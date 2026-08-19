@@ -63,6 +63,27 @@ follow-up, not yet done.
 | `ei_bsco_m` | Household financial expectations (consumer survey) | `indic=BS-FS-NY`, "financial situation over next 12 months" | fetched ad hoc for `23_model_E_expectations_wealth.py` |
 | `tec00131` | Household gross saving rate | | fetched ad hoc for `23_model_E_expectations_wealth.py` |
 
+## P1a/P1b additions (recovery trajectory, migration)
+
+| Dataset code | What it is | Key params | Fetched by |
+|---|---|---|---|
+| `sdg_08_10` | Real GDP per capita, 2008–2024 (recovery trajectory: current-peak distance and separately, worst-drawdown/recovery-time detection) | | `28_recovery_trajectory.py` |
+| `migr_emi1ctz` | Emigration flow | `citizen=NAT`, `agedef=COMPLET`, `unit=NR`, `sex=T` | `29_migration_brain_drain.py` |
+| `migr_imm1ctz` | Immigration flow (return migration of nationals) | same params as above | `29_migration_brain_drain.py` |
+| `demo_pjan` | Population (rate denominator) | `sex=T`, `age=TOTAL` | `29_migration_brain_drain.py` |
+| `demo_gind` (`MIGTRT`) | Eurostat's headline "net migration rate" | **checked and rejected** — see note below | `29_migration_brain_drain.py` |
+
+**Rejection note**: `demo_gind`'s `MIGTRT`/`MIGT` indicators are officially
+"net migration plus statistical adjustment" — a residual (population change
+minus natural change) that absorbs census and population-register
+revisions, not just real migration. For Greece it shows strongly *positive*
+net migration every year 2011–2024, directly contradicting Greece's own
+falling population and the well-documented emigration pattern — clear
+evidence it's dominated by statistical noise for this country. Caught by
+cross-checking against `GROW`/`NATGROW` before use. `migr_emi1ctz` /
+`migr_imm1ctz` (actual flow registrations) used instead; all 27 EU
+countries report into them with near-full 2008–2024 coverage.
+
 ## Non-Eurostat sources (corroboration only, not modeled)
 
 These are cited in the literature/discussion section as independent
@@ -73,6 +94,13 @@ corroboration — none are merged into any model or panel.
 - **Mantés & Marinakis / Greekonomics.gr** (2025 report, MIT-licensed companion code at `github.com/AMantes/Greekonomics`): "Bottom-10" comparator income/housing/healthcare figures.
 - **Greece in Figures** (`greeceinfigures.com`): independently-reported AROPE/subjective-poverty headline figures, matched against this project's own Eurostat pull.
 - **Andriopoulou, Kanavitsa & Tsakloglou** (2019/2020): microdata-based anchored-poverty comparison — full citation in report Methods.
+- **Gourinchas, Philippon & Vayanos** (2016, VoxEU/CEPR): "compound crisis" framing for the recovery-trajectory section.
+- **European Stability Mechanism** explainer: domestic drivers of the Greek crisis (cheap euro-era borrowing, weak tax administration, 2009 data-misreporting revelation).
+- **OECD** (2026, "A Review of Greek Emigrants" / "Talent Abroad"): return-migration flow numbers and age/education profile of returnees (census-based — not this project's own Eurostat flow data).
+- **Kathimerini** (3 July 2026): public-facing coverage of the same OECD report, cross-checked against this project's own migration figures.
+- **Greekonomics.gr** brain-drain article (staff, 3 Aug 2026, distinct from the Mantés & Marinakis report): stock-based ("brain drain reversal premature") counterpoint to this project's own flow-based finding.
+- **Labrianidis & Vogiatzis** (2013): pre-crisis skilled-emigration/crisis mutual-reinforcement argument.
+- **Pratsinakis** (2022, open-access book chapter, *Challenging Mobilities... The Case of Greece*, IMISCOE/Springer): "brain drain is an incomplete frame" argument, survey stats (27% "enforced," 43% "always wanted to leave," two-in-three crisis emigrants university-educated), and a third independent shape check on the emigration timeline (peak 2012, plateau through late 2010s per this source and OECD, vs. a steadier decline in this project's own Eurostat extraction — reported as an open, unresolved discrepancy in the report itself). PDF supplied by the user at `docs/978-3-031-11574-5.pdf`.
 
 ## Non-Eurostat data considered and rejected or deferred
 

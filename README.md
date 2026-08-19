@@ -70,6 +70,8 @@ Scripts are numbered in dependency order. Run all from inside `scripts/`:
 | 25 | `25_near_zero_gap_countries.py` | Near-zero AROPE-vs-subjective-gap country comparison |
 | 26 | `26_model_scorecard.py` | All six models (A-F) side by side, in- and out-of-sample: `model_scorecard.csv` |
 | 27 | `27_multiple_testing.py` | FDR correction on the exploratory test families: `fdr_*.csv` |
+| 28 | `28_recovery_trajectory.py` | Years-to-recovery per country, indexed trajectory chart data |
+| 29 | `29_migration_brain_drain.py` | Net migration of Greek nationals, cross-country comparison |
 | — | `09_export_report_data.py` again | Re-run to pick up any new columns before... |
 | — | `inject_data.py` | ...embedding the refreshed JSON into `output/report.html` |
 

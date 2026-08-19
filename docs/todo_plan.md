@@ -63,14 +63,19 @@ inclusion.
 integration deferred to P3
 
 ### P1b — Migration / brain drain (scoped narrow)
-- [ ] Net migration, crisis/recovery years
-- [ ] Age profile, if comparable
-- [ ] Return migration, if comparable
-- [ ] Explicitly note anything not clean/comparable rather than forcing it
-      (education/skill profile, cross-country comparison were flagged as
-      the least likely to be cleanly available)
-- [ ] Checkpoint: report findings, recommend placement, decide
-      integrate/hold back
+- [x] Net migration, crisis/recovery years
+- [x] Age profile, if comparable — not comparable for Greek nationals
+      specifically; explicitly not used, attributed instead to OECD/census
+      source where cited
+- [x] Return migration, if comparable — yes, and this is where the most
+      newsworthy finding turned up (net inflow in 2023 and 2024)
+- [x] Explicitly note anything not clean/comparable rather than forcing it
+      (age profile as above; `demo_gind`'s headline "net migration rate"
+      rejected outright as statistically-noise-dominated for Greece)
+- [x] Checkpoint: report findings, recommend placement, decide
+      integrate/hold back — **decision: integrate, with careful framing**
+
+**Commit**: `p1a-recovery-trajectory-analysis` (P1a analysis) — done
 
 **Commit**: `p1b-migration-feasibility`
 
@@ -93,15 +98,26 @@ integration deferred to P3
 
 ## P3 — Integrate into report
 
-Only after the P1 checkpoints (and P2, if pursued) are individually decided.
+Originally planned as one batched step after all of P1a/b/c. User instead
+asked to integrate P1a and P1b immediately after their checkpoints (ahead
+of P1c), so this happened in two parts rather than one — noted here so the
+plan and what actually happened stay in sync.
 
-- [ ] Update the scorecard if any new variable entered a model
-- [ ] Add new sections only where they strengthen the story (recovery
-      trajectory near scarring; migration as a structural scarring channel;
-      trust near expectations, if included)
-- [ ] Keep exploratory labels clear and consistent
-- [ ] Update executive summary and conclusion
-- [ ] Update Methods and this documentation
+- [x] Add new sections where they strengthen the story — recovery
+      trajectory promoted to lead "Still below its own pre-crisis peak";
+      migration added as "The crisis also became an exit route" — **done
+      for P1a/P1b**; trust near expectations still pending P1c
+- [x] Keep exploratory labels clear and consistent — no new exploratory
+      claims introduced by P1a/P1b (both are descriptive, not modeled)
+- [ ] Update the scorecard if any new variable entered a model — N/A so far,
+      neither P1a nor P1b variables were added to any regression
+- [ ] Update executive summary and conclusion — not yet done for P1a/P1b
+      findings specifically
+- [x] Update Methods and this documentation — done for P1a/P1b (new dataset
+      codes, new citations, `data_sources.md`, `publication_strategy.md`)
+
+**Commit**: `p1a-p1b-report-integration` — done for P1a/P1b; P1c and P2
+integration still pending a future pass through this checklist
 
 **Commit**: `report-integration`
 

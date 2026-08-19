@@ -18,6 +18,8 @@ gr_trend_a = pd.read_csv(f"{OUT}/gr_residual_trend_A_structural.csv")
 gr_trend_c = pd.read_csv(f"{OUT}/gr_residual_trend_C_plus_arrears_unexpected.csv")
 nested_loo = pd.read_csv(f"{OUT}/nested_loo_summary.csv")
 arope_snapshot = pd.read_csv(f"{OUT}/arope_subjective_snapshot_2025.csv")
+recovery_idx = pd.read_csv(f"{OUT}/recovery_indexed_trajectories.csv")
+migration = pd.read_csv("../data/raw/migration_nationals_panel.csv")
 
 
 def clean(v):
@@ -156,6 +158,15 @@ bundle = {
         {"geo": r["geo"], "label": r["geo_label"], "subjective": clean(r["subjective_poverty"]),
          "arope": clean(r["arope"]), "gap": clean(r["gap"])}
         for _, r in arope_snapshot.iterrows()
+    ],
+    "recovery_trajectory": [
+        {"time": int(t), **{geo: clean(v) for geo, v in g.set_index("geo")["indexed_to_own_peak"].items()}}
+        for t, g in recovery_idx.groupby("time")
+    ],
+    "migration_nationals": [
+        {"year": int(r["time"]), "emigration": clean(r["emigration_nationals"]),
+         "immigration": clean(r["immigration_nationals"]), "net": clean(r["net_migration_nationals"])}
+        for _, r in migration[migration.geo == "EL"].sort_values("time").iterrows()
     ],
 }
 

@@ -818,3 +818,131 @@ recommended for integration. User confirmed: hold the actual report
 integration for the batched P3 step rather than doing it now, so more P1
 items can be checkpointed first without repeatedly touching report.html.
 New data: `recovery_trajectory.csv`, `recovery_indexed_trajectories.csv`.
+
+## P1b: migration/brain drain (2026-08-20)
+
+Script `29_migration_brain_drain.py`. Scoped narrow per the agreed plan: net
+migration, age profile if comparable, return migration if comparable.
+
+**Rejected first**: Eurostat's headline "net migration rate" (`demo_gind`,
+indicator `MIGTRT`) is officially "net migration plus statistical
+adjustment" — a residual absorbing census/register revisions, not just real
+migration. For Greece it's strongly *positive* every year 2011-2024 (+150k
+to +240k), directly contradicting Greece's own falling population and the
+well-documented emigration story. Caught by cross-checking against total
+population change (`GROW`) and natural change (`NATGROW`) before using it.
+
+**Used instead**: `migr_emi1ctz` / `migr_imm1ctz`, filtered to
+`citizen=NAT` (the reporting country's own nationals) and
+`agedef=COMPLET`, 2008-2024. All 27 EU countries report into these tables
+with near-full coverage — genuinely comparable. Net outflow of Greek
+nationals rose from under 6,000/year (2008-2009) to a peak of 44,502 in
+2012, stayed elevated through the late 2010s, then declined and **flipped
+to a net inflow in 2023 (+9,160 returning) and 2024 (+19,900 returning)** —
+first positive years since before the crisis. Cumulative net loss
+2008-2024: 290,281 people, 2.6% of Greece's 2008 population.
+
+**Age profile: not usable, reported honestly rather than forced.** Eurostat
+only publishes age-band breakdowns for *all* emigrants regardless of
+citizenship, not for Greek nationals specifically — using it would conflate
+Greek citizens leaving with foreign residents leaving. Per the scoping rule,
+not used; any age/education claim in the report is attributed to the
+OECD/census source instead (see below), never to this table.
+
+**Cross-country check**: ranked by cumulative net emigration of nationals as
+% of population (25 countries, >=15 years coverage), Greece is 5th of 25
+(2.7%) — behind Lithuania (8.3%), Croatia (5.9%), Romania (4.3%), Luxembourg
+(a different kind of case). Not the most extreme EU case on this dimension.
+
+**Checkpoint decision**: integrate, with careful framing (per user
+instructions) — not "worst in the EU," but "large, crisis-linked, sustained
+over a decade, with a genuine recent reversal that doesn't erase the
+cumulative loss."
+
+## P1a + P1b integration (2026-08-20)
+
+Both integrated together per user's explicit ordering (P1a first, as the
+stronger/cleaner result; P1b second, as a secondary structural-scarring
+channel), with additional literature verification requested before
+integration.
+
+**Chart infrastructure**: extended the existing `lineChart()` JS function
+with three small, backward-compatible additions — per-series `showLabel`
+(suppress end-label/dot for background series), per-series `opacity`/`width`
+(faint background lines), and a chart-level `tooltipSeries` override (so a
+27-line chart's hover only shows Greece, not all 27 countries). Extended
+`barChart()` with an optional `valFmt` formatter (existing calls unaffected,
+default unchanged) — needed because the migration chart's values are
+population counts (thousands), not percentages, and `+34225.0` reads badly;
+now renders `+34,225`. Caught the formatter wasn't actually wired into the
+migration chart's call site on first pass — verified via browser screenshot
+before publishing, not assumed from the code alone.
+
+**New report_data.json entries**: `recovery_trajectory` (27 countries x 17
+years, indexed to own peak) and `migration_nationals` (Greece's
+emigration/immigration/net by year), added via `09_export_report_data.py`.
+
+**Recovery trajectory** now leads "Still below its own pre-crisis peak":
+the 3-years-vs-16-years framing, the indexed-trajectory chart (Greece
+highlighted, other 26 countries faint), Finland/Luxembourg as honest
+complications, and a literature box grounding the "not just pessimism"
+argument in Gourinchas/Philippon/Vayanos (2016, VoxEU/CEPR — verified
+directly: "one of the worst crises in history... significantly more severe
+and protracted" than any comparable trifecta crisis since 1980, 26%
+cumulative real income decline 2007-2013) and the ESM's own explainer
+(verified directly: cheap euro-era borrowing delayed reform, weak tax
+administration, 2009 data-misreporting revelation triggered market-access
+loss).
+
+**Migration** added as new subsection "The crisis also became an exit
+route" right after, with the chart, the core finding, the cross-country
+honesty check, and a careful stock-vs-flow explanation citing the OECD 2026
+"Talent Abroad" review (verified directly: 46,000 returned vs 37,000 left
+in 2023, "first positive year since the crisis began"; returnees 54% aged
+20-39, three-fifths tertiary-educated vs 23% among never-emigrated Greek
+residents — explicitly attributed to OECD/census data, not to this
+project's own Eurostat flow table) alongside the existing Greekonomics.gr
+stock-based "reversal was premature" finding, plus Kathimerini's 3 July 2026
+coverage of the same OECD report (verified: 2024 figure of "20,000 more
+returned than left" essentially matches this project's own computed figure
+of 19,852).
+
+**PDF access saga, worth recording**: the user pointed at Pratsinakis (2022,
+"Greece's Emigration During the Crisis Beyond the Brain Drain," in Kousis,
+Chatzidaki & Kafetsios eds., *Challenging Mobilities... The Case of
+Greece*, IMISCOE/Springer, open access) via a paywalled Springer link first
+(inaccessible), then a local PDF in `~/Downloads/` — which failed with
+`EPERM` on every tool tried (Read, cp, even plain `cat`/Python `open()`),
+a hard macOS Downloads-folder sandbox restriction on this process, not
+fixable by switching tools. Told the user directly rather than retry
+pointlessly; they moved the file to `docs/978-3-031-11574-5.pdf`, which
+resolved it immediately. Full chapter read and used substantively — it's a
+better, more directly-on-point source than the Labrianidis & Vogiatzis
+(2013) piece for the "brain drain is a real but incomplete frame" argument
+(kept both; they're complementary). Concrete additions: only 27% of
+post-2010 emigrants in Pratsinakis's own 996-respondent survey said their
+decision was "enforced by circumstances" (43% said they'd always wanted to
+leave regardless); two in three crisis-era emigrants held a university
+degree (Labrianidis & Pratsinakis 2016 survey, cited within); highly
+educated Greeks' unemployment rose to ~4x the EU-28 average during the
+crisis.
+
+**A genuine three-way shape discrepancy, reported honestly rather than
+smoothed over**: this project's own Eurostat extraction shows Greek
+national emigration peaking in 2012 then declining fairly steadily. Both
+the OECD 2026 review and Pratsinakis (2022) — independently, using
+Eurostat data pulled at different times/vintages — describe a 2012 peak
+followed by a plateau around 46,000-56,000 through the late 2010s, not a
+steady decline. All three agree on the crisis-era surge and the 2012 peak;
+they disagree on exactly how fast the outflow eased afterward. Not
+resolved (would need re-querying multiple Eurostat table variants) —
+stated as an open discrepancy in the report itself rather than picking the
+version that reads more cleanly.
+
+**Also fixed in passing**: migration bar-chart value formatting (see chart
+infrastructure note above).
+
+Republished after each verification step; tag balance checked before every
+publish, per established practice. Commits: `p1a-recovery-trajectory-
+analysis` (analysis only), then `p1a-p1b-report-integration` (charts +
+prose + citations, both P1a and P1b together).
