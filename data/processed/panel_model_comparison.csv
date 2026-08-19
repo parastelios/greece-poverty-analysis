@@ -1,0 +1,5 @@
+model,n,r2,gr_avg_residual,gr_latest_residual
+M1_baseline_EUR_GDP,270,0.738,15.3,27.9
+M2_swap_to_AIC_PPS,270,0.764,15.1,27.4
+M3_swap_to_GDP_PPS,270,0.724,15.4,27.2
+M4_plus_hardship_vars,267,0.892,2.2,5.8

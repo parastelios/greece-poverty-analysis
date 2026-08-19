@@ -1,0 +1,9 @@
+variable,lag_-2,lag_-1,lag_+0,lag_+1,lag_+2
+AROP (relative),0.364,0.302,0.191,0.019,-0.218
+"Anchored poverty (approx., 2008 base)",0.661,0.806,0.897,0.924,0.851
+Real household disposable income,-0.808,-0.927,-0.927,-0.846,-0.758
+Real GDP per capita,-0.757,-0.83,-0.824,-0.805,-0.741
+Unemployment rate,0.809,0.93,0.805,0.568,0.304
+"Severe material deprivation, legacy",0.651,0.766,0.825,0.854,0.797
+Housing cost overburden,0.635,0.797,0.857,0.857,0.801
+Households in arrears,0.614,0.72,0.823,0.876,0.831

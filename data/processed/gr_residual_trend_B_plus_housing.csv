@@ -1,0 +1,11 @@
+time,subjective_poverty,predicted,residual,model
+2015,77.7,81.2,-3.5,B_plus_housing
+2016,76.8,79.3,-2.5,B_plus_housing
+2017,77.2,75.4,1.8,B_plus_housing
+2018,74.1,72.2,1.9,B_plus_housing
+2019,71.0,66.1,4.9,B_plus_housing
+2020,69.8,61.8,8.0,B_plus_housing
+2021,71.0,52.9,18.1,B_plus_housing
+2022,68.4,49.9,18.5,B_plus_housing
+2023,67.0,47.2,19.8,B_plus_housing
+2024,66.7,46.0,20.7,B_plus_housing

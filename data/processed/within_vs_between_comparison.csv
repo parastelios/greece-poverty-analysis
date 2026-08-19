@@ -1,0 +1,6 @@
+,pooled_between (no country FE),two_way_FE (within-country)
+Intercept,23.032,20.952
+unemployment_rate,2.207,1.071
+aic_pps_pc_k,-0.876,-0.867
+severe_mat_soc_deprivation,1.152,1.17
+arop,-0.614,0.176

@@ -1,0 +1,6 @@
+variable,p,p_adj_fdr,survives_fdr
+arop,0.0767,0.17233333333333334,False
+unemployment_rate,0.9828,0.9828,False
+real_gdp_pc,0.1034,0.17233333333333334,False
+severe_mat_soc_deprivation,0.001,0.005,True
+arrears,0.3272,0.409,False

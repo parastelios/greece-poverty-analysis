@@ -1,0 +1,11 @@
+time,subjective_poverty,predicted,residual,model
+2015,77.7,72.4,5.3,A_structural
+2016,76.8,72.9,3.9,A_structural
+2017,77.2,69.1,8.1,A_structural
+2018,74.1,65.2,8.9,A_structural
+2019,71.0,60.1,10.9,A_structural
+2020,69.8,55.9,13.9,A_structural
+2021,71.0,47.4,23.6,A_structural
+2022,68.4,45.2,23.2,A_structural
+2023,67.0,41.3,25.7,A_structural
+2024,66.7,39.3,27.4,A_structural

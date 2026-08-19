@@ -1,0 +1,654 @@
+geo,geo_label,time,arope_legacy
+AL,Albania,2017,51.8
+AL,Albania,2018,49.0
+AL,Albania,2019,46.2
+AL,Albania,2020,43.4
+AT,Austria,2003,15.7
+AT,Austria,2004,17.9
+AT,Austria,2005,17.4
+AT,Austria,2006,17.8
+AT,Austria,2007,16.7
+AT,Austria,2008,20.6
+AT,Austria,2009,19.1
+AT,Austria,2010,18.9
+AT,Austria,2011,19.2
+AT,Austria,2012,18.5
+AT,Austria,2013,18.8
+AT,Austria,2014,19.2
+AT,Austria,2015,18.3
+AT,Austria,2016,18.0
+AT,Austria,2017,18.1
+AT,Austria,2018,17.5
+AT,Austria,2019,16.9
+AT,Austria,2020,17.5
+BE,Belgium,2003,23.4
+BE,Belgium,2004,21.6
+BE,Belgium,2005,22.6
+BE,Belgium,2006,21.5
+BE,Belgium,2007,21.6
+BE,Belgium,2008,20.8
+BE,Belgium,2009,20.2
+BE,Belgium,2010,20.8
+BE,Belgium,2011,21.0
+BE,Belgium,2012,21.6
+BE,Belgium,2013,20.8
+BE,Belgium,2014,21.2
+BE,Belgium,2015,21.1
+BE,Belgium,2016,20.9
+BE,Belgium,2017,20.6
+BE,Belgium,2018,20.0
+BE,Belgium,2019,19.5
+BE,Belgium,2020,19.0
+BG,Bulgaria,2006,61.3
+BG,Bulgaria,2007,60.7
+BG,Bulgaria,2008,44.8
+BG,Bulgaria,2009,46.2
+BG,Bulgaria,2010,49.2
+BG,Bulgaria,2011,49.1
+BG,Bulgaria,2012,49.3
+BG,Bulgaria,2013,48.0
+BG,Bulgaria,2014,40.1
+BG,Bulgaria,2015,41.3
+BG,Bulgaria,2016,40.4
+BG,Bulgaria,2017,38.9
+BG,Bulgaria,2018,32.8
+BG,Bulgaria,2019,32.8
+BG,Bulgaria,2020,32.1
+CH,Switzerland,2007,17.9
+CH,Switzerland,2008,18.1
+CH,Switzerland,2009,17.9
+CH,Switzerland,2010,17.2
+CH,Switzerland,2011,17.2
+CH,Switzerland,2012,17.5
+CH,Switzerland,2013,16.3
+CH,Switzerland,2014,16.4
+CH,Switzerland,2015,18.2
+CH,Switzerland,2016,17.8
+CH,Switzerland,2017,18.1
+CH,Switzerland,2018,17.4
+CH,Switzerland,2019,18.8
+CH,Switzerland,2020,18.1
+CY,Cyprus,2005,25.3
+CY,Cyprus,2006,25.4
+CY,Cyprus,2007,25.2
+CY,Cyprus,2008,23.3
+CY,Cyprus,2009,23.5
+CY,Cyprus,2010,24.6
+CY,Cyprus,2011,24.6
+CY,Cyprus,2012,27.1
+CY,Cyprus,2013,27.8
+CY,Cyprus,2014,27.4
+CY,Cyprus,2015,28.9
+CY,Cyprus,2016,27.7
+CY,Cyprus,2017,25.2
+CY,Cyprus,2018,23.9
+CY,Cyprus,2019,22.8
+CY,Cyprus,2020,22.1
+CZ,Czechia,2005,19.6
+CZ,Czechia,2006,18.0
+CZ,Czechia,2007,15.8
+CZ,Czechia,2008,15.3
+CZ,Czechia,2009,14.0
+CZ,Czechia,2010,14.4
+CZ,Czechia,2011,15.3
+CZ,Czechia,2012,15.4
+CZ,Czechia,2013,14.6
+CZ,Czechia,2014,14.8
+CZ,Czechia,2015,14.0
+CZ,Czechia,2016,13.3
+CZ,Czechia,2017,12.2
+CZ,Czechia,2018,12.2
+CZ,Czechia,2019,12.5
+CZ,Czechia,2020,11.9
+DE,Germany,2005,18.4
+DE,Germany,2006,20.2
+DE,Germany,2007,20.6
+DE,Germany,2008,20.1
+DE,Germany,2009,20.0
+DE,Germany,2010,19.7
+DE,Germany,2011,19.9
+DE,Germany,2012,19.6
+DE,Germany,2013,20.3
+DE,Germany,2014,20.6
+DE,Germany,2015,20.0
+DE,Germany,2016,19.7
+DE,Germany,2017,19.0
+DE,Germany,2018,18.7
+DE,Germany,2019,17.4
+DE,Germany,2020,21.6
+DK,Denmark,2003,16.9
+DK,Denmark,2004,16.5
+DK,Denmark,2005,17.2
+DK,Denmark,2006,16.7
+DK,Denmark,2007,16.8
+DK,Denmark,2008,16.3
+DK,Denmark,2009,17.6
+DK,Denmark,2010,18.3
+DK,Denmark,2011,17.6
+DK,Denmark,2012,17.5
+DK,Denmark,2013,18.3
+DK,Denmark,2014,17.9
+DK,Denmark,2015,17.7
+DK,Denmark,2016,16.8
+DK,Denmark,2017,17.2
+DK,Denmark,2018,17.0
+DK,Denmark,2019,16.3
+DK,Denmark,2020,15.9
+EA,"Euro area (EA11-1999, EA12-2001, EA13-2007, EA15-2008, EA16-2009, EA17-2011, EA18-2014, EA19-2015, EA20-2023, EA21-2026)",2008,21.6
+EA,"Euro area (EA11-1999, EA12-2001, EA13-2007, EA15-2008, EA16-2009, EA17-2011, EA18-2014, EA19-2015, EA20-2023, EA21-2026)",2009,21.4
+EA,"Euro area (EA11-1999, EA12-2001, EA13-2007, EA15-2008, EA16-2009, EA17-2011, EA18-2014, EA19-2015, EA20-2023, EA21-2026)",2010,21.8
+EA,"Euro area (EA11-1999, EA12-2001, EA13-2007, EA15-2008, EA16-2009, EA17-2011, EA18-2014, EA19-2015, EA20-2023, EA21-2026)",2011,22.7
+EA,"Euro area (EA11-1999, EA12-2001, EA13-2007, EA15-2008, EA16-2009, EA17-2011, EA18-2014, EA19-2015, EA20-2023, EA21-2026)",2012,23.1
+EA,"Euro area (EA11-1999, EA12-2001, EA13-2007, EA15-2008, EA16-2009, EA17-2011, EA18-2014, EA19-2015, EA20-2023, EA21-2026)",2013,23.0
+EA,"Euro area (EA11-1999, EA12-2001, EA13-2007, EA15-2008, EA16-2009, EA17-2011, EA18-2014, EA19-2015, EA20-2023, EA21-2026)",2014,23.5
+EA,"Euro area (EA11-1999, EA12-2001, EA13-2007, EA15-2008, EA16-2009, EA17-2011, EA18-2014, EA19-2015, EA20-2023, EA21-2026)",2015,23.1
+EA,"Euro area (EA11-1999, EA12-2001, EA13-2007, EA15-2008, EA16-2009, EA17-2011, EA18-2014, EA19-2015, EA20-2023, EA21-2026)",2016,23.1
+EA,"Euro area (EA11-1999, EA12-2001, EA13-2007, EA15-2008, EA16-2009, EA17-2011, EA18-2014, EA19-2015, EA20-2023, EA21-2026)",2017,22.1
+EA,"Euro area (EA11-1999, EA12-2001, EA13-2007, EA15-2008, EA16-2009, EA17-2011, EA18-2014, EA19-2015, EA20-2023, EA21-2026)",2018,21.6
+EA,"Euro area (EA11-1999, EA12-2001, EA13-2007, EA15-2008, EA16-2009, EA17-2011, EA18-2014, EA19-2015, EA20-2023, EA21-2026)",2019,20.8
+EA,"Euro area (EA11-1999, EA12-2001, EA13-2007, EA15-2008, EA16-2009, EA17-2011, EA18-2014, EA19-2015, EA20-2023, EA21-2026)",2020,21.8
+EA18,Euro area - 18 countries (2014),2005,21.8
+EA18,Euro area - 18 countries (2014),2006,22.0
+EA18,Euro area - 18 countries (2014),2007,21.8
+EA18,Euro area - 18 countries (2014),2008,21.6
+EA18,Euro area - 18 countries (2014),2009,21.6
+EA18,Euro area - 18 countries (2014),2010,21.9
+EA18,Euro area - 18 countries (2014),2011,22.8
+EA18,Euro area - 18 countries (2014),2012,23.2
+EA18,Euro area - 18 countries (2014),2013,23.1
+EA18,Euro area - 18 countries (2014),2014,23.5
+EA18,Euro area - 18 countries (2014),2015,23.0
+EA18,Euro area - 18 countries (2014),2016,23.0
+EA18,Euro area - 18 countries (2014),2017,22.1
+EA18,Euro area - 18 countries (2014),2018,21.5
+EA18,Euro area - 18 countries (2014),2019,20.7
+EA18,Euro area - 18 countries (2014),2020,21.8
+EA19,Euro area - 19 countries  (2015-2022),2005,22.0
+EA19,Euro area - 19 countries  (2015-2022),2006,22.1
+EA19,Euro area - 19 countries  (2015-2022),2007,21.9
+EA19,Euro area - 19 countries  (2015-2022),2008,21.7
+EA19,Euro area - 19 countries  (2015-2022),2009,21.6
+EA19,Euro area - 19 countries  (2015-2022),2010,22.0
+EA19,Euro area - 19 countries  (2015-2022),2011,22.9
+EA19,Euro area - 19 countries  (2015-2022),2012,23.3
+EA19,Euro area - 19 countries  (2015-2022),2013,23.1
+EA19,Euro area - 19 countries  (2015-2022),2014,23.5
+EA19,Euro area - 19 countries  (2015-2022),2015,23.1
+EA19,Euro area - 19 countries  (2015-2022),2016,23.1
+EA19,Euro area - 19 countries  (2015-2022),2017,22.1
+EA19,Euro area - 19 countries  (2015-2022),2018,21.6
+EA19,Euro area - 19 countries  (2015-2022),2019,20.8
+EA19,Euro area - 19 countries  (2015-2022),2020,21.8
+EA20,Euro area – 20 countries (2023-2025),2014,23.5
+EA20,Euro area – 20 countries (2023-2025),2015,23.1
+EA20,Euro area – 20 countries (2023-2025),2016,23.2
+EA20,Euro area – 20 countries (2023-2025),2017,22.2
+EA20,Euro area – 20 countries (2023-2025),2018,21.6
+EA20,Euro area – 20 countries (2023-2025),2019,20.8
+EA20,Euro area – 20 countries (2023-2025),2020,21.8
+EE,Estonia,2004,26.3
+EE,Estonia,2005,25.9
+EE,Estonia,2006,22.0
+EE,Estonia,2007,22.0
+EE,Estonia,2008,21.8
+EE,Estonia,2009,23.4
+EE,Estonia,2010,21.7
+EE,Estonia,2011,23.1
+EE,Estonia,2012,23.4
+EE,Estonia,2013,23.5
+EE,Estonia,2014,26.0
+EE,Estonia,2015,24.2
+EE,Estonia,2016,24.4
+EE,Estonia,2017,23.4
+EE,Estonia,2018,24.4
+EE,Estonia,2019,24.3
+EE,Estonia,2020,23.2
+EL,Greece,2003,32.9
+EL,Greece,2004,30.9
+EL,Greece,2005,29.4
+EL,Greece,2006,29.3
+EL,Greece,2007,28.3
+EL,Greece,2008,28.1
+EL,Greece,2009,27.6
+EL,Greece,2010,27.7
+EL,Greece,2011,31.0
+EL,Greece,2012,34.6
+EL,Greece,2013,35.7
+EL,Greece,2014,36.0
+EL,Greece,2015,35.7
+EL,Greece,2016,35.6
+EL,Greece,2017,34.8
+EL,Greece,2018,31.8
+EL,Greece,2019,30.0
+EL,Greece,2020,28.8
+ES,Spain,2004,25.0
+ES,Spain,2005,24.3
+ES,Spain,2006,24.0
+ES,Spain,2007,23.3
+ES,Spain,2008,23.8
+ES,Spain,2009,24.7
+ES,Spain,2010,26.1
+ES,Spain,2011,26.7
+ES,Spain,2012,27.2
+ES,Spain,2013,27.3
+ES,Spain,2014,29.2
+ES,Spain,2015,28.6
+ES,Spain,2016,27.9
+ES,Spain,2017,26.6
+ES,Spain,2018,26.1
+ES,Spain,2019,25.3
+ES,Spain,2020,26.4
+EU,"European Union (EU6-1958, EU9-1973, EU10-1981, EU12-1986, EU15-1995, EU25-2004, EU27-2007, EU28-2013, EU27-2020)",2008,23.7
+EU,"European Union (EU6-1958, EU9-1973, EU10-1981, EU12-1986, EU15-1995, EU25-2004, EU27-2007, EU28-2013, EU27-2020)",2009,23.3
+EU,"European Union (EU6-1958, EU9-1973, EU10-1981, EU12-1986, EU15-1995, EU25-2004, EU27-2007, EU28-2013, EU27-2020)",2010,23.8
+EU,"European Union (EU6-1958, EU9-1973, EU10-1981, EU12-1986, EU15-1995, EU25-2004, EU27-2007, EU28-2013, EU27-2020)",2011,24.3
+EU,"European Union (EU6-1958, EU9-1973, EU10-1981, EU12-1986, EU15-1995, EU25-2004, EU27-2007, EU28-2013, EU27-2020)",2012,24.8
+EU,"European Union (EU6-1958, EU9-1973, EU10-1981, EU12-1986, EU15-1995, EU25-2004, EU27-2007, EU28-2013, EU27-2020)",2013,24.6
+EU,"European Union (EU6-1958, EU9-1973, EU10-1981, EU12-1986, EU15-1995, EU25-2004, EU27-2007, EU28-2013, EU27-2020)",2014,24.4
+EU,"European Union (EU6-1958, EU9-1973, EU10-1981, EU12-1986, EU15-1995, EU25-2004, EU27-2007, EU28-2013, EU27-2020)",2015,23.8
+EU,"European Union (EU6-1958, EU9-1973, EU10-1981, EU12-1986, EU15-1995, EU25-2004, EU27-2007, EU28-2013, EU27-2020)",2016,23.5
+EU,"European Union (EU6-1958, EU9-1973, EU10-1981, EU12-1986, EU15-1995, EU25-2004, EU27-2007, EU28-2013, EU27-2020)",2017,22.4
+EU,"European Union (EU6-1958, EU9-1973, EU10-1981, EU12-1986, EU15-1995, EU25-2004, EU27-2007, EU28-2013, EU27-2020)",2018,21.8
+EU,"European Union (EU6-1958, EU9-1973, EU10-1981, EU12-1986, EU15-1995, EU25-2004, EU27-2007, EU28-2013, EU27-2020)",2019,21.2
+EU27_2007,European Union - 27 countries (2007-2013),2005,25.8
+EU27_2007,European Union - 27 countries (2007-2013),2006,25.3
+EU27_2007,European Union - 27 countries (2007-2013),2007,24.5
+EU27_2007,European Union - 27 countries (2007-2013),2008,23.7
+EU27_2007,European Union - 27 countries (2007-2013),2009,23.3
+EU27_2007,European Union - 27 countries (2007-2013),2010,23.7
+EU27_2007,European Union - 27 countries (2007-2013),2011,24.2
+EU27_2007,European Union - 27 countries (2007-2013),2012,24.7
+EU27_2007,European Union - 27 countries (2007-2013),2013,24.6
+EU27_2007,European Union - 27 countries (2007-2013),2014,24.4
+EU27_2007,European Union - 27 countries (2007-2013),2015,23.7
+EU27_2007,European Union - 27 countries (2007-2013),2016,23.5
+EU27_2007,European Union - 27 countries (2007-2013),2017,22.4
+EU27_2007,European Union - 27 countries (2007-2013),2018,21.8
+EU27_2007,European Union - 27 countries (2007-2013),2019,21.2
+EU27_2020,European Union - 27 countries (from 2020),2010,23.9
+EU27_2020,European Union - 27 countries (from 2020),2011,24.5
+EU27_2020,European Union - 27 countries (from 2020),2012,24.9
+EU27_2020,European Union - 27 countries (from 2020),2013,24.6
+EU27_2020,European Union - 27 countries (from 2020),2014,24.5
+EU27_2020,European Union - 27 countries (from 2020),2015,23.8
+EU27_2020,European Union - 27 countries (from 2020),2016,23.7
+EU27_2020,European Union - 27 countries (from 2020),2017,22.5
+EU27_2020,European Union - 27 countries (from 2020),2018,21.6
+EU27_2020,European Union - 27 countries (from 2020),2019,20.9
+EU27_2020,European Union - 27 countries (from 2020),2020,21.5
+EU28,European Union - 28 countries (2013-2020),2010,23.8
+EU28,European Union - 28 countries (2013-2020),2011,24.3
+EU28,European Union - 28 countries (2013-2020),2012,24.8
+EU28,European Union - 28 countries (2013-2020),2013,24.6
+EU28,European Union - 28 countries (2013-2020),2014,24.4
+EU28,European Union - 28 countries (2013-2020),2015,23.8
+EU28,European Union - 28 countries (2013-2020),2016,23.5
+EU28,European Union - 28 countries (2013-2020),2017,22.4
+EU28,European Union - 28 countries (2013-2020),2018,21.8
+EU28,European Union - 28 countries (2013-2020),2019,21.2
+FI,Finland,2004,17.2
+FI,Finland,2005,17.2
+FI,Finland,2006,17.1
+FI,Finland,2007,17.4
+FI,Finland,2008,17.4
+FI,Finland,2009,16.9
+FI,Finland,2010,16.9
+FI,Finland,2011,17.9
+FI,Finland,2012,17.2
+FI,Finland,2013,16.0
+FI,Finland,2014,17.3
+FI,Finland,2015,16.8
+FI,Finland,2016,16.6
+FI,Finland,2017,15.7
+FI,Finland,2018,16.5
+FI,Finland,2019,15.6
+FI,Finland,2020,16.0
+FR,France,2004,19.8
+FR,France,2005,18.9
+FR,France,2006,18.8
+FR,France,2007,19.0
+FR,France,2008,18.5
+FR,France,2009,18.5
+FR,France,2010,19.2
+FR,France,2011,19.3
+FR,France,2012,19.1
+FR,France,2013,18.1
+FR,France,2014,18.5
+FR,France,2015,17.7
+FR,France,2016,18.2
+FR,France,2017,17.0
+FR,France,2018,17.4
+FR,France,2019,17.9
+FR,France,2020,18.6
+HR,Croatia,2010,31.1
+HR,Croatia,2011,32.6
+HR,Croatia,2012,32.6
+HR,Croatia,2013,29.9
+HR,Croatia,2014,29.3
+HR,Croatia,2015,29.1
+HR,Croatia,2016,27.9
+HR,Croatia,2017,26.4
+HR,Croatia,2018,24.8
+HR,Croatia,2019,23.3
+HR,Croatia,2020,23.2
+HU,Hungary,2005,32.1
+HU,Hungary,2006,31.4
+HU,Hungary,2007,29.4
+HU,Hungary,2008,28.2
+HU,Hungary,2009,29.6
+HU,Hungary,2010,29.9
+HU,Hungary,2011,31.5
+HU,Hungary,2012,33.5
+HU,Hungary,2013,34.8
+HU,Hungary,2014,31.8
+HU,Hungary,2015,28.2
+HU,Hungary,2016,26.3
+HU,Hungary,2017,25.6
+HU,Hungary,2018,19.6
+HU,Hungary,2019,19.9
+HU,Hungary,2020,18.3
+IE,Ireland,2003,24.4
+IE,Ireland,2004,24.8
+IE,Ireland,2005,25.0
+IE,Ireland,2006,23.3
+IE,Ireland,2007,23.1
+IE,Ireland,2008,23.7
+IE,Ireland,2009,25.7
+IE,Ireland,2010,27.3
+IE,Ireland,2011,30.9
+IE,Ireland,2012,30.1
+IE,Ireland,2013,29.9
+IE,Ireland,2014,28.3
+IE,Ireland,2015,26.2
+IE,Ireland,2016,24.4
+IE,Ireland,2017,22.7
+IE,Ireland,2018,21.1
+IE,Ireland,2019,20.7
+IE,Ireland,2020,19.2
+IS,Iceland,2004,13.7
+IS,Iceland,2005,13.3
+IS,Iceland,2006,12.5
+IS,Iceland,2007,13.0
+IS,Iceland,2008,11.8
+IS,Iceland,2009,11.6
+IS,Iceland,2010,13.7
+IS,Iceland,2011,13.7
+IS,Iceland,2012,12.7
+IS,Iceland,2013,13.0
+IS,Iceland,2014,11.2
+IS,Iceland,2015,12.5
+IS,Iceland,2016,12.2
+IS,Iceland,2017,12.8
+IS,Iceland,2018,11.0
+IS,Iceland,2019,11.7
+IS,Iceland,2020,11.8
+IT,Italy,2004,26.2
+IT,Italy,2005,25.6
+IT,Italy,2006,25.9
+IT,Italy,2007,26.0
+IT,Italy,2008,25.5
+IT,Italy,2009,24.9
+IT,Italy,2010,25.0
+IT,Italy,2011,28.1
+IT,Italy,2012,29.9
+IT,Italy,2013,28.5
+IT,Italy,2014,28.3
+IT,Italy,2015,28.7
+IT,Italy,2016,30.0
+IT,Italy,2017,28.9
+IT,Italy,2018,27.3
+IT,Italy,2019,25.6
+IT,Italy,2020,25.3
+LT,Lithuania,2005,41.0
+LT,Lithuania,2006,35.9
+LT,Lithuania,2007,28.7
+LT,Lithuania,2008,28.3
+LT,Lithuania,2009,29.6
+LT,Lithuania,2010,34.0
+LT,Lithuania,2011,33.1
+LT,Lithuania,2012,32.5
+LT,Lithuania,2013,30.8
+LT,Lithuania,2014,27.3
+LT,Lithuania,2015,29.3
+LT,Lithuania,2016,30.1
+LT,Lithuania,2017,29.6
+LT,Lithuania,2018,28.3
+LT,Lithuania,2019,26.3
+LT,Lithuania,2020,24.8
+LU,Luxembourg,2003,15.8
+LU,Luxembourg,2004,16.1
+LU,Luxembourg,2005,17.3
+LU,Luxembourg,2006,16.5
+LU,Luxembourg,2007,15.9
+LU,Luxembourg,2008,15.5
+LU,Luxembourg,2009,17.8
+LU,Luxembourg,2010,17.1
+LU,Luxembourg,2011,16.8
+LU,Luxembourg,2012,18.4
+LU,Luxembourg,2013,19.0
+LU,Luxembourg,2014,19.0
+LU,Luxembourg,2015,18.5
+LU,Luxembourg,2016,19.1
+LU,Luxembourg,2017,19.4
+LU,Luxembourg,2018,20.7
+LU,Luxembourg,2019,20.6
+LU,Luxembourg,2020,20.9
+LV,Latvia,2005,46.3
+LV,Latvia,2006,42.2
+LV,Latvia,2007,35.1
+LV,Latvia,2008,34.2
+LV,Latvia,2009,37.9
+LV,Latvia,2010,38.2
+LV,Latvia,2011,40.1
+LV,Latvia,2012,36.2
+LV,Latvia,2013,35.1
+LV,Latvia,2014,32.7
+LV,Latvia,2015,30.9
+LV,Latvia,2016,28.5
+LV,Latvia,2017,28.2
+LV,Latvia,2018,28.4
+LV,Latvia,2019,27.3
+LV,Latvia,2020,26.0
+ME,Montenegro,2013,37.3
+ME,Montenegro,2014,37.5
+ME,Montenegro,2015,35.9
+ME,Montenegro,2016,34.6
+ME,Montenegro,2017,33.7
+ME,Montenegro,2018,31.4
+ME,Montenegro,2019,30.5
+ME,Montenegro,2020,30.9
+MK,North Macedonia,2010,47.2
+MK,North Macedonia,2011,50.4
+MK,North Macedonia,2012,50.3
+MK,North Macedonia,2013,48.1
+MK,North Macedonia,2014,43.3
+MK,North Macedonia,2015,41.6
+MK,North Macedonia,2016,41.1
+MK,North Macedonia,2017,41.6
+MK,North Macedonia,2018,41.1
+MK,North Macedonia,2019,39.9
+MK,North Macedonia,2020,39.8
+MT,Malta,2005,20.5
+MT,Malta,2006,19.5
+MT,Malta,2007,19.7
+MT,Malta,2008,20.1
+MT,Malta,2009,20.3
+MT,Malta,2010,21.2
+MT,Malta,2011,22.1
+MT,Malta,2012,23.1
+MT,Malta,2013,24.6
+MT,Malta,2014,23.9
+MT,Malta,2015,23.0
+MT,Malta,2016,20.3
+MT,Malta,2017,19.3
+MT,Malta,2018,19.0
+MT,Malta,2019,20.1
+MT,Malta,2020,19.0
+NL,Netherlands,2005,16.7
+NL,Netherlands,2006,16.0
+NL,Netherlands,2007,15.7
+NL,Netherlands,2008,14.9
+NL,Netherlands,2009,15.1
+NL,Netherlands,2010,15.1
+NL,Netherlands,2011,15.7
+NL,Netherlands,2012,15.0
+NL,Netherlands,2013,15.9
+NL,Netherlands,2014,16.5
+NL,Netherlands,2015,16.4
+NL,Netherlands,2016,16.7
+NL,Netherlands,2017,17.0
+NL,Netherlands,2018,16.7
+NL,Netherlands,2019,16.5
+NL,Netherlands,2020,16.1
+NO,Norway,2003,12.9
+NO,Norway,2004,15.8
+NO,Norway,2005,16.2
+NO,Norway,2006,16.8
+NO,Norway,2007,16.5
+NO,Norway,2008,15.0
+NO,Norway,2009,15.2
+NO,Norway,2010,14.9
+NO,Norway,2011,14.5
+NO,Norway,2012,13.7
+NO,Norway,2013,14.1
+NO,Norway,2014,13.5
+NO,Norway,2015,15.0
+NO,Norway,2016,15.3
+NO,Norway,2017,16.0
+NO,Norway,2018,16.2
+NO,Norway,2019,16.1
+NO,Norway,2020,15.9
+PL,Poland,2005,45.3
+PL,Poland,2006,39.5
+PL,Poland,2007,34.4
+PL,Poland,2008,30.5
+PL,Poland,2009,27.8
+PL,Poland,2010,27.8
+PL,Poland,2011,27.2
+PL,Poland,2012,26.7
+PL,Poland,2013,25.8
+PL,Poland,2014,24.7
+PL,Poland,2015,23.4
+PL,Poland,2016,21.9
+PL,Poland,2017,19.5
+PL,Poland,2018,18.9
+PL,Poland,2019,18.2
+PL,Poland,2020,17.3
+PT,Portugal,2004,27.5
+PT,Portugal,2005,26.1
+PT,Portugal,2006,25.0
+PT,Portugal,2007,25.0
+PT,Portugal,2008,26.0
+PT,Portugal,2009,24.9
+PT,Portugal,2010,25.3
+PT,Portugal,2011,24.4
+PT,Portugal,2012,25.3
+PT,Portugal,2013,27.5
+PT,Portugal,2014,27.5
+PT,Portugal,2015,26.6
+PT,Portugal,2016,25.1
+PT,Portugal,2017,23.3
+PT,Portugal,2018,21.6
+PT,Portugal,2019,21.6
+PT,Portugal,2020,19.8
+RO,Romania,2007,47.0
+RO,Romania,2008,44.2
+RO,Romania,2009,43.0
+RO,Romania,2010,41.5
+RO,Romania,2011,40.9
+RO,Romania,2012,43.2
+RO,Romania,2013,41.9
+RO,Romania,2014,40.3
+RO,Romania,2015,37.4
+RO,Romania,2016,38.8
+RO,Romania,2017,35.7
+RO,Romania,2018,32.5
+RO,Romania,2019,31.2
+RO,Romania,2020,30.4
+RS,Serbia,2013,42.0
+RS,Serbia,2014,42.6
+RS,Serbia,2015,41.7
+RS,Serbia,2016,38.5
+RS,Serbia,2017,36.7
+RS,Serbia,2018,34.3
+RS,Serbia,2019,31.9
+RS,Serbia,2020,31.1
+SE,Sweden,2004,16.9
+SE,Sweden,2005,14.4
+SE,Sweden,2006,16.3
+SE,Sweden,2007,13.9
+SE,Sweden,2008,16.7
+SE,Sweden,2009,17.8
+SE,Sweden,2010,17.7
+SE,Sweden,2011,18.5
+SE,Sweden,2012,17.7
+SE,Sweden,2013,18.3
+SE,Sweden,2014,18.2
+SE,Sweden,2015,18.6
+SE,Sweden,2016,18.3
+SE,Sweden,2017,17.7
+SE,Sweden,2018,18.0
+SE,Sweden,2019,18.8
+SE,Sweden,2020,17.9
+SI,Slovenia,2005,18.5
+SI,Slovenia,2006,17.1
+SI,Slovenia,2007,17.1
+SI,Slovenia,2008,18.5
+SI,Slovenia,2009,17.1
+SI,Slovenia,2010,18.3
+SI,Slovenia,2011,19.3
+SI,Slovenia,2012,19.6
+SI,Slovenia,2013,20.4
+SI,Slovenia,2014,20.4
+SI,Slovenia,2015,19.2
+SI,Slovenia,2016,18.4
+SI,Slovenia,2017,17.1
+SI,Slovenia,2018,16.2
+SI,Slovenia,2019,14.4
+SI,Slovenia,2020,15.0
+SK,Slovakia,2005,32.0
+SK,Slovakia,2006,26.7
+SK,Slovakia,2007,21.4
+SK,Slovakia,2008,20.6
+SK,Slovakia,2009,19.6
+SK,Slovakia,2010,20.6
+SK,Slovakia,2011,20.6
+SK,Slovakia,2012,20.5
+SK,Slovakia,2013,19.8
+SK,Slovakia,2014,18.4
+SK,Slovakia,2015,18.4
+SK,Slovakia,2016,18.1
+SK,Slovakia,2017,16.3
+SK,Slovakia,2018,16.3
+SK,Slovakia,2019,16.4
+SK,Slovakia,2020,14.8
+TR,Türkiye,2006,66.4
+TR,Türkiye,2007,64.4
+TR,Türkiye,2008,63.9
+TR,Türkiye,2009,63.9
+TR,Türkiye,2010,65.7
+TR,Türkiye,2011,63.8
+TR,Türkiye,2012,61.3
+TR,Türkiye,2013,51.2
+TR,Türkiye,2014,41.6
+TR,Türkiye,2015,41.3
+TR,Türkiye,2016,45.1
+TR,Türkiye,2017,41.3
+TR,Türkiye,2018,39.8
+TR,Türkiye,2019,39.8
+TR,Türkiye,2020,41.5
+UK,United Kingdom,2005,24.8
+UK,United Kingdom,2006,23.7
+UK,United Kingdom,2007,22.6
+UK,United Kingdom,2008,23.2
+UK,United Kingdom,2009,22.0
+UK,United Kingdom,2010,23.2
+UK,United Kingdom,2011,22.7
+UK,United Kingdom,2012,24.1
+UK,United Kingdom,2013,24.8
+UK,United Kingdom,2014,24.1
+UK,United Kingdom,2015,23.5
+UK,United Kingdom,2016,22.2
+UK,United Kingdom,2017,22.0
+UK,United Kingdom,2018,23.1
+XK,Kosovo*,2018,56.7

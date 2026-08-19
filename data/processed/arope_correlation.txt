@@ -1,0 +1,3 @@
+level r=0.483 p=0.0196
+firstdiff r=0.739 p=0.0001
+detrended r=0.900 p=0.0000

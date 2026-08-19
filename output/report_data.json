@@ -1,0 +1,1471 @@
+{
+ "trend": [
+  {
+   "year": 2003,
+   "gr_arop": 20.7,
+   "eu_arop": null,
+   "gr_subj": 48.0,
+   "eu_subj": null,
+   "gr_arop_rank": 1,
+   "n_arop": 6,
+   "gr_arope": 32.9,
+   "eu_arope": null,
+   "gr_arope_rank": 1,
+   "n_arope": 6,
+   "gr_subj_rank": 1,
+   "n_subj": 6,
+   "gap_arop": null,
+   "gap_subj": null,
+   "unemployment": null,
+   "real_income_idx": null,
+   "real_gdp_pc": 18480,
+   "threshold_real_idx": 89.79,
+   "severe_dep_legacy": 16.9,
+   "severe_dep_new": null,
+   "anchored_poverty": 25.6
+  },
+  {
+   "year": 2004,
+   "gr_arop": 19.9,
+   "eu_arop": null,
+   "gr_subj": 45.4,
+   "eu_subj": null,
+   "gr_arop_rank": 5,
+   "n_arop": 13,
+   "gr_arope": 30.9,
+   "eu_arope": null,
+   "gr_arope_rank": 1,
+   "n_arope": 13,
+   "gr_subj_rank": 1,
+   "n_subj": 13,
+   "gap_arop": null,
+   "gap_subj": null,
+   "unemployment": null,
+   "real_income_idx": null,
+   "real_gdp_pc": 19420,
+   "threshold_real_idx": 93.96,
+   "severe_dep_legacy": 14.1,
+   "severe_dep_new": null,
+   "anchored_poverty": 22.8
+  },
+  {
+   "year": 2005,
+   "gr_arop": 19.6,
+   "eu_arop": 16.0,
+   "gr_subj": 50.8,
+   "eu_subj": null,
+   "gr_arop_rank": 5,
+   "n_arop": 25,
+   "gr_arope": 29.4,
+   "eu_arope": 25.8,
+   "gr_arope_rank": 6,
+   "n_arope": 25,
+   "gr_subj_rank": 3,
+   "n_subj": 25,
+   "gap_arop": 3.6,
+   "gap_subj": null,
+   "unemployment": null,
+   "real_income_idx": 88.85,
+   "real_gdp_pc": 19590,
+   "threshold_real_idx": 96.67,
+   "severe_dep_legacy": 12.8,
+   "severe_dep_new": null,
+   "anchored_poverty": 20.7
+  },
+  {
+   "year": 2006,
+   "gr_arop": 20.5,
+   "eu_arop": 16.1,
+   "gr_subj": 52.6,
+   "eu_subj": null,
+   "gr_arop_rank": 2,
+   "n_arop": 25,
+   "gr_arope": 29.3,
+   "eu_arope": 25.3,
+   "gr_arope_rank": 5,
+   "n_arope": 25,
+   "gr_subj_rank": 1,
+   "n_subj": 25,
+   "gap_arop": 4.4,
+   "gap_subj": null,
+   "unemployment": null,
+   "real_income_idx": 93.88,
+   "real_gdp_pc": 20790,
+   "threshold_real_idx": 97.89,
+   "severe_dep_legacy": 11.5,
+   "severe_dep_new": null,
+   "anchored_poverty": 21.5
+  },
+  {
+   "year": 2007,
+   "gr_arop": 20.3,
+   "eu_arop": 16.6,
+   "gr_subj": 52.4,
+   "eu_subj": 23.8,
+   "gr_arop_rank": 4,
+   "n_arop": 27,
+   "gr_arope": 28.3,
+   "eu_arope": 24.5,
+   "gr_arope_rank": 7,
+   "n_arope": 27,
+   "gr_subj_rank": 2,
+   "n_subj": 27,
+   "gap_arop": 3.7,
+   "gap_subj": 28.6,
+   "unemployment": null,
+   "real_income_idx": 96.47,
+   "real_gdp_pc": 21470,
+   "threshold_real_idx": 98.41,
+   "severe_dep_legacy": 11.5,
+   "severe_dep_new": null,
+   "anchored_poverty": 21.2
+  },
+  {
+   "year": 2008,
+   "gr_arop": 20.1,
+   "eu_arop": 16.6,
+   "gr_subj": 54.5,
+   "eu_subj": 25.0,
+   "gr_arop_rank": 5,
+   "n_arop": 27,
+   "gr_arope": 28.1,
+   "eu_arope": 23.7,
+   "gr_arope_rank": 7,
+   "n_arope": 27,
+   "gr_subj_rank": 2,
+   "n_subj": 27,
+   "gap_arop": 3.5,
+   "gap_subj": 29.5,
+   "unemployment": null,
+   "real_income_idx": 100.0,
+   "real_gdp_pc": 21420,
+   "threshold_real_idx": 100.0,
+   "severe_dep_legacy": 11.2,
+   "severe_dep_new": null,
+   "anchored_poverty": 19.7
+  },
+  {
+   "year": 2009,
+   "gr_arop": 19.7,
+   "eu_arop": 16.4,
+   "gr_subj": 57.0,
+   "eu_subj": 26.1,
+   "gr_arop_rank": 7,
+   "n_arop": 27,
+   "gr_arope": 27.6,
+   "eu_arope": 23.3,
+   "gr_arope_rank": 7,
+   "n_arope": 27,
+   "gr_subj_rank": 2,
+   "n_subj": 27,
+   "gap_arop": 3.3,
+   "gap_subj": 30.9,
+   "unemployment": 9.8,
+   "real_income_idx": 100.38,
+   "real_gdp_pc": 20490,
+   "threshold_real_idx": 105.07,
+   "severe_dep_legacy": 11.0,
+   "severe_dep_new": null,
+   "anchored_poverty": 17.0
+  },
+  {
+   "year": 2010,
+   "gr_arop": 20.1,
+   "eu_arop": 16.5,
+   "gr_subj": 58.4,
+   "eu_subj": 28.0,
+   "gr_arop_rank": 6,
+   "n_arop": 27,
+   "gr_arope": 27.7,
+   "eu_arope": 23.9,
+   "gr_arope_rank": 7,
+   "n_arope": 27,
+   "gr_subj_rank": 2,
+   "n_subj": 27,
+   "gap_arop": 3.6,
+   "gap_subj": 30.4,
+   "unemployment": 12.9,
+   "real_income_idx": 86.87,
+   "real_gdp_pc": 19300,
+   "threshold_real_idx": 104.44,
+   "severe_dep_legacy": 11.6,
+   "severe_dep_new": null,
+   "anchored_poverty": 18.0
+  },
+  {
+   "year": 2011,
+   "gr_arop": 21.4,
+   "eu_arop": 16.9,
+   "gr_subj": 62.6,
+   "eu_subj": 27.3,
+   "gr_arop_rank": 3,
+   "n_arop": 27,
+   "gr_arope": 31.0,
+   "eu_arope": 24.5,
+   "gr_arope_rank": 6,
+   "n_arope": 27,
+   "gr_subj_rank": 1,
+   "n_subj": 27,
+   "gap_arop": 4.5,
+   "gap_subj": 35.3,
+   "unemployment": 18.1,
+   "real_income_idx": 76.85,
+   "real_gdp_pc": 17420,
+   "threshold_real_idx": 93.02,
+   "severe_dep_legacy": 15.2,
+   "severe_dep_new": null,
+   "anchored_poverty": 24.6
+  },
+  {
+   "year": 2012,
+   "gr_arop": 23.1,
+   "eu_arop": 16.8,
+   "gr_subj": 73.1,
+   "eu_subj": 28.8,
+   "gr_arop_rank": 1,
+   "n_arop": 27,
+   "gr_arope": 34.6,
+   "eu_arope": 24.9,
+   "gr_arope_rank": 4,
+   "n_arope": 27,
+   "gr_subj_rank": 1,
+   "n_subj": 27,
+   "gap_arop": 6.3,
+   "gap_subj": 44.3,
+   "unemployment": 24.8,
+   "real_income_idx": 67.06,
+   "real_gdp_pc": 16050,
+   "threshold_real_idx": 79.76,
+   "severe_dep_legacy": 19.5,
+   "severe_dep_new": null,
+   "anchored_poverty": 33.3
+  },
+  {
+   "year": 2013,
+   "gr_arop": 23.1,
+   "eu_arop": 16.8,
+   "gr_subj": 78.3,
+   "eu_subj": 30.0,
+   "gr_arop_rank": 1,
+   "n_arop": 28,
+   "gr_arope": 35.7,
+   "eu_arope": 24.6,
+   "gr_arope_rank": 3,
+   "n_arope": 28,
+   "gr_subj_rank": 1,
+   "n_subj": 28,
+   "gap_arop": 6.3,
+   "gap_subj": 48.3,
+   "unemployment": 27.8,
+   "real_income_idx": 64.23,
+   "real_gdp_pc": 15800,
+   "threshold_real_idx": 70.82,
+   "severe_dep_legacy": 20.3,
+   "severe_dep_new": null,
+   "anchored_poverty": 39.7
+  },
+  {
+   "year": 2014,
+   "gr_arop": 22.1,
+   "eu_arop": 17.3,
+   "gr_subj": 78.1,
+   "eu_subj": 28.9,
+   "gr_arop_rank": 3,
+   "n_arop": 28,
+   "gr_arope": 36.0,
+   "eu_arope": 24.5,
+   "gr_arope_rank": 3,
+   "n_arope": 28,
+   "gr_subj_rank": 1,
+   "n_subj": 28,
+   "gap_arop": 4.8,
+   "gap_subj": 49.2,
+   "unemployment": 26.6,
+   "real_income_idx": 65.89,
+   "real_gdp_pc": 16030,
+   "threshold_real_idx": 65.89,
+   "severe_dep_legacy": 21.5,
+   "severe_dep_new": null,
+   "anchored_poverty": 40.6
+  },
+  {
+   "year": 2015,
+   "gr_arop": 21.4,
+   "eu_arop": 17.4,
+   "gr_subj": 77.7,
+   "eu_subj": 27.1,
+   "gr_arop_rank": 7,
+   "n_arop": 28,
+   "gr_arope": 35.7,
+   "eu_arope": 23.8,
+   "gr_arope_rank": 3,
+   "n_arope": 28,
+   "gr_subj_rank": 1,
+   "n_subj": 28,
+   "gap_arop": 4.0,
+   "gap_subj": 50.6,
+   "unemployment": 25.0,
+   "real_income_idx": 67.79,
+   "real_gdp_pc": 16100,
+   "threshold_real_idx": 65.24,
+   "severe_dep_legacy": 22.2,
+   "severe_dep_new": 17.6,
+   "anchored_poverty": 39.8
+  },
+  {
+   "year": 2016,
+   "gr_arop": 21.2,
+   "eu_arop": 17.5,
+   "gr_subj": 76.8,
+   "eu_subj": 25.3,
+   "gr_arop_rank": 7,
+   "n_arop": 28,
+   "gr_arope": 35.6,
+   "eu_arope": 23.7,
+   "gr_arope_rank": 3,
+   "n_arope": 28,
+   "gr_subj_rank": 1,
+   "n_subj": 28,
+   "gap_arop": 3.7,
+   "gap_subj": 51.5,
+   "unemployment": 23.9,
+   "real_income_idx": 67.88,
+   "real_gdp_pc": 16160,
+   "threshold_real_idx": 65.07,
+   "severe_dep_legacy": 22.4,
+   "severe_dep_new": 18.4,
+   "anchored_poverty": 39.8
+  },
+  {
+   "year": 2017,
+   "gr_arop": 20.2,
+   "eu_arop": 16.9,
+   "gr_subj": 77.2,
+   "eu_subj": 22.0,
+   "gr_arop_rank": 8,
+   "n_arop": 28,
+   "gr_arope": 34.8,
+   "eu_arope": 22.5,
+   "gr_arope_rank": 3,
+   "n_arope": 28,
+   "gr_subj_rank": 1,
+   "n_subj": 28,
+   "gap_arop": 3.3,
+   "gap_subj": 55.2,
+   "unemployment": 21.8,
+   "real_income_idx": 68.39,
+   "real_gdp_pc": 16430,
+   "threshold_real_idx": 65.22,
+   "severe_dep_legacy": 21.1,
+   "severe_dep_new": 18.3,
+   "anchored_poverty": 38.3
+  },
+  {
+   "year": 2018,
+   "gr_arop": 18.5,
+   "eu_arop": 16.8,
+   "gr_subj": 74.1,
+   "eu_subj": 21.5,
+   "gr_arop_rank": 10,
+   "n_arop": 28,
+   "gr_arope": 31.8,
+   "eu_arope": 21.6,
+   "gr_arope_rank": 3,
+   "n_arope": 28,
+   "gr_subj_rank": 1,
+   "n_subj": 28,
+   "gap_arop": 1.7,
+   "gap_subj": 52.6,
+   "unemployment": 19.7,
+   "real_income_idx": 68.3,
+   "real_gdp_pc": 16810,
+   "threshold_real_idx": 66.94,
+   "severe_dep_legacy": 16.7,
+   "severe_dep_new": 16.1,
+   "anchored_poverty": 37.3
+  },
+  {
+   "year": 2019,
+   "gr_arop": 17.9,
+   "eu_arop": 16.5,
+   "gr_subj": 71.0,
+   "eu_subj": 18.5,
+   "gr_arop_rank": 9,
+   "n_arop": 27,
+   "gr_arope": 30.0,
+   "eu_arope": 20.9,
+   "gr_arope_rank": 3,
+   "n_arope": 27,
+   "gr_subj_rank": 1,
+   "n_subj": 27,
+   "gap_arop": 1.4,
+   "gap_subj": 52.5,
+   "unemployment": 17.9,
+   "real_income_idx": 73.3,
+   "real_gdp_pc": 17210,
+   "threshold_real_idx": 69.42,
+   "severe_dep_legacy": 16.2,
+   "severe_dep_new": 15.8,
+   "anchored_poverty": 34.6
+  },
+  {
+   "year": 2020,
+   "gr_arop": 17.7,
+   "eu_arop": 16.7,
+   "gr_subj": 69.8,
+   "eu_subj": 19.8,
+   "gr_arop_rank": 9,
+   "n_arop": 27,
+   "gr_arope": 28.8,
+   "eu_arope": 21.5,
+   "gr_arope_rank": 3,
+   "n_arope": 27,
+   "gr_subj_rank": 1,
+   "n_subj": 27,
+   "gap_arop": 1.0,
+   "gap_subj": 50.0,
+   "unemployment": 17.6,
+   "real_income_idx": 71.04,
+   "real_gdp_pc": 15660,
+   "threshold_real_idx": 75.37,
+   "severe_dep_legacy": 16.6,
+   "severe_dep_new": 14.9,
+   "anchored_poverty": 30.8
+  },
+  {
+   "year": 2021,
+   "gr_arop": 19.6,
+   "eu_arop": 16.8,
+   "gr_subj": 71.0,
+   "eu_subj": 18.3,
+   "gr_arop_rank": 8,
+   "n_arop": 27,
+   "gr_arope": 28.3,
+   "eu_arope": 21.7,
+   "gr_arope_rank": 3,
+   "n_arope": 27,
+   "gr_subj_rank": 1,
+   "n_subj": 27,
+   "gap_arop": 2.8,
+   "gap_subj": 52.7,
+   "unemployment": 14.7,
+   "real_income_idx": 78.03,
+   "real_gdp_pc": 17110,
+   "threshold_real_idx": 74.66,
+   "severe_dep_legacy": null,
+   "severe_dep_new": 13.9,
+   "anchored_poverty": 32.7
+  },
+  {
+   "year": 2022,
+   "gr_arop": 18.8,
+   "eu_arop": 16.5,
+   "gr_subj": 68.4,
+   "eu_subj": 19.0,
+   "gr_arop_rank": 8,
+   "n_arop": 27,
+   "gr_arope": 26.3,
+   "eu_arope": 21.6,
+   "gr_arope_rank": 3,
+   "n_arope": 27,
+   "gr_subj_rank": 1,
+   "n_subj": 27,
+   "gap_arop": 2.3,
+   "gap_subj": 49.4,
+   "unemployment": 12.5,
+   "real_income_idx": 78.05,
+   "real_gdp_pc": 18160,
+   "threshold_real_idx": 74.3,
+   "severe_dep_legacy": null,
+   "severe_dep_new": 13.9,
+   "anchored_poverty": 33.6
+  },
+  {
+   "year": 2023,
+   "gr_arop": 18.9,
+   "eu_arop": 16.2,
+   "gr_subj": 67.0,
+   "eu_subj": 19.1,
+   "gr_arop_rank": 9,
+   "n_arop": 27,
+   "gr_arope": 26.1,
+   "eu_arope": 21.3,
+   "gr_arope_rank": 4,
+   "n_arope": 27,
+   "gr_subj_rank": 1,
+   "n_subj": 27,
+   "gap_arop": 2.7,
+   "gap_subj": 47.9,
+   "unemployment": 11.1,
+   "real_income_idx": 82.07,
+   "real_gdp_pc": 18600,
+   "threshold_real_idx": 75.28,
+   "severe_dep_legacy": null,
+   "severe_dep_new": 13.5,
+   "anchored_poverty": 32.0
+  },
+  {
+   "year": 2024,
+   "gr_arop": 19.6,
+   "eu_arop": 16.2,
+   "gr_subj": 66.7,
+   "eu_subj": 17.4,
+   "gr_arop_rank": 7,
+   "n_arop": 27,
+   "gr_arope": 26.9,
+   "eu_arope": 21.0,
+   "gr_arope_rank": 3,
+   "n_arope": 27,
+   "gr_subj_rank": 1,
+   "n_subj": 27,
+   "gap_arop": 3.4,
+   "gap_subj": 49.3,
+   "unemployment": 10.1,
+   "real_income_idx": 84.13,
+   "real_gdp_pc": 19020,
+   "threshold_real_idx": 78.91,
+   "severe_dep_legacy": null,
+   "severe_dep_new": 14.0,
+   "anchored_poverty": 30.2
+  },
+  {
+   "year": 2025,
+   "gr_arop": 19.6,
+   "eu_arop": 16.3,
+   "gr_subj": 67.2,
+   "eu_subj": 17.6,
+   "gr_arop_rank": 4,
+   "n_arop": 27,
+   "gr_arope": 27.5,
+   "eu_arope": 20.9,
+   "gr_arope_rank": 2,
+   "n_arope": 27,
+   "gr_subj_rank": 1,
+   "n_subj": 27,
+   "gap_arop": 3.3,
+   "gap_subj": 49.6,
+   "unemployment": 8.9,
+   "real_income_idx": null,
+   "real_gdp_pc": 19400,
+   "threshold_real_idx": 82.69,
+   "severe_dep_legacy": null,
+   "severe_dep_new": 14.9,
+   "anchored_poverty": 27.5
+  }
+ ],
+ "correlations": [
+  {
+   "variable": "Real household disposable income (idx 2008=100)",
+   "r0": -0.93,
+   "p0": 0.0,
+   "n0": 20,
+   "r1": -0.93,
+   "p1": 0.0
+  },
+  {
+   "variable": "Severe material & social deprivation, new 13-item (%)",
+   "r0": 0.92,
+   "p0": 0.0,
+   "n0": 11,
+   "r1": 0.94,
+   "p1": 0.0
+  },
+  {
+   "variable": "AROP threshold, real terms (idx 2008=100)",
+   "r0": -0.88,
+   "p0": 0.0,
+   "n0": 23,
+   "r1": -0.77,
+   "p1": 0.0
+  },
+  {
+   "variable": "Housing cost overburden (%)",
+   "r0": 0.86,
+   "p0": 0.0,
+   "n0": 22,
+   "r1": 0.8,
+   "p1": 0.0
+  },
+  {
+   "variable": "Severe material deprivation, legacy 9-item (%)",
+   "r0": 0.82,
+   "p0": 0.0,
+   "n0": 18,
+   "r1": 0.77,
+   "p1": 0.0
+  },
+  {
+   "variable": "Real GDP per capita (EUR)",
+   "r0": -0.82,
+   "p0": 0.0,
+   "n0": 23,
+   "r1": -0.83,
+   "p1": 0.0
+  },
+  {
+   "variable": "Households in arrears (%)",
+   "r0": 0.82,
+   "p0": 0.0,
+   "n0": 23,
+   "r1": 0.72,
+   "p1": 0.0
+  },
+  {
+   "variable": "Unemployment rate (%)",
+   "r0": 0.81,
+   "p0": 0.0,
+   "n0": 17,
+   "r1": 0.93,
+   "p1": 0.0
+  },
+  {
+   "variable": "Cannot keep home adequately warm (%)",
+   "r0": 0.8,
+   "p0": 0.0,
+   "n0": 23,
+   "r1": 0.79,
+   "p1": 0.0
+  },
+  {
+   "variable": "Cannot face unexpected expense (%)",
+   "r0": 0.76,
+   "p0": 0.0,
+   "n0": 23,
+   "r1": 0.64,
+   "p1": 0.0
+  },
+  {
+   "variable": "Real household consumption per capita (EUR)",
+   "r0": -0.7,
+   "p0": 0.0,
+   "n0": 23,
+   "r1": -0.73,
+   "p1": 0.0
+  },
+  {
+   "variable": "Employment rate 20-64 (%)",
+   "r0": -0.69,
+   "p0": 0.0,
+   "n0": 17,
+   "r1": -0.86,
+   "p1": 0.0
+  },
+  {
+   "variable": "HICP inflation, headline (%)",
+   "r0": -0.54,
+   "p0": 0.01,
+   "n0": 23,
+   "r1": -0.52,
+   "p1": 0.01
+  },
+  {
+   "variable": "HICP inflation, housing & energy (%)",
+   "r0": -0.31,
+   "p0": 0.15,
+   "n0": 23,
+   "r1": -0.26,
+   "p1": 0.24
+  },
+  {
+   "variable": "HICP inflation, food (%)",
+   "r0": -0.21,
+   "p0": 0.35,
+   "n0": 23,
+   "r1": -0.24,
+   "p1": 0.28
+  },
+  {
+   "variable": "AROP (objective, relative)",
+   "r0": 0.19,
+   "p0": 0.38,
+   "n0": 23,
+   "r1": 0.3,
+   "p1": 0.17
+  },
+  {
+   "variable": "Minimum wage (nominal EUR/month)",
+   "r0": 0.07,
+   "p0": 0.75,
+   "n0": 23,
+   "r1": 0.21,
+   "p1": 0.34
+  }
+ ],
+ "robustness": [
+  {
+   "variable": "Real household disposable income",
+   "r_level": -0.93,
+   "r_firstdiff": -0.53,
+   "p_firstdiff": 0.02,
+   "r_detrended": -0.91,
+   "p_detrended": 0.0
+  },
+  {
+   "variable": "Severe material & social deprivation, new",
+   "r_level": 0.92,
+   "r_firstdiff": 0.38,
+   "p_firstdiff": 0.28,
+   "r_detrended": 0.11,
+   "p_detrended": 0.75
+  },
+  {
+   "variable": "AROP threshold, real terms",
+   "r_level": -0.88,
+   "r_firstdiff": -0.65,
+   "p_firstdiff": 0.0,
+   "r_detrended": -0.78,
+   "p_detrended": 0.0
+  },
+  {
+   "variable": "Housing cost overburden",
+   "r_level": 0.86,
+   "r_firstdiff": 0.51,
+   "p_firstdiff": 0.02,
+   "r_detrended": 0.86,
+   "p_detrended": 0.0
+  },
+  {
+   "variable": "Severe material deprivation, legacy",
+   "r_level": 0.82,
+   "r_firstdiff": 0.65,
+   "p_firstdiff": 0.0,
+   "r_detrended": 0.62,
+   "p_detrended": 0.01
+  },
+  {
+   "variable": "Real GDP per capita",
+   "r_level": -0.82,
+   "r_firstdiff": -0.49,
+   "p_firstdiff": 0.02,
+   "r_detrended": -0.82,
+   "p_detrended": 0.0
+  },
+  {
+   "variable": "Households in arrears",
+   "r_level": 0.82,
+   "r_firstdiff": 0.47,
+   "p_firstdiff": 0.03,
+   "r_detrended": 0.67,
+   "p_detrended": 0.0
+  },
+  {
+   "variable": "Unemployment rate",
+   "r_level": 0.81,
+   "r_firstdiff": 0.86,
+   "p_firstdiff": 0.0,
+   "r_detrended": 0.8,
+   "p_detrended": 0.0
+  },
+  {
+   "variable": "Cannot keep home adequately warm",
+   "r_level": 0.8,
+   "r_firstdiff": 0.63,
+   "p_firstdiff": 0.0,
+   "r_detrended": 0.9,
+   "p_detrended": 0.0
+  },
+  {
+   "variable": "Cannot face unexpected expense",
+   "r_level": 0.76,
+   "r_firstdiff": 0.52,
+   "p_firstdiff": 0.01,
+   "r_detrended": 0.58,
+   "p_detrended": 0.0
+  },
+  {
+   "variable": "Real household consumption per capita",
+   "r_level": -0.7,
+   "r_firstdiff": -0.55,
+   "p_firstdiff": 0.01,
+   "r_detrended": -0.84,
+   "p_detrended": 0.0
+  },
+  {
+   "variable": "Employment rate 20-64",
+   "r_level": -0.69,
+   "r_firstdiff": -0.72,
+   "p_firstdiff": 0.0,
+   "r_detrended": -0.77,
+   "p_detrended": 0.0
+  },
+  {
+   "variable": "HICP inflation, headline",
+   "r_level": -0.54,
+   "r_firstdiff": -0.25,
+   "p_firstdiff": 0.27,
+   "r_detrended": -0.67,
+   "p_detrended": 0.0
+  },
+  {
+   "variable": "AROPE (poverty or social exclusion)",
+   "r_level": 0.48,
+   "r_firstdiff": 0.74,
+   "p_firstdiff": 0.0,
+   "r_detrended": 0.9,
+   "p_detrended": 0.0
+  },
+  {
+   "variable": "AROP",
+   "r_level": 0.19,
+   "r_firstdiff": 0.6,
+   "p_firstdiff": 0.0,
+   "r_detrended": 0.67,
+   "p_detrended": 0.0
+  }
+ ],
+ "spearman": [
+  {
+   "variable": "AROP (relative)",
+   "pearson_level": 0.19,
+   "spearman_level": 0.2,
+   "pearson_diff": 0.6,
+   "spearman_diff": 0.53
+  },
+  {
+   "variable": "Anchored poverty (approx., 2008 base)",
+   "pearson_level": 0.9,
+   "spearman_level": 0.89,
+   "pearson_diff": 0.7,
+   "spearman_diff": 0.41
+  },
+  {
+   "variable": "Real household disposable income",
+   "pearson_level": -0.93,
+   "spearman_level": -0.93,
+   "pearson_diff": -0.53,
+   "spearman_diff": -0.26
+  },
+  {
+   "variable": "Real GDP per capita",
+   "pearson_level": -0.82,
+   "spearman_level": -0.85,
+   "pearson_diff": -0.49,
+   "spearman_diff": -0.46
+  },
+  {
+   "variable": "Unemployment rate",
+   "pearson_level": 0.81,
+   "spearman_level": 0.86,
+   "pearson_diff": 0.86,
+   "spearman_diff": 0.6
+  },
+  {
+   "variable": "Severe material deprivation, legacy",
+   "pearson_level": 0.82,
+   "spearman_level": 0.74,
+   "pearson_diff": 0.65,
+   "spearman_diff": 0.4
+  },
+  {
+   "variable": "Housing cost overburden",
+   "pearson_level": 0.86,
+   "spearman_level": 0.9,
+   "pearson_diff": 0.51,
+   "spearman_diff": 0.38
+  },
+  {
+   "variable": "Households in arrears",
+   "pearson_level": 0.82,
+   "spearman_level": 0.79,
+   "pearson_diff": 0.47,
+   "spearman_diff": 0.39
+  }
+ ],
+ "leadlag": [
+  {
+   "variable": "AROP (relative)",
+   "lag_m2": 0.36,
+   "lag_m1": 0.3,
+   "lag_0": 0.19,
+   "lag_p1": 0.02,
+   "lag_p2": -0.22
+  },
+  {
+   "variable": "Anchored poverty (approx., 2008 base)",
+   "lag_m2": 0.66,
+   "lag_m1": 0.81,
+   "lag_0": 0.9,
+   "lag_p1": 0.92,
+   "lag_p2": 0.85
+  },
+  {
+   "variable": "Real household disposable income",
+   "lag_m2": -0.81,
+   "lag_m1": -0.93,
+   "lag_0": -0.93,
+   "lag_p1": -0.85,
+   "lag_p2": -0.76
+  },
+  {
+   "variable": "Real GDP per capita",
+   "lag_m2": -0.76,
+   "lag_m1": -0.83,
+   "lag_0": -0.82,
+   "lag_p1": -0.81,
+   "lag_p2": -0.74
+  },
+  {
+   "variable": "Unemployment rate",
+   "lag_m2": 0.81,
+   "lag_m1": 0.93,
+   "lag_0": 0.81,
+   "lag_p1": 0.57,
+   "lag_p2": 0.3
+  },
+  {
+   "variable": "Severe material deprivation, legacy",
+   "lag_m2": 0.65,
+   "lag_m1": 0.77,
+   "lag_0": 0.82,
+   "lag_p1": 0.85,
+   "lag_p2": 0.8
+  },
+  {
+   "variable": "Housing cost overburden",
+   "lag_m2": 0.64,
+   "lag_m1": 0.8,
+   "lag_0": 0.86,
+   "lag_p1": 0.86,
+   "lag_p2": 0.8
+  },
+  {
+   "variable": "Households in arrears",
+   "lag_m2": 0.61,
+   "lag_m1": 0.72,
+   "lag_0": 0.82,
+   "lag_p1": 0.88,
+   "lag_p2": 0.83
+  }
+ ],
+ "residuals_by_country": [
+  {
+   "geo": "EL",
+   "residual": 15.3
+  },
+  {
+   "geo": "CY",
+   "residual": 13.07
+  },
+  {
+   "geo": "HR",
+   "residual": 10.58
+  },
+  {
+   "geo": "LU",
+   "residual": 8.43
+  },
+  {
+   "geo": "IE",
+   "residual": 6.25
+  },
+  {
+   "geo": "BG",
+   "residual": 5.58
+  },
+  {
+   "geo": "LV",
+   "residual": 3.46
+  },
+  {
+   "geo": "MT",
+   "residual": 2.8
+  },
+  {
+   "geo": "CZ",
+   "residual": 2.35
+  },
+  {
+   "geo": "PT",
+   "residual": 2.09
+  },
+  {
+   "geo": "PL",
+   "residual": 1.94
+  },
+  {
+   "geo": "HU",
+   "residual": 1.87
+  },
+  {
+   "geo": "SK",
+   "residual": 1.57
+  },
+  {
+   "geo": "SI",
+   "residual": 1.15
+  },
+  {
+   "geo": "IT",
+   "residual": -0.15
+  },
+  {
+   "geo": "AT",
+   "residual": -1.91
+  },
+  {
+   "geo": "BE",
+   "residual": -2.41
+  },
+  {
+   "geo": "EE",
+   "residual": -2.42
+  },
+  {
+   "geo": "NL",
+   "residual": -2.9
+  },
+  {
+   "geo": "DK",
+   "residual": -3.68
+  },
+  {
+   "geo": "DE",
+   "residual": -4.11
+  },
+  {
+   "geo": "FR",
+   "residual": -6.6
+  },
+  {
+   "geo": "LT",
+   "residual": -6.72
+  },
+  {
+   "geo": "SE",
+   "residual": -7.01
+  },
+  {
+   "geo": "RO",
+   "residual": -11.34
+  },
+  {
+   "geo": "FI",
+   "residual": -12.14
+  },
+  {
+   "geo": "ES",
+   "residual": -15.05
+  }
+ ],
+ "nested_varying": [
+  {
+   "model": "A_structural",
+   "n_countries": 27,
+   "r2": 0.76,
+   "gr_avg_residual": 15.1,
+   "gr_first_year_residual": 5.3,
+   "gr_last_year_residual": 27.4
+  },
+  {
+   "model": "B_plus_housing",
+   "n_countries": 27,
+   "r2": 0.78,
+   "gr_avg_residual": 8.8,
+   "gr_first_year_residual": -3.5,
+   "gr_last_year_residual": 20.7
+  },
+  {
+   "model": "C_plus_arrears_unexpected",
+   "n_countries": 27,
+   "r2": 0.89,
+   "gr_avg_residual": 2.2,
+   "gr_first_year_residual": -4.8,
+   "gr_last_year_residual": 5.8
+  },
+  {
+   "model": "D_plus_institutional",
+   "n_countries": 27,
+   "r2": 0.89,
+   "gr_avg_residual": 2.2,
+   "gr_first_year_residual": -4.8,
+   "gr_last_year_residual": 6.0
+  }
+ ],
+ "nested_balanced": [
+  {
+   "model": "A_structural",
+   "n_countries": 24,
+   "r2": 0.77,
+   "gr_avg_residual": 13.6,
+   "gr_last_year_residual": 27.6
+  },
+  {
+   "model": "B_plus_housing",
+   "n_countries": 24,
+   "r2": 0.79,
+   "gr_avg_residual": 8.2,
+   "gr_last_year_residual": 21.6
+  },
+  {
+   "model": "C_plus_arrears_unexpected",
+   "n_countries": 24,
+   "r2": 0.89,
+   "gr_avg_residual": 2.1,
+   "gr_last_year_residual": 7.1
+  },
+  {
+   "model": "D_plus_institutional",
+   "n_countries": 24,
+   "r2": 0.89,
+   "gr_avg_residual": 2.2,
+   "gr_last_year_residual": 7.2
+  }
+ ],
+ "leave_greece_out": [
+  {
+   "year": 2015,
+   "actual": 77.7,
+   "predicted": 70.98,
+   "residual": 6.72
+  },
+  {
+   "year": 2016,
+   "actual": 76.8,
+   "predicted": 71.03,
+   "residual": 5.77
+  },
+  {
+   "year": 2017,
+   "actual": 77.2,
+   "predicted": 67.05,
+   "residual": 10.15
+  },
+  {
+   "year": 2018,
+   "actual": 74.1,
+   "predicted": 63.18,
+   "residual": 10.92
+  },
+  {
+   "year": 2019,
+   "actual": 71.0,
+   "predicted": 59.15,
+   "residual": 11.85
+  },
+  {
+   "year": 2020,
+   "actual": 69.8,
+   "predicted": 54.9,
+   "residual": 14.9
+  },
+  {
+   "year": 2021,
+   "actual": 71.0,
+   "predicted": 50.59,
+   "residual": 20.41
+  },
+  {
+   "year": 2022,
+   "actual": 68.4,
+   "predicted": 57.31,
+   "residual": 11.09
+  },
+  {
+   "year": 2023,
+   "actual": 67.0,
+   "predicted": 57.01,
+   "residual": 9.99
+  },
+  {
+   "year": 2024,
+   "actual": 66.7,
+   "predicted": 52.56,
+   "residual": 14.14
+  }
+ ],
+ "within_between": {
+  "Intercept": {
+   "pooled_between": 23.03,
+   "two_way_fe": 20.95
+  },
+  "unemployment_rate": {
+   "pooled_between": 2.21,
+   "two_way_fe": 1.07
+  },
+  "aic_pps_pc_k": {
+   "pooled_between": -0.88,
+   "two_way_fe": -0.87
+  },
+  "severe_mat_soc_deprivation": {
+   "pooled_between": 1.15,
+   "two_way_fe": 1.17
+  },
+  "arop": {
+   "pooled_between": -0.61,
+   "two_way_fe": 0.18
+  }
+ },
+ "gr_resid_trend_ac": [
+  {
+   "year": 2015,
+   "resid_a": 5.3,
+   "resid_c": -4.8
+  },
+  {
+   "year": 2016,
+   "resid_a": 3.9,
+   "resid_c": -4.6
+  },
+  {
+   "year": 2017,
+   "resid_a": 8.1,
+   "resid_c": 0.0
+  },
+  {
+   "year": 2018,
+   "resid_a": 8.9,
+   "resid_c": 0.8
+  },
+  {
+   "year": 2019,
+   "resid_a": 10.9,
+   "resid_c": 2.4
+  },
+  {
+   "year": 2020,
+   "resid_a": 13.9,
+   "resid_c": 6.2
+  },
+  {
+   "year": 2021,
+   "resid_a": 23.6,
+   "resid_c": 12.4
+  },
+  {
+   "year": 2022,
+   "resid_a": 23.2,
+   "resid_c": 2.8
+  },
+  {
+   "year": 2023,
+   "resid_a": 25.7,
+   "resid_c": 1.3
+  },
+  {
+   "year": 2024,
+   "resid_a": 27.4,
+   "resid_c": 5.8
+  }
+ ],
+ "nested_loo": [
+  {
+   "model": "A_structural",
+   "gr_avg_residual": 25.6,
+   "gr_rank": "1/27",
+   "second_highest": 18.5,
+   "second_highest_country": "LU"
+  },
+  {
+   "model": "B_plus_housing",
+   "gr_avg_residual": 35.5,
+   "gr_rank": "1/27",
+   "second_highest": 19.4,
+   "second_highest_country": "CY"
+  },
+  {
+   "model": "C_plus_arrears_unexpected",
+   "gr_avg_residual": 11.6,
+   "gr_rank": "1/27",
+   "second_highest": 10.7,
+   "second_highest_country": "LU"
+  }
+ ],
+ "arope_snapshot": [
+  {
+   "geo": "EL",
+   "label": "Greece",
+   "subjective": 67.2,
+   "arope": 27.5,
+   "gap": 39.7
+  },
+  {
+   "geo": "BG",
+   "label": "Bulgaria",
+   "subjective": 36.1,
+   "arope": 29.0,
+   "gap": 7.1
+  },
+  {
+   "geo": "RO",
+   "label": "Romania",
+   "subjective": 23.4,
+   "arope": 27.4,
+   "gap": -4.0
+  },
+  {
+   "geo": "SK",
+   "label": "Slovakia",
+   "subjective": 23.1,
+   "arope": 16.7,
+   "gap": 6.4
+  },
+  {
+   "geo": "IT",
+   "label": "Italy",
+   "subjective": 22.4,
+   "arope": 22.6,
+   "gap": -0.2
+  },
+  {
+   "geo": "FR",
+   "label": "France",
+   "subjective": 21.7,
+   "arope": 20.8,
+   "gap": 0.9
+  },
+  {
+   "geo": "ES",
+   "label": "Spain",
+   "subjective": 20.6,
+   "arope": 25.7,
+   "gap": -5.1
+  },
+  {
+   "geo": "PT",
+   "label": "Portugal",
+   "subjective": 20.3,
+   "arope": 18.6,
+   "gap": 1.7
+  },
+  {
+   "geo": "HU",
+   "label": "Hungary",
+   "subjective": 20.1,
+   "arope": 19.5,
+   "gap": 0.6
+  },
+  {
+   "geo": "LV",
+   "label": "Latvia",
+   "subjective": 20.0,
+   "arope": 24.7,
+   "gap": -4.7
+  },
+  {
+   "geo": "HR",
+   "label": "Croatia",
+   "subjective": 19.1,
+   "arope": 20.7,
+   "gap": -1.6
+  },
+  {
+   "geo": "CY",
+   "label": "Cyprus",
+   "subjective": 18.2,
+   "arope": 17.1,
+   "gap": 1.1
+  },
+  {
+   "geo": "IE",
+   "label": "Ireland",
+   "subjective": 15.9,
+   "arope": 18.8,
+   "gap": -2.9
+  },
+  {
+   "geo": "BE",
+   "label": "Belgium",
+   "subjective": 15.5,
+   "arope": 16.5,
+   "gap": -1.0
+  },
+  {
+   "geo": "SI",
+   "label": "Slovenia",
+   "subjective": 15.3,
+   "arope": 15.5,
+   "gap": -0.2
+  },
+  {
+   "geo": "MT",
+   "label": "Malta",
+   "subjective": 15.1,
+   "arope": 19.4,
+   "gap": -4.3
+  },
+  {
+   "geo": "CZ",
+   "label": "Czechia",
+   "subjective": 13.8,
+   "arope": 11.5,
+   "gap": 2.3
+  },
+  {
+   "geo": "EE",
+   "label": "Estonia",
+   "subjective": 13.4,
+   "arope": 21.8,
+   "gap": -8.4
+  },
+  {
+   "geo": "DK",
+   "label": "Denmark",
+   "subjective": 12.0,
+   "arope": 17.9,
+   "gap": -5.9
+  },
+  {
+   "geo": "LT",
+   "label": "Lithuania",
+   "subjective": 11.8,
+   "arope": 26.3,
+   "gap": -14.5
+  },
+  {
+   "geo": "AT",
+   "label": "Austria",
+   "subjective": 11.8,
+   "arope": 18.6,
+   "gap": -6.8
+  },
+  {
+   "geo": "PL",
+   "label": "Poland",
+   "subjective": 11.2,
+   "arope": 15.0,
+   "gap": -3.8
+  },
+  {
+   "geo": "SE",
+   "label": "Sweden",
+   "subjective": 10.1,
+   "arope": 18.6,
+   "gap": -8.5
+  },
+  {
+   "geo": "FI",
+   "label": "Finland",
+   "subjective": 9.0,
+   "arope": 17.2,
+   "gap": -8.2
+  },
+  {
+   "geo": "DE",
+   "label": "Germany",
+   "subjective": 7.4,
+   "arope": 21.2,
+   "gap": -13.8
+  },
+  {
+   "geo": "NL",
+   "label": "Netherlands",
+   "subjective": 7.3,
+   "arope": 15.8,
+   "gap": -8.5
+  },
+  {
+   "geo": "LU",
+   "label": "Luxembourg",
+   "subjective": 7.1,
+   "arope": 18.2,
+   "gap": -11.1
+  },
+  {
+   "geo": "EU27_2020",
+   "label": "European Union - 27 countries (from 2020)",
+   "subjective": 17.6,
+   "arope": 20.9,
+   "gap": -3.3
+  }
+ ]
+}

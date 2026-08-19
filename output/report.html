@@ -1,0 +1,1076 @@
+<title>The Greek Poverty Paradox</title>
+<style>
+:root {
+  color-scheme: light;
+  --page:           #f9f9f7;
+  --surface-1:      #fcfcfb;
+  --surface-2:      #f3f2ee;
+  --text-primary:   #0b0b0b;
+  --text-secondary: #52514e;
+  --text-muted:     #898781;
+  --gridline:       #e1e0d9;
+  --baseline:       #c3c2b7;
+  --border:         rgba(11,11,11,0.10);
+  --series-gr:      #2a78d6;
+  --series-gr-wash: rgba(42,120,214,0.10);
+  --series-eu:      #eb6834;
+  --series-eu-wash: rgba(235,104,52,0.10);
+  --series-3:       #1baf7a;
+  --series-4:       #eda100;
+  --series-5:       #4a3aa7;
+  --band-fill:      rgba(137,135,129,0.08);
+  --good:           #0ca30c;
+  --critical:       #d03b3b;
+}
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --page:           #0d0d0d;
+    --surface-1:      #1a1a19;
+    --surface-2:      #222221;
+    --text-primary:   #ffffff;
+    --text-secondary: #c3c2b7;
+    --text-muted:     #898781;
+    --gridline:       #2c2c2a;
+    --baseline:       #383835;
+    --border:         rgba(255,255,255,0.10);
+    --series-gr:      #3987e5;
+    --series-gr-wash: rgba(57,135,229,0.13);
+    --series-eu:      #d95926;
+    --series-eu-wash: rgba(217,89,38,0.14);
+    --series-3:       #199e70;
+    --series-4:       #c98500;
+    --series-5:       #9085e9;
+    --band-fill:      rgba(137,135,129,0.10);
+    --good:           #0ca30c;
+    --critical:       #e66767;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page:           #0d0d0d;
+  --surface-1:      #1a1a19;
+  --surface-2:      #222221;
+  --text-primary:   #ffffff;
+  --text-secondary: #c3c2b7;
+  --text-muted:     #898781;
+  --gridline:       #2c2c2a;
+  --baseline:       #383835;
+  --border:         rgba(255,255,255,0.10);
+  --series-gr:      #3987e5;
+  --series-gr-wash: rgba(57,135,229,0.13);
+  --series-eu:      #d95926;
+  --series-eu-wash: rgba(217,89,38,0.14);
+  --series-3:       #199e70;
+  --series-4:       #c98500;
+  --series-5:       #9085e9;
+  --band-fill:      rgba(137,135,129,0.10);
+  --good:           #0ca30c;
+  --critical:       #e66767;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--page); }
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: var(--text-primary);
+  background: var(--page);
+}
+.wrap { max-width: 860px; margin: 0 auto; padding: 56px 24px 90px; }
+
+header.hero { margin-bottom: 32px; }
+.eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin: 0 0 12px; }
+h1 { font-size: 34px; line-height: 1.15; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 16px; text-wrap: balance; }
+.dek { font-size: 17px; line-height: 1.55; color: var(--text-secondary); max-width: 65ch; margin: 0 0 6px; }
+.meta { font-size: 12.5px; color: var(--text-muted); margin-top: 18px; }
+
+.summary-box { background: var(--surface-1); border: 1px solid var(--border); border-radius: 14px; padding: 26px 28px; margin: 28px 0; }
+.summary-box .eyebrow { margin-bottom: 10px; }
+.summary-box p { font-size: 15px; line-height: 1.65; color: var(--text-primary); margin: 0 0 14px; max-width: 70ch; }
+.summary-box p:last-child { margin-bottom: 0; }
+.summary-box p.limits { font-size: 13px; color: var(--text-secondary); border-top: 1px solid var(--gridline); padding-top: 14px; margin-top: 4px; }
+
+.stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin: 32px 0 8px; }
+.stat-tile { background: var(--surface-1); padding: 16px 16px; }
+.stat-label { font-size: 11.5px; color: var(--text-muted); margin: 0 0 6px; }
+.stat-value { font-size: 24px; font-weight: 700; letter-spacing: -0.01em; }
+.stat-value.gr { color: var(--series-gr); }
+.stat-sub { font-size: 11.5px; color: var(--text-secondary); margin-top: 4px; }
+
+.part-header { margin: 64px 0 8px; padding-top: 28px; border-top: 3px solid var(--series-gr); }
+.part-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--series-gr); margin: 0 0 8px; }
+.part-header h2 { font-size: 26px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 12px; text-wrap: balance; }
+.part-header p { font-size: 15px; line-height: 1.65; color: var(--text-secondary); max-width: 68ch; }
+.part-header p b { color: var(--text-primary); }
+
+section { margin: 44px 0; }
+section h3.sec-title { font-size: 19px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 6px; text-wrap: balance; }
+section .lede { font-size: 14.5px; color: var(--text-secondary); line-height: 1.6; max-width: 68ch; margin: 0 0 22px; }
+section p { font-size: 14.5px; line-height: 1.65; color: var(--text-primary); max-width: 68ch; }
+section p.note { font-size: 12.5px; color: var(--text-muted); line-height: 1.55; max-width: 68ch; }
+section p.method-aside { font-size: 12.5px; color: var(--text-muted); line-height: 1.55; max-width: 68ch; margin-top: 8px; }
+section p.method-aside b { color: var(--text-secondary); font-weight: 600; }
+section h4 { font-size: 13px; font-weight: 700; margin: 18px 0 8px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.03em; }
+.method-item { margin-bottom: 22px; }
+.method-item dt { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+.method-item dd { margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--text-secondary); max-width: 68ch; }
+.method-item dd + dd { margin-top: 6px; }
+.method-item code { font-size: 12px; background: var(--surface-2); padding: 1px 5px; border-radius: 4px; color: var(--text-primary); }
+.q-label { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; color: var(--text-muted); background: var(--surface-2); border-radius: 5px; padding: 2px 7px; margin-bottom: 10px; margin-right: 6px; }
+.badge-approx { display: inline-block; font-size: 10.5px; font-weight: 600; letter-spacing: 0.02em; color: var(--series-4); background: color-mix(in srgb, var(--series-4) 15%, transparent); border-radius: 5px; padding: 2px 7px; margin-left: 6px; vertical-align: middle; }
+
+.card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 22px 22px 10px; }
+.chart-title { font-size: 14px; font-weight: 600; margin: 0 0 2px; }
+.chart-sub { font-size: 12px; color: var(--text-secondary); margin: 0 0 12px; }
+.legend { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-secondary); }
+.legend-swatch { width: 10px; height: 10px; border-radius: 2px; flex: none; }
+.chart-wrap { position: relative; }
+svg.chart { width: 100%; height: auto; display: block; overflow: visible; }
+.gridline { stroke: var(--gridline); stroke-width: 1; }
+.baseline { stroke: var(--baseline); stroke-width: 1; }
+.axis-label { fill: var(--text-muted); font-size: 10.5px; }
+.crisis-band { fill: var(--band-fill); }
+.crisis-line { stroke: var(--text-muted); stroke-width: 1; stroke-dasharray: 2 3; }
+.crisis-label { fill: var(--text-muted); font-size: 10px; }
+.direct-label { font-size: 11px; font-weight: 600; }
+.direct-label-sub { fill: var(--text-secondary); font-size: 9.5px; }
+.hit-target { fill: transparent; }
+.hover-dot { stroke: var(--surface-1); stroke-width: 2; opacity: 0; }
+.crosshair { stroke: var(--text-muted); stroke-width: 1; opacity: 0; }
+.tooltip { position: absolute; pointer-events: none; opacity: 0; transition: opacity .08s ease; background: var(--surface-1); border: 1px solid var(--border); border-radius: 8px; padding: 8px 11px; font-size: 12px; box-shadow: 0 4px 14px rgba(0,0,0,0.14); white-space: nowrap; transform: translate(-50%,-100%); z-index: 5; }
+.tooltip .t-year { color: var(--text-muted); font-size: 10.5px; margin-bottom: 3px; }
+.tooltip .t-row { display: flex; align-items: center; gap: 6px; font-weight: 600; }
+.tooltip .t-row + .t-row { margin-top: 2px; }
+.tooltip .dot { width: 7px; height: 7px; border-radius: 50%; flex: none; }
+.foot-note { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 12px 2px 2px; font-size: 10.5px; color: var(--text-muted); border-top: 1px solid var(--gridline); margin-top: 14px; }
+
+table.data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+table.data-table th, table.data-table td { text-align: right; padding: 7px 10px; border-bottom: 1px solid var(--gridline); font-variant-numeric: tabular-nums; }
+table.data-table th:first-child, table.data-table td:first-child { text-align: left; font-variant-numeric: normal; }
+table.data-table th { color: var(--text-muted); font-weight: 500; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.03em; }
+table.data-table td.sig { color: var(--text-muted); font-size: 11px; }
+table.data-table td.hl, table.data-table tr.hl td { color: var(--series-gr); font-weight: 600; }
+.table-scroll { overflow-x: auto; }
+.table-caption { font-size: 12px; color: var(--text-secondary); margin: 0 0 10px; }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+@media (max-width: 720px) { .two-col { grid-template-columns: 1fr; } .stat-row { grid-template-columns: repeat(2, 1fr); } }
+
+.finding { background: var(--surface-2); border-radius: 10px; padding: 16px 18px; margin: 18px 0; font-size: 13.5px; line-height: 1.6; }
+.finding b { color: var(--text-primary); }
+
+.answer-box { background: var(--surface-1); border: 1px solid var(--border); border-left: 3px solid var(--series-gr); border-radius: 10px; padding: 24px 26px; margin-top: 12px; }
+.answer-box h4 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--series-gr); margin: 0 0 10px; }
+.answer-box p { font-size: 14.5px; }
+
+.toc { display: flex; flex-direction: column; gap: 4px; font-size: 13px; margin-top: 14px; }
+.toc .toc-part { font-weight: 700; color: var(--text-primary); margin-top: 10px; }
+.toc .toc-part:first-child { margin-top: 0; }
+.toc a { color: var(--text-secondary); text-decoration: none; border-bottom: 1px solid transparent; padding-left: 14px; display: inline-block; }
+.toc a:hover { color: var(--series-gr); border-bottom-color: var(--series-gr); }
+
+footer { margin-top: 70px; padding-top: 20px; border-top: 1px solid var(--gridline); font-size: 11.5px; color: var(--text-muted); line-height: 1.6; }
+</style>
+
+<div class="wrap">
+
+<header class="hero">
+  <p class="eyebrow">EU-SILC · Eurostat · 2003&ndash;2025</p>
+  <h1>The Greek Poverty Paradox</h1>
+  <p class="dek">Greece's official poverty rate is elevated but not extreme among EU countries &mdash; 4th-highest of 27. By their own account, Greek households are the most financially squeezed in the Union, by a wide margin &mdash; and have been for over a decade. This report investigates how much of that gap is real.</p>
+  <p class="meta">A note on framing: this project started from the question "objective vs. subjective poverty," and AROP is often called "objective poverty" informally. This report avoids that label deliberately &mdash; Eurostat's own guidance is explicit that a relative-income threshold isn't a direct measure of living standards, so AROP is treated throughout as a <i>relative-income indicator</i>, not as ground truth against which subjective poverty is being checked. See Methods for the full reasoning.</p>
+</header>
+
+<div class="summary-box">
+  <p class="eyebrow">Executive summary</p>
+  <p><b>The paradox.</b> Two out of three Greek households say they struggle to make ends meet &mdash; the highest share anywhere in the EU, more than triple the EU average, every year since 2011. But Greece's official poverty rate (the standard EU measure of low income) is only the 4th-highest in the EU, and has ranged between 1st and 10th since 2007. The two measures capture related but genuinely different things &mdash; one relative income, one lived experience &mdash; and this report asks how much of the gap between them is real.</p>
+  <p><b>What the official rate actually measures.</b> The EU's standard poverty line isn't a fixed income level &mdash; it's set at 60% of whatever the national median income happens to be <i>that year</i>. When Greek incomes collapsed together during the debt crisis, the poverty line collapsed with them. So the poverty rate barely moved, even as households got dramatically poorer in real terms underneath it.</p>
+  <p><b>What happens with a fixed benchmark instead.</b> If you hold the poverty line to a pre-crisis living standard &mdash; adjusting only for inflation, not letting it drift down with the economy &mdash; measured poverty roughly doubles during the crisis, closely tracking what households were actually reporting. That's strong evidence that a real, sizeable part of the paradox is arithmetic. It is not the whole explanation, though &mdash; a smaller but genuine gap remains even after accounting for that and for other measurable hardship, as Part II of this report finds.</p>
+  <p><b>How much that explains.</b> Comparing Greece to other EU countries with similar unemployment, income, and material hardship, Greek households still report more difficulty than those factors alone predict. Adding housing costs and missed-bill-payment data to the comparison closes most of that gap when the model is allowed to see Greece's own data &mdash; but a real gap remains, concentrated in the 2020s, and it's still the largest of any EU country even when the comparison is built entirely from the other 26.</p>
+  <p><b>Why what's left isn't just pessimism.</b> Three further findings, each tested directly rather than assumed, point to real conditions behind the remaining gap, not just a national mood: Greece is the only EU country that still hasn't recovered its own pre-crisis living standard &mdash; real income remains 11.2% below its 2008 peak, sixteen years on, while every other EU country has fully recovered. Greek subjective poverty barely moves with the yearly ups and downs of unemployment, housing costs, or missed bills the way every other EU country's does &mdash; evidence of a chronic, structural condition, not a reaction to any single year's news. And the handful of EU countries where measured and felt poverty line up closely don't do it by escaping hardship on any one measure &mdash; they do it by not stacking Greece's specific combination of housing costs, arrears, unhealed income loss, and pessimism all at the same time. Financial pessimism itself is also real and measurable &mdash; Greece is the most pessimistic country in the EU about its own future by a wide margin &mdash; but this report treats that finding cautiously, since expecting things to get worse is conceptually close to the outcome being explained; the three findings above don't have that limitation.</p>
+  <p><b>What's still unexplained.</b> On the comparison used to establish that headline range (Section 9), somewhere between roughly 6 and 20 percentage points of "extra" difficulty, depending on the year, isn't accounted for by income, unemployment, and material hardship alone. Adding the further findings above narrows that gap in most years, and the income-scarring test (a hard economic variable) does so cleanly and consistently. The financial-pessimism test narrows it further on average but less evenly &mdash; in a few of the earliest years it actually over-predicts Greece's difficulty rather than under-predicting it, a genuine complication rather than a clean shrinkage, and one more reason that particular result is treated more cautiously than the others (see the scorecard, Section 10, and Section 11 for the detail). That's a real, open finding &mdash; not a failure of the analysis, and not evidence that the rest is exaggeration. The next question is what specifically &mdash; beyond income, unemployment, material hardship, housing, unhealed income loss, and pessimism &mdash; is still driving what remains.</p>
+  <p class="limits"><b>A note on limits.</b> Every figure here comes from official Eurostat data, except one: a poverty measure anchored to 2008 living standards, which Eurostat doesn't publish that far back and had to be approximated. That approximation was tested against a similar official measure and found accurate to within about 1 percentage point on average &mdash; but it is least certain in exactly the years (2012&ndash;2014) where it shows the largest effect, and that's flagged throughout rather than glossed over.</p>
+</div>
+
+<div class="stat-row">
+  <div class="stat-tile"><p class="stat-label">Subjective poverty, 2025</p><p class="stat-value gr">67.2%</p><p class="stat-sub">vs EU 17.6%</p></div>
+  <div class="stat-tile"><p class="stat-label">AROP (official poverty rate), 2025</p><p class="stat-value">19.6%</p><p class="stat-sub">vs EU 16.3%</p></div>
+  <div class="stat-tile"><p class="stat-label">EU rank, subjective poverty</p><p class="stat-value gr">1st of 27</p><p class="stat-sub">every year since 2011</p></div>
+  <div class="stat-tile"><p class="stat-label">EU rank, AROP</p><p class="stat-value">4th of 27</p><p class="stat-sub">elevated, ranged 1st&ndash;10th since 2007</p></div>
+</div>
+
+<nav class="toc">
+  <div class="toc-part">Part I &mdash; Does subjective poverty reflect real hardship?</div>
+  <a href="#paradox">1. The paradox</a>
+  <a href="#yardstick">2. Why AROP behaves differently: the moving threshold</a>
+  <a href="#anchored">3. A fixed yardstick: anchored poverty</a>
+  <a href="#tracking">4. Does it track real conditions in Greece?</a>
+  <a href="#generalize">5. Does the relationship hold across Europe?</a>
+  <a href="#answer1">6. Answer to Question 1</a>
+  <div class="toc-part">Part II &mdash; Why is Greece still an outlier?</div>
+  <a href="#outlier">7. Greece versus comparable EU countries</a>
+  <a href="#explains">8. What housing and financial strain explain</a>
+  <a href="#lgo">9. Leave-Greece-out prediction</a>
+  <a href="#scorecard">10. The scorecard: how much each layer explains</a>
+  <a href="#scarring-pessimism">11. Scarring and pessimism</a>
+  <a href="#answer2">12. Answer to Question 2</a>
+  <div class="toc-part">Reference</div>
+  <a href="#literature">Where this fits in the research literature</a>
+  <a href="#methodology">Methods, robustness &amp; limitations</a>
+</nav>
+
+<div class="part-header" id="part1">
+  <p class="part-eyebrow">Part I</p>
+  <h2>Does subjective poverty reflect real economic hardship?</h2>
+  <p><b>Question 1:</b> To what extent does Greece's exceptionally high subjective poverty reflect measurable deterioration in living standards that relative-income poverty does not capture?</p>
+</div>
+
+<section id="paradox">
+  <span class="q-label">1</span>
+  <h3 class="sec-title">The paradox: subjective poverty vs. the official rate</h3>
+  <p class="lede">The EU's official poverty measure (AROP: income below 60% of the national median) and subjective poverty (households who say they struggle to make ends meet) are meant to describe the same thing from two angles. In Greece, they've told almost opposite stories since before the crisis even began.</p>
+
+  <p>This is easiest to see across all of Europe at once. The chart below uses Eurostat's broader official indicator, AROPE ("at risk of poverty or social exclusion" &mdash; see Section 3), against subjective poverty, for every EU country plus the EU average, in the most recent year available.</p>
+  <div class="card">
+    <p class="chart-title">AROPE vs. subjective poverty, EU countries, 2025</p>
+    <p class="chart-sub">Sorted by subjective poverty. The gap direction flips across Europe &mdash; it doesn't just get bigger and smaller.</p>
+    <div class="legend" id="legend-snapshot"></div>
+    <div class="chart-wrap"><svg class="chart" id="chart-snapshot" viewBox="0 0 860 720" preserveAspectRatio="xMidYMid meet"></svg><div class="tooltip" id="tt-snapshot"></div></div>
+    <div class="foot-note"><span>Source: Eurostat, ilc_peps01n &amp; ilc_sbjp01</span><span>2025</span></div>
+  </div>
+  <div class="finding">
+    <b>Greece's gap is in a different league from every other country's &mdash; in either direction.</b> Subjective poverty exceeds AROPE by 39.7 points in Greece; the next-largest gap in that same direction is Bulgaria's, at 7.1 points. Several countries &mdash; mostly in Northern and Western Europe (Germany, Sweden, the Netherlands, Luxembourg, Lithuania, Finland) &mdash; show the <i>opposite</i> pattern: AROPE sits well above subjective poverty, by 8&ndash;15 points. So this isn't a story of "some countries under-report and some over-report by varying amounts" &mdash; most countries sit within about 5 points of agreement between the two measures either way, and Greece is the one clear, large exception, not one end of a smooth spread.
+  </div>
+  <p class="note">Greece's own two headline numbers here (67.2% subjective poverty vs. 17.6% EU average; 27.5% AROPE vs. 21% EU average) are independently reported the same way by Greek data-journalism outlet <a href="https://www.greeceinfigures.com/ftoxeia-kai-koinonikos-apokleismos/" target="_blank" rel="noopener">Greece in Figures</a>, drawing on the same primary Eurostat/ELSTAT data this report uses directly. That page covers Greece against the EU average only, not the full 27-country breakdown shown above &mdash; the country-by-country chart itself is this project's own construction from the live Eurostat API, not reproduced from theirs.</p>
+
+  <div class="two-col">
+    <div class="card">
+      <p class="chart-title">Subjective poverty</p>
+      <p class="chart-sub">Share of households who say making ends meet is difficult or very difficult</p>
+      <div class="legend" id="legend-subj"></div>
+      <div class="chart-wrap"><svg class="chart" id="chart-subj" viewBox="0 0 420 300" preserveAspectRatio="xMidYMid meet"></svg><div class="tooltip" id="tt-subj"></div></div>
+      <div class="foot-note"><span>ilc_mdes09 / ilc_sbjp01</span><span>2003&ndash;2025</span></div>
+    </div>
+    <div class="card">
+      <p class="chart-title">Official poverty rate (AROP)</p>
+      <p class="chart-sub">Income below 60% of the national median</p>
+      <div class="legend" id="legend-arop"></div>
+      <div class="chart-wrap"><svg class="chart" id="chart-arop" viewBox="0 0 420 300" preserveAspectRatio="xMidYMid meet"></svg><div class="tooltip" id="tt-arop"></div></div>
+      <div class="foot-note"><span>ilc_li02</span><span>2003&ndash;2025</span></div>
+    </div>
+  </div>
+
+  <div class="finding">
+    <b>Already high before the crisis.</b> In 2003, before any hint of the debt crisis, 48% of Greek households already said making ends meet was hard &mdash; more than double the official poverty rate of 20.7%. So this isn't just a crisis story layered on a healthy baseline; the gap was there from the start.
+  </div>
+
+  <h4>How big is the gap, and how unusual is Greece?</h4>
+  <p>Two more views of the same divergence: the size of the gap between Greece and the EU average each year, and Greece's rank against other EU countries.</p>
+  <div class="card">
+    <p class="chart-title">Greece minus EU average, percentage points</p>
+    <div class="legend" id="legend-gap"></div>
+    <div class="chart-wrap"><svg class="chart" id="chart-gap" viewBox="0 0 860 280" preserveAspectRatio="xMidYMid meet"></svg><div class="tooltip" id="tt-gap"></div></div>
+    <div class="foot-note"><span>Positive = Greece worse than EU average</span><span>2005&ndash;2025 (AROP), 2007&ndash;2025 (subjective)</span></div>
+  </div>
+  <div class="card" style="margin-top:14px;">
+    <p class="chart-title">Greece's EU rank, 1 = highest poverty rate</p>
+    <div class="legend" id="legend-rank"></div>
+    <div class="chart-wrap"><svg class="chart" id="chart-rank" viewBox="0 0 860 280" preserveAspectRatio="xMidYMid meet"></svg><div class="tooltip" id="tt-rank"></div></div>
+    <div class="foot-note"><span>Lower on chart = worse rank (closer to 1st)</span><span>EU member states only, membership as of each survey year</span></div>
+  </div>
+  <div class="finding">
+    <b>"Greece has one of the highest official poverty rates in Europe"</b> is well supported &mdash; its rank has stayed in the 1st&ndash;10th band since 2007. But that's a much less extreme statement than <b>"Greece has by far the highest subjective poverty rate in Europe,"</b> which is the accurate headline: 1st of 27&ndash;28 countries every year since 2011.
+  </div>
+  <p class="note">EU aggregate for subjective poverty has no coverage before 2007; EU aggregate composition also changes over time (more countries joined, then the UK left) &mdash; see Methods for exact years. In 2003&ndash;2004 only 6&ndash;13 countries had comparable data yet, so Greece's early rank is indicative only, not the level.</p>
+</section>
+
+<section id="yardstick">
+  <span class="q-label">2</span>
+  <h3 class="sec-title">Why AROP behaves differently: the moving threshold</h3>
+  <p class="lede">Here's the mechanical reason the official rate stayed so calm through a historic income collapse. The poverty line is defined as 60% of the national median income &mdash; not a fixed euro amount, but a moving target that resets every year. If everyone's income falls together, the line falls with it, and the share of people below the line barely changes &mdash; even though everyone underneath it is now poorer in real terms.</p>
+  <div class="card">
+    <p class="chart-title">The poverty line itself, in real terms (2008 = 100)</p>
+    <p class="chart-sub">Greece's actual euro poverty threshold, adjusted for inflation, vs. real household income</p>
+    <div class="legend" id="legend-threshold"></div>
+    <div class="chart-wrap"><svg class="chart" id="chart-threshold" viewBox="0 0 860 280" preserveAspectRatio="xMidYMid meet"></svg><div class="tooltip" id="tt-threshold"></div></div>
+    <div class="foot-note"><span>Threshold deflated using Greek inflation, chained from 2008</span><span>ilc_li01, tepsr_wc310</span></div>
+  </div>
+  <div class="finding">
+    The poverty line itself fell from 100 (2008) to a low of 65 in 2016 &mdash; a 35-point real decline &mdash; tracking real household income almost exactly (which fell to 68 the same year). Over that same stretch, the measured poverty <i>rate</i> barely moved, from 20.1% to 21.2%, because the ruler shrank along with the thing it was measuring.
+  </div>
+  <p class="method-aside"><b>Method:</b> the poverty threshold Eurostat actually used each year (single-adult household, 60% of that year's median income, in euros) is deflated to constant 2008 prices using Greek consumer-price inflation. See Methods for the full definition.</p>
+</section>
+
+<section id="anchored">
+  <span class="q-label">3</span>
+  <h3 class="sec-title">A fixed yardstick: anchored poverty <span class="badge-approx">approximated</span></h3>
+  <p class="lede">The chart above shows the ruler shrinking. This section asks the more direct question: what if we just didn't let the ruler shrink? What if "poor" still meant, ten years later, what it meant in 2008 &mdash; adjusted only for inflation, not for how far the whole country's income had fallen?</p>
+  <p>Eurostat doesn't publish that measure for Greece back to 2008 (their own version of it is anchored to 2019, which misses the crisis entirely). So this report builds an approximate version: each year, Eurostat publishes the poverty rate at four different income levels (40%, 50%, 60%, and 70% of that year's median). Fitting a smooth curve through those four points recreates a rough picture of the whole income distribution, accurate enough to read off "what share of people would fall below a 2008-level income" in any later year.</p>
+  <p>There's a fourth, genuinely official measure worth adding here, precisely because it needs no approximating: Eurostat's broader headline indicator, <b>AROPE</b> ("at risk of poverty <i>or</i> social exclusion"). Rather than income alone, AROPE counts anyone who is either income-poor, <i>or</i> severely materially and socially deprived, <i>or</i> living in a household with very low work intensity &mdash; whichever applies. Because two of those three conditions aren't tied to a shifting median income the way AROP is, AROPE doesn't have exactly the same moving-yardstick weakness &mdash; and it turns out to behave more like subjective poverty than plain AROP does, without any approximation involved.</p>
+  <div class="card">
+    <p class="chart-title">Four measures of poverty, side by side</p>
+    <p class="chart-sub">AROP vs. AROPE vs. fixed-benchmark poverty (approx., 2008 base) vs. subjective poverty &mdash; all shown as a percentage (population-weighted for the first three; see Methods for the subjective series' household-vs-population weighting)</p>
+    <div class="legend" id="legend-anchor"></div>
+    <div class="chart-wrap"><svg class="chart" id="chart-anchor" viewBox="0 0 860 280" preserveAspectRatio="xMidYMid meet"></svg><div class="tooltip" id="tt-anchor"></div></div>
+    <div class="foot-note"><span>Fixed-benchmark series is approximated; AROPE and AROP are official Eurostat figures &mdash; see Methods</span><span>ilc_li01, ilc_li02, ilc_mdes09, ilc_peps01/ilc_peps01n</span></div>
+  </div>
+  <div class="finding">
+    <b>The fixed-benchmark measure and AROPE both behave far more like subjective poverty than the official AROP rate does &mdash; but for two different reasons, not the same one.</b> The fixed-benchmark line roughly doubled during the crisis &mdash; from about 20% (2008) to a peak near 41% (2014) &mdash; while AROP barely moved (20% &rarr; 22%) over the same span, because its <i>threshold</i> fell with the collapsing median (Section 2). AROPE's good performance has a more mundane explanation: it's a union of AROP with severe material deprivation and low work intensity, and this project's own data already shows deprivation tracking subjective poverty closely on its own &mdash; AROPE mostly inherits that. It doesn't fix AROP's moving-threshold problem at all; the AROP-poor people inside AROPE are still counted against that same shifting line. What it adds is a different, complementary point: AROPE moved from 28% (2008) to a peak of 36% (2014) and tracks subjective poverty's year-over-year changes almost as closely as the fixed-benchmark line does (correlation 0.74 in year-over-year changes, 0.90 once each series' own trend is removed &mdash; both far above AROP's 0.60 and 0.67 on the same two tests), and it does that with no approximation at all, since Eurostat calculates it directly from survey data every year.
+  </div>
+  <p class="note">AROPE has its own methodology break, exactly like the material-deprivation series it partly draws on: figures through 2020 use the legacy definition, 2021 onward use a revised one (both from Eurostat, spliced here at the point where the two vintages meet rather than blended). Greece's AROPE rank among EU states has stayed in a narrower 2nd&ndash;7th band across the whole period &mdash; elevated, like AROP, but nowhere near subjective poverty's 1st-of-27 every year.</p>
+
+  <h4>Checking the approximation against a real Eurostat number</h4>
+  <p>A good curve fit through four points doesn't prove the method extrapolates accurately <i>beyond</i> those points &mdash; and the years that matter most here (2012&ndash;2014) require exactly that kind of extrapolation. So the same method was tested where it can actually be checked: Eurostat does publish an official fixed-benchmark poverty rate anchored to <b>2019</b> (rather than 2008). The same four-point method was used to estimate that 2019-anchored series independently, then compared year by year to Eurostat's real published numbers.</p>
+  <div class="finding">
+    <b>The method checks out reasonably well, with one honest caveat.</b> Across 2019&ndash;2025, the approximation was off by 1.2 percentage points on average (worst case: 3.4 points, in 2022), and consistently tracked the real series (correlation 0.89). It also ran slightly high &mdash; a small, consistent overestimate of about 1 point. But none of the validated years required much extrapolation, because Greek incomes didn't move nearly as far from 2019 as they did from 2008 during the crisis. The 2012&ndash;2014 estimates above involve real extrapolation that this check couldn't directly test &mdash; so treat the crisis-era <i>shape</i> (a sharp rise, roughly doubling) as well supported, and the exact numbers in those specific years with a bit more caution than the validation alone would suggest.
+  </div>
+  <p class="method-aside"><b>Method:</b> income is treated as approximately log-normally distributed; a two-parameter curve is fit to the four published (threshold, poverty-rate) points each year via a standard probit-linear regression (fit quality R&sup2;&gt;0.99 in every year). Full validation numbers (mean error, worst-case error, bias, correlation) are in Methods.</p>
+
+  <h4>A second, more relevant check: against actual crisis-year microdata</h4>
+  <p>The check above tested the method in years that turned out not to need much extrapolation. A separate, independent study gives a better test &mdash; one that covers the crisis years directly. Andriopoulou, Kanavitsa &amp; Tsakloglou computed Greece's anchored poverty rate for 2007&ndash;2016 using the actual underlying household survey data (not an approximation from four summary points, the real income of every household in the sample). Their number, for income year 2013: <b>48% of the population poor</b> by a 2007-anchored measure.</p>
+  <p class="method-aside"><b>A year-labelling note before comparing:</b> their "2013" refers to the income year. This report's series is labelled by EU-SILC <i>survey</i> year, which (as noted elsewhere in this report) generally reflects income from the <i>previous</i> calendar year. So their income-year-2013 figure lines up with this report's <b>survey-year 2014</b>, not 2013.</p>
+  <div class="finding">
+    <b>Independent microdata points in the same direction, and finds an even larger crisis-era effect.</b> This report's survey-year-2014 estimate is 40.6%, about 7&ndash;8 points below Andriopoulou et al.'s 48%. That gap shouldn't be read as proof this report's method has a specific, quantifiable bias, though &mdash; the two exercises differ in more than just the approximation (household microdata vs. a four-point aggregate reconstruction, the exact price index and anchor-year definition used, and data vintage all differ too), so the difference can't cleanly be attributed to any one of them. What it does provide is real external corroboration of the qualitative story: an independent, microdata-based study finds a fixed pre-crisis poverty line reveals far more deterioration than contemporaneous AROP shows &mdash; if anything, more than this report's own reconstruction shows.
+  </div>
+  <p class="method-aside"><b>Method &amp; a caveat on comparability:</b> Andriopoulou et al. anchor to 2007 rather than 2008 and use Greece's national SILC microdata directly rather than the four-point Eurostat summary this report relies on. Andriopoulou, E., Kanavitsa, E., &amp; Tsakloglou, P. Decomposing poverty in hard times: Greece 2007&ndash;2016. <i>Revue d'économie du développement</i> (2019); also circulated as LSE Hellenic Observatory GreeSE Paper No. 149 (2020), the version consulted for this report.</p>
+</section>
+
+<section id="tracking">
+  <span class="q-label">4</span>
+  <h3 class="sec-title">Does subjective poverty track real economic conditions in Greece?</h3>
+  <p class="lede">If subjective poverty were mostly a matter of mood or expectation, it would drift loosely from the actual economy. In Greece, it moves closely with unemployment and household income &mdash; and that relationship survives a real attempt to break it.</p>
+  <div class="card">
+    <p class="chart-title">Subjective poverty, unemployment, and real income &mdash; indexed together</p>
+    <p class="chart-sub">All three lines share one scale to make the turning points easy to compare &mdash; they're different units (share of households, % of the labour force, and an income index), so only the shape should be compared, not the exact levels</p>
+    <div class="legend" id="legend-crisis"></div>
+    <div class="chart-wrap"><svg class="chart" id="chart-crisis" viewBox="0 0 860 280" preserveAspectRatio="xMidYMid meet"></svg><div class="tooltip" id="tt-crisis"></div></div>
+    <div class="foot-note"><span>Real income idx 2008=100 · Unemployment %, age 15&ndash;74</span><span>2009&ndash;2025 (unemployment data starts in 2009)</span></div>
+  </div>
+  <div class="finding">
+    <b>All three turn in the same year.</b> Subjective poverty peaked in <b>2013 (78.3%)</b> &mdash; the exact same year unemployment peaked (27.8%) and real household income hit bottom. It then fell through the 2013&ndash;2019 recovery as unemployment nearly halved, held flat through COVID, eased further through 2023&ndash;2024 as unemployment kept falling, and ticked back up slightly in 2025.
+  </div>
+
+  <h4>A stricter test: does it survive removing the shared trend?</h4>
+  <p>Two things that are both rising or both falling for years at a time will often look strongly correlated even if they aren't really connected week to week &mdash; they just share a slow-moving trend. To rule that out, each relationship below is tested three ways: the raw correlation, the correlation of <i>year-over-year changes</i> (does a good year for one line up with a good year for the other?), and the correlation after removing each series' own long-run trend. If a relationship survives the second and third test, it's much more likely to be a real, short-run connection rather than two lines that just happen to share a shape.</p>
+  <div class="card table-scroll">
+    <table class="data-table" id="robust-table">
+      <thead><tr><th>Variable</th><th>Raw correlation</th><th>Year-over-year change</th><th>Trend removed</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <p class="note">n.s. = not a statistically reliable relationship (p&ge;0.05).</p>
+
+  <div class="finding">
+    <b>Most relationships hold up &mdash; one doesn't, and the official poverty rate turns out more interesting than it first looked.</b> Unemployment, income, jobs, housing costs, missed bill payments, and one deprivation measure all keep a real relationship after both stricter tests &mdash; some (unemployment, housing costs) even get stronger. <b>One doesn't survive:</b> a newer hardship measure that looked striking on the surface (0.92) drops to essentially nothing (0.11) once the shared trend is removed &mdash; it only has 10&ndash;11 years of data, too short to tell a real relationship from coincidence, so it shouldn't be relied on. <b>And here's the interesting nuance on AROP:</b> its raw correlation is weak (0.19), but its year-over-year change correlation is a respectable 0.60. In other words, AROP isn't a bad indicator &mdash; its problem is specifically about the <i>level</i> it reports during a society-wide income collapse (Section 2), not about whether it responds to real change at all. When the economy gets worse or better from one year to the next, the official poverty rate does move in the right direction; it just can't tell you how bad things have gotten overall, because its own yardstick moves too.
+  </div>
+  <p class="method-aside"><b>Method &amp; a further check:</b> a similar test was also run looking one and two years forward and back (not just the same year), on year-over-year changes rather than levels, to see whether the timing of the relationship makes sense without reintroducing the shared-trend problem the year-over-year test above already guards against. For unemployment, the clearest result there, the same-year and prior-year relationships are essentially tied (both around 0.86) and clearly the strongest points in the window, tapering off further out in either direction. This is offered as a timing clue, not as further proof against a coincidental relationship &mdash; that proof is what the year-over-year and trend-removed columns above already provide.</p>
+</section>
+
+<section id="generalize">
+  <span class="q-label">5</span>
+  <h3 class="sec-title">Does the relationship hold across Europe, or is it just Greece?</h3>
+  <p class="lede">Everything so far either looks at all EU countries pooled together, or at Greece by itself. Those are different questions. Does a country's <i>own</i> subjective poverty move with its <i>own</i> changing conditions &mdash; a pattern that should show up all across Europe, not just in Greece? To test that, this compares changes <i>within</i> each country over time, rather than comparing countries' overall levels against each other (that second, level-based comparison is the subject of Part II, and needs its own separate model &mdash; this one, by design, can't see Greece's overall level at all, only its year-to-year wiggle).</p>
+  <div class="card table-scroll">
+    <table class="data-table" id="within-between-table">
+      <thead><tr><th>Variable</th><th>Comparing countries' levels</th><th>Within each country over time</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <p class="note">27 EU states, 2015&ndash;2024. Both columns control for unemployment, income (purchasing-power adjusted), material hardship, and the official poverty rate together, plus year-to-year EU-wide shocks; the second column also removes each country's own fixed baseline level.</p>
+  <p class="method-aside"><b>Method:</b> a two-way fixed-effects panel regression (country and year fixed effects, country-clustered standard errors) against a pooled regression with year effects only.</p>
+  <div class="finding">
+    <b>There is clear evidence the relationship generalizes beyond Greece &mdash; though not equally strongly for every variable.</b> Material hardship is robustly linked to subjective poverty within countries over time (a strong, reliable result). Unemployment points the same direction but is right at the edge of conventional statistical reliability. The official poverty rate, once again, comes back weak and unreliable in both comparisons &mdash; and even flips sign between them &mdash; reinforcing that it's a poor stand-in for lived financial strain regardless of how the question is framed.
+  </div>
+</section>
+
+<section id="answer1">
+  <div class="answer-box">
+    <h4>Answer to Question 1</h4>
+    <p>Yes, in large part. Reported difficulty making ends meet rose and fell in step with real income, unemployment, and material hardship &mdash; a relationship that survives the stricter year-over-year and trend-removed tests, not just a raw correlation, and holds up as a general European pattern, not something unique to Greece. Much of why the official poverty rate looked so much calmer is arithmetic: its threshold is pegged to the national median income, and the national median collapsed along with everyone's income. A fixed, pre-crisis benchmark instead shows poverty roughly doubling &mdash; closely matching what households were actually reporting, and independent microdata research finds an even larger effect (see Section 3) &mdash; though the exact estimate in the deepest crisis years carries more uncertainty than the rest of the series.</p>
+  </div>
+</section>
+
+<div class="part-header" id="part2">
+  <p class="part-eyebrow">Part II</p>
+  <h2>Why is Greece still an outlier?</h2>
+  <p><b>Question 2:</b> How much of Greece's cross-country subjective-poverty gap can measurable financial hardship account for, and how much remains unexplained?</p>
+</div>
+
+<section id="outlier">
+  <span class="q-label">7</span>
+  <h3 class="sec-title">Greece versus comparable EU countries</h3>
+  <p class="lede">This part of the report switches from "does subjective poverty make sense over time" to "does Greece's <i>level</i> make sense compared to other countries with similar conditions." A model is fit across all EU countries predicting subjective poverty from unemployment, income, and material hardship; Greece's actual number minus what the model predicts is its "unexplained" residual &mdash; the part its economic conditions alone don't account for.</p>
+  <div class="card">
+    <p class="chart-title">Average unexplained residual by country, 2015&ndash;2024</p>
+    <p class="chart-sub">Positive = households report more difficulty than unemployment, income, and material hardship predict</p>
+    <div class="chart-wrap"><svg class="chart" id="chart-bars" viewBox="0 0 860 620" preserveAspectRatio="xMidYMid meet"></svg><div class="tooltip" id="tt-bars"></div></div>
+  </div>
+  <div class="finding">
+    On this starting comparison, Greece has the largest unexplained gap of any EU country &mdash; ahead of Cyprus and Croatia, the next-highest. The rest of Part II asks how much of that gap survives once more of the picture is filled in.
+  </div>
+  <p class="method-aside"><b>Method:</b> income is measured in purchasing-power-adjusted terms (accounting for the fact that a euro buys more in Greece than in Denmark), not raw currency &mdash; the standard way to compare living standards <i>between</i> countries. Swapping in raw currency-adjusted income instead barely changed the result (Greece's average residual moved by 0.2 points), so this choice turned out to matter much less than expected going in.</p>
+</section>
+
+<section id="explains">
+  <span class="q-label">8</span>
+  <h3 class="sec-title">What housing and financial strain explain</h3>
+  <p class="lede">The comparison above uses only four broad economic variables. Adding more specific measures of financial pressure &mdash; the cost of housing relative to income, and whether a household is behind on bills or couldn't cover a surprise expense &mdash; shows how much of Greece's unexplained gap those variables can statistically account for. Two of them (arrears, inability to cover an unexpected expense) are conceptually close to the outcome itself &mdash; worth keeping in mind when reading how much they explain.</p>
+  <div class="card table-scroll">
+    <table class="data-table" id="nested-table">
+      <thead><tr><th>Comparison includes&hellip;</th><th>Adds</th><th>How well it fits</th><th>Greece's avg. gap</th><th>Greece's 2024 gap</th><th>Same result, fixed country list</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <p class="table-caption">The last column reruns every comparison on the same fixed set of 24 countries throughout (rather than the full, changing EU membership used elsewhere), to check the result isn't an artifact of which countries had data available in which years. It comes out within 1&ndash;2 points of the main version every time.</p>
+
+  <div class="card">
+    <p class="chart-title">Greece's unexplained gap by year: basic comparison vs. richer comparison</p>
+    <div class="legend" id="legend-residtrend"></div>
+    <div class="chart-wrap"><svg class="chart" id="chart-residtrend" viewBox="0 0 860 260" preserveAspectRatio="xMidYMid meet"></svg><div class="tooltip" id="tt-residtrend"></div></div>
+  </div>
+
+  <div class="finding">
+    <b>Housing costs and bill/expense strain explain most of the gap &mdash; not all of it.</b> Starting from the basic comparison (unemployment, income, hardship, official poverty rate), Greece's average gap is 15.1 points. Adding housing costs brings it to 8.8. Adding missed bills and inability-to-cover-an-unexpected-expense brings it down to 2.2 &mdash; close to zero for most of 2015&ndash;2019. But a real gap of around 6 points re-emerges by 2024, and it's concentrated in the 2020s rather than spread evenly across the whole period. Two further checks &mdash; a household's overall debt burden, and how much Greece's welfare system reduces poverty compared to other countries &mdash; were tested and added essentially nothing on top of what housing and bill/expense strain already explain; in this comparison, neither shows up as an additional factor once those are already accounted for.
+  </div>
+  <p class="method-aside"><b>Method:</b> household debt-to-income and the poverty-reducing effect of social transfers were added as a further check; both come back statistically indistinguishable from zero once the other variables are already in the model. That doesn't rule either one out as a real factor &mdash; it means this specific comparison doesn't find independent evidence for them, which is a more careful claim than "ruling out," since their effects could easily be tangled up with housing and arrears rather than separate from them.</p>
+</section>
+
+<section id="lgo">
+  <span class="q-label">9</span>
+  <h3 class="sec-title">Leave-Greece-out: the cleanest test</h3>
+  <p class="lede">Every comparison so far includes Greece in the data used to build it, which means Greece's own pattern could be quietly bending the comparison toward itself. This is the sharpest way to rule that out: build the comparison model using only the <b>other 26</b> EU countries, then ask what it would have predicted for Greece &mdash; a genuine out-of-sample prediction Greece had no part in shaping.</p>
+  <div class="card">
+    <p class="chart-title">Greece: actual vs. predicted by a model that never saw Greece's data</p>
+    <div class="legend" id="legend-lgo"></div>
+    <div class="chart-wrap"><svg class="chart" id="chart-lgo" viewBox="0 0 860 260" preserveAspectRatio="xMidYMid meet"></svg><div class="tooltip" id="tt-lgo"></div></div>
+    <div class="foot-note"><span>Model built on 26 EU states, evaluated on Greece</span><span>2015&ndash;2024</span></div>
+  </div>
+  <div class="finding">
+    Even this more honest test, using Section 8's richest comparison (basic conditions + housing + bills/expenses), shows a persistent 6&ndash;20 point gap in <b>every single year</b> &mdash; including years where the in-sample version of the same comparison showed almost nothing. The next part digs into why those two versions disagree so much.
+  </div>
+
+  <h4>Is that gap actually unusual, or is it just normal noise from leaving a country out?</h4>
+  <p>Leaving Greece out changes the comparison group, which on its own could shift the result by some amount for any country, not just Greece. To find out how much of a shift is normal, the same exercise was repeated for <b>every</b> country in the panel &mdash; each one left out in turn, with the model rebuilt on the remaining 26 and used to predict the excluded country. And to connect this to Section 8's in-sample finding, it was repeated for all three of that section's nested comparisons (basic economic conditions; + housing; + bills and expenses), not just the richest one.</p>
+  <div class="card table-scroll">
+    <table class="data-table" id="nested-loo-table">
+      <thead><tr><th>Comparison includes&hellip;</th><th>Greece's out-of-sample gap</th><th>Greece's rank</th><th>Next-largest country</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <div class="finding">
+    <b>Greece has the largest out-of-sample gap under every specification tested &mdash; but the path isn't a smooth decline the way the in-sample version was, and by the richest comparison, Greece is no longer alone at the extreme.</b> Going from the basic comparison to "+ housing" doesn't shrink Greece's out-of-sample gap the way it did in-sample (Section 8) &mdash; it grows, from 25.6 to 35.5 points, well clear of the next-largest country in both cases (Luxembourg at 18.5, then Cyprus at 19.4). Only once bills and expenses are added on top does Greece's gap fall sharply, to 11.6 &mdash; still the largest of the 27, but now only narrowly ahead of Luxembourg (10.7), not clear of the pack the way it was under the other two comparisons. That mismatch between the smooth in-sample decline (15.1 &rarr; 8.8 &rarr; 2.2, Section 8) and this bumpier out-of-sample one is itself informative: part of why the in-sample version looks so clean is that those models get to see Greece's own data while fitting, which this test deliberately doesn't allow. The out-of-sample view is the more honest one, and its actual message is narrower than "housing and cash-flow strain explain the gap": the full combination of variables gets Greece's predicted difficulty much closer to what's reported than the basic comparison does, but Greece remains the single hardest country to predict under every version of the model tested.
+  </div>
+</section>
+
+<section id="scorecard">
+  <h3 class="sec-title">The scorecard: how much each layer explains</h3>
+  <p class="lede">Sections 7&ndash;9 and Section 11 each add one more layer to the comparison and report the result separately. Here they are side by side &mdash; six versions of the same model, from sparsest to richest, each shown two ways: how much of Greece's gap disappears when the model is allowed to see Greece's own data (in-sample), and how much survives when it isn't (out-of-sample, the stricter test).</p>
+  <div class="card table-scroll">
+    <table class="data-table">
+      <thead><tr><th>Model</th><th>Fit (R&sup2;)</th><th>Greece's gap, in-sample</th><th>Greece's gap, out-of-sample</th><th>Greece's rank, out-of-sample</th></tr></thead>
+      <tbody>
+        <tr><td>A: unemployment, income, deprivation, official poverty rate</td><td>0.76</td><td>15.1</td><td>25.6</td><td>1st of 27</td></tr>
+        <tr><td>B: A + housing cost overburden</td><td>0.78</td><td>8.8</td><td>35.5</td><td>1st of 27</td></tr>
+        <tr><td>C: B + arrears, unexpected-expense capacity</td><td>0.89</td><td>2.2</td><td>11.6</td><td>1st of 27</td></tr>
+        <tr><td>D: C + household debt-to-income, transfer effect</td><td>0.89</td><td>2.2</td><td>13.0</td><td>1st of 27</td></tr>
+        <tr><td>E: C + financial expectations, saving rate</td><td>0.90</td><td>1.3</td><td>3.6</td><td>10th of 27</td></tr>
+        <tr><td>F: C + scarring stock (% below own income peak)</td><td>0.90</td><td>1.3</td><td>7.1</td><td>4th of 27</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="finding">
+    <b>Two things stand out.</b> First, the in-sample and out-of-sample columns tell different stories at almost every step &mdash; housing (Model B) looks like it helps in-sample (15.1 &rarr; 8.8) but makes the out-of-sample prediction worse (25.6 &rarr; 35.5), and debt/transfers (Model D) does nothing either way. Only three additions genuinely close the out-of-sample gap: bills and cash-flow strain (Model C, down to 11.6), financial pessimism (Model E, down to 3.6 and off the top rank entirely), and the scarring stock (Model F, down to 7.1). Second, financial expectations (Model E) closes the most ground of anything tested &mdash; but it's also the variable this report caveats hardest (Section 11), because it's conceptually close to the outcome itself. The scarring stock (Model F) closes less ground numerically, but it's built from hard economic data &mdash; real income, nothing subjective &mdash; which is why Section 11 leads with it rather than with Model E.
+  </div>
+  <p class="method-aside"><b>Method:</b> all six models use the same panel-regression setup (year fixed effects, country-clustered standard errors) and the same base sample; out-of-sample numbers are each model's own leave-one-country-out average residual for Greece, computed the same way as Section 9's table. Full per-country results for every model: <code>model_scorecard.csv</code> and <code>scorecard_loo_*.csv</code>.</p>
+</section>
+
+<section id="scarring-pessimism">
+  <span class="q-label">11</span>
+  <h3 class="sec-title">What's behind the remaining gap: scarring and pessimism</h3>
+  <p class="lede">Section 9 leaves a real, unexplained gap even in the strictest out-of-sample test &mdash; something beyond current income, unemployment, and material hardship is still driving part of Greece's subjective-poverty outlier status. Two variables outside that "current conditions" category were tested directly: how far below its own historical income peak Greece still is, and how pessimistic Greek households are about their own financial future. Both move the needle; neither fully closes the gap.</p>
+
+  <h4>Still below its own pre-crisis peak</h4>
+  <div class="card table-scroll">
+    <p class="chart-title">How far below its own historical peak, real GDP per capita, 2024</p>
+    <table class="data-table">
+      <thead><tr><th>Country</th><th>% below its own all-time high</th></tr></thead>
+      <tbody>
+        <tr><td>Greece</td><td>11.2%</td></tr>
+        <tr><td>Estonia</td><td>7.1%</td></tr>
+        <tr><td>Luxembourg</td><td>6.1%</td></tr>
+        <tr><td>Ireland</td><td>3.3%</td></tr>
+        <tr><td>Austria</td><td>2.8%</td></tr>
+        <tr><td>All other EU countries (18 of 27)</td><td>0.0&ndash;2.5%, most fully recovered</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="table-caption">"All-time high" runs from 2008 (before the earliest usable point for most countries) through 2024, so a country that dipped in 2009 or 2020 but has since grown past its old peak counts as fully recovered (0%).</p>
+  <div class="finding">
+    <span class="badge-approx">Core finding</span> <b>Greece is the only EU country still meaningfully below its own pre-crisis income peak &mdash; and it's not close.</b> Sixteen years after 2008 (the most recent data available, 2024), Greek real income per capita remains 11.2% below its all-time high; the next-most-scarred country, Estonia, is at 7.1%, and every other EU country has either fully recovered or was never that far below. Adding this as a year-by-year variable (not a single number per country, but how far below peak each country was <i>in that specific year</i>) to Section 8/9's richest comparison is a modest but real improvement: it's statistically significant (p=0.045), and it cuts Greece's out-of-sample gap (Section 9) from 11.6 points to 7.1 &mdash; moving Greece from clearly the single largest gap in the EU to 4th-largest of 27, behind Luxembourg, Cyprus, and Portugal.
+  </div>
+  <p class="method-aside"><b>Method:</b> built from Eurostat's real GDP per capita series (<code>sdg_08_10</code>), 2008&ndash;2024, as each country's running historical maximum minus its value that year, expressed as a percentage. This is a different, more direct test than an earlier exploratory check in this project (a single peak-to-trough decline number per country, correlated against average residuals): here the "how scarred right now" value changes every year and is added directly into the panel regression, which is the right way to test whether it explains year-to-year outcomes rather than just cross-country averages. It's consistent with published research on this exact mechanism: Baldini, Gallo &amp; Torricelli (2020) find that a past income-scarcity spell continues to depress subjective make-ends-meet assessments up to two years later across Europe, even controlling for current income (full citation in Methods).</p>
+
+  <h4>Does Greece's subjective poverty move with the economy the way other countries' does?</h4>
+  <p>A different cut on the same "scarring" idea: instead of levels, look at year-over-year <i>changes</i>. For each country separately, its own year-to-year swing in a given predictor is correlated against its own year-to-year swing in subjective poverty &mdash; asking whether a country's reported hardship reacts to its own economic news the way the pooled EU pattern (Section 4's Methods) suggests it should.</p>
+  <div class="card table-scroll">
+    <table class="data-table">
+      <thead><tr><th>Year-over-year change in&hellip;</th><th>Greece's own correlation</th><th>Greece's EU rank</th><th>Typical (median) EU country</th></tr></thead>
+      <tbody>
+        <tr><td>Official poverty rate (AROP)</td><td>+0.71</td><td>3rd of 27</td><td>+0.12</td></tr>
+        <tr><td>Real GDP per capita</td><td>+0.13</td><td>7th of 27</td><td>&minus;0.27</td></tr>
+        <tr><td>Material deprivation</td><td>+0.27</td><td>19th of 27</td><td>+0.40</td></tr>
+        <tr><td>Unemployment rate</td><td>&minus;0.12</td><td>21st of 27</td><td>+0.01</td></tr>
+        <tr><td>Housing cost overburden</td><td>&minus;0.17</td><td>22nd of 27</td><td>+0.12</td></tr>
+        <tr><td>Inability to cover an unexpected expense</td><td>+0.02</td><td>24th of 27</td><td>+0.58</td></tr>
+        <tr><td>Arrears</td><td>&minus;0.34</td><td>27th of 27 (lowest)</td><td>+0.26</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="finding">
+    <b>Greece's subjective poverty tracks its own official poverty rate unusually closely &mdash; and almost nothing else.</b> On year-to-year changes in AROP, Greece is 3rd-most-tightly-tracking of 27 countries. On every material-hardship measure tested &mdash; unemployment, housing costs, deprivation, arrears, unexpected-expense capacity &mdash; Greece sits in the bottom third of the EU, and on arrears its correlation is not just weak but the single most negative of any country (more arrears in a given year is, if anything, associated with a very slightly <i>lower</i> subjective-poverty reading that year). Most EU countries' subjective poverty rises and falls with these year-to-year swings much more than Greece's does. Read alongside the previous subsection, this fits a consistent picture: Greek subjective poverty behaves less like a reaction to each year's specific economic news and more like a persistently elevated <i>level</i> &mdash; consistent with a scarring/pessimism story, not a swing-reactive one.
+  </div>
+  <p class="method-aside"><span class="badge-approx">Exploratory lead, not a core finding</span> <b>Does that sensitivity pattern itself relate to the size of a country's unexplained gap?</b> Tested directly: for each of the nine predictors above, does a country's own Δ-sensitivity correlate with the size of its Model C leave-one-out residual (Section 9) across all 27 countries? With nine tests run together, a false-discovery-rate correction (Methods) is the right way to read the p-values, not the raw ones. Under that correction, eight of the nine show no reliable relationship, and the ninth &mdash; real GDP &mdash; survives, but only just: countries whose subjective poverty is less connected to (or moves opposite to) real GDP swings tend to have larger unexplained gaps (r=+0.52, raw p=0.006, FDR-adjusted p=0.050), and this holds almost unchanged excluding Greece (r=+0.50, raw p=0.009), so it isn't just Greece driving its own correlation. Greece's own real-GDP sensitivity (mildly positive rather than the expected negative, ranked 7th of 27) fits that broader pattern rather than being a one-off. Arrears looked similarly related at first (r=&minus;0.46, raw p=0.016) but fails the FDR correction outright (adjusted p=0.070) and weakens further once Greece is excluded (p rises to 0.058) &mdash; that one is reported as "Greece happens to be unusual on two separate things at once," not a finding. With only 9&ndash;10 year-over-year observations feeding each country's own correlation, this whole subsection is more descriptive than confirmatory &mdash; a different, weaker standard of evidence than the panel regressions used elsewhere in this report, and labeled as such.</p>
+
+  <h4>How pessimistic households are about their own future</h4>
+  <div class="finding">
+    <span class="badge-approx">Core finding &mdash; read with the caveat below</span> <b>Greece is also the single most pessimistic country in the EU about where its own households' finances are headed &mdash; and this variable moves Greece further off the top of the outlier list than anything else tested.</b> Using Eurostat's household financial-expectations survey (how households expect their own finances to change over the next 12 months), Greece scores worst of 35 countries measured, 11 points clear of the next-most-pessimistic (Slovenia). Adding it to the richest comparison improves the fit (R&sup2; 0.892&rarr;0.904) and is itself statistically significant (p=0.021). Repeating Section 9's leave-one-out test for every country with this variable added knocks Greece from the largest cross-country gap in the EU &mdash; its rank under every other comparison tested &mdash; down to 10th of 27.
+  </div>
+  <p class="method-aside"><b>Caveat that matters more here than anywhere else in this report:</b> "how do you expect your own household's finances to change" is a subjective survey question, much closer in kind to "how difficult is it to make ends meet" (this report's outcome variable) than any material variable tested elsewhere. This result is better read as "current difficulty and pessimism about the future are closely related sentiments that move together in Greece more than in the rest of the EU," not as an independent economic condition that explains the gap. It reframes part of the residual rather than resolving it &mdash; from "an unexplained material gap" to "Greece is unusually pessimistic about its own future, in a way partly separable from current material conditions." <b>Household saving rate</b> was also tested as a possible wealth-depletion signal (Greece is 2nd-lowest of 34 countries, persistently negative almost every year 2015&ndash;2024) but added no independent explanatory power once financial expectations was already in the model &mdash; consistent with the two being correlated rather than saving rate carrying separate information, and with this report's recurring limitation that national averages can't see who, within a country, is actually depleting savings. Independent corroboration for the pessimism finding comes from outside Eurostat entirely: a University of Macedonia survey for the Greek think tank diaNEOsis (April 2016, n=1,348, &plusmn;2.7%) found 74% of respondents expected their own financial situation to worsen over the next year (7% expected improvement) and 81.5% reported difficulty meeting basic household needs &mdash; a different survey house, a different year, and different question wording, landing on the same extreme pessimism.</p>
+
+  <h4>Why some countries feel almost exactly as poor as they measure</h4>
+  <p>A different way to ask the same question: instead of only looking at what makes Greece unusual, look at the EU countries where subjective poverty and the broader poverty-or-exclusion rate (AROPE, Section 6) line up almost exactly &mdash; Italy, France, Portugal, Hungary, Croatia, Cyprus, Belgium, and Slovenia, each within 2 points, versus Greece's 39.7-point gap. If these countries share some trait Greece lacks, that's a useful contrast.</p>
+  <div class="card table-scroll">
+    <p class="chart-title">Greece vs. the eight closest-to-aligned EU countries, most recent year available</p>
+    <table class="data-table">
+      <thead><tr><th></th><th>Unemployment</th><th>Material deprivation</th><th>Housing cost overburden</th><th>Arrears</th><th>Below own income peak</th><th>Financial pessimism</th></tr></thead>
+      <tbody>
+        <tr><td><b>Greece</b></td><td>10.1%</td><td>14.0%</td><td>28.9%</td><td>42.8%</td><td>11.2%</td><td>&minus;43.2 (worst of 27)</td></tr>
+        <tr><td>8-country average</td><td>5.5%</td><td>4.7%</td><td>5.6%</td><td>8.2%</td><td>0.0%</td><td>&minus;7.4</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="finding">
+    <span class="badge-approx">Descriptive comparison, not a causal test</span> These eight countries are not a uniform group &mdash; individually, several score worse than Greece on single measures (Hungary's material deprivation, Cyprus's arrears). What none of them do is combine several kinds of strain at once the way Greece does: Greece ranks 1st or 2nd of 27 on housing cost overburden, arrears, and distance below its own income peak, and 3rd on material deprivation and inability to cover an unexpected expense &mdash; and every one of the eight comparison countries has fully recovered to its own historical income peak, while Greece remains 11.2% below its. None of them approaches Greece's degree of pessimism about the future, either. The pattern this suggests: it isn't any single hardship measure that pushes a country's subjective poverty far above what its official rate implies &mdash; it's several kinds of strain, plus unhealed income scarring, plus collapsed expectations, stacking at once. That's a description of what's different about Greece, not a causal test of it, and it draws on the same small set of variables already discussed above rather than an independent check.
+  </div>
+</section>
+
+<section id="answer2">
+  <div class="answer-box">
+    <h4>Answer to Question 2</h4>
+    <p>A substantial part, but not all of it, and the honest answer depends on how strictly it's tested. Adding housing costs and cash-flow problems (missed bills, no buffer for a surprise expense) to a basic comparison of unemployment, income, and material hardship shrinks Greece's apparent gap from 15.1 points to 2.2 when the model is allowed to see Greece's own data &mdash; most of it. Tested more strictly, out of sample &mdash; predicting Greece from a model trained only on the other 26 countries &mdash; the same full combination of variables still gets much closer to Greece's real number than the basic comparison alone does, but the path there isn't smooth (housing on its own makes the out-of-sample prediction worse, not better) and the final gap (11.6 points) is real, not close to zero. Under every version of the comparison tested &mdash; in-sample or out, basic or richest &mdash; Greece has the largest gap of any EU country. Household debt and the poverty-reducing effect of Greece's welfare system were tested directly and provided no additional explanatory power in this specification &mdash; a narrower finding than ruling them out, since their effects could be tangled up with the variables already included. What's left is a genuinely open question, not a data problem: something beyond income, unemployment, and material hardship &mdash; plausibly housing tenure, household composition, informal income, savings buffers, or institutional factors &mdash; is still driving part of the gap. The analysis identifies and quantifies that remaining gap; it does not claim to know its cause, and finding out is the natural next step for this research, not a correction to what's already been found. Section 11 takes a first pass at that next step: how far Greece remains below its own pre-crisis income peak, and how pessimistic Greek households are about their own financial future, each explain a further, modest slice of it &mdash; without closing it.</p>
+  </div>
+</section>
+
+<section id="literature">
+  <h3 class="sec-title">Where this fits in the research literature</h3>
+  <p class="lede">None of this report's building blocks are being proposed here for the first time. What follows is a short, honest account of what other researchers have already established, how their work relates to this report's two questions, and where this report's own combination of pieces seems to be genuinely new.</p>
+
+  <h4>The moving-threshold problem: known, and known for Greece specifically</h4>
+  <p>The core mechanism in Section 2 &mdash; that a relative poverty line can understate a crisis because the line itself moves with the collapsing average &mdash; is not a new observation. Andriopoulou, Kanavitsa &amp; Tsakloglou demonstrated it for Greece directly, using real household survey data for 2007&ndash;2016, and found an even larger effect than this report's approximation does once the two studies' year labels are properly aligned (see Section 3 and Methods). Goedemé, Decerf &amp; Van den Bosch (2022), writing in the <i>Journal of European Social Policy</i>, proposed a new EU-wide poverty indicator specifically to fix this problem, and used Greece as their lead example of why it matters. So Part I of this report is best read as building on and cross-checking that established finding with a different, subjective outcome variable &mdash; not discovering it.</p>
+
+  <h4>Subjective poverty as a research topic: an active but distinct literature</h4>
+  <p>Subjective poverty measurement is its own established field, and it's worth being precise about a real difference in method: some studies (e.g. &Zcaron;elinsk&yacute;, Mysíková &amp; Garner, 2022, <i>European Journal of Development Research</i>) build subjective poverty from a "minimum income question" (what income would your household need to get by), while this report &mdash; like Eurostat's own headline indicator &mdash; uses the "ability to make ends meet" question instead. They're related but not the same measure, and that EU-wide study using the other method also flags Greece and Bulgaria as exceptionally high, which is a useful independent cross-check even though the two studies aren't measuring identically the same thing. A related paper by some of the same authors (&Zcaron;elinsk&yacute;, Ng &amp; Mysíková, 2020, <i>Economics Letters</i>) uses a statistical technique (the Youden index) to back out, from the same "make ends meet" responses this report uses, the income level that best separates households who call themselves poor from those who don't &mdash; a genuinely different question from this report's anchored-poverty measure (which asks how many people fall below a fixed <i>pre-crisis</i> living standard). It's a complementary way of turning subjective answers into an income figure, not an alternative version of Section 3's construction &mdash; see the ideas list below for what a combined analysis could look like. Earlier work (Guagnano, Santarelli &amp; Santini, 2016, <i>Social Indicators Research</i>) modelled subjective poverty across Europe against household and community characteristics, including social capital &mdash; a reminder that economic variables aren't the only candidate explanations in this literature, which bears on the open question in Part II.</p>
+
+  <h4>What might explain a country doing worse than its economy predicts</h4>
+  <p>Part II's central puzzle &mdash; a country reporting persistently worse subjective outcomes than its measured economic conditions predict, even after controlling for a lot &mdash; has a close <i>parallel</i> in a completely different literature: the "happiness gap" between post-communist and Western European countries. Nikolova (2016, <i>European Journal of Political Economy</i>) found that gap wasn't fully explained by economic conditions either, and that institutional quality (the rule of law, specifically) explained a meaningful further share of it, on top of macroeconomics. That's not evidence about Greece &mdash; it's a study of a different set of countries and a different outcome (life satisfaction, not subjective poverty) &mdash; but it's a useful analogy for this report's own open residual, worth treating as a future exploratory hypothesis rather than the obvious next thing to test (household debt and welfare-transfer effectiveness were this report's own tests along similar lines &mdash; see the Answer to Question 2, Section 12, for that result). There's also a specific, recent precedent for this report's housing-cost finding: Filandri, Pasqua &amp; Tucci (2025, <i>Journal of European Social Policy</i>) link housing tenure and rent regulation to subjective poverty using EU-SILC data for young adults (18&ndash;34) across 24 European countries &mdash; a real, theoretically grounded precedent for treating housing tenure as a serious next variable, though their result is specific to that age group and hasn't been shown here to hold for the general Greek population. Section 11's scarring finding has more direct grounding: Baldini, Gallo &amp; Torricelli (2020, <i>Economia Politica</i>) find that a past income-scarcity spell continues to depress subjective make-ends-meet assessments up to two years later across Europe, even controlling for current income &mdash; the same mechanism, tested on a different (EU-SILC longitudinal, not cross-country) sample. Its pessimism finding is independently corroborated outside this report's own data entirely: a University of Macedonia survey for the Greek think tank diaNEOsis (2016) found 74% of respondents expected their own finances to worsen over the following year and 81.5% reported difficulty meeting basic household needs, using a different survey house, year, and question wording from anything else cited here.</p>
+
+  <h4>External corroboration from other Greek data-journalism and research</h4>
+  <p>Two independent, Eurostat/ELSTAT-sourced projects reach compatible conclusions using different comparison designs from this report's own. Mantés &amp; Marinakis (2025), a report published via Greekonomics.gr with an accompanying open-source (MIT-licensed) codebase, benchmark Greece not against the EU average but against a "Bottom-10" group of ten EU countries that were poorer than Greece before 2008 and have since overtaken it &mdash; a comparator chosen specifically to separate genuine divergence from ordinary catch-up growth. Their income finding parallels Section 11's own scarring result: Greek real disposable household income remained 18% below its 2008 level as of 2023, versus +11% for the EU27 average and +38% for the Bottom-10 group over the same span. On housing, they report overburden among Greece's below-median-income households running near 88&ndash;90% since 2012 &mdash; roughly three times the EU27/Bottom-10 rate on that same poverty-status-specific measure (not directly comparable to Section 8's general-population housing figure, which is a different population base, but pointing the same direction). On healthcare, unmet medical need reached 12% of the Greek population in 2024, about five times the EU average &mdash; a variable outside anything this report tested directly, but a specific, concrete lead for future work given how large that gap is. Separately, a January 2026 diaNEOsis article on housing (summarizing an IOBE study led by Nikos Vettas) uses Eurostat's housing-cost-overburden definition directly and reports Greek households spending 35.5% of disposable income on housing in 2024 versus an EU average of 19.2%, with 42.8% of the population in some form of housing or utility arrears versus an EU average of 9.2% &mdash; that 42.8% figure exactly matches this report's own arrears rate for Greece (Section 11), which is expected rather than a coincidence, since both draw on the same official Eurostat series, but is a useful independent sanity check regardless. diaNEOsis's own research portal also hosts a 2016/2017 extreme-poverty study (Matsaganis et al., Athens University of Economics and Business) built on a third, different poverty definition again &mdash; an absolute "basket of essential goods" income line, rather than AROP's relative 60%-of-median threshold or this report's own fixed-2008-anchor approximation (Section 3) &mdash; worth noting as a reminder that "poverty line" is not a single settled concept even within Greek research specifically.</p>
+
+  <h4>A statistical caution worth naming</h4>
+  <p>Cross-country regressions like the ones in Part II &mdash; including in a lot of published research, not just here &mdash; usually treat each country as a fully independent observation. Claessens, Kyritsis &amp; Atkinson (2023, <i>Nature Communications</i>) show this is often not a safe assumption: neighbouring or culturally-linked countries tend to move together in ways that standard statistics don't account for, which can make a finding look more solidly established than it is. This report's cross-country models use country-clustered standard errors, which helps but isn't the same thing as directly modelling geographic or cultural proximity, which is the stronger approach that paper tests. The right next step isn't necessarily a specific fix (their own comparison finds simpler corrections, like the one used here, are sometimes but not always adequate) &mdash; it's first checking whether this report's own residuals show spatial structure at all, then deciding how much correction that warrants. Worth flagging as a limitation this report shares with most work in this space, not something unique to it.</p>
+
+  <h4>What, if anything, is new here</h4>
+  <p>Given the above, this report's most defensible original contribution is the <i>combination</i>: tying the well-established moving-threshold mechanism specifically to the subjective "make ends meet" measure (rather than income poverty alone), testing that link with first-differencing and detrending rather than just raw correlation, checking whether it generalizes across the EU with a within-country panel, and then running the cross-country residual decomposition and nested leave-one-country-out predictions in Part II. That specific combination &mdash; and the finding that Greece remains the largest cross-country gap of any EU state under every specification tested, in-sample and out &mdash; doesn't appear to already exist in the sources checked for this report. That's a claim worth treating cautiously rather than definitively: it comes from a targeted search, not a systematic literature review.</p>
+  <p class="note">Full citations for every paper named above are in Methods.</p>
+</section>
+
+<section id="methodology">
+  <h3 class="sec-title">Methods, robustness &amp; limitations</h3>
+  <p class="lede">Every series here comes from the Eurostat API, fetched fresh for this analysis &mdash; nothing hand-entered. This section has the full technical detail behind every plain-language claim above: exact definitions, what couldn't be made comparable across years, and the caveats on every approximated or exploratory analysis.</p>
+
+  <h4>Subjective poverty &mdash; definition, earliest data, and official verification</h4>
+  <dl class="method-item">
+    <dt>What's measured</dt>
+    <dd>Share of households answering "with difficulty" or "with great difficulty" to EU-SILC's "ability to make ends meet" question (<code>ilc_mdes09</code>, categories <code>DIF</code> + <code>GRT</code>). The underlying 6-point scale is unchanged in EU-SILC since 2003.</dd>
+    <dt>Verified against Eurostat's own headline product</dt>
+    <dd>Eurostat separately publishes an official "Subjective poverty" indicator, <code>ilc_sbjp01</code> (population-weighted, by age and sex), from 2010 onward. It matches this project's <code>ilc_mdes09</code>-derived household-weighted construction to within a few tenths of a point for Greece and the EU aggregate in every overlapping year (e.g. Greece 2024: 66.8% official vs. 66.7% here). The 2003&ndash;2009 portion of the series is this project's own same-methodology extension using the raw <code>ilc_mdes09</code> components, consistent with but not itself part of the official product.</dd>
+    <dt>Earliest comparable year</dt>
+    <dd>2003. In 2003&ndash;2004 only 6&ndash;13 countries had EU-SILC data yet, so Greece's EU rank in those two years is indicative only; the level (48.0%, 45.4%) doesn't depend on other countries and is robust.</dd>
+  </dl>
+
+  <h4>AROP &mdash; definition, and why it isn't called "objective poverty" here</h4>
+  <dl class="method-item">
+    <dt>What's measured</dt>
+    <dd>60% of national median equivalised disposable income (<code>ilc_li02</code>, <code>rskpovth=B_60</code>, <code>statinfo=MED_EI</code>). This report avoids the term "objective poverty" &mdash; Eurostat's own guidance is explicit that AROP measures income relative to other residents and does not by itself imply a low standard of living.</dd>
+    <dt>Reference-year mismatch</dt>
+    <dd>Greece's AROP rate for survey year <i>t</i> is generally based on income received in calendar year <i>t&minus;1</i>, while the subjective question asks about the household's current situation. Both contemporaneous and 1-year-lagged correlations are reported for this reason.</dd>
+  </dl>
+
+  <h4>AROPE &mdash; a different, broader indicator, not a variant of AROP</h4>
+  <dl class="method-item">
+    <dt>What's measured</dt>
+    <dd>The share of people who are <i>either</i> AROP-poor, <i>or</i> severely materially and socially deprived, <i>or</i> living in a household with very low work intensity (a union of three conditions, not a weighted average) &mdash; Eurostat's EU2030 headline poverty-and-social-exclusion target indicator. Legacy series <code>ilc_peps01</code> (2003&ndash;2020) and revised series <code>ilc_peps01n</code> (2015&ndash;2025, using the new material-deprivation definition) are spliced at 2020/2021, the same break point documented for the deprivation series elsewhere in this report &mdash; not blended across the overlap.</dd>
+    <dt>Why it isn't a substitute for the anchored-poverty analysis</dt>
+    <dd>AROPE is a genuinely different measure, not another way of doing what Section 2&ndash;3 do. Its severe-deprivation and low-work-intensity components aren't defined relative to a shifting national median the way AROP is, so it doesn't share AROP's specific "moving yardstick" mechanism &mdash; which is exactly why it was worth checking whether it tracks subjective poverty differently than AROP does. It does: correlation with subjective poverty is 0.48 in levels, 0.74 in year-over-year changes, and 0.90 once each series' own trend is removed, all well above AROP's 0.19 / 0.60 / 0.67 on the same three tests &mdash; and unlike the fixed-benchmark series in Section 3, no approximation is involved.</dd>
+    <dt>EU ranking</dt>
+    <dd>Using the same EU-membership-by-year approach as AROP's ranking elsewhere in this report, Greece's AROPE rank has stayed within a 2nd&ndash;7th band across 2005&ndash;2025 &mdash; elevated, similar in shape to AROP's own 1st&ndash;10th range, and nowhere near subjective poverty's 1st-of-27 in every year since 2011.</dd>
+  </dl>
+
+  <h4>Anchored poverty <span class="badge-approx">approximation, validated where possible</span></h4>
+  <dl class="method-item">
+    <dt>Method</dt>
+    <dd>Eurostat's own anchored-poverty product (<code>ilc_li22</code>) is fixed at 2019, which misses the 2008&ndash;2013 collapse this report is about, so a 2008-anchored series is approximated instead. Each year, Eurostat publishes the poverty rate at four points &mdash; 40%, 50%, 60%, 70% of that year's median (<code>ilc_li02</code>) &mdash; and the euro income level each threshold corresponds to (<code>ilc_li01</code>, single-adult household). Treating income as approximately log-normally distributed, a probit-linear regression (poverty-rate percentile vs. ln(threshold)) is fit to those four points each year (R&sup2;&gt;0.99 in every year), then evaluated at the inflation-adjusted 2008 threshold (&euro;6,480, chained forward/backward with Greek HICP).</dd>
+    <dt>Validation against the official 2019-anchored series</dt>
+    <dd>The identical method was used to independently reconstruct Eurostat's official 2019-anchored series (<code>ilc_li22</code>) for 2019&ndash;2025, then compared to the real published values. Mean absolute error: 1.22 percentage points. Maximum absolute error: 3.36 points (2022). Bias: the method runs +1.22 points high on average (a mild, consistent overestimate). Correlation with the official series: r=0.89 (p=0.007, n=7).</dd>
+    <dt>What the validation does and doesn't cover</dt>
+    <dd>Every validated year (2019&ndash;2025) required <i>zero</i> extrapolation &mdash; the anchor threshold stayed within the observed 40&ndash;70% range every time, because Greek incomes didn't move as far from 2019 as they did from 2008 during the crisis. The 2008-anchored estimates for 2012&ndash;2016 require real extrapolation beyond that observed range (peaking in 2016, when the anchor threshold sat noticeably below the lowest observed grid point that year). The validation therefore supports the method's general accuracy and its slight upward bias, but doesn't directly test the larger-extrapolation regime the most dramatic 2008-anchor estimates rely on. The crisis-era <i>direction and shape</i> (a sharp, sustained rise) is well supported independently by the directly-observed threshold collapse (Section 2, no approximation involved); the exact anchored-poverty <i>levels</i> in 2012&ndash;2016 carry correspondingly more uncertainty than the validation numbers alone would suggest.</dd>
+    <dt>A second check, against real crisis-year microdata</dt>
+    <dd>Andriopoulou, Kanavitsa &amp; Tsakloglou computed Greece's anchored poverty rate for 2007&ndash;2016 directly from household-level EU-SILC microdata (not a four-point approximation), anchored to 2007. Their result, for <i>income</i> year 2013: 48% of the population poor. Their years are labelled by income year; this report's series is labelled by EU-SILC survey year, which reflects income from the prior calendar year &mdash; so the aligned comparison is their income-year 2013 against this report's survey-year 2014 (40.6%), a gap of roughly 7&ndash;8 points. That gap should not be read as this report's approximation error specifically: the two exercises differ in several ways at once (household microdata vs. a four-point aggregate reconstruction, exact price-index and anchor-year choices, data vintage), so no single cause can be isolated. What the comparison does provide is real external corroboration, from independent microdata, of the same qualitative finding &mdash; and their estimate of the crisis-era effect is larger than this report's, not smaller. Andriopoulou, E., Kanavitsa, E., &amp; Tsakloglou, P. Decomposing poverty in hard times: Greece 2007&ndash;2016. <i>Revue d'économie du développement</i> (2019); also LSE Hellenic Observatory GreeSE Paper No. 149 (2020), the version consulted here.</dd>
+  </dl>
+
+  <h4>Robustness testing: first differences, detrending, and lead/lag</h4>
+  <dl class="method-item">
+    <dt>Why</dt>
+    <dd>Two series that each have a strong multi-year trend (a crisis, then a recovery) can show a large raw correlation even without a real short-run relationship. First-differencing (year-over-year change vs. year-over-year change) and linear detrending (each series' deviation from its own trend line) both remove that shared trend and test whether the relationship survives.</dd>
+    <dt>Lead/lag, and why it's treated as secondary evidence</dt>
+    <dd>A &minus;2..+2 year lead/lag scan was run on <i>first-differenced</i> series specifically (not levels) &mdash; a level-based lead/lag scan re-introduces the same shared-trend problem first-differencing exists to solve, since two smooth trending series will often stay correlated across a small shift regardless of any real short-run link. On first differences, unemployment shows the clearest, most stable pattern: correlation of roughly 0.5&ndash;0.86 across the window, with the same-year and prior-year values essentially tied at the top (0.859 and 0.855) rather than one clearly leading the other. That's directionally consistent with AROP's own known one-year reference lag, though the near-tie means this shouldn't be read as strong confirmation of it specifically. The anchored-poverty series and AROP itself are closer to each other on this stricter test than the raw-level comparison suggested (anchored poverty stays positive across the whole window; AROP turns slightly negative two years out) &mdash; a real but much more modest distinction than earlier framings implied, and reported here as descriptive timing evidence rather than as independent proof against a spurious relationship.</dd>
+  </dl>
+
+  <h4>Multiple-testing discipline</h4>
+  <dl class="method-item">
+    <dt>Confirmatory vs. exploratory</dt>
+    <dd>This report distinguishes two standards of evidence, and labels them where it matters. <b>Confirmatory tests</b> are single, pre-specified comparisons where one variable was added to a fixed model to test one hypothesis &mdash; the panel-regression coefficients throughout Sections 7&ndash;11 and the scorecard (Section 10) are this kind. <b>Exploratory sweeps</b> are the multi-variable scans &mdash; the correlation table (Section 4), the year-over-year sensitivity table and its gap-relation follow-up (Section 11), and the second-difference/acceleration check (run, not published, given how little survived) &mdash; where many variables were tested together and some "significant" results are expected from chance alone. A result is only treated as a main claim in this report if it survives both a statistical test appropriate to how many comparisons were run, and a conceptual check (does it make sense, does it hold up to excluding Greece, is the effect size honestly small or overstated) &mdash; not from an isolated p-value under 0.05.</dd>
+    <dt>False-discovery-rate correction, applied to each exploratory family</dt>
+    <dd>Benjamini-Hochberg FDR correction was applied within each family of tests run together (not across the whole project, which would conflate tests answering different questions). Section 4's correlation table (17 variables): 13 of 17 survive correction &mdash; the four that don't (both narrower HICP inflation measures, raw AROP, minimum wage) are already the ones described as weak in the text. Section 11's gap-relation test (9 predictors): only real GDP survives, and only just (adjusted p=0.050); arrears, which looked significant before correction (raw p=0.016), does not (adjusted p=0.070) &mdash; consistent with the text's own read of it as likely Greece-specific rather than a general pattern. The acceleration/second-difference check (5 variables, not published in the main text): only material deprivation survives. Full adjusted values: <code>fdr_correlations.csv</code>, <code>fdr_sensitivity_vs_gap.csv</code>, <code>fdr_acceleration.csv</code>.</dd>
+    <dt>Labels used in the text</dt>
+    <dd>Where a finding's evidentiary status might not be obvious from context alone, it's tagged: <span class="badge-approx">Core finding</span> for a confirmatory result central to answering this report's two research questions; <span class="badge-approx">Descriptive comparison, not a causal test</span> for a real pattern in the data that wasn't tested with a regression or held to a significance threshold; <span class="badge-approx">Exploratory lead, not a core finding</span> for a result from a multi-variable sweep that's suggestive but doesn't meet the same bar as the confirmatory tests. This isn't applied retroactively to every sentence in the report &mdash; it marks the specific places where the distinction is easy to miss.</dd>
+  </dl>
+
+  <h4>Cross-country models: purchasing power, not just currency</h4>
+  <dl class="method-item">
+    <dd>The cross-country models (Sections 7&ndash;9) use income adjusted for purchasing power (AIC per capita in PPS, <code>nama_10_pc</code>, <code>na_item=P41</code>), not raw currency &mdash; Eurostat's own guidance recommends this specifically for comparing household living standards <i>between</i> countries, since it removes cross-country price-level differences a currency figure doesn't. Chain-linked real EUR (the right choice for following <i>one</i> country through time) is kept for the Greece-only series in Sections 1&ndash;5. Swapping between the two bases changed Greece's average cross-country gap by only 0.2 points.</dd>
+  </dl>
+
+  <h4>Nested comparisons: what's added at each step, and one deliberate caution</h4>
+  <dl class="method-item">
+    <dd><b>Basic comparison:</b> unemployment rate, purchasing-power-adjusted income, material hardship, AROP. <b>+ Housing:</b> adds housing cost overburden. <b>+ Bills/expenses:</b> adds arrears and inability to cover an unexpected expense. <b>+ Debt/transfers:</b> adds household debt-to-income and the poverty-reduction effect of social transfers. The "+ Bills/expenses" step is flagged deliberately: arrears and inability-to-cover-an-unexpected-expense are themselves close to financial-strain measures conceptually, not fully independent of the outcome being explained &mdash; so a shrinking gap at that step should be read as "closely related hardship indicators explain most of it," not as proof the basic comparison was simply too sparse. The leave-Greece-out test (Section 9) uses the "+ Bills/expenses" specification as the most defensible middle ground between these two concerns.</dd>
+  </dl>
+
+  <h4>Sample stability and within- vs. between-country models</h4>
+  <dl class="method-item">
+    <dd>Every cross-country comparison was rerun on a fixed set of 24 countries with complete data across all 10 years and all variables, instead of the full, changing EU membership used elsewhere; results were within 1&ndash;2 points in every case. Separately, Section 5's within-country model (country + year fixed effects) and Section 7's between-country model (year fixed effects only) answer genuinely different questions and are interpreted separately by design: country fixed effects remove each country's persistent baseline level, so that model cannot detect or speak to a Greek level effect at all.</dd>
+  </dl>
+
+  <h4>EU aggregates, country rankings, and material deprivation series</h4>
+  <dl class="method-item">
+    <dd>No single Eurostat EU-aggregate code has constant country composition across 2003&ndash;2025; a priority fallback (current 27 states &rarr; earlier compositions &rarr; a changing-composition code) is used and recorded per year, which introduces methodological step-changes in the Greece&ndash;EU gap series on top of the economic ones (documented years: 2005, 2007, 2013).</dd>
+    <dd>Country rankings use EU membership as of each survey year (EU15 pre-2004 through EU27 post-Brexit from 2020), excluding EFTA/candidate countries that also report to Eurostat.</dd>
+    <dd>Two versions of "severe material deprivation" exist: a legacy 9-item measure (2003&ndash;2020) and a new 13-item measure (2021 onward, usable from ~2015). They are not directly comparable and are kept as separate series; the new measure's short overlap (10&ndash;11 years) is also why its correlation with subjective poverty collapsed after detrending.</dd>
+  </dl>
+
+  <h4>Variables tested but not central to the story</h4>
+  <dl class="method-item">
+    <dd><b>Minimum wage</b> (nominal, EUR/month) and <b>HICP inflation</b> (headline, food, housing &amp; energy) were fetched and appear in the correlation table (Section 4) &mdash; both came back weak and mostly not statistically significant, so they're reported there but not built on further. <b>Household consumption per capita</b> was used as a secondary income-side proxy in the same table (r=&minus;0.70 in levels). <b>Household saving rate</b> was fetched and tested directly in the cross-country model as a candidate explanation for Part II's residual (Section 11); it came back statistically null once financial-expectations pessimism was also in the model, despite Greece being a genuine outlier on it (2nd-lowest of 34 EU/candidate countries, 2015&ndash;2024 average). <b>Real wages</b> specifically (a compensation-per-employee series deflated for inflation, distinct from GDP, consumption, or the minimum wage) were never fetched for this project and remain untested &mdash; noted here rather than silently absent.</dd>
+  </dl>
+
+  <h4>Section 11 variables: scarring stock and financial expectations</h4>
+  <dl class="method-item">
+    <dd><b>Distance below own peak (scarring stock):</b> built from real GDP per capita (<code>sdg_08_10</code>), 2008&ndash;2024. For each country and year, its running historical maximum up to and including that year, minus its actual value that year, as a percentage of the peak. Added to the Section 8/9 "+ Bills/expenses" specification as a further predictor (year fixed effects, country-clustered standard errors), the same panel-regression setup used throughout Part II. This differs from an earlier, purely cross-sectional check in this project (a single peak-to-trough decline number correlated against average residuals, kept in the codebase as an exploratory script) &mdash; the Section 11 version is time-varying and enters the regression directly.</dd>
+    <dd><b>Financial expectations:</b> Eurostat's household consumer survey (<code>ei_bsco_m</code>, indicator <code>BS-FS-NY</code>), "financial situation of household over next 12 months," a balance statistic (net % expecting improvement minus deterioration). <b>Household saving rate:</b> <code>tec00131</code>, gross saving as a share of disposable income. Both merged into the same panel-regression setup as the scarring variable, added together as a further specification beyond Section 8/9's richest model.</dd>
+  </dl>
+
+  <h4>What was deliberately excluded</h4>
+  <dl class="method-item">
+    <dd>The pre-2003 European Community Household Panel was not merged into any series (different sample design, differently-worded question) &mdash; 2003 is a hard start throughout. Unemployment data at the exact age band used here has no disseminated Greek values before 2009, despite other series running back to 2000. All data reflects the current Eurostat vintage as fetched; no attempt was made to reconstruct as-first-published values.</dd>
+  </dl>
+
+  <h4>Data appendix</h4>
+  <dl class="method-item">
+    <dd>Every number in this report traces back to a cleaned, reproducible table, not just to charts. The core Greece&ndash;EU annual series (levels, gaps, ranks for AROP and subjective poverty) is <code>master_table.csv</code>; the full merged dataset used throughout Parts I and II, including every supplementary variable, is <code>analysis_dataset.csv</code>. Cross-country panel data and model outputs (nested models, leave-one-out results, the AROPE snapshot) are in separate named CSVs alongside them. All of it is produced by the numbered scripts in this project's <code>scripts/</code> directory, run against the live Eurostat API &mdash; see the project's README for exact run order and dependencies. Nothing in this report was computed by hand outside that pipeline.</dd>
+  </dl>
+
+  <h4>Related literature &mdash; full citations</h4>
+  <dl class="method-item">
+    <dd>Andriopoulou, E., Kanavitsa, E., &amp; Tsakloglou, P. Decomposing poverty in hard times: Greece 2007&ndash;2016. <i>Revue d'économie du développement</i> (2019); also circulated as LSE Hellenic Observatory GreeSE Paper No. 149 (2020) and IZA Discussion Paper (2020).</dd>
+    <dd>Goedem&eacute;, T., Decerf, B., &amp; Van den Bosch, K. (2022). A new poverty indicator for Europe: The extended headcount ratio. <i>Journal of European Social Policy</i>, 32(3), 287&ndash;301.</dd>
+    <dd>&Zcaron;elinsk&yacute;, T., Mysíková, M., &amp; Garner, T. I. (2022). Trends in Subjective Income Poverty Rates in the European Union. <i>European Journal of Development Research</i>, 34(5), 2493&ndash;2516.</dd>
+    <dd>&Zcaron;elinsk&yacute;, T., Ng, J. W. J., &amp; Mysíková, M. (2020). Estimating subjective poverty lines with discrete information. <i>Economics Letters</i>, 196.</dd>
+    <dd>Guagnano, G., Santarelli, E., &amp; Santini, I. (2016). Can Social Capital Affect Subjective Poverty in Europe? An Empirical Analysis Based on a Generalized Ordered Logit Model. <i>Social Indicators Research</i>, 128(2), 881&ndash;907.</dd>
+    <dd>Baldini, M., Gallo, G., &amp; Torricelli, C. (2020). The scars of scarcity in the short run: an empirical investigation across Europe. <i>Economia Politica</i>, 37, 617&ndash;649.</dd>
+    <dd>Nikolova, M. (2016). Minding the happiness gap: Political institutions and perceived quality of life in transition. <i>European Journal of Political Economy</i>, 45, 129&ndash;148.</dd>
+    <dd>Filandri, M., Pasqua, S., &amp; Tucci, V. (2025). Housing tenure and subjective poverty among young European adults: The role of rent regulation. <i>Journal of European Social Policy</i>, 35(4), 332&ndash;348.</dd>
+    <dd>Claessens, S., Kyritsis, T., &amp; Atkinson, Q. D. (2023). Cross-national analyses require additional controls to account for the non-independence of nations. <i>Nature Communications</i>, 14, 5776.</dd>
+    <dd>Πανεπιστήμιο Μακεδονίας (University of Macedonia), for diaNEOsis (2016). Δημόσια Γνώμη για την Ελληνική Οικονομία [Public Opinion on the Greek Economy]. n=1,348, &plusmn;2.7%, fieldwork April 2016.</dd>
+    <dd>Mantés, A., &amp; Marinakis, K. (2025). &Egrave;κθεση για την Ελληνική Οικονομία [Report on the Greek Economy]. Greekonomics.gr. Code: github.com/AMantes/Greekonomics (MIT license).</dd>
+    <dd>Nikolaidis, I. (2026). Η Στέγαση στην Ελλάδα [Housing in Greece]. diaNEOsis, summarizing a study led by N. Vettas (IOBE).</dd>
+    <dd>Matsaganis, M., et al. (2016, updated 2017). Μια Αποδοτικότερη Πολιτική για την Καταπολέμηση της Ακραίας Φτώχειας [A More Effective Policy for Combating Extreme Poverty]. Athens University of Economics and Business, Public Policy Analysis Group, for diaNEOsis.</dd>
+  </dl>
+</section>
+
+<footer>
+  <p><b>Data &amp; methods, in brief.</b> All series pulled from the Eurostat API dissemination endpoint. Subjective poverty = "difficulty" + "great difficulty" making ends meet (<code>ilc_mdes09</code>, cross-checked against official <code>ilc_sbjp01</code>). AROP = 60% of national median equivalised income (<code>ilc_li02</code>) &mdash; a relative-income measure, not treated as a direct living-standards indicator. Cross-country models use purchasing-power-adjusted income. Correlation and regression are descriptive, not causal. See "Methods, robustness &amp; limitations" above for every definition and caveat.</p>
+</footer>
+
+</div>
+
+<script>
+const DATA = {"trend": [{"year": 2003, "gr_arop": 20.7, "eu_arop": null, "gr_subj": 48.0, "eu_subj": null, "gr_arop_rank": 1, "n_arop": 6, "gr_arope": 32.9, "eu_arope": null, "gr_arope_rank": 1, "n_arope": 6, "gr_subj_rank": 1, "n_subj": 6, "gap_arop": null, "gap_subj": null, "unemployment": null, "real_income_idx": null, "real_gdp_pc": 18480, "threshold_real_idx": 89.79, "severe_dep_legacy": 16.9, "severe_dep_new": null, "anchored_poverty": 25.6}, {"year": 2004, "gr_arop": 19.9, "eu_arop": null, "gr_subj": 45.4, "eu_subj": null, "gr_arop_rank": 5, "n_arop": 13, "gr_arope": 30.9, "eu_arope": null, "gr_arope_rank": 1, "n_arope": 13, "gr_subj_rank": 1, "n_subj": 13, "gap_arop": null, "gap_subj": null, "unemployment": null, "real_income_idx": null, "real_gdp_pc": 19420, "threshold_real_idx": 93.96, "severe_dep_legacy": 14.1, "severe_dep_new": null, "anchored_poverty": 22.8}, {"year": 2005, "gr_arop": 19.6, "eu_arop": 16.0, "gr_subj": 50.8, "eu_subj": null, "gr_arop_rank": 5, "n_arop": 25, "gr_arope": 29.4, "eu_arope": 25.8, "gr_arope_rank": 6, "n_arope": 25, "gr_subj_rank": 3, "n_subj": 25, "gap_arop": 3.6, "gap_subj": null, "unemployment": null, "real_income_idx": 88.85, "real_gdp_pc": 19590, "threshold_real_idx": 96.67, "severe_dep_legacy": 12.8, "severe_dep_new": null, "anchored_poverty": 20.7}, {"year": 2006, "gr_arop": 20.5, "eu_arop": 16.1, "gr_subj": 52.6, "eu_subj": null, "gr_arop_rank": 2, "n_arop": 25, "gr_arope": 29.3, "eu_arope": 25.3, "gr_arope_rank": 5, "n_arope": 25, "gr_subj_rank": 1, "n_subj": 25, "gap_arop": 4.4, "gap_subj": null, "unemployment": null, "real_income_idx": 93.88, "real_gdp_pc": 20790, "threshold_real_idx": 97.89, "severe_dep_legacy": 11.5, "severe_dep_new": null, "anchored_poverty": 21.5}, {"year": 2007, "gr_arop": 20.3, "eu_arop": 16.6, "gr_subj": 52.4, "eu_subj": 23.8, "gr_arop_rank": 4, "n_arop": 27, "gr_arope": 28.3, "eu_arope": 24.5, "gr_arope_rank": 7, "n_arope": 27, "gr_subj_rank": 2, "n_subj": 27, "gap_arop": 3.7, "gap_subj": 28.6, "unemployment": null, "real_income_idx": 96.47, "real_gdp_pc": 21470, "threshold_real_idx": 98.41, "severe_dep_legacy": 11.5, "severe_dep_new": null, "anchored_poverty": 21.2}, {"year": 2008, "gr_arop": 20.1, "eu_arop": 16.6, "gr_subj": 54.5, "eu_subj": 25.0, "gr_arop_rank": 5, "n_arop": 27, "gr_arope": 28.1, "eu_arope": 23.7, "gr_arope_rank": 7, "n_arope": 27, "gr_subj_rank": 2, "n_subj": 27, "gap_arop": 3.5, "gap_subj": 29.5, "unemployment": null, "real_income_idx": 100.0, "real_gdp_pc": 21420, "threshold_real_idx": 100.0, "severe_dep_legacy": 11.2, "severe_dep_new": null, "anchored_poverty": 19.7}, {"year": 2009, "gr_arop": 19.7, "eu_arop": 16.4, "gr_subj": 57.0, "eu_subj": 26.1, "gr_arop_rank": 7, "n_arop": 27, "gr_arope": 27.6, "eu_arope": 23.3, "gr_arope_rank": 7, "n_arope": 27, "gr_subj_rank": 2, "n_subj": 27, "gap_arop": 3.3, "gap_subj": 30.9, "unemployment": 9.8, "real_income_idx": 100.38, "real_gdp_pc": 20490, "threshold_real_idx": 105.07, "severe_dep_legacy": 11.0, "severe_dep_new": null, "anchored_poverty": 17.0}, {"year": 2010, "gr_arop": 20.1, "eu_arop": 16.5, "gr_subj": 58.4, "eu_subj": 28.0, "gr_arop_rank": 6, "n_arop": 27, "gr_arope": 27.7, "eu_arope": 23.9, "gr_arope_rank": 7, "n_arope": 27, "gr_subj_rank": 2, "n_subj": 27, "gap_arop": 3.6, "gap_subj": 30.4, "unemployment": 12.9, "real_income_idx": 86.87, "real_gdp_pc": 19300, "threshold_real_idx": 104.44, "severe_dep_legacy": 11.6, "severe_dep_new": null, "anchored_poverty": 18.0}, {"year": 2011, "gr_arop": 21.4, "eu_arop": 16.9, "gr_subj": 62.6, "eu_subj": 27.3, "gr_arop_rank": 3, "n_arop": 27, "gr_arope": 31.0, "eu_arope": 24.5, "gr_arope_rank": 6, "n_arope": 27, "gr_subj_rank": 1, "n_subj": 27, "gap_arop": 4.5, "gap_subj": 35.3, "unemployment": 18.1, "real_income_idx": 76.85, "real_gdp_pc": 17420, "threshold_real_idx": 93.02, "severe_dep_legacy": 15.2, "severe_dep_new": null, "anchored_poverty": 24.6}, {"year": 2012, "gr_arop": 23.1, "eu_arop": 16.8, "gr_subj": 73.1, "eu_subj": 28.8, "gr_arop_rank": 1, "n_arop": 27, "gr_arope": 34.6, "eu_arope": 24.9, "gr_arope_rank": 4, "n_arope": 27, "gr_subj_rank": 1, "n_subj": 27, "gap_arop": 6.3, "gap_subj": 44.3, "unemployment": 24.8, "real_income_idx": 67.06, "real_gdp_pc": 16050, "threshold_real_idx": 79.76, "severe_dep_legacy": 19.5, "severe_dep_new": null, "anchored_poverty": 33.3}, {"year": 2013, "gr_arop": 23.1, "eu_arop": 16.8, "gr_subj": 78.3, "eu_subj": 30.0, "gr_arop_rank": 1, "n_arop": 28, "gr_arope": 35.7, "eu_arope": 24.6, "gr_arope_rank": 3, "n_arope": 28, "gr_subj_rank": 1, "n_subj": 28, "gap_arop": 6.3, "gap_subj": 48.3, "unemployment": 27.8, "real_income_idx": 64.23, "real_gdp_pc": 15800, "threshold_real_idx": 70.82, "severe_dep_legacy": 20.3, "severe_dep_new": null, "anchored_poverty": 39.7}, {"year": 2014, "gr_arop": 22.1, "eu_arop": 17.3, "gr_subj": 78.1, "eu_subj": 28.9, "gr_arop_rank": 3, "n_arop": 28, "gr_arope": 36.0, "eu_arope": 24.5, "gr_arope_rank": 3, "n_arope": 28, "gr_subj_rank": 1, "n_subj": 28, "gap_arop": 4.8, "gap_subj": 49.2, "unemployment": 26.6, "real_income_idx": 65.89, "real_gdp_pc": 16030, "threshold_real_idx": 65.89, "severe_dep_legacy": 21.5, "severe_dep_new": null, "anchored_poverty": 40.6}, {"year": 2015, "gr_arop": 21.4, "eu_arop": 17.4, "gr_subj": 77.7, "eu_subj": 27.1, "gr_arop_rank": 7, "n_arop": 28, "gr_arope": 35.7, "eu_arope": 23.8, "gr_arope_rank": 3, "n_arope": 28, "gr_subj_rank": 1, "n_subj": 28, "gap_arop": 4.0, "gap_subj": 50.6, "unemployment": 25.0, "real_income_idx": 67.79, "real_gdp_pc": 16100, "threshold_real_idx": 65.24, "severe_dep_legacy": 22.2, "severe_dep_new": 17.6, "anchored_poverty": 39.8}, {"year": 2016, "gr_arop": 21.2, "eu_arop": 17.5, "gr_subj": 76.8, "eu_subj": 25.3, "gr_arop_rank": 7, "n_arop": 28, "gr_arope": 35.6, "eu_arope": 23.7, "gr_arope_rank": 3, "n_arope": 28, "gr_subj_rank": 1, "n_subj": 28, "gap_arop": 3.7, "gap_subj": 51.5, "unemployment": 23.9, "real_income_idx": 67.88, "real_gdp_pc": 16160, "threshold_real_idx": 65.07, "severe_dep_legacy": 22.4, "severe_dep_new": 18.4, "anchored_poverty": 39.8}, {"year": 2017, "gr_arop": 20.2, "eu_arop": 16.9, "gr_subj": 77.2, "eu_subj": 22.0, "gr_arop_rank": 8, "n_arop": 28, "gr_arope": 34.8, "eu_arope": 22.5, "gr_arope_rank": 3, "n_arope": 28, "gr_subj_rank": 1, "n_subj": 28, "gap_arop": 3.3, "gap_subj": 55.2, "unemployment": 21.8, "real_income_idx": 68.39, "real_gdp_pc": 16430, "threshold_real_idx": 65.22, "severe_dep_legacy": 21.1, "severe_dep_new": 18.3, "anchored_poverty": 38.3}, {"year": 2018, "gr_arop": 18.5, "eu_arop": 16.8, "gr_subj": 74.1, "eu_subj": 21.5, "gr_arop_rank": 10, "n_arop": 28, "gr_arope": 31.8, "eu_arope": 21.6, "gr_arope_rank": 3, "n_arope": 28, "gr_subj_rank": 1, "n_subj": 28, "gap_arop": 1.7, "gap_subj": 52.6, "unemployment": 19.7, "real_income_idx": 68.3, "real_gdp_pc": 16810, "threshold_real_idx": 66.94, "severe_dep_legacy": 16.7, "severe_dep_new": 16.1, "anchored_poverty": 37.3}, {"year": 2019, "gr_arop": 17.9, "eu_arop": 16.5, "gr_subj": 71.0, "eu_subj": 18.5, "gr_arop_rank": 9, "n_arop": 27, "gr_arope": 30.0, "eu_arope": 20.9, "gr_arope_rank": 3, "n_arope": 27, "gr_subj_rank": 1, "n_subj": 27, "gap_arop": 1.4, "gap_subj": 52.5, "unemployment": 17.9, "real_income_idx": 73.3, "real_gdp_pc": 17210, "threshold_real_idx": 69.42, "severe_dep_legacy": 16.2, "severe_dep_new": 15.8, "anchored_poverty": 34.6}, {"year": 2020, "gr_arop": 17.7, "eu_arop": 16.7, "gr_subj": 69.8, "eu_subj": 19.8, "gr_arop_rank": 9, "n_arop": 27, "gr_arope": 28.8, "eu_arope": 21.5, "gr_arope_rank": 3, "n_arope": 27, "gr_subj_rank": 1, "n_subj": 27, "gap_arop": 1.0, "gap_subj": 50.0, "unemployment": 17.6, "real_income_idx": 71.04, "real_gdp_pc": 15660, "threshold_real_idx": 75.37, "severe_dep_legacy": 16.6, "severe_dep_new": 14.9, "anchored_poverty": 30.8}, {"year": 2021, "gr_arop": 19.6, "eu_arop": 16.8, "gr_subj": 71.0, "eu_subj": 18.3, "gr_arop_rank": 8, "n_arop": 27, "gr_arope": 28.3, "eu_arope": 21.7, "gr_arope_rank": 3, "n_arope": 27, "gr_subj_rank": 1, "n_subj": 27, "gap_arop": 2.8, "gap_subj": 52.7, "unemployment": 14.7, "real_income_idx": 78.03, "real_gdp_pc": 17110, "threshold_real_idx": 74.66, "severe_dep_legacy": null, "severe_dep_new": 13.9, "anchored_poverty": 32.7}, {"year": 2022, "gr_arop": 18.8, "eu_arop": 16.5, "gr_subj": 68.4, "eu_subj": 19.0, "gr_arop_rank": 8, "n_arop": 27, "gr_arope": 26.3, "eu_arope": 21.6, "gr_arope_rank": 3, "n_arope": 27, "gr_subj_rank": 1, "n_subj": 27, "gap_arop": 2.3, "gap_subj": 49.4, "unemployment": 12.5, "real_income_idx": 78.05, "real_gdp_pc": 18160, "threshold_real_idx": 74.3, "severe_dep_legacy": null, "severe_dep_new": 13.9, "anchored_poverty": 33.6}, {"year": 2023, "gr_arop": 18.9, "eu_arop": 16.2, "gr_subj": 67.0, "eu_subj": 19.1, "gr_arop_rank": 9, "n_arop": 27, "gr_arope": 26.1, "eu_arope": 21.3, "gr_arope_rank": 4, "n_arope": 27, "gr_subj_rank": 1, "n_subj": 27, "gap_arop": 2.7, "gap_subj": 47.9, "unemployment": 11.1, "real_income_idx": 82.07, "real_gdp_pc": 18600, "threshold_real_idx": 75.28, "severe_dep_legacy": null, "severe_dep_new": 13.5, "anchored_poverty": 32.0}, {"year": 2024, "gr_arop": 19.6, "eu_arop": 16.2, "gr_subj": 66.7, "eu_subj": 17.4, "gr_arop_rank": 7, "n_arop": 27, "gr_arope": 26.9, "eu_arope": 21.0, "gr_arope_rank": 3, "n_arope": 27, "gr_subj_rank": 1, "n_subj": 27, "gap_arop": 3.4, "gap_subj": 49.3, "unemployment": 10.1, "real_income_idx": 84.13, "real_gdp_pc": 19020, "threshold_real_idx": 78.91, "severe_dep_legacy": null, "severe_dep_new": 14.0, "anchored_poverty": 30.2}, {"year": 2025, "gr_arop": 19.6, "eu_arop": 16.3, "gr_subj": 67.2, "eu_subj": 17.6, "gr_arop_rank": 4, "n_arop": 27, "gr_arope": 27.5, "eu_arope": 20.9, "gr_arope_rank": 2, "n_arope": 27, "gr_subj_rank": 1, "n_subj": 27, "gap_arop": 3.3, "gap_subj": 49.6, "unemployment": 8.9, "real_income_idx": null, "real_gdp_pc": 19400, "threshold_real_idx": 82.69, "severe_dep_legacy": null, "severe_dep_new": 14.9, "anchored_poverty": 27.5}], "correlations": [{"variable": "Real household disposable income (idx 2008=100)", "r0": -0.93, "p0": 0.0, "n0": 20, "r1": -0.93, "p1": 0.0}, {"variable": "Severe material & social deprivation, new 13-item (%)", "r0": 0.92, "p0": 0.0, "n0": 11, "r1": 0.94, "p1": 0.0}, {"variable": "AROP threshold, real terms (idx 2008=100)", "r0": -0.88, "p0": 0.0, "n0": 23, "r1": -0.77, "p1": 0.0}, {"variable": "Housing cost overburden (%)", "r0": 0.86, "p0": 0.0, "n0": 22, "r1": 0.8, "p1": 0.0}, {"variable": "Severe material deprivation, legacy 9-item (%)", "r0": 0.82, "p0": 0.0, "n0": 18, "r1": 0.77, "p1": 0.0}, {"variable": "Real GDP per capita (EUR)", "r0": -0.82, "p0": 0.0, "n0": 23, "r1": -0.83, "p1": 0.0}, {"variable": "Households in arrears (%)", "r0": 0.82, "p0": 0.0, "n0": 23, "r1": 0.72, "p1": 0.0}, {"variable": "Unemployment rate (%)", "r0": 0.81, "p0": 0.0, "n0": 17, "r1": 0.93, "p1": 0.0}, {"variable": "Cannot keep home adequately warm (%)", "r0": 0.8, "p0": 0.0, "n0": 23, "r1": 0.79, "p1": 0.0}, {"variable": "Cannot face unexpected expense (%)", "r0": 0.76, "p0": 0.0, "n0": 23, "r1": 0.64, "p1": 0.0}, {"variable": "Real household consumption per capita (EUR)", "r0": -0.7, "p0": 0.0, "n0": 23, "r1": -0.73, "p1": 0.0}, {"variable": "Employment rate 20-64 (%)", "r0": -0.69, "p0": 0.0, "n0": 17, "r1": -0.86, "p1": 0.0}, {"variable": "HICP inflation, headline (%)", "r0": -0.54, "p0": 0.01, "n0": 23, "r1": -0.52, "p1": 0.01}, {"variable": "HICP inflation, housing & energy (%)", "r0": -0.31, "p0": 0.15, "n0": 23, "r1": -0.26, "p1": 0.24}, {"variable": "HICP inflation, food (%)", "r0": -0.21, "p0": 0.35, "n0": 23, "r1": -0.24, "p1": 0.28}, {"variable": "AROP (objective, relative)", "r0": 0.19, "p0": 0.38, "n0": 23, "r1": 0.3, "p1": 0.17}, {"variable": "Minimum wage (nominal EUR/month)", "r0": 0.07, "p0": 0.75, "n0": 23, "r1": 0.21, "p1": 0.34}], "robustness": [{"variable": "Real household disposable income", "r_level": -0.93, "r_firstdiff": -0.53, "p_firstdiff": 0.02, "r_detrended": -0.91, "p_detrended": 0.0}, {"variable": "Severe material & social deprivation, new", "r_level": 0.92, "r_firstdiff": 0.38, "p_firstdiff": 0.28, "r_detrended": 0.11, "p_detrended": 0.75}, {"variable": "AROP threshold, real terms", "r_level": -0.88, "r_firstdiff": -0.65, "p_firstdiff": 0.0, "r_detrended": -0.78, "p_detrended": 0.0}, {"variable": "Housing cost overburden", "r_level": 0.86, "r_firstdiff": 0.51, "p_firstdiff": 0.02, "r_detrended": 0.86, "p_detrended": 0.0}, {"variable": "Severe material deprivation, legacy", "r_level": 0.82, "r_firstdiff": 0.65, "p_firstdiff": 0.0, "r_detrended": 0.62, "p_detrended": 0.01}, {"variable": "Real GDP per capita", "r_level": -0.82, "r_firstdiff": -0.49, "p_firstdiff": 0.02, "r_detrended": -0.82, "p_detrended": 0.0}, {"variable": "Households in arrears", "r_level": 0.82, "r_firstdiff": 0.47, "p_firstdiff": 0.03, "r_detrended": 0.67, "p_detrended": 0.0}, {"variable": "Unemployment rate", "r_level": 0.81, "r_firstdiff": 0.86, "p_firstdiff": 0.0, "r_detrended": 0.8, "p_detrended": 0.0}, {"variable": "Cannot keep home adequately warm", "r_level": 0.8, "r_firstdiff": 0.63, "p_firstdiff": 0.0, "r_detrended": 0.9, "p_detrended": 0.0}, {"variable": "Cannot face unexpected expense", "r_level": 0.76, "r_firstdiff": 0.52, "p_firstdiff": 0.01, "r_detrended": 0.58, "p_detrended": 0.0}, {"variable": "Real household consumption per capita", "r_level": -0.7, "r_firstdiff": -0.55, "p_firstdiff": 0.01, "r_detrended": -0.84, "p_detrended": 0.0}, {"variable": "Employment rate 20-64", "r_level": -0.69, "r_firstdiff": -0.72, "p_firstdiff": 0.0, "r_detrended": -0.77, "p_detrended": 0.0}, {"variable": "HICP inflation, headline", "r_level": -0.54, "r_firstdiff": -0.25, "p_firstdiff": 0.27, "r_detrended": -0.67, "p_detrended": 0.0}, {"variable": "AROPE (poverty or social exclusion)", "r_level": 0.48, "r_firstdiff": 0.74, "p_firstdiff": 0.0, "r_detrended": 0.9, "p_detrended": 0.0}, {"variable": "AROP", "r_level": 0.19, "r_firstdiff": 0.6, "p_firstdiff": 0.0, "r_detrended": 0.67, "p_detrended": 0.0}], "spearman": [{"variable": "AROP (relative)", "pearson_level": 0.19, "spearman_level": 0.2, "pearson_diff": 0.6, "spearman_diff": 0.53}, {"variable": "Anchored poverty (approx., 2008 base)", "pearson_level": 0.9, "spearman_level": 0.89, "pearson_diff": 0.7, "spearman_diff": 0.41}, {"variable": "Real household disposable income", "pearson_level": -0.93, "spearman_level": -0.93, "pearson_diff": -0.53, "spearman_diff": -0.26}, {"variable": "Real GDP per capita", "pearson_level": -0.82, "spearman_level": -0.85, "pearson_diff": -0.49, "spearman_diff": -0.46}, {"variable": "Unemployment rate", "pearson_level": 0.81, "spearman_level": 0.86, "pearson_diff": 0.86, "spearman_diff": 0.6}, {"variable": "Severe material deprivation, legacy", "pearson_level": 0.82, "spearman_level": 0.74, "pearson_diff": 0.65, "spearman_diff": 0.4}, {"variable": "Housing cost overburden", "pearson_level": 0.86, "spearman_level": 0.9, "pearson_diff": 0.51, "spearman_diff": 0.38}, {"variable": "Households in arrears", "pearson_level": 0.82, "spearman_level": 0.79, "pearson_diff": 0.47, "spearman_diff": 0.39}], "leadlag": [{"variable": "AROP (relative)", "lag_m2": 0.36, "lag_m1": 0.3, "lag_0": 0.19, "lag_p1": 0.02, "lag_p2": -0.22}, {"variable": "Anchored poverty (approx., 2008 base)", "lag_m2": 0.66, "lag_m1": 0.81, "lag_0": 0.9, "lag_p1": 0.92, "lag_p2": 0.85}, {"variable": "Real household disposable income", "lag_m2": -0.81, "lag_m1": -0.93, "lag_0": -0.93, "lag_p1": -0.85, "lag_p2": -0.76}, {"variable": "Real GDP per capita", "lag_m2": -0.76, "lag_m1": -0.83, "lag_0": -0.82, "lag_p1": -0.81, "lag_p2": -0.74}, {"variable": "Unemployment rate", "lag_m2": 0.81, "lag_m1": 0.93, "lag_0": 0.81, "lag_p1": 0.57, "lag_p2": 0.3}, {"variable": "Severe material deprivation, legacy", "lag_m2": 0.65, "lag_m1": 0.77, "lag_0": 0.82, "lag_p1": 0.85, "lag_p2": 0.8}, {"variable": "Housing cost overburden", "lag_m2": 0.64, "lag_m1": 0.8, "lag_0": 0.86, "lag_p1": 0.86, "lag_p2": 0.8}, {"variable": "Households in arrears", "lag_m2": 0.61, "lag_m1": 0.72, "lag_0": 0.82, "lag_p1": 0.88, "lag_p2": 0.83}], "residuals_by_country": [{"geo": "EL", "residual": 15.3}, {"geo": "CY", "residual": 13.07}, {"geo": "HR", "residual": 10.58}, {"geo": "LU", "residual": 8.43}, {"geo": "IE", "residual": 6.25}, {"geo": "BG", "residual": 5.58}, {"geo": "LV", "residual": 3.46}, {"geo": "MT", "residual": 2.8}, {"geo": "CZ", "residual": 2.35}, {"geo": "PT", "residual": 2.09}, {"geo": "PL", "residual": 1.94}, {"geo": "HU", "residual": 1.87}, {"geo": "SK", "residual": 1.57}, {"geo": "SI", "residual": 1.15}, {"geo": "IT", "residual": -0.15}, {"geo": "AT", "residual": -1.91}, {"geo": "BE", "residual": -2.41}, {"geo": "EE", "residual": -2.42}, {"geo": "NL", "residual": -2.9}, {"geo": "DK", "residual": -3.68}, {"geo": "DE", "residual": -4.11}, {"geo": "FR", "residual": -6.6}, {"geo": "LT", "residual": -6.72}, {"geo": "SE", "residual": -7.01}, {"geo": "RO", "residual": -11.34}, {"geo": "FI", "residual": -12.14}, {"geo": "ES", "residual": -15.05}], "nested_varying": [{"model": "A_structural", "n_countries": 27, "r2": 0.76, "gr_avg_residual": 15.1, "gr_first_year_residual": 5.3, "gr_last_year_residual": 27.4}, {"model": "B_plus_housing", "n_countries": 27, "r2": 0.78, "gr_avg_residual": 8.8, "gr_first_year_residual": -3.5, "gr_last_year_residual": 20.7}, {"model": "C_plus_arrears_unexpected", "n_countries": 27, "r2": 0.89, "gr_avg_residual": 2.2, "gr_first_year_residual": -4.8, "gr_last_year_residual": 5.8}, {"model": "D_plus_institutional", "n_countries": 27, "r2": 0.89, "gr_avg_residual": 2.2, "gr_first_year_residual": -4.8, "gr_last_year_residual": 6.0}], "nested_balanced": [{"model": "A_structural", "n_countries": 24, "r2": 0.77, "gr_avg_residual": 13.6, "gr_last_year_residual": 27.6}, {"model": "B_plus_housing", "n_countries": 24, "r2": 0.79, "gr_avg_residual": 8.2, "gr_last_year_residual": 21.6}, {"model": "C_plus_arrears_unexpected", "n_countries": 24, "r2": 0.89, "gr_avg_residual": 2.1, "gr_last_year_residual": 7.1}, {"model": "D_plus_institutional", "n_countries": 24, "r2": 0.89, "gr_avg_residual": 2.2, "gr_last_year_residual": 7.2}], "leave_greece_out": [{"year": 2015, "actual": 77.7, "predicted": 70.98, "residual": 6.72}, {"year": 2016, "actual": 76.8, "predicted": 71.03, "residual": 5.77}, {"year": 2017, "actual": 77.2, "predicted": 67.05, "residual": 10.15}, {"year": 2018, "actual": 74.1, "predicted": 63.18, "residual": 10.92}, {"year": 2019, "actual": 71.0, "predicted": 59.15, "residual": 11.85}, {"year": 2020, "actual": 69.8, "predicted": 54.9, "residual": 14.9}, {"year": 2021, "actual": 71.0, "predicted": 50.59, "residual": 20.41}, {"year": 2022, "actual": 68.4, "predicted": 57.31, "residual": 11.09}, {"year": 2023, "actual": 67.0, "predicted": 57.01, "residual": 9.99}, {"year": 2024, "actual": 66.7, "predicted": 52.56, "residual": 14.14}], "within_between": {"Intercept": {"pooled_between": 23.03, "two_way_fe": 20.95}, "unemployment_rate": {"pooled_between": 2.21, "two_way_fe": 1.07}, "aic_pps_pc_k": {"pooled_between": -0.88, "two_way_fe": -0.87}, "severe_mat_soc_deprivation": {"pooled_between": 1.15, "two_way_fe": 1.17}, "arop": {"pooled_between": -0.61, "two_way_fe": 0.18}}, "gr_resid_trend_ac": [{"year": 2015, "resid_a": 5.3, "resid_c": -4.8}, {"year": 2016, "resid_a": 3.9, "resid_c": -4.6}, {"year": 2017, "resid_a": 8.1, "resid_c": 0.0}, {"year": 2018, "resid_a": 8.9, "resid_c": 0.8}, {"year": 2019, "resid_a": 10.9, "resid_c": 2.4}, {"year": 2020, "resid_a": 13.9, "resid_c": 6.2}, {"year": 2021, "resid_a": 23.6, "resid_c": 12.4}, {"year": 2022, "resid_a": 23.2, "resid_c": 2.8}, {"year": 2023, "resid_a": 25.7, "resid_c": 1.3}, {"year": 2024, "resid_a": 27.4, "resid_c": 5.8}], "nested_loo": [{"model": "A_structural", "gr_avg_residual": 25.6, "gr_rank": "1/27", "second_highest": 18.5, "second_highest_country": "LU"}, {"model": "B_plus_housing", "gr_avg_residual": 35.5, "gr_rank": "1/27", "second_highest": 19.4, "second_highest_country": "CY"}, {"model": "C_plus_arrears_unexpected", "gr_avg_residual": 11.6, "gr_rank": "1/27", "second_highest": 10.7, "second_highest_country": "LU"}], "arope_snapshot": [{"geo": "EL", "label": "Greece", "subjective": 67.2, "arope": 27.5, "gap": 39.7}, {"geo": "BG", "label": "Bulgaria", "subjective": 36.1, "arope": 29.0, "gap": 7.1}, {"geo": "RO", "label": "Romania", "subjective": 23.4, "arope": 27.4, "gap": -4.0}, {"geo": "SK", "label": "Slovakia", "subjective": 23.1, "arope": 16.7, "gap": 6.4}, {"geo": "IT", "label": "Italy", "subjective": 22.4, "arope": 22.6, "gap": -0.2}, {"geo": "FR", "label": "France", "subjective": 21.7, "arope": 20.8, "gap": 0.9}, {"geo": "ES", "label": "Spain", "subjective": 20.6, "arope": 25.7, "gap": -5.1}, {"geo": "PT", "label": "Portugal", "subjective": 20.3, "arope": 18.6, "gap": 1.7}, {"geo": "HU", "label": "Hungary", "subjective": 20.1, "arope": 19.5, "gap": 0.6}, {"geo": "LV", "label": "Latvia", "subjective": 20.0, "arope": 24.7, "gap": -4.7}, {"geo": "HR", "label": "Croatia", "subjective": 19.1, "arope": 20.7, "gap": -1.6}, {"geo": "CY", "label": "Cyprus", "subjective": 18.2, "arope": 17.1, "gap": 1.1}, {"geo": "IE", "label": "Ireland", "subjective": 15.9, "arope": 18.8, "gap": -2.9}, {"geo": "BE", "label": "Belgium", "subjective": 15.5, "arope": 16.5, "gap": -1.0}, {"geo": "SI", "label": "Slovenia", "subjective": 15.3, "arope": 15.5, "gap": -0.2}, {"geo": "MT", "label": "Malta", "subjective": 15.1, "arope": 19.4, "gap": -4.3}, {"geo": "CZ", "label": "Czechia", "subjective": 13.8, "arope": 11.5, "gap": 2.3}, {"geo": "EE", "label": "Estonia", "subjective": 13.4, "arope": 21.8, "gap": -8.4}, {"geo": "DK", "label": "Denmark", "subjective": 12.0, "arope": 17.9, "gap": -5.9}, {"geo": "LT", "label": "Lithuania", "subjective": 11.8, "arope": 26.3, "gap": -14.5}, {"geo": "AT", "label": "Austria", "subjective": 11.8, "arope": 18.6, "gap": -6.8}, {"geo": "PL", "label": "Poland", "subjective": 11.2, "arope": 15.0, "gap": -3.8}, {"geo": "SE", "label": "Sweden", "subjective": 10.1, "arope": 18.6, "gap": -8.5}, {"geo": "FI", "label": "Finland", "subjective": 9.0, "arope": 17.2, "gap": -8.2}, {"geo": "DE", "label": "Germany", "subjective": 7.4, "arope": 21.2, "gap": -13.8}, {"geo": "NL", "label": "Netherlands", "subjective": 7.3, "arope": 15.8, "gap": -8.5}, {"geo": "LU", "label": "Luxembourg", "subjective": 7.1, "arope": 18.2, "gap": -11.1}, {"geo": "EU27_2020", "label": "European Union - 27 countries (from 2020)", "subjective": 17.6, "arope": 20.9, "gap": -3.3}]};
+
+const ns = 'http://www.w3.org/2000/svg';
+function css(v){ return getComputedStyle(document.documentElement).getPropertyValue(v).trim(); }
+
+function legend(containerId, items){
+  const el = document.getElementById(containerId);
+  if(!el) return;
+  el.innerHTML = items.map(it => `<div class="legend-item"><span class="legend-swatch" style="background:${it.color}"></span>${it.label}</div>`).join('');
+}
+
+function lineChart(opts){
+  const { svgId, ttId, data, xKey, series, yMin, yMax, yTicks, width, height, crisisYear, yFmt } = opts;
+  const svg = document.getElementById(svgId);
+  const tooltip = document.getElementById(ttId);
+  const W = width, H = height;
+  const padL = 34, padR = 14, padT = 16, padB = 28;
+  const plotW = W - padL - padR, plotH = H - padT - padB;
+  const years = data.map(d => d[xKey]);
+  const xMin = Math.min(...years), xMax = Math.max(...years);
+  const xScale = (yr) => padL + ((yr - xMin) / (xMax - xMin)) * plotW;
+  const yScale = (v) => padT + plotH - ((v - yMin) / (yMax - yMin)) * plotH;
+
+  function el(tag, attrs){
+    const e = document.createElementNS(ns, tag);
+    for(const k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
+  }
+
+  yTicks.forEach(v => {
+    const y = yScale(v);
+    svg.appendChild(el('line', {x1: padL, x2: W - padR, y1: y, y2: y, class: v === yTicks[0] ? 'baseline' : 'gridline'}));
+    const t = el('text', {x: padL - 6, y: y + 3, 'text-anchor': 'end', class: 'axis-label'});
+    t.textContent = yFmt ? yFmt(v) : v;
+    svg.appendChild(t);
+  });
+
+  const step = xMax - xMin > 15 ? 3 : 2;
+  years.forEach((yr, i) => {
+    if (yr === xMax) return;
+    if (i % step !== 0) return;
+    if (xMax - yr < step * 0.6) return;
+    const x = xScale(yr);
+    const t = el('text', {x, y: H - padB + 16, 'text-anchor': 'middle', class: 'axis-label'});
+    t.textContent = yr;
+    svg.appendChild(t);
+  });
+  {
+    const t = el('text', {x: xScale(xMax), y: H - padB + 16, 'text-anchor': 'middle', class: 'axis-label'});
+    t.textContent = xMax;
+    svg.appendChild(t);
+  }
+
+  if (crisisYear) {
+    const cx = xScale(crisisYear);
+    svg.appendChild(el('rect', {x: cx, y: padT, width: (W - padR) - cx, height: plotH, class: 'crisis-band'}));
+    svg.appendChild(el('line', {x1: cx, x2: cx, y1: padT, y2: padT + plotH, class: 'crisis-line'}));
+    const lbl = el('text', {x: cx + 5, y: padT + 11, class: 'crisis-label'});
+    lbl.textContent = 'crisis →';
+    svg.appendChild(lbl);
+  }
+
+  series.forEach(s => {
+    const pts = data.filter(d => d[s.key] !== null && d[s.key] !== undefined).map(d => [d[xKey], d[s.key]]);
+    if (pts.length < 2) return;
+    const dPath = pts.map((p,i) => `${i===0?'M':'L'} ${xScale(p[0])},${yScale(p[1])}`).join(' ');
+    svg.appendChild(el('path', {d: dPath, fill: 'none', stroke: s.color, 'stroke-width': 2, 'stroke-linejoin':'round','stroke-linecap':'round', 'stroke-dasharray': s.dash || 'none'}));
+    const last = pts[pts.length - 1];
+    svg.appendChild(el('circle', {cx: xScale(last[0]), cy: yScale(last[1]), r: 4, fill: s.color, class:'hover-dot', style:'opacity:1'}));
+    const lab = el('text', {x: xScale(last[0]) - 4, y: yScale(last[1]) - 8, 'text-anchor': 'end', class: 'direct-label', style:`fill:${s.color}`});
+    lab.textContent = (yFmt ? yFmt(last[1]) : last[1]);
+    svg.appendChild(lab);
+  });
+
+  const crosshair = el('line', {class: 'crosshair', y1: padT, y2: padT + plotH});
+  svg.appendChild(crosshair);
+  const hoverDots = {};
+  series.forEach(s => {
+    const d = el('circle', {r: 4, fill: s.color, class: 'hover-dot'});
+    svg.appendChild(d);
+    hoverDots[s.key] = d;
+  });
+
+  const uniqueYears = [...new Set(years)];
+  uniqueYears.forEach(yr => {
+    const x = xScale(yr);
+    const hit = el('rect', {x: x - (plotW/uniqueYears.length)/2, y: padT, width: plotW/uniqueYears.length, height: plotH, class: 'hit-target'});
+    hit.addEventListener('mouseenter', () => {
+      crosshair.setAttribute('x1', x); crosshair.setAttribute('x2', x); crosshair.setAttribute('opacity', 1);
+      const row = data.find(d => d[xKey] === yr);
+      let html = `<div class="t-year">${yr}</div>`;
+      series.forEach(s => {
+        const v = row[s.key];
+        const dot = hoverDots[s.key];
+        if (v === null || v === undefined) { dot.setAttribute('opacity', 0); return; }
+        dot.setAttribute('cx', x); dot.setAttribute('cy', yScale(v)); dot.setAttribute('opacity', 1);
+        html += `<div class="t-row"><span class="dot" style="background:${s.color}"></span>${s.label}: ${yFmt ? yFmt(v) : v}</div>`;
+      });
+      tooltip.innerHTML = html;
+      const bbox = svg.getBoundingClientRect();
+      tooltip.style.left = ((x / W) * bbox.width) + 'px';
+      tooltip.style.top = ((padT / H) * bbox.height) + 'px';
+      tooltip.style.opacity = 1;
+    });
+    svg.appendChild(hit);
+  });
+  svg.addEventListener('mouseleave', () => {
+    crosshair.setAttribute('opacity', 0);
+    Object.values(hoverDots).forEach(d => d.setAttribute('opacity', 0));
+    tooltip.style.opacity = 0;
+  });
+}
+
+function barChart(opts){
+  const { svgId, ttId, rows, width, height, highlightGeo, unit } = opts;
+  const svg = document.getElementById(svgId);
+  const tooltip = document.getElementById(ttId);
+  const W = width, H = height;
+  const padL = 46, padR = 60, padT = 10, padB = 20;
+  const n = rows.length;
+  const rowH = (H - padT - padB) / n;
+  const barH = Math.min(18, rowH - 6);
+  const vMax = Math.max(...rows.map(r => Math.abs(r.value))) * 1.1;
+  const plotW = W - padL - padR;
+  const xScale = (v) => padL + ((v + vMax) / (2 * vMax)) * plotW;
+  const zeroX = xScale(0);
+  function el(tag, attrs){ const e = document.createElementNS(ns, tag); for(const k in attrs) e.setAttribute(k, attrs[k]); return e; }
+  svg.appendChild(el('line', {x1: zeroX, x2: zeroX, y1: padT, y2: H - padB, class: 'baseline'}));
+  rows.forEach((r, i) => {
+    const y = padT + i * rowH + (rowH - barH) / 2;
+    const isHL = r.geo === highlightGeo;
+    const x0 = Math.min(zeroX, xScale(r.value));
+    const w = Math.abs(xScale(r.value) - zeroX);
+    const color = isHL ? css('--series-gr') : (r.value >= 0 ? css('--series-4') : css('--series-3'));
+    svg.appendChild(el('rect', {x: x0, y, width: Math.max(w,1), height: barH, rx: 3, fill: color, opacity: isHL ? 1 : 0.75}));
+    const nameLab = el('text', {x: padL - 8, y: y + barH/2 + 4, 'text-anchor':'end', class:'axis-label', style: isHL ? `fill:${css('--series-gr')};font-weight:700` : ''});
+    nameLab.textContent = r.geo;
+    svg.appendChild(nameLab);
+    const valX = xScale(r.value) + (r.value >= 0 ? 6 : -6);
+    const valLab = el('text', {x: valX, y: y + barH/2 + 4, 'text-anchor': r.value >= 0 ? 'start':'end', class:'direct-label', style: isHL? `fill:${css('--series-gr')}`:'fill:var(--text-secondary);font-weight:500;font-size:10.5px'});
+    valLab.textContent = (r.value>=0?'+':'') + r.value.toFixed(1);
+    svg.appendChild(valLab);
+    const hit = el('rect', {x: padL, y: padT + i*rowH, width: plotW, height: rowH, class:'hit-target'});
+    hit.addEventListener('mouseenter', () => {
+      tooltip.innerHTML = `<div class="t-year">${r.geo}${isHL?' (Greece)':''}</div><div class="t-row"><span class="dot" style="background:${color}"></span>${(r.value>=0?'+':'')+r.value.toFixed(1)}${unit||''}</div>`;
+      const bbox = svg.getBoundingClientRect();
+      tooltip.style.left = ((zeroX / W) * bbox.width) + 'px';
+      tooltip.style.top = (((padT + i*rowH) / H) * bbox.height) + 'px';
+      tooltip.style.opacity = 1;
+    });
+    hit.addEventListener('mouseleave', () => tooltip.style.opacity = 0);
+    svg.appendChild(hit);
+  });
+}
+
+function dumbbellChart(opts){
+  const { svgId, ttId, rows, width, height, colorA, colorB, labelA, labelB, highlightGeo, unit } = opts;
+  const svg = document.getElementById(svgId);
+  const tooltip = document.getElementById(ttId);
+  const W = width, H = height;
+  const padL = 90, padR = 46, padT = 10, padB = 24;
+  const n = rows.length;
+  const rowH = (H - padT - padB) / n;
+  const dotR = 5;
+  const allVals = rows.flatMap(r => [r.a, r.b]);
+  const vMin = 0, vMax = Math.max(...allVals) * 1.08;
+  const plotW = W - padL - padR;
+  const xScale = (v) => padL + ((v - vMin) / (vMax - vMin)) * plotW;
+  function el(tag, attrs){ const e = document.createElementNS(ns, tag); for(const k in attrs) e.setAttribute(k, attrs[k]); return e; }
+
+  [0, 20, 40, 60].forEach(v => {
+    if (v > vMax) return;
+    const x = xScale(v);
+    svg.appendChild(el('line', {x1: x, x2: x, y1: padT, y2: H - padB, class: v === 0 ? 'baseline' : 'gridline'}));
+    const t = el('text', {x, y: H - padB + 15, 'text-anchor': 'middle', class: 'axis-label'});
+    t.textContent = v + '%';
+    svg.appendChild(t);
+  });
+
+  rows.forEach((r, i) => {
+    const y = padT + i * rowH + rowH / 2;
+    const isHL = r.geo === highlightGeo;
+    const xa = xScale(r.a), xb = xScale(r.b);
+    svg.appendChild(el('line', {x1: Math.min(xa,xb), x2: Math.max(xa,xb), y1: y, y2: y, stroke: 'var(--gridline)', 'stroke-width': isHL ? 2.5 : 1.5}));
+    svg.appendChild(el('circle', {cx: xa, cy: y, r: dotR, fill: colorA, class: 'hover-dot', style: 'opacity:1'}));
+    svg.appendChild(el('circle', {cx: xb, cy: y, r: dotR, fill: colorB, class: 'hover-dot', style: 'opacity:1'}));
+    const nameLab = el('text', {x: padL - 10, y: y + 4, 'text-anchor': 'end', class: 'axis-label', style: isHL ? `fill:${colorB};font-weight:700` : ''});
+    nameLab.textContent = r.label;
+    svg.appendChild(nameLab);
+    const aLeft = xa < xb;
+    const aLab = el('text', {x: xa + (aLeft ? -9 : 9), y: y + 4, 'text-anchor': aLeft ? 'end' : 'start', class: 'direct-label', style: `fill:${colorA};font-size:10.5px;font-weight:500`});
+    aLab.textContent = r.a.toFixed(1) + '%';
+    svg.appendChild(aLab);
+    const bLab = el('text', {x: xb + (aLeft ? 9 : -9), y: y + 4, 'text-anchor': aLeft ? 'start' : 'end', class: 'direct-label', style: `fill:${colorB};font-size:10.5px;font-weight:600`});
+    bLab.textContent = r.b.toFixed(1) + '%';
+    svg.appendChild(bLab);
+    const hit = el('rect', {x: 0, y: padT + i*rowH, width: W, height: rowH, class: 'hit-target'});
+    hit.addEventListener('mouseenter', () => {
+      tooltip.innerHTML = `<div class="t-year">${r.label}</div>`+
+        `<div class="t-row"><span class="dot" style="background:${colorB}"></span>${labelB}: ${r.b.toFixed(1)}${unit||''}</div>`+
+        `<div class="t-row"><span class="dot" style="background:${colorA}"></span>${labelA}: ${r.a.toFixed(1)}${unit||''}</div>`+
+        `<div class="t-row">gap: ${(r.b-r.a>=0?'+':'')+(r.b-r.a).toFixed(1)}${unit||''}</div>`;
+      const bbox = svg.getBoundingClientRect();
+      tooltip.style.left = (((xa+xb)/2 / W) * bbox.width) + 'px';
+      tooltip.style.top = ((y / H) * bbox.height) + 'px';
+      tooltip.style.opacity = 1;
+    });
+    hit.addEventListener('mouseleave', () => tooltip.style.opacity = 0);
+    svg.appendChild(hit);
+  });
+}
+
+const COL_GR = css('--series-gr'), COL_EU = css('--series-eu'), COL_3 = css('--series-3'), COL_4 = css('--series-4'), COL_5 = css('--series-5');
+
+legend('legend-snapshot', [{label:'AROPE', color: COL_5}, {label:'Subjective poverty', color: COL_GR}]);
+dumbbellChart({
+  svgId: 'chart-snapshot', ttId: 'tt-snapshot', width: 860, height: 720, highlightGeo: 'EL', unit: '%',
+  colorA: COL_5, colorB: COL_GR, labelA: 'AROPE', labelB: 'Subjective poverty',
+  rows: DATA.arope_snapshot.map(r => ({ geo: r.geo, label: r.geo === 'EU27_2020' ? 'EU average' : r.label, a: r.arope, b: r.subjective })),
+});
+
+legend('legend-subj', [{label:'Greece', color: COL_GR}, {label:'EU average', color: COL_EU}]);
+lineChart({ svgId:'chart-subj', ttId:'tt-subj', data: DATA.trend, xKey:'year', width:420, height:300,
+  series:[{key:'gr_subj', label:'Greece', color: COL_GR}, {key:'eu_subj', label:'EU average', color: COL_EU}],
+  yMin:0, yMax:90, yTicks:[0,20,40,60,80], yFmt:v=>v+'%' });
+
+legend('legend-arop', [{label:'Greece', color: COL_GR}, {label:'EU average', color: COL_EU}]);
+lineChart({ svgId:'chart-arop', ttId:'tt-arop', data: DATA.trend, xKey:'year', width:420, height:300,
+  series:[{key:'gr_arop', label:'Greece', color: COL_GR}, {key:'eu_arop', label:'EU average', color: COL_EU}],
+  yMin:0, yMax:30, yTicks:[0,10,20,30], yFmt:v=>v+'%' });
+
+legend('legend-gap', [{label:'Subjective poverty gap', color: COL_GR}, {label:'AROP gap', color: COL_EU}]);
+lineChart({ svgId:'chart-gap', ttId:'tt-gap', data: DATA.trend, xKey:'year', width:860, height:280,
+  series:[{key:'gap_subj', label:'Subjective poverty gap', color: COL_GR}, {key:'gap_arop', label:'AROP gap', color: COL_EU}],
+  yMin:0, yMax:60, yTicks:[0,15,30,45,60], yFmt:v=>v.toFixed(0)+' pp', crisisYear: 2009 });
+
+legend('legend-rank', [{label:'Subjective poverty rank', color: COL_GR}, {label:'AROP rank', color: COL_EU}]);
+lineChart({ svgId:'chart-rank', ttId:'tt-rank', data: DATA.trend, xKey:'year', width:860, height:280,
+  series:[{key:'gr_subj_rank', label:'Subjective poverty rank', color: COL_GR}, {key:'gr_arop_rank', label:'AROP rank', color: COL_EU}],
+  yMin:29, yMax:0, yTicks:[1,5,10,15,20,25], yFmt:v=>'#'+v.toFixed(0), crisisYear: 2009 });
+
+legend('legend-threshold', [{label:'AROP threshold, real (idx 2008=100)', color: COL_GR}, {label:'Real household income (idx 2008=100)', color: COL_3}]);
+lineChart({ svgId:'chart-threshold', ttId:'tt-threshold', data: DATA.trend, xKey:'year', width:860, height:280,
+  series:[{key:'threshold_real_idx', label:'AROP threshold, real (idx 2008=100)', color: COL_GR}, {key:'real_income_idx', label:'Real household income (idx 2008=100)', color: COL_3}],
+  yMin:60, yMax:110, yTicks:[60,75,90,105], yFmt:v=>v.toFixed(0), crisisYear: 2009 });
+
+legend('legend-anchor', [{label:'Subjective poverty', color: COL_GR}, {label:'Fixed-benchmark poverty (approx.)', color: COL_4}, {label:'AROPE (official)', color: COL_5}, {label:'AROP (official rate)', color: COL_EU}]);
+lineChart({ svgId:'chart-anchor', ttId:'tt-anchor', data: DATA.trend, xKey:'year', width:860, height:280,
+  series:[
+    {key:'gr_subj', label:'Subjective poverty', color: COL_GR},
+    {key:'anchored_poverty', label:'Fixed-benchmark poverty (approx.)', color: COL_4},
+    {key:'gr_arope', label:'AROPE (official)', color: COL_5},
+    {key:'gr_arop', label:'AROP (official rate)', color: COL_EU},
+  ],
+  yMin:0, yMax:90, yTicks:[0,20,40,60,80], yFmt:v=>v.toFixed(0)+'%', crisisYear: 2009 });
+
+legend('legend-crisis', [{label:'Subjective poverty (%)', color: COL_GR}, {label:'Unemployment rate (%)', color: COL_4}, {label:'Real income (idx 2008=100)', color: COL_3}]);
+lineChart({ svgId:'chart-crisis', ttId:'tt-crisis', data: DATA.trend, xKey:'year', width:860, height:280,
+  series:[
+    {key:'gr_subj', label:'Subjective poverty (%)', color: COL_GR},
+    {key:'unemployment', label:'Unemployment rate (%)', color: COL_4},
+    {key:'real_income_idx', label:'Real income (idx 2008=100)', color: COL_3},
+  ],
+  yMin:0, yMax:105, yTicks:[0,25,50,75,100], yFmt:v=>v.toFixed(0), crisisYear: 2009 });
+
+{
+  const tbody = document.querySelector('#robust-table tbody');
+  DATA.robustness.forEach(r => {
+    const tr = document.createElement('tr');
+    const sigD = r.p_firstdiff !== null && r.p_firstdiff < 0.05 ? '' : ' (n.s.)';
+    const sigT = r.p_detrended !== null && r.p_detrended < 0.05 ? '' : ' (n.s.)';
+    tr.innerHTML = `<td>${r.variable}</td><td>${r.r_level!==null?r.r_level.toFixed(2):'—'}</td><td>${r.r_firstdiff!==null?r.r_firstdiff.toFixed(2):'—'}<span class="sig">${sigD}</span></td><td>${r.r_detrended!==null?r.r_detrended.toFixed(2):'—'}<span class="sig">${sigT}</span></td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+{
+  const labels = {
+    unemployment_rate: 'Unemployment rate',
+    aic_pps_pc_k: 'Income (purchasing-power adjusted)',
+    severe_mat_soc_deprivation: 'Material & social hardship',
+    arop: 'AROP (official poverty rate)',
+  };
+  const tbody = document.querySelector('#within-between-table tbody');
+  Object.keys(labels).forEach(k => {
+    const row = DATA.within_between[k];
+    if (!row) return;
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${labels[k]}</td><td>${row.pooled_between.toFixed(2)}</td><td>${row.two_way_fe.toFixed(2)}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+barChart({
+  svgId:'chart-bars', ttId:'tt-bars', width:860, height:620, highlightGeo:'EL', unit:' pp',
+  rows: DATA.residuals_by_country.map(r => ({geo: r.geo, value: r.residual})),
+});
+
+{
+  const modelLabels = {
+    A_structural: 'Basic comparison',
+    B_plus_housing: '+ Housing',
+    C_plus_arrears_unexpected: '+ Bills / expenses',
+    D_plus_institutional: '+ Debt / transfers',
+  };
+  const addsLabels = {
+    A_structural: 'unemployment, income, hardship, AROP',
+    B_plus_housing: 'housing cost overburden',
+    C_plus_arrears_unexpected: 'arrears, unexpected-expense inability',
+    D_plus_institutional: 'debt-to-income, transfer effect',
+  };
+  const balancedByModel = {};
+  DATA.nested_balanced.forEach(r => balancedByModel[r.model] = r);
+  const tbody = document.querySelector('#nested-table tbody');
+  DATA.nested_varying.forEach(r => {
+    const bal = balancedByModel[r.model];
+    const tr = document.createElement('tr');
+    if (r.model === 'C_plus_arrears_unexpected') tr.className = 'hl';
+    tr.innerHTML = `<td>${modelLabels[r.model] || r.model}</td><td>${addsLabels[r.model] || ''}</td><td>R² ${r.r2.toFixed(2)}</td><td>${r.gr_avg_residual>=0?'+':''}${r.gr_avg_residual.toFixed(1)}</td><td>${r.gr_last_year_residual>=0?'+':''}${r.gr_last_year_residual.toFixed(1)}</td><td>${bal ? (bal.gr_avg_residual>=0?'+':'')+bal.gr_avg_residual.toFixed(1) : '—'}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+legend('legend-residtrend', [{label:'Basic comparison', color: COL_4}, {label:'+ Housing, bills, expenses', color: COL_GR}]);
+lineChart({
+  svgId:'chart-residtrend', ttId:'tt-residtrend', data: DATA.gr_resid_trend_ac, xKey:'year', width:860, height:260,
+  series:[
+    {key:'resid_a', label:'Basic comparison', color: COL_4},
+    {key:'resid_c', label:'+ Housing, bills, expenses', color: COL_GR},
+  ],
+  yMin:-8, yMax:30, yTicks:[-8,0,10,20,30], yFmt:v=>(v>=0?'+':'')+v.toFixed(0),
+});
+
+{
+  const nestedLooLabels = {
+    A_structural: 'A &middot; basic economic conditions',
+    B_plus_housing: 'B &middot; + housing',
+    C_plus_arrears_unexpected: 'C &middot; + bills / expenses',
+  };
+  const tbody = document.querySelector('#nested-loo-table tbody');
+  DATA.nested_loo.forEach(r => {
+    const tr = document.createElement('tr');
+    if (r.model === 'C_plus_arrears_unexpected') tr.className = 'hl';
+    tr.innerHTML = `<td>${nestedLooLabels[r.model] || r.model}</td><td>${r.gr_avg_residual>=0?'+':''}${r.gr_avg_residual.toFixed(1)}</td><td>${r.gr_rank}</td><td>${r.second_highest_country} (${r.second_highest>=0?'+':''}${r.second_highest.toFixed(1)})</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+legend('legend-lgo', [{label:'Greece, actual', color: COL_GR}, {label:'Predicted (model never saw Greece)', color: COL_5}]);
+lineChart({
+  svgId:'chart-lgo', ttId:'tt-lgo', data: DATA.leave_greece_out, xKey:'year', width:860, height:260,
+  series:[
+    {key:'actual', label:'Greece, actual', color: COL_GR},
+    {key:'predicted', label:'Predicted (model never saw Greece)', color: COL_5},
+  ],
+  yMin:40, yMax:85, yTicks:[40,55,70,85], yFmt:v=>v.toFixed(0)+'%',
+});
+</script>

@@ -1,0 +1,5 @@
+model,n,n_countries,r2,gr_avg_residual,gr_last_year_residual
+A_structural,240,24,0.773,13.6,27.6
+B_plus_housing,240,24,0.789,8.2,21.6
+C_plus_arrears_unexpected,240,24,0.887,2.1,7.1
+D_plus_institutional,240,24,0.887,2.2,7.2

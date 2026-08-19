@@ -1,0 +1,4 @@
+model,gr_avg_residual,gr_rank,others_mean,others_sd,second_highest,second_highest_country
+A_structural,25.6,1/27,-0.8,8.5,18.5,LU
+B_plus_housing,35.5,1/27,-0.6,8.7,19.4,CY
+C_plus_arrears_unexpected,11.6,1/27,-0.1,6.0,10.7,LU

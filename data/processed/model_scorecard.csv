@@ -1,0 +1,7 @@
+model,label,n_countries,n_obs,r2,gr_avg_residual_insample,gr_avg_residual_oos,gr_rank_oos
+A_structural,"A: unemployment, income, deprivation, AROP",27,270,0.764,15.1,25.6,1/27
+B_plus_housing,B: A + housing cost overburden,27,269,0.783,8.8,35.5,1/27
+C_plus_arrears_unexpected,"C: B + arrears, unexpected-expense capacity",27,267,0.892,2.2,11.6,1/27
+D_plus_institutional,"D: C + household debt-to-income, transfer effect",27,265,0.892,2.2,13.0,1/27
+E_plus_expectations_wealth,"E: C + financial expectations, saving rate",27,265,0.904,1.3,3.6,10/27
+F_plus_scarring_stock,F: C + scarring stock (% below own income peak),27,267,0.896,1.3,7.1,4/27
