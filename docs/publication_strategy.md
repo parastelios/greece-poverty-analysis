@@ -1731,3 +1731,75 @@ is written.
 
 Tag balance and in-browser rendering verified before publishing.
 Republished with label "Independent review fixes".
+
+## A real, live bug: the Section 3 AROPE chart was empty (2026-08-21)
+
+A third independent review reran the full pipeline from live Eurostat data,
+scripts 01 through 36 in order, then the export/injection step, and
+compared the result against the committed state. Verdict: the core
+analysis reproduces cleanly &mdash; every headline number checked (subjective
+poverty, AROP, AROPE, the C/C-LTU scorecard gap, LTU rate, real wages, GDP
+scarring, migration total, wage-adjusted pressure, mortgage-free-owner
+overburden, inequality) matched exactly. But it surfaced one real defect:
+the committed <code>output/report_data.json</code> had every AROPE trend
+value as <code>null</code>, which meant the AROPE line in Section 3's
+"four measures of poverty" chart was never actually drawing, even though
+the surrounding text discusses AROPE's trajectory and correlation figures
+as if the chart shows it.
+
+**Verified directly before acting on the claim, not taken on faith**:
+confirmed the committed <code>report_data.json</code> genuinely had
+<code>gr_arope</code>/<code>eu_arope</code> null for all 23 years (0 of 23
+populated); confirmed the chart (<code>id="chart-anchor"</code>) reads
+<code>DATA.trend</code> directly and would render an empty AROPE line as a
+result; confirmed the reviewer's other listed diffs (Moldova GDP values,
+±1 in <code>panel_regression_summary.txt</code>'s generation timestamp)
+were exactly as benign as described, by diffing each file directly rather
+than assuming.
+
+**Root cause, traced precisely**: <code>21_arope.py</code> computes a
+spliced legacy+new AROPE series and writes it <i>back into</i>
+<code>analysis_dataset.csv</code> &mdash; the same write-back pattern
+already documented for <code>05_threshold_hypothesis.py</code>
+(<code>gr_arop_threshold_real_idx2008</code>), discovered and fixed during
+P2a (real wages). <code>04_merge_all.py</code> rebuilds
+<code>analysis_dataset.csv</code> from scratch every time it runs, which
+silently wipes any write-back column that isn't re-applied afterward.
+This session re-ran <code>04</code> multiple times during P2 (real wages,
+long-term unemployment, income inequality all triggered reruns for their
+own reasons) and, each time, carefully re-ran <code>05</code> afterward per
+the documented order &mdash; but never re-ran <code>21</code>, because the
+README's own ordering caveat, written when the <code>05</code> issue was
+first found, only named <code>05</code> specifically rather than
+generalizing to "every write-back script." The <code>21_arope.py</code>
+columns were almost certainly wiped during the first such rerun (the P2a
+real-wages round) and stayed empty through every subsequent publish since
+&mdash; meaning the live, published report's AROPE chart has been broken
+for a substantial stretch of this session, caught only by an external full
+rerun, not by any of this project's own several review passes.
+
+**Fixed at the root**, not just patched for this one instance: generalized
+the README's ordering caveat to name both write-back scripts explicitly
+and state the general rule (re-run every write-back script after any
+<code>04</code> rerun, for any reason, and verify
+<code>analysis_dataset.csv</code>'s expected columns afterward). Regenerated
+<code>report_data.json</code> and re-injected into <code>report.html</code>
+via the standard <code>09_export_report_data.py</code> /
+<code>inject_data.py</code> pair (not just accepted the external rerun's
+output directly); verified in-browser that all 4 chart lines now render
+with 23 of 23 years populated; republished immediately, given this is a
+live-broken chart on the published artifact, not a documentation
+inconsistency that can wait for a batched pass.
+
+**A gap in this project's own review discipline, worth naming plainly**:
+the P4 release-readiness review and the subsequent independent-review pass
+both did claim audits against the live report's <i>text</i>, but neither
+one checked whether every chart actually had non-null data behind it &mdash;
+a category of bug that text-level claim auditing structurally cannot catch,
+since the prose was accurate throughout; only the chart's own data was
+empty. Worth remembering for any future review pass: check chart data
+population directly (as this fix now does, via a JS in-browser check),
+not just the prose describing what the chart shows.
+
+Tag balance and in-browser rendering verified before publishing.
+Republished with label "Fix: AROPE chart data was null all session".

@@ -3,8 +3,8 @@
 Dep. Variable:     subjective_poverty   R-squared:                       0.738
 Model:                            OLS   Adj. R-squared:                  0.724
 Method:                 Least Squares   F-statistic:                     46.59
-Date:                Tue, 18 Aug 2026   Prob (F-statistic):           1.21e-14
-Time:                        16:09:32   Log-Likelihood:                -939.20
+Date:                Wed, 19 Aug 2026   Prob (F-statistic):           1.21e-14
+Time:                        17:56:05   Log-Likelihood:                -939.20
 No. Observations:                 270   AIC:                             1906.
 Df Residuals:                     256   BIC:                             1957.
 Df Model:                          13                                         

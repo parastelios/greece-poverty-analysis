@@ -100,12 +100,29 @@ always reflects the last export.
 
 **Ordering caveat**: `04_merge_all.py` rebuilds `analysis_dataset.csv` from
 `master_table.csv` *from scratch* every time it runs — it doesn't merge into
-the existing file. `05_threshold_hypothesis.py` computes a derived column
-(`gr_arop_threshold_real_idx2008`) and writes it *back into*
-`analysis_dataset.csv`. If you re-run `04` after `05` has already run, that
-derived column is silently wiped and needs `05` re-run to restore it. Always
-run in numeric order (04 before 05) when regenerating from raw data, not
-just when adding a genuinely new script.
+the existing file. Two other scripts compute a derived column and write it
+*back into* `analysis_dataset.csv` rather than into their own separate
+output file: `05_threshold_hypothesis.py` (`gr_arop_threshold_real_idx2008`)
+and `21_arope.py` (`gr_arope`, `eu_arope`, `gr_eu_arope_gap`). If you re-run
+`04` at any point after either of those has already run — not just when
+first adding a new script, but any time `04` is re-run for *any* reason
+(a new raw file, a bugfix, a routine data refresh) — their columns are
+silently wiped from `analysis_dataset.csv` and need re-running to restore.
+This bit in practice: several P2-round reruns of `04` this project went
+through re-ran `05` (per the documented order below) but not `21`, leaving
+`gr_arope`/`eu_arope` null in the committed `analysis_dataset.csv` and
+`report_data.json` for an extended stretch — the Section 3 "four measures
+of poverty" chart's AROPE line was empty in the published report the whole
+time, even though the surrounding text discussed it. The snapshot AROPE
+chart (Section 1) was unaffected, since it reads a separate file
+(`arope_subjective_snapshot_2025.csv`) not touched by this issue. Caught by
+an independent full pipeline rerun, not by this project's own review passes
+directly — worth remembering next time `04` changes: **re-run every
+write-back script (currently 05 and 21), not just the one you have in mind,
+and check `analysis_dataset.csv` for its expected columns afterward.**
+Always run in full numeric order (01 through the highest script) when
+regenerating from raw data end to end, which sidesteps this by construction
+since every write-back script's number is higher than 04's.
 
 **Raw-file shape caveat**: `04_merge_all.py`'s generic merge assumes one
 row per `geo`/`time` pair in every raw CSV it picks up from `data/raw/`.
