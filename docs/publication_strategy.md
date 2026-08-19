@@ -781,3 +781,40 @@ no claims changed, nothing re-analyzed. Full plan and checkboxes in
 
 Verified tag balance before republishing, per established practice. Commit:
 `p0-report-cleanup`.
+
+## P1a: recovery trajectory (2026-08-20)
+
+Script `28_recovery_trajectory.py`. First draft had a real bug: for
+countries whose all-time GDP peak fell in 2024 itself (i.e. still climbing),
+the trough-detection trivially set trough=peak=2024, which wiped out every
+genuine historical recovery event and produced a nonsensical "0 countries
+recovered from a real dip." Caught before reporting anything, fixed by
+separating two distinct questions and computing each properly:
+
+1. **Currently below own all-time peak?** — reproduces the already-published
+   Section 11 numbers exactly (Greece 11.2%, Estonia 7.1%, Luxembourg 6.1%,
+   etc.), used as a consistency check on the new script.
+2. **How long to recover from the worst crisis-era drawdown?** — uses
+   max-drawdown detection (same method as the older exploratory script 12),
+   which correctly finds the crisis trough for a country even if it's since
+   climbed to a brand-new peak. Result: 23 of 27 EU countries had a real
+   crisis dip (mostly 2009 or 2020) and recovered; median recovery time 3
+   years (range 1-7). Only 3 never recovered from their worst dip: Greece
+   (26.9% decline, 2020 trough, still not recovered), Luxembourg (a much
+   smaller, very recent 6.1% dip — not a comparable case to Greece), and
+   Finland (8.5% decline in 2009, never regained its 2008 peak — closest
+   approach was 99.2% in 2022 before slipping again). Poland had zero
+   drawdown across the whole window.
+
+Also built an indexed-trajectory chart (each country's real GDP/capita
+indexed to its own peak = 100, 2008-2024) as a Chart.js preview, shown to
+the user directly rather than only described — Greece's line visibly
+separates from the EU field around 2011 and never rejoins it.
+
+**Checkpoint decision**: genuinely strengthens the report (the "3-year
+median vs. Greece's 16 years and counting" framing is sharper than the
+existing static 11.2% number) and the data is internally consistent, so
+recommended for integration. User confirmed: hold the actual report
+integration for the batched P3 step rather than doing it now, so more P1
+items can be checkpointed first without repeatedly touching report.html.
+New data: `recovery_trajectory.csv`, `recovery_indexed_trajectories.csv`.

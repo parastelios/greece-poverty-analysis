@@ -51,14 +51,16 @@ results are a valid outcome to report honestly, not a reason to force
 inclusion.
 
 ### P1a — Recovery trajectory
-- [ ] Years below peak, years to recovery, per EU country
-- [ ] List of countries not yet recovered
-- [ ] Indexed EU recovery-path chart (Greece vs. faint EU field, each
+- [x] Years below peak, years to recovery, per EU country
+- [x] List of countries not yet recovered
+- [x] Indexed EU recovery-path chart (Greece vs. faint EU field, each
       country indexed to its own peak)
-- [ ] Checkpoint: report findings, recommend placement, decide
-      integrate/hold back
+- [x] Checkpoint: report findings, recommend placement, decide
+      integrate/hold back — **decision: strengthens the report, integrate,
+      but deferred to the batched P3 integration step rather than done now**
 
-**Commit**: `p1a-recovery-trajectory-analysis`
+**Commit**: `p1a-recovery-trajectory-analysis` — analysis done, report
+integration deferred to P3
 
 ### P1b — Migration / brain drain (scoped narrow)
 - [ ] Net migration, crisis/recovery years
