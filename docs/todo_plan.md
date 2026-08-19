@@ -107,7 +107,19 @@ literature integrated directly into the report in the same session
       `docs/publication_strategy.md`, "P2a: real wages" for the full log.
       Republished.
 - [ ] Youth unemployment
-- [ ] Long-term unemployment
+- [x] Long-term unemployment — fetched (`31_long_term_unemployment.py`),
+      became a scorecard-changing finding, not just descriptive evidence.
+      Model C-LTU (long-term unemployment replaces headline unemployment)
+      cuts Greece's out-of-sample gap from 11.6 to 3.9 points and moves
+      Greece from 1st to 6th of 27 — added to the scorecard as the
+      preferred labor-market specification, with the additive version kept
+      as a robustness check only. Integrated as a new Section 11
+      subsection, a reshuffled-outlier table, executive summary and
+      Section 12 conclusion updates, and a full Methods writeup covering
+      the multicollinearity check, coefficient-stability test, and
+      interaction checks against the scarring-stock and
+      financial-expectations variables. See `docs/publication_strategy.md`,
+      "P2b: long-term unemployment" for the full log. Republished.
 - [ ] Inequality (Gini or S80:S20)
 - [ ] Housing tenure, if feasible
 

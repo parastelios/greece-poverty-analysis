@@ -2,6 +2,8 @@
 import json
 import pandas as pd
 
+from eu_membership import eu_members
+
 OUT = "../data/processed"
 df = pd.read_csv(f"{OUT}/analysis_dataset.csv").sort_values("year")
 corr = pd.read_csv(f"{OUT}/correlations.csv")
@@ -21,6 +23,11 @@ arope_snapshot = pd.read_csv(f"{OUT}/arope_subjective_snapshot_2025.csv")
 recovery_idx = pd.read_csv(f"{OUT}/recovery_indexed_trajectories.csv")
 migration = pd.read_csv("../data/raw/migration_nationals_panel.csv")
 real_wages = pd.read_csv(f"{OUT}/real_wages_panel.csv")
+ltu = pd.read_csv("../data/raw/panel_long_term_unemployment.csv")
+ltu = ltu[ltu.geo.isin(eu_members(2024)) & (ltu.time >= 2009)]
+model_scorecard_ltu = pd.read_csv(f"{OUT}/model_scorecard_ltu.csv")
+loo_c_baseline = pd.read_csv(f"{OUT}/scorecard_loo_C_baseline.csv")
+loo_c_ltu_swap = pd.read_csv(f"{OUT}/scorecard_loo_C_LTU_swap.csv")
 
 
 def clean(v):
@@ -181,6 +188,24 @@ bundle = {
     "real_wages_trajectory": [
         {"time": int(t), **{geo: clean(v) for geo, v in g.set_index("geo")["real_wage_idx2008"].items()}}
         for t, g in real_wages[real_wages.time >= 2008].groupby("time")
+    ],
+    "ltu_trajectory": [
+        {"time": int(t), **{geo: clean(v) for geo, v in g.set_index("geo")["ltu_rate"].items()}}
+        for t, g in ltu.groupby("time")
+    ],
+    "model_scorecard_ltu": [
+        {"model": r["model"], "label": r["label"], "n_countries": int(r["n_countries"]), "n_obs": int(r["n_obs"]),
+         "r2": clean(r["r2"]), "gr_avg_residual_insample": clean(r["gr_avg_residual_insample"]),
+         "gr_avg_residual_oos": clean(r["gr_avg_residual_oos"]), "gr_rank_oos": r["gr_rank_oos"]}
+        for _, r in model_scorecard_ltu.iterrows()
+    ],
+    "loo_c_baseline": [
+        {"geo": r["geo"], "avg_residual": clean(r["avg_residual"]), "rank": int(r["rank"])}
+        for _, r in loo_c_baseline.iterrows()
+    ],
+    "loo_c_ltu_swap": [
+        {"geo": r["geo"], "avg_residual": clean(r["avg_residual"]), "rank": int(r["rank"])}
+        for _, r in loo_c_ltu_swap.iterrows()
     ],
 }
 

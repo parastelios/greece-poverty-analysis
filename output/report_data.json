@@ -555,6 +555,14 @@
  ],
  "correlations": [
   {
+   "variable": "Long-term unemployment rate (12mo+, % active pop)",
+   "r0": 0.93,
+   "p0": 0.0,
+   "n0": 16,
+   "r1": 0.91,
+   "p1": 0.0
+  },
+  {
    "variable": "Real household disposable income (idx 2008=100)",
    "r0": -0.93,
    "p0": 0.0,
@@ -700,6 +708,14 @@
   }
  ],
  "robustness": [
+  {
+   "variable": "Long-term unemployment rate (12mo+)",
+   "r_level": 0.93,
+   "r_firstdiff": 0.92,
+   "p_firstdiff": 0.0,
+   "r_detrended": 0.86,
+   "p_detrended": 0.0
+  },
   {
    "variable": "Real household disposable income",
    "r_level": -0.93,
@@ -2602,6 +2618,824 @@
    "SE": 97.41,
    "SI": 124.94,
    "SK": 136.39
+  }
+ ],
+ "ltu_trajectory": [
+  {
+   "time": 2009,
+   "AT": 1.4,
+   "BE": 3.2,
+   "BG": 3.5,
+   "CY": 0.6,
+   "CZ": 2.0,
+   "DE": 3.6,
+   "DK": 0.6,
+   "EE": 3.7,
+   "EL": 3.6,
+   "ES": 4.3,
+   "FI": 1.7,
+   "FR": 2.0,
+   "HR": 5.0,
+   "HU": 4.0,
+   "IE": 3.5,
+   "IT": 3.7,
+   "LT": 3.3,
+   "LU": 1.2,
+   "LV": 5.0,
+   "MT": 2.9,
+   "NL": 0.9,
+   "PL": 2.6,
+   "PT": 4.8,
+   "RO": 2.6,
+   "SE": 1.1,
+   "SI": 1.8,
+   "SK": 7.6
+  },
+  {
+   "time": 2010,
+   "AT": 1.5,
+   "BE": 3.7,
+   "BG": 5.3,
+   "CY": 1.3,
+   "CZ": 3.0,
+   "DE": 3.3,
+   "DK": 1.4,
+   "EE": 7.5,
+   "EL": 5.2,
+   "ES": 7.3,
+   "FI": 2.5,
+   "FR": 2.4,
+   "HR": 6.5,
+   "HU": 5.3,
+   "IE": 6.9,
+   "IT": 4.3,
+   "LT": 7.4,
+   "LU": 1.3,
+   "LV": 9.7,
+   "MT": 4.1,
+   "NL": 1.1,
+   "PL": 3.1,
+   "PT": 6.3,
+   "RO": 3.0,
+   "SE": 1.5,
+   "SI": 3.2,
+   "SK": 10.7
+  },
+  {
+   "time": 2011,
+   "AT": 1.5,
+   "BE": 3.1,
+   "BG": 7.0,
+   "CY": 1.6,
+   "CZ": 2.7,
+   "DE": 2.8,
+   "DK": 1.8,
+   "EE": 7.0,
+   "EL": 8.0,
+   "ES": 8.9,
+   "FI": 2.2,
+   "FR": 2.5,
+   "HR": 8.3,
+   "HU": 5.1,
+   "IE": 8.8,
+   "IT": 4.6,
+   "LT": 8.0,
+   "LU": 1.4,
+   "LV": 9.8,
+   "MT": 3.9,
+   "NL": 1.4,
+   "PL": 3.7,
+   "PT": 6.6,
+   "RO": 3.6,
+   "SE": 1.4,
+   "SI": 3.7,
+   "SK": 10.7
+  },
+  {
+   "time": 2012,
+   "AT": 1.5,
+   "BE": 3.1,
+   "BG": 7.5,
+   "CY": 3.6,
+   "CZ": 3.0,
+   "DE": 2.5,
+   "DK": 2.1,
+   "EE": 5.4,
+   "EL": 13.1,
+   "ES": 11.0,
+   "FI": 2.1,
+   "FR": 2.6,
+   "HR": 10.3,
+   "HU": 4.8,
+   "IE": 9.2,
+   "IT": 6.0,
+   "LT": 6.6,
+   "LU": 1.6,
+   "LV": 8.6,
+   "MT": 3.8,
+   "NL": 1.7,
+   "PL": 4.2,
+   "PT": 8.1,
+   "RO": 3.7,
+   "SE": 1.4,
+   "SI": 4.3,
+   "SK": 10.9
+  },
+  {
+   "time": 2013,
+   "AT": 1.6,
+   "BE": 3.5,
+   "BG": 8.1,
+   "CY": 6.1,
+   "CZ": 3.0,
+   "DE": 2.4,
+   "DK": 1.8,
+   "EE": 3.8,
+   "EL": 16.7,
+   "ES": 13.0,
+   "FI": 2.1,
+   "FR": 2.9,
+   "HR": 11.0,
+   "HU": 4.8,
+   "IE": 7.9,
+   "IT": 7.4,
+   "LT": 5.1,
+   "LU": 1.8,
+   "LV": 6.3,
+   "MT": 3.5,
+   "NL": 2.3,
+   "PL": 4.5,
+   "PT": 9.7,
+   "RO": 3.9,
+   "SE": 1.4,
+   "SI": 5.2,
+   "SK": 11.6
+  },
+  {
+   "time": 2014,
+   "AT": 1.9,
+   "BE": 3.9,
+   "BG": 7.6,
+   "CY": 7.7,
+   "CZ": 2.7,
+   "DE": 2.2,
+   "DK": 1.7,
+   "EE": 3.3,
+   "EL": 17.5,
+   "ES": 12.9,
+   "FI": 2.4,
+   "FR": 3.1,
+   "HR": 10.2,
+   "HU": 3.6,
+   "IE": 6.6,
+   "IT": 8.2,
+   "LT": 4.8,
+   "LU": 1.6,
+   "LV": 5.1,
+   "MT": 2.9,
+   "NL": 2.7,
+   "PL": 3.9,
+   "PT": 8.7,
+   "RO": 3.4,
+   "SE": 1.3,
+   "SI": 5.3,
+   "SK": 10.7
+  },
+  {
+   "time": 2015,
+   "AT": 2.0,
+   "BE": 4.0,
+   "BG": 6.3,
+   "CY": 6.8,
+   "CZ": 2.4,
+   "DE": 2.1,
+   "DK": 1.6,
+   "EE": 2.4,
+   "EL": 16.4,
+   "ES": 11.4,
+   "FI": 2.9,
+   "FR": 3.1,
+   "HR": 10.2,
+   "HU": 3.0,
+   "IE": 5.3,
+   "IT": 7.4,
+   "LT": 3.9,
+   "LU": 1.9,
+   "LV": 4.9,
+   "MT": 2.7,
+   "NL": 2.7,
+   "PL": 3.0,
+   "PT": 7.4,
+   "RO": 3.6,
+   "SE": 1.3,
+   "SI": 4.7,
+   "SK": 8.8
+  },
+  {
+   "time": 2016,
+   "AT": 2.4,
+   "BE": 3.7,
+   "BG": 5.2,
+   "CY": 5.8,
+   "CZ": 1.7,
+   "DE": 1.7,
+   "DK": 1.2,
+   "EE": 2.2,
+   "EL": 15.4,
+   "ES": 9.5,
+   "FI": 2.9,
+   "FR": 3.1,
+   "HR": 6.7,
+   "HU": 2.3,
+   "IE": 4.2,
+   "IT": 7.1,
+   "LT": 3.0,
+   "LU": 2.2,
+   "LV": 4.4,
+   "MT": 2.4,
+   "NL": 2.3,
+   "PL": 2.2,
+   "PT": 6.4,
+   "RO": 3.4,
+   "SE": 1.2,
+   "SI": 4.3,
+   "SK": 6.8
+  },
+  {
+   "time": 2017,
+   "AT": 2.3,
+   "BE": 3.1,
+   "BG": 4.0,
+   "CY": 4.5,
+   "CZ": 1.0,
+   "DE": 1.6,
+   "DK": 1.2,
+   "EE": 2.0,
+   "EL": 14.3,
+   "ES": 7.7,
+   "FI": 2.6,
+   "FR": 2.9,
+   "HR": 4.5,
+   "HU": 1.6,
+   "IE": 3.0,
+   "IT": 6.9,
+   "LT": 2.7,
+   "LU": 2.1,
+   "LV": 3.6,
+   "MT": 2.0,
+   "NL": 1.7,
+   "PL": 1.5,
+   "PT": 4.6,
+   "RO": 2.4,
+   "SE": 1.1,
+   "SI": 3.1,
+   "SK": 5.9
+  },
+  {
+   "time": 2018,
+   "AT": 1.7,
+   "BE": 2.6,
+   "BG": 3.7,
+   "CY": 2.7,
+   "CZ": 0.7,
+   "DE": 1.4,
+   "DK": 1.0,
+   "EE": 1.3,
+   "EL": 12.5,
+   "ES": 6.4,
+   "FI": 2.0,
+   "FR": 2.5,
+   "HR": 3.4,
+   "HU": 1.4,
+   "IE": 2.1,
+   "IT": 6.5,
+   "LT": 2.0,
+   "LU": 1.4,
+   "LV": 3.4,
+   "MT": 1.9,
+   "NL": 1.2,
+   "PL": 1.0,
+   "PT": 3.2,
+   "RO": 2.2,
+   "SE": 0.9,
+   "SI": 2.2,
+   "SK": 4.7
+  },
+  {
+   "time": 2019,
+   "AT": 1.4,
+   "BE": 2.1,
+   "BG": 3.0,
+   "CY": 2.2,
+   "CZ": 0.6,
+   "DE": 1.2,
+   "DK": 0.8,
+   "EE": 0.9,
+   "EL": 11.3,
+   "ES": 5.3,
+   "FI": 1.5,
+   "FR": 2.3,
+   "HR": 2.4,
+   "HU": 1.1,
+   "IE": 1.6,
+   "IT": 5.9,
+   "LT": 1.9,
+   "LU": 1.3,
+   "LV": 2.7,
+   "MT": 1.0,
+   "NL": 0.9,
+   "PL": 0.7,
+   "PT": 2.8,
+   "RO": 2.0,
+   "SE": 0.8,
+   "SI": 1.9,
+   "SK": 3.9
+  },
+  {
+   "time": 2020,
+   "AT": 1.7,
+   "BE": 2.1,
+   "BG": 2.8,
+   "CY": 2.2,
+   "CZ": 0.6,
+   "DE": 1.1,
+   "DK": 0.9,
+   "EE": 1.2,
+   "EL": 10.5,
+   "ES": 5.0,
+   "FI": 1.5,
+   "FR": 1.9,
+   "HR": 2.1,
+   "HU": 1.1,
+   "IE": 1.4,
+   "IT": 5.1,
+   "LT": 2.5,
+   "LU": 1.7,
+   "LV": 2.4,
+   "MT": 1.3,
+   "NL": 0.7,
+   "PL": 0.6,
+   "PT": 2.3,
+   "RO": 1.8,
+   "SE": 1.0,
+   "SI": 1.9,
+   "SK": 3.7
+  },
+  {
+   "time": 2021,
+   "AT": 2.0,
+   "BE": 2.6,
+   "BG": 2.6,
+   "CY": 2.5,
+   "CZ": 0.8,
+   "DE": 1.2,
+   "DK": 1.0,
+   "EE": 1.6,
+   "EL": 9.2,
+   "ES": 6.2,
+   "FI": 1.8,
+   "FR": 2.3,
+   "HR": 2.7,
+   "HU": 1.3,
+   "IE": 1.8,
+   "IT": 5.4,
+   "LT": 2.6,
+   "LU": 1.8,
+   "LV": 2.3,
+   "MT": 1.0,
+   "NL": 0.8,
+   "PL": 0.9,
+   "PT": 2.9,
+   "RO": 2.0,
+   "SE": 1.8,
+   "SI": 1.9,
+   "SK": 3.9
+  },
+  {
+   "time": 2022,
+   "AT": 1.2,
+   "BE": 2.3,
+   "BG": 2.2,
+   "CY": 2.1,
+   "CZ": 0.6,
+   "DE": 1.1,
+   "DK": 0.5,
+   "EE": 1.3,
+   "EL": 7.7,
+   "ES": 5.1,
+   "FI": 1.5,
+   "FR": 2.0,
+   "HR": 2.4,
+   "HU": 1.2,
+   "IE": 1.3,
+   "IT": 4.6,
+   "LT": 2.3,
+   "LU": 1.3,
+   "LV": 2.0,
+   "MT": 1.2,
+   "NL": 0.7,
+   "PL": 0.9,
+   "PT": 2.8,
+   "RO": 2.2,
+   "SE": 1.9,
+   "SI": 1.6,
+   "SK": 4.1
+  },
+  {
+   "time": 2023,
+   "AT": 1.1,
+   "BE": 2.2,
+   "BG": 2.3,
+   "CY": 1.8,
+   "CZ": 0.8,
+   "DE": 1.0,
+   "DK": 0.5,
+   "EE": 1.3,
+   "EL": 6.2,
+   "ES": 4.3,
+   "FI": 1.6,
+   "FR": 1.8,
+   "HR": 2.1,
+   "HU": 1.4,
+   "IE": 1.1,
+   "IT": 4.2,
+   "LT": 2.3,
+   "LU": 1.7,
+   "LV": 1.8,
+   "MT": 0.8,
+   "NL": 0.5,
+   "PL": 0.8,
+   "PT": 2.5,
+   "RO": 2.2,
+   "SE": 1.6,
+   "SI": 1.4,
+   "SK": 3.8
+  },
+  {
+   "time": 2024,
+   "AT": 1.1,
+   "BE": 2.0,
+   "BG": 2.2,
+   "CY": 1.3,
+   "CZ": 0.8,
+   "DE": 1.0,
+   "DK": 0.8,
+   "EE": 1.8,
+   "EL": 5.4,
+   "ES": 3.8,
+   "FI": 1.8,
+   "FR": 1.7,
+   "HR": 1.8,
+   "HU": 1.5,
+   "IE": 1.0,
+   "IT": 3.3,
+   "LT": 2.3,
+   "LU": 1.6,
+   "LV": 2.2,
+   "MT": 0.7,
+   "NL": 0.5,
+   "PL": 0.8,
+   "PT": 2.4,
+   "RO": 1.8,
+   "SE": 1.7,
+   "SI": 1.1,
+   "SK": 3.5
+  }
+ ],
+ "model_scorecard_ltu": [
+  {
+   "model": "C_baseline",
+   "label": "C: unemployment, income, deprivation, AROP, housing, arrears, unexpected (baseline)",
+   "n_countries": 27,
+   "n_obs": 267,
+   "r2": 0.89,
+   "gr_avg_residual_insample": 2.23,
+   "gr_avg_residual_oos": 11.59,
+   "gr_rank_oos": "1/27"
+  },
+  {
+   "model": "C_LTU_swap",
+   "label": "C-LTU: same as C but LTU REPLACES headline unemployment (preferred)",
+   "n_countries": 27,
+   "n_obs": 267,
+   "r2": 0.91,
+   "gr_avg_residual_insample": 1.29,
+   "gr_avg_residual_oos": 3.86,
+   "gr_rank_oos": "6/27"
+  },
+  {
+   "model": "C_LTU_add",
+   "label": "C+LTU: LTU ADDED alongside headline unemployment (robustness only)",
+   "n_countries": 27,
+   "n_obs": 267,
+   "r2": 0.92,
+   "gr_avg_residual_insample": 1.03,
+   "gr_avg_residual_oos": 2.27,
+   "gr_rank_oos": "7/27"
+  },
+  {
+   "model": "C_LTU_plus_scarring",
+   "label": "C-LTU + scarring stock (% below own GDP peak)",
+   "n_countries": 27,
+   "n_obs": 267,
+   "r2": 0.91,
+   "gr_avg_residual_insample": 1.08,
+   "gr_avg_residual_oos": 2.97,
+   "gr_rank_oos": "7/27"
+  },
+  {
+   "model": "C_expectations_baseline",
+   "label": "C + financial expectations + saving rate (Model E baseline)",
+   "n_countries": 27,
+   "n_obs": 265,
+   "r2": 0.9,
+   "gr_avg_residual_insample": 1.32,
+   "gr_avg_residual_oos": 3.61,
+   "gr_rank_oos": "10/27"
+  },
+  {
+   "model": "C_LTU_plus_expectations",
+   "label": "C-LTU + financial expectations + saving rate",
+   "n_countries": 27,
+   "n_obs": 265,
+   "r2": 0.92,
+   "gr_avg_residual_insample": 0.72,
+   "gr_avg_residual_oos": -1.75,
+   "gr_rank_oos": "19/27"
+  }
+ ],
+ "loo_c_baseline": [
+  {
+   "geo": "EL",
+   "avg_residual": 11.59,
+   "rank": 1
+  },
+  {
+   "geo": "LU",
+   "avg_residual": 10.69,
+   "rank": 2
+  },
+  {
+   "geo": "CY",
+   "avg_residual": 8.07,
+   "rank": 3
+  },
+  {
+   "geo": "PT",
+   "avg_residual": 8.0,
+   "rank": 4
+  },
+  {
+   "geo": "IT",
+   "avg_residual": 7.43,
+   "rank": 5
+  },
+  {
+   "geo": "SK",
+   "avg_residual": 6.12,
+   "rank": 6
+  },
+  {
+   "geo": "BE",
+   "avg_residual": 5.72,
+   "rank": 7
+  },
+  {
+   "geo": "CZ",
+   "avg_residual": 4.95,
+   "rank": 8
+  },
+  {
+   "geo": "MT",
+   "avg_residual": 3.9,
+   "rank": 9
+  },
+  {
+   "geo": "HR",
+   "avg_residual": 2.13,
+   "rank": 10
+  },
+  {
+   "geo": "LV",
+   "avg_residual": 1.67,
+   "rank": 11
+  },
+  {
+   "geo": "AT",
+   "avg_residual": 1.5,
+   "rank": 12
+  },
+  {
+   "geo": "NL",
+   "avg_residual": 0.86,
+   "rank": 13
+  },
+  {
+   "geo": "HU",
+   "avg_residual": 0.54,
+   "rank": 14
+  },
+  {
+   "geo": "BG",
+   "avg_residual": 0.3,
+   "rank": 15
+  },
+  {
+   "geo": "PL",
+   "avg_residual": 0.02,
+   "rank": 16
+  },
+  {
+   "geo": "FR",
+   "avg_residual": -1.61,
+   "rank": 17
+  },
+  {
+   "geo": "IE",
+   "avg_residual": -2.98,
+   "rank": 18
+  },
+  {
+   "geo": "LT",
+   "avg_residual": -3.81,
+   "rank": 19
+  },
+  {
+   "geo": "DK",
+   "avg_residual": -3.93,
+   "rank": 20
+  },
+  {
+   "geo": "SE",
+   "avg_residual": -4.36,
+   "rank": 21
+  },
+  {
+   "geo": "SI",
+   "avg_residual": -4.66,
+   "rank": 22
+  },
+  {
+   "geo": "DE",
+   "avg_residual": -5.95,
+   "rank": 23
+  },
+  {
+   "geo": "ES",
+   "avg_residual": -7.42,
+   "rank": 24
+  },
+  {
+   "geo": "EE",
+   "avg_residual": -7.68,
+   "rank": 25
+  },
+  {
+   "geo": "RO",
+   "avg_residual": -7.87,
+   "rank": 26
+  },
+  {
+   "geo": "FI",
+   "avg_residual": -13.84,
+   "rank": 27
+  }
+ ],
+ "loo_c_ltu_swap": [
+  {
+   "geo": "CY",
+   "avg_residual": 8.9,
+   "rank": 1
+  },
+  {
+   "geo": "LU",
+   "avg_residual": 8.35,
+   "rank": 2
+  },
+  {
+   "geo": "PT",
+   "avg_residual": 6.59,
+   "rank": 3
+  },
+  {
+   "geo": "CZ",
+   "avg_residual": 5.04,
+   "rank": 4
+  },
+  {
+   "geo": "BE",
+   "avg_residual": 4.27,
+   "rank": 5
+  },
+  {
+   "geo": "EL",
+   "avg_residual": 3.86,
+   "rank": 6
+  },
+  {
+   "geo": "IT",
+   "avg_residual": 3.25,
+   "rank": 7
+  },
+  {
+   "geo": "LV",
+   "avg_residual": 2.91,
+   "rank": 8
+  },
+  {
+   "geo": "MT",
+   "avg_residual": 2.62,
+   "rank": 9
+  },
+  {
+   "geo": "HR",
+   "avg_residual": 2.53,
+   "rank": 10
+  },
+  {
+   "geo": "HU",
+   "avg_residual": 1.63,
+   "rank": 11
+  },
+  {
+   "geo": "NL",
+   "avg_residual": 1.53,
+   "rank": 12
+  },
+  {
+   "geo": "BG",
+   "avg_residual": 1.47,
+   "rank": 13
+  },
+  {
+   "geo": "AT",
+   "avg_residual": 1.24,
+   "rank": 14
+  },
+  {
+   "geo": "SK",
+   "avg_residual": 1.13,
+   "rank": 15
+  },
+  {
+   "geo": "PL",
+   "avg_residual": 0.93,
+   "rank": 16
+  },
+  {
+   "geo": "FR",
+   "avg_residual": -0.16,
+   "rank": 17
+  },
+  {
+   "geo": "DK",
+   "avg_residual": -0.8,
+   "rank": 18
+  },
+  {
+   "geo": "SE",
+   "avg_residual": -1.37,
+   "rank": 19
+  },
+  {
+   "geo": "LT",
+   "avg_residual": -3.36,
+   "rank": 20
+  },
+  {
+   "geo": "IE",
+   "avg_residual": -3.53,
+   "rank": 21
+  },
+  {
+   "geo": "SI",
+   "avg_residual": -5.28,
+   "rank": 22
+  },
+  {
+   "geo": "EE",
+   "avg_residual": -5.45,
+   "rank": 23
+  },
+  {
+   "geo": "DE",
+   "avg_residual": -5.6,
+   "rank": 24
+  },
+  {
+   "geo": "ES",
+   "avg_residual": -6.05,
+   "rank": 25
+  },
+  {
+   "geo": "RO",
+   "avg_residual": -6.26,
+   "rank": 26
+  },
+  {
+   "geo": "FI",
+   "avg_residual": -11.92,
+   "rank": 27
   }
  ]
 }

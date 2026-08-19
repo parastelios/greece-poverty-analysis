@@ -27,6 +27,7 @@ predictors = {
     "gr_hicp_headline_rate": "HICP inflation, headline",
     "gr_arop_threshold_real_idx2008": "AROP threshold, real terms",
     "gr_real_wage_idx2008": "Real wages, compensation per employee",
+    "gr_panel_long_term_unemployment": "Long-term unemployment rate (12mo+)",
 }
 
 

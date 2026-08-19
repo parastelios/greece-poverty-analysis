@@ -30,6 +30,7 @@ predictors = {
     "gr_arop_threshold_real_idx2008": "AROP threshold, real terms (idx 2008=100)",
     "gr_minimum_wage_eur_month": "Minimum wage (nominal EUR/month)",
     "gr_real_wage_idx2008": "Real wages, compensation per employee (idx 2008=100)",
+    "gr_panel_long_term_unemployment": "Long-term unemployment rate (12mo+, % active pop)",
 }
 
 

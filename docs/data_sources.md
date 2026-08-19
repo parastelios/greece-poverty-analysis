@@ -115,10 +115,30 @@ corroboration — none are merged into any model or panel.
   literature-backed narrative context (Section 11 and the literature
   section), using the three non-Eurostat sources above. A future version
   that expands beyond Eurostat's own API could revisit this.
-- Youth/long-term unemployment, income inequality (Gini/S80:S20), housing
-  tenure: named in `docs/project_description.md` but not yet fetched — see
+- Youth unemployment, income inequality (Gini/S80:S20), housing tenure:
+  named in `docs/project_description.md` but not yet fetched — see
   `docs/publication_strategy.md` and `docs/todo_plan.md` (P2) for the
-  remaining scope. Real wages (below) has since been fetched and integrated.
+  remaining scope. Real wages and long-term unemployment (below) have since
+  been fetched and integrated.
+
+## P2b addition (long-term unemployment)
+
+| Dataset code | What it is | Key params | Fetched by |
+|---|---|---|---|
+| `une_ltu_a` | Long-term unemployment rate (12mo+, % of active population) | `sex=T`, `age=Y15-74`, `unit=PC_ACT`, `indic_em=LTU` | `31_long_term_unemployment.py` |
+
+Full 27-country coverage, 2009&ndash;2024 (Eurostat does not publish this
+series further back). Unlike real wages, this variable became a genuine
+scorecard-changing finding: swapped in for headline unemployment in the
+Section 10 model (as Model C-LTU, not simply added alongside it — the two
+are collinear enough, r=0.91 panel-wide, that adding both destabilizes
+headline unemployment's own coefficient), it cuts Greece's out-of-sample
+gap from 11.6 to 3.9 points and moves Greece from the largest unexplained
+outlier in the EU to 6th-largest. See report Methods ("Long-term
+unemployment: source, method, and why it replaces rather than adds to
+headline unemployment") for the full multicollinearity check, coefficient
+stability test, and interaction checks against the scarring-stock and
+financial-expectations variables.
 
 ## P2a addition (real wages)
 

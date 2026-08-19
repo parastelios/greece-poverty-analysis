@@ -1,4 +1,5 @@
 variable,r_level,r_firstdiff,p_firstdiff,n_firstdiff,r_detrended,p_detrended
+Long-term unemployment rate (12mo+),0.933,0.922,0.0,15,0.859,0.0
 Real household disposable income,-0.927,-0.53,0.0195,19,-0.91,0.0
 "Severe material & social deprivation, new",0.922,0.38,0.2794,10,0.107,0.7547
 "AROP threshold, real terms",-0.879,-0.653,0.001,22,-0.778,0.0

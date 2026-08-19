@@ -1102,3 +1102,100 @@ Remaining under P2, not started: youth unemployment, long-term
 unemployment, income inequality (Gini/S80:S20), housing tenure. Per the
 same checkpoint discipline used throughout, waiting for the user's
 go-ahead before starting the next one.
+
+## P2b: long-term unemployment (2026-08-21)
+
+User's explicit sequencing after P2a: long-term unemployment first among
+the remaining P2 items, "the most conceptually aligned with scarring,"
+before youth unemployment, inequality, and housing tenure. Built as
+`31_long_term_unemployment.py`: Eurostat's `une_ltu_a` (unemployed 12
+months or more, % of active population), full 27-country coverage,
+2009&ndash;2024.
+
+**This one changed the sequence.** Unlike real wages, the checkpoint
+analysis came back as a genuine scorecard candidate, not just descriptive
+evidence: level correlation r=0.93 (strongest in the whole project,
+displacing real household income from 1st place), first-difference r=0.92
+(the first variable in this project whose year-to-year changes also track
+subjective poverty tightly, not just the shared level), detrended r=0.86.
+All three survive FDR correction comfortably.
+
+**Multicollinearity was real and had to be handled carefully.** Long-term
+unemployment correlates strongly with headline unemployment (r=0.91 across
+the full panel, r=0.998 for Greece's own series alone — mechanically
+expected, since by the mid-2010s most of Greece's unemployment *was*
+long-term). Two specs tested: adding long-term unemployment *alongside*
+headline unemployment improves fit further (R&sup2; 0.919, Greece's gap to
+2.3) but destabilizes headline unemployment's own coefficient (flips
+negative, loses significance — VIF &asymp;8&ndash;9 for both). *Replacing*
+headline unemployment with long-term unemployment instead (Model C-LTU)
+avoids that: R&sup2; 0.914, Greece's out-of-sample gap 11.6&rarr;3.9, rank
+1st&rarr;6th of 27, with clean coefficients throughout. Confirmed the
+swap-model coefficient is not a fluke by refitting 27 times, once per
+excluded country: the long-term-unemployment coefficient never changed
+sign and was never less significant than p&lt;0.001, including the refit
+that excludes Greece itself.
+
+**User's explicit integration brief, after seeing these results**: treat
+long-term unemployment as a core model candidate, not descriptive-only.
+Use the replacement spec (C-LTU) as preferred, the additive spec as
+robustness only. Add a body subsection near scarring/recovery. Reframe the
+GDP-scarring subsection as macro context now that long-term unemployment
+looks like the sharper household-facing mechanism. Reframe financial
+expectations to acknowledge overlap rather than claim independent
+explanatory power. Update the executive summary and Section 12 conclusion.
+Before finalizing text, run: the full C-LTU scorecard row, the full
+27-country leave-one-out ranking (not just Greece's), FDR status for the
+correlation, whether C-LTU still behaves well combined with the
+scarring-stock and expectations/wealth models, and whether long-term
+unemployment reduces the apparent role of financial expectations.
+
+**That follow-up battery** (`32_ltu_model_test.py`) found: (1) adding the
+scarring-stock variable on top of Model C-LTU changes nothing (R&sup2;
+unchanged, p=0.605) — long-term unemployment appears to subsume most of
+what the scarring stock was capturing; (2) adding financial expectations
+and saving rate on top of Model C-LTU still improves fit (R&sup2; 0.920)
+and pushes Greece's residual to -1.75 (rank 19th) — but financial
+expectations' own coefficient weakens from p=0.021 (with headline
+unemployment) to p=0.062 (with long-term unemployment), confirming real
+overlap. Treated that combined result cautiously in the report (a
+directional finding, not a headline number) rather than touting "Greece's
+gap basically disappears" — it's the most heavily stacked spec tested, on
+a smaller sample (n=265), and overclaiming it risked looking engineered
+rather than clean.
+
+**Where it landed**: a new Section 11 subsection ("The crisis left people
+unemployed for years, not months") placed right after the GDP-scarring
+subsection, with a 27-country chart and a compact before/after table
+showing the outlier ranking reshuffle (Cyprus, Luxembourg, Portugal,
+Czechia, and Belgium all now rank above Greece under C-LTU); a new
+highlighted row in the Section 10 scorecard table; a reframed GDP-scarring
+method-aside noting the redundancy once long-term unemployment is
+included; a softened financial-expectations core finding acknowledging the
+overlap; new paragraphs in the executive summary and the Section 12
+"Answer to Question 2" conclusion box; a new Section 4 callout since
+long-term unemployment is now the top row in that correlation table too;
+and a full Methods subsection covering the multicollinearity check,
+coefficient-stability test, and both interaction checks. Also caught and
+fixed the Methods "13 of 17 survive FDR correction" line, stale since the
+P2a round added real wages without updating this count — now correctly
+"15 of 19."
+
+**One real bug caught during chart verification**: the first attempt at
+the 27-country long-term-unemployment chart rendered only 2 of 27 lines.
+Cause: `09_export_report_data.py`'s new `ltu_trajectory` bundle wasn't
+year-floored the way `real_wages_trajectory` is, so its first row (2003)
+only had data for France — and the chart's JS derives its list of
+countries to draw from the *first* row's keys. Fixed by filtering the
+export to `time >= 2009`, the year full 27-country coverage actually
+begins (confirmed directly against the raw fetch, not assumed), matching
+the precedent already set for real wages. Verified afterward that all 27
+lines render.
+
+Tag balance and in-browser chart/table rendering verified before
+publishing. Republished with label "P2b: long-term unemployment as central
+finding".
+
+Remaining under P2, not started: youth unemployment, income inequality
+(Gini/S80:S20), housing tenure. Per the same checkpoint discipline used
+throughout, waiting for the user's go-ahead before starting the next one.

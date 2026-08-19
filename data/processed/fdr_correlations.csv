@@ -1,18 +1,20 @@
 variable,column,r_contemporaneous,p_contemporaneous,n_contemporaneous,r_lag1,p_lag1,n_lag1,p_adj_fdr,survives_fdr
+"Long-term unemployment rate (12mo+, % active pop)",gr_panel_long_term_unemployment,0.933,0.0,16,0.91,0.0,16,0.0,True
 Real household disposable income (idx 2008=100),gr_real_hh_income_idx2008,-0.927,0.0,20,-0.927,0.0,20,0.0,True
-"Severe material & social deprivation, new 13-item (%)",gr_severe_mat_soc_deprivation_new,0.922,0.0001,11,0.943,0.0,10,0.00017,True
+"Severe material & social deprivation, new 13-item (%)",gr_severe_mat_soc_deprivation_new,0.922,0.0001,11,0.943,0.0,10,0.00015833333333333335,True
 "AROP threshold, real terms (idx 2008=100)",gr_arop_threshold_real_idx2008,-0.879,0.0,23,-0.766,0.0,22,0.0,True
 Housing cost overburden (%),gr_housing_cost_overburden,0.857,0.0,22,0.797,0.0,21,0.0,True
 "Severe material deprivation, legacy 9-item (%)",gr_severe_mat_deprivation_legacy,0.825,0.0,18,0.766,0.0002,18,0.0,True
 Real GDP per capita (EUR),gr_real_gdp_pc,-0.824,0.0,23,-0.83,0.0,22,0.0,True
 Households in arrears (%),gr_arrears,0.823,0.0,23,0.72,0.0002,22,0.0,True
-Unemployment rate (%),gr_unemployment_rate,0.805,0.0001,17,0.93,0.0,16,0.00017,True
+Unemployment rate (%),gr_unemployment_rate,0.805,0.0001,17,0.93,0.0,16,0.00015833333333333335,True
 Cannot keep home adequately warm (%),gr_cannot_keep_home_warm,0.798,0.0,23,0.791,0.0,22,0.0,True
+"Real wages, compensation per employee (idx 2008=100)",gr_real_wage_idx2008,-0.785,0.0,22,-0.684,0.0004,22,0.0,True
 Cannot face unexpected expense (%),gr_unexpected_expenses_inability,0.759,0.0,23,0.637,0.0014,22,0.0,True
-Real household consumption per capita (EUR),gr_consumption_pc,-0.699,0.0002,23,-0.731,0.0001,22,0.0003090909090909091,True
-Employment rate 20-64 (%),gr_employment_rate_20_64,-0.691,0.0021,17,-0.861,0.0,16,0.0029749999999999998,True
-"HICP inflation, headline (%)",gr_hicp_headline_rate,-0.536,0.0084,23,-0.524,0.0124,22,0.010984615384615384,True
-"HICP inflation, housing & energy (%)",gr_hicp_housing_energy_rate,-0.312,0.1477,23,-0.262,0.2392,22,0.17935,False
-"HICP inflation, food (%)",gr_hicp_food_rate,-0.206,0.3452,23,-0.242,0.2773,22,0.39122666666666667,False
-"AROP (objective, relative)",gr_arop,0.191,0.3838,23,0.302,0.1715,22,0.40778749999999997,False
+Real household consumption per capita (EUR),gr_consumption_pc,-0.699,0.0002,23,-0.731,0.0001,22,0.0002923076923076923,True
+Employment rate 20-64 (%),gr_employment_rate_20_64,-0.691,0.0021,17,-0.861,0.0,16,0.00285,True
+"HICP inflation, headline (%)",gr_hicp_headline_rate,-0.536,0.0084,23,-0.524,0.0124,22,0.010639999999999998,True
+"HICP inflation, housing & energy (%)",gr_hicp_housing_energy_rate,-0.312,0.1477,23,-0.262,0.2392,22,0.17539375000000001,False
+"HICP inflation, food (%)",gr_hicp_food_rate,-0.206,0.3452,23,-0.242,0.2773,22,0.38581176470588235,False
+"AROP (objective, relative)",gr_arop,0.191,0.3838,23,0.302,0.1715,22,0.4051222222222222,False
 Minimum wage (nominal EUR/month),gr_minimum_wage_eur_month,0.071,0.7472,23,0.212,0.3436,22,0.7472,False
