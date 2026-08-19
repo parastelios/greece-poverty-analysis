@@ -651,6 +651,14 @@
    "p1": 0.0014
   },
   {
+   "variable": "Youth unemployment rate (15-24, % youth labor force)",
+   "r0": 0.71,
+   "p0": 0.002,
+   "n0": 16,
+   "r1": 0.9,
+   "p1": 0.0
+  },
+  {
    "variable": "Real household consumption per capita (EUR)",
    "r0": -0.7,
    "p0": 0.0002,
@@ -803,6 +811,14 @@
    "p_firstdiff": 0.0136,
    "r_detrended": 0.58,
    "p_detrended": 0.0035
+  },
+  {
+   "variable": "Youth unemployment rate (15-24)",
+   "r_level": 0.71,
+   "r_firstdiff": 0.79,
+   "p_firstdiff": 0.0005,
+   "r_detrended": 0.81,
+   "p_detrended": 0.0002
   },
   {
    "variable": "Real household consumption per capita",

@@ -1199,3 +1199,99 @@ finding".
 Remaining under P2, not started: youth unemployment, income inequality
 (Gini/S80:S20), housing tenure. Per the same checkpoint discipline used
 throughout, waiting for the user's go-ahead before starting the next one.
+
+## P2b review: Section 11 reorder (2026-08-21)
+
+Before moving to youth unemployment, user asked for a mini-review of the
+P2b integration: a claim audit (every LTU number cross-checked against the
+underlying data files), a narrative audit, a scorecard audit, and a
+Section 11 flow check. Everything passed except the flow check: the
+intended story ("the economy did not recover, pay did not recover,
+unemployment became long-term, people left, expectations weakened")
+requires real wages to come before long-term unemployment, but the actual
+subsection order had long-term unemployment first (my own earlier design
+choice, reasoning that it should sit immediately next to the GDP
+subsection it reframes). Fixed by swapping the two subsections, adding a
+short bridge sentence, and correcting a "long-term unemployment, next"
+forward-reference in the GDP subsection that assumed the old order.
+Verified both charts still render in full after the move. No other issues
+found. Republished.
+
+## P2c: youth unemployment (2026-08-21)
+
+User's brief: test youth unemployment specifically against long-term
+unemployment and migration, not as a generic hardship variable — the
+hypothesis being youth-specific labor-market scarring and exit pressure,
+not redundant general hardship. Six-point checkpoint scope: feasibility,
+descriptive, correlation (with FDR status), overlap (vs headline
+unemployment, LTU, migration, VIF), model tests (swap and add-to-C-LTU),
+and an explicit interpretation decision tree (strong+distinct → new
+subsection; strong+redundant → Methods/context only; weak → documented and
+dropped). Built as `33_youth_unemployment.py`: Eurostat's `une_rt_a`
+(ages 15&ndash;24, % of youth *labor force*, not youth population — a
+distinct, sometimes-confused Eurostat product), full 27-country coverage,
+2009&ndash;2024.
+
+**Result matched the user's own prior expectation almost exactly.**
+Descriptively real: Greece peaked at 59.2% in 2013, fell to 22.5% by 2024.
+Notably, unlike nearly every other variable in this report, Greece is *not*
+currently the EU's worst on this one — Spain overtook it (26.5%), and
+Greece ranks only 4th-highest. Correlation with subjective poverty is
+genuinely strong (level r=0.71, first-diff r=0.79, detrended r=0.81, all
+survive FDR) but clearly weaker than long-term unemployment's r=0.93/0.92/
+0.86 at every time scale. Overlap is severe: r=0.99 with both headline
+unemployment and long-term unemployment for Greece's own series, r=0.92
+and r=0.85 respectively panel-wide.
+
+**Model tests were decisive.** Replacing headline unemployment with youth
+unemployment in Model C leaves Greece the largest out-of-sample outlier in
+the EU, barely moved from baseline (R&sup2; 0.899 vs 0.892, gap 10.8 vs
+11.6, rank unchanged at 1st of 27) — nowhere near long-term unemployment's
+swap result (R&sup2; 0.914, gap 3.9, rank 6th). Added on top of Model
+C-LTU as a robustness check, it changes almost nothing (R&sup2; unchanged
+at 0.914) and its own coefficient is not statistically significant
+(p=0.815, VIF 4.7) — once long-term unemployment is already in the model,
+youth unemployment adds no further independent explanatory power.
+**Not added to the scorecard.**
+
+**One reconciliation caught before reporting back:** the checkpoint
+script's own quick detrended-correlation calculation (r=0.93) didn't match
+the official pipeline's number (r=0.81) computed via
+`10_robustness_correlations.py`. Traced to a real methodological
+difference, not a bug: the checkpoint script detrended subjective poverty
+using only the 16 years where youth-unemployment data exists, while the
+pipeline's `detrend()` function fits subjective poverty's trend line over
+its full 23-year series and evaluates it at the overlapping years — the
+correct, consistent-with-every-other-variable approach. Used the pipeline
+number in the writeup and in the report, not the checkpoint script's.
+
+**Per the user's decision tree, this landed as "strong but redundant with
+LTU"** — not a new scorecard model, and deliberately not given its own
+Section 11 subsection with a chart (that would overstate its independent
+contribution sitting next to long-term unemployment). Instead: (1) added
+as a Section 4 correlation/robustness table row using the official
+pipeline numbers, confirmed to survive FDR correction (16 of 20 variables
+now survive, up from 15 of 19); (2) a full Methods checkpoint entry
+("Youth unemployment: checked, strongly correlated, and not a scorecard
+model") covering the denominator clarification, correlation, overlap, and
+model-test numbers; (3) a short supporting-context note added to the
+*existing* migration subsection, using close to the user's own suggested
+wording — youth unemployment's 2013 peak fell within a year of the 2012
+emigration peak, offered as a descriptive, non-causal push-factor
+connection. No new chart, no new subsection.
+
+As the user put it: this is a useful result precisely because it shows the
+report's discipline — not every strongly-correlated variable becomes a
+headline finding when it's redundant with one already in the model.
+Long-term unemployment remains the cleaner structural labor-market scar.
+
+Tag balance and in-browser rendering verified before publishing.
+Republished.
+
+Remaining under P2, not started: income inequality (Gini/S80:S20), housing
+tenure, and a new item the user proposed mid-session — P2e: wage-adjusted
+cost-of-living pressure (Eurostat price-level indices vs. the real-wages
+work already done, sequenced after labor-market items and before housing
+tenure; see `docs/todo_plan.md` for the full scoping note). Per the same
+checkpoint discipline used throughout, waiting for the user's go-ahead
+before starting the next one.

@@ -75,6 +75,7 @@ Scripts are numbered in dependency order. Run all from inside `scripts/`:
 | 30 | `30_real_wages.py` | Real wage index (2008=100), 27-country comparison + correlation test |
 | 31 | `31_long_term_unemployment.py` | Long-term unemployment rate, correlation + multicollinearity + Model C feasibility test |
 | 32 | `32_ltu_model_test.py` | Full model battery: C-LTU scorecard row, 27-country LOO ranking, scarring/expectations interaction checks |
+| 33 | `33_youth_unemployment.py` | Youth unemployment: feasibility, correlation, overlap with LTU/migration, model tests (swap and add-to-C-LTU) |
 | — | `09_export_report_data.py` again | Re-run to pick up any new columns before... |
 | — | `inject_data.py` | ...embedding the refreshed JSON into `output/report.html` |
 

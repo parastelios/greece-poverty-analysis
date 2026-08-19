@@ -115,11 +115,11 @@ corroboration — none are merged into any model or panel.
   literature-backed narrative context (Section 11 and the literature
   section), using the three non-Eurostat sources above. A future version
   that expands beyond Eurostat's own API could revisit this.
-- Youth unemployment, income inequality (Gini/S80:S20), housing tenure:
-  named in `docs/project_description.md` but not yet fetched — see
+- Income inequality (Gini/S80:S20), housing tenure: named in
+  `docs/project_description.md` but not yet fetched — see
   `docs/publication_strategy.md` and `docs/todo_plan.md` (P2) for the
-  remaining scope. Real wages and long-term unemployment (below) have since
-  been fetched and integrated.
+  remaining scope. Real wages, long-term unemployment, and youth
+  unemployment (below) have since been fetched and integrated.
 
 ## P2b addition (long-term unemployment)
 
@@ -155,3 +155,27 @@ against the existing panel predictors (PPS income, real GDP, scarring stock
 before deciding not to add it to the scorecard; see report Methods
 ("Real wages: source, method, and why it isn't a scorecard model") for the
 full test result.
+
+## P2c addition (youth unemployment)
+
+| Dataset code | What it is | Key params | Fetched by |
+|---|---|---|---|
+| `une_rt_a` | Youth unemployment rate (15-24, % of youth labor force) | `sex=T`, `age=Y15-24`, `unit=PC_ACT` | `33_youth_unemployment.py` |
+
+Full 27-country coverage, 2009&ndash;2024. Note the denominator: this is
+the share of the youth *labor force* unemployed, not the share of the
+youth *population* (Eurostat's separate `yth_empl_090` product, not used
+here). Strongly correlated with subjective poverty on its own (level
+r=0.71, first-difference r=0.79, detrended r=0.81 — survives FDR
+correction) but overlaps so heavily with long-term unemployment (r=0.85
+panel-wide, r=0.99 for Greece's own series) that it adds no independent
+explanatory power once long-term unemployment is already in the
+cross-country model: replacing headline unemployment with youth
+unemployment alone leaves Greece the largest unexplained outlier
+(R&sup2; 0.899, gap 10.8, rank unchanged at 1st of 27), and adding it on
+top of Model C-LTU changes almost nothing (its own coefficient p=0.815).
+**Not added to the scorecard as a result.** Kept as supporting descriptive
+context in the migration/brain-drain subsection (its 2013 peak fell
+within a year of the 2012 emigration peak) and documented in full in
+report Methods ("Youth unemployment: checked, strongly correlated, and
+not a scorecard model").

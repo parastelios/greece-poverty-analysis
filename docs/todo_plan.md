@@ -106,7 +106,6 @@ literature integrated directly into the report in the same session
       and a p-value export rounding bug found during verification. See
       `docs/publication_strategy.md`, "P2a: real wages" for the full log.
       Republished.
-- [ ] Youth unemployment
 - [x] Long-term unemployment — fetched (`31_long_term_unemployment.py`),
       became a scorecard-changing finding, not just descriptive evidence.
       Model C-LTU (long-term unemployment replaces headline unemployment)
@@ -120,8 +119,36 @@ literature integrated directly into the report in the same session
       interaction checks against the scarring-stock and
       financial-expectations variables. See `docs/publication_strategy.md`,
       "P2b: long-term unemployment" for the full log. Republished.
+- [x] Youth unemployment — fetched (`33_youth_unemployment.py`), checked
+      against LTU and migration specifically per user's brief. Strongly
+      correlated with subjective poverty on its own (level r=0.71,
+      first-diff r=0.79, detrended r=0.81, survives FDR) but redundant with
+      long-term unemployment once both are tested together (replacing
+      headline unemployment with youth unemployment alone leaves Greece
+      1st/worst; added on top of Model C-LTU, its coefficient is not
+      significant, p=0.815). **Not added to the scorecard.** Integrated as
+      a Section 4 correlation-table row, a Methods checkpoint entry, and a
+      short supporting-context note in the migration subsection (youth
+      unemployment's 2013 peak fell within a year of the 2012 emigration
+      peak) — deliberately no standalone chart/subsection, since that would
+      overstate its contribution next to long-term unemployment. See
+      `docs/publication_strategy.md`, "P2c: youth unemployment" for the
+      full log. Republished.
 - [ ] Inequality (Gini or S80:S20)
 - [ ] Housing tenure, if feasible
+- [ ] P2e: wage-adjusted cost-of-living pressure (user proposal,
+      2026-08-21) — not "are Greek supermarket prices high" but "how
+      expensive are essential goods/services relative to Greek wages,"
+      using Eurostat price-level indices (`prc_ppp_ind`, comparative price
+      levels by COICOP category: food, housing, transport, communication,
+      restaurants) set against the real-wages work already done (P2a) and
+      HICP category inflation (`prc_hicp_aind`, already partly used
+      elsewhere in this project) for the "did prices rise while wages
+      stayed depressed" angle. Candidate framing: a "Greek paycheck basket"
+      index (essentials price level ÷ wage level) vs. the EU and vs.
+      countries with similar wage levels. User's suggested sequencing:
+      after youth/long-term unemployment, before housing tenure — queued
+      here accordingly, not yet started.
 
 ## P3 — Integrate into report
 

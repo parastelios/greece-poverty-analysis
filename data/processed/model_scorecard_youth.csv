@@ -1,0 +1,5 @@
+model,label,n_countries,n_obs,r2,gr_insample,gr_loo,gr_rank
+C_baseline,C: headline unemployment (baseline),27,267,0.892,2.23,11.59,1/27
+C_LTU_swap,C-LTU: long-term unemployment replaces headline,27,267,0.914,1.29,3.86,6/27
+C_youth_swap,C-youth: youth unemployment replaces headline,27,267,0.899,2.04,10.79,1/27
+C_LTU_plus_youth,C-LTU + youth unemployment (robustness: does youth add anything on top of LTU?),27,267,0.914,1.27,3.54,6/27
