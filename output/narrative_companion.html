@@ -1,0 +1,536 @@
+<title>The Greek Poverty Paradox</title>
+<style>
+:root {
+  color-scheme: light;
+  --ground:       #E8E4D9;
+  --surface:      #F2EFE6;
+  --surface-2:    #EDE9DC;
+  --ink:          #1D1E1B;
+  --ink-soft:     #55524A;
+  --ink-mute:     #8B887D;
+  --accent:       #2F5D50;
+  --accent-ink:   #24463C;
+  --accent-soft:  rgba(47,93,80,0.11);
+  --accent-2:     #8B4A3A;
+  --accent-2-soft:rgba(139,74,58,0.12);
+  --rule:         #D3CEC0;
+  --border:       rgba(29,30,27,0.13);
+  --shadow:       rgba(29,30,27,0.08);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --ground:       #161512;
+    --surface:      #201F1A;
+    --surface-2:    #262420;
+    --ink:          #ECE7D9;
+    --ink-soft:     #B7B2A0;
+    --ink-mute:     #837D6D;
+    --accent:       #5FA08C;
+    --accent-ink:   #8FC4B3;
+    --accent-soft:  rgba(95,160,140,0.16);
+    --accent-2:     #C97A64;
+    --accent-2-soft:rgba(201,122,100,0.16);
+    --rule:         #34322A;
+    --border:       rgba(236,231,217,0.14);
+    --shadow:       rgba(0,0,0,0.35);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --ground:       #161512;
+  --surface:      #201F1A;
+  --surface-2:    #262420;
+  --ink:          #ECE7D9;
+  --ink-soft:     #B7B2A0;
+  --ink-mute:     #837D6D;
+  --accent:       #5FA08C;
+  --accent-ink:   #8FC4B3;
+  --accent-soft:  rgba(95,160,140,0.16);
+  --accent-2:     #C97A64;
+  --accent-2-soft:rgba(201,122,100,0.16);
+  --rule:         #34322A;
+  --border:       rgba(236,231,217,0.14);
+  --shadow:       rgba(0,0,0,0.35);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: var(--ground); }
+body {
+  font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif;
+  color: var(--ink);
+  background: var(--ground);
+  -webkit-font-smoothing: antialiased;
+}
+.sans { font-family: -apple-system, "Segoe UI", system-ui, sans-serif; }
+.num  { font-family: ui-monospace, "SF Mono", "Cascadia Code", Menlo, monospace; font-variant-numeric: tabular-nums; }
+
+.page { max-width: 720px; margin: 0 auto; padding: 64px 26px 120px; }
+
+/* ---------- masthead ---------- */
+.masthead { margin-bottom: 56px; }
+.eyebrow {
+  font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+  font-size: 11.5px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--accent-ink); margin: 0 0 22px; display: flex; align-items: center; gap: 10px;
+}
+.eyebrow::before { content: ""; width: 26px; height: 1px; background: var(--accent); display: inline-block; }
+h1.title {
+  font-size: clamp(38px, 7vw, 58px); line-height: 1.04; font-weight: 700; letter-spacing: -0.015em;
+  margin: 0 0 20px; text-wrap: balance;
+}
+p.subtitle {
+  font-size: 19px; line-height: 1.55; color: var(--ink-soft); max-width: 58ch; margin: 0;
+  font-style: italic;
+}
+.masthead-meta {
+  font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+  font-size: 12px; color: var(--ink-mute); margin-top: 26px; display: flex; gap: 18px; flex-wrap: wrap;
+}
+
+/* ---------- crack divider (thematic: fault line / scar) ---------- */
+.crack { width: 100%; height: 22px; margin: 58px 0; display: block; overflow: visible; }
+.crack path { fill: none; stroke: var(--rule); stroke-width: 1.4; }
+.crack.accent path { stroke: var(--accent); opacity: 0.55; }
+
+/* ---------- narrative type ---------- */
+.chapter { margin: 0 0 8px; }
+.chapter-no {
+  font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+  font-size: 12.5px; font-weight: 700; letter-spacing: 0.1em; color: var(--accent-ink);
+  margin: 0 0 10px; text-transform: uppercase;
+}
+h2.chapter-title {
+  font-size: clamp(26px, 4.4vw, 34px); line-height: 1.15; font-weight: 700; letter-spacing: -0.01em;
+  margin: 0 0 22px; text-wrap: balance;
+}
+.lede {
+  font-size: 20px; line-height: 1.5; color: var(--ink); margin: 0 0 22px; max-width: 34ch;
+  font-style: italic; font-weight: 400;
+}
+article p {
+  font-size: 17.5px; line-height: 1.72; color: var(--ink); max-width: 62ch; margin: 0 0 20px;
+}
+article p.tight { max-width: 62ch; }
+article b { color: var(--ink); font-weight: 700; }
+article i.term { font-style: italic; color: var(--accent-ink); }
+
+/* ---------- pull stat ---------- */
+.pull {
+  display: flex; align-items: baseline; gap: 18px; margin: 34px 0; padding: 22px 0;
+  border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+}
+.pull .figure {
+  font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+  font-size: clamp(40px, 8vw, 56px); font-weight: 700; letter-spacing: -0.02em; color: var(--accent);
+  line-height: 1; flex: none;
+}
+.pull .cap { font-size: 14.5px; line-height: 1.5; color: var(--ink-soft); max-width: 34ch; }
+.pull .cap b { color: var(--ink); }
+
+/* ---------- method note ---------- */
+.method {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 3px;
+  padding: 20px 24px; margin: 8px 0 30px; border-left: 3px solid var(--accent);
+}
+.method .method-label {
+  font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+  font-size: 10.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--accent-ink); margin: 0 0 10px;
+}
+.method p {
+  font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+  font-size: 13.5px; line-height: 1.62; color: var(--ink-soft); max-width: none; margin: 0 0 10px;
+}
+.method p:last-child { margin-bottom: 0; }
+.method b { color: var(--ink); font-weight: 600; }
+.method .num { color: var(--accent-ink); }
+
+/* ---------- proof table ---------- */
+.proof {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 26px;
+  margin: 30px 0;
+}
+.proof-label {
+  font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--accent-ink); margin: 0 0 4px;
+}
+.proof-title { font-size: 19px; font-weight: 700; margin: 0 0 4px; }
+.proof-sub { font-family: -apple-system, "Segoe UI", system-ui, sans-serif; font-size: 12.5px; color: var(--ink-mute); margin: 0 0 18px; }
+.proof-scroll { overflow-x: auto; }
+table.proof-table {
+  width: 100%; border-collapse: collapse; font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+  font-size: 13px; min-width: 560px;
+}
+table.proof-table th, table.proof-table td {
+  text-align: right; padding: 9px 12px; border-bottom: 1px solid var(--rule);
+  font-variant-numeric: tabular-nums;
+}
+table.proof-table th:first-child, table.proof-table td:first-child { text-align: left; font-variant-numeric: normal; }
+table.proof-table th { color: var(--ink-mute); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.03em; }
+table.proof-table tr.hl td { color: var(--accent-ink); font-weight: 700; background: var(--accent-soft); }
+.proof-foot { font-family: -apple-system, "Segoe UI", system-ui, sans-serif; font-size: 12px; color: var(--ink-mute); margin-top: 14px; line-height: 1.5; }
+
+/* ---------- small data table (within narrative) ---------- */
+.mini-scroll { overflow-x: auto; margin: 22px 0; }
+table.mini { width: 100%; border-collapse: collapse; font-family: -apple-system, "Segoe UI", system-ui, sans-serif; font-size: 13px; min-width: 480px; }
+table.mini th, table.mini td { text-align: right; padding: 8px 12px; border-bottom: 1px solid var(--rule); font-variant-numeric: tabular-nums; }
+table.mini th:first-child, table.mini td:first-child { text-align: left; font-variant-numeric: normal; }
+table.mini th { color: var(--ink-mute); font-weight: 600; font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.03em; }
+table.mini tr.hl td { color: var(--accent-ink); font-weight: 700; }
+
+/* ---------- landing / thesis ---------- */
+.landing {
+  background: var(--accent-soft); border-radius: 4px; padding: 34px 30px; margin: 20px 0 34px;
+  border-left: 3px solid var(--accent);
+}
+.landing p { font-size: 19px; line-height: 1.6; margin: 0 0 16px; }
+.landing p:last-child { margin-bottom: 0; }
+.landing b { color: var(--accent-ink); }
+
+/* ---------- what-wasnt-it list ---------- */
+.checked-list { display: flex; flex-direction: column; gap: 14px; margin: 24px 0 30px; }
+.checked-item {
+  display: flex; gap: 14px; align-items: flex-start; padding: 14px 16px;
+  background: var(--surface); border-radius: 3px; border: 1px solid var(--border);
+}
+.checked-mark {
+  font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+  font-size: 11px; font-weight: 700; color: var(--ink-mute); letter-spacing: 0.05em;
+  border: 1px solid var(--rule); border-radius: 3px; padding: 2px 6px; flex: none; margin-top: 2px;
+}
+.checked-item p { font-family: -apple-system, "Segoe UI", system-ui, sans-serif; font-size: 14px; line-height: 1.55; color: var(--ink-soft); margin: 0; max-width: none; }
+.checked-item p b { color: var(--ink); }
+
+/* ---------- closing / colophon ---------- */
+.colophon {
+  margin-top: 64px; padding-top: 26px; border-top: 1px solid var(--rule);
+  font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+  font-size: 12.5px; color: var(--ink-mute); line-height: 1.7;
+}
+.colophon a { color: var(--accent-ink); text-decoration: none; border-bottom: 1px solid var(--accent); }
+.colophon a:hover { opacity: 0.75; }
+
+@media (max-width: 560px) {
+  .pull { flex-direction: column; gap: 6px; }
+  table.proof-table, table.mini { min-width: 0; }
+}
+</style>
+
+<div class="page">
+
+  <div class="masthead">
+    <p class="eyebrow">A narrative companion &middot; EU-SILC / Eurostat, 2003&ndash;2025</p>
+    <h1 class="title">The Greek Poverty Paradox</h1>
+    <p class="subtitle">Why Greece's official poverty rate misses part of the story &mdash; and why Greek pessimism is not just mood.</p>
+    <p class="masthead-meta">
+      <span>11 chapters</span>
+      <span>Companion to the full technical report</span>
+      <span>Data vintage 2026-08-21</span>
+    </p>
+  </div>
+
+  <article>
+
+    <p>Two out of three Greek households say they cannot make ends meet. That is the highest share anywhere in the European Union &mdash; more than triple the EU average &mdash; and it has been true, without a single exception, every year since 2011.</p>
+
+    <p>Ask Greece's official poverty statistics instead, and the picture looks almost ordinary. The country's poverty rate ranks 4th-highest of 27 EU states: elevated, not extreme. The kind of number that puts a country somewhere in the upper-middle of a hardship ranking, not standing alone at the very top of it.</p>
+
+    <p>Two measures. One country. A thirty-nine-point gap between how bad Greece's poverty rate says things are, and how bad Greek households say things feel.</p>
+
+    <p>It would be easy to conclude that one of these numbers must be wrong &mdash; exaggerated pessimism on one side, or a blind statistic on the other. That is the wrong instinct. <b>They are measuring different things.</b> The official rate measures relative income within Greece: how far a household's income sits below the middle of the pack, in whatever year you happen to be counting. Households, when Eurostat asks them directly, are answering a different, broader question &mdash; whether life feels affordable and stable. Nothing requires those two answers to move together. This is the story of what happens when they stop.</p>
+
+    <div class="pull">
+      <div class="figure num">39.7pt</div>
+      <div class="cap">The gap between Greece's felt and measured poverty in 2025 &mdash; the largest of any EU country in either direction. The next-largest gap, Bulgaria's, is <b>7.1 points.</b></div>
+    </div>
+
+    <svg class="crack" viewBox="0 0 720 22" preserveAspectRatio="none"><path d="M0,11 L58,9 L96,13 L140,8 L189,14 L241,10 L288,15 L339,9 L392,12 L438,8 L487,13 L541,10 L588,14 L636,9 L680,12 L720,10" /></svg>
+
+    <div class="chapter">
+      <p class="chapter-no">Chapter 1</p>
+      <h2 class="chapter-title">A ruler that shrank</h2>
+    </div>
+    <p class="lede">The official poverty line isn't fixed. It moves with the very economy it's supposed to be measuring.</p>
+
+    <p>Here is the quiet flaw at the center of the EU's standard poverty measure: it is not an income level. It is a percentage &mdash; 60% of whatever the national median income happens to be, <i class="term">that year</i>. In an ordinary economy, where incomes drift up slowly and roughly together, that is a reasonable way to define "poor relative to your neighbors."</p>
+
+    <p>Greece's economy, starting in 2010, was not ordinary. Incomes across the whole country fell together, hard and fast. And when the median falls, the poverty line falls with it &mdash; because the line is defined <i class="term">as</i> a share of the median. A household earning exactly what it earned five years earlier could find itself reclassified from "poor" to "not poor," not because anything in its life had improved, but because the ruler measuring it had shrunk to match the collapse around it.</p>
+
+    <p>So the official poverty rate, through the worst years of the Greek debt crisis, barely moved. Not because Greek households weren't getting poorer &mdash; they were, dramatically &mdash; but because the yardstick was falling with them, always re-centering on a poorer and poorer "normal."</p>
+
+    <p>What happens if you refuse to let the ruler move? Hold the poverty line to where it stood in 2008, adjusted only for inflation &mdash; not for how far the whole economy had fallen &mdash; and measured poverty roughly <b>doubles</b> during the crisis, from about 20% to a peak near 41%. That climb tracks almost exactly what Greek households were telling surveyors about their own lives, in real time, throughout those years.</p>
+
+    <div class="method">
+      <p class="method-label">Method note</p>
+      <p>Eurostat's own fixed-benchmark poverty product is anchored to 2019, not 2008, which misses the crisis years entirely. This report reconstructs an approximate 2008-anchored series: each year, Eurostat publishes the poverty rate at four income thresholds (40/50/60/70% of that year's median); fitting a probit-linear curve through those four points (R&sup2;&gt;0.99 every year) and evaluating it at the inflation-adjusted 2008 threshold recovers an estimate of "what share of people would fall below a 2008-level income."</p>
+      <p>The same method, applied to Eurostat's <i>real</i> 2019-anchored series and checked against the real published numbers for 2019&ndash;2025, is accurate to <span class="num">1.2 points</span> on average (worst case 3.4 points) with a small, consistent upward bias and <span class="num">r=0.89</span> correlation to the true series. An independent academic reconstruction using real household microdata (Andriopoulou, Kanavitsa &amp; Tsakloglou, 2019/2020) finds an even larger crisis-era effect than this approximation does &mdash; <span class="num">48%</span> of the population poor by a 2007-anchor for income-year 2013, versus this report's <span class="num">40.6%</span> for the aligned survey-year 2014.</p>
+    </div>
+
+    <p>A second Eurostat measure makes the same point from an entirely different angle, with no approximation involved at all. <i class="term">AROPE</i> &mdash; "at risk of poverty or social exclusion" &mdash; counts anyone who is either income-poor, or severely deprived of basic goods, or living in a very-low-work household. Two of those three conditions have nothing to do with a shifting median. AROPE tracks Greek subjective poverty far more closely than the official rate does, moving from 28% in 2008 to a peak of 36% in 2014 &mdash; a real, officially-measured rise, not a reconstruction.</p>
+
+    <p>Put the arithmetic fix and the official broader measure side by side, and a real, sizeable part of the Greek paradox dissolves. It was never entirely a mystery of national temperament. Part of it was always just a ruler that shrank at the worst possible moment.</p>
+
+    <svg class="crack" viewBox="0 0 720 22" preserveAspectRatio="none"><path d="M0,12 L44,8 L92,15 L131,9 L178,13 L224,8 L279,14 L326,10 L371,12 L418,8 L466,14 L515,9 L562,13 L611,10 L658,12 L720,11" /></svg>
+
+    <div class="chapter">
+      <p class="chapter-no">Chapter 2</p>
+      <h2 class="chapter-title">What the ruler still doesn't catch</h2>
+    </div>
+    <p class="lede">Fix the arithmetic, and a real gap survives anyway.</p>
+
+    <p>If the whole paradox were arithmetic, the story would end here: correct the yardstick, watch the mystery disappear. It doesn't. Compare Greece to other EU countries with similarly rough unemployment, income, and material hardship &mdash; a like-for-like comparison, not a Greece-only correction &mdash; and Greek households still report meaningfully more difficulty than those shared conditions alone would predict.</p>
+
+    <p>Add housing costs and cash-flow strain (missed bills, no buffer for a surprise expense) to that comparison, and most of the remaining gap closes &mdash; <i>if</i> the model is allowed to see Greece's own data while it learns. Test it more honestly &mdash; predict Greece using a model trained only on the other twenty-six countries, having never seen a single Greek data point &mdash; and the gap survives. Under every version of that stricter test, Greece is the hardest country in the European Union to predict.</p>
+
+    <div class="method">
+      <p class="method-label">Method note</p>
+      <p>In-sample gap (model sees Greece's own data): falls from <span class="num">15.1</span> points (basic comparison: unemployment, income, deprivation, official poverty rate) to <span class="num">2.2</span> points once housing, arrears, and unexpected-expense capacity are added. Out-of-sample gap (leave-Greece-out, stricter test): <span class="num">25.6 &rarr; 35.5 &rarr; 11.6</span> points across the same three steps &mdash; housing alone makes the out-of-sample prediction <i>worse</i>, not better, before the fuller comparison brings it back down. Greece ranks 1st of 27 (largest gap) under every specification.</p>
+    </div>
+
+    <p>That remaining 11.6-point gap is the real subject of everything that follows. Not a rounding error, not an artifact of a badly-chosen comparison year &mdash; a genuine, quantified residual that the standard toolkit of income, unemployment, and material hardship cannot explain. Something else is going on. The rest of this piece is that something else, told as what it actually is: not one hidden variable, but a sequence of scars that never fully closed.</p>
+
+    <svg class="crack accent" viewBox="0 0 720 22" preserveAspectRatio="none"><path d="M0,10 L60,14 L110,7 L165,13 L210,9 L262,15 L312,8 L365,12 L415,9 L468,14 L518,10 L570,13 L622,8 L670,12 L720,10" /></svg>
+
+    <div class="chapter">
+      <p class="chapter-no">Chapter 3</p>
+      <h2 class="chapter-title">The economy that didn't come back</h2>
+    </div>
+    <p class="lede">Most countries that fell, got back up. Greece kept falling for twelve years.</p>
+
+    <p>Almost every EU country that suffered a genuine crisis-era downturn recovered from it within a few years &mdash; a median of three, and none took longer than seven. Greece's worst decline ran from its 2008 peak all the way to a trough in <b>2020</b>: a 26.9% collapse that took twelve years just to stop falling, let alone climb back. As of the most recent data, it still hasn't: Greek real GDP per capita remains 11.2% below its own all-time high, sixteen years on.</p>
+
+    <p>Two smaller countries complicate the "only" in that sentence, and it is worth naming them rather than smoothing them away: Finland came within 0.8% of its own 2008 peak in 2022, then slipped back below it; Luxembourg currently sits 6.1% below a peak of its own. Neither changes the headline. Luxembourg's dip is small, recent, and still unfolding in an unusually wealthy economy &mdash; a different kind of story from a sixteen-year-old unhealed crisis. By scale and by duration, Greece's decline is still, by any reasonable measure, unresolved in a way no other EU economy's is.</p>
+
+    <div class="mini-scroll">
+      <table class="mini">
+        <thead><tr><th>Country</th><th>% below its own all-time high, 2024</th></tr></thead>
+        <tbody>
+          <tr class="hl"><td>Greece</td><td>11.2%</td></tr>
+          <tr><td>Estonia</td><td>7.1%</td></tr>
+          <tr><td>Luxembourg</td><td>6.1%</td></tr>
+          <tr><td>Ireland</td><td>3.3%</td></tr>
+          <tr><td>Austria</td><td>2.8%</td></tr>
+          <tr><td>All other EU countries (18 of 27)</td><td>0.0&ndash;2.5%, mostly fully recovered</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>This is where the report's real argument begins to take shape. Not "Greeks compare themselves to an abstract European average and feel bad about it" &mdash; something more specific and more falsifiable: the economy itself never gave most households their old life back. Everything in the chapters that follow is a different, more concrete way of watching that same failure to heal.</p>
+
+    <svg class="crack" viewBox="0 0 720 22" preserveAspectRatio="none"><path d="M0,9 L52,13 L100,8 L148,14 L196,9 L248,12 L296,8 L344,14 L392,10 L444,13 L492,8 L540,12 L588,9 L636,13 L684,10 L720,11" /></svg>
+
+    <div class="chapter">
+      <p class="chapter-no">Chapter 4</p>
+      <h2 class="chapter-title">A smaller paycheck</h2>
+    </div>
+    <p class="lede">GDP is an abstraction. The number on a payslip isn't.</p>
+
+    <p>Real GDP per capita is an economist's number &mdash; a useful one, but not something any household actually receives in an envelope. The paycheck is. And the paycheck tells the same story a second time, more directly.</p>
+
+    <div class="pull">
+      <div class="figure num">&minus;31.8%</div>
+      <div class="cap">How far below their 2008 level Greek <b>real wages</b> still sat in 2024 &mdash; the largest shortfall of any EU country, and not close. Hungary is a distant second at &minus;25.8%.</div>
+    </div>
+
+    <p>Real wages &mdash; compensation per employee, adjusted for inflation &mdash; peaked in Greece in 2009, one year after GDP, before the crisis fully caught up with pay. They bottomed out in 2023, just one year before the most recent data. Every other EU country has either fully recovered its 2008 real wage level or grown well past it, some by enormous margins: Bulgaria's real wages now sit 166% above their 2008 level; Lithuania's, 51% above. Greece is not merely lagging a recovering pack. It is the only EU country whose paycheck never really came back.</p>
+
+    <div class="method">
+      <p class="method-label">Method note</p>
+      <p>Built from nominal compensation per employee (Eurostat <code class="num">nama_10_lp_ulc</code>), deflated by the national HICP price index, rebased so each country's own 2008 value equals 100. At the level, real wages track subjective poverty about as strongly as any variable in this report (<span class="num">r=&minus;0.79</span>) &mdash; but on year-to-year changes that relationship is weak and not statistically significant, the same pattern this report flags for several level-only variables. Tested directly as a candidate addition to the main cross-country model: it does not add independent explanatory power once existing predictors are accounted for, so it is kept here as strong descriptive evidence, not folded into the model.</p>
+    </div>
+
+    <svg class="crack" viewBox="0 0 720 22" preserveAspectRatio="none"><path d="M0,13 L46,8 L94,14 L142,9 L190,13 L238,8 L290,15 L338,10 L386,12 L434,8 L482,14 L530,9 L578,13 L626,10 L674,12 L720,11" /></svg>
+
+    <div class="chapter">
+      <p class="chapter-no">Chapter 5</p>
+      <h2 class="chapter-title">Ordinary things, extraordinary weight</h2>
+    </div>
+    <p class="lede">Greece is not an expensive country. That is exactly the point.</p>
+
+    <p>Here is a number that seems, at first, to contradict everything so far: on raw price level, Greece is not one of the EU's expensive countries. Its overall cost of living ranks only 18th-highest of 27 &mdash; below the EU average, not above it. Denmark is expensive. Ireland is expensive. Greece, by the numbers a tourist would recognize, is not.</p>
+
+    <p>But a price level only tells you what things cost. It says nothing about what a household can afford to spend. And once you divide those Greek prices by a Greek paycheck &mdash; comparing what a euro of Greek wages actually buys, against what a euro of the EU-average wage buys &mdash; the ranking does not just shift. It <b>inverts completely.</b></p>
+
+    <div class="pull">
+      <div class="figure num">18th &rarr; 1st</div>
+      <div class="cap">Greece's rank among 27 EU countries on overall consumption: <b>18th-most-expensive</b> by raw price level, but <b>1st</b> for wage-adjusted price pressure &mdash; the highest in the EU.</div>
+    </div>
+
+    <p>The reason is simple, and stark: Greek wages sit at just 48.3% of the EU average &mdash; the 4th-lowest in the Union. Prices don't need to be high for the squeeze to be severe when the paycheck behind them is this small. The pattern holds category by category, not just in the aggregate &mdash; and it holds hardest in exactly the categories where Greek prices look, on paper, unremarkable.</p>
+
+    <div class="mini-scroll">
+      <table class="mini">
+        <thead><tr><th>Category</th><th>Raw price (EU=100)</th><th>Wage-adjusted pressure</th><th>EU rank, pressure</th></tr></thead>
+        <tbody>
+          <tr class="hl"><td>Overall consumption</td><td>83.6</td><td>173.1</td><td>1st of 27</td></tr>
+          <tr><td>Food &amp; beverages</td><td>106.2</td><td>219.9</td><td>2nd of 27</td></tr>
+          <tr><td>Housing, water, electricity, gas</td><td>73.5</td><td>152.2</td><td>2nd of 27</td></tr>
+          <tr><td>Transport</td><td>89.7</td><td>185.7</td><td>1st of 27</td></tr>
+          <tr><td>Restaurants &amp; accommodation</td><td>86.6</td><td>179.3</td><td>1st of 27</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>And the two directions of that squeeze &mdash; the shrinking paycheck, the rising bill &mdash; have not stood still since 2008. They have moved apart. Greek nominal wages, unadjusted for inflation, sit 13.1% below their 2008 level even today. Over that same span, nominal food prices rose 41.6%. Housing and energy rose 33.6%. Greek households do not need to imagine hardship to feel squeezed. The receipt grew while the paycheck shrank, in absolute euros, at the same time.</p>
+
+    <div class="method">
+      <p class="method-label">Method note &mdash; a units clarification</p>
+      <p>Two different comparisons appear across this section and the previous one, and they measure different things: real wages (Chapter 4) are <i>inflation-adjusted purchasing power</i>, tracked against Greece's own 2008 level over time. Wage-adjusted price pressure here is a different, <i>nominal</i> comparison &mdash; actual euro wages against actual euro prices, benchmarked against the rest of the EU rather than against Greece's own past. Both are correct; they answer different questions. This is a comparative price-level index (Eurostat's harmonized category comparisons), not an actual household-budget survey or real receipts &mdash; and the category-level detail has full 27-country coverage for only 2022&ndash;2024, too short a window to support a formal cross-country model test. It is reported here as strong descriptive evidence, deliberately labeled "price pressure," not "affordability," since it is a transparent ratio of two published indices rather than a constructed cost-of-living methodology of its own.</p>
+    </div>
+
+    <svg class="crack" viewBox="0 0 720 22" preserveAspectRatio="none"><path d="M0,11 L48,7 L96,14 L144,9 L192,13 L240,8 L288,14 L336,10 L384,12 L432,8 L480,14 L528,9 L576,13 L624,10 L672,12 L720,11" /></svg>
+
+    <div class="chapter">
+      <p class="chapter-no">Chapter 6</p>
+      <h2 class="chapter-title">No longer safe even owning it</h2>
+    </div>
+    <p class="lede">In most of Europe, paying off your mortgage means the housing squeeze is over. Not here.</p>
+
+    <p>In most EU countries, owning a home outright is close to a guarantee: pay off the mortgage, and housing largely disappears as a source of financial strain. That protection is one of the more dependable patterns in European household economics &mdash; which is exactly what makes Greece's version of it so telling.</p>
+
+    <div class="pull">
+      <div class="figure num">25.7%</div>
+      <div class="cap">Share of Greek <b>mortgage-free homeowners</b> still overburdened by housing costs in 2024 &mdash; the highest in the EU, and almost <b>twice</b> the next-highest country, Sweden (14.0%). The typical EU country: 1&ndash;7%.</div>
+    </div>
+
+    <p>Renters are still worse off in absolute terms &mdash; 37.4% of Greek market-rate renters are overburdened, against 25.7% of mortgage-free owners. But look at the <i class="term">size of that gap</i>, not just the two numbers, and something more unusual appears: Greece's owner-renter divide is one of the narrowest in the EU, ranking 22nd of 27 on the size of the difference. Not because renters are spared &mdash; they aren't &mdash; but because ownership, which shields households almost everywhere else in Europe, barely shields them here. Greece's housing problem does not stop at the renter-owner line the way it does elsewhere. It reaches people who, on paper, should be protected.</p>
+
+    <p>The ownership structure itself carries a clue about why. Greece is not unusual in how many people own their homes &mdash; roughly 70%, close to the EU average. It is unusual in <i class="term">how</i> they own them: only 8&ndash;17% of Greek ownership is mortgage-financed, against a stable 24&ndash;26% EU-wide. Most Greek homeowners hold their houses outright, likely reflecting an older, inherited, or self-built housing stock rather than credit-financed purchase &mdash; consistent with, though this report does not directly test, pressure from property tax, aging infrastructure, and energy costs rather than rent or mortgage payments themselves. One further, still-unfolding shift is worth flagging: Greece's ownership rate has fallen faster than the EU average recently, from 73.9% to 69.7% between 2020 and 2024 &mdash; more than double the EU's own pace of decline over the same years.</p>
+
+    <div class="method">
+      <p class="method-label">Method note</p>
+      <p>Source: Eurostat housing cost overburden by tenure status (<code class="num">ilc_lvho07c</code>) and tenure distribution (<code class="num">ilc_lvho02</code>), full 27-country coverage. The "TOTAL" tenure row exactly matches the general housing-cost-overburden variable already used throughout this report's cross-country model &mdash; this chapter is a drill-down into a variable already central to the story, not a new independent one. Mortgage-free-owner overburden correlates at <span class="num">r&asymp;0.9</span> with that existing variable (expected, since it is a subcomponent of the total), and adding it as a further model predictor changes little and is not statistically significant &mdash; kept as descriptive depth on the housing-cost mechanism, not a new model finding.</p>
+    </div>
+
+    <svg class="crack accent" viewBox="0 0 720 22" preserveAspectRatio="none"><path d="M0,10 L55,14 L105,8 L155,13 L205,9 L255,15 L305,8 L355,12 L405,9 L455,14 L505,10 L555,13 L605,8 L655,12 L720,10" /></svg>
+
+    <div class="chapter">
+      <p class="chapter-no">Chapter 7</p>
+      <h2 class="chapter-title">When joblessness stops being a spell</h2>
+    </div>
+    <p class="lede">The single strongest signal in this entire investigation was never about how many people were unemployed. It was about how long.</p>
+
+    <p>Every measure so far has described conditions that stayed bad. This one describes the mechanism that best explains <i>why</i> they stayed bad &mdash; and it is the one result in this entire report that actually changes the model's verdict, not just its texture.</p>
+
+    <p>Headline unemployment tells you how many people are out of work at a given moment. It says nothing about whether the same people have been out of work for a month or for years &mdash; whether the labor market is actually re-absorbing them, or simply cycling them through. <i class="term">Long-term unemployment</i> &mdash; the share of the labor force out of work for twelve months or more &mdash; answers that different question. And it turns out to be the strongest single variable in this entire investigation, at every time scale tested: how high it runs, how much it moves year to year, and how far it deviates from its own trend all track Greek subjective poverty more tightly than anything else measured.</p>
+
+    <p>Greece's long-term unemployment rate has fallen a long way from its worst point &mdash; from 17.5% of the labor force in 2014 (meaning roughly three-quarters of all unemployed Greeks, at that moment, had been out of work a year or more) down to 5.4% in 2024. That is real, substantial progress. It is also still, by a wide margin, the highest rate in the European Union: next is Spain at 3.8%, then Slovakia and Italy near 3.5%. Most of the EU sits under 2%. Headline unemployment recovered far faster than this did.</p>
+
+    <p>Swap this one measure into the model in place of headline unemployment &mdash; changing nothing else &mdash; and Greece's story changes with it.</p>
+
+    <div class="proof">
+      <p class="proof-label">Proof table</p>
+      <p class="proof-title">What changes when the model uses duration instead of rate</p>
+      <p class="proof-sub">Same predictors, same panel, same method &mdash; only the unemployment measure changes</p>
+      <div class="proof-scroll">
+        <table class="proof-table">
+          <thead><tr><th>Model</th><th>Fit (R&sup2;)</th><th>Greece's gap, out-of-sample</th><th>Greece's rank</th></tr></thead>
+          <tbody>
+            <tr><td>Headline unemployment (baseline)</td><td>0.89</td><td>11.6</td><td>1st of 27</td></tr>
+            <tr class="hl"><td>Long-term unemployment (replacing headline)</td><td>0.91</td><td>3.9</td><td>6th of 27</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="proof-foot">Without adding a single new variable to the model, this one substitution cuts Greece's unexplained gap by roughly two-thirds and removes it from the top of the outlier list entirely. Full 27-country ranking, before and after &mdash; Cyprus, Luxembourg, Portugal, Czechia, and Belgium now rank above Greece.</p>
+    </div>
+
+    <p>That does not make the underlying hardship disappear. It sharpens what caused it. The crisis did not simply put people out of work for a while. It left a meaningful share of them out of work long enough for the experience to stop being a bad year and start being a condition &mdash; and a model that can see that distinction understands Greece far better than one that can't.</p>
+
+    <div class="method">
+      <p class="method-label">Method note</p>
+      <p>Long-term and headline unemployment are, unsurprisingly, highly correlated (<span class="num">r=0.91</span> panel-wide; <span class="num">r=0.998</span> for Greece's own series, since by the mid-2010s most of Greece's unemployment <i>was</i> long-term). Adding both to the same model together destabilizes headline unemployment's own coefficient &mdash; a textbook collinearity symptom &mdash; so replacement, not addition, is the preferred specification. Long-term unemployment's own coefficient is stable and significant (<span class="num">p&lt;0.001</span>) across all 27 leave-one-country-out refits, including the refit that excludes Greece itself: not an artifact of Greece's own data. Two findings from earlier chapters turn out to overlap with this one once tested together &mdash; the GDP-scarring result adds nothing further once long-term unemployment is in the model, and financial pessimism (Chapter 10) weakens from significant to marginal &mdash; addressed honestly in Chapter 9.</p>
+    </div>
+
+    <svg class="crack" viewBox="0 0 720 22" preserveAspectRatio="none"><path d="M0,9 L50,13 L100,8 L150,14 L200,9 L250,12 L300,8 L350,14 L400,10 L450,13 L500,8 L550,12 L600,9 L650,13 L700,10 L720,11" /></svg>
+
+    <div class="chapter">
+      <p class="chapter-no">Chapter 8</p>
+      <h2 class="chapter-title">Some people just left</h2>
+    </div>
+    <p class="lede">Income and jobs are not the only things a household can lose to an unrecovered crisis. People themselves can leave.</p>
+
+    <p>This is not a hidden variable in any model &mdash; it is the visible, human consequence of everything in the six chapters before it. During exactly the years income, jobs, and expectations were collapsing, a meaningful share of Greek households treated leaving the country as the answer.</p>
+
+    <div class="pull">
+      <div class="figure num">290,281</div>
+      <div class="cap">Net loss of Greek nationals, 2008&ndash;2024 &mdash; 2.6% of Greece's 2008 population. Outflow peaked at <b>44,502</b> in a single year, 2012, the most acute stretch of the crisis.</div>
+    </div>
+
+    <p>The outflow has, only very recently, begun to reverse. 2023 and 2024 both show a net <i>inflow</i> &mdash; more Greek nationals returning than leaving, for the first time since before the crisis began. That reversal is real. It does not erase the cumulative loss, or the years of disrupted careers and family separation behind it, and Greece is not even the EU's most extreme case on this specific measure &mdash; several Eastern and Baltic countries lost a larger share of their population to emigration over the same period. What makes Greece's version notable isn't uniqueness. It's that the outflow was large, crisis-linked, and sustained for well over a decade, arriving at exactly the moments the rest of this story describes.</p>
+
+    <div class="method">
+      <p class="method-label">Method note</p>
+      <p>Source: Eurostat migration-flow tables (<code class="num">migr_emi1ctz</code> / <code class="num">migr_imm1ctz</code>), Greek nationals only, 2008&ndash;2024. Youth unemployment (ages 15&ndash;24) peaked at 59.2% in 2013, one year after the emigration peak &mdash; a plausible, but not causally tested, push-factor timing. Youth unemployment tracks subjective poverty strongly on its own, but overlaps so heavily with long-term unemployment that it adds no independent explanatory power once that variable is already in the model &mdash; kept here as descriptive context, not its own finding.</p>
+    </div>
+
+    <svg class="crack" viewBox="0 0 720 22" preserveAspectRatio="none"><path d="M0,12 L46,8 L94,15 L142,9 L190,13 L238,8 L290,14 L338,10 L386,12 L434,8 L482,14 L530,9 L578,13 L626,10 L674,12 L720,11" /></svg>
+
+    <div class="chapter">
+      <p class="chapter-no">Chapter 9</p>
+      <h2 class="chapter-title">Why pessimism isn't the story</h2>
+    </div>
+    <p class="lede">This is the one finding placed deliberately last, and read with the most caution.</p>
+
+    <p>Greece is the single most pessimistic country in the European Union about where its own households' finances are headed &mdash; worst of 35 countries surveyed, 11 points clear of the next-most-pessimistic, Slovenia. On its own, added to the baseline model, that pessimism measure closes real ground: it knocks Greece from the largest cross-country gap in the EU down to 10th of 27.</p>
+
+    <p>It would be tempting to end there &mdash; "Greeks are pessimistic, and that pessimism explains the rest." This report resists that temptation, for a specific reason: <i class="term">expecting things to get worse</i> is conceptually very close to <i class="term">reporting that things are already hard</i>. Using one to explain the other risks explaining a feeling with itself. And once long-term unemployment (Chapter 7) is in the model instead of headline unemployment, financial pessimism's own contribution weakens from statistically significant to marginal &mdash; some of what looked like an independent psychological effect turns out to overlap with the labor-market mechanism already established.</p>
+
+    <p>That does not make the pessimism finding false, or unimportant. It makes it a symptom worth understanding rather than a cause worth leaning on. And there is a real, structural reason behind it, independent of anything modeled in this report: Greek institutional trust was never particularly high before the crisis (averaging 44% through the 2000s), collapsed to a historic low of 7% in 2012 &mdash; the same year this report's own migration data marks as the acute peak of the crisis &mdash; recovered only partially to 37%, and has been falling again since 2023 despite genuinely strong recent macroeconomic performance. Pessimism, read this way, is not a national temperament. It is closer to memory: a rational reading of an economy that did not heal the way the rest of Europe's did, held by people who watched trust collapse at the same moment their income did.</p>
+
+    <div class="method">
+      <p class="method-label">Method note</p>
+      <p>Financial expectations (Eurostat household consumer survey): added to the headline-unemployment model, R&sup2; rises <span class="num">0.892&rarr;0.904</span>, coefficient significant (<span class="num">p=0.021</span>). Added to the long-term-unemployment model instead: coefficient weakens to <span class="num">p=0.062</span>, no longer significant at the conventional threshold. Household saving rate was also tested as a wealth-depletion signal (Greece 2nd-lowest of 34 countries) but added no independent power once expectations were already in the model. Institutional trust itself is not modeled &mdash; Eurostat's own holdings on the topic amount to a single year of data (2013), too thin to support a trend variable &mdash; and is included here only as literature-backed interpretive context (Ervasti, Kouvo &amp; Venetoklis 2019; OECD 2026 trust survey).</p>
+    </div>
+
+    <svg class="crack accent" viewBox="0 0 720 22" preserveAspectRatio="none"><path d="M0,10 L52,14 L102,8 L152,13 L202,9 L252,15 L302,8 L352,12 L402,9 L452,14 L502,10 L552,13 L602,8 L652,12 L720,10" /></svg>
+
+    <div class="chapter">
+      <p class="chapter-no">Chapter 10</p>
+      <h2 class="chapter-title">What wasn't it</h2>
+    </div>
+    <p class="lede">A useful investigation also reports what it ruled out.</p>
+
+    <p>Not every plausible suspect held up. Reporting the negatives honestly is part of what makes the positives worth trusting.</p>
+
+    <div class="checked-list">
+      <div class="checked-item">
+        <span class="checked-mark sans">RULED OUT</span>
+        <p><b>Income inequality.</b> Greece's inequality is elevated but not exceptional &mdash; 6th-highest of 27 EU countries on both the Gini coefficient and the S80/S20 ratio &mdash; and its own inequality has actually <i>fallen</i> since 2003, even as subjective poverty stayed elevated. Added to the model, it explains none of the remaining gap. This report's poverty paradox is not a story about a hidden unequal tail; it is a story about the average household.</p>
+      </div>
+      <div class="checked-item">
+        <span class="checked-mark sans">REDUNDANT</span>
+        <p><b>Youth unemployment.</b> Genuinely strong on its own, but so heavily overlapped with long-term unemployment that it adds nothing once that variable is already in the model. Kept as context (Chapter 8), not counted twice.</p>
+      </div>
+      <div class="checked-item">
+        <span class="checked-mark sans">REDUNDANT</span>
+        <p><b>The GDP-scarring stock.</b> A real, standalone finding (Chapter 3) &mdash; but once long-term unemployment is in the model, its further contribution is no longer statistically significant. Long-term unemployment appears to capture the same underlying scarring more directly.</p>
+      </div>
+      <div class="checked-item">
+        <span class="checked-mark sans">TESTED, NOT SCORECARD</span>
+        <p><b>Household debt and Greece's welfare-transfer system.</b> Tested directly; provided no additional explanatory power in this specification &mdash; a narrower finding than ruling them out, since their effects could be tangled up with variables already included.</p>
+      </div>
+    </div>
+
+    <svg class="crack" viewBox="0 0 720 22" preserveAspectRatio="none"><path d="M0,11 L44,7 L92,14 L140,9 L188,13 L236,8 L288,14 L336,10 L384,12 L432,8 L480,14 L528,9 L576,13 L624,10 L672,12 L720,11" /></svg>
+
+    <div class="chapter">
+      <p class="chapter-no">Chapter 11</p>
+      <h2 class="chapter-title">Landing</h2>
+    </div>
+
+    <div class="landing">
+      <p>Greece is not a country that simply feels poorer than it is. The official poverty measure missed the sharpest part of the collapse because its own threshold fell along with Greek incomes &mdash; and even after correcting for that, a real gap survived every honest test this investigation could throw at it.</p>
+      <p>That remaining gap is not one hidden variable. It is a sequence: <b>an economy that never fully came back, a paycheck that fell further than the economy did, ordinary prices that turned heavy against that paycheck, a home that stopped being a shelter from cost even when it was paid off, joblessness that curdled from a spell into a condition, and a decade of people responding by leaving.</b> Financial pessimism sits on top of all of it &mdash; not the explanation, but a reasonably accurate memory of having lived through it.</p>
+      <p>What looks, from the outside, like Greek households feeling sorrier for themselves than the statistics justify is, on the evidence here, closer to the opposite: households keeping an accurate internal account of a decade the headline numbers were built to smooth over.</p>
+      <p>This is not a closed case. A real, smaller residual remains even after every finding in this piece &mdash; household composition, informal income, savings buffers, and institutional factors beyond what Eurostat measures are all still genuinely open questions, named honestly rather than dismissed. What this investigation can say with confidence is narrower and, I think, more useful: the part of the gap it <i>can</i> explain is not mood. It is memory of a decade that, in six separate and independently-checked ways, never actually ended.</p>
+    </div>
+
+  </article>
+
+  <div class="colophon">
+    <p>This is a narrative companion to <b>The Greek Poverty Paradox</b>, the full technical report behind every figure cited here &mdash; exact coefficients, robustness checks, multiple-testing corrections, full citations, and the complete data pipeline. Every number above traces to that report's own reproducible Eurostat pipeline; nothing here is independently sourced. Data vintage: 2026-08-21. Eurostat revises its own published figures over time, so a later pull from the live API will not reproduce these exact numbers byte-for-byte, even with unchanged methodology.</p>
+  </div>
+
+</div>
