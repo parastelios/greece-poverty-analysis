@@ -199,31 +199,64 @@ plan and what actually happened stay in sync.
 
 - [x] Add new sections where they strengthen the story — recovery
       trajectory promoted to lead "Still below its own pre-crisis peak";
-      migration added as "The crisis also became an exit route" — **done
-      for P1a/P1b**; trust near expectations still pending P1c
-- [x] Keep exploratory labels clear and consistent — no new exploratory
-      claims introduced by P1a/P1b (both are descriptive, not modeled)
-- [ ] Update the scorecard if any new variable entered a model — N/A so far,
-      neither P1a nor P1b variables were added to any regression
-- [ ] Update executive summary and conclusion — not yet done for P1a/P1b
-      findings specifically
-- [x] Update Methods and this documentation — done for P1a/P1b (new dataset
-      codes, new citations, `data_sources.md`, `publication_strategy.md`)
+      migration added as "The crisis also became an exit route" (P1a/P1b);
+      real wages, wage-adjusted pricing, housing tenure, and long-term
+      unemployment all added as their own Section 11 subsections (P2)
+- [x] Keep exploratory labels clear and consistent — badge vocabulary
+      reviewed and tightened during P4 (see below): "Descriptive check"
+      added as a distinct label so confirmatory-model findings (LTU, GDP
+      scarring, wage-adjusted pricing, anchored poverty) don't share a
+      badge with tested-but-not-scorecard findings (real wages, housing
+      tenure, financial expectations)
+- [x] Update the scorecard if any new variable entered a model — done:
+      Model C-LTU added as the preferred labor-market specification
+      (P2b), highlighted in the Section 10 table
+- [x] Update executive summary and conclusion — done across P2 (each
+      integration round added its own paragraph) and tightened/completed
+      during the P4 full review (see below): executive summary reduced
+      from 9 to 5 content paragraphs + limits; Section 12 conclusion
+      rewritten to cover every Section 11 finding, not just the ones
+      integrated earliest
+- [x] Update Methods and this documentation — done throughout P2, each
+      round's dataset codes and citations added as they landed
 
-**Commit**: `p1a-p1b-report-integration` — done for P1a/P1b; P1c and P2
-integration still pending a future pass through this checklist
-
-**Commit**: `report-integration`
+**Commit**: `p1a-p1b-report-integration` (P1a/P1b) plus one commit per P2
+sub-item; full details in `publication_strategy.md`
 
 ## P4 — Final release review
 
 Same five-part structure as the review that produced P0, run again as a
-bookend after P1–P3.
+bookend after P1–P3. Scoped explicitly as a release-readiness review, not
+a new-ideas review — no new variables added, only consistency work on
+what P1/P2 had already produced.
 
-- [ ] Claim audit — check every new claim against the underlying CSVs
-- [ ] Narrative read-through — as a first-time reader
-- [ ] Robustness / multiple-testing check
-- [ ] Greek-perspective framing check
-- [ ] Cross-reference and formatting pass
+- [x] Claim audit — every headline number in the executive summary,
+      scorecard, Section 11, Section 12, and Methods checked against the
+      current CSV/JSON outputs. All consistent; no stale numbers found.
+- [x] Narrative read-through — found and fixed: Section 11's title no
+      longer matched its scope (renamed "Scarring and pessimism" →
+      "The scars beneath the gap"); two self-referencing "(Section 11)"
+      citations from inside Section 11 itself (→ "above"); a real
+      factual contradiction (one passage said 2012 was "Greece's deepest
+      economic trough," contradicting the GDP-scarring subsection's own
+      2020 trough — corrected to reference the migration peak, which
+      2012 actually is, elsewhere in this report); a real-vs-nominal
+      wage clarity gap between two adjacent subsections (added a
+      one-sentence units note)
+- [x] Robustness / multiple-testing check — FDR counts in Methods
+      confirmed current (21 variables, 16 survive) as of the P2 close
+- [x] Greek-perspective framing check — confirmed intact: measurable
+      material reasons (wages, jobs, prices, housing, migration) framed
+      ahead of and separately from the more heavily caveated pessimism
+      finding, throughout
+- [x] Cross-reference and formatting pass — Section 12 conclusion
+      rewritten to include wage-adjusted price pressure and housing
+      tenure (previously absent entirely) and to drop "housing tenure"
+      from its own "still open" speculative list (now tested); "Core
+      finding" badge frequency reduced from 7 to 5 actual uses (kept:
+      moving-threshold/anchored poverty, LTU ×2, wage-adjusted pricing,
+      GDP scarring/recovery trajectory; demoted to new "Descriptive
+      check" label: real wages, housing tenure, financial expectations)
 
-**Commit**: `release-review-fixes`
+**Commit**: `release-review-fixes` — full findings list and fix log in
+`publication_strategy.md`, "Full Version 1 release-readiness review"

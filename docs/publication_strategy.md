@@ -1549,3 +1549,104 @@ variables will be added without a fresh decision to do so &mdash; the
 next step is a full review of the expanded Version 1 (P3: integrate the
 whole P2 sweep into a coherent narrative pass, then P4: final release
 review), not more analysis expansion.
+
+## Full Version 1 release-readiness review (2026-08-21)
+
+User's explicit framing: a release-readiness review, not another ideas
+review &mdash; "no new variables unless a current claim requires them."
+Seven-part scope: full claim/number audit, narrative coherence, executive
+summary/conclusion consistency, redundancy check across the six P2
+additions, cross-reference/TOC/badge audit, Greek-perspective framing
+check, and Methods/documentation consistency.
+
+**Method**: read the entire report end to end (everything from Section 7
+onward, since Part I predates this session's changes), cross-checked
+every headline number in the executive summary, scorecard, Section 11,
+Section 12, and Methods against the current CSV/JSON outputs, and grepped
+systematically for cross-reference patterns ("Section 11" self-references,
+stale terminology, badge usage counts).
+
+**What passed clean**: every number checked out. Redundancy handling was
+already good going in &mdash; GDP-scarring-vs-LTU, housing-tenure-vs-
+overburden, expectations-vs-LTU, and youth-unemployment-vs-LTU/migration
+all had explicit, consistent "here's the overlap, here's why we didn't
+double-count it" language already in place from each round's own
+integration work. FDR counts in Methods were current. Citations all
+resolved. The Greek-perspective framing goal (measurable material reasons,
+pessimism treated more cautiously, no claim that the residual is solved)
+read as intact throughout.
+
+**Five must-fix findings, all addressed in one pass**:
+1. Section 12 ("Answer to Question 2") never mentioned wage-adjusted price
+   pressure or housing tenure at all, despite both being built as
+   headline/core findings this session &mdash; a reader who read only the
+   conclusion would have missed two of Section 11's strongest results.
+   Rewritten (now two paragraphs instead of one very long one) to cover
+   every Section 11 finding: LTU, GDP scarring, wage-adjusted pricing,
+   housing tenure, migration, financial expectations, and the inequality
+   null result, roughly in order of how consequential each one is.
+2. Section 12's "still open" speculative list included "housing tenure"
+   as an untested candidate explanation &mdash; stale, since housing
+   tenure was tested this session (found to be descriptive depth, not
+   independently explanatory). Removed from that list.
+3. Two self-referencing "(Section 11)" citations found inside Section 11
+   itself (in the youth-unemployment/migration method-aside, and the
+   trust/pessimism method-aside) &mdash; changed to "above."
+4. A genuine factual contradiction: the trust/pessimism method-aside
+   claimed 2012 was "the same year this report's own analysis
+   independently identifies as Greece's deepest economic trough," but the
+   GDP-scarring subsection, earlier in the same section, explicitly
+   states the trough was 2020. Traced to what 2012 actually *is* elsewhere
+   in the report &mdash; the migration peak (44,502 net departures,
+   already called "the depth of the crisis" in the migration subsection)
+   &mdash; and corrected the sentence to reference that instead, with an
+   explicit note distinguishing it from the later, deeper 2020 GDP trough.
+5. Section 11's title ("Scarring and pessimism," both the TOC entry and
+   the section's own h3) no longer matched its scope after six rounds of
+   P2 additions (real wages, wage-adjusted pricing, housing tenure, and
+   long-term unemployment all now live there too, not just GDP scarring
+   and financial pessimism). Renamed to "The scars beneath the gap" (the
+   user's suggested title), in both the TOC and the section heading.
+
+**One should-fix, addressed**: real wages ("31.8% below 2008 level," real/
+inflation-adjusted) and wage-adjusted pricing ("13.1% below 2008 level,"
+nominal) sit in adjacent subsections and both describe "wages... below
+2008" with different numbers, without an explicit cross-reference &mdash;
+risked reading as an unexplained discrepancy even though both are
+individually correct. Added a one-sentence units note at the start of the
+wage-adjusted-pricing subsection explicitly distinguishing the two: "the
+31.8% figure above is real wages... What follows is a different, nominal
+comparison."
+
+**Two polish items, both addressed**:
+- "Core finding" badge had grown to 7 uses across Section 11 alone,
+  diluting its signal. Reduced to 5 actual uses, kept only for the most
+  central results: the moving-threshold/anchored-poverty finding in Part I
+  (which never had the badge before &mdash; added it, since it's the
+  report's foundational result and had none), long-term unemployment
+  (both its Section 10 scorecard mention and its Section 11 descriptive
+  peak/latest finding), wage-adjusted price pressure, and GDP scarring/
+  recovery trajectory. Demoted real wages, housing tenure, and financial
+  expectations to a new label, "Descriptive check" &mdash; defined and
+  added to the Methods "Labels used in the text" documentation alongside
+  the three pre-existing badge types, matching the report's own
+  established discipline of documenting every label it uses.
+- Executive summary reduced from 9 paragraphs to 5 content paragraphs
+  plus the closing limits note, per the user's suggested structure
+  (paradox, moving threshold, material reasons, LTU, what remains open).
+  Merged the official-rate-mechanism and fixed-benchmark-result paragraphs
+  into one; merged the GDP-scarring/wage/price/housing-tenure material
+  evidence into a single "material reasons" paragraph; kept long-term
+  unemployment as its own paragraph, since it's structurally different
+  from the others (the one result that changes the scorecard, not just
+  descriptive evidence); folded the inequality null result into the
+  closing "what's still unexplained" paragraph.
+
+Tag balance verified after every fix, and the full set re-verified
+in-browser (TOC text, section heading, badge counts by type, Section 12
+paragraph content) before publishing. Republished with label "Full polish
+pass: 8 release-readiness fixes".
+
+This completes P3 and P4. Per the user's own framing, this was
+stabilization work, not scope expansion &mdash; the next step, if any, is
+the user's call: a final skim, or moving on to something else entirely.
