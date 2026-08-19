@@ -115,12 +115,12 @@ corroboration — none are merged into any model or panel.
   literature-backed narrative context (Section 11 and the literature
   section), using the three non-Eurostat sources above. A future version
   that expands beyond Eurostat's own API could revisit this.
-- Income inequality (Gini/S80:S20), housing tenure: named in
-  `docs/project_description.md` but not yet fetched — see
-  `docs/publication_strategy.md` and `docs/todo_plan.md` (P2) for the
-  remaining scope. Real wages, long-term unemployment, youth unemployment,
-  and wage-adjusted cost-of-living pressure (below) have since been
-  fetched and integrated.
+- Income inequality (Gini/S80:S20), housing tenure, real wages, long-term
+  unemployment, youth unemployment, and wage-adjusted cost-of-living
+  pressure: all named in `docs/project_description.md` and have since
+  been fetched and integrated — see the dedicated sections below and
+  `docs/publication_strategy.md` for the full log of each. P2 is
+  complete; see `docs/todo_plan.md` for what remains outside its scope.
 
 ## P2e addition (wage-adjusted cost-of-living pressure)
 

@@ -15,14 +15,26 @@ is Version 1, built around its own two research questions; several items in
 the brief are intentionally future work, not V1 requirements), and
 `docs/todo_plan.md` for the current checkpointed plan and its progress.
 
+## Data vintage
+
+Every file in `data/` and the published report reflect a **live pull from
+the Eurostat API, last rebuilt 2026-08-21**. Eurostat revises its own
+published figures over time (methodology updates, late-reported country
+data, benchmark revisions); re-running the pipeline against the live API
+on a later date will not reproduce these exact numbers byte-for-byte, even
+though nothing in this project's own code will have changed. Treat this
+date as the reference vintage for any specific number quoted in the report
+or in the docs.
+
 ## Setup
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Python 3.11+ recommended. No API key needed — the Eurostat dissemination API
-is public.
+Python 3.11+ recommended (dependencies pinned to exact versions in
+`requirements.txt` for reproducibility). No API key needed — the Eurostat
+dissemination API is public.
 
 ## Project structure
 

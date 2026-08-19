@@ -97,7 +97,7 @@ for name, vars_ in MODELS.items():
     key_coefs = {}
     for v in ["unemployment_rate", "ltu_rate", "fin_expectations", "saving_rate", "pct_below_peak"]:
         if v in vars_:
-            key_coefs[v] = (round(m.params[v], 3), round(m.pvalues[v], 4))
+            key_coefs[v] = (round(float(m.params[v]), 3), round(float(m.pvalues[v]), 4))
 
     scorecard.append({
         "model": name,

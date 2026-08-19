@@ -1650,3 +1650,84 @@ pass: 8 release-readiness fixes".
 This completes P3 and P4. Per the user's own framing, this was
 stabilization work, not scope expansion &mdash; the next step, if any, is
 the user's call: a final skim, or moving on to something else entirely.
+
+## Independent review, second pass (2026-08-21)
+
+User ran a second, independent review (a fresh read of the report, data,
+docs, and git state, files unchanged) and shared seven findings plus a
+substantial narrative-structure critique. Verified all seven directly
+against the current file state before acting on any of them &mdash; all
+seven checked out as genuine:
+
+1. Executive summary said "Greece is the only EU country that still
+   hasn't recovered its own pre-crisis living standard," but Section 11
+   itself explicitly names Finland and Luxembourg as also below their own
+   peaks, landing on the more careful "unresolved by any reasonable
+   measure" framing instead. The blunter executive-summary version
+   predates this session (present before this session's own P4 tightening
+   pass, just carried forward rather than introduced) &mdash; fixed to
+   match Section 11's own more precise claim.
+2. "Greek real income per capita remains 11.2% below its all-time high"
+   (both in the executive summary and Section 11) should say "real GDP
+   per capita" &mdash; the chart, its data source (<code>sdg_08_10</code>),
+   and the variable's own name elsewhere in the report (the correlation
+   table's "Real GDP per capita (EUR)" row) are all GDP, not household
+   income, which this report treats as a distinct variable
+   (<code>gr_real_hh_income_idx2008</code>) with its own separate
+   correlation-table row. Fixed both instances.
+3. The scorecard's "Beyond C-LTU, two further additions..." (introducing
+   Models E and F) read as if E/F extend C-LTU, when the table shows both
+   are built on baseline Model C. Reworded to say explicitly that E/F are
+   separate extensions of C, not stacked on the labor-market swap.
+4. <code>data_sources.md</code> still said income inequality and housing
+   tenure were "not yet fetched," despite both having their own
+   fully-integrated sections lower in the same file. Fixed.
+5. <code>requirements.txt</code> had no version pins; there was no data-
+   vintage or rebuild-date note anywhere in the project. Pinned all five
+   dependencies to their exact currently-verified-working versions
+   (pandas 2.2.3, numpy 2.2.5, scipy 1.17.1, statsmodels 0.14.6, requests
+   2.31.0) and added a "Data vintage" section to the README stating the
+   last full pipeline rebuild date (2026-08-21) and flagging that
+   Eurostat's own published figures can revise over time, so a later
+   re-run won't reproduce these exact numbers byte-for-byte even with
+   unchanged code.
+6. <code>model_scorecard_ltu.csv</code>'s <code>key_coefficients</code>
+   column had raw <code>np.float64(...)</code> reprs baked into the CSV
+   text &mdash; traced to <code>32_ltu_model_test.py</code> calling
+   Python's built-in <code>round()</code> directly on a numpy float64
+   scalar (which returns another numpy float64, not a plain float).
+   Fixed by wrapping with <code>float()</code> first; confirmed this was
+   the only CSV in the project with the issue (grepped
+   <code>data/processed/</code> for the same pattern); reran the script
+   and confirmed every other output file it produces is byte-identical to
+   before &mdash; purely a formatting fix, no value changed.
+7. Section 11's lede still said "Several variables... All three move the
+   needle," undercounting the section's actual seven subsections (a
+   leftover from before this session's P2 additions). The section title
+   itself was renamed during the P4 review, but the lede's own
+   enumeration was missed at the time. Rewritten to name all seven
+   candidates tested (GDP scarring, real wages, wage-adjusted pricing,
+   housing tenure, long-term unemployment, migration, financial
+   expectations) and to flag explicitly that not all of them changed the
+   model.
+
+**A separate, larger recommendation from the same review**: a full
+narrative restructuring of the report &mdash; separating "main text"
+(readable, story-driven) from "method boxes" (technical detail, caveats,
+robustness), and rewriting Section 11 specifically as the central
+narrative chapter around an explicit story spine (economy didn't recover
+&rarr; pay didn't recover &rarr; ordinary prices feel expensive &rarr;
+housing doesn't protect owners &rarr; unemployment became duration &rarr;
+people left &rarr; so pessimism isn't just mood). Assessed as a
+substantively different kind of change from the seven fixes above &mdash;
+correct in its critique (the report does read as a research memo, method
+language does sit inline with the narrative rather than separated out)
+but large enough in surface area, and different enough in character from
+the stabilization work this session has otherwise done, to warrant an
+explicit separate decision rather than folding it into this pass. User
+agreed: write it as a separate document, with a full re-review of every
+finding and a proposed structure shared before any full narrative draft
+is written.
+
+Tag balance and in-browser rendering verified before publishing.
+Republished with label "Independent review fixes".

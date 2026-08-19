@@ -1,7 +1,7 @@
 model,label,n_countries,n_obs,r2,gr_avg_residual_insample,gr_avg_residual_oos,gr_rank_oos,key_coefficients
-C_baseline,"C: unemployment, income, deprivation, AROP, housing, arrears, unexpected (baseline)",27,267,0.892,2.23,11.59,1/27,"{'unemployment_rate': (np.float64(0.785), np.float64(0.0218))}"
-C_LTU_swap,C-LTU: same as C but LTU REPLACES headline unemployment (preferred),27,267,0.914,1.29,3.86,6/27,"{'ltu_rate': (np.float64(1.963), np.float64(0.0))}"
-C_LTU_add,C+LTU: LTU ADDED alongside headline unemployment (robustness only),27,267,0.919,1.03,2.27,7/27,"{'unemployment_rate': (np.float64(-0.89), np.float64(0.0933)), 'ltu_rate': (np.float64(3.136), np.float64(0.0))}"
-C_LTU_plus_scarring,C-LTU + scarring stock (% below own GDP peak),27,267,0.914,1.08,2.97,7/27,"{'ltu_rate': (np.float64(1.877), np.float64(0.0)), 'pct_below_peak': (np.float64(0.116), np.float64(0.6051))}"
-C_expectations_baseline,C + financial expectations + saving rate (Model E baseline),27,265,0.904,1.32,3.61,10/27,"{'unemployment_rate': (np.float64(0.855), np.float64(0.0016)), 'fin_expectations': (np.float64(-0.225), np.float64(0.0209)), 'saving_rate': (np.float64(0.001), np.float64(0.9974))}"
-C_LTU_plus_expectations,C-LTU + financial expectations + saving rate,27,265,0.92,0.72,-1.75,19/27,"{'ltu_rate': (np.float64(1.865), np.float64(0.0)), 'fin_expectations': (np.float64(-0.155), np.float64(0.0622)), 'saving_rate': (np.float64(-0.027), np.float64(0.8598))}"
+C_baseline,"C: unemployment, income, deprivation, AROP, housing, arrears, unexpected (baseline)",27,267,0.892,2.23,11.59,1/27,"{'unemployment_rate': (0.785, 0.0218)}"
+C_LTU_swap,C-LTU: same as C but LTU REPLACES headline unemployment (preferred),27,267,0.914,1.29,3.86,6/27,"{'ltu_rate': (1.963, 0.0)}"
+C_LTU_add,C+LTU: LTU ADDED alongside headline unemployment (robustness only),27,267,0.919,1.03,2.27,7/27,"{'unemployment_rate': (-0.89, 0.0933), 'ltu_rate': (3.136, 0.0)}"
+C_LTU_plus_scarring,C-LTU + scarring stock (% below own GDP peak),27,267,0.914,1.08,2.97,7/27,"{'ltu_rate': (1.877, 0.0), 'pct_below_peak': (0.116, 0.6051)}"
+C_expectations_baseline,C + financial expectations + saving rate (Model E baseline),27,265,0.904,1.32,3.61,10/27,"{'unemployment_rate': (0.855, 0.0016), 'fin_expectations': (-0.225, 0.0209), 'saving_rate': (0.001, 0.9974)}"
+C_LTU_plus_expectations,C-LTU + financial expectations + saving rate,27,265,0.92,0.72,-1.75,19/27,"{'ltu_rate': (1.865, 0.0), 'fin_expectations': (-0.155, 0.0622), 'saving_rate': (-0.027, 0.8598)}"
