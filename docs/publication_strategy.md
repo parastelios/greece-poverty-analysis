@@ -742,3 +742,42 @@ analysis; trust-in-EU/state feasibility check; remaining robustness variables
 converting the literature section into a full Discussion/Conclusion with
 citations moved inline (the multiple-testing round added one FDR-related
 paragraph there but didn't restructure the section itself).
+
+## P0 cleanup (2026-08-20)
+
+Six small fixes from the targeted release-readiness review, all mechanical —
+no claims changed, nothing re-analyzed. Full plan and checkboxes in
+`docs/todo_plan.md`.
+
+1. **Wrong AROPE cross-reference.** The near-zero-gap subsection cited
+   "(AROPE, Section 6)" — Section 6 is Answer to Question 1, which never
+   mentions AROPE. AROPE is actually introduced in Section 3. Fixed.
+2. **Missing q-label badge.** Every numbered section (1-9, 11) has a small
+   numeral badge; the scorecard (Section 10) didn't, despite the TOC
+   numbering it "10." Added.
+3. **diaNEOsis sample size reconciled, not silently picked.** Re-checked
+   both sources directly: the results file is literally named
+   `1348q_results-survey_Poverty-DN.xlsx` (n=1,348), while diaNEOsis's own
+   summary prose on the page rounds this to "1,300." Kept 1,348 as the
+   number actually used in this report's math (it's what the &plusmn;2.7%
+   margin was computed from) but the citation and inline mention now both
+   state the discrepancy explicitly rather than picking one silently.
+4. **Badge added to the swing-sensitivity finding.** Its own follow-up test
+   was labeled "Exploratory lead"; the primary finding had no label at all.
+   Now tagged "Descriptive comparison, not a causal test," matching the
+   near-zero-gap finding's evidentiary status.
+5. **"Scarring/pessimism story" softened.** That phrase paired a hard-data
+   finding (scarring) and a heavily-caveated subjective one (pessimism) as
+   if they were one category. Reworded to distinguish them explicitly and
+   point forward to the pessimism subsection's caveat.
+6. **Bridge sentences added** in three places: the scorecard's lede now
+   tells the reader Models E/F introduce two new variables explained in the
+   very next section (they were previously named in the table with zero
+   context); the pessimism subsection got an intro paragraph recapping the
+   two findings before it (it previously had none, unlike every other
+   subsection); the near-zero-gap subsection's opening line now explicitly
+   recaps "the three findings above" before pivoting to the contrastive
+   framing.
+
+Verified tag balance before republishing, per established practice. Commit:
+`p0-report-cleanup`.

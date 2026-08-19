@@ -22,25 +22,26 @@ history stay in sync. Full reasoning for each completed item lives in
 Small, mechanical fixes surfaced by the release-readiness review. No new
 analysis, no claims change — clears the deck before P1.
 
-- [ ] Fix wrong AROPE cross-reference ("Section 6" → "Section 3") in the
+- [x] Fix wrong AROPE cross-reference ("Section 6" → "Section 3") in the
       near-zero-gap subsection
-- [ ] Add the missing `q-label` badge to the scorecard section (every other
+- [x] Add the missing `q-label` badge to the scorecard section (every other
       numbered section has one; the scorecard doesn't, despite the TOC
       numbering it "10")
-- [ ] Reconcile the diaNEOsis sample size (report says n=1,348 from the PDF;
+- [x] Reconcile the diaNEOsis sample size (report says n=1,348 from the PDF;
       the institution's own portal page says n=1,300 for the apparently same
-      survey) — re-check both sources before changing either
-- [ ] Add an evidentiary badge to the swing-sensitivity finding (its
+      survey) — re-checked both: kept 1,348 (what the report's math actually
+      used), citation now states the discrepancy explicitly
+- [x] Add an evidentiary badge to the swing-sensitivity finding (its
       follow-up gap-relation test is labeled "Exploratory lead"; the primary
       finding itself carries no badge, unlike the near-zero-gap comparison)
-- [ ] Soften "scarring/pessimism story" — the phrase pairs a hard-data
+- [x] Soften "scarring/pessimism story" — the phrase pairs a hard-data
       finding (scarring) and a caveated subjective one (pessimism) as if
       they're one category
-- [ ] Add bridge sentences: the scorecard names Models E/F before Section 11
+- [x] Add bridge sentences: the scorecard names Models E/F before Section 11
       defines them; Section 11's four subsections have no connective "so
       far" bridges between them
 
-**Commit**: `p0-report-cleanup`
+**Commit**: `p0-report-cleanup` — done
 
 ## P1 — Highest-value structural extensions (checkpointed, one at a time)
 
