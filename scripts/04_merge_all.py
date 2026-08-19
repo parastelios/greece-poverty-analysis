@@ -21,6 +21,17 @@ for path in var_files:
     if name in SKIP:
         continue
     df = pd.read_csv(path)
+    if "geo" not in df.columns:
+        # Greece-only files consumed directly by a specific script (e.g. anchor_rates,
+        # gr_saving_rate) rather than through this generic cross-country merge.
+        print(f"[SKIP] {name}: no 'geo' column, not a generic cross-country file")
+        continue
+    time_col = "time" if "time" in df.columns else ("year" if "year" in df.columns else None)
+    if time_col is None:
+        print(f"[SKIP] {name}: no 'time' or 'year' column")
+        continue
+    if time_col != "time":
+        df = df.rename(columns={time_col: "time"})
     value_col = [c for c in df.columns if c not in ("geo", "time", "geo_label")][0]
 
     gr = df[df.geo == "EL"][["time", value_col]].rename(columns={value_col: f"gr_{name}"})

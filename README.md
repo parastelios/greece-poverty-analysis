@@ -72,12 +72,22 @@ Scripts are numbered in dependency order. Run all from inside `scripts/`:
 | 27 | `27_multiple_testing.py` | FDR correction on the exploratory test families: `fdr_*.csv` |
 | 28 | `28_recovery_trajectory.py` | Years-to-recovery per country, indexed trajectory chart data |
 | 29 | `29_migration_brain_drain.py` | Net migration of Greek nationals, cross-country comparison |
+| 30 | `30_real_wages.py` | Real wage index (2008=100), 27-country comparison + correlation test |
 | — | `09_export_report_data.py` again | Re-run to pick up any new columns before... |
 | — | `inject_data.py` | ...embedding the refreshed JSON into `output/report.html` |
 
 `09_export_report_data.py` and `inject_data.py` are re-run every time the
 underlying data changes, not just once — the report's embedded `DATA` object
 always reflects the last export.
+
+**Ordering caveat**: `04_merge_all.py` rebuilds `analysis_dataset.csv` from
+`master_table.csv` *from scratch* every time it runs — it doesn't merge into
+the existing file. `05_threshold_hypothesis.py` computes a derived column
+(`gr_arop_threshold_real_idx2008`) and writes it *back into*
+`analysis_dataset.csv`. If you re-run `04` after `05` has already run, that
+derived column is silently wiped and needs `05` re-run to restore it. Always
+run in numeric order (04 before 05) when regenerating from raw data, not
+just when adding a genuinely new script.
 
 ## Notes
 

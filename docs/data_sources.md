@@ -115,7 +115,23 @@ corroboration — none are merged into any model or panel.
   literature-backed narrative context (Section 11 and the literature
   section), using the three non-Eurostat sources above. A future version
   that expands beyond Eurostat's own API could revisit this.
-- Real wages, youth/long-term unemployment, income inequality (Gini/S80:S20),
-  housing tenure: named in `docs/project_description.md` but deliberately
-  not fetched for Version 1 — see `docs/publication_strategy.md` for the
-  scoping decision.
+- Youth/long-term unemployment, income inequality (Gini/S80:S20), housing
+  tenure: named in `docs/project_description.md` but not yet fetched — see
+  `docs/publication_strategy.md` and `docs/todo_plan.md` (P2) for the
+  remaining scope. Real wages (below) has since been fetched and integrated.
+
+## P2a addition (real wages)
+
+| Dataset code | What it is | Key params | Fetched by |
+|---|---|---|---|
+| `nama_10_lp_ulc` | Nominal compensation per employee | `na_item=D1_SAL_PER`, `unit=EUR` | `30_real_wages.py` |
+| `prc_hicp_aind` | HICP price index (deflator) | `coicop=CP00`, `unit=INX_A_AVG` | `30_real_wages.py` |
+
+Real wages = nominal compensation per employee deflated by the HICP index,
+rebased so each of the 27 EU countries' own 2008 value = 100
+(`real_wage_idx2008`). 2000–2024 coverage. Checked for multicollinearity
+against the existing panel predictors (PPS income, real GDP, scarring stock
+— all r&le;0.33) and tested as a candidate cross-country model addition
+before deciding not to add it to the scorecard; see report Methods
+("Real wages: source, method, and why it isn't a scorecard model") for the
+full test result.

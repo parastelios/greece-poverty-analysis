@@ -20,6 +20,7 @@ nested_loo = pd.read_csv(f"{OUT}/nested_loo_summary.csv")
 arope_snapshot = pd.read_csv(f"{OUT}/arope_subjective_snapshot_2025.csv")
 recovery_idx = pd.read_csv(f"{OUT}/recovery_indexed_trajectories.csv")
 migration = pd.read_csv("../data/raw/migration_nationals_panel.csv")
+real_wages = pd.read_csv(f"{OUT}/real_wages_panel.csv")
 
 
 def clean(v):
@@ -28,6 +29,15 @@ def clean(v):
     if isinstance(v, float) and v == int(v):
         return round(v, 2)
     return round(v, 2) if isinstance(v, float) else v
+
+
+def clean_p(v):
+    # p-values get 4 decimals, not 2: the report's significance labels do a
+    # strict `p < 0.05` comparison, and 2-decimal rounding can push a truly
+    # sub-threshold value (e.g. 0.0489) up to exactly 0.05, flipping the label.
+    if pd.isna(v):
+        return None
+    return round(v, 4)
 
 
 trend = []
@@ -67,10 +77,10 @@ for _, r in corr.iterrows():
     correlations.append({
         "variable": r["variable"],
         "r0": clean(r["r_contemporaneous"]),
-        "p0": clean(r["p_contemporaneous"]),
+        "p0": clean_p(r["p_contemporaneous"]),
         "n0": clean(r["n_contemporaneous"]),
         "r1": clean(r["r_lag1"]),
-        "p1": clean(r["p_lag1"]),
+        "p1": clean_p(r["p_lag1"]),
     })
 
 robustness = []
@@ -79,9 +89,9 @@ for _, r in robust.iterrows():
         "variable": r["variable"],
         "r_level": clean(r["r_level"]),
         "r_firstdiff": clean(r["r_firstdiff"]),
-        "p_firstdiff": clean(r["p_firstdiff"]),
+        "p_firstdiff": clean_p(r["p_firstdiff"]),
         "r_detrended": clean(r["r_detrended"]),
-        "p_detrended": clean(r["p_detrended"]),
+        "p_detrended": clean_p(r["p_detrended"]),
     })
 
 spearman_out = []
@@ -167,6 +177,10 @@ bundle = {
         {"year": int(r["time"]), "emigration": clean(r["emigration_nationals"]),
          "immigration": clean(r["immigration_nationals"]), "net": clean(r["net_migration_nationals"])}
         for _, r in migration[migration.geo == "EL"].sort_values("time").iterrows()
+    ],
+    "real_wages_trajectory": [
+        {"time": int(t), **{geo: clean(v) for geo, v in g.set_index("geo")["real_wage_idx2008"].items()}}
+        for t, g in real_wages[real_wages.time >= 2008].groupby("time")
     ],
 }
 

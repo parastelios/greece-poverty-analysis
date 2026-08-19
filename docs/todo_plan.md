@@ -98,7 +98,14 @@ literature integrated directly into the report in the same session
 
 ## P2 — Labor-market and distribution extensions (lower priority)
 
-- [ ] Real wages
+- [x] Real wages — fetched (`30_real_wages.py`), integrated as a major
+      Section 11 evidence point + correlation/robustness table row + chart;
+      multicollinearity/model-feasibility check done, decided **not** to
+      add to the scorecard (no independent explanatory power beyond
+      existing predictors). Also fixed two `04_merge_all.py` pipeline bugs
+      and a p-value export rounding bug found during verification. See
+      `docs/publication_strategy.md`, "P2a: real wages" for the full log.
+      Republished.
 - [ ] Youth unemployment
 - [ ] Long-term unemployment
 - [ ] Inequality (Gini or S80:S20)

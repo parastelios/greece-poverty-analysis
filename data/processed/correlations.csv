@@ -8,6 +8,7 @@ Real GDP per capita (EUR),gr_real_gdp_pc,-0.824,0.0,23,-0.83,0.0,22
 Households in arrears (%),gr_arrears,0.823,0.0,23,0.72,0.0002,22
 Unemployment rate (%),gr_unemployment_rate,0.805,0.0001,17,0.93,0.0,16
 Cannot keep home adequately warm (%),gr_cannot_keep_home_warm,0.798,0.0,23,0.791,0.0,22
+"Real wages, compensation per employee (idx 2008=100)",gr_real_wage_idx2008,-0.785,0.0,22,-0.684,0.0004,22
 Cannot face unexpected expense (%),gr_unexpected_expenses_inability,0.759,0.0,23,0.637,0.0014,22
 Real household consumption per capita (EUR),gr_consumption_pc,-0.699,0.0002,23,-0.731,0.0001,22
 Employment rate 20-64 (%),gr_employment_rate_20_64,-0.691,0.0021,17,-0.861,0.0,16

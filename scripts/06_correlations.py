@@ -29,6 +29,7 @@ predictors = {
     "gr_hicp_housing_energy_rate": "HICP inflation, housing & energy (%)",
     "gr_arop_threshold_real_idx2008": "AROP threshold, real terms (idx 2008=100)",
     "gr_minimum_wage_eur_month": "Minimum wage (nominal EUR/month)",
+    "gr_real_wage_idx2008": "Real wages, compensation per employee (idx 2008=100)",
 }
 
 

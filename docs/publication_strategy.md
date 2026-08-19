@@ -1018,3 +1018,87 @@ context, not a finding this report tests). Three new citations added.
 
 This closes out all of P1 (P1a, P1b, P1c). Tag balance verified before
 publishing, per established practice.
+
+## P2a: real wages (2026-08-20/21)
+
+First item under P2 (labor-market/distribution extensions). User's explicit
+brief on how to treat it: not minimum-touch — a "major evidence point" in
+Section 11, added to the correlation/robustness table with both level and
+first-difference readings, a cross-country chart, and a multicollinearity
++ model-feasibility check *before* deciding whether it earns a scorecard
+column. Built as `30_real_wages.py`: nominal compensation per employee
+(`nama_10_lp_ulc`) deflated by HICP (`prc_hicp_aind`), rebased to each of
+27 EU countries' own 2008=100. Full detail of the dataset codes and
+construction in `docs/data_sources.md` (P2a addition).
+
+**Headline finding**: by 2024 Greece's real wage index stood at 68.2
+(2008=100) — a 31.8% real-terms shortfall, the largest of any EU country
+and not close (Hungary next-worst at 74.2, Italy third at 90.6; every other
+country had recovered to 2008 level or above). Peak was 2009 (101.7),
+trough 2023 (66.4). Correlation with subjective poverty: strong at the
+level (r=-0.79, p<0.0001, n=22), weak and not significant on first
+differences (r=-0.21, p=0.35) — same pattern the report already flags for
+several other variables (a level correlation likely reflecting a shared
+crisis-era trend, not tight year-to-year co-movement).
+
+**Multicollinearity + model-feasibility check, done before touching the
+scorecard**: real wages correlate only modestly with the existing panel
+predictors (PPS income r=-0.12, real GDP r=-0.12, scarring stock r=-0.33) —
+not redundant with them. But adding it to Model C barely moves anything:
+R² 0.892→0.893, its own coefficient isn't significant (p=0.33), and
+Greece's leave-one-out residual gap only inches down (11.6→11.2, rank
+unchanged at 1st of 27). Honest null result for the modeling question.
+**Decision: not added to the scorecard.** Kept as a strong descriptive
+finding about Greece's own paycheck recovery, documented in a new Methods
+subsection explaining the reasoning so the "why isn't this a model
+variable if the level correlation is r=-0.79" question is answered
+directly rather than left implicit.
+
+**Where it landed**: a new Section 11 subsection ("The paycheck didn't
+recover either") placed after the recovery-trajectory content and before
+migration, with a 27-country line chart (Greece highlighted, other 26
+faint) capped at index 160 with a caption explaining why a few
+Eastern-European catch-up-growth countries (Bulgaria to 267, Lithuania to
+151) run off the top of the frame; a new row in the Section 4
+correlation/robustness table; and the Methods subsection described above.
+
+**Two real pipeline bugs found and fixed at the root, not worked around**,
+while re-running `04_merge_all.py` to pick up the new
+`real_wage_idx2008.csv`: (1) it crashed on pre-existing Greece-only raw
+files lacking a `geo` column (`AttributeError`) — fixed with an explicit
+skip-and-log check, not a try/except; (2) it crashed on
+`panel_financial_expectations.csv`, which uses `year` instead of `time` —
+fixed with flexible time-column detection. Both were latent bugs that
+predate this round (those raw files existed already; `04` just hadn't been
+re-run since). Also re-learned the hard way that `04` rebuilds
+`analysis_dataset.csv` from scratch and silently wipes the derived column
+`05_threshold_hypothesis.py` writes back in — caught when the AROP
+threshold correlation row vanished, fixed by re-running `05` after `04` in
+the documented order. Now called out explicitly as a README ordering
+caveat so it doesn't get rediscovered the same way next time.
+
+**A genuine display bug caught during final verification, not
+introduced by this round but exposed by it**: `09_export_report_data.py`'s
+`clean()` helper rounds every float — including p-values — to 2 decimals
+before export. The real wages detrended p-value is 0.0489, genuinely below
+the 0.05 significance threshold, but 2-decimal rounding turned it into
+exactly `0.05`, and the report's JS does a strict `p < 0.05` check for the
+"(n.s.)" label — so `0.05 < 0.05` is false and the table incorrectly
+flagged a real, if marginal, significant result as not significant. Checked
+every other p-value in the robustness table for the same failure mode
+(compare rounded-to-2dp threshold crossing against the true value); real
+wages' detrended figure was the only one affected. Fixed at the root: added
+a separate `clean_p()` that keeps 4 decimals for every exported p-value
+(correlations and robustness both), regenerated `report_data.json`,
+re-injected, and verified in-browser that the table now matches the prose.
+General fix, not real-wages-specific — protects any future variable whose
+p-value lands near a rounding-sensitive boundary.
+
+Tag balance and in-browser chart/table rendering verified before
+publishing. Republished with label "P2a: real wages integration + p-value
+precision fix".
+
+Remaining under P2, not started: youth unemployment, long-term
+unemployment, income inequality (Gini/S80:S20), housing tenure. Per the
+same checkpoint discipline used throughout, waiting for the user's
+go-ahead before starting the next one.

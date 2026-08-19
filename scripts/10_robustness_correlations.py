@@ -26,6 +26,7 @@ predictors = {
     "gr_cannot_keep_home_warm": "Cannot keep home adequately warm",
     "gr_hicp_headline_rate": "HICP inflation, headline",
     "gr_arop_threshold_real_idx2008": "AROP threshold, real terms",
+    "gr_real_wage_idx2008": "Real wages, compensation per employee",
 }
 
 
