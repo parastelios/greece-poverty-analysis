@@ -135,20 +135,29 @@ literature integrated directly into the report in the same session
       `docs/publication_strategy.md`, "P2c: youth unemployment" for the
       full log. Republished.
 - [ ] Inequality (Gini or S80:S20)
-- [ ] Housing tenure, if feasible
-- [ ] P2e: wage-adjusted cost-of-living pressure (user proposal,
-      2026-08-21) — not "are Greek supermarket prices high" but "how
-      expensive are essential goods/services relative to Greek wages,"
-      using Eurostat price-level indices (`prc_ppp_ind`, comparative price
-      levels by COICOP category: food, housing, transport, communication,
-      restaurants) set against the real-wages work already done (P2a) and
-      HICP category inflation (`prc_hicp_aind`, already partly used
-      elsewhere in this project) for the "did prices rise while wages
-      stayed depressed" angle. Candidate framing: a "Greek paycheck basket"
-      index (essentials price level ÷ wage level) vs. the EU and vs.
-      countries with similar wage levels. User's suggested sequencing:
-      after youth/long-term unemployment, before housing tenure — queued
-      here accordingly, not yet started.
+- [ ] Housing tenure, if feasible — user flagged this as likely more
+      complex than P2e (a different question: who is exposed to housing
+      costs, and how tenure/family structure changes the burden), to be
+      treated as its own separate checkpoint, not mixed with P2e
+- [x] P2e: wage-adjusted cost-of-living pressure — fetched
+      (`34_wage_adjusted_cost_of_living.py`), a strong, reader-facing
+      finding. On raw price level Greece ranks only 18th-most-expensive of
+      27 EU countries on overall consumption — not an expensive country in
+      absolute terms. But its wages are so far below the EU average
+      (48.3%, 4th-lowest) that once prices are scaled by wage level, the
+      ranking reverses completely: Greece has the EU's highest
+      wage-adjusted price pressure on overall consumption, and ranks 1st
+      or 2nd of 27 in every category tested (food, housing, transport,
+      restaurants, communication). Since 2008, Greek nominal wages are
+      still 13.1% below their 2008 level while food prices rose 41.6% and
+      housing/energy 33.6%. Integrated as a new Section 11 subsection ("A
+      smaller paycheck facing ordinary prices"), placed between real wages
+      and long-term unemployment; a 2024 price-vs-pressure table; an
+      executive-summary paragraph; and a full Methods entry covering the
+      real feasibility constraint (category-level price data only has
+      full coverage 2022–2024) and why it wasn't tested as a scorecard
+      model. See `docs/publication_strategy.md`, "P2e: wage-adjusted
+      cost-of-living pressure" for the full log. Republished.
 
 ## P3 — Integrate into report
 

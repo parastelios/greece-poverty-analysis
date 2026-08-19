@@ -1295,3 +1295,95 @@ work already done, sequenced after labor-market items and before housing
 tenure; see `docs/todo_plan.md` for the full scoping note). Per the same
 checkpoint discipline used throughout, waiting for the user's go-ahead
 before starting the next one.
+
+## P2e: wage-adjusted cost-of-living pressure (2026-08-21)
+
+User's brief, sent mid-session: not "are Greek supermarket prices high"
+but "how expensive are essential goods and services relative to Greek
+wages" — price level (Eurostat's comparative price level indices) set
+against wage level (nominal compensation per employee, the same series
+already fetched for real wages), category by category. Explicit six-point
+checkpoint scope: feasibility, descriptive cross-country, the wage-adjusted
+basket itself, a time-series angle via HICP categories, an explicit
+low-expectation on model role ("I would not expect this to become a
+scorecard variable immediately"), and report placement near real wages.
+
+Built as `34_wage_adjusted_cost_of_living.py`: Eurostat's
+`prc_ppp_ind_1` (`PLI_EU27_2020`, comparative price levels, EU27=100) for
+six categories — overall consumption, food, housing/utilities, transport,
+restaurants, information &amp; communication — against a wage benchmark
+built from `nama_10_lp_ulc` (Greece's nominal compensation per employee as
+a share of the EU27 average).
+
+**Real feasibility constraint, checked and reported honestly rather than
+glossed over:** the granular category-level price indices have full
+27-country coverage for only three years, 2022&ndash;2024. Only the
+broader "overall household consumption" category has a long enough series
+(2000&ndash;2024) for any real time-series work. This ruled out a proper
+cross-country panel-regression model test for the category detail from
+the start &mdash; not enough time variation to support the year-fixed-
+effects setup used everywhere else in this report.
+
+**The core finding is a clean reversal, and turned out stronger than
+either of us expected going in.** On raw price level, Greece ranks only
+18th-most-expensive of 27 EU countries on overall consumption &mdash; not
+an expensive country in absolute terms, and in several categories (housing,
+transport, restaurants) its raw prices sit well below the EU average.
+But Greek wages are so far below the EU average (48.3% of it, 4th-lowest
+of 27) that once prices are scaled by wage level, the picture reverses
+completely: Greece has the EU's **highest** wage-adjusted price pressure
+on overall consumption, and ranks 1st or 2nd of 27 in every individual
+category tested &mdash; 2nd on food (behind Bulgaria), 2nd on housing
+(behind Czechia), 1st on transport, restaurants, and communication. The
+reversal holds even in the categories where Greece's raw prices are
+cheapest relative to the EU, which is the whole point: prices don't need
+to be high for the squeeze to be severe when wages are this low.
+
+**Time series, the version the user specifically asked for:** since 2008,
+Greek nominal wages are still 13.1% below their 2008 level (index 86.9,
+2008=100 &mdash; computed directly from the nominal compensation series,
+not backed out from the real-wage index), while nominal food prices rose
+41.6%, housing/energy 33.6%, and the general HICP 27.5% over the same
+span. The paycheck shrank in absolute euro terms while the receipt grew.
+
+**Model role, per the user's own stated low expectation:** confirmed
+correct. The one series with enough years to check &mdash; overall
+consumption, wage-adjusted &mdash; correlates with subjective poverty at
+the level (r=0.696, p=0.0003) but not on year-to-year changes (r=&minus;0.063,
+not significant), the same level-only pattern already documented for real
+wages, which for real wages translated into zero independent explanatory
+power once actually tested against Model C. Given that precedent and the
+short category-level time series, no formal cross-country panel test was
+run. **Not added to the scorecard.**
+
+**Where it landed, following the user's explicit integration plan almost
+verbatim:** a new Section 11 subsection, "A smaller paycheck facing
+ordinary prices," placed between real wages and long-term unemployment
+(matching where it was checked in the checkpoint, and keeping the
+"economy &rarr; pay &rarr; prices &rarr; jobs &rarr; emigration" narrative
+arc intact); a 2024 table showing raw price level, EU rank, wage-adjusted
+pressure, and wage-adjusted rank side by side for all six categories, so
+the reversal (18th on price, 1st on pressure) is directly visible; a
+two-sentence executive-summary paragraph, since the user called this "a
+headline supporting point in the Greek-perspective argument"; and a full
+Methods entry covering the construction, the coverage constraint, what the
+measure is and isn't (a harmonized price-level comparison, not a household
+budget survey or real receipts), and why it wasn't tested as a scorecard
+model.
+
+One title correction, agreed with the user before integrating: the
+original working title ("ordinary Greek prices near European levels") was
+inaccurate, since Greek prices are frequently *below* the EU average, not
+near it. The corrected framing &mdash; prices don't have to be high for
+the squeeze to be severe when wages are this low &mdash; is both more
+accurate and, per the user, more powerful.
+
+Tag balance and in-browser rendering verified before publishing.
+Republished with label "P2e: wage-adjusted cost-of-living pressure".
+
+Remaining under P2, not started: income inequality (Gini/S80:S20) and
+housing tenure. Per the user's explicit instruction, housing tenure is to
+be treated as its own separate checkpoint (a different question — who is
+exposed to housing costs, and how tenure/family structure changes the
+burden — likely more complex to interpret than P2e), not combined with any
+other item. Waiting for the user's go-ahead before starting the next one.

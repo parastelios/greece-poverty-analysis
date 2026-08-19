@@ -118,8 +118,33 @@ corroboration — none are merged into any model or panel.
 - Income inequality (Gini/S80:S20), housing tenure: named in
   `docs/project_description.md` but not yet fetched — see
   `docs/publication_strategy.md` and `docs/todo_plan.md` (P2) for the
-  remaining scope. Real wages, long-term unemployment, and youth
-  unemployment (below) have since been fetched and integrated.
+  remaining scope. Real wages, long-term unemployment, youth unemployment,
+  and wage-adjusted cost-of-living pressure (below) have since been
+  fetched and integrated.
+
+## P2e addition (wage-adjusted cost-of-living pressure)
+
+| Dataset code | What it is | Key params | Fetched by |
+|---|---|---|---|
+| `prc_ppp_ind_1` | Comparative price level indices, EU27=100 | `indic_ppp=PLI_EU27_2020`, `ppp_cat18` (category code) | `34_wage_adjusted_cost_of_living.py` |
+| `nama_10_lp_ulc` | Nominal compensation per employee (wage benchmark, reused from P2a) | `na_item=D1_SAL_PER`, `unit=EUR` | `34_wage_adjusted_cost_of_living.py` |
+
+Wage-adjusted price pressure = price level (EU=100) ÷ wage level (Greece's
+nominal compensation per employee as % of the EU27 average) × 100. Full
+27-country coverage for the broad "overall household consumption" category
+(`ppp_cat18=A01`) back to 2000; the narrower categories used in the report
+(food, housing/utilities, transport, restaurants, communication) have full
+27-country coverage for only 2022–2024 — checked directly against
+Eurostat, not assumed, and documented as a real feasibility constraint in
+report Methods ("Wage-adjusted price pressure: source, method, and
+limits"). On raw price level Greece ranks only 18th-most-expensive of 27
+on overall consumption; on wage-adjusted pressure it ranks 1st. Descriptive
+only — the category-level data's short time span rules out a proper
+cross-country panel-regression test, and the overall-consumption series
+that does have enough years shows the same level-only correlation pattern
+(r=0.70 level, not significant on first differences) that real wages
+already showed without adding independent model power. Not added to the
+scorecard.
 
 ## P2b addition (long-term unemployment)
 
