@@ -6,9 +6,14 @@ rate that is elevated but not exceptional. Published report:
 [The Greek Poverty Paradox](https://claude.ai/code/artifact/81651c87-c049-476b-b481-49adadf42181).
 
 All data is fetched live from the Eurostat API dissemination endpoint; nothing
-in `data/` is hand-entered. See `docs/comparability_notes.md` for methodology
-and `docs/publication_strategy.md` for the research/decision log behind every
-addition made after the first draft.
+in `data/` is hand-entered. See `docs/comparability_notes.md` for methodology,
+`docs/data_sources.md` for every Eurostat dataset code used and what it
+feeds, `docs/publication_strategy.md` for the research/decision log behind
+every addition made after the first draft, `docs/project_description.md` for
+the original project brief (treated as a north-star spec — the live report
+is Version 1, built around its own two research questions; several items in
+the brief are intentionally future work, not V1 requirements), and
+`docs/todo_plan.md` for the current checkpointed plan and its progress.
 
 ## Setup
 
