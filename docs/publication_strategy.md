@@ -946,3 +946,75 @@ Republished after each verification step; tag balance checked before every
 publish, per established practice. Commits: `p1a-recovery-trajectory-
 analysis` (analysis only), then `p1a-p1b-report-integration` (charts +
 prose + citations, both P1a and P1b together).
+
+## P1c: trust in state/EU (2026-08-20)
+
+**Feasibility check, done properly rather than guessed**: searched
+Eurostat's actual catalogue (`toc/txt` endpoint) for "trust"/"confidence"
+in institutions rather than guessing dataset codes blind. Result: Eurostat's
+entire "Trust in institutions and public services" folder (`qol_gov_ins`)
+contains exactly one dataset, `ilc_pw03b`, covering exactly one year, 2013.
+Confirmed by direct fetch (domains available: `LEG`, `POLC`, `POLIT` — legal
+system, police, political system; no EU-institutions-specific domain).
+Eurostat's only *ongoing* annual trust series (`ilc_pw03`/`ilc_pw04`, 2013,
+2018, then annually 2021-2025) measures interpersonal trust ("trust in
+other people"), a different construct — not substituted for institutional
+trust.
+
+Pulled the 2013 snapshot anyway for completeness: Greece ranks 4th-lowest
+of 28 on political-system trust (2.0/10), behind Portugal (1.7), Slovenia
+(1.8), and Spain (1.9) — the bottom five are exactly the crisis-hit
+Southern European countries together. Not distinctively worse than
+comparable countries on this one data point, and a single year can't show
+a trend — **feasibility check failed against the stated bar** (comparable
+source, years, coverage, method consistency). Documented in Methods as
+checked-and-infeasible, same pattern as real wages and housing tenure.
+
+**User did independent literature research and found the right answer**:
+don't model it, but do add it as literature-backed context, since Eurostat
+failing as a panel source doesn't mean the broader trust literature has
+nothing to say. Verified the two load-bearing sources directly before
+writing anything:
+
+- **Ervasti, Kouvo & Venetoklis (2019, *Social Indicators Research*, cited
+  190x)** — confirmed via Google's indexed abstract (Springer paywalled
+  directly): using ESS data 2002-2011, Greece's crisis sharply damaged
+  trust in political/impartial institutions while interpersonal trust held
+  steady. Institutional, not general-temperament, damage.
+- **OECD (2026), "Survey on Drivers of Trust in Public Institutions 2026
+  Results: Greece"** — read directly via browser, not summarized. The
+  strongest single source found this round: pre-crisis trust averaged 44%
+  (not particularly high — a single 2004 Olympics-year spike above 50% is
+  the exception, not the baseline), collapsed to a historical low of 7% in
+  2012 (the same year this project's own analysis independently identifies
+  as Greece's deepest economic trough — a genuine, unplanned cross-check),
+  recovered only to 37% at its best (2015, 2020), never regained the
+  pre-2008 average, and has fallen *again* since 2023 (32% to 24%) despite
+  strong recent macroeconomic performance — a disconnect the OECD's own
+  account calls puzzling. Sourced from Eurobarometer via Tufiș, Ghica &
+  Radu (2024), Harvard Dataverse.
+- **Economou et al. (2014, *Social Science & Medicine*, cited 76x)** —
+  confirmed via indexed abstract (institutional + interpersonal trust
+  linked to mental illness during the crisis, nationwide Greek study);
+  cited lightly, not load-bearing.
+
+**A real framing correction, caught before publishing**: my first draft led
+with "trust collapsed to 7% in 2012" without first establishing the
+pre-crisis baseline wasn't itself high — exactly the "Greece was high-trust
+then suddenly became low-trust" misreading the user flagged as a risk.
+Rewrote using their explicit four-part structure (pre-existing condition →
+crisis shock → aftermath → interpretation), leading with "trust was not
+particularly high before the crisis" using the OECD source's own words,
+*then* the 2012 collapse, *then* the fragile partial recovery. This was a
+genuine catch of a claim I'd have gotten subtly wrong otherwise, not just
+a style note.
+
+**Where it landed**: a method-aside in Section 11 (full four-part
+treatment), a short pointer in the literature section (cross-referencing
+Section 11 rather than repeating it), and a Methods entry explaining why it
+wasn't modeled — using language close to what the user proposed directly.
+Not added as Model G, not charted, not given a badge (it's narrative
+context, not a finding this report tests). Three new citations added.
+
+This closes out all of P1 (P1a, P1b, P1c). Tag balance verified before
+publishing, per established practice.

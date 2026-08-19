@@ -101,12 +101,20 @@ corroboration — none are merged into any model or panel.
 - **Greekonomics.gr** brain-drain article (staff, 3 Aug 2026, distinct from the Mantés & Marinakis report): stock-based ("brain drain reversal premature") counterpoint to this project's own flow-based finding.
 - **Labrianidis & Vogiatzis** (2013): pre-crisis skilled-emigration/crisis mutual-reinforcement argument.
 - **Pratsinakis** (2022, open-access book chapter, *Challenging Mobilities... The Case of Greece*, IMISCOE/Springer): "brain drain is an incomplete frame" argument, survey stats (27% "enforced," 43% "always wanted to leave," two-in-three crisis emigrants university-educated), and a third independent shape check on the emigration timeline (peak 2012, plateau through late 2010s per this source and OECD, vs. a steadier decline in this project's own Eurostat extraction — reported as an open, unresolved discrepancy in the report itself). PDF supplied by the user at `docs/978-3-031-11574-5.pdf`.
+- **Ervasti, Kouvo & Venetoklis** (2019, *Social Indicators Research*): institutional vs. interpersonal trust during the crisis — the crisis damaged the former, not the latter.
+- **OECD** (2026, "Survey on Drivers of Trust in Public Institutions: Greece"): the load-bearing trust source — pre-crisis baseline (44% average, not high), the 2012 collapse to 7%, and the puzzling 2023-2025 renewed decline despite economic recovery.
+- **Economou et al.** (2014, *Social Science & Medicine*): trust/social-capital and mental-health link during the crisis — cited lightly.
 
 ## Non-Eurostat data considered and rejected or deferred
 
-- Eurobarometer trust-in-institutions data: not yet fetched — feasibility
-  (comparable methodology, country/year coverage) is an open checkpoint
-  (see the project's task list, P1.3).
+- **Institutional trust (Eurobarometer/ESS/OECD)**: feasibility checked
+  directly against Eurostat's own catalogue (see `publication_strategy.md`,
+  P1c) — Eurostat's entire institutional-trust holdings are one dataset
+  (`ilc_pw03b`) covering a single year, 2013, which fails the
+  comparable-years bar outright. Not modeled as a result. Added instead as
+  literature-backed narrative context (Section 11 and the literature
+  section), using the three non-Eurostat sources above. A future version
+  that expands beyond Eurostat's own API could revisit this.
 - Real wages, youth/long-term unemployment, income inequality (Gini/S80:S20),
   housing tenure: named in `docs/project_description.md` but deliberately
   not fetched for Version 1 — see `docs/publication_strategy.md` for the

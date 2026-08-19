@@ -80,13 +80,21 @@ integration deferred to P3
 **Commit**: `p1b-migration-feasibility`
 
 ### P1c — Trust in state/EU
-- [ ] Feasibility check: comparable source, years, country coverage, method
-      consistency — before any modeling
-- [ ] Only proceed to modeling if it clears that bar
-- [ ] Checkpoint: report findings, recommend placement, decide
-      integrate/hold back
+- [x] Feasibility check: comparable source, years, country coverage, method
+      consistency — before any modeling. **Failed**: Eurostat's entire
+      institutional-trust holdings are one dataset (`ilc_pw03b`), one year
+      (2013) only.
+- [x] Only proceed to modeling if it clears that bar — it didn't; not
+      modeled
+- [x] Checkpoint: report findings, recommend placement, decide
+      integrate/hold back — **decision: don't model, do add as
+      literature-backed context** (user's own independent research found
+      Ervasti et al. 2019 and an OECD 2026 trust profile that together
+      support the "structural, not cultural mood" argument)
 
-**Commit**: `p1c-trust-feasibility`
+**Commit**: `p1c-trust-feasibility` (feasibility check) — done; trust
+literature integrated directly into the report in the same session
+(Section 11, literature section, Methods) rather than deferred to P3
 
 ## P2 — Labor-market and distribution extensions (lower priority)
 
