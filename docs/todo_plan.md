@@ -134,7 +134,22 @@ literature integrated directly into the report in the same session
       overstate its contribution next to long-term unemployment. See
       `docs/publication_strategy.md`, "P2c: youth unemployment" for the
       full log. Republished.
-- [ ] Inequality (Gini or S80:S20)
+- [x] Inequality (Gini or S80:S20) — final P2 item, fetched
+      (`36_income_inequality.py`). S80/S20 has full 2003–2024 coverage;
+      Gini's is shorter (2014–2024). Greece is elevated but not extreme
+      (6th of 27). Level correlation with subjective poverty is weak and
+      does not survive FDR correction (r=0.15, adjusted p=0.54) — the only
+      variable in the table with a non-significant level reading. Adding
+      it to Model C-LTU contributes no independent explanatory power.
+      **Not added to the scorecard, no dedicated subsection or chart** —
+      integrated as a short Methods entry plus one sentence in the Section
+      12 conclusion. The useful result is the negative one: Greece's gap
+      is not mainly an inequality story. Also caught and fixed a real
+      pipeline bug during this round (`04_merge_all.py` choking on three
+      multi-row-per-year raw files from earlier P2 rounds) — see
+      `docs/publication_strategy.md` for the full fix and the
+      confirmation that no previously-published numbers were affected.
+      Republished. **This closes out P2.**
 - [x] Housing tenure — fetched (`35_housing_tenure.py`), treated as its own
       separate checkpoint per the user's instruction, not combined with
       P2e. Reframed a variable already central to the report

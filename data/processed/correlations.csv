@@ -18,4 +18,5 @@ Employment rate 20-64 (%),gr_employment_rate_20_64,-0.691,0.0021,17,-0.861,0.0,1
 "HICP inflation, housing & energy (%)",gr_hicp_housing_energy_rate,-0.312,0.1477,23,-0.262,0.2392,22
 "HICP inflation, food (%)",gr_hicp_food_rate,-0.206,0.3452,23,-0.242,0.2773,22
 "AROP (objective, relative)",gr_arop,0.191,0.3838,23,0.302,0.1715,22
+"Income inequality, S80/S20 ratio",gr_panel_s80s20,0.147,0.5139,22,0.187,0.4037,22
 Minimum wage (nominal EUR/month),gr_minimum_wage_eur_month,0.071,0.7472,23,0.212,0.3436,22

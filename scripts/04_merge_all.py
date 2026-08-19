@@ -32,6 +32,13 @@ for path in var_files:
         continue
     if time_col != "time":
         df = df.rename(columns={time_col: "time"})
+    if df.duplicated(subset=["geo", "time"]).any():
+        # Has an extra dimension (e.g. tenure status, price category) not collapsed to
+        # one row per geo/time -- not a generic single-value cross-country file. Merging
+        # it here would fan out every row of master via a many-to-many join.
+        print(f"[SKIP] {name}: multiple rows per geo/time (extra dimension not filtered) -- "
+              f"not a generic single-value cross-country file")
+        continue
     value_col = [c for c in df.columns if c not in ("geo", "time", "geo_label")][0]
 
     gr = df[df.geo == "EL"][["time", value_col]].rename(columns={value_col: f"gr_{name}"})

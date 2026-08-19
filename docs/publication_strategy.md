@@ -1463,3 +1463,89 @@ Greece".
 Remaining under P2, not started: income inequality (Gini/S80:S20) — the
 last item on the original P2 list. Per the same checkpoint discipline used
 throughout, waiting for the user's go-ahead before starting.
+
+## Income inequality (2026-08-21) — final P2 item
+
+User's explicit framing going in: expect this to be less central than
+LTU, wages/prices, or housing tenure, but worth checking because it tests
+whether the average-level measures already in the model are hiding a
+worse-off tail. Same five-point checkpoint structure as youth unemployment
+and housing tenure: feasibility, descriptive, correlation (with FDR),
+model test, interpretation.
+
+Built as `36_income_inequality.py`: Eurostat's `ilc_di11` (S80/S20 income
+quintile share ratio, full 27-country coverage 2003&ndash;2024) and
+`ilc_di12` (Gini coefficient, age-broken-down series, shorter coverage
+2014&ndash;2024 only &mdash; checked directly, not assumed).
+
+**Result matched the user's expectation closely, and turned out to be a
+genuinely clean null.** Greece is elevated but not extreme on inequality
+&mdash; 6th-highest of 27 EU countries on both measures. Its own S80/S20
+has actually *fallen* since 2003 (6.38&rarr;5.27), including a substantial
+decline since the 2012 crisis-era peak (6.63) &mdash; the Greek crisis
+compressed incomes broadly rather than widening the gap at the top. A
+striking cross-country cross-check: Bulgaria has the EU's highest
+inequality (6.96) but far *lower* subjective poverty (37.4%) than Greece
+(66.7%, only moderately unequal at 5.27) &mdash; inequality level and
+subjective poverty are not tracking together across countries. The level
+correlation with subjective poverty is weak and does not survive FDR
+correction (r=0.15, raw p=0.51, adjusted p=0.54) &mdash; the only variable
+in the whole correlation table with a non-significant level reading, a
+genuine outlier from this project's usual pattern. Added to Model C-LTU,
+it contributes no independent explanatory power (R&sup2; barely moves,
+Greece's out-of-sample gap gets worse rather than better, coefficient not
+significant, p=0.50).
+
+**Per the user's own interpretation framework, a null result here is
+itself the useful finding**: it rules out a plausible alternative
+explanation for Greece's subjective-poverty gap. The story this report
+has been building &mdash; depressed wages, structural unemployment,
+wage-adjusted price pressure, housing costs that reach owners too &mdash;
+is about *average*-level hardship being severe for most Greek households,
+not about inequality hiding a worse-off minority behind an okay-looking
+average.
+
+**Integrated exactly per the user's limited-integration instructions**: a
+short entry in the existing "Variables tested but not central to the
+story" Methods subsection (no new dedicated h4, unlike LTU/wages/tenure,
+since this one doesn't carry the same weight), one sentence appended to
+the Section 12 "Answer to Question 2" conclusion box using close to the
+user's own suggested wording, and the Section 4 correlation-table row.
+Deliberately no chart, no new subsection &mdash; would have diluted the
+report's stronger evidence.
+
+**A real pipeline bug found and fixed while getting the FDR number.**
+Re-running `04_merge_all.py` (needed to compute inequality's FDR-adjusted
+p-value through the standard 04&rarr;05&rarr;06&rarr;10&rarr;27 pipeline)
+triggered a cascading many-to-many join blowup: row counts for every
+variable exploded into the hundreds. Traced to three raw files created in
+earlier P2 rounds &mdash; `panel_housing_overburden_by_tenure.csv`
+(P2: housing tenure), `panel_price_levels_by_category.csv` (P2e),
+`panel_tenure_distribution.csv` (housing tenure) &mdash; each of which has
+multiple rows per country/year (one per tenure or price category, by
+design, since they were built for their own dedicated checkpoint scripts,
+not the generic merge). None of them had ever been through
+`04_merge_all.py` before this round, since none of P2e's or housing
+tenure's own integration work needed to re-run the generic merge pipeline
+&mdash; this was the first time it ran with all three present. Fixed at
+the root, matching this project's established practice of generic fixes
+over special cases: added a `geo`/`time` uniqueness check to
+`04_merge_all.py` that skips (with a clear log line) any raw file with
+more than one row per country/year, rather than adding the three files to
+a manual skip list &mdash; this protects against the same failure mode
+for any future multi-dimensional raw file, not just these three. Verified
+directly afterward that every already-published correlation number (long-
+term unemployment r=0.933, real wages r=&minus;0.785, youth unemployment
+r=0.711, and every other row) is byte-for-byte unchanged &mdash; the
+corruption never touched any previously-published report content, caught
+before it could.
+
+Tag balance and in-browser rendering verified before publishing.
+Republished with label "P2 final: income inequality checked, not
+central".
+
+**This closes out P2.** Per the user's explicit instruction, no further
+variables will be added without a fresh decision to do so &mdash; the
+next step is a full review of the expanded Version 1 (P3: integrate the
+whole P2 sweep into a coherent narrative pass, then P4: final release
+review), not more analysis expansion.

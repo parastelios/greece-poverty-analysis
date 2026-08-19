@@ -231,3 +231,44 @@ a small underlying renter subsample historically — the report relies on
 the stable 2022–2024 window for the by-tenure comparison, not the full
 historical series. Full detail in report Methods ("Housing tenure: source,
 method, and why it's descriptive depth, not a new model variable").
+
+## Income inequality addition (2026-08-21) — final P2 item
+
+| Dataset code | What it is | Key params | Fetched by |
+|---|---|---|---|
+| `ilc_di11` | S80/S20 income quintile share ratio | `age=TOTAL`, `sex=T`, `unit=RAT` | `36_income_inequality.py` |
+| `ilc_di12` | Gini coefficient, equivalised disposable income | `age=TOTAL`, `statinfo=GINI_HND` | `36_income_inequality.py` |
+
+S80/S20 has full 27-country coverage, 2003–2024; Gini's age-broken-down
+series is shorter, 2014–2024 only — checked directly against Eurostat,
+not assumed. Greece is elevated but not extreme on either measure (6th of
+27 in 2024). Level correlation with subjective poverty is weak and does
+not survive FDR correction (r=0.15, adjusted p=0.54) — the only variable
+in the correlation table with a non-significant level reading. Added to
+Model C-LTU, it contributes no independent explanatory power (R² barely
+moves, Greece's out-of-sample gap gets worse, coefficient not
+significant). **Not added to the scorecard, and deliberately given no
+dedicated subsection or chart** — the finding here is the negative one:
+Greece's subjective-poverty gap is not mainly an inequality story. Full
+detail in report Methods ("Variables tested but not central to the
+story").
+
+### Pipeline bug found and fixed during this round
+
+Re-running `04_merge_all.py` (needed to get FDR status for the inequality
+correlation) triggered a cascading many-to-many join blowup: three raw
+files created in earlier P2 rounds —
+`panel_housing_overburden_by_tenure.csv`, `panel_price_levels_by_category.csv`,
+and `panel_tenure_distribution.csv` — have multiple rows per country/year
+(one per tenure or price category, by design, for their own dedicated
+checkpoint scripts) and had never been run through the generic merge
+before, since it hadn't been re-run since those files were created. Fixed
+at the root in `04_merge_all.py` with a general `geo`/`time` uniqueness
+check that skips any raw file with more than one row per country/year,
+rather than special-casing the three offending files — this protects
+against any future multi-dimensional raw file causing the same issue.
+Confirmed directly afterward that every previously-published correlation
+number (long-term unemployment r=0.933, real wages r=−0.785, youth
+unemployment r=0.711, etc.) is unchanged — the corruption never reached
+any already-published report content, since this was the first time the
+merge had run with those three files present.

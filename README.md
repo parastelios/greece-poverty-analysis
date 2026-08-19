@@ -78,6 +78,7 @@ Scripts are numbered in dependency order. Run all from inside `scripts/`:
 | 33 | `33_youth_unemployment.py` | Youth unemployment: feasibility, correlation, overlap with LTU/migration, model tests (swap and add-to-C-LTU) |
 | 34 | `34_wage_adjusted_cost_of_living.py` | Price level vs. wage level by category, wage-adjusted price pressure ranking, time series since 2008 |
 | 35 | `35_housing_tenure.py` | Housing cost overburden and tenure distribution by ownership/rental status, cross-country and Greece-only correlation, model test against existing housing_cost_overburden |
+| 36 | `36_income_inequality.py` | S80/S20 and Gini: feasibility, correlation, overlap with existing predictors, model test against Model C-LTU |
 | — | `09_export_report_data.py` again | Re-run to pick up any new columns before... |
 | — | `inject_data.py` | ...embedding the refreshed JSON into `output/report.html` |
 
@@ -93,6 +94,16 @@ the existing file. `05_threshold_hypothesis.py` computes a derived column
 derived column is silently wiped and needs `05` re-run to restore it. Always
 run in numeric order (04 before 05) when regenerating from raw data, not
 just when adding a genuinely new script.
+
+**Raw-file shape caveat**: `04_merge_all.py`'s generic merge assumes one
+row per `geo`/`time` pair in every raw CSV it picks up from `data/raw/`.
+Files with an extra dimension (e.g. a `tenure` or `category` column, with
+several rows per country/year) are detected and skipped automatically —
+they're meant to be consumed directly by their own dedicated script, not
+through the generic cross-country merge. If you add a new multi-dimensional
+raw file and want it in the generic merge, filter or pivot it to one row
+per `geo`/`time` first (see `real_wage_idx2008.csv` or
+`panel_long_term_unemployment.csv` for the expected shape).
 
 ## Notes
 
