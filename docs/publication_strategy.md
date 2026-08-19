@@ -1387,3 +1387,79 @@ be treated as its own separate checkpoint (a different question — who is
 exposed to housing costs, and how tenure/family structure changes the
 burden — likely more complex to interpret than P2e), not combined with any
 other item. Waiting for the user's go-ahead before starting the next one.
+
+## Housing tenure (2026-08-21)
+
+Started as its own checkpoint per the user's explicit instruction — a
+different question from P2e ("who is exposed to housing costs, and how
+does tenure/family structure change the burden"), not combined with it.
+Built as `35_housing_tenure.py`: Eurostat's `ilc_lvho07c` (housing cost
+overburden by tenure status) and `ilc_lvho02` (tenure distribution), full
+27-country coverage, 15&ndash;22 years. Confirmed directly that the
+`ilc_lvho07c` "TOTAL" row is the exact same series already powering the
+report's `housing_cost_overburden` variable (used throughout Sections
+7&ndash;11 and in the cross-country model) &mdash; this is a drill-down of
+an already-central variable, not an unrelated new one.
+
+**The headline result, and it's a genuine surprise given the report's
+established "renters worse off" prior:** Greece's mortgage-free-owner
+overburden rate is 25.7% &mdash; the EU's highest by a wide margin (next:
+Sweden, 14.0%; typical EU range 1&ndash;7%). Homeownership, which shields
+households from housing-cost pressure almost everywhere else in the EU,
+does not do that in Greece. Renters are still worse off in absolute terms
+(37.4% overburdened) &mdash; but the owner-renter *gap* is one of the EU's
+narrowest (Greece ranks 22nd of 27), because owners are unusually burdened
+too, not because renters are spared.
+
+**A genuine judgment call, resolved by the user rather than assumed:**
+whether the small owner-renter gap is a complication to the "renters have
+it worse" story or the actual headline. Flagged this explicitly as an
+open framing question when reporting the checkpoint back. User's answer:
+the small gap is the strongest part of the finding, not a complication
+&mdash; it's what makes Greece structurally different from the rest of
+the EU (tenure normally separates the exposed from the protected; in
+Greece it doesn't), and integration proceeded on that basis.
+
+**Multicollinearity check and model test, done before ruling on scorecard
+inclusion:** mortgage-free-owner overburden correlates at r=0.91
+(panel-wide) and r=0.88 (Greece-only) with the `housing_cost_overburden`
+variable already in Model C-LTU &mdash; expected, since it's a
+subcomponent of that total by construction. Added on top of Model C-LTU,
+R&sup2; barely moves (0.914&rarr;0.917), Greece's out-of-sample gap gets
+slightly worse rather than better (3.9&rarr;5.1), and the coefficient
+isn't significant (p=0.141). **Not added to the scorecard** &mdash; the
+housing-cost channel is already captured; this adds texture to why it's
+so severe, not new independent explanatory power. Correlation reported
+separately and honestly labeled descriptive, not causal: Greece-only over
+time r=0.90 (18 years), cross-country single-year (2024) r=0.66.
+
+**One real data-quality issue caught and handled, not glossed over:** the
+renter-specific subseries in Greece's historical data show implausible
+year-to-year swings before roughly 2021 (market-rate renter overburden:
+23.6% in 2007, 87.5% in 2014) &mdash; almost certainly a small-subsample
+artifact in a historically ownership-dominated country, not a real
+one-year swing in housing conditions. Handled by relying only on the
+stable 2022&ndash;2024 window for the by-tenure comparison, not the full
+historical series, and documenting the issue explicitly in Methods rather
+than silently using a noisy number.
+
+**Where it landed**, per the user's explicit placement instruction: a new
+Section 11 subsection, "Owning your home does not fully protect you
+here," placed between the wage-adjusted-pricing subsection and long-term
+unemployment (extending the narrative arc: economy &rarr; pay &rarr;
+prices &rarr; housing tenure &rarr; jobs &rarr; emigration &rarr;
+sentiment) &mdash; a table of the four headline overburden figures, one
+sentence on ownership structure (near-EU-average ownership rate but much
+lower mortgage penetration, "plausibly consistent with" inherited/
+self-built housing rather than asserted as fact), the correlation
+figures labeled descriptive, and a full Methods entry. No executive
+summary change this round &mdash; the user's integration instructions
+didn't call for one, unlike P2e, so none was added.
+
+Tag balance and in-browser rendering verified before publishing.
+Republished with label "Housing tenure: ownership doesn't fully protect in
+Greece".
+
+Remaining under P2, not started: income inequality (Gini/S80:S20) — the
+last item on the original P2 list. Per the same checkpoint discipline used
+throughout, waiting for the user's go-ahead before starting.

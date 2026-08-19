@@ -77,6 +77,7 @@ Scripts are numbered in dependency order. Run all from inside `scripts/`:
 | 32 | `32_ltu_model_test.py` | Full model battery: C-LTU scorecard row, 27-country LOO ranking, scarring/expectations interaction checks |
 | 33 | `33_youth_unemployment.py` | Youth unemployment: feasibility, correlation, overlap with LTU/migration, model tests (swap and add-to-C-LTU) |
 | 34 | `34_wage_adjusted_cost_of_living.py` | Price level vs. wage level by category, wage-adjusted price pressure ranking, time series since 2008 |
+| 35 | `35_housing_tenure.py` | Housing cost overburden and tenure distribution by ownership/rental status, cross-country and Greece-only correlation, model test against existing housing_cost_overburden |
 | — | `09_export_report_data.py` again | Re-run to pick up any new columns before... |
 | — | `inject_data.py` | ...embedding the refreshed JSON into `output/report.html` |
 

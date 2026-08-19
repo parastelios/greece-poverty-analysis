@@ -204,3 +204,30 @@ context in the migration/brain-drain subsection (its 2013 peak fell
 within a year of the 2012 emigration peak) and documented in full in
 report Methods ("Youth unemployment: checked, strongly correlated, and
 not a scorecard model").
+
+## Housing tenure addition (2026-08-21)
+
+| Dataset code | What it is | Key params | Fetched by |
+|---|---|---|---|
+| `ilc_lvho07c` | Housing cost overburden rate by tenure status | `unit=PC`, `tenure=OWN_L/OWN_NL/RENT_FR/RENT_MKT/TOTAL` | `35_housing_tenure.py` |
+| `ilc_lvho02` | Distribution of population by tenure status | `rskpovth=TOTAL`, `hhcomp=TOTAL`, `unit=PC` | `35_housing_tenure.py` |
+
+Full 27-country coverage on both, 15–22 years depending on country. The
+`ilc_lvho07c` "TOTAL" row exactly matches the `housing_cost_overburden`
+variable already used throughout the report and the cross-country model —
+checked directly. Greece's mortgage-free-owner overburden rate (25.7% in
+2024) is the EU's highest by a wide margin (next: Sweden, 14.0%; typical
+EU range 1–7%) — homeownership does not shield Greek households from
+housing-cost pressure the way it does almost everywhere else in the EU.
+Renters are still worse off (37.4%), but the owner-renter gap is one of
+the EU's narrowest (Greece ranks 22nd of 27) precisely because owners are
+unusually burdened too. Correlates strongly with subjective poverty
+(Greece-only over time, r=0.90; cross-country single-year, r=0.66) but is
+highly collinear with the `housing_cost_overburden` variable already in
+Model C-LTU (r≈0.9) and adds no independent explanatory power when tested
+— not added to the scorecard. Note: the renter-specific subseries show
+implausible year-to-year swings in Greece's pre-2021 data, consistent with
+a small underlying renter subsample historically — the report relies on
+the stable 2022–2024 window for the by-tenure comparison, not the full
+historical series. Full detail in report Methods ("Housing tenure: source,
+method, and why it's descriptive depth, not a new model variable").

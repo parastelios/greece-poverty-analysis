@@ -135,10 +135,26 @@ literature integrated directly into the report in the same session
       `docs/publication_strategy.md`, "P2c: youth unemployment" for the
       full log. Republished.
 - [ ] Inequality (Gini or S80:S20)
-- [ ] Housing tenure, if feasible — user flagged this as likely more
-      complex than P2e (a different question: who is exposed to housing
-      costs, and how tenure/family structure changes the burden), to be
-      treated as its own separate checkpoint, not mixed with P2e
+- [x] Housing tenure — fetched (`35_housing_tenure.py`), treated as its own
+      separate checkpoint per the user's instruction, not combined with
+      P2e. Reframed a variable already central to the report
+      (`housing_cost_overburden`) by tenure status: Greece's mortgage-free
+      owners face a 25.7% overburden rate, the EU's highest by a wide
+      margin (next: Sweden 14.0%, typical EU range 1–7%) — homeownership
+      does not shield Greek households the way it does almost everywhere
+      else in the EU. Renters are still worse off (37.4%), but the
+      owner-renter gap is one of the EU's narrowest (Greece ranks 22nd of
+      27) because owners are unusually burdened too, not because renters
+      are spared — the "small gap" read as the strongest part of the
+      finding, not a complication, per explicit user framing. Strongly
+      collinear with the existing `housing_cost_overburden` variable
+      (r≈0.9) and adds no independent model power once tested — **not
+      added to the scorecard**, integrated as descriptive depth only.
+      New Section 11 subsection ("Owning your home does not fully protect
+      you here") placed between wage-adjusted pricing and long-term
+      unemployment, plus a full Methods entry. See
+      `docs/publication_strategy.md`, "Housing tenure" for the full log.
+      Republished.
 - [x] P2e: wage-adjusted cost-of-living pressure — fetched
       (`34_wage_adjusted_cost_of_living.py`), a strong, reader-facing
       finding. On raw price level Greece ranks only 18th-most-expensive of
