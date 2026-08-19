@@ -18,7 +18,7 @@ the brief are intentionally future work, not V1 requirements), and
 ## Data vintage
 
 Every file in `data/` and the published report reflect a **live pull from
-the Eurostat API, last rebuilt 2026-08-21**. Eurostat revises its own
+the Eurostat API, last rebuilt 2026-08-19**. Eurostat revises its own
 published figures over time (methodology updates, late-reported country
 data, benchmark revisions); re-running the pipeline against the live API
 on a later date will not reproduce these exact numbers byte-for-byte, even

@@ -227,17 +227,17 @@ table.mini tr.hl td { color: var(--accent-ink); font-weight: 700; }
     <p class="masthead-meta">
       <span>11 chapters</span>
       <span>Companion to the full technical report</span>
-      <span>Data vintage 2026-08-21</span>
+      <span>Data vintage 2026-08-19</span>
     </p>
   </div>
 
   <article>
 
-    <p>Two out of three Greek households say they cannot make ends meet. That is the highest share anywhere in the European Union &mdash; more than triple the EU average &mdash; and it has been true, without a single exception, every year since 2011.</p>
+    <p>Two out of three Greek households say they struggle to make ends meet. That is the highest share anywhere in the European Union &mdash; more than triple the EU average &mdash; and it has been true, without a single exception, every year since 2011.</p>
 
-    <p>Ask Greece's official poverty statistics instead, and the picture looks almost ordinary. The country's poverty rate ranks 4th-highest of 27 EU states: elevated, not extreme. The kind of number that puts a country somewhere in the upper-middle of a hardship ranking, not standing alone at the very top of it.</p>
+    <p>Ask Greece's official poverty statistics instead, and the picture looks almost ordinary. The country's poverty rate ranks 4th-highest of 27 EU states: elevated, not extreme. The kind of number that puts a country somewhere in the upper-middle of a hardship ranking, not standing alone at the very top of it. A second, broader Eurostat measure &mdash; one that also counts material deprivation and very-low household work intensity, not income alone &mdash; tells almost the same story: elevated, not extreme.</p>
 
-    <p>Two measures. One country. A thirty-nine-point gap between how bad Greece's poverty rate says things are, and how bad Greek households say things feel.</p>
+    <p>Two measures. One country. A thirty-nine-point gap between how bad Greece's broader poverty-or-exclusion rate says things are, and how bad Greek households say things feel.</p>
 
     <p>It would be easy to conclude that one of these numbers must be wrong &mdash; exaggerated pessimism on one side, or a blind statistic on the other. That is the wrong instinct. <b>They are measuring different things.</b> The official rate measures relative income within Greece: how far a household's income sits below the middle of the pack, in whatever year you happen to be counting. Households, when Eurostat asks them directly, are answering a different, broader question &mdash; whether life feels affordable and stable. Nothing requires those two answers to move together. This is the story of what happens when they stop.</p>
 
@@ -282,7 +282,7 @@ table.mini tr.hl td { color: var(--accent-ink); font-weight: 700; }
 
     <p>If the whole paradox were arithmetic, the story would end here: correct the yardstick, watch the mystery disappear. It doesn't. Compare Greece to other EU countries with similarly rough unemployment, income, and material hardship &mdash; a like-for-like comparison, not a Greece-only correction &mdash; and Greek households still report meaningfully more difficulty than those shared conditions alone would predict.</p>
 
-    <p>Add housing costs and cash-flow strain (missed bills, no buffer for a surprise expense) to that comparison, and most of the remaining gap closes &mdash; <i>if</i> the model is allowed to see Greece's own data while it learns. Test it more honestly &mdash; predict Greece using a model trained only on the other twenty-six countries, having never seen a single Greek data point &mdash; and the gap survives. Under every version of that stricter test, Greece is the hardest country in the European Union to predict.</p>
+    <p>Add housing costs and cash-flow strain (missed bills, no buffer for a surprise expense) to that comparison, and most of the remaining gap closes &mdash; <i>if</i> the model is allowed to see Greece's own data while it learns. Test it more honestly &mdash; predict Greece using a model trained only on the other twenty-six countries, having never seen a single Greek data point &mdash; and the gap survives. Under every version of that stricter test built on headline unemployment &mdash; the standard comparison used throughout this section &mdash; Greece is the hardest country in the European Union to predict. (Chapter 7 finds a different labor-market measure that changes this picture substantially; this section describes what the standard comparison alone can and can't explain.)</p>
 
     <div class="method">
       <p class="method-label">Method note</p>
@@ -440,7 +440,7 @@ table.mini tr.hl td { color: var(--accent-ink); font-weight: 700; }
 
     <div class="method">
       <p class="method-label">Method note</p>
-      <p>Long-term and headline unemployment are, unsurprisingly, highly correlated (<span class="num">r=0.91</span> panel-wide; <span class="num">r=0.998</span> for Greece's own series, since by the mid-2010s most of Greece's unemployment <i>was</i> long-term). Adding both to the same model together destabilizes headline unemployment's own coefficient &mdash; a textbook collinearity symptom &mdash; so replacement, not addition, is the preferred specification. Long-term unemployment's own coefficient is stable and significant (<span class="num">p&lt;0.001</span>) across all 27 leave-one-country-out refits, including the refit that excludes Greece itself: not an artifact of Greece's own data. Two findings from earlier chapters turn out to overlap with this one once tested together &mdash; the GDP-scarring result adds nothing further once long-term unemployment is in the model, and financial pessimism (Chapter 10) weakens from significant to marginal &mdash; addressed honestly in Chapter 9.</p>
+      <p>Long-term and headline unemployment are, unsurprisingly, highly correlated (<span class="num">r=0.91</span> panel-wide; <span class="num">r=0.998</span> for Greece's own series, since by the mid-2010s most of Greece's unemployment <i>was</i> long-term). Adding both to the same model together destabilizes headline unemployment's own coefficient &mdash; a textbook collinearity symptom &mdash; so replacement, not addition, is the preferred specification. Long-term unemployment's own coefficient is stable and significant (<span class="num">p&lt;0.001</span>) across all 27 leave-one-country-out refits, including the refit that excludes Greece itself: not an artifact of Greece's own data. Two findings from earlier chapters turn out to overlap with this one once tested together &mdash; the GDP-scarring result adds nothing further once long-term unemployment is in the model, and financial pessimism weakens from significant to marginal &mdash; addressed honestly in Chapter 9.</p>
     </div>
 
     <svg class="crack" viewBox="0 0 720 22" preserveAspectRatio="none"><path d="M0,9 L50,13 L100,8 L150,14 L200,9 L250,12 L300,8 L350,14 L400,10 L450,13 L500,8 L550,12 L600,9 L650,13 L700,10 L720,11" /></svg>
@@ -497,7 +497,7 @@ table.mini tr.hl td { color: var(--accent-ink); font-weight: 700; }
     <div class="checked-list">
       <div class="checked-item">
         <span class="checked-mark sans">RULED OUT</span>
-        <p><b>Income inequality.</b> Greece's inequality is elevated but not exceptional &mdash; 6th-highest of 27 EU countries on both the Gini coefficient and the S80/S20 ratio &mdash; and its own inequality has actually <i>fallen</i> since 2003, even as subjective poverty stayed elevated. Added to the model, it explains none of the remaining gap. This report's poverty paradox is not a story about a hidden unequal tail; it is a story about the average household.</p>
+        <p><b>Income inequality.</b> Greece's inequality is elevated but not exceptional &mdash; 6th-highest of 27 EU countries on both the Gini coefficient and the S80/S20 ratio &mdash; and its own inequality has actually <i>fallen</i> since 2003, even as subjective poverty stayed elevated. Added to the model, it explains none of the remaining gap. This report's poverty paradox is not a story about a hidden unequal tail; it is a story about average-level hardship.</p>
       </div>
       <div class="checked-item">
         <span class="checked-mark sans">REDUNDANT</span>
@@ -524,13 +524,13 @@ table.mini tr.hl td { color: var(--accent-ink); font-weight: 700; }
       <p>Greece is not a country that simply feels poorer than it is. The official poverty measure missed the sharpest part of the collapse because its own threshold fell along with Greek incomes &mdash; and even after correcting for that, a real gap survived every honest test this investigation could throw at it.</p>
       <p>That remaining gap is not one hidden variable. It is a sequence: <b>an economy that never fully came back, a paycheck that fell further than the economy did, ordinary prices that turned heavy against that paycheck, a home that stopped being a shelter from cost even when it was paid off, joblessness that curdled from a spell into a condition, and a decade of people responding by leaving.</b> Financial pessimism sits on top of all of it &mdash; not the explanation, but a reasonably accurate memory of having lived through it.</p>
       <p>What looks, from the outside, like Greek households feeling sorrier for themselves than the statistics justify is, on the evidence here, closer to the opposite: households keeping an accurate internal account of a decade the headline numbers were built to smooth over.</p>
-      <p>This is not a closed case. A real, smaller residual remains even after every finding in this piece &mdash; household composition, informal income, savings buffers, and institutional factors beyond what Eurostat measures are all still genuinely open questions, named honestly rather than dismissed. What this investigation can say with confidence is narrower and, I think, more useful: the part of the gap it <i>can</i> explain is not mood. It is memory of a decade that, in six separate and independently-checked ways, never actually ended.</p>
+      <p>This is not a closed case. A real, smaller residual remains even after every finding in this piece &mdash; household composition, informal income, savings buffers, and institutional factors beyond what Eurostat measures are all still genuinely open questions, named honestly rather than dismissed. What this investigation can say with confidence is narrower and, I think, more useful: the part of the gap it <i>can</i> explain is not mood. It is memory of a decade that, in six separate and independently-checked ways, has not fully ended.</p>
     </div>
 
   </article>
 
   <div class="colophon">
-    <p>This is a narrative companion to <b>The Greek Poverty Paradox</b>, the full technical report behind every figure cited here &mdash; exact coefficients, robustness checks, multiple-testing corrections, full citations, and the complete data pipeline. Every number above traces to that report's own reproducible Eurostat pipeline; nothing here is independently sourced. Data vintage: 2026-08-21. Eurostat revises its own published figures over time, so a later pull from the live API will not reproduce these exact numbers byte-for-byte, even with unchanged methodology.</p>
+    <p>This is a narrative companion to <b>The Greek Poverty Paradox</b>, the full technical report behind every figure cited here &mdash; exact coefficients, robustness checks, multiple-testing corrections, full citations, and the complete data pipeline. Most modeled numbers above trace to that report's own reproducible Eurostat pipeline; the institutional-trust figures in Chapter 9 are literature and survey context (OECD, Eurobarometer, peer-reviewed sources), not part of the Eurostat pipeline or this report's own models &mdash; both are cited in full in the technical report's Methods section. Data vintage: 2026-08-19. Eurostat revises its own published figures over time, so a later pull from the live API will not reproduce these exact numbers byte-for-byte, even with unchanged methodology.</p>
   </div>
 
 </div>
