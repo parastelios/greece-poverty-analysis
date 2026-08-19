@@ -2084,7 +2084,68 @@ republished to their existing Artifact URLs. The user also shared a
 higher-level observation mid-round: that the three outputs now cover the
 same material but don't yet share one explicit hierarchy of central vs.
 supporting vs. contextual findings, and suggested treating the narrative
-companion as the "story spine" the other two should align to. Not yet acted
-on &mdash; flagged here as the likely next round, pending explicit
-confirmation of scope, since it would mean editing structure/ordering across
-all three documents rather than fixing individual claims.
+companion as the "story spine" the other two should align to.
+
+## Cross-document alignment pass: a story hierarchy layered on the badge system (2026-08-20)
+
+Followed up on the hierarchy observation above. Explicit design decision,
+made by the user after two rounds of back-and-forth: **keep the existing
+evidence-quality badge system (Core finding / Descriptive check /
+Exploratory lead) completely untouched**, and add a *separate*, orthogonal
+axis &mdash; a six-stage story hierarchy (measurement problem &rarr; residual
+outlier &rarr; material scarring &rarr; duration mechanism &rarr; social/
+demographic scars &rarr; ruled-out explanations) &mdash; expressed through
+ordering, framing, transitions, and summaries, not new badges or a
+relabeling of existing ones. Rationale, in the user's own words: the badges
+answer "how strong is this finding," the story spine answers "why am I
+being told this and how does it move the argument" &mdash; conflating them
+risks making supporting-but-strong evidence read as weak. One new visible
+phrase was authorized: <b>Evidence role:</b>, used sparingly in method notes
+to name a finding's narrative role without touching its evidentiary label.
+
+This was explicitly scoped as an editorial pass, not new analysis &mdash;
+no new variables, no new charts, no changed numbers. Work by document:
+
+**`report.html`** (needed the most work, per the user's own read &mdash;
+"still feels like accumulated evidence"): added a one-line statement of the
+whole argument's shape at the top of the executive summary (the same
+sentence the user supplied: "Greece's poverty paradox is partly a
+measurement problem and partly a scarring problem..."), naming the six
+stages explicitly; added a previously-missing executive-summary paragraph
+for the social/demographic-scars stage (migration + trust had findings in
+Section 11 but no executive-summary mention at all &mdash; a real gap, not
+just an ordering issue); gave the ruled-out-inequality finding a bolded
+"Ruled out:" lead-in inside its existing paragraph, rather than a new
+paragraph; regrouped Section 11's own lede into the three sub-groups it
+implicitly always had (material scarring / duration / social scars) with a
+one-sentence description of each; added six "Evidence role:" phrases to the
+method-note boxes for real wages, wage-adjusted pricing, housing tenure,
+migration/youth-unemployment, pessimism/trust, and the ruled-out inequality
+finding.
+
+**`narrative_companion.html`** (needed the least, since the user identified
+it as already having "the best spine" &mdash; its chapter order already
+matches the six-stage hierarchy almost exactly): added one roadmap
+paragraph right after the opening hook, before Chapter 1, naming the shape
+of the whole piece in narrative voice and mapping chapter ranges to stages.
+Chapter-level transitions (Ch. 2&rarr;3, Ch. 6&rarr;7, Ch. 9&rarr;10) were
+checked and left alone &mdash; each chapter's own lede sentence already
+does the pivoting work cleanly, and the Landing (Ch. 11) already crystallizes
+the argument better in its own prose than the clinical one-line summary
+would; adding the explicit sentence there would have flattened it, so it
+was left untouched.
+
+**`academic_paper_draft.html`**: added a roadmap paragraph to the
+Introduction naming the six stages with section cross-references; added a
+new paragraph to &sect;4.3 (evidentiary hedging convention) explicitly
+distinguishing evidentiary status from argument stage, stating a finding
+can be central to the argument while resting on descriptive evidence; split
+&sect;6.6's single undifferentiated paragraph (GDP/wages/prices/housing
+mixed with migration/trust) into two bolded sub-paragraphs, "Material
+scarring" and "Social and demographic scars," matching the same split now
+named in report.html's Section 11 lede.
+
+All three files' tag balance re-verified via regex count; all three
+republished to their existing Artifact URLs. Committed and pushed to
+`origin/main` (commit `2032f97` for the academic-paper/chart/GDP-bug round;
+this alignment round follows in a separate commit).
