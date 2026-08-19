@@ -1803,3 +1803,288 @@ not just the prose describing what the chart shows.
 
 Tag balance and in-browser rendering verified before publishing.
 Republished with label "Fix: AROPE chart data was null all session".
+
+## Narrative companion published to output/, Chapter 9 rewrite, academic paper drafted (2026-08-19)
+
+Three separate pieces of follow-on work, logged together since they happened
+in one continuous stretch.
+
+**Narrative companion moved into the project.** `narrative_companion.html`
+had only existed in scratchpad and as a standalone Artifact; copied into
+`output/narrative_companion.html` per user request and added to the README's
+project-structure listing. The stray file `output/The Greek Poverty
+Paradox.html` (an accidental Claude-artifact-shell save, untracked, not
+project content) was found alongside it and deleted.
+
+**Chapter 9 rewrite.** The user's own critique: "pessimism is not reporting
+things are already hard but that they are hard already for a long time and
+because of that there is no hope to see things becoming better," combined
+with political trust. Chapter 9 ("Why pessimism isn't the story") was
+redundant with Chapter 11's landing and rested on a weaker mechanism than the
+report's own Section 11 findings actually support. Rewrote around a
+duration&rarr;extrapolation&rarr;hopelessness argument, explicitly tying
+Chapter 9 back to Chapter 7's sixteen-year scarring thesis (which the
+original version never referenced) and integrating the institutional-trust
+finding as a second, parallel timeline rather than a footnote. Added an
+explicit method-note caveat that the trust/income timelines are a documented
+parallel, not a tested joint mechanism.
+
+**A second independent review** (7 line-referenced findings on
+`narrative_companion.html`: stale data-vintage date, an AROP/AROPE
+conflation in the opening hook, an overclaimed "cannot make ends meet"
+phrasing, a wrong chapter cross-reference, an unscoped "hardest country to
+predict" claim, a colophon overclaiming Eurostat-only sourcing, two phrases
+needing softer absolute language) &mdash; every claim verified against the
+file directly before any fix, consistent with this project's standing
+discipline. All seven fixed. Separately, the "today" date used throughout
+much of this session (2026-08-21) was caught as wrong by the user against the
+narrative companion's own vintage field; verified correct via the
+`panel_regression_summary.txt` generation timestamp (`Wed, 19 Aug 2026`) and
+fixed in the two functionally meaningful vintage claims (narrative companion,
+README) &mdash; historical dated changelog headers throughout this file were
+deliberately left alone as internal timestamps, not user-facing claims.
+
+**Academic working paper drafted.** The user asked for a structure/plan for
+an academic working-paper draft, then, on a substantive critique that this
+report never examined *why* Greek government policy since the crisis largely
+failed to translate into visible household-level improvement, asked
+specifically to fold that question into the paper's Discussion section
+("Option 3, fold it into the academic paper's Discussion"). Researched
+Greece's three EU/IMF/ESM adjustment programs (2010, 2012, 2015) from two
+primary sources read in full (via `WebSearch` + `Read`'s PDF extraction,
+after `WebFetch` failed on both PDFs' raw binary content &mdash; worth noting
+as a recurring tool limitation, not specific to this project):
+Pagoulatos (2018), *Greece after the Bailouts: Assessment of a Qualified
+Failure* (LSE Hellenic Observatory GreeSE Paper No. 130), an independent
+academic assessment; and European Stability Mechanism (2020), *Lessons from
+Financial Assistance to Greece*, the lending institution's own commissioned,
+independent evaluation. Deliberately sought a source that would argue the
+programs' case, not just the critical one, before writing anything &mdash;
+consistent with the explicit commitment made to the user not to write toward
+the user's own stated hypothesis ("almost everything failed") as a
+predetermined conclusion. The two sources converge on a similar qualified
+verdict from opposite institutional positions (financial-stability and
+structural-reform objectives substantially met; growth and social objectives
+not, for reasons both sources attribute partly to program design &mdash;
+front-loaded austerity built on a since-revised fiscal-multiplier assumption,
+delayed debt relief, and labor-market liberalization without a matching
+safety net), which is used in the paper's Discussion section as a source of
+confidence that the qualified-failure framing isn't simply one critic's
+reading. The Discussion section connects this record to the paper's own
+empirical findings &mdash; the "flexicurity without security" gap as a
+plausible institutional explanation for why long-term unemployment
+specifically outpredicts headline unemployment (Section 11's central
+result), and front-loading/the multiplier error as consistent with the
+unusually deep and prolonged GDP scarring &mdash; explicitly hedged
+throughout as interpretation, not a causal claim tested by this paper's own
+regressions.
+
+Drafted as `output/academic_paper_draft.html`: full IMRaD-style academic
+paper (abstract, JEL codes, formal literature review, data/methods,
+Results I &amp; II reformatted from the technical report into academic
+register with in-text citations, the new Discussion section above,
+limitations, conclusion, data/code/AI-disclosure statement, full APA
+reference list). Four structural decisions were made by default rather than
+asked, and are flagged as open items directly in the draft's own text for
+the user to confirm or override: single combined paper rather than split
+(matches the existing report's own Part I/II structure); APA citation style
+(previously suggested, not objected to); AI-assistance disclosure included
+(previously recommended); author name and affiliation left as explicit
+placeholders. Published as a separate Artifact
+(https://claude.ai/code/artifact/2fede66a-f98a-4365-bb89-7634c8661208,
+title "Greek Poverty Working Paper", favicon &#127468;&#127479;). Tag-balance
+verified via regex count before publishing; dark-mode rendering verified via
+computed-style JS check after the Browser pane's screenshot tool proved
+unreliable on this file (returned blank captures at depth while the
+underlying DOM/CSS were confirmed correct) &mdash; noted here in case it
+recurs on a future large single-page artifact.
+
+## Charts added to both companion pieces; academic paper review response (2026-08-19)
+
+The user pointed out, correctly, that neither `narrative_companion.html` nor
+`academic_paper_draft.html` had any charts &mdash; both were text/table-only,
+unlike `report.html`. Fixed by generating self-contained inline SVGs (a
+Python script computing coordinates directly from `output/report_data.json`,
+no chart library, colors set via `var(--token)` so each chart inherits its
+document's own light/dark theme automatically):
+
+- **Academic paper** (5 numbered figures, inserted at their first relevant
+  reference): Fig. 1 AROPE-vs-subjective dumbbell, all 27 countries + EU
+  average (&sect;5.1); Fig. 2 real poverty threshold vs. real household
+  income, 2005&ndash;2024 (&sect;5.2); Fig. 3 out-of-sample gap by model, bar
+  chart of Table 1 (&sect;6.4); Fig. 4 long-term unemployment rate, all EU
+  countries (&sect;6.5); Fig. 5 real GDP per capita indexed to own peak, all
+  EU countries (&sect;6.6).
+- **Narrative companion** (3 charts, placed more sparingly to match its
+  lighter pacing): the AROPE/subjective dumbbell using a curated ~9-country
+  subset, right after the opening pull-stat; the GDP-recovery chart in
+  Chapter 3; the long-term-unemployment chart in Chapter 7.
+
+One data-accuracy catch during generation: the EU aggregate's row in
+`arope_snapshot` carries Eurostat's raw label ("European Union - 27
+countries (from 2020)"), relabeled to "EU average" for the chart legend
+before use &mdash; the underlying value wasn't touched, just the display
+label.
+
+**Independent review of the academic paper, second round.** While the charts
+were still being added, the user shared a detailed review of the pre-chart
+draft and, on its central point ("Section 7 makes it lose some of its
+earlier power... tone it down and report as a dimension in the discussion"),
+agreed directly rather than just relaying the reviewer's view. Every finding
+was checked against the actual file (and, for the two most technical ones,
+against `docs/data_sources.md` and the relevant script) before any fix, per
+this project's standing discipline of never taking a review's claims at
+face value:
+
+- **Confirmed, fixed:** methods text cited "(Table 3)" for a table actually
+  labeled "Table 1" &mdash; a stale internal numbering artifact, not a
+  missing-rows problem (the table already had all seven models A&ndash;F +
+  C-LTU).
+- **Confirmed, fixed:** abstract claimed AROP "ranked only 4th&ndash;10th,"
+  contradicted by this project's own established fact that Greece's AROP
+  rank has touched 1st since 2007; fixed to "ranged between 1st and 10th...
+  4th-highest in the most recent year" in both the abstract and
+  introduction, removing the confusing "never worse than 1st" phrasing.
+- **Confirmed, fixed &mdash; the sharpest catch:** the methods section
+  described `tepsr_wc310` as the deflator for the poverty threshold. Checked
+  against `docs/data_sources.md` and `scripts/05_threshold_hypothesis.py`
+  directly: `tepsr_wc310` is actually *real household disposable income,
+  already indexed to 2008* &mdash; a comparison series, not a deflator. The
+  real deflator is Greek HICP (`prc_hicp_aind`), confirmed by the script's
+  own comment. Fixed to attribute each series correctly.
+- **Confirmed, fixed:** the Andriopoulou et al. comparison labeled this
+  project's own figure "income year 2014," but `report.html` itself uses
+  "survey-year 2014" &mdash; a real convention mismatch introduced when
+  converting to academic prose; fixed, and the surrounding claim softened to
+  note the survey-year/income-year alignment hasn't been independently
+  verified against Andriopoulou et al.'s exact convention.
+- **Confirmed, fixed:** institutional-trust figures (OECD 2026 country
+  profile, Eurobarometer series) were cited in-text but the OECD reference
+  was missing from the paper's own reference list &mdash; added, matching
+  `report.html`'s existing citation.
+- **Confirmed, fixed:** the "no series is hand-entered / not drawn from a
+  non-public source" reproducibility claim (both the &sect;4 opening and the
+  &sect;10 data-availability statement) was scoped too broadly &mdash; it
+  didn't account for the OECD/Eurobarometer trust context or the two
+  bailout-program secondary sources. Fixed with the same pattern already
+  used to fix this exact issue in the narrative companion's colophon earlier
+  this session: scope the strong claim to the core Eurostat panel, name the
+  literature/institutional sources explicitly as a separate category.
+- **Agreed and acted on, not just "fixed":** Section 7 was restructured from
+  five subsections (&sect;7.1&ndash;7.5, ~1700 words, three full paragraphs
+  connecting program design to the paper's own findings, one of them a
+  "two independent, mutually reinforcing reasons" claim about trust and
+  scarring together that read stronger than the evidence supports) down to
+  two subsections (~700 words): &sect;7.1 interprets the paper's own &sect;5/&sect;6
+  results directly (new content &mdash; the old Section 7 jumped straight to
+  bailout history with no discussion of the paper's own core results first,
+  which was itself part of why it read as scope creep); &sect;7.2 condenses
+  the programs table and the credited/criticized record into shorter prose,
+  keeps only the two connections with the clearest evidentiary basis
+  (front-loading/scarring; flexicurity-gap/long-term-unemployment), and
+  drops the trust-and-scarring "two independent reasons" paragraph entirely.
+  The Conclusion and abstract were rewritten to match &mdash; leading with
+  the paper's own tested findings, mentioning the policy-history connection
+  once, briefly, clearly hedged. TOC and cross-references to the old
+  `#s7-3`/`#s7-4`/`#s7-5` anchors updated throughout.
+
+Both files' tag balance verified via regex count before republishing; both
+republished to their existing Artifact URLs (not new ones).
+
+## Third review round: FDR scope, remaining academic-paper issues, GDP-trajectory
+## bug found in report.html itself, narrative chart expansion (2026-08-19)
+
+Same discipline as the previous two rounds: every claim checked against the
+actual file (and, for the multiple-testing point, against
+`scripts/27_multiple_testing.py` directly) before any fix.
+
+**Multiple-testing scope, raised separately from the numbered review.** The
+Methods text described FDR correction as applying "most notably" to the
+9-predictor sensitivity-vs-gap test, without naming the other two families.
+Checked `scripts/27_multiple_testing.py` directly: the project actually runs
+FDR correction on **three** separate families &mdash; the contemporaneous
+correlation screen (17 variables, `fdr_correlations.csv`), the sensitivity-
+vs-gap test (9 predictors, `fdr_sensitivity_vs_gap.csv`, the only one of the
+three reproduced in the academic paper itself), and a second-difference/
+acceleration check (5 variables, `fdr_acceleration.csv`) &mdash; explicitly
+*not* the confirmatory panel-regression coefficients, per the script's own
+docstring. Fixed to name all three families and state plainly that no single
+correction spans the whole project, since the families answer different
+questions.
+
+**Five further, independently-checked issues in `academic_paper_draft.html`:**
+- Figure 2's caption still said the threshold was "deflated by
+  `tepsr_wc310`" &mdash; the exact mistake already fixed in the body text
+  (&sect;4) two rounds ago, missed in the figure caption when the figure was
+  added afterward. Fixed to match the corrected body text.
+- The abstract said a 6&ndash;20pp out-of-sample gap "persists under every
+  specification," then two sentences later said C-LTU cuts it to 3.9 &mdash;
+  a direct self-contradiction. Fixed to scope the claim to "every
+  specification that uses headline unemployment," matching the (already
+  correct) wording already used in the Results section itself.
+- Section 7 was still introduced, in both the Introduction and the Literature
+  Review's "contribution" paragraph, as something done for the first time /
+  not previously attempted &mdash; novelty framing left over from before the
+  Section 7 demotion two rounds ago, inconsistent with treating it as
+  interpretive context. Both passages rewritten to state plainly that
+  Sections 5&ndash;6 are the paper's contribution and Section 7 makes no
+  claim of novelty.
+- Section headings rendered as "1.Introduction" with no space in the
+  underlying text content (only CSS margin provided visual separation) &mdash;
+  cosmetically fine on screen, but would collapse on copy-paste or any
+  text-extraction tool. Fixed by adding a literal space after the number in
+  all 11 headings.
+
+**A real bug in `report.html` itself, not just the derived documents.** The
+GDP-recovery finding (Section 11) said Greece's decline "ran from its 2008
+peak all the way to a trough in 2020" and "took twelve years just to stop
+falling" &mdash; wording that implies continuous decline. Checked the actual
+series (`recovery_trajectory` in `report_data.json`, Greece/EL column): the
+index fell from 100 (2008) to a first trough of 73.76 in **2013**, recovered
+to 80.35 by **2019**, then the COVID-19 pandemic pushed it to a new marginal
+low of 73.11 in **2020** &mdash; barely below the 2013 trough, but via an
+unrelated second shock landing on a partially-recovered economy, not twelve
+years of uninterrupted falling. The underlying data and the "11.2% below
+peak in 2024" headline number were never wrong; only the shape description
+was. This is the first review round in this project's history to catch a
+factual bug in `report.html`'s own prose rather than in a document derived
+from it &mdash; worth noting since two prior independent-review rounds and
+this project's own P4 release-readiness review all read past it. Fixed at
+the root (`report.html`), then propagated the same correction to the two
+derived documents (`academic_paper_draft.html` &sect;7.2,
+`narrative_companion.html` Chapter 3) rather than patching each
+independently. Also fixed on the same pass: "all-time high" (too absolute
+for a 2008&ndash;2024 observation window) &mdash; changed to "2008 peak" in
+the narrative's table header, matching the more careful "own historical
+peak" language already used elsewhere.
+
+**Two more narrative-companion wording fixes**, both confirmed against the
+file before changing: the Chapter 9 trust passage ("two independent,
+sixteen-year timelines... two separate, reinforcing reasons") stated more
+than an untested, context-only variable supports &mdash; softened to
+describe it as a documented parallel, not a claim about reasons a household
+actually has. The colophon's "the full technical report behind every figure
+cited here" was corrected to "the modeled and Eurostat-based figures," since
+the institutional-trust figures are explicitly not part of that pipeline
+(the very next sentence already said so &mdash; the fix makes the first
+clause consistent with it rather than contradicting it).
+
+**Narrative companion: two more charts.** The user felt three charts felt
+thin against the academic paper's five and asked for more. Added a real-
+wages trajectory chart (Chapter 4, capped at 160 matching `report.html`'s
+own convention, since a few Eastern European countries grow far past that
+line) and a net-migration bar chart (Chapter 8, diverging around zero,
+rust for net-outflow years and green for the two recent net-inflow years) &mdash;
+now five charts total, generated the same way as the first three (inline
+SVG, colors via `var(--token)`, data pulled directly from
+`report_data.json`).
+
+All three files' tag balance re-verified via regex count; all three
+republished to their existing Artifact URLs. The user also shared a
+higher-level observation mid-round: that the three outputs now cover the
+same material but don't yet share one explicit hierarchy of central vs.
+supporting vs. contextual findings, and suggested treating the narrative
+companion as the "story spine" the other two should align to. Not yet acted
+on &mdash; flagged here as the likely next round, pending explicit
+confirmation of scope, since it would mean editing structure/ordering across
+all three documents rather than fixing individual claims.

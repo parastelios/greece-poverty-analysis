@@ -1,0 +1,734 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Greek Poverty Working Paper</title>
+<style>
+  :root{
+    --paper: #F7F7F4;
+    --paper-raised: #FFFFFF;
+    --ink: #1B1D1F;
+    --ink-soft: #4A4E54;
+    --meta: #6E7279;
+    --rule: #D8D7D2;
+    --rule-strong: #B9B8B2;
+    --accent: #1E3A5F;
+    --accent-soft: #325776;
+    --accent-tint: #EAEEF3;
+    --tag-bg: #EFEEE9;
+    --link: #1E3A5F;
+    --table-stripe: #F1F0EC;
+    --code-bg: #EEEDE8;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #15171A;
+      --paper-raised: #1B1E22;
+      --ink: #E7E6E1;
+      --ink-soft: #C2C1BB;
+      --meta: #9A9DA3;
+      --rule: #33363B;
+      --rule-strong: #45484E;
+      --accent: #8FB4D9;
+      --accent-soft: #7096BC;
+      --accent-tint: #1E2A35;
+      --tag-bg: #24272B;
+      --link: #8FB4D9;
+      --table-stripe: #1E2124;
+      --code-bg: #202327;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #15171A;
+    --paper-raised: #1B1E22;
+    --ink: #E7E6E1;
+    --ink-soft: #C2C1BB;
+    --meta: #9A9DA3;
+    --rule: #33363B;
+    --rule-strong: #45484E;
+    --accent: #8FB4D9;
+    --accent-soft: #7096BC;
+    --accent-tint: #1E2A35;
+    --tag-bg: #24272B;
+    --link: #8FB4D9;
+    --table-stripe: #1E2124;
+    --code-bg: #202327;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family: ui-serif, Georgia, "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
+    font-size:17px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+  .sans{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+  .tab{ font-variant-numeric: tabular-nums; }
+
+  .page{ max-width:760px; margin:0 auto; padding:64px 24px 96px; }
+
+  header.masthead{ margin-bottom:40px; }
+  .wp-tag{
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size:11.5px; letter-spacing:.11em; text-transform:uppercase;
+    color:var(--meta); background:var(--tag-bg); display:inline-block;
+    padding:5px 10px; border-radius:3px; margin-bottom:22px;
+  }
+  h1.title{
+    font-size:2.05rem; line-height:1.28; margin:0 0 20px; font-weight:600;
+    text-wrap:balance; letter-spacing:-0.005em;
+  }
+  .byline{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; font-size:15px; color:var(--ink-soft); margin:0 0 4px; }
+  .affil{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; font-size:13.5px; color:var(--meta); margin:0 0 24px; }
+  .placeholder{ background: var(--accent-tint); color: var(--accent); padding:1px 5px; border-radius:2px; font-style:normal; }
+
+  .meta-strip{
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size:13px; color:var(--meta); border-top:1px solid var(--rule); border-bottom:1px solid var(--rule);
+    padding:12px 0; display:flex; flex-wrap:wrap; gap:6px 22px;
+  }
+  .meta-strip b{ color:var(--ink-soft); font-weight:600; }
+
+  .abstract{
+    margin:32px 0 8px; padding:22px 24px; background:var(--paper-raised);
+    border-left:3px solid var(--accent); border-radius:2px;
+  }
+  .abstract-label{
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size:11.5px; letter-spacing:.11em; text-transform:uppercase; color:var(--accent); margin:0 0 10px; font-weight:600;
+  }
+  .abstract p{ margin:0; font-size:15.5px; color:var(--ink-soft); }
+  .keywords{ margin-top:16px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; font-size:13px; color:var(--meta); }
+  .keywords b{ color:var(--ink-soft); }
+
+  nav.toc{
+    margin:36px 0 48px; padding:18px 22px; background:var(--paper-raised); border:1px solid var(--rule); border-radius:4px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; font-size:13.5px;
+  }
+  nav.toc p.toc-label{ margin:0 0 10px; font-size:11.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--meta); font-weight:600; }
+  nav.toc ol{ margin:0; padding-left:20px; }
+  nav.toc li{ margin-bottom:5px; }
+  nav.toc a{ color:var(--ink-soft); text-decoration:none; }
+  nav.toc a:hover{ color:var(--link); text-decoration:underline; }
+  nav.toc ol ol{ margin-top:5px; padding-left:18px; }
+  nav.toc ol ol li{ font-size:13px; color:var(--meta); }
+
+  section{ margin:44px 0; }
+  h2.sec{
+    font-size:1.35rem; margin:0 0 18px; padding-bottom:10px; border-bottom:1px solid var(--rule-strong);
+    font-weight:600; letter-spacing:-0.003em; scroll-margin-top:20px;
+  }
+  h2.sec .num{ color:var(--accent); margin-right:10px; font-variant-numeric:tabular-nums; }
+  h3.sub{ font-size:1.08rem; margin:30px 0 12px; font-weight:600; scroll-margin-top:20px; }
+  h4.subsub{ font-size:.98rem; margin:22px 0 10px; font-weight:600; font-style:italic; color:var(--ink-soft); }
+
+  p{ margin:0 0 16px; }
+  .lede{ font-size:1.05rem; color:var(--ink-soft); }
+
+  a{ color:var(--link); }
+
+  blockquote{
+    margin:18px 0; padding:2px 0 2px 18px; border-left:2px solid var(--rule-strong);
+    color:var(--ink-soft); font-style:italic; font-size:.98rem;
+  }
+
+  .callout{
+    background:var(--accent-tint); border-radius:4px; padding:16px 18px; margin:20px 0;
+    font-size:.96rem;
+  }
+  .callout b.tag{
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size:10.5px; letter-spacing:.09em; text-transform:uppercase; color:var(--accent);
+    display:block; margin-bottom:6px;
+  }
+
+  table{ width:100%; border-collapse:collapse; font-size:.92rem; }
+  .table-wrap{ overflow-x:auto; margin:18px 0; border:1px solid var(--rule); border-radius:4px; }
+  .table-wrap table{ margin:0; }
+  caption{ text-align:left; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; font-size:12.5px; color:var(--meta); padding:10px 14px 0; caption-side:top; }
+  th, td{ text-align:left; padding:9px 14px; border-bottom:1px solid var(--rule); font-variant-numeric:tabular-nums; }
+  th{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; font-size:11.5px; letter-spacing:.03em; text-transform:uppercase; color:var(--meta); font-weight:600; background:var(--table-stripe); }
+  tbody tr:nth-child(even){ background:var(--table-stripe); }
+  tr.hl td{ font-weight:600; }
+  .table-note{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; font-size:12px; color:var(--meta); padding:8px 14px 12px; margin:0; }
+
+  .figure{ margin:20px 0; padding:18px 20px 14px; background:var(--paper-raised); border:1px solid var(--rule); border-radius:4px; }
+  .figure svg{ display:block; }
+  .fig-caption{
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size:12.5px; color:var(--meta); margin:12px 0 0; line-height:1.55;
+  }
+  .fig-caption b{ color:var(--ink-soft); }
+
+  code{ font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size:.86em; background:var(--code-bg); padding:1px 5px; border-radius:3px; }
+
+  .footnote{ font-size:.86rem; color:var(--meta); }
+
+  section#references dl{ margin:0; }
+  section#references dd{
+    margin:0 0 13px 0; padding-left:26px; text-indent:-26px; font-size:.93rem; color:var(--ink-soft);
+  }
+
+  footer.colophon{
+    margin-top:64px; padding-top:22px; border-top:1px solid var(--rule);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size:12.5px; color:var(--meta); line-height:1.7;
+  }
+
+  ul.plain, ol.plain{ padding-left:22px; }
+  ul.plain li, ol.plain li{ margin-bottom:8px; }
+
+  @media (max-width:600px){
+    .page{ padding:40px 18px 72px; }
+    h1.title{ font-size:1.6rem; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+<header class="masthead">
+  <span class="wp-tag sans">Working paper &middot; preprint &middot; not peer reviewed</span>
+  <h1 class="title">Subjective Poverty and the Limits of Relative-Income Measurement: Evidence from Greece, 2003&ndash;2025</h1>
+  <p class="byline"><span class="placeholder">[Author name]</span></p>
+  <p class="affil"><span class="placeholder">[Affiliation / independent researcher &mdash; correspondence: name@example.org]</span> &middot; Draft of August 2026</p>
+  <div class="meta-strip">
+    <span><b>JEL:</b> D31, E24, F45, H12, I31, I32</span>
+    <span><b>Data vintage:</b> Eurostat live pull, 2026-08-19</span>
+    <span><b>Companion outputs:</b> technical report, narrative companion (see &sect;10)</span>
+  </div>
+</header>
+
+<div class="abstract">
+  <p class="abstract-label sans">Abstract</p>
+  <p>Greece has reported the European Union's highest rate of subjective financial strain &mdash; households saying they struggle to make ends meet &mdash; every year since 2011, while its official at-risk-of-poverty rate (AROP), a relative-income measure, has ranged between 1st and 10th over the same period and stood at 4th-highest in the most recent year. This paper investigates how much of that divergence is real. Using Eurostat panel data for the EU27, 2003&ndash;2025, it first shows that AROP's moving threshold &mdash; recalculated each year at 60% of the (collapsing) national median &mdash; mechanically understated the crisis: a fixed, inflation-adjusted 2008 threshold shows measured poverty roughly doubling during the debt crisis, closely tracking subjective reports, and this reconstruction is cross-validated against independent microdata (Andriopoulou et al., 2019/2020). Second, a cross-country panel regression (year fixed effects, country-clustered standard errors, leave-one-country-out validation) shows that housing costs and cash-flow strain explain most, but not all, of Greece's residual gap in-sample; out-of-sample, under every specification that uses headline unemployment, a 6&ndash;20 percentage-point gap persists. The single most consequential result is that replacing headline unemployment with long-term unemployment (12 months or more) in the model cuts Greece's out-of-sample residual from 11.6 to 3.9 points and displaces Greece from the largest cross-country outlier to 6th of 27, without adding any new variable. This is reinforced by evidence that Greece's real GDP per capita remains 11.2% below its 2008 peak sixteen years on (median EU recovery: 3 years), that Greek households face the EU's highest wage-adjusted price pressure in every consumption category tested, and that institutional trust collapsed to 7% in 2012 and has only partially recovered. As one further, more speculative dimension, the Discussion briefly situates the long-term-unemployment finding against the documented design of Greece's financial-assistance programs (2010&ndash;2018), drawing on an independent academic assessment and the lending institution's own evaluation, both of which describe thin welfare coverage for the long-term unemployed as a specific, acknowledged design gap &mdash; offered as historical context, not as a causally tested claim.</p>
+  <p class="keywords sans"><b>Keywords:</b> subjective poverty; relative-income poverty; anchored poverty; Greece; Eurozone crisis; long-term unemployment; fiscal adjustment programs; institutional trust</p>
+</div>
+
+<nav class="toc">
+  <p class="toc-label">Contents</p>
+  <ol>
+    <li><a href="#s1">Introduction</a></li>
+    <li><a href="#s2">Institutional and macroeconomic background</a></li>
+    <li><a href="#s3">Related literature</a>
+      <ol>
+        <li><a href="#s3-1">The moving-threshold problem</a></li>
+        <li><a href="#s3-2">Subjective poverty as a research object</a></li>
+        <li><a href="#s3-3">Cross-country gaps beyond economic fundamentals</a></li>
+        <li><a href="#s3-4">Housing tenure, scarring, and institutional trust</a></li>
+        <li><a href="#s3-5">Contribution of this paper</a></li>
+      </ol>
+    </li>
+    <li><a href="#s4">Data and methods</a></li>
+    <li><a href="#s5">Results I &mdash; Does subjective poverty reflect real hardship?</a></li>
+    <li><a href="#s6">Results II &mdash; Why does Greece remain an outlier?</a></li>
+    <li><a href="#s7">Discussion</a>
+      <ol>
+        <li><a href="#s7-1">What the measurement and outlier results suggest together</a></li>
+        <li><a href="#s7-2">Policy history as one contextual dimension</a></li>
+      </ol>
+    </li>
+    <li><a href="#s8">Limitations</a></li>
+    <li><a href="#s9">Conclusion</a></li>
+    <li><a href="#s10">Data, code, and AI-assistance disclosure</a></li>
+    <li><a href="#references">References</a></li>
+  </ol>
+</nav>
+
+<section id="s1">
+  <h2 class="sec"><span class="num">1.</span> Introduction</h2>
+  <p>By its own account, Greece is the most financially strained country in the European Union. In every wave of Eurostat's harmonized household survey since 2011, a larger share of Greek respondents has said they struggle to make ends meet than in any of the other 26 or 27 member states &mdash; in the most recent year, 67.2%, more than triple the EU average of 17.6%. Yet Greece's official, relative-income poverty rate (AROP: the share of the population living below 60% of national median income) tells a materially less extreme story: elevated, but only the 4th-highest in the EU in the most recent year, and ranging between 1st and 10th over the whole 2007&ndash;2025 period. The two measures are meant to describe overlapping phenomena from two angles &mdash; one lived experience, one relative income &mdash; and in Greece they have diverged sharply and persistently.</p>
+  <p>This paper investigates how much of that divergence reflects a real, measurable deterioration in living standards that a relative-income indicator is simply not built to capture, and how much of what remains is a genuine, still-open puzzle. It does so through two research questions:</p>
+  <blockquote>
+    <b>RQ1.</b> To what extent does Greece's exceptionally high subjective poverty reflect measurable deterioration in living standards that relative-income poverty does not capture?<br><br>
+    <b>RQ2.</b> How much of Greece's cross-country subjective-poverty gap can measurable financial hardship account for, and how much remains unexplained?
+  </blockquote>
+  <p>The empirical core of the paper (&sect;5&ndash;6) draws on a publicly reproducible Eurostat panel covering the EU27 and, where available, the EU aggregate, 2003&ndash;2025. Part I reconstructs a fixed, inflation-adjusted poverty threshold anchored to 2008 living standards and cross-validates it against independent household-microdata research. Part II fits a cross-country panel regression predicting subjective poverty from progressively richer sets of economic-condition variables, validated throughout with leave-one-country-out prediction rather than in-sample fit alone, and identifies long-term unemployment &mdash; not headline unemployment &mdash; as the single strongest predictor of Greece's outlier status.</p>
+  <p>This paper's empirical contribution is Sections 5 and 6. Section 7 adds a brief, more speculative layer of interpretive context on top of that contribution, not a second finding of equal standing: it places the &sect;5&ndash;6 results alongside the documented history and design of Greece's three EU/IMF/ESM financial-assistance programs (2010, 2012, and 2015), asking whether that policy record is <em>consistent with</em> why long-term unemployment and unresolved scarring, rather than the crisis's depth alone, are what best explain Greece's persistent outlier status. The programs' design and the paper's own regression findings are never treated as a single tested causal chain; &sect;7 states this explicitly and hedges accordingly throughout.</p>
+</section>
+
+<section id="s2">
+  <h2 class="sec"><span class="num">2.</span> Institutional and macroeconomic background</h2>
+  <p>Greece entered the euro area in 2001 following a decade of macroeconomic stabilization, and experienced a decade of debt-financed, consumption-driven growth thereafter, averaging 4.1% real GDP growth in 2000&ndash;2007 (Pagoulatos, 2018). This growth was underwritten by persistent primary fiscal deficits, a near-tripling of private-sector debt as a share of GDP, and a current-account deficit that reached 15% of GDP by 2008 &mdash; financed overwhelmingly by external capital inflows rather than domestic saving or foreign direct investment (Pagoulatos, 2018). The 2008 global financial crisis triggered a "sudden stop" of these inflows; a 2009 revision of the reported budget deficit from an official 6% to an eventual 15.1% of GDP eroded market confidence sharply, and by early 2010 Greece had lost market access entirely.</p>
+  <p>What followed was, on any conventional metric, one of the deepest peacetime economic contractions on record for an advanced economy: an eight-year-equivalent depression as steep as the United States' in the 1930s, but roughly twice as long (Pagoulatos, 2018). Real GDP fell by around a quarter from its 2008 peak; unemployment peaked at 27.5%; three consecutive financial-assistance programs were required between May 2010 and August 2018, a distinction unique among euro-area crisis countries. A brief account of these programs' design and record is given in &sect;7.2, as one contextual dimension for interpreting this paper's own empirical findings rather than as background scene-setting; readers uninterested in that connection can proceed directly to &sect;3.</p>
+</section>
+
+<section id="s3">
+  <h2 class="sec"><span class="num">3.</span> Related literature</h2>
+
+  <h3 class="sub" id="s3-1">3.1 The moving-threshold problem</h3>
+  <p>The mechanism at the center of this paper's first research question &mdash; that a relative poverty line can understate a crisis because the line itself falls with the collapsing average it is drawn from &mdash; is well established, including for Greece specifically. Andriopoulou, Kanavitsa, and Tsakloglou (2019/2020) compute an anchored (fixed-threshold) poverty rate for Greece for 2007&ndash;2016 using household-level EU-SILC microdata, finding that a 2007-anchored measure shows substantially more deterioration than the contemporaneous relative AROP series; their income-year-2013 anchored rate of 48% of the population is used in &sect;5.3 as an external validation benchmark for this paper's own, coarser reconstruction. Goedem&eacute; et al. (2022) propose a new EU-wide poverty indicator, the extended headcount ratio, designed specifically to address this same measurement problem, and use Greece as their lead illustrative case.</p>
+
+  <h3 class="sub" id="s3-2">3.2 Subjective poverty as a research object</h3>
+  <p>Subjective poverty measurement is an active, distinct literature with its own methodological conventions. &Zcaron;elinsk&yacute;, Mysíková, and Garner (2022) track subjective income-poverty rates across the EU using a "minimum income question" design, a different construct from the "ability to make ends meet" measure used here and by Eurostat's own headline indicator, but one that independently flags Greece and Bulgaria as extreme outliers. A related paper (&Zcaron;elinsk&yacute;, Ng, & Mysíková, 2020) derives an income threshold from make-ends-meet responses using the Youden index &mdash; a genuinely different construction from this paper's anchored-poverty measure, and a natural extension for future work (&sect;8). Guagnano, Santarelli, and Santini (2016) model subjective poverty across Europe against household and community characteristics including social capital, a reminder that economic variables are not the only plausible predictors in this literature.</p>
+
+  <h3 class="sub" id="s3-3">3.3 Cross-country gaps beyond economic fundamentals</h3>
+  <p>Part II's central empirical puzzle &mdash; a country reporting persistently worse subjective outcomes than its measured economic conditions predict &mdash; has a structural parallel in the "happiness gap" literature comparing post-communist and Western European countries. Nikolova (2016) finds that gap is not fully explained by economic conditions, and that institutional quality (rule of law specifically) accounts for a further share of it. This is not evidence about Greece, and the outcome variable (life satisfaction) differs from subjective poverty, but it motivated this paper's own tests of household debt and welfare-transfer effectiveness as candidate residual explanations (&sect;6.2), both of which returned null results. Separately, Claessens, Kyritsis, and Atkinson (2023) demonstrate that cross-country regressions commonly treat national observations as more independent than they are, understating true uncertainty when neighbouring or culturally linked countries co-move; this paper's use of country-clustered standard errors partially, but not fully, addresses that concern (&sect;8).</p>
+
+  <h3 class="sub" id="s3-4">3.4 Housing tenure, scarring, and institutional trust</h3>
+  <p>Filandri, Pasqua, and Tucci (2025) link housing tenure and rent regulation to subjective poverty among young European adults (18&ndash;34) using EU-SILC data across 24 countries, providing theoretical grounding for this paper's own housing-tenure findings (&sect;6.6), though their result is age-specific and not shown here to generalize to the full population. Baldini, Gallo, and Torricelli (2020) find that a past income-scarcity spell continues to depress subjective make-ends-meet assessments up to two years later across Europe, even controlling for current income &mdash; the same scarring mechanism this paper documents for Greece over a far longer horizon (&sect;6.6). Gourinchas, Philippon, and Vayanos (2016, 2017) characterize the Greek crisis as one of the most severe "trifecta" crises (sudden stop, sovereign debt, and lending boom-bust together) on record, with output collapse "significantly more severe and protracted" than any comparable post-1980 episode. On institutional trust specifically, Ervasti, Kouvo, and Venetoklis (2019) show the crisis damaged Greek trust in political and impartial institutions while leaving interpersonal trust largely intact, and Economou et al. (2014) link low institutional and interpersonal trust to worse mental-health outcomes during the crisis. On migration, Labrianidis and Vogiatzis (2013) argue skilled emigration and the debt crisis were mutually reinforcing rather than the former simply a consequence of the latter, and Pratsinakis (2022) cautions against reducing the post-2010 emigration wave to a single "brain drain" narrative, showing mixed motives among emigrants in an original survey.</p>
+
+  <h3 class="sub" id="s3-5">3.5 Contribution of this paper</h3>
+  <p>None of the individual mechanisms tested here are proposed for the first time. This paper's contribution is the combination: tying the well-established moving-threshold problem specifically to a subjective, lived-experience outcome measure rather than income poverty alone; validating that link with first-differenced and detrended correlations and a within-country panel rather than raw level correlation alone; and, in Part II, running a nested cross-country residual decomposition with leave-one-country-out out-of-sample validation at every step &mdash; including the finding that long-term unemployment, not headline unemployment, is the single variable that most changes Greece's standing. This empirical combination is the paper's contribution; the discussion of Greece's adjustment programs in &sect;7.2 is offered as interpretive context for that contribution, not as an additional novel finding in its own right, and no claim of novelty is made for it here.</p>
+</section>
+
+<section id="s4">
+  <h2 class="sec"><span class="num">4.</span> Data and methods</h2>
+  <p>All data underlying the paper's core empirical results (&sect;5&ndash;6) are drawn live from the Eurostat SDMX-JSON dissemination API; no series in that core panel is hand-entered, and the full extraction and analysis pipeline is a numbered sequence of reproducible scripts (&sect;10). This does not extend to &sect;7: the institutional-trust figures cited there and in &sect;6.6 are literature and survey context (OECD, 2026; underlying Eurobarometer time series), not part of the Eurostat pipeline or this paper's own models, and the policy-history material is drawn from two secondary sources read in full for this paper (Pagoulatos, 2018; European Stability Mechanism, 2020) &mdash; both cited in full in &sect;12. The core panel covers subjective poverty (Eurostat series <code>ilc_mdes09</code>/<code>ilc_sbjp01</code>), AROP (<code>ilc_li02</code>), AROPE (<code>ilc_peps01n</code>), the poverty threshold in nominal terms (<code>ilc_li01</code>, deflated to real terms using cumulative Greek HICP, <code>prc_hicp_aind</code>) alongside real household disposable income already indexed to 2008 (<code>tepsr_wc310</code>), real GDP per capita (<code>sdg_08_10</code>), real wages (<code>nama_10_lp_ulc</code>, deflated by <code>prc_hicp_aind</code>), long-term and headline unemployment (<code>une_ltu_a</code> and the corresponding headline series), housing-cost overburden by tenure status (<code>ilc_lvho07c</code>), and net migration of nationals (<code>migr_emi1ctz</code>, <code>migr_imm1ctz</code>). Coverage begins in 2003 for the earliest series and varies thereafter by indicator; exact year ranges are reported alongside each result.</p>
+
+  <h3 class="sub">4.1 Anchored-poverty reconstruction</h3>
+  <p>Eurostat does not publish a pre-crisis-anchored poverty series for Greece. This paper approximates one by holding the 2008 nominal poverty threshold fixed and deflating it forward using Greek consumer-price inflation, then recomputing the poverty headcount against that fixed real threshold rather than against each year's own moving 60%-of-median line. The approximation is built from four published summary points rather than household microdata, and is validated in two ways (&sect;5.3): against Eurostat's own 2019 anchored-poverty publication, and against Andriopoulou et al.'s (2019/2020) independent microdata-based reconstruction for 2007&ndash;2016. The method performs to within roughly one percentage point of the official benchmark on average, but is least certain in exactly the years (2012&ndash;2014) where it shows the largest effect &mdash; a limitation carried through into every result that relies on it.</p>
+
+  <h3 class="sub">4.2 Cross-country panel regression</h3>
+  <p>Part II's central specification is an ordinary-least-squares panel regression of subjective poverty on a nested sequence of predictors, with year fixed effects and country-clustered standard errors (<code>cov_type='cluster'</code>, clustered by country), estimated across all EU member states with available data for each specification. Seven nested models are reported (Table 1, &sect;6.4): Model A (headline unemployment, PPS-adjusted income, material deprivation, AROP); Model B (A + housing-cost overburden); Model C (B + arrears and inability to cover an unexpected expense); Model C-LTU (C, with long-term unemployment replacing headline unemployment); Model D (C + household debt-to-income and welfare-transfer effectiveness); Model E (C + financial expectations and household saving rate); and Model F (C + a GDP-scarring-stock variable). Every specification is evaluated two ways: in-sample fit, and leave-one-country-out (LOO) prediction, in which the model is refit on 26 countries and evaluated on the 27th &mdash; repeated for every country in turn, not only Greece, to establish whether Greece's out-of-sample gap is unusual relative to the distribution of all countries' own out-of-sample gaps under the same procedure.</p>
+  <p>Benjamini-Hochberg false-discovery-rate correction is applied within each family of related exploratory tests run together in this project: the contemporaneous correlation screen across the full predictor set (17 variables; reported in the companion technical report, &sect;10, not reproduced in full here), the year-over-year sensitivity-versus-residual test used in this paper (&sect;6.6, 9 predictors), and a second-difference/acceleration check (5 variables, technical report only). No single correction is applied across the whole project, since these families answer different questions and were not run as one combined test; the panel regressions' own coefficients (e.g. each model's added-variable p-value in Table 1) are each the single planned test for a specific, pre-specified hypothesis and are reported as such, not folded into any FDR family.</p>
+
+  <h3 class="sub">4.3 Evidentiary hedging convention</h3>
+  <p>Throughout &sect;5&ndash;6, findings are explicitly labeled by evidentiary status rather than left to be inferred from tone: <em>core findings</em> are statistically significant results from the primary panel specifications, robust to the leave-one-country-out check; <em>descriptive checks</em> are real, verified patterns that either fall outside the regression framework (insufficient time-series length, or a variable conceptually too close to the outcome to be treated as an independent predictor) or did not survive being added to the preferred specification; and <em>exploratory leads</em> are patterns surviving only a weaker standard of evidence (small sample, borderline significance after multiple-testing correction) and are flagged as such rather than reported at face value. No result in this paper is described as causally identified; the panel regressions establish association conditional on observed covariates and year fixed effects, not a causal estimate, and this is stated explicitly wherever a finding might otherwise be read more strongly than the design supports.</p>
+
+  <h3 class="sub">4.4 Limitations of the data</h3>
+  <p>All results rely on Eurostat's published, country-level aggregate series rather than household microdata. This means the analysis cannot observe within-country heterogeneity &mdash; who, specifically, is driving Greece's outlier status, or whether it is concentrated in particular household types &mdash; and cannot rule out that some of the residual gap reflects compositional factors (household structure, informal income, savings buffers) invisible to country-year aggregates. Where a candidate mechanism specifically requires microdata to test properly (for example, the Youden-index subjective-poverty-line construction of &Zcaron;elinsk&yacute; et al., 2020), this paper flags it as a natural extension rather than attempting an aggregate-data approximation that would not meaningfully test the same claim.</p>
+</section>
+
+<section id="s5">
+  <h2 class="sec"><span class="num">5.</span> Results I &mdash; Does subjective poverty reflect real hardship?</h2>
+
+  <h3 class="sub">5.1 The paradox, documented</h3>
+  <p>Across all 27 EU countries plus the EU aggregate, Greece's gap between AROPE (the broader at-risk-of-poverty-or-social-exclusion measure) and subjective poverty is in a different league from every other country's, in either direction: 39.7 percentage points, against a next-largest gap (Bulgaria) of 7.1 points. A cluster of mostly Northern and Western European states (Germany, Sweden, the Netherlands, Luxembourg, Lithuania, Finland) show the opposite pattern &mdash; AROPE well above subjective poverty &mdash; but by comparably modest margins (8&ndash;15 points). Most EU countries sit within roughly five points of agreement between the two measures; Greece is a singular exception, not one extreme of a continuous spread. The divergence also predates the debt crisis: in 2003, 48% of Greek households already reported difficulty making ends meet, more than double the contemporaneous AROP rate of 20.7%.</p>
+
+  <div class="figure">
+<svg viewBox="0 0 700 530.0" width="100%" role="img" aria-label="AROPE vs subjective poverty by country">
+<line x1="100.0" y1="24" x2="100.0" y2="522.0" stroke="var(--rule)" stroke-width="1"/>
+<text x="100.0" y="18" text-anchor="middle" font-size="10" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">4%</text>
+<line x1="238.5" y1="24" x2="238.5" y2="522.0" stroke="var(--rule)" stroke-width="1"/>
+<text x="238.5" y="18" text-anchor="middle" font-size="10" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">21%</text>
+<line x1="377.0" y1="24" x2="377.0" y2="522.0" stroke="var(--rule)" stroke-width="1"/>
+<text x="377.0" y="18" text-anchor="middle" font-size="10" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">38%</text>
+<line x1="515.5" y1="24" x2="515.5" y2="522.0" stroke="var(--rule)" stroke-width="1"/>
+<text x="515.5" y="18" text-anchor="middle" font-size="10" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">55%</text>
+<line x1="654.0" y1="24" x2="654.0" y2="522.0" stroke="var(--rule)" stroke-width="1"/>
+<text x="654.0" y="18" text-anchor="middle" font-size="10" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">72%</text>
+<circle cx="100" cy="12" r="3.6" fill="var(--meta)"/>
+<text x="108" y="15.5" font-size="10.5" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">AROPE</text>
+<circle cx="195" cy="12" r="3.6" fill="var(--accent)"/>
+<text x="203" y="15.5" font-size="10.5" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Subjective</text>
+<text x="90" y="44.4" text-anchor="end" font-size="11.5" font-weight="700" fill="var(--accent)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Greece</text>
+<line x1="290.9" y1="40.9" x2="614.8" y2="40.9" stroke="var(--ink-soft)" stroke-width="2.4" opacity="1"/>
+<circle cx="290.9" cy="40.9" r="3.4" fill="var(--meta)"/>
+<circle cx="614.8" cy="40.9" r="3.4" fill="var(--accent)"/>
+<text x="90" y="61.9" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Bulgaria</text>
+<line x1="303.2" y1="58.4" x2="361.1" y2="58.4" stroke="var(--ink-soft)" stroke-width="1.4" opacity="0.6"/>
+<circle cx="303.2" cy="58.4" r="2.6" fill="var(--meta)"/>
+<circle cx="361.1" cy="58.4" r="2.6" fill="var(--accent)"/>
+<text x="90" y="79.3" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Romania</text>
+<line x1="290.1" y1="75.8" x2="257.5" y2="75.8" stroke="var(--ink-soft)" stroke-width="1.4" opacity="0.6"/>
+<circle cx="290.1" cy="75.8" r="2.6" fill="var(--meta)"/>
+<circle cx="257.5" cy="75.8" r="2.6" fill="var(--accent)"/>
+<text x="90" y="96.8" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Slovakia</text>
+<line x1="202.8" y1="93.3" x2="255.0" y2="93.3" stroke="var(--ink-soft)" stroke-width="1.4" opacity="0.6"/>
+<circle cx="202.8" cy="93.3" r="2.6" fill="var(--meta)"/>
+<circle cx="255.0" cy="93.3" r="2.6" fill="var(--accent)"/>
+<text x="90" y="114.3" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Italy</text>
+<line x1="251.0" y1="110.8" x2="249.3" y2="110.8" stroke="var(--ink-soft)" stroke-width="1.4" opacity="0.6"/>
+<circle cx="251.0" cy="110.8" r="2.6" fill="var(--meta)"/>
+<circle cx="249.3" cy="110.8" r="2.6" fill="var(--accent)"/>
+<text x="90" y="131.8" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">France</text>
+<line x1="236.3" y1="128.3" x2="243.6" y2="128.3" stroke="var(--ink-soft)" stroke-width="1.4" opacity="0.6"/>
+<circle cx="236.3" cy="128.3" r="2.6" fill="var(--meta)"/>
+<circle cx="243.6" cy="128.3" r="2.6" fill="var(--accent)"/>
+<text x="90" y="149.3" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Spain</text>
+<line x1="276.2" y1="145.8" x2="234.6" y2="145.8" stroke="var(--ink-soft)" stroke-width="1.4" opacity="0.6"/>
+<circle cx="276.2" cy="145.8" r="2.6" fill="var(--meta)"/>
+<circle cx="234.6" cy="145.8" r="2.6" fill="var(--accent)"/>
+<text x="90" y="166.8" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Portugal</text>
+<line x1="218.3" y1="163.3" x2="232.2" y2="163.3" stroke="var(--ink-soft)" stroke-width="1.4" opacity="0.6"/>
+<circle cx="218.3" cy="163.3" r="2.6" fill="var(--meta)"/>
+<circle cx="232.2" cy="163.3" r="2.6" fill="var(--accent)"/>
+<text x="90" y="184.3" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Hungary</text>
+<line x1="225.7" y1="180.8" x2="230.6" y2="180.8" stroke="var(--ink-soft)" stroke-width="1.4" opacity="0.6"/>
+<circle cx="225.7" cy="180.8" r="2.6" fill="var(--meta)"/>
+<circle cx="230.6" cy="180.8" r="2.6" fill="var(--accent)"/>
+<text x="90" y="201.8" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Latvia</text>
+<line x1="268.1" y1="198.3" x2="229.7" y2="198.3" stroke="var(--ink-soft)" stroke-width="1.4" opacity="0.6"/>
+<circle cx="268.1" cy="198.3" r="2.6" fill="var(--meta)"/>
+<circle cx="229.7" cy="198.3" r="2.6" fill="var(--accent)"/>
+<text x="90" y="219.3" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Croatia</text>
+<line x1="235.5" y1="215.8" x2="222.4" y2="215.8" stroke="var(--ink-soft)" stroke-width="1.4" opacity="0.6"/>
+<circle cx="235.5" cy="215.8" r="2.6" fill="var(--meta)"/>
+<circle cx="222.4" cy="215.8" r="2.6" fill="var(--accent)"/>
+<text x="90" y="236.8" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Cyprus</text>
+<line x1="206.1" y1="233.3" x2="215.1" y2="233.3" stroke="var(--ink-soft)" stroke-width="1.4" opacity="0.6"/>
+<circle cx="206.1" cy="233.3" r="2.6" fill="var(--meta)"/>
+<circle cx="215.1" cy="233.3" r="2.6" fill="var(--accent)"/>
+<text x="90" y="254.3" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">EU average</text>
+<line x1="237.1" y1="250.8" x2="210.2" y2="250.8" stroke="var(--ink-soft)" stroke-width="1.4" opacity="0.6"/>
+<circle cx="237.1" cy="250.8" r="2.6" fill="var(--meta)"/>
+<circle cx="210.2" cy="250.8" r="2.6" fill="var(--accent)"/>
+<text x="90" y="271.9" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Ireland</text>
+<line x1="220.0" y1="268.4" x2="196.3" y2="268.4" stroke="var(--ink-soft)" stroke-width="1.4" opacity="0.6"/>
+<circle cx="220.0" cy="268.4" r="2.6" fill="var(--meta)"/>
+<circle cx="196.3" cy="268.4" r="2.6" fill="var(--accent)"/>
+<text x="90" y="289.4" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Belgium</text>
+<line x1="201.2" y1="285.9" x2="193.0" y2="285.9" stroke="var(--ink-soft)" stroke-width="1.4" opacity="0.6"/>
+<circle cx="201.2" cy="285.9" r="2.6" fill="var(--meta)"/>
+<circle cx="193.0" cy="285.9" r="2.6" fill="var(--accent)"/>
+<text x="90" y="306.9" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Slovenia</text>
+<line x1="193.0" y1="303.4" x2="191.4" y2="303.4" stroke="var(--ink-soft)" stroke-width="1.4" opacity="0.6"/>
+<circle cx="193.0" cy="303.4" r="2.6" fill="var(--meta)"/>
+<circle cx="191.4" cy="303.4" r="2.6" fill="var(--accent)"/>
+<text x="90" y="324.4" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Malta</text>
+<line x1="224.9" y1="320.9" x2="189.8" y2="320.9" stroke="var(--ink-soft)" stroke-width="1.4" opacity="0.6"/>
+<circle cx="224.9" cy="320.9" r="2.6" fill="var(--meta)"/>
+<circle cx="189.8" cy="320.9" r="2.6" fill="var(--accent)"/>
+<text x="90" y="341.9" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Czechia</text>
+<line x1="160.4" y1="338.4" x2="179.2" y2="338.4" stroke="var(--ink-soft)" stroke-width="1.4" opacity="0.6"/>
+<circle cx="160.4" cy="338.4" r="2.6" fill="var(--meta)"/>
+<circle cx="179.2" cy="338.4" r="2.6" fill="var(--accent)"/>
+<text x="90" y="359.4" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Estonia</text>
+<line x1="244.4" y1="355.9" x2="175.9" y2="355.9" stroke="var(--ink-soft)" stroke-width="1.4" opacity="0.6"/>
+<circle cx="244.4" cy="355.9" r="2.6" fill="var(--meta)"/>
+<circle cx="175.9" cy="355.9" r="2.6" fill="var(--accent)"/>
+<text x="90" y="376.9" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Denmark</text>
+<line x1="212.6" y1="373.4" x2="164.5" y2="373.4" stroke="var(--ink-soft)" stroke-width="1.4" opacity="0.6"/>
+<circle cx="212.6" cy="373.4" r="2.6" fill="var(--meta)"/>
+<circle cx="164.5" cy="373.4" r="2.6" fill="var(--accent)"/>
+<text x="90" y="394.4" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Lithuania</text>
+<line x1="281.1" y1="390.9" x2="162.9" y2="390.9" stroke="var(--ink-soft)" stroke-width="1.4" opacity="0.6"/>
+<circle cx="281.1" cy="390.9" r="2.6" fill="var(--meta)"/>
+<circle cx="162.9" cy="390.9" r="2.6" fill="var(--accent)"/>
+<text x="90" y="411.9" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Austria</text>
+<line x1="218.3" y1="408.4" x2="162.9" y2="408.4" stroke="var(--ink-soft)" stroke-width="1.4" opacity="0.6"/>
+<circle cx="218.3" cy="408.4" r="2.6" fill="var(--meta)"/>
+<circle cx="162.9" cy="408.4" r="2.6" fill="var(--accent)"/>
+<text x="90" y="429.4" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Poland</text>
+<line x1="189.0" y1="425.9" x2="158.0" y2="425.9" stroke="var(--ink-soft)" stroke-width="1.4" opacity="0.6"/>
+<circle cx="189.0" cy="425.9" r="2.6" fill="var(--meta)"/>
+<circle cx="158.0" cy="425.9" r="2.6" fill="var(--accent)"/>
+<text x="90" y="446.9" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Sweden</text>
+<line x1="218.3" y1="443.4" x2="149.0" y2="443.4" stroke="var(--ink-soft)" stroke-width="1.4" opacity="0.6"/>
+<circle cx="218.3" cy="443.4" r="2.6" fill="var(--meta)"/>
+<circle cx="149.0" cy="443.4" r="2.6" fill="var(--accent)"/>
+<text x="90" y="464.4" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Finland</text>
+<line x1="206.9" y1="460.9" x2="140.0" y2="460.9" stroke="var(--ink-soft)" stroke-width="1.4" opacity="0.6"/>
+<circle cx="206.9" cy="460.9" r="2.6" fill="var(--meta)"/>
+<circle cx="140.0" cy="460.9" r="2.6" fill="var(--accent)"/>
+<text x="90" y="481.9" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Germany</text>
+<line x1="239.5" y1="478.4" x2="127.0" y2="478.4" stroke="var(--ink-soft)" stroke-width="1.4" opacity="0.6"/>
+<circle cx="239.5" cy="478.4" r="2.6" fill="var(--meta)"/>
+<circle cx="127.0" cy="478.4" r="2.6" fill="var(--accent)"/>
+<text x="90" y="499.4" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Netherlands</text>
+<line x1="195.5" y1="495.9" x2="126.1" y2="495.9" stroke="var(--ink-soft)" stroke-width="1.4" opacity="0.6"/>
+<circle cx="195.5" cy="495.9" r="2.6" fill="var(--meta)"/>
+<circle cx="126.1" cy="495.9" r="2.6" fill="var(--accent)"/>
+<text x="90" y="516.9" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Luxembourg</text>
+<line x1="215.1" y1="513.4" x2="124.5" y2="513.4" stroke="var(--ink-soft)" stroke-width="1.4" opacity="0.6"/>
+<circle cx="215.1" cy="513.4" r="2.6" fill="var(--meta)"/>
+<circle cx="124.5" cy="513.4" r="2.6" fill="var(--accent)"/>
+</svg>
+    <p class="fig-caption"><b>Figure 1.</b> AROPE and subjective poverty by EU country, most recent year available. Sorted by subjective poverty. Source: Eurostat <code>ilc_peps01n</code>, <code>ilc_sbjp01</code>.</p>
+  </div>
+
+  <h3 class="sub">5.2 The moving-threshold mechanism</h3>
+  <p>Greece's real, inflation-adjusted poverty threshold fell from an index value of 100 in 2008 to 65 in 2016 &mdash; a 35-point real decline that tracks the collapse in real household income (which fell to 68 over the same span) almost exactly. Because the poverty line is defined relative to the (collapsing) national median rather than to a fixed living standard, the measured AROP rate barely moved over this period, rising only from 20.1% to 21.2%, even as the population beneath the line grew markedly poorer in real terms.</p>
+
+  <div class="figure">
+<svg viewBox="0 0 700 300" width="100%" role="img" aria-label="Real poverty threshold vs real household income, Greece, 2008=100">
+<line x1="40" y1="274.0" x2="686" y2="274.0" stroke="var(--rule)" stroke-width="1"/>
+<text x="32" y="278.0" text-anchor="end" font-size="10.5" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">62</text>
+<line x1="40" y1="209.5" x2="686" y2="209.5" stroke="var(--rule)" stroke-width="1"/>
+<text x="32" y="213.5" text-anchor="end" font-size="10.5" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">74</text>
+<line x1="40" y1="145.0" x2="686" y2="145.0" stroke="var(--rule)" stroke-width="1"/>
+<text x="32" y="149.0" text-anchor="end" font-size="10.5" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">85</text>
+<line x1="40" y1="80.5" x2="686" y2="80.5" stroke="var(--rule)" stroke-width="1"/>
+<text x="32" y="84.5" text-anchor="end" font-size="10.5" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">97</text>
+<line x1="40" y1="16.0" x2="686" y2="16.0" stroke="var(--rule)" stroke-width="1"/>
+<text x="32" y="20.0" text-anchor="end" font-size="10.5" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">109</text>
+<text x="40.0" y="292" text-anchor="middle" font-size="10.5" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">2005</text>
+<text x="210.0" y="292" text-anchor="middle" font-size="10.5" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">2010</text>
+<text x="380.0" y="292" text-anchor="middle" font-size="10.5" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">2015</text>
+<text x="550.0" y="292" text-anchor="middle" font-size="10.5" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">2020</text>
+<text x="686.0" y="292" text-anchor="middle" font-size="10.5" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">2024</text>
+<path d="M 40.0,84.0 L 74.0,77.3 L 108.0,74.5 L 142.0,65.9 L 176.0,38.2 L 210.0,41.7 L 244.0,103.9 L 278.0,176.1 L 312.0,224.8 L 346.0,251.6 L 380.0,255.2 L 414.0,256.1 L 448.0,255.3 L 482.0,245.9 L 516.0,232.4 L 550.0,200.0 L 584.0,203.9 L 618.0,205.8 L 652.0,200.5 L 686.0,180.7" fill="none" stroke="var(--meta)" stroke-width="1.8"/>
+<circle cx="686.0" cy="180.7" r="3.2" fill="var(--meta)"/>
+<text x="680.0" y="194.7" text-anchor="end" font-size="11.5" font-weight="600" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Poverty threshold (real)</text>
+<path d="M 40.0,126.6 L 74.0,99.2 L 108.0,85.1 L 142.0,65.9 L 176.0,63.8 L 210.0,137.4 L 244.0,191.9 L 278.0,245.2 L 312.0,260.7 L 346.0,251.6 L 380.0,241.3 L 414.0,240.8 L 448.0,238.0 L 482.0,238.5 L 516.0,211.3 L 550.0,223.6 L 584.0,185.5 L 618.0,185.4 L 652.0,163.5 L 686.0,152.3" fill="none" stroke="var(--accent)" stroke-width="2.6"/>
+<circle cx="686.0" cy="152.3" r="3.2" fill="var(--accent)"/>
+<text x="680.0" y="143.3" text-anchor="end" font-size="11.5" font-weight="600" fill="var(--accent)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Real household income</text>
+</svg>
+    <p class="fig-caption"><b>Figure 2.</b> Greece's real (inflation-adjusted) AROP poverty threshold and real household income, both indexed to 2008=100. Source: Eurostat <code>ilc_li01</code>, deflated with Greek HICP (<code>prc_hicp_aind</code>); real household income from <code>tepsr_wc310</code>.</p>
+  </div>
+
+  <h3 class="sub">5.3 Anchored-poverty reconstruction and external validation</h3>
+  <p>Recomputing the poverty headcount against a fixed, 2008-anchored real threshold rather than the moving AROP line shows measured poverty roughly doubling during the debt crisis, tracking subjective reports of hardship far more closely than AROP does over the same period. This paper's own reconstruction (survey-year 2014: 40.6% of the population below the anchored threshold) is conservative relative to Andriopoulou et al.'s (2019/2020) independent microdata-based estimate for the closest reported year (income year 2013: 48%), a 7&ndash;8 point gap attributable to differences in data source (aggregate summary points versus full household microdata), anchor year (2008 versus 2007), and price-index construction &mdash; and potentially to the survey-year/income-year distinction itself, which this paper has not independently verified against Andriopoulou et al.'s exact reference-period convention. None of these can be cleanly isolated as the dominant cause. The direction of the gap &mdash; the independent, more granular study finds an even larger crisis-era effect than this paper's coarser approximation &mdash; is itself informative: if anything, this paper's Part I findings understate the case for a real, measurable deterioration that AROP fails to register.</p>
+
+  <h3 class="sub">5.4 Does the relationship hold over time and across countries?</h3>
+  <p>Within Greece, subjective poverty tracks the anchored-poverty reconstruction closely across levels, first differences, and a detrended series (full correlation table in the companion technical report, &sect;10). A within-country, two-way fixed-effects panel across the EU27 shows the same directional relationship generalizes beyond Greece, though with substantially more noise than the Greece-specific series alone &mdash; consistent with Greece representing an unusually clean and unusually severe instance of a mechanism that operates, more weakly, EU-wide.</p>
+
+  <div class="callout">
+    <b class="tag sans">Answer to RQ1</b>
+    A substantial, real part of Greece's subjective-poverty exceptionalism is arithmetic: because the standard EU poverty line resets each year against a collapsing median, it systematically understated the depth of Greece's crisis-era income losses. Holding that line fixed at a pre-crisis standard reveals a doubling of measured poverty that AROP does not show, corroborated by an independent, more granular microdata study finding an even larger effect. This is not the whole explanation: even after this correction, Greece's cross-country subjective-poverty gap does not fully close, motivating Part II.
+  </div>
+</section>
+
+<section id="s6">
+  <h2 class="sec"><span class="num">6.</span> Results II &mdash; Why does Greece remain an outlier?</h2>
+
+  <h3 class="sub">6.1 Baseline cross-country residual</h3>
+  <p>A baseline model (Model A: headline unemployment, PPS-adjusted income, material deprivation, AROP) predicting subjective poverty across all EU countries, 2015&ndash;2024, leaves Greece with the largest average unexplained residual of any EU country &mdash; ahead of Cyprus and Croatia, the next-highest.</p>
+
+  <h3 class="sub">6.2 Housing and cash-flow strain</h3>
+  <p>Adding housing-cost overburden (Model B) and then arrears and inability to cover an unexpected expense (Model C) reduces Greece's in-sample average residual from 15.1 points to 8.8 and then to 2.2 &mdash; near zero for most of 2015&ndash;2019, though a roughly 6-point gap re-emerges by 2024, concentrated in the 2020s. Household debt-to-income and the poverty-reducing effect of social transfers were tested as further additions and returned coefficients statistically indistinguishable from zero once housing and cash-flow strain were already in the model &mdash; a narrower finding than ruling either factor out entirely, since their effects could be absorbed by the variables already present.</p>
+
+  <h3 class="sub">6.3 Out-of-sample validation</h3>
+  <p>Because every model above includes Greece in its own training data, its own pattern could be inflating the apparent fit. Refitting each nested specification on the other 26 EU countries and evaluating it on Greece alone &mdash; and repeating this leave-one-out procedure for every country, not only Greece, to establish a baseline for what a "normal" out-of-sample shift looks like &mdash; tells a different, less monotonic story. Going from the basic comparison to "+ housing" does not shrink Greece's out-of-sample gap the way it does in-sample; it grows, from 25.6 to 35.5 points. Only once cash-flow strain (arrears, unexpected-expense capacity) is added does the gap fall sharply, to 11.6 &mdash; still the largest of 27, but only narrowly ahead of Luxembourg (10.7) rather than clear of the field. The gap between the smooth in-sample decline and this more volatile out-of-sample pattern is itself informative: part of why the in-sample fit looks so clean is that those models are permitted to see Greece's own data while being estimated.</p>
+
+  <h3 class="sub">6.4 The full scorecard</h3>
+  <div class="table-wrap">
+    <table>
+      <caption>Table 1. Nested model comparison, Greece's average residual, 2015&ndash;2024.</caption>
+      <thead><tr><th>Model</th><th>R&sup2;</th><th>In-sample gap</th><th>Out-of-sample gap</th><th>OOS rank</th></tr></thead>
+      <tbody>
+        <tr><td>A: unemployment, income, deprivation, AROP</td><td class="tab">0.76</td><td class="tab">15.1</td><td class="tab">25.6</td><td>1st / 27</td></tr>
+        <tr><td>B: A + housing cost overburden</td><td class="tab">0.78</td><td class="tab">8.8</td><td class="tab">35.5</td><td>1st / 27</td></tr>
+        <tr><td>C: B + arrears, unexpected-expense capacity</td><td class="tab">0.89</td><td class="tab">2.2</td><td class="tab">11.6</td><td>1st / 27</td></tr>
+        <tr class="hl"><td>C-LTU: C, long-term unemployment replaces headline</td><td class="tab">0.91</td><td class="tab">1.3</td><td class="tab">3.9</td><td>6th / 27</td></tr>
+        <tr><td>D: C + debt-to-income, transfer effect</td><td class="tab">0.89</td><td class="tab">2.2</td><td class="tab">13.0</td><td>1st / 27</td></tr>
+        <tr><td>E: C + financial expectations, saving rate</td><td class="tab">0.90</td><td class="tab">1.3</td><td class="tab">3.6</td><td>10th / 27</td></tr>
+        <tr><td>F: C + scarring stock (% below own GDP peak)</td><td class="tab">0.90</td><td class="tab">1.3</td><td class="tab">7.1</td><td>4th / 27</td></tr>
+      </tbody>
+    </table>
+    <p class="table-note">All specifications: year fixed effects, country-clustered standard errors. Out-of-sample = each country's own leave-one-country-out average residual.</p>
+  </div>
+
+  <div class="figure">
+<svg viewBox="0 0 700 280" width="100%" role="img" aria-label="Out-of-sample gap by model">
+<line x1="34" y1="230.0" x2="686" y2="230.0" stroke="var(--rule)" stroke-width="1"/>
+<text x="26" y="234.0" text-anchor="end" font-size="10.5" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">0</text>
+<line x1="34" y1="158.7" x2="686" y2="158.7" stroke="var(--rule)" stroke-width="1"/>
+<text x="26" y="162.7" text-anchor="end" font-size="10.5" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">14</text>
+<line x1="34" y1="87.3" x2="686" y2="87.3" stroke="var(--rule)" stroke-width="1"/>
+<text x="26" y="91.3" text-anchor="end" font-size="10.5" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">27</text>
+<line x1="34" y1="16.0" x2="686" y2="16.0" stroke="var(--rule)" stroke-width="1"/>
+<text x="26" y="20.0" text-anchor="end" font-size="10.5" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">41</text>
+<rect x="52.6" y="95.8" width="55.9" height="134.2" fill="var(--meta)" rx="2"/>
+<text x="80.6" y="89.8" text-anchor="middle" font-size="11" font-weight="600" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">25.6</text>
+<text x="80.6" y="246.0" text-anchor="middle" font-size="10.5" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">A</text>
+<rect x="145.8" y="43.9" width="55.9" height="186.1" fill="var(--meta)" rx="2"/>
+<text x="173.7" y="37.9" text-anchor="middle" font-size="11" font-weight="600" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">35.5</text>
+<text x="173.7" y="246.0" text-anchor="middle" font-size="10.5" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">B</text>
+<rect x="238.9" y="169.2" width="55.9" height="60.8" fill="var(--meta)" rx="2"/>
+<text x="266.9" y="163.2" text-anchor="middle" font-size="11" font-weight="600" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">11.6</text>
+<text x="266.9" y="246.0" text-anchor="middle" font-size="10.5" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">C</text>
+<rect x="332.1" y="209.6" width="55.9" height="20.4" fill="var(--accent)" rx="2"/>
+<text x="360.0" y="203.6" text-anchor="middle" font-size="11" font-weight="600" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">3.9</text>
+<text x="360.0" y="246.0" text-anchor="middle" font-size="10.5" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">C-LTU</text>
+<rect x="425.2" y="161.9" width="55.9" height="68.1" fill="var(--meta)" rx="2"/>
+<text x="453.1" y="155.9" text-anchor="middle" font-size="11" font-weight="600" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">13.0</text>
+<text x="453.1" y="246.0" text-anchor="middle" font-size="10.5" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">D</text>
+<rect x="518.3" y="211.1" width="55.9" height="18.9" fill="var(--meta)" rx="2"/>
+<text x="546.3" y="205.1" text-anchor="middle" font-size="11" font-weight="600" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">3.6</text>
+<text x="546.3" y="246.0" text-anchor="middle" font-size="10.5" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">E</text>
+<rect x="611.5" y="192.8" width="55.9" height="37.2" fill="var(--meta)" rx="2"/>
+<text x="639.4" y="186.8" text-anchor="middle" font-size="11" font-weight="600" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">7.1</text>
+<text x="639.4" y="246.0" text-anchor="middle" font-size="10.5" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">F</text>
+</svg>
+    <p class="fig-caption"><b>Figure 3.</b> Greece's out-of-sample (leave-one-country-out) average residual, points, by model. C-LTU (highlighted) is the preferred specification. Corresponds to the out-of-sample column of Table 1.</p>
+  </div>
+
+  <h3 class="sub">6.5 Long-term unemployment as the sharpest mechanism</h3>
+  <p>The single most consequential result in this paper is not an added variable but a substitution: replacing headline unemployment with long-term unemployment (12 months or more out of work) in Model C. Long-term unemployment tracks Greek subjective poverty more tightly than any other variable tested, at every time scale &mdash; level (r=0.93, p&lt;0.0001), first-difference (r=0.92, p&lt;0.0001), and detrended (r=0.86, p&lt;0.0001), all robust to false-discovery-rate correction. Substituted into Model C, it lifts the fit from R&sup2;=0.89 to 0.91 and cuts Greece's out-of-sample gap from 11.6 to 3.9 points, moving Greece from the EU's largest unexplained outlier to 6th of 27. Its coefficient is stable and significant at p&lt;0.001 across all 27 leave-one-country-out refits, including the refit excluding Greece itself, indicating the result is not an artifact of Greece's own data. A robustness check adding long-term unemployment alongside (rather than in place of) headline unemployment achieves a marginally better fit but destabilizes headline unemployment's coefficient (sign flip, loss of significance, variance inflation factor &asymp;8&ndash;9), a textbook symptom of collinearity that motivates treating this as a replacement rather than an addition. Greece's own long-term unemployment rate peaked at 17.5% of the labor force in 2014 and has since fallen to 5.4% in 2024 &mdash; still the EU's highest by a wide margin (next: Spain, 3.8%).</p>
+
+  <div class="figure">
+<svg viewBox="0 0 700 320" width="100%" role="img" aria-label="Long-term unemployment rate, EU countries, Greece highlighted">
+<rect x="0" y="0" width="700" height="320" fill="none"/>
+<line x1="40" y1="294.0" x2="686" y2="294.0" stroke="var(--rule)" stroke-width="1"/>
+<text x="32" y="298.0" text-anchor="end" font-size="10.5" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">-1%</text>
+<line x1="40" y1="224.5" x2="686" y2="224.5" stroke="var(--rule)" stroke-width="1"/>
+<text x="32" y="228.5" text-anchor="end" font-size="10.5" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">4%</text>
+<line x1="40" y1="155.0" x2="686" y2="155.0" stroke="var(--rule)" stroke-width="1"/>
+<text x="32" y="159.0" text-anchor="end" font-size="10.5" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">9%</text>
+<line x1="40" y1="85.5" x2="686" y2="85.5" stroke="var(--rule)" stroke-width="1"/>
+<text x="32" y="89.5" text-anchor="end" font-size="10.5" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">14%</text>
+<line x1="40" y1="16.0" x2="686" y2="16.0" stroke="var(--rule)" stroke-width="1"/>
+<text x="32" y="20.0" text-anchor="end" font-size="10.5" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">19%</text>
+<text x="40.0" y="312" text-anchor="middle" font-size="10.5" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">2009</text>
+<text x="384.5" y="312" text-anchor="middle" font-size="10.5" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">2017</text>
+<text x="686.0" y="312" text-anchor="middle" font-size="10.5" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">2024</text>
+<path d="M 40.0,266.5 L 83.1,265.0 L 126.1,265.0 L 169.2,265.0 L 212.3,263.6 L 255.3,259.3 L 298.4,257.9 L 341.5,252.1 L 384.5,253.5 L 427.6,262.2 L 470.7,266.5 L 513.7,262.2 L 556.8,257.9 L 599.9,269.3 L 642.9,270.8 L 686.0,270.8" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,240.6 L 83.1,233.5 L 126.1,242.1 L 169.2,242.1 L 212.3,236.3 L 255.3,230.6 L 298.4,229.2 L 341.5,233.5 L 384.5,242.1 L 427.6,249.2 L 470.7,256.4 L 513.7,256.4 L 556.8,249.2 L 599.9,253.5 L 642.9,255.0 L 686.0,257.9" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,236.3 L 83.1,210.5 L 126.1,186.1 L 169.2,179.0 L 212.3,170.3 L 255.3,177.5 L 298.4,196.2 L 341.5,211.9 L 384.5,229.2 L 427.6,233.5 L 470.7,243.5 L 513.7,246.4 L 556.8,249.2 L 599.9,255.0 L 642.9,253.5 L 686.0,255.0" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,277.9 L 83.1,267.9 L 126.1,263.6 L 169.2,234.9 L 212.3,199.0 L 255.3,176.1 L 298.4,189.0 L 341.5,203.3 L 384.5,222.0 L 427.6,247.8 L 470.7,255.0 L 513.7,255.0 L 556.8,250.7 L 599.9,256.4 L 642.9,260.7 L 686.0,267.9" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,257.9 L 83.1,243.5 L 126.1,247.8 L 169.2,243.5 L 212.3,243.5 L 255.3,247.8 L 298.4,252.1 L 341.5,262.2 L 384.5,272.2 L 427.6,276.5 L 470.7,277.9 L 513.7,277.9 L 556.8,275.1 L 599.9,277.9 L 642.9,275.1 L 686.0,275.1" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,234.9 L 83.1,239.2 L 126.1,246.4 L 169.2,250.7 L 212.3,252.1 L 255.3,255.0 L 298.4,256.4 L 341.5,262.2 L 384.5,263.6 L 427.6,266.5 L 470.7,269.3 L 513.7,270.8 L 556.8,269.3 L 599.9,270.8 L 642.9,272.2 L 686.0,272.2" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,277.9 L 83.1,266.5 L 126.1,260.7 L 169.2,256.4 L 212.3,260.7 L 255.3,262.2 L 298.4,263.6 L 341.5,269.3 L 384.5,269.3 L 427.6,272.2 L 470.7,275.1 L 513.7,273.6 L 556.8,272.2 L 599.9,279.4 L 642.9,279.4 L 686.0,275.1" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,233.5 L 83.1,179.0 L 126.1,186.1 L 169.2,209.1 L 212.3,232.0 L 255.3,239.2 L 298.4,252.1 L 341.5,255.0 L 384.5,257.9 L 427.6,267.9 L 470.7,273.6 L 513.7,269.3 L 556.8,263.6 L 599.9,267.9 L 642.9,267.9 L 686.0,260.7" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,224.9 L 83.1,181.8 L 126.1,158.9 L 169.2,128.7 L 212.3,100.1 L 255.3,101.5 L 298.4,123.0 L 341.5,150.3 L 384.5,176.1 L 427.6,194.7 L 470.7,210.5 L 513.7,214.8 L 556.8,197.6 L 599.9,213.4 L 642.9,224.9 L 686.0,232.0" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,262.2 L 83.1,250.7 L 126.1,255.0 L 169.2,256.4 L 212.3,256.4 L 255.3,252.1 L 298.4,244.9 L 341.5,244.9 L 384.5,249.2 L 427.6,257.9 L 470.7,265.0 L 513.7,265.0 L 556.8,260.7 L 599.9,265.0 L 642.9,263.6 L 686.0,260.7" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,257.9 L 83.1,252.1 L 126.1,250.7 L 169.2,249.2 L 212.3,244.9 L 255.3,242.1 L 298.4,242.1 L 341.5,242.1 L 384.5,244.9 L 427.6,250.7 L 470.7,253.5 L 513.7,259.3 L 556.8,253.5 L 599.9,257.9 L 642.9,260.7 L 686.0,262.2" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,214.8 L 83.1,193.3 L 126.1,167.5 L 169.2,138.8 L 212.3,128.7 L 255.3,140.2 L 298.4,140.2 L 341.5,190.4 L 384.5,222.0 L 427.6,237.8 L 470.7,252.1 L 513.7,256.4 L 556.8,247.8 L 599.9,252.1 L 642.9,256.4 L 686.0,260.7" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,229.2 L 83.1,210.5 L 126.1,213.4 L 169.2,217.7 L 212.3,217.7 L 255.3,234.9 L 298.4,243.5 L 341.5,253.5 L 384.5,263.6 L 427.6,266.5 L 470.7,270.8 L 513.7,270.8 L 556.8,267.9 L 599.9,269.3 L 642.9,266.5 L 686.0,265.0" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,236.3 L 83.1,187.6 L 126.1,160.3 L 169.2,154.6 L 212.3,173.2 L 255.3,191.9 L 298.4,210.5 L 341.5,226.3 L 384.5,243.5 L 427.6,256.4 L 470.7,263.6 L 513.7,266.5 L 556.8,260.7 L 599.9,267.9 L 642.9,270.8 L 686.0,272.2" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,233.5 L 83.1,224.9 L 126.1,220.6 L 169.2,200.5 L 212.3,180.4 L 255.3,168.9 L 298.4,180.4 L 341.5,184.7 L 384.5,187.6 L 427.6,193.3 L 470.7,201.9 L 513.7,213.4 L 556.8,209.1 L 599.9,220.6 L 642.9,226.3 L 686.0,239.2" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,239.2 L 83.1,180.4 L 126.1,171.8 L 169.2,191.9 L 212.3,213.4 L 255.3,217.7 L 298.4,230.6 L 341.5,243.5 L 384.5,247.8 L 427.6,257.9 L 470.7,259.3 L 513.7,250.7 L 556.8,249.2 L 599.9,253.5 L 642.9,253.5 L 686.0,253.5" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,269.3 L 83.1,267.9 L 126.1,266.5 L 169.2,263.6 L 212.3,260.7 L 255.3,263.6 L 298.4,259.3 L 341.5,255.0 L 384.5,256.4 L 427.6,266.5 L 470.7,267.9 L 513.7,262.2 L 556.8,260.7 L 599.9,267.9 L 642.9,262.2 L 686.0,263.6" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,214.8 L 83.1,147.4 L 126.1,146.0 L 169.2,163.2 L 212.3,196.2 L 255.3,213.4 L 298.4,216.3 L 341.5,223.4 L 384.5,234.9 L 427.6,237.8 L 470.7,247.8 L 513.7,252.1 L 556.8,253.5 L 599.9,257.9 L 642.9,260.7 L 686.0,255.0" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,244.9 L 83.1,227.7 L 126.1,230.6 L 169.2,232.0 L 212.3,236.3 L 255.3,244.9 L 298.4,247.8 L 341.5,252.1 L 384.5,257.9 L 427.6,259.3 L 470.7,272.2 L 513.7,267.9 L 556.8,272.2 L 599.9,269.3 L 642.9,275.1 L 686.0,276.5" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,273.6 L 83.1,270.8 L 126.1,266.5 L 169.2,262.2 L 212.3,253.5 L 255.3,247.8 L 298.4,247.8 L 341.5,253.5 L 384.5,262.2 L 427.6,269.3 L 470.7,273.6 L 513.7,276.5 L 556.8,275.1 L 599.9,276.5 L 642.9,279.4 L 686.0,279.4" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,249.2 L 83.1,242.1 L 126.1,233.5 L 169.2,226.3 L 212.3,222.0 L 255.3,230.6 L 298.4,243.5 L 341.5,255.0 L 384.5,265.0 L 427.6,272.2 L 470.7,276.5 L 513.7,277.9 L 556.8,273.6 L 599.9,273.6 L 642.9,275.1 L 686.0,275.1" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,217.7 L 83.1,196.2 L 126.1,191.9 L 169.2,170.3 L 212.3,147.4 L 255.3,161.7 L 298.4,180.4 L 341.5,194.7 L 384.5,220.6 L 427.6,240.6 L 470.7,246.4 L 513.7,253.5 L 556.8,244.9 L 599.9,246.4 L 642.9,250.7 L 686.0,252.1" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,249.2 L 83.1,243.5 L 126.1,234.9 L 169.2,233.5 L 212.3,230.6 L 255.3,237.8 L 298.4,234.9 L 341.5,237.8 L 384.5,252.1 L 427.6,255.0 L 470.7,257.9 L 513.7,260.7 L 556.8,257.9 L 599.9,255.0 L 642.9,255.0 L 686.0,260.7" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,270.8 L 83.1,265.0 L 126.1,266.5 L 169.2,266.5 L 212.3,266.5 L 255.3,267.9 L 298.4,267.9 L 341.5,269.3 L 384.5,270.8 L 427.6,273.6 L 470.7,275.1 L 513.7,272.2 L 556.8,260.7 L 599.9,259.3 L 642.9,263.6 L 686.0,262.2" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,260.7 L 83.1,240.6 L 126.1,233.5 L 169.2,224.9 L 212.3,211.9 L 255.3,210.5 L 298.4,219.1 L 341.5,224.9 L 384.5,242.1 L 427.6,255.0 L 470.7,259.3 L 513.7,259.3 L 556.8,259.3 L 599.9,263.6 L 642.9,266.5 L 686.0,270.8" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,177.5 L 83.1,133.1 L 126.1,133.1 L 169.2,130.2 L 212.3,120.1 L 255.3,133.1 L 298.4,160.3 L 341.5,189.0 L 384.5,201.9 L 427.6,219.1 L 470.7,230.6 L 513.7,233.5 L 556.8,230.6 L 599.9,227.7 L 642.9,232.0 L 686.0,236.3" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,234.9 L 83.1,211.9 L 126.1,171.8 L 169.2,98.6 L 212.3,47.0 L 255.3,35.5 L 298.4,51.3 L 341.5,65.6 L 384.5,81.4 L 427.6,107.2 L 470.7,124.4 L 513.7,135.9 L 556.8,154.6 L 599.9,176.1 L 642.9,197.6 L 686.0,209.1" fill="none" stroke="var(--accent)" stroke-width="2.6"/>
+<circle cx="686.0" cy="209.1" r="3.4" fill="var(--accent)"/>
+<text x="680.0" y="200.1" text-anchor="end" font-size="12" font-weight="600" fill="var(--accent)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Greece</text>
+</svg>
+    <p class="fig-caption"><b>Figure 4.</b> Long-term unemployment rate (12 months or more, % of active population), all EU countries, 2009&ndash;2024. Source: Eurostat <code>une_ltu_a</code>.</p>
+  </div>
+
+  <h3 class="sub">6.6 Structural corroboration</h3>
+  <div class="figure">
+<svg viewBox="0 0 700 320" width="100%" role="img" aria-label="Real GDP per capita indexed to own historical peak, EU countries, Greece highlighted">
+<rect x="0" y="0" width="700" height="320" fill="none"/>
+<line x1="40" y1="294.0" x2="686" y2="294.0" stroke="var(--rule)" stroke-width="1"/>
+<text x="32" y="298.0" text-anchor="end" font-size="10.5" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">44</text>
+<line x1="40" y1="224.5" x2="686" y2="224.5" stroke="var(--rule)" stroke-width="1"/>
+<text x="32" y="228.5" text-anchor="end" font-size="10.5" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">59</text>
+<line x1="40" y1="155.0" x2="686" y2="155.0" stroke="var(--rule)" stroke-width="1"/>
+<text x="32" y="159.0" text-anchor="end" font-size="10.5" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">74</text>
+<line x1="40" y1="85.5" x2="686" y2="85.5" stroke="var(--rule)" stroke-width="1"/>
+<text x="32" y="89.5" text-anchor="end" font-size="10.5" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">89</text>
+<line x1="40" y1="16.0" x2="686" y2="16.0" stroke="var(--rule)" stroke-width="1"/>
+<text x="32" y="20.0" text-anchor="end" font-size="10.5" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">104</text>
+<line x1="40" y1="35.5" x2="686" y2="35.5" stroke="var(--rule-strong)" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="686" y="30.5" text-anchor="end" font-size="10" fill="var(--rule-strong)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">own historical peak = 100</text>
+<text x="40.0" y="312" text-anchor="middle" font-size="10.5" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">2008</text>
+<text x="363.0" y="312" text-anchor="middle" font-size="10.5" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">2016</text>
+<text x="686.0" y="312" text-anchor="middle" font-size="10.5" fill="var(--meta)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">2024</text>
+<path d="M 40.0,66.8 L 80.4,83.2 L 120.8,76.7 L 161.1,65.8 L 201.5,65.1 L 241.9,68.7 L 282.2,68.8 L 322.6,67.5 L 363.0,64.0 L 403.4,57.0 L 443.8,48.3 L 484.1,42.5 L 524.5,73.0 L 564.9,53.8 L 605.2,35.5 L 645.6,43.1 L 686.0,48.3" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,83.2 L 80.4,94.3 L 120.8,87.2 L 161.1,84.6 L 201.5,86.3 L 241.9,87.0 L 282.2,81.6 L 322.6,78.0 L 363.0,75.1 L 403.4,70.5 L 443.8,64.5 L 484.1,56.4 L 524.5,79.2 L 564.9,55.0 L 605.2,40.9 L 645.6,37.8 L 686.0,35.5" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,206.9 L 80.4,215.0 L 120.8,209.0 L 161.1,195.5 L 201.5,189.9 L 241.9,187.0 L 282.2,180.1 L 322.6,165.5 L 363.0,150.9 L 403.4,136.7 L 443.8,123.2 L 484.1,103.8 L 524.5,112.3 L 564.9,79.4 L 605.2,59.5 L 645.6,50.9 L 686.0,35.5" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,109.4 L 80.4,127.2 L 120.8,128.6 L 161.1,136.3 L 201.5,153.4 L 241.9,175.6 L 282.2,180.9 L 322.6,170.9 L 363.0,151.4 L 403.4,134.6 L 443.8,116.3 L 484.1,99.4 L 524.5,117.2 L 564.9,80.4 L 605.2,52.4 L 645.6,45.2 L 686.0,35.5" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,113.1 L 80.4,133.6 L 120.8,124.8 L 161.1,117.5 L 201.5,120.6 L 241.9,120.6 L 282.2,112.3 L 322.6,93.5 L 363.0,83.3 L 403.4,62.4 L 443.8,50.7 L 484.1,35.5 L 524.5,57.8 L 564.9,40.1 L 605.2,38.4 L 645.6,43.2 L 686.0,37.6" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,91.6 L 80.4,112.7 L 120.8,95.8 L 161.1,80.7 L 201.5,79.4 L 241.9,78.5 L 282.2,70.7 L 322.6,66.7 L 363.0,59.9 L 403.4,48.7 L 443.8,44.3 L 484.1,40.1 L 524.5,58.5 L 564.9,40.7 L 605.2,35.5 L 645.6,43.6 L 686.0,47.2" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,93.5 L 80.4,115.6 L 120.8,111.3 L 161.1,107.9 L 201.5,109.3 L 241.9,105.5 L 282.2,102.7 L 322.6,97.2 L 363.0,88.2 L 403.4,78.4 L 443.8,72.8 L 484.1,67.2 L 524.5,75.7 L 564.9,50.3 L 605.2,52.3 L 645.6,50.4 L 686.0,35.5" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,140.3 L 80.4,191.6 L 120.8,183.5 L 161.1,158.9 L 201.5,145.3 L 241.9,137.8 L 282.2,124.6 L 322.6,117.1 L 363.0,106.1 L 403.4,84.2 L 443.8,70.0 L 484.1,56.2 L 524.5,70.2 L 564.9,35.5 L 605.2,41.6 L 645.6,65.1 L 686.0,68.2" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,69.3 L 80.4,88.7 L 120.8,90.0 L 161.1,94.1 L 201.5,105.7 L 241.9,109.8 L 282.2,102.9 L 322.6,86.5 L 363.0,74.9 L 403.4,63.5 L 443.8,55.0 L 484.1,49.9 L 524.5,100.9 L 564.9,74.6 L 605.2,51.8 L 645.6,46.3 L 686.0,35.5" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,35.5 L 80.4,74.7 L 120.8,63.4 L 161.1,55.1 L 201.5,63.9 L 241.9,70.1 L 282.2,73.9 L 322.6,73.4 L 363.0,63.6 L 403.4,50.5 L 443.8,45.8 L 484.1,40.1 L 524.5,52.2 L 564.9,41.2 L 605.2,39.1 L 645.6,46.6 L 686.0,46.1" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,74.3 L 80.4,88.3 L 120.8,82.2 L 161.1,74.0 L 201.5,75.3 L 241.9,74.0 L 282.2,72.0 L 322.6,69.4 L 363.0,67.3 L 403.4,60.1 L 443.8,54.9 L 484.1,47.8 L 524.5,83.1 L 564.9,56.2 L 605.2,46.4 L 645.6,40.9 L 686.0,35.5" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,161.2 L 80.4,183.6 L 120.8,187.1 L 161.1,186.3 L 201.5,191.7 L 241.9,189.8 L 282.2,189.0 L 322.6,178.5 L 363.0,163.4 L 403.4,147.5 L 443.8,132.6 L 484.1,117.5 L 524.5,145.6 L 564.9,97.8 L 605.2,66.8 L 645.6,50.9 L 686.0,35.5" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,163.8 L 80.4,185.7 L 120.8,181.7 L 161.1,174.9 L 201.5,177.2 L 241.9,169.5 L 282.2,153.9 L 322.6,140.0 L 363.0,130.0 L 403.4,113.6 L 443.8,91.4 L 484.1,70.4 L 524.5,87.7 L 564.9,56.5 L 605.2,36.9 L 645.6,40.1 L 686.0,35.5" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,265.6 L 80.4,279.4 L 120.8,276.7 L 161.1,274.1 L 201.5,275.9 L 241.9,272.2 L 282.2,252.9 L 322.6,195.8 L 363.0,195.8 L 403.4,170.2 L 443.8,150.1 L 484.1,138.5 L 524.5,118.7 L 564.9,61.2 L 605.2,35.5 L 645.6,58.8 L 686.0,50.5" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,48.3 L 80.4,74.5 L 120.8,69.9 L 161.1,68.4 L 201.5,82.9 L 241.9,91.2 L 282.2,91.3 L 322.6,87.1 L 363.0,81.3 L 403.4,73.8 L 443.8,69.5 L 484.1,66.6 L 524.5,102.7 L 564.9,65.4 L 605.2,43.7 L 645.6,39.3 L 686.0,35.5" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,200.3 L 80.4,241.4 L 120.8,234.9 L 161.1,211.9 L 201.5,195.8 L 241.9,180.7 L 282.2,166.2 L 322.6,153.8 L 363.0,140.4 L 403.4,119.6 L 443.8,97.7 L 484.1,78.0 L 524.5,77.6 L 564.9,50.7 L 605.2,43.5 L 645.6,46.5 L 686.0,35.5" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,38.5 L 80.4,61.3 L 120.8,53.2 L 161.1,58.8 L 201.5,61.7 L 241.9,59.3 L 282.2,58.3 L 322.6,57.1 L 363.0,46.8 L 403.4,50.7 L 443.8,52.3 L 484.1,49.5 L 524.5,58.5 L 564.9,35.5 L 605.2,50.4 L 645.6,58.3 L 686.0,63.6" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,144.6 L 80.4,195.8 L 120.8,200.7 L 161.1,186.0 L 201.5,159.3 L 241.9,148.7 L 282.2,138.1 L 322.6,121.5 L 363.0,108.5 L 403.4,91.6 L 443.8,70.9 L 484.1,65.2 L 524.5,77.4 L 564.9,44.5 L 605.2,36.1 L 645.6,39.3 L 686.0,35.5" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,228.0 L 80.4,233.7 L 120.8,218.8 L 161.1,217.3 L 201.5,208.2 L 241.9,194.0 L 282.2,177.5 L 322.6,155.1 L 363.0,149.2 L 403.4,114.9 L 443.8,101.8 L 484.1,102.2 L 524.5,123.7 L 564.9,76.3 L 605.2,76.7 L 645.6,50.2 L 686.0,35.5" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,84.8 L 80.4,101.9 L 120.8,98.8 L 161.1,93.6 L 201.5,99.1 L 241.9,100.3 L 282.2,95.4 L 322.6,88.7 L 363.0,81.1 L 403.4,72.0 L 443.8,65.0 L 484.1,58.0 L 524.5,77.2 L 564.9,53.3 L 605.2,35.5 L 645.6,42.8 L 686.0,40.9" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,229.0 L 80.4,222.3 L 120.8,212.8 L 161.1,198.0 L 201.5,193.5 L 241.9,191.1 L 282.2,179.0 L 322.6,164.8 L 363.0,154.5 L 403.4,137.0 L 443.8,114.4 L 484.1,96.9 L 524.5,96.9 L 564.9,67.0 L 605.2,54.2 L 645.6,51.1 L 686.0,35.5" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,89.2 L 80.4,102.4 L 120.8,95.8 L 161.1,102.6 L 201.5,117.0 L 241.9,118.6 L 282.2,113.9 L 322.6,106.5 L 363.0,97.6 L 403.4,83.9 L 443.8,71.5 L 484.1,60.6 L 524.5,97.5 L 564.9,76.2 L 605.2,49.5 L 645.6,40.4 L 686.0,35.5" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,188.4 L 80.4,202.8 L 120.8,212.7 L 161.1,198.3 L 201.5,191.2 L 241.9,189.5 L 282.2,175.8 L 322.6,164.2 L 363.0,152.6 L 403.4,122.3 L 443.8,99.8 L 484.1,82.3 L 524.5,95.3 L 564.9,69.2 L 605.2,49.6 L 645.6,39.7 L 686.0,35.5" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,86.8 L 80.4,107.6 L 120.8,88.7 L 161.1,79.1 L 201.5,83.8 L 241.9,82.7 L 282.2,77.4 L 322.6,63.6 L 363.0,59.6 L 403.4,57.7 L 443.8,55.0 L 484.1,48.3 L 524.5,59.9 L 564.9,39.9 L 605.2,39.1 L 645.6,43.1 L 686.0,35.5" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,105.6 L 80.4,138.6 L 120.8,135.9 L 161.1,134.3 L 201.5,145.5 L 241.9,148.8 L 282.2,139.6 L 322.6,131.4 L 363.0,120.6 L 403.4,101.4 L 443.8,85.3 L 484.1,74.3 L 524.5,94.2 L 564.9,61.5 L 605.2,50.3 L 645.6,42.0 L 686.0,35.5" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,157.8 L 80.4,177.1 L 120.8,156.2 L 161.1,145.5 L 201.5,140.5 L 241.9,138.6 L 282.2,129.2 L 322.6,110.4 L 363.0,103.7 L 403.4,92.8 L 443.8,77.2 L 484.1,68.0 L 524.5,79.8 L 564.9,54.5 L 605.2,53.5 L 645.6,44.2 L 686.0,35.5" fill="none" stroke="var(--ink-soft)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,35.5 L 80.4,55.5 L 120.8,81.1 L 161.1,121.4 L 201.5,150.9 L 241.9,156.3 L 282.2,151.3 L 322.6,149.8 L 363.0,148.5 L 403.4,142.7 L 443.8,134.5 L 484.1,125.9 L 524.5,159.3 L 564.9,128.1 L 605.2,105.6 L 645.6,96.1 L 686.0,87.1" fill="none" stroke="var(--accent)" stroke-width="2.6"/>
+<circle cx="686.0" cy="87.1" r="3.4" fill="var(--accent)"/>
+<text x="680.0" y="78.1" text-anchor="end" font-size="12" font-weight="600" fill="var(--accent)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Greece</text>
+</svg>
+    <p class="fig-caption"><b>Figure 5.</b> Real GDP per capita, indexed to each country's own historical peak (2008&ndash;2024). Greece is the only EU country that never rejoins the pack. Source: Eurostat <code>sdg_08_10</code>.</p>
+  </div>
+  <p>Several further hard-data findings, tested individually rather than assumed, reinforce the same structural picture without themselves entering the preferred scorecard specification. Greece's real GDP per capita remains 11.2% below its 2008 peak as of 2024; of 27 EU countries with a genuine crisis-era downturn, the median recovery time was three years and none exceeded seven, making Greece's sixteen-year, still-unresolved shortfall a clear outlier (added directly to the panel as a scarring-stock predictor, this is independently significant, p=0.045, cutting the out-of-sample gap to 7.1, though it loses significance once long-term unemployment is already in the model, p=0.61, suggesting long-term unemployment captures the same underlying scarring more directly). Real wages remain 31.8% below their 2008 level, the largest shortfall of any EU country. Once nominal wages are compared against nominal prices on a common EU-wide scale, Greece records the EU's highest wage-adjusted price pressure in every consumption category tested &mdash; 1st of 27 for overall consumption, transport, and restaurants, 2nd for food and housing &mdash; despite ranking only 18th-most-expensive of 27 on raw price level; Greek wages average 48.3% of the EU mean, the 4th-lowest share in the Union. Housing tenure offers no full shelter: 25.7% of Greek mortgage-free owners face housing-cost overburden, the EU's highest rate by a wide margin (next: Sweden, 14.0%), against a typical EU range of 1&ndash;7%. Net emigration of Greek nationals totaled 290,281 people (2.6% of the 2008 population) between 2008 and 2024, peaking at 44,502 in 2012, with a net inflow only appearing in 2023&ndash;2024. Institutional trust in national government, tracked via Eurobarometer, fell from an already-middling pre-2008 average of 44% to a historic low of 7% in 2012, recovering only to 37% at its subsequent peaks (2015, 2020) before declining again to 24% by 2026 despite genuinely improved recent macroeconomic performance &mdash; a disconnect OECD's (2026) own account treats as unresolved. None of these trust or migration series are entered directly into the regression; they are reported as descriptive, independently corroborated context for the scale and duration of the underlying scarring.</p>
+
+  <h3 class="sub">6.7 A candidate explanation ruled out</h3>
+  <p>Income inequality (S80/S20 and Gini) was tested directly as a candidate residual explanation and found not to contribute: Greek inequality is elevated but not exceptional (6th-highest of 27 EU countries), and adding it to Model C-LTU explains none of the remaining residual.</p>
+
+  <div class="callout">
+    <b class="tag sans">Answer to RQ2</b>
+    A substantial share of Greece's cross-country subjective-poverty gap is accounted for by measurable conditions, but not all of it, and the honest answer depends on how strictly the test is applied. In-sample, housing and cash-flow variables shrink the gap from 15.1 to 2.2 points. Out-of-sample &mdash; the stricter, more honest test &mdash; a persistent 6&ndash;20 point gap survives every specification that uses headline unemployment. Replacing headline with long-term unemployment, without adding any new variable, is the single change that most closes this gap (11.6 &rarr; 3.9 points), identifying a precise mechanism (prolonged joblessness, not joblessness per se) rather than making the underlying hardship disappear. What remains open is not a data problem but a genuine unresolved question: household composition, informal income, savings buffers, or institutional factors not captured in Eurostat's aggregate series may account for the rest.
+  </div>
+</section>
+
+<section id="s7">
+  <h2 class="sec"><span class="num">7.</span> Discussion</h2>
+  <p class="lede">Sections 5 and 6 establish two things: that a substantial share of Greece's subjective-poverty exceptionalism is a measurement artifact of a relative-income threshold that resets every year, and that among the material conditions this paper can observe, the <em>duration</em> of joblessness &mdash; not its incidence &mdash; is what most separates Greece from the rest of the EU. This section interprets that pattern (&sect;7.1), then adds one further, more speculative dimension: what the documented record of Greece's financial-assistance programs suggests about why a recovery of this specific shape occurred (&sect;7.2). That policy-history material is offered as context, not as an additional tested result, and is scoped narrower and hedged more heavily than &sect;5&ndash;6 throughout.</p>
+
+  <h3 class="sub" id="s7-1">7.1 What the measurement and outlier results suggest together</h3>
+  <p>Taken together, &sect;5 and &sect;6 point away from a reading of Greece's subjective poverty as households reacting to each year's economic news, and toward a population whose material conditions have been substantially, measurably degraded relative to the rest of the EU for a long time. The year-over-year sensitivity results (&sect;6.6) reinforce this directly: Greek subjective poverty tracks its own official poverty rate unusually closely but barely moves with year-to-year swings in unemployment, housing costs, or material deprivation &mdash; consistent with a persistently elevated level rather than a reactive one. The relative-income poverty measure this paper's Part I results critique was, by construction, not built to register that kind of slow-moving, structural deterioration: a threshold that resets to 60% of a collapsing median tracks the crisis's average, not its duration. Long-term unemployment is the sharpest single expression of that duration in this paper's data, which is one reason &sect;7.2 asks whether the historical record offers a plausible institutional account of why duration, rather than incidence, ended up carrying so much of the explanatory weight.</p>
+
+  <h3 class="sub" id="s7-2">7.2 Policy history as one contextual dimension</h3>
+  <p>Greece required three successive EU/IMF/ESM financial-assistance programs between May 2010 and August 2018 &mdash; each, in Pagoulatos's (2018) account, drawing "its existence from the failure of the previous."</p>
+  <div class="table-wrap">
+    <table>
+      <caption>Table 2. Greece's three financial-assistance programs. Source: Pagoulatos (2018), Table 2; European Stability Mechanism (2020).</caption>
+      <thead><tr><th>Program</th><th>Period</th><th>Size</th><th>Lender(s)</th><th>Primary focus</th></tr></thead>
+      <tbody>
+        <tr><td>1st (GLF/IMF)</td><td>May 2010&ndash;Mar 2012</td><td class="tab">&euro;110bn (&euro;72.8bn disbursed)</td><td>Bilateral loans + IMF</td><td>Front-loaded fiscal consolidation</td></tr>
+        <tr><td>2nd (EFSF/IMF)</td><td>Mar 2012&ndash;2014/15</td><td class="tab">&euro;130bn+&euro;34.5bn</td><td>EFSF + IMF</td><td>Private-sector debt restructuring (PSI); competitiveness reform</td></tr>
+        <tr><td>3rd (ESM)</td><td>Aug 2015&ndash;Aug 2018</td><td class="tab">up to &euro;86bn (&euro;61.9bn disbursed)</td><td>ESM</td><td>Milder fiscal path; institutional and financial-sector reform</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Two independent sources &mdash; an outside academic assessment (Pagoulatos, 2018) and the lending institution's own commissioned, independent evaluation (European Stability Mechanism, 2020) &mdash; were deliberately consulted together for this section, and reach a convergent, two-sided verdict rather than a one-sided one. Both credit the programs with avoiding a disorderly Grexit, eventually meeting and then exceeding their fiscal targets, eliminating the current-account deficit, and delivering substantial structural reform (Greece's World Bank <em>Doing Business</em> rank improved from 96th of 181 to 61st of 189 between 2009 and 2015). Both are equally explicit about where the programs, in their own assessment, fell short, and attribute part of that shortfall to design choices rather than to the initial imbalances alone: fiscal consolidation was heavily front-loaded on a multiplier assumption the IMF's own subsequent research revised sharply upward (Blanchard &amp; Leigh, 2013); debt restructuring was delayed by several years on liquidity-versus-solvency grounds Pagoulatos (2018) attributes to creditor bank exposure rather than to an assessment of Greek fundamentals; and labor-market liberalization proceeded well ahead of the safety net, with Pagoulatos (2018) reporting that under 20% of Greece's unemployed received any allowance during a period when roughly 70% had already been out of work a year or more &mdash; a gap the ESM evaluation independently describes as prioritizing "fiscal targets over growth-enhancing... reforms" at the level of program strategy.</p>
+  <p>Two of these documented design features line up, as a matter of timing and population, with this paper's own results, and are offered here as a plausible historical account worth naming &mdash; not as a tested mechanism. The front-loaded consolidation, applied through the years of deepest output loss, is consistent with the unusual depth of Greece's initial GDP collapse (26.2% from the 2008 peak to a first trough in 2013) and with the fact that the recovery which followed was still incomplete when a second, unrelated shock (the 2020 pandemic) arrived &mdash; leaving Greece sixteen years on, still not fully recovered, against a median EU recovery of three (&sect;6.6). And the specific population left largely outside unemployment support &mdash; the long-term unemployed &mdash; is the same population whose size is this paper's single strongest predictor of Greece's subjective-poverty outlier status (&sect;6.5). Neither connection is estimated quantitatively here; both would require data (macroeconomic counterfactuals, benefit-receipt microdata) outside this paper's aggregate-panel design (&sect;4.4). Consistent with the two sources' own framing rather than a stronger claim on this paper's part: Pagoulatos (2018) titles his assessment "a qualified failure," and the ESM's own evaluators reach a similar bifurcated verdict from the lender's side &mdash; financial-stability objectives substantially met, growth and social objectives not. That an outside critique and the lender's own commissioned evaluation converge this closely is worth noting as one reason to treat the qualified reading as more than a partisan one, without this paper treating either source's account of <em>why</em> as established beyond what each source itself claims.</p>
+</section>
+
+<section id="s8">
+  <h2 class="sec"><span class="num">8.</span> Limitations</h2>
+  <ul class="plain">
+    <li><b>Aggregate, not micro, data.</b> Every result in &sect;5&ndash;6 is built from Eurostat's published country-year aggregates. Within-country heterogeneity, compositional effects, and informal income are invisible to this design (&sect;4.4).</li>
+    <li><b>The anchored-poverty reconstruction is an approximation.</b> Built from four summary points rather than microdata, it is least reliable in exactly the years (2012&ndash;2014) where it shows the largest effect (&sect;5.3).</li>
+    <li><b>Cross-country independence.</b> Country-clustered standard errors address some, but not all, of the non-independence risk Claessens et al. (2023) identify in cross-national panels of this kind; this paper has not tested its own residuals for spatial structure.</li>
+    <li><b>No causal identification.</b> The panel regressions establish conditional association, not causation. This applies with particular force to &sect;7: the connections drawn there between program design and this paper's empirical findings are offered as a plausible, literature-grounded interpretation, not as a tested causal chain, and no counterfactual (what would have happened under an alternative program design) is estimated.</li>
+    <li><b>Secondary sources for the policy history.</b> Section 7 relies on two synthesizing accounts (Pagoulatos, 2018; European Stability Mechanism, 2020) rather than primary program documents, troika review texts, or original interviews. Both sources are treated as credible on their own terms &mdash; one independently peer-circulated academic work, one an institutionally commissioned but editorially independent evaluation &mdash; but neither is a primary archival source.</li>
+    <li><b>Financial expectations and pessimism.</b> Any variable measuring households' own beliefs about their future finances is conceptually close to the subjective-poverty outcome itself; this paper treats such variables (&sect;6, Model E; the institutional-trust context in &sect;6.6) as the most heavily caveated evidence in the paper, not as independent economic conditions.</li>
+  </ul>
+</section>
+
+<section id="s9">
+  <h2 class="sec"><span class="num">9.</span> Conclusion</h2>
+  <p>Greece's status as the EU's most subjectively poverty-stricken country by a wide and persistent margin is not a measurement artifact to be explained away, nor is it fully explained by the specific economic conditions this paper is able to observe. A substantial share is arithmetic: a relative-income poverty line that resets against a collapsing median mechanically understated a historic income collapse. A further substantial share is accounted for by housing costs and cash-flow strain, though less cleanly than an in-sample fit alone suggests. What survives every out-of-sample test, and what this paper's evidence most directly implicates, is the duration of joblessness specifically, not its incidence: long-term unemployment, substituted for headline unemployment with no other change to the model, is what most closes Greece's out-of-sample gap and what best distinguishes it from the rest of the EU. The documented design of Greece's financial-assistance programs &mdash; read through both an independent academic critique and the lending institution's own evaluators (&sect;7.2) &mdash; offers one plausible, historically grounded reason why duration rather than incidence ended up mattering this much, since welfare coverage for the long-term unemployed was, by both sources' own account, thin for much of the period this paper's data cover; this paper treats that connection as context worth naming, not as a tested causal chain. What remains genuinely open is a real and specific question for further research: what, beyond income, unemployment duration, and material hardship, is still driving the residual few points of Greece's outlier status that no specification tested here fully closes.</p>
+</section>
+
+<section id="s10">
+  <h2 class="sec"><span class="num">10.</span> Data, code, and AI-assistance disclosure</h2>
+  <p><b>Data and code availability.</b> All data underlying the paper's core empirical results (&sect;5&ndash;6) are fetched live from the public Eurostat SDMX-JSON dissemination API; no series in that core panel is hand-entered or drawn from a non-public source. The full extraction, cleaning, and modeling pipeline is a numbered sequence of Python scripts, run against the live API, and is available alongside this paper's companion outputs. This does not extend to the institutional-trust figures cited in &sect;6.6 and &sect;7 (OECD, 2026, and the underlying Eurobarometer series) or to the two secondary sources the &sect;7 discussion draws on (Pagoulatos, 2018; European Stability Mechanism, 2020) &mdash; all are public, cited in full in &sect;12, but are literature and institutional-evaluation sources, not part of this project's own Eurostat pipeline. This paper's companion outputs are a full technical report (<code>output/report.html</code>) presenting every model, robustness check, and chart underlying &sect;5&ndash;6 in expanded form, and a narrative companion piece (<code>output/narrative_companion.html</code>) presenting the same evidence base for a general audience. Re-running the pipeline against the live Eurostat API on a later date will not reproduce the exact figures in this paper byte-for-byte, since Eurostat revises its own published data over time (methodology updates, late-reported country data, benchmark revisions); all figures here reflect a pull dated 2026-08-19, stated explicitly wherever precision matters.</p>
+  <p><b>AI-assistance disclosure.</b> This paper's underlying data retrieval, statistical modeling, and drafting were carried out with the assistance of Claude (Anthropic), an AI system, operating under direct human direction throughout: every analytical choice (model specification, variable inclusion, validation method), every claim's wording, and every citation was reviewed by <span class="placeholder">[the author]</span>, who takes full responsibility for the content, interpretations, and conclusions of this paper. Two sources cited in &sect;7 (Pagoulatos, 2018; European Stability Mechanism, 2020) were retrieved and read in full by the assisting AI system directly from their original PDF publications as part of this process. <span class="placeholder">[Author: confirm, edit, or remove this disclosure before submission, per your target venue's policy.]</span></p>
+  <p class="footnote"><span class="placeholder">[Open items for the author before this draft is submission-ready: (1) author name and institutional affiliation, currently placeholders throughout; (2) confirm single combined-paper structure versus splitting Parts I and II into separate submissions; (3) confirm APA citation style, used as a default here; (4) select a target venue (working-paper series, preprint server, or journal) and reformat to its house style; (5) if targeting a specific journal, verify each cited paper's exact venue and page numbers directly against the publisher record before submission, since several citations here were carried forward from the companion technical report's own literature review rather than re-verified against publisher metadata for this draft.]</span></p>
+</section>
+
+<section id="references">
+  <h2 class="sec"><span class="num">&sect;</span> References</h2>
+  <dl>
+    <dd>Andriopoulou, E., Kanavitsa, E., &amp; Tsakloglou, P. (2019). Decomposing poverty in hard times: Greece 2007&ndash;2016. <i>Revue d'&eacute;conomie du d&eacute;veloppement</i>. Also circulated as LSE Hellenic Observatory GreeSE Paper No. 149 (2020) and IZA Discussion Paper (2020).</dd>
+    <dd>Baldini, M., Gallo, G., &amp; Torricelli, C. (2020). The scars of scarcity in the short run: an empirical investigation across Europe. <i>Economia Politica</i>, 37, 617&ndash;649.</dd>
+    <dd>Blanchard, O. J., &amp; Leigh, D. (2013). Growth Forecast Errors and Fiscal Multipliers. <i>IMF Working Paper</i> No. 13/1.</dd>
+    <dd>Claessens, S., Kyritsis, T., &amp; Atkinson, Q. D. (2023). Cross-national analyses require additional controls to account for the non-independence of nations. <i>Nature Communications</i>, 14, 5776.</dd>
+    <dd>Economou, M., Madianos, M., Peppou, L. E., et al. (2014). Cognitive social capital and mental illness during economic crisis: A nationwide population-based study in Greece. <i>Social Science &amp; Medicine</i>, 100, 141&ndash;147.</dd>
+    <dd>Ervasti, H., Kouvo, A., &amp; Venetoklis, T. (2019). Social and Institutional Trust in Times of Crisis: Greece, 2002&ndash;2011. <i>Social Indicators Research</i>, 141(3), 1207&ndash;1231.</dd>
+    <dd>European Stability Mechanism, Independent Evaluator (Almunia, J.). (2020). <i>Lessons from Financial Assistance to Greece: Independent Evaluation Report.</i> Luxembourg: European Stability Mechanism.</dd>
+    <dd>Filandri, M., Pasqua, S., &amp; Tucci, V. (2025). Housing tenure and subjective poverty among young European adults: The role of rent regulation. <i>Journal of European Social Policy</i>, 35(4), 332&ndash;348.</dd>
+    <dd>Goedem&eacute;, T., Decerf, B., &amp; Van den Bosch, K. (2022). A new poverty indicator for Europe: The extended headcount ratio. <i>Journal of European Social Policy</i>, 32(3), 287&ndash;301.</dd>
+    <dd>Gourinchas, P.-O., Philippon, T., &amp; Vayanos, D. (2016). The Greek crisis: An autopsy. <i>VoxEU / CEPR</i>, 5 August 2016; based on Gourinchas, P.-O., Philippon, T., &amp; Vayanos, D. (2017). The Analytics of the Greek Crisis. <i>NBER Macroeconomics Annual</i>, 31(1).</dd>
+    <dd>Guagnano, G., Santarelli, E., &amp; Santini, I. (2016). Can Social Capital Affect Subjective Poverty in Europe? An Empirical Analysis Based on a Generalized Ordered Logit Model. <i>Social Indicators Research</i>, 128(2), 881&ndash;907.</dd>
+    <dd>Labrianidis, L., &amp; Vogiatzis, N. (2013). The mutually reinforcing relation between international migration of highly educated labour force and economic crisis: the case of Greece. <i>South-East Europe: A South-East European Studies Journal</i>. DOI: 10.1080/14683857.2013.859814.</dd>
+    <dd>Nikolova, M. (2016). Minding the happiness gap: Political institutions and perceived quality of life in transition. <i>European Journal of Political Economy</i>, 45, 129&ndash;148.</dd>
+    <dd>OECD. (2026). <i>OECD Survey on Drivers of Trust in Public Institutions 2026 Results: Greece.</i> Country note, 29 June 2026. Trust time series sourced from Tufi&#537;, C., Ghica, L., &amp; Radu, B. (2024), Long-Term Trends of Political Trust Dynamics (1980&ndash;2023), Harvard Dataverse.</dd>
+    <dd>Pagoulatos, G. (2018). <i>Greece after the Bailouts: Assessment of a Qualified Failure.</i> GreeSE Paper No. 130, Hellenic Observatory Papers on Greece and Southeast Europe, London School of Economics.</dd>
+    <dd>Pratsinakis, M. (2022). Greece's Emigration During the Crisis Beyond the Brain Drain. In M. Kousis, A. Chatzidaki, &amp; K. Kafetsios (Eds.), <i>Challenging Mobilities in and to the EU during Times of Crises: The Case of Greece</i> (pp. 27&ndash;45). IMISCOE Research Series, Springer.</dd>
+    <dd>&Zcaron;elinsk&yacute;, T., Mysíková, M., &amp; Garner, T. I. (2022). Trends in Subjective Income Poverty Rates in the European Union. <i>European Journal of Development Research</i>, 34(5), 2493&ndash;2516.</dd>
+    <dd>&Zcaron;elinsk&yacute;, T., Ng, J. W. J., &amp; Mysíková, M. (2020). Estimating subjective poverty lines with discrete information. <i>Economics Letters</i>, 196.</dd>
+  </dl>
+</section>
+
+<footer class="colophon">
+  <p>This working paper is a preprint, not peer reviewed. It draws its empirical core (&sect;5&ndash;6) from a companion technical report covering the same Eurostat-derived analysis in fuller, plain-language form, and its Discussion (&sect;7) from two additional primary sources read in full for this draft (Pagoulatos, 2018; European Stability Mechanism, 2020). All Eurostat figures reflect a live API pull dated 2026-08-19; see &sect;10 for data-vintage and reproducibility notes.</p>
+</footer>
+
+</div>
+</body>
+</html>

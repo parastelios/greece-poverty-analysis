@@ -172,6 +172,18 @@ table.proof-table th { color: var(--ink-mute); font-weight: 600; font-size: 11px
 table.proof-table tr.hl td { color: var(--accent-ink); font-weight: 700; background: var(--accent-soft); }
 .proof-foot { font-family: -apple-system, "Segoe UI", system-ui, sans-serif; font-size: 12px; color: var(--ink-mute); margin-top: 14px; line-height: 1.5; }
 
+/* ---------- plot (chart) ---------- */
+.plot {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 4px;
+  padding: 22px 24px 16px; margin: 28px 0;
+}
+.plot svg { display: block; }
+.plot-caption {
+  font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+  font-size: 12.5px; color: var(--ink-mute); margin: 12px 0 0; line-height: 1.5;
+}
+.plot-caption b { color: var(--ink-soft); }
+
 /* ---------- small data table (within narrative) ---------- */
 .mini-scroll { overflow-x: auto; margin: 22px 0; }
 table.mini { width: 100%; border-collapse: collapse; font-family: -apple-system, "Segoe UI", system-ui, sans-serif; font-size: 13px; min-width: 480px; }
@@ -246,6 +258,62 @@ table.mini tr.hl td { color: var(--accent-ink); font-weight: 700; }
       <div class="cap">The gap between Greece's felt and measured poverty in 2025 &mdash; the largest of any EU country in either direction. The next-largest gap, Bulgaria's, is <b>7.1 points.</b></div>
     </div>
 
+    <div class="plot">
+<svg viewBox="0 0 620 310" width="100%" role="img" aria-label="AROPE vs subjective poverty by country">
+<line x1="92.0" y1="24" x2="92.0" y2="302" stroke="var(--rule)" stroke-width="1"/>
+<text x="92.0" y="18" text-anchor="middle" font-size="10" fill="var(--ink-mute)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">4%</text>
+<line x1="212.5" y1="24" x2="212.5" y2="302" stroke="var(--rule)" stroke-width="1"/>
+<text x="212.5" y="18" text-anchor="middle" font-size="10" fill="var(--ink-mute)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">21%</text>
+<line x1="333.0" y1="24" x2="333.0" y2="302" stroke="var(--rule)" stroke-width="1"/>
+<text x="333.0" y="18" text-anchor="middle" font-size="10" fill="var(--ink-mute)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">38%</text>
+<line x1="453.5" y1="24" x2="453.5" y2="302" stroke="var(--rule)" stroke-width="1"/>
+<text x="453.5" y="18" text-anchor="middle" font-size="10" fill="var(--ink-mute)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">55%</text>
+<line x1="574.0" y1="24" x2="574.0" y2="302" stroke="var(--rule)" stroke-width="1"/>
+<text x="574.0" y="18" text-anchor="middle" font-size="10" fill="var(--ink-mute)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">72%</text>
+<circle cx="92" cy="12" r="3.6" fill="var(--accent-2)"/>
+<text x="100" y="15.5" font-size="10.5" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">AROPE</text>
+<circle cx="187" cy="12" r="3.6" fill="var(--accent)"/>
+<text x="195" y="15.5" font-size="10.5" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Subjective</text>
+<text x="82" y="52.1" text-anchor="end" font-size="11.5" font-weight="700" fill="var(--accent)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Greece</text>
+<line x1="256.7" y1="48.6" x2="539.9" y2="48.6" stroke="var(--ink-mute)" stroke-width="2.4" opacity="1"/>
+<circle cx="256.7" cy="48.6" r="3.4" fill="var(--accent-2)"/>
+<circle cx="539.9" cy="48.6" r="3.4" fill="var(--accent)"/>
+<text x="82" y="82.1" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Bulgaria</text>
+<line x1="267.4" y1="78.6" x2="318.0" y2="78.6" stroke="var(--ink-mute)" stroke-width="1.4" opacity="0.6"/>
+<circle cx="267.4" cy="78.6" r="2.6" fill="var(--accent-2)"/>
+<circle cx="318.0" cy="78.6" r="2.6" fill="var(--accent)"/>
+<text x="82" y="112.1" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Italy</text>
+<line x1="221.7" y1="108.6" x2="220.3" y2="108.6" stroke="var(--ink-mute)" stroke-width="1.4" opacity="0.6"/>
+<circle cx="221.7" cy="108.6" r="2.6" fill="var(--accent-2)"/>
+<circle cx="220.3" cy="108.6" r="2.6" fill="var(--accent)"/>
+<text x="82" y="142.1" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">France</text>
+<line x1="208.9" y1="138.6" x2="215.3" y2="138.6" stroke="var(--ink-mute)" stroke-width="1.4" opacity="0.6"/>
+<circle cx="208.9" cy="138.6" r="2.6" fill="var(--accent-2)"/>
+<circle cx="215.3" cy="138.6" r="2.6" fill="var(--accent)"/>
+<text x="82" y="172.1" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Portugal</text>
+<line x1="193.2" y1="168.6" x2="205.3" y2="168.6" stroke="var(--ink-mute)" stroke-width="1.4" opacity="0.6"/>
+<circle cx="193.2" cy="168.6" r="2.6" fill="var(--accent-2)"/>
+<circle cx="205.3" cy="168.6" r="2.6" fill="var(--accent)"/>
+<text x="82" y="202.1" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Croatia</text>
+<line x1="208.2" y1="198.6" x2="196.8" y2="198.6" stroke="var(--ink-mute)" stroke-width="1.4" opacity="0.6"/>
+<circle cx="208.2" cy="198.6" r="2.6" fill="var(--accent-2)"/>
+<circle cx="196.8" cy="198.6" r="2.6" fill="var(--accent)"/>
+<text x="82" y="232.1" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Cyprus</text>
+<line x1="182.5" y1="228.6" x2="190.4" y2="228.6" stroke="var(--ink-mute)" stroke-width="1.4" opacity="0.6"/>
+<circle cx="182.5" cy="228.6" r="2.6" fill="var(--accent-2)"/>
+<circle cx="190.4" cy="228.6" r="2.6" fill="var(--accent)"/>
+<text x="82" y="262.1" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Sweden</text>
+<line x1="193.2" y1="258.6" x2="132.6" y2="258.6" stroke="var(--ink-mute)" stroke-width="1.4" opacity="0.6"/>
+<circle cx="193.2" cy="258.6" r="2.6" fill="var(--accent-2)"/>
+<circle cx="132.6" cy="258.6" r="2.6" fill="var(--accent)"/>
+<text x="82" y="292.1" text-anchor="end" font-size="11.5" font-weight="400" fill="var(--ink-soft)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Germany</text>
+<line x1="211.8" y1="288.6" x2="113.3" y2="288.6" stroke="var(--ink-mute)" stroke-width="1.4" opacity="0.6"/>
+<circle cx="211.8" cy="288.6" r="2.6" fill="var(--accent-2)"/>
+<circle cx="113.3" cy="288.6" r="2.6" fill="var(--accent)"/>
+</svg>
+      <p class="plot-caption">AROPE and subjective poverty, a handful of representative EU countries, most recent year available. Most countries sit close together; Greece stands alone. Source: Eurostat.</p>
+    </div>
+
     <svg class="crack" viewBox="0 0 720 22" preserveAspectRatio="none"><path d="M0,11 L58,9 L96,13 L140,8 L189,14 L241,10 L288,15 L339,9 L392,12 L438,8 L487,13 L541,10 L588,14 L636,9 L680,12 L720,10" /></svg>
 
     <div class="chapter">
@@ -299,13 +367,13 @@ table.mini tr.hl td { color: var(--accent-ink); font-weight: 700; }
     </div>
     <p class="lede">Most countries that fell, got back up. Greece kept falling for twelve years.</p>
 
-    <p>Almost every EU country that suffered a genuine crisis-era downturn recovered from it within a few years &mdash; a median of three, and none took longer than seven. Greece's worst decline ran from its 2008 peak all the way to a trough in <b>2020</b>: a 26.9% collapse that took twelve years just to stop falling, let alone climb back. As of the most recent data, it still hasn't: Greek real GDP per capita remains 11.2% below its own all-time high, sixteen years on.</p>
+    <p>Almost every EU country that suffered a genuine crisis-era downturn recovered from it within a few years &mdash; a median of three, and none took longer than seven except Greece. Greece's own path had two separate chapters, not one uninterrupted slide. The debt crisis alone drove a 26.2% decline from the 2008 peak to a first trough in <b>2013</b>; real recovery followed, closing to within 20 points of the old peak by 2019. Then the pandemic cut that recovery off, pushing the index to a new low &mdash; 26.9% below peak &mdash; in <b>2020</b>, barely worse than the original 2013 trough, but from an unrelated shock landing on an economy that hadn't yet finished healing from the first one, not from twelve straight years of falling. Recovery resumed again afterward. As of the most recent data, Greek real GDP per capita remains 11.2% below its 2008 peak, sixteen years on.</p>
 
     <p>Two smaller countries complicate the "only" in that sentence, and it is worth naming them rather than smoothing them away: Finland came within 0.8% of its own 2008 peak in 2022, then slipped back below it; Luxembourg currently sits 6.1% below a peak of its own. Neither changes the headline. Luxembourg's dip is small, recent, and still unfolding in an unusually wealthy economy &mdash; a different kind of story from a sixteen-year-old unhealed crisis. By scale and by duration, Greece's decline is still, by any reasonable measure, unresolved in a way no other EU economy's is.</p>
 
     <div class="mini-scroll">
       <table class="mini">
-        <thead><tr><th>Country</th><th>% below its own all-time high, 2024</th></tr></thead>
+        <thead><tr><th>Country</th><th>% below its own 2008&ndash;2024 peak, 2024</th></tr></thead>
         <tbody>
           <tr class="hl"><td>Greece</td><td>11.2%</td></tr>
           <tr><td>Estonia</td><td>7.1%</td></tr>
@@ -315,6 +383,57 @@ table.mini tr.hl td { color: var(--accent-ink); font-weight: 700; }
           <tr><td>All other EU countries (18 of 27)</td><td>0.0&ndash;2.5%, mostly fully recovered</td></tr>
         </tbody>
       </table>
+    </div>
+
+    <div class="plot">
+<svg viewBox="0 0 620 320" width="100%" role="img" aria-label="Real GDP per capita indexed to own historical peak, EU countries, Greece highlighted">
+<rect x="0" y="0" width="620" height="320" fill="none"/>
+<line x1="40" y1="294.0" x2="606" y2="294.0" stroke="var(--rule)" stroke-width="1"/>
+<text x="32" y="298.0" text-anchor="end" font-size="10.5" fill="var(--ink-mute)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">44</text>
+<line x1="40" y1="224.5" x2="606" y2="224.5" stroke="var(--rule)" stroke-width="1"/>
+<text x="32" y="228.5" text-anchor="end" font-size="10.5" fill="var(--ink-mute)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">59</text>
+<line x1="40" y1="155.0" x2="606" y2="155.0" stroke="var(--rule)" stroke-width="1"/>
+<text x="32" y="159.0" text-anchor="end" font-size="10.5" fill="var(--ink-mute)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">74</text>
+<line x1="40" y1="85.5" x2="606" y2="85.5" stroke="var(--rule)" stroke-width="1"/>
+<text x="32" y="89.5" text-anchor="end" font-size="10.5" fill="var(--ink-mute)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">89</text>
+<line x1="40" y1="16.0" x2="606" y2="16.0" stroke="var(--rule)" stroke-width="1"/>
+<text x="32" y="20.0" text-anchor="end" font-size="10.5" fill="var(--ink-mute)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">104</text>
+<line x1="40" y1="35.5" x2="606" y2="35.5" stroke="var(--accent-2)" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="606" y="30.5" text-anchor="end" font-size="10" fill="var(--accent-2)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">own historical peak</text>
+<text x="40.0" y="312" text-anchor="middle" font-size="10.5" fill="var(--ink-mute)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">2008</text>
+<text x="323.0" y="312" text-anchor="middle" font-size="10.5" fill="var(--ink-mute)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">2016</text>
+<text x="606.0" y="312" text-anchor="middle" font-size="10.5" fill="var(--ink-mute)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">2024</text>
+<path d="M 40.0,66.8 L 75.4,83.2 L 110.8,76.7 L 146.1,65.8 L 181.5,65.1 L 216.9,68.7 L 252.2,68.8 L 287.6,67.5 L 323.0,64.0 L 358.4,57.0 L 393.8,48.3 L 429.1,42.5 L 464.5,73.0 L 499.9,53.8 L 535.2,35.5 L 570.6,43.1 L 606.0,48.3" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,83.2 L 75.4,94.3 L 110.8,87.2 L 146.1,84.6 L 181.5,86.3 L 216.9,87.0 L 252.2,81.6 L 287.6,78.0 L 323.0,75.1 L 358.4,70.5 L 393.8,64.5 L 429.1,56.4 L 464.5,79.2 L 499.9,55.0 L 535.2,40.9 L 570.6,37.8 L 606.0,35.5" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,206.9 L 75.4,215.0 L 110.8,209.0 L 146.1,195.5 L 181.5,189.9 L 216.9,187.0 L 252.2,180.1 L 287.6,165.5 L 323.0,150.9 L 358.4,136.7 L 393.8,123.2 L 429.1,103.8 L 464.5,112.3 L 499.9,79.4 L 535.2,59.5 L 570.6,50.9 L 606.0,35.5" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,109.4 L 75.4,127.2 L 110.8,128.6 L 146.1,136.3 L 181.5,153.4 L 216.9,175.6 L 252.2,180.9 L 287.6,170.9 L 323.0,151.4 L 358.4,134.6 L 393.8,116.3 L 429.1,99.4 L 464.5,117.2 L 499.9,80.4 L 535.2,52.4 L 570.6,45.2 L 606.0,35.5" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,113.1 L 75.4,133.6 L 110.8,124.8 L 146.1,117.5 L 181.5,120.6 L 216.9,120.6 L 252.2,112.3 L 287.6,93.5 L 323.0,83.3 L 358.4,62.4 L 393.8,50.7 L 429.1,35.5 L 464.5,57.8 L 499.9,40.1 L 535.2,38.4 L 570.6,43.2 L 606.0,37.6" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,91.6 L 75.4,112.7 L 110.8,95.8 L 146.1,80.7 L 181.5,79.4 L 216.9,78.5 L 252.2,70.7 L 287.6,66.7 L 323.0,59.9 L 358.4,48.7 L 393.8,44.3 L 429.1,40.1 L 464.5,58.5 L 499.9,40.7 L 535.2,35.5 L 570.6,43.6 L 606.0,47.2" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,93.5 L 75.4,115.6 L 110.8,111.3 L 146.1,107.9 L 181.5,109.3 L 216.9,105.5 L 252.2,102.7 L 287.6,97.2 L 323.0,88.2 L 358.4,78.4 L 393.8,72.8 L 429.1,67.2 L 464.5,75.7 L 499.9,50.3 L 535.2,52.3 L 570.6,50.4 L 606.0,35.5" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,140.3 L 75.4,191.6 L 110.8,183.5 L 146.1,158.9 L 181.5,145.3 L 216.9,137.8 L 252.2,124.6 L 287.6,117.1 L 323.0,106.1 L 358.4,84.2 L 393.8,70.0 L 429.1,56.2 L 464.5,70.2 L 499.9,35.5 L 535.2,41.6 L 570.6,65.1 L 606.0,68.2" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,69.3 L 75.4,88.7 L 110.8,90.0 L 146.1,94.1 L 181.5,105.7 L 216.9,109.8 L 252.2,102.9 L 287.6,86.5 L 323.0,74.9 L 358.4,63.5 L 393.8,55.0 L 429.1,49.9 L 464.5,100.9 L 499.9,74.6 L 535.2,51.8 L 570.6,46.3 L 606.0,35.5" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,35.5 L 75.4,74.7 L 110.8,63.4 L 146.1,55.1 L 181.5,63.9 L 216.9,70.1 L 252.2,73.9 L 287.6,73.4 L 323.0,63.6 L 358.4,50.5 L 393.8,45.8 L 429.1,40.1 L 464.5,52.2 L 499.9,41.2 L 535.2,39.1 L 570.6,46.6 L 606.0,46.1" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,74.3 L 75.4,88.3 L 110.8,82.2 L 146.1,74.0 L 181.5,75.3 L 216.9,74.0 L 252.2,72.0 L 287.6,69.4 L 323.0,67.3 L 358.4,60.1 L 393.8,54.9 L 429.1,47.8 L 464.5,83.1 L 499.9,56.2 L 535.2,46.4 L 570.6,40.9 L 606.0,35.5" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,161.2 L 75.4,183.6 L 110.8,187.1 L 146.1,186.3 L 181.5,191.7 L 216.9,189.8 L 252.2,189.0 L 287.6,178.5 L 323.0,163.4 L 358.4,147.5 L 393.8,132.6 L 429.1,117.5 L 464.5,145.6 L 499.9,97.8 L 535.2,66.8 L 570.6,50.9 L 606.0,35.5" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,163.8 L 75.4,185.7 L 110.8,181.7 L 146.1,174.9 L 181.5,177.2 L 216.9,169.5 L 252.2,153.9 L 287.6,140.0 L 323.0,130.0 L 358.4,113.6 L 393.8,91.4 L 429.1,70.4 L 464.5,87.7 L 499.9,56.5 L 535.2,36.9 L 570.6,40.1 L 606.0,35.5" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,265.6 L 75.4,279.4 L 110.8,276.7 L 146.1,274.1 L 181.5,275.9 L 216.9,272.2 L 252.2,252.9 L 287.6,195.8 L 323.0,195.8 L 358.4,170.2 L 393.8,150.1 L 429.1,138.5 L 464.5,118.7 L 499.9,61.2 L 535.2,35.5 L 570.6,58.8 L 606.0,50.5" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,48.3 L 75.4,74.5 L 110.8,69.9 L 146.1,68.4 L 181.5,82.9 L 216.9,91.2 L 252.2,91.3 L 287.6,87.1 L 323.0,81.3 L 358.4,73.8 L 393.8,69.5 L 429.1,66.6 L 464.5,102.7 L 499.9,65.4 L 535.2,43.7 L 570.6,39.3 L 606.0,35.5" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,200.3 L 75.4,241.4 L 110.8,234.9 L 146.1,211.9 L 181.5,195.8 L 216.9,180.7 L 252.2,166.2 L 287.6,153.8 L 323.0,140.4 L 358.4,119.6 L 393.8,97.7 L 429.1,78.0 L 464.5,77.6 L 499.9,50.7 L 535.2,43.5 L 570.6,46.5 L 606.0,35.5" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,38.5 L 75.4,61.3 L 110.8,53.2 L 146.1,58.8 L 181.5,61.7 L 216.9,59.3 L 252.2,58.3 L 287.6,57.1 L 323.0,46.8 L 358.4,50.7 L 393.8,52.3 L 429.1,49.5 L 464.5,58.5 L 499.9,35.5 L 535.2,50.4 L 570.6,58.3 L 606.0,63.6" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,144.6 L 75.4,195.8 L 110.8,200.7 L 146.1,186.0 L 181.5,159.3 L 216.9,148.7 L 252.2,138.1 L 287.6,121.5 L 323.0,108.5 L 358.4,91.6 L 393.8,70.9 L 429.1,65.2 L 464.5,77.4 L 499.9,44.5 L 535.2,36.1 L 570.6,39.3 L 606.0,35.5" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,228.0 L 75.4,233.7 L 110.8,218.8 L 146.1,217.3 L 181.5,208.2 L 216.9,194.0 L 252.2,177.5 L 287.6,155.1 L 323.0,149.2 L 358.4,114.9 L 393.8,101.8 L 429.1,102.2 L 464.5,123.7 L 499.9,76.3 L 535.2,76.7 L 570.6,50.2 L 606.0,35.5" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,84.8 L 75.4,101.9 L 110.8,98.8 L 146.1,93.6 L 181.5,99.1 L 216.9,100.3 L 252.2,95.4 L 287.6,88.7 L 323.0,81.1 L 358.4,72.0 L 393.8,65.0 L 429.1,58.0 L 464.5,77.2 L 499.9,53.3 L 535.2,35.5 L 570.6,42.8 L 606.0,40.9" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,229.0 L 75.4,222.3 L 110.8,212.8 L 146.1,198.0 L 181.5,193.5 L 216.9,191.1 L 252.2,179.0 L 287.6,164.8 L 323.0,154.5 L 358.4,137.0 L 393.8,114.4 L 429.1,96.9 L 464.5,96.9 L 499.9,67.0 L 535.2,54.2 L 570.6,51.1 L 606.0,35.5" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,89.2 L 75.4,102.4 L 110.8,95.8 L 146.1,102.6 L 181.5,117.0 L 216.9,118.6 L 252.2,113.9 L 287.6,106.5 L 323.0,97.6 L 358.4,83.9 L 393.8,71.5 L 429.1,60.6 L 464.5,97.5 L 499.9,76.2 L 535.2,49.5 L 570.6,40.4 L 606.0,35.5" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,188.4 L 75.4,202.8 L 110.8,212.7 L 146.1,198.3 L 181.5,191.2 L 216.9,189.5 L 252.2,175.8 L 287.6,164.2 L 323.0,152.6 L 358.4,122.3 L 393.8,99.8 L 429.1,82.3 L 464.5,95.3 L 499.9,69.2 L 535.2,49.6 L 570.6,39.7 L 606.0,35.5" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,86.8 L 75.4,107.6 L 110.8,88.7 L 146.1,79.1 L 181.5,83.8 L 216.9,82.7 L 252.2,77.4 L 287.6,63.6 L 323.0,59.6 L 358.4,57.7 L 393.8,55.0 L 429.1,48.3 L 464.5,59.9 L 499.9,39.9 L 535.2,39.1 L 570.6,43.1 L 606.0,35.5" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,105.6 L 75.4,138.6 L 110.8,135.9 L 146.1,134.3 L 181.5,145.5 L 216.9,148.8 L 252.2,139.6 L 287.6,131.4 L 323.0,120.6 L 358.4,101.4 L 393.8,85.3 L 429.1,74.3 L 464.5,94.2 L 499.9,61.5 L 535.2,50.3 L 570.6,42.0 L 606.0,35.5" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,157.8 L 75.4,177.1 L 110.8,156.2 L 146.1,145.5 L 181.5,140.5 L 216.9,138.6 L 252.2,129.2 L 287.6,110.4 L 323.0,103.7 L 358.4,92.8 L 393.8,77.2 L 429.1,68.0 L 464.5,79.8 L 499.9,54.5 L 535.2,53.5 L 570.6,44.2 L 606.0,35.5" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,35.5 L 75.4,55.5 L 110.8,81.1 L 146.1,121.4 L 181.5,150.9 L 216.9,156.3 L 252.2,151.3 L 287.6,149.8 L 323.0,148.5 L 358.4,142.7 L 393.8,134.5 L 429.1,125.9 L 464.5,159.3 L 499.9,128.1 L 535.2,105.6 L 570.6,96.1 L 606.0,87.1" fill="none" stroke="var(--accent)" stroke-width="2.6"/>
+<circle cx="606.0" cy="87.1" r="3.4" fill="var(--accent)"/>
+<text x="600.0" y="78.1" text-anchor="end" font-size="12" font-weight="600" fill="var(--accent)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Greece</text>
+</svg>
+      <p class="plot-caption">Real GDP per capita, indexed to each country's own historical peak, 2008&ndash;2024. Every EU country's line is shown; Greece never rejoins the pack. Source: Eurostat.</p>
     </div>
 
     <p>This is where the report's real argument begins to take shape. Not "Greeks compare themselves to an abstract European average and feel bad about it" &mdash; something more specific and more falsifiable: the economy itself never gave most households their old life back. Everything in the chapters that follow is a different, more concrete way of watching that same failure to heal.</p>
@@ -332,6 +451,57 @@ table.mini tr.hl td { color: var(--accent-ink); font-weight: 700; }
     <div class="pull">
       <div class="figure num">&minus;31.8%</div>
       <div class="cap">How far below their 2008 level Greek <b>real wages</b> still sat in 2024 &mdash; the largest shortfall of any EU country, and not close. Hungary is a distant second at &minus;25.8%.</div>
+    </div>
+
+    <div class="plot">
+<svg viewBox="0 0 620 320" width="100%" role="img" aria-label="Real wages, EU countries, Greece highlighted">
+<rect x="0" y="0" width="620" height="320" fill="none"/>
+<line x1="40" y1="294.0" x2="606" y2="294.0" stroke="var(--rule)" stroke-width="1"/>
+<text x="32" y="298.0" text-anchor="end" font-size="10.5" fill="var(--ink-mute)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">61</text>
+<line x1="40" y1="224.5" x2="606" y2="224.5" stroke="var(--rule)" stroke-width="1"/>
+<text x="32" y="228.5" text-anchor="end" font-size="10.5" fill="var(--ink-mute)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">87</text>
+<line x1="40" y1="155.0" x2="606" y2="155.0" stroke="var(--rule)" stroke-width="1"/>
+<text x="32" y="159.0" text-anchor="end" font-size="10.5" fill="var(--ink-mute)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">114</text>
+<line x1="40" y1="85.5" x2="606" y2="85.5" stroke="var(--rule)" stroke-width="1"/>
+<text x="32" y="89.5" text-anchor="end" font-size="10.5" fill="var(--ink-mute)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">141</text>
+<line x1="40" y1="16.0" x2="606" y2="16.0" stroke="var(--rule)" stroke-width="1"/>
+<text x="32" y="20.0" text-anchor="end" font-size="10.5" fill="var(--ink-mute)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">167</text>
+<line x1="40" y1="191.8" x2="606" y2="191.8" stroke="var(--accent-2)" stroke-width="1" stroke-dasharray="3,3"/>
+<text x="606" y="186.8" text-anchor="end" font-size="10" fill="var(--accent-2)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">2008 level</text>
+<text x="40.0" y="312" text-anchor="middle" font-size="10.5" fill="var(--ink-mute)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">2008</text>
+<text x="323.0" y="312" text-anchor="middle" font-size="10.5" fill="var(--ink-mute)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">2016</text>
+<text x="606.0" y="312" text-anchor="middle" font-size="10.5" fill="var(--ink-mute)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">2024</text>
+<path d="M 40.0,191.8 L 75.4,189.7 L 110.8,191.3 L 146.1,195.0 L 181.5,194.9 L 216.9,194.9 L 252.2,194.2 L 287.6,191.2 L 323.0,187.7 L 358.4,189.3 L 393.8,187.5 L 429.1,184.2 L 464.5,183.3 L 499.9,182.8 L 535.2,192.3 L 570.6,194.4 L 606.0,183.6" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,191.8 L 75.4,188.9 L 110.8,191.2 L 146.1,191.5 L 181.5,189.8 L 216.9,186.8 L 252.2,185.4 L 287.6,186.6 L 323.0,189.2 L 358.4,190.0 L 393.8,191.2 L 429.1,189.1 L 464.5,193.5 L 499.9,189.1 L 535.2,195.8 L 570.6,182.6 L 606.0,185.1" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,191.8 L 75.4,177.6 L 110.8,159.2 L 146.1,149.7 L 181.5,133.8 L 216.9,107.1 L 252.2,81.9 L 287.6,56.8 L 323.0,35.5 L 358.4,35.5 L 393.8,35.5 L 429.1,35.5 L 464.5,35.5 L 499.9,35.5 L 535.2,35.5 L 570.6,35.5 L 606.0,35.5" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,191.8 L 75.4,177.8 L 110.8,181.6 L 146.1,184.8 L 181.5,188.4 L 216.9,203.3 L 252.2,211.7 L 287.6,211.1 L 323.0,210.4 L 358.4,208.3 L 393.8,205.7 L 429.1,193.5 L 464.5,189.2 L 499.9,183.2 L 535.2,185.2 L 570.6,171.3 L 606.0,168.5" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,191.8 L 75.4,209.4 L 110.8,191.7 L 146.1,182.6 L 181.5,193.6 L 216.9,205.4 L 252.2,214.0 L 287.6,204.7 L 323.0,191.9 L 358.4,171.9 L 393.8,146.6 L 429.1,131.5 L 464.5,139.0 L 499.9,120.1 L 535.2,129.4 L 570.6,136.6 L 606.0,142.0" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,191.8 L 75.4,191.2 L 110.8,187.8 L 146.1,186.5 L 181.5,185.1 L 216.9,184.0 L 252.2,178.0 L 287.6,172.0 L 323.0,166.5 L 358.4,163.4 L 393.8,159.8 L 429.1,154.4 L 464.5,154.4 L 499.9,154.5 L 535.2,166.5 L 570.6,166.2 L 606.0,158.7" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,191.8 L 75.4,186.8 L 110.8,184.0 L 146.1,187.3 L 181.5,188.6 L 216.9,186.2 L 252.2,183.4 L 287.6,179.7 L 323.0,175.4 L 358.4,173.7 L 393.8,171.2 L 429.1,168.6 L 464.5,162.1 L 499.9,158.1 L 535.2,174.2 L 570.6,173.6 L 606.0,165.1" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,191.8 L 75.4,202.0 L 110.8,202.3 L 146.1,209.4 L 181.5,205.4 L 216.9,199.5 L 252.2,184.2 L 287.6,174.8 L 323.0,159.8 L 358.4,150.2 L 393.8,132.7 L 429.1,115.3 L 464.5,98.1 L 499.9,81.5 L 535.2,118.2 L 570.6,119.7 L 606.0,109.2" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,191.8 L 75.4,180.7 L 110.8,182.9 L 146.1,190.8 L 181.5,200.0 L 216.9,204.1 L 252.2,203.1 L 287.6,198.6 L 323.0,197.8 L 358.4,201.1 L 393.8,201.2 L 429.1,194.6 L 464.5,191.7 L 499.9,187.2 L 535.2,196.1 L 570.6,192.1 L 606.0,187.8" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,191.8 L 75.4,190.6 L 110.8,187.4 L 146.1,187.0 L 181.5,188.6 L 216.9,190.5 L 252.2,191.2 L 287.6,188.1 L 323.0,186.4 L 358.4,190.0 L 393.8,189.9 L 429.1,188.2 L 464.5,187.6 L 499.9,182.4 L 535.2,194.1 L 570.6,196.8 L 606.0,195.0" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,191.8 L 75.4,188.0 L 110.8,185.4 L 146.1,184.5 L 181.5,184.4 L 216.9,181.8 L 252.2,179.9 L 287.6,177.0 L 323.0,174.8 L 358.4,172.6 L 393.8,174.3 L 429.1,178.0 L 464.5,189.0 L 499.9,181.5 L 535.2,183.9 L 570.6,186.8 L 606.0,184.8" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,191.8 L 75.4,201.8 L 110.8,197.1 L 146.1,198.5 L 181.5,211.5 L 216.9,219.0 L 252.2,232.4 L 287.6,229.1 L 323.0,222.3 L 358.4,218.9 L 393.8,208.0 L 429.1,206.2 L 464.5,207.5 L 499.9,198.5 L 535.2,195.0 L 570.6,182.9 L 606.0,170.1" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,191.8 L 75.4,235.3 L 110.8,237.4 L 146.1,239.8 L 181.5,252.4 L 216.9,261.0 L 252.2,267.5 L 287.6,264.6 L 323.0,260.5 L 358.4,250.5 L 393.8,249.7 L 429.1,242.7 L 464.5,256.7 L 499.9,255.8 L 535.2,269.5 L 570.6,268.1 L 606.0,259.1" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,191.8 L 75.4,187.0 L 110.8,188.7 L 146.1,180.8 L 181.5,181.8 L 216.9,186.5 L 252.2,184.6 L 287.6,178.7 L 323.0,171.6 L 358.4,164.7 L 393.8,158.8 L 429.1,149.7 L 464.5,139.6 L 499.9,132.5 L 535.2,144.0 L 570.6,147.1 L 606.0,131.2" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,191.8 L 75.4,192.5 L 110.8,190.8 L 146.1,195.5 L 181.5,206.8 L 216.9,208.0 L 252.2,207.9 L 287.6,205.5 L 323.0,204.6 L 358.4,206.8 L 393.8,205.7 L 429.1,204.3 L 464.5,213.8 L 499.9,202.4 L 535.2,214.0 L 570.6,221.2 L 606.0,216.3" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,191.8 L 75.4,225.4 L 110.8,228.5 L 146.1,224.1 L 181.5,221.9 L 216.9,212.3 L 252.2,201.8 L 287.6,185.5 L 323.0,170.7 L 358.4,155.0 L 393.8,139.3 L 429.1,113.9 L 464.5,95.3 L 499.9,70.8 L 535.2,94.1 L 570.6,82.9 L 606.0,59.7" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,191.8 L 75.4,188.0 L 110.8,190.4 L 146.1,190.0 L 181.5,194.1 L 216.9,190.7 L 252.2,187.1 L 287.6,183.0 L 323.0,181.3 L 358.4,178.7 L 393.8,175.5 L 429.1,174.9 L 464.5,171.9 L 499.9,167.0 L 535.2,176.7 L 570.6,164.4 L 606.0,160.9" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,191.8 L 75.4,228.5 L 110.8,241.6 L 146.1,244.3 L 181.5,231.0 L 216.9,219.8 L 252.2,202.8 L 287.6,184.3 L 323.0,166.2 L 358.4,153.6 L 393.8,138.9 L 429.1,131.3 L 464.5,122.8 L 499.9,109.0 L 535.2,121.1 L 570.6,131.1 L 606.0,102.2" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,191.8 L 75.4,192.0 L 110.8,184.8 L 146.1,181.0 L 181.5,180.7 L 216.9,177.1 L 252.2,171.1 L 287.6,159.6 L 323.0,151.8 L 358.4,142.9 L 393.8,126.1 L 429.1,119.1 L 464.5,117.1 L 499.9,101.5 L 535.2,100.8 L 570.6,111.4 L 606.0,94.2" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,191.8 L 75.4,187.9 L 110.8,188.5 L 146.1,189.9 L 181.5,192.0 L 216.9,193.8 L 252.2,190.3 L 287.6,191.3 L 323.0,186.4 L 358.4,187.5 L 393.8,185.8 L 429.1,184.8 L 464.5,176.9 L 499.9,177.1 L 535.2,196.8 L 570.6,192.3 L 606.0,183.8" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,191.8 L 75.4,242.2 L 110.8,209.7 L 146.1,213.4 L 181.5,217.8 L 216.9,216.8 L 252.2,211.0 L 287.6,203.5 L 323.0,201.7 L 358.4,185.4 L 393.8,168.7 L 429.1,161.7 L 464.5,167.7 L 499.9,176.7 L 535.2,185.9 L 570.6,168.9 L 606.0,126.3" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,191.8 L 75.4,183.2 L 110.8,180.2 L 146.1,194.2 L 181.5,208.7 L 216.9,201.2 L 252.2,205.6 L 287.6,206.3 L 323.0,205.1 L 358.4,203.8 L 393.8,196.0 L 429.1,183.4 L 464.5,178.1 L 499.9,164.7 L 535.2,171.4 L 570.6,160.5 L 606.0,146.7" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,191.8 L 75.4,245.7 L 110.8,245.1 L 146.1,254.8 L 181.5,265.0 L 216.9,260.2 L 252.2,252.1 L 287.6,247.7 L 323.0,215.9 L 358.4,188.2 L 393.8,170.7 L 429.1,157.5 L 464.5,158.4 L 499.9,157.0 L 535.2,153.2 L 570.6,125.4 L 606.0,92.1" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,191.8 L 75.4,215.7 L 110.8,187.0 L 146.1,167.2 L 181.5,149.9 L 216.9,143.6 L 252.2,152.8 L 287.6,155.5 L 323.0,155.6 L 358.4,160.1 L 393.8,172.8 L 429.1,178.3 L 464.5,170.6 L 499.9,154.9 L 535.2,184.2 L 570.6,205.5 L 606.0,198.6" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,191.8 L 75.4,189.0 L 110.8,184.1 L 146.1,185.6 L 181.5,195.5 L 216.9,199.2 L 252.2,196.9 L 287.6,191.2 L 323.0,182.4 L 358.4,178.4 L 393.8,172.9 L 429.1,163.1 L 464.5,151.3 L 499.9,133.8 L 535.2,146.6 L 570.6,139.8 L 606.0,126.8" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,191.8 L 75.4,177.6 L 110.8,164.3 L 146.1,169.8 L 181.5,173.2 L 216.9,169.9 L 252.2,164.3 L 287.6,153.0 L 323.0,144.9 L 358.4,133.2 L 393.8,122.7 L 429.1,110.1 L 464.5,104.0 L 499.9,90.1 L 535.2,110.1 L 570.6,112.1 L 606.0,97.0" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,191.8 L 75.4,187.4 L 110.8,203.1 L 146.1,218.8 L 181.5,230.0 L 216.9,246.7 L 252.2,252.9 L 287.6,252.0 L 323.0,259.4 L 358.4,259.6 L 393.8,267.6 L 429.1,268.9 L 464.5,267.4 L 499.9,265.5 L 535.2,278.0 L 570.6,279.4 L 606.0,274.7" fill="none" stroke="var(--accent)" stroke-width="2.6"/>
+<circle cx="606.0" cy="274.7" r="3.4" fill="var(--accent)"/>
+<text x="600.0" y="265.7" text-anchor="end" font-size="12" font-weight="600" fill="var(--accent)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Greece</text>
+</svg>
+      <p class="plot-caption">Real wages (compensation per employee), indexed to each country's own 2008 level, 2008&ndash;2024. Capped at 160 to keep the Greece-comparison zone readable &mdash; a few Eastern European countries (visible flattening at the top) grew well past that line. Source: Eurostat.</p>
     </div>
 
     <p>Real wages &mdash; compensation per employee, adjusted for inflation &mdash; peaked in Greece in 2009, one year after GDP, before the crisis fully caught up with pay. They bottomed out in 2023, just one year before the most recent data. Every other EU country has either fully recovered its 2008 real wage level or grown well past it, some by enormous margins: Bulgaria's real wages now sit 166% above their 2008 level; Lithuania's, 51% above. Greece is not merely lagging a recovering pack. It is the only EU country whose paycheck never really came back.</p>
@@ -418,6 +588,55 @@ table.mini tr.hl td { color: var(--accent-ink); font-weight: 700; }
 
     <p>Greece's long-term unemployment rate has fallen a long way from its worst point &mdash; from 17.5% of the labor force in 2014 (meaning roughly three-quarters of all unemployed Greeks, at that moment, had been out of work a year or more) down to 5.4% in 2024. That is real, substantial progress. It is also still, by a wide margin, the highest rate in the European Union: next is Spain at 3.8%, then Slovakia and Italy near 3.5%. Most of the EU sits under 2%. Headline unemployment recovered far faster than this did.</p>
 
+    <div class="plot">
+<svg viewBox="0 0 620 320" width="100%" role="img" aria-label="Long-term unemployment rate, EU countries, Greece highlighted">
+<rect x="0" y="0" width="620" height="320" fill="none"/>
+<line x1="40" y1="294.0" x2="606" y2="294.0" stroke="var(--rule)" stroke-width="1"/>
+<text x="32" y="298.0" text-anchor="end" font-size="10.5" fill="var(--ink-mute)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">-1%</text>
+<line x1="40" y1="224.5" x2="606" y2="224.5" stroke="var(--rule)" stroke-width="1"/>
+<text x="32" y="228.5" text-anchor="end" font-size="10.5" fill="var(--ink-mute)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">4%</text>
+<line x1="40" y1="155.0" x2="606" y2="155.0" stroke="var(--rule)" stroke-width="1"/>
+<text x="32" y="159.0" text-anchor="end" font-size="10.5" fill="var(--ink-mute)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">9%</text>
+<line x1="40" y1="85.5" x2="606" y2="85.5" stroke="var(--rule)" stroke-width="1"/>
+<text x="32" y="89.5" text-anchor="end" font-size="10.5" fill="var(--ink-mute)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">14%</text>
+<line x1="40" y1="16.0" x2="606" y2="16.0" stroke="var(--rule)" stroke-width="1"/>
+<text x="32" y="20.0" text-anchor="end" font-size="10.5" fill="var(--ink-mute)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">19%</text>
+<text x="40.0" y="312" text-anchor="middle" font-size="10.5" fill="var(--ink-mute)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">2009</text>
+<text x="341.9" y="312" text-anchor="middle" font-size="10.5" fill="var(--ink-mute)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">2017</text>
+<text x="606.0" y="312" text-anchor="middle" font-size="10.5" fill="var(--ink-mute)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">2024</text>
+<path d="M 40.0,266.5 L 77.7,265.0 L 115.5,265.0 L 153.2,265.0 L 190.9,263.6 L 228.7,259.3 L 266.4,257.9 L 304.1,252.1 L 341.9,253.5 L 379.6,262.2 L 417.3,266.5 L 455.1,262.2 L 492.8,257.9 L 530.5,269.3 L 568.3,270.8 L 606.0,270.8" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,240.6 L 77.7,233.5 L 115.5,242.1 L 153.2,242.1 L 190.9,236.3 L 228.7,230.6 L 266.4,229.2 L 304.1,233.5 L 341.9,242.1 L 379.6,249.2 L 417.3,256.4 L 455.1,256.4 L 492.8,249.2 L 530.5,253.5 L 568.3,255.0 L 606.0,257.9" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,236.3 L 77.7,210.5 L 115.5,186.1 L 153.2,179.0 L 190.9,170.3 L 228.7,177.5 L 266.4,196.2 L 304.1,211.9 L 341.9,229.2 L 379.6,233.5 L 417.3,243.5 L 455.1,246.4 L 492.8,249.2 L 530.5,255.0 L 568.3,253.5 L 606.0,255.0" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,277.9 L 77.7,267.9 L 115.5,263.6 L 153.2,234.9 L 190.9,199.0 L 228.7,176.1 L 266.4,189.0 L 304.1,203.3 L 341.9,222.0 L 379.6,247.8 L 417.3,255.0 L 455.1,255.0 L 492.8,250.7 L 530.5,256.4 L 568.3,260.7 L 606.0,267.9" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,257.9 L 77.7,243.5 L 115.5,247.8 L 153.2,243.5 L 190.9,243.5 L 228.7,247.8 L 266.4,252.1 L 304.1,262.2 L 341.9,272.2 L 379.6,276.5 L 417.3,277.9 L 455.1,277.9 L 492.8,275.1 L 530.5,277.9 L 568.3,275.1 L 606.0,275.1" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,234.9 L 77.7,239.2 L 115.5,246.4 L 153.2,250.7 L 190.9,252.1 L 228.7,255.0 L 266.4,256.4 L 304.1,262.2 L 341.9,263.6 L 379.6,266.5 L 417.3,269.3 L 455.1,270.8 L 492.8,269.3 L 530.5,270.8 L 568.3,272.2 L 606.0,272.2" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,277.9 L 77.7,266.5 L 115.5,260.7 L 153.2,256.4 L 190.9,260.7 L 228.7,262.2 L 266.4,263.6 L 304.1,269.3 L 341.9,269.3 L 379.6,272.2 L 417.3,275.1 L 455.1,273.6 L 492.8,272.2 L 530.5,279.4 L 568.3,279.4 L 606.0,275.1" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,233.5 L 77.7,179.0 L 115.5,186.1 L 153.2,209.1 L 190.9,232.0 L 228.7,239.2 L 266.4,252.1 L 304.1,255.0 L 341.9,257.9 L 379.6,267.9 L 417.3,273.6 L 455.1,269.3 L 492.8,263.6 L 530.5,267.9 L 568.3,267.9 L 606.0,260.7" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,224.9 L 77.7,181.8 L 115.5,158.9 L 153.2,128.7 L 190.9,100.1 L 228.7,101.5 L 266.4,123.0 L 304.1,150.3 L 341.9,176.1 L 379.6,194.7 L 417.3,210.5 L 455.1,214.8 L 492.8,197.6 L 530.5,213.4 L 568.3,224.9 L 606.0,232.0" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,262.2 L 77.7,250.7 L 115.5,255.0 L 153.2,256.4 L 190.9,256.4 L 228.7,252.1 L 266.4,244.9 L 304.1,244.9 L 341.9,249.2 L 379.6,257.9 L 417.3,265.0 L 455.1,265.0 L 492.8,260.7 L 530.5,265.0 L 568.3,263.6 L 606.0,260.7" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,257.9 L 77.7,252.1 L 115.5,250.7 L 153.2,249.2 L 190.9,244.9 L 228.7,242.1 L 266.4,242.1 L 304.1,242.1 L 341.9,244.9 L 379.6,250.7 L 417.3,253.5 L 455.1,259.3 L 492.8,253.5 L 530.5,257.9 L 568.3,260.7 L 606.0,262.2" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,214.8 L 77.7,193.3 L 115.5,167.5 L 153.2,138.8 L 190.9,128.7 L 228.7,140.2 L 266.4,140.2 L 304.1,190.4 L 341.9,222.0 L 379.6,237.8 L 417.3,252.1 L 455.1,256.4 L 492.8,247.8 L 530.5,252.1 L 568.3,256.4 L 606.0,260.7" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,229.2 L 77.7,210.5 L 115.5,213.4 L 153.2,217.7 L 190.9,217.7 L 228.7,234.9 L 266.4,243.5 L 304.1,253.5 L 341.9,263.6 L 379.6,266.5 L 417.3,270.8 L 455.1,270.8 L 492.8,267.9 L 530.5,269.3 L 568.3,266.5 L 606.0,265.0" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,236.3 L 77.7,187.6 L 115.5,160.3 L 153.2,154.6 L 190.9,173.2 L 228.7,191.9 L 266.4,210.5 L 304.1,226.3 L 341.9,243.5 L 379.6,256.4 L 417.3,263.6 L 455.1,266.5 L 492.8,260.7 L 530.5,267.9 L 568.3,270.8 L 606.0,272.2" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,233.5 L 77.7,224.9 L 115.5,220.6 L 153.2,200.5 L 190.9,180.4 L 228.7,168.9 L 266.4,180.4 L 304.1,184.7 L 341.9,187.6 L 379.6,193.3 L 417.3,201.9 L 455.1,213.4 L 492.8,209.1 L 530.5,220.6 L 568.3,226.3 L 606.0,239.2" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,239.2 L 77.7,180.4 L 115.5,171.8 L 153.2,191.9 L 190.9,213.4 L 228.7,217.7 L 266.4,230.6 L 304.1,243.5 L 341.9,247.8 L 379.6,257.9 L 417.3,259.3 L 455.1,250.7 L 492.8,249.2 L 530.5,253.5 L 568.3,253.5 L 606.0,253.5" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,269.3 L 77.7,267.9 L 115.5,266.5 L 153.2,263.6 L 190.9,260.7 L 228.7,263.6 L 266.4,259.3 L 304.1,255.0 L 341.9,256.4 L 379.6,266.5 L 417.3,267.9 L 455.1,262.2 L 492.8,260.7 L 530.5,267.9 L 568.3,262.2 L 606.0,263.6" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,214.8 L 77.7,147.4 L 115.5,146.0 L 153.2,163.2 L 190.9,196.2 L 228.7,213.4 L 266.4,216.3 L 304.1,223.4 L 341.9,234.9 L 379.6,237.8 L 417.3,247.8 L 455.1,252.1 L 492.8,253.5 L 530.5,257.9 L 568.3,260.7 L 606.0,255.0" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,244.9 L 77.7,227.7 L 115.5,230.6 L 153.2,232.0 L 190.9,236.3 L 228.7,244.9 L 266.4,247.8 L 304.1,252.1 L 341.9,257.9 L 379.6,259.3 L 417.3,272.2 L 455.1,267.9 L 492.8,272.2 L 530.5,269.3 L 568.3,275.1 L 606.0,276.5" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,273.6 L 77.7,270.8 L 115.5,266.5 L 153.2,262.2 L 190.9,253.5 L 228.7,247.8 L 266.4,247.8 L 304.1,253.5 L 341.9,262.2 L 379.6,269.3 L 417.3,273.6 L 455.1,276.5 L 492.8,275.1 L 530.5,276.5 L 568.3,279.4 L 606.0,279.4" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,249.2 L 77.7,242.1 L 115.5,233.5 L 153.2,226.3 L 190.9,222.0 L 228.7,230.6 L 266.4,243.5 L 304.1,255.0 L 341.9,265.0 L 379.6,272.2 L 417.3,276.5 L 455.1,277.9 L 492.8,273.6 L 530.5,273.6 L 568.3,275.1 L 606.0,275.1" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,217.7 L 77.7,196.2 L 115.5,191.9 L 153.2,170.3 L 190.9,147.4 L 228.7,161.7 L 266.4,180.4 L 304.1,194.7 L 341.9,220.6 L 379.6,240.6 L 417.3,246.4 L 455.1,253.5 L 492.8,244.9 L 530.5,246.4 L 568.3,250.7 L 606.0,252.1" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,249.2 L 77.7,243.5 L 115.5,234.9 L 153.2,233.5 L 190.9,230.6 L 228.7,237.8 L 266.4,234.9 L 304.1,237.8 L 341.9,252.1 L 379.6,255.0 L 417.3,257.9 L 455.1,260.7 L 492.8,257.9 L 530.5,255.0 L 568.3,255.0 L 606.0,260.7" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,270.8 L 77.7,265.0 L 115.5,266.5 L 153.2,266.5 L 190.9,266.5 L 228.7,267.9 L 266.4,267.9 L 304.1,269.3 L 341.9,270.8 L 379.6,273.6 L 417.3,275.1 L 455.1,272.2 L 492.8,260.7 L 530.5,259.3 L 568.3,263.6 L 606.0,262.2" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,260.7 L 77.7,240.6 L 115.5,233.5 L 153.2,224.9 L 190.9,211.9 L 228.7,210.5 L 266.4,219.1 L 304.1,224.9 L 341.9,242.1 L 379.6,255.0 L 417.3,259.3 L 455.1,259.3 L 492.8,259.3 L 530.5,263.6 L 568.3,266.5 L 606.0,270.8" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,177.5 L 77.7,133.1 L 115.5,133.1 L 153.2,130.2 L 190.9,120.1 L 228.7,133.1 L 266.4,160.3 L 304.1,189.0 L 341.9,201.9 L 379.6,219.1 L 417.3,230.6 L 455.1,233.5 L 492.8,230.6 L 530.5,227.7 L 568.3,232.0 L 606.0,236.3" fill="none" stroke="var(--ink-mute)" stroke-width="1.1" opacity="0.55"/>
+<path d="M 40.0,234.9 L 77.7,211.9 L 115.5,171.8 L 153.2,98.6 L 190.9,47.0 L 228.7,35.5 L 266.4,51.3 L 304.1,65.6 L 341.9,81.4 L 379.6,107.2 L 417.3,124.4 L 455.1,135.9 L 492.8,154.6 L 530.5,176.1 L 568.3,197.6 L 606.0,209.1" fill="none" stroke="var(--accent)" stroke-width="2.6"/>
+<circle cx="606.0" cy="209.1" r="3.4" fill="var(--accent)"/>
+<text x="600.0" y="200.1" text-anchor="end" font-size="12" font-weight="600" fill="var(--accent)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Greece</text>
+</svg>
+      <p class="plot-caption">Long-term unemployment rate (12 months or more, % of active population), all EU countries, 2009&ndash;2024. Source: Eurostat.</p>
+    </div>
+
     <p>Swap this one measure into the model in place of headline unemployment &mdash; changing nothing else &mdash; and Greece's story changes with it.</p>
 
     <div class="proof">
@@ -458,6 +677,45 @@ table.mini tr.hl td { color: var(--accent-ink); font-weight: 700; }
       <div class="cap">Net loss of Greek nationals, 2008&ndash;2024 &mdash; 2.6% of Greece's 2008 population. Outflow peaked at <b>44,502</b> in a single year, 2012, the most acute stretch of the crisis.</div>
     </div>
 
+    <div class="plot">
+<svg viewBox="0 0 620 280" width="100%" role="img" aria-label="Net migration of Greek nationals, 2008-2024">
+<line x1="44" y1="254.0" x2="606" y2="254.0" stroke="var(--rule)" stroke-width="1"/>
+<text x="36" y="258.0" text-anchor="end" font-size="10.5" fill="var(--ink-mute)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">-25k</text>
+<line x1="44" y1="194.5" x2="606" y2="194.5" stroke="var(--rule)" stroke-width="1"/>
+<text x="36" y="198.5" text-anchor="end" font-size="10.5" fill="var(--ink-mute)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">-6k</text>
+<line x1="44" y1="135.0" x2="606" y2="135.0" stroke="var(--rule)" stroke-width="1"/>
+<text x="36" y="139.0" text-anchor="end" font-size="10.5" fill="var(--ink-mute)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">13k</text>
+<line x1="44" y1="75.5" x2="606" y2="75.5" stroke="var(--rule)" stroke-width="1"/>
+<text x="36" y="79.5" text-anchor="end" font-size="10.5" fill="var(--ink-mute)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">32k</text>
+<line x1="44" y1="16.0" x2="606" y2="16.0" stroke="var(--rule)" stroke-width="1"/>
+<text x="36" y="20.0" text-anchor="end" font-size="10.5" fill="var(--ink-mute)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">51k</text>
+<line x1="44" y1="175.6" x2="606" y2="175.6" stroke="var(--ink-soft)" stroke-width="1.2"/>
+<text x="60.5" y="274" text-anchor="middle" font-size="10" fill="var(--ink-mute)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">2008</text>
+<text x="192.8" y="274" text-anchor="middle" font-size="10" fill="var(--ink-mute)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">2012</text>
+<text x="325.0" y="274" text-anchor="middle" font-size="10" fill="var(--ink-mute)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">2016</text>
+<text x="457.2" y="274" text-anchor="middle" font-size="10" fill="var(--ink-mute)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">2020</text>
+<text x="589.5" y="274" text-anchor="middle" font-size="10" fill="var(--ink-mute)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">2024</text>
+<rect x="50.3" y="175.6" width="20.5" height="18.7" fill="var(--accent)" rx="1.5"/>
+<rect x="83.3" y="175.6" width="20.5" height="9.4" fill="var(--accent)" rx="1.5"/>
+<rect x="116.4" y="165.5" width="20.5" height="10.1" fill="var(--accent-2)" rx="1.5"/>
+<rect x="149.5" y="68.4" width="20.5" height="107.3" fill="var(--accent-2)" rx="1.5"/>
+<rect x="182.5" y="36.2" width="20.5" height="139.5" fill="var(--accent-2)" rx="1.5"/>
+<rect x="215.6" y="49.0" width="20.5" height="126.7" fill="var(--accent-2)" rx="1.5"/>
+<rect x="248.6" y="81.6" width="20.5" height="94.1" fill="var(--accent-2)" rx="1.5"/>
+<rect x="281.7" y="81.4" width="20.5" height="94.2" fill="var(--accent-2)" rx="1.5"/>
+<rect x="314.8" y="79.7" width="20.5" height="96.0" fill="var(--accent-2)" rx="1.5"/>
+<rect x="347.8" y="84.5" width="20.5" height="91.1" fill="var(--accent-2)" rx="1.5"/>
+<rect x="380.9" y="96.4" width="20.5" height="79.3" fill="var(--accent-2)" rx="1.5"/>
+<rect x="413.9" y="115.0" width="20.5" height="60.6" fill="var(--accent-2)" rx="1.5"/>
+<rect x="447.0" y="112.2" width="20.5" height="63.5" fill="var(--accent-2)" rx="1.5"/>
+<rect x="480.0" y="134.5" width="20.5" height="41.1" fill="var(--accent-2)" rx="1.5"/>
+<rect x="513.1" y="150.2" width="20.5" height="25.5" fill="var(--accent-2)" rx="1.5"/>
+<rect x="546.2" y="175.6" width="20.5" height="28.7" fill="var(--accent)" rx="1.5"/>
+<rect x="579.2" y="175.6" width="20.5" height="62.2" fill="var(--accent)" rx="1.5"/>
+</svg>
+      <p class="plot-caption">Net migration of Greek nationals by year. Rust bars: more people left than returned that year. Green bars: more returned than left. Source: Eurostat.</p>
+    </div>
+
     <p>The outflow has, only very recently, begun to reverse. 2023 and 2024 both show a net <i>inflow</i> &mdash; more Greek nationals returning than leaving, for the first time since before the crisis began. That reversal is real. It does not erase the cumulative loss, or the years of disrupted careers and family separation behind it, and Greece is not even the EU's most extreme case on this specific measure &mdash; several Eastern and Baltic countries lost a larger share of their population to emigration over the same period. What makes Greece's version notable isn't uniqueness. It's that the outflow was large, crisis-linked, and sustained for well over a decade, arriving at exactly the moments the rest of this story describes.</p>
 
     <div class="method">
@@ -477,7 +735,7 @@ table.mini tr.hl td { color: var(--accent-ink); font-weight: 700; }
 
     <p>The easy, and wrong, reading is that this is circular &mdash; households asked about tomorrow are just restating how bad today already is, so using one to explain the other explains a feeling with itself. There's a real version of that concern: once long-term unemployment (Chapter 7) is in the model instead of headline unemployment, financial pessimism's own contribution weakens from statistically significant to marginal, and some of what looked like an independent psychological effect turns out to overlap with the labor-market mechanism already established. But the more precise reading isn't "restating the present." It's <i class="term">extrapolating from the past</i>. A household seventeen years into an economy that has never fully come back does not need to imagine hardship continuing &mdash; it has already watched hardship not end, past every point at which a comparable European economy's did. Expecting no improvement, under those specific conditions, isn't catastrophizing. It's closer to pattern recognition.</p>
 
-    <p>The political backdrop gives that pattern nothing to push back against. Greek institutional trust was never particularly high before the crisis (averaging 44% through the 2000s), collapsed to a historic low of 7% in 2012 &mdash; the same year this report's own migration data marks as the acute peak of the crisis &mdash; and has recovered only partially since, to 37% at best. It is falling again as of the most recent data, despite genuinely strong recent macroeconomic performance: the one piece of unambiguous good news in this entire investigation, and it has produced no corresponding rebound in how much people trust the institutions meant to manage the economy on their behalf. A household with two independent, sixteen-year timelines &mdash; one for its own income, one for its trust in the state &mdash; that both fail to recover on schedule has two separate, reinforcing reasons to expect nothing changes next year either.</p>
+    <p>The political backdrop gives that pattern nothing to push back against. Greek institutional trust was never particularly high before the crisis (averaging 44% through the 2000s), collapsed to a historic low of 7% in 2012 &mdash; the same year this report's own migration data marks as the acute peak of the crisis &mdash; and has recovered only partially since, to 37% at best. It is falling again as of the most recent data, despite genuinely strong recent macroeconomic performance: the one piece of unambiguous good news in this entire investigation, and it has produced no corresponding rebound in how much people trust the institutions meant to manage the economy on their behalf. The trust series isn't tested as a model mechanism anywhere in this report &mdash; it's context, not a variable that explains anything away &mdash; but it points at the same shape as the income story: a long stretch where the thing that was supposed to recover didn't, on schedule or otherwise. That parallel helps explain why a macro recovery can arrive in the statistics without yet arriving in how a household feels about the years ahead.</p>
 
     <div class="method">
       <p class="method-label">Method note</p>
@@ -530,7 +788,7 @@ table.mini tr.hl td { color: var(--accent-ink); font-weight: 700; }
   </article>
 
   <div class="colophon">
-    <p>This is a narrative companion to <b>The Greek Poverty Paradox</b>, the full technical report behind every figure cited here &mdash; exact coefficients, robustness checks, multiple-testing corrections, full citations, and the complete data pipeline. Most modeled numbers above trace to that report's own reproducible Eurostat pipeline; the institutional-trust figures in Chapter 9 are literature and survey context (OECD, Eurobarometer, peer-reviewed sources), not part of the Eurostat pipeline or this report's own models &mdash; both are cited in full in the technical report's Methods section. Data vintage: 2026-08-19. Eurostat revises its own published figures over time, so a later pull from the live API will not reproduce these exact numbers byte-for-byte, even with unchanged methodology.</p>
+    <p>This is a narrative companion to <b>The Greek Poverty Paradox</b>, the full technical report behind the modeled and Eurostat-based figures cited here &mdash; exact coefficients, robustness checks, multiple-testing corrections, full citations, and the complete data pipeline. Most modeled numbers above trace to that report's own reproducible Eurostat pipeline; the institutional-trust figures in Chapter 9 are literature and survey context (OECD, Eurobarometer, peer-reviewed sources), not part of the Eurostat pipeline or this report's own models &mdash; both are cited in full in the technical report's Methods section. Data vintage: 2026-08-19. Eurostat revises its own published figures over time, so a later pull from the live API will not reproduce these exact numbers byte-for-byte, even with unchanged methodology.</p>
   </div>
 
 </div>
