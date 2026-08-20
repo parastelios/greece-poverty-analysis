@@ -1,0 +1,19 @@
+variable,label,r2,coef,p_raw_without_greece,n,status,p_raw_with_greece
+wage_years_below_2008,wage_years_below_2008,0.875,0.3103,0.0036236042170287646,257,ok,0.00453296109995092
+cum_excess_unemployment,Cumulative excess unemployment above 2009,0.884,0.164,0.006442169989358904,257,ok,0.00013235726376829537
+wage_years_below_peak,wage_years_below_peak,0.871,0.1761,0.08155118526461946,257,ok,0.06566676096679132
+wage_longest_streak_2008,wage_longest_streak_2008,0.872,0.2665,0.09708841210711863,257,ok,0.05384771442474961
+gdp_cum_negative_years,gdp_cum_negative_years,0.873,0.7875,0.16436574531522918,257,ok,0.13032074325220344
+wage_cum_negative_years,wage_cum_negative_years,0.87,0.3625,0.18710262531582844,257,ok,0.07033472049673783
+wage_longest_streak_peak,wage_longest_streak_peak,0.868,0.1094,0.4684040522318689,257,ok,0.2333591514453922
+cum_wage_shortfall_ownpeak,"Cumulative real-wage shortfall, own rolling-peak basis",0.868,0.0049,0.5241739344832035,257,ok,0.2034462388909234
+cum_wage_shortfall_2008base,"Cumulative real-wage shortfall, fixed 2008 basis",0.868,0.0039,0.5550821271237685,257,ok,0.23686908461588196
+gdp_years_below_peak,gdp_years_below_peak,0.87,-0.2069,0.5561783645333485,257,ok,0.8741196829937691
+gdp_years_below_2008,gdp_years_below_2008,0.87,-0.2092,0.562913079731972,257,ok,0.8945761394854858
+pct_below_peak,[current-year] % below own GDP peak (existing Model F variable),0.867,0.0678,0.8058179528619214,257,ok,0.6051261801867034
+cum_excess_ltu,Cumulative excess LTU above 2009,0.867,0.0213,0.8300333606650943,257,ok,0.24442888052321754
+cum_gdp_shortfall_2008base,"Cumulative GDP shortfall, fixed 2008 basis",0.867,-0.0076,0.8594138484252173,257,ok,0.32006711878513927
+cum_gdp_shortfall_ownpeak,"Cumulative GDP shortfall, own rolling-peak basis",0.867,-0.0054,0.8985989166869642,257,ok,0.29487643288315846
+cum_threshold_shortfall,Cumulative real AROP-threshold shortfall since 2008,0.867,0.0001,0.9738925448635689,257,ok,0.6450935258918737
+gdp_longest_streak_peak,gdp_longest_streak_peak,0.867,0.0091,0.9770543461550588,257,ok,0.7367710550047909
+gdp_longest_streak_2008,gdp_longest_streak_2008,0.867,-0.0031,0.9922115436391982,257,ok,0.7636228260881

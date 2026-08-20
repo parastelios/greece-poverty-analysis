@@ -212,6 +212,7 @@ for var, label in CANDIDATES.items():
         "gr_rank_oos": f"{int(gr_loo_row['rank'])}/{len(loo)}",
         "coef": round(float(m.params[var]), 4),
         "p_value": round(float(m.pvalues[var]), 4),
+        "p_value_raw": float(m.pvalues[var]),
     })
 
 # baseline for comparison: C-LTU with no added variable
@@ -330,12 +331,162 @@ dur_results = []
 for var in DURATION_CANDIDATES:
     r = run_model([var], panel)
     coef, p = r["coefs"][var]
+    p_raw = float(r["model"].pvalues[var])
     dur_results.append(dict(var=var, r2=r["r2"], n=r["n"], gr_in=r["gr_in"], gr_oos=r["gr_oos"],
-                             rank=r["rank"], coef=coef, p=p))
+                             rank=r["rank"], coef=coef, p=p, p_raw=p_raw))
 dur_df = pd.DataFrame(dur_results)
 dur_df.to_csv(f"{OUT}/cumulative_hardship_duration_battery.csv", index=False)
 print("\n\n=== Duration/direction battery (exploratory), each added individually to Model C-LTU ===")
 print(dur_df.to_string(index=False))
+
+
+# ================================================================ FDR correction, full family =====
+# Both battery loops above (8 cumulative candidates + 10 duration candidates = 18) are one
+# exploratory screening family: every candidate considered before cum_excess_unemployment was
+# selected as the preferred addition. Corrected here from FULL-PRECISION p-values (not the
+# 4-decimal-rounded columns above) and saved as its own declared output, not an ad hoc one-off --
+# this was flagged as a reproducibility gap in external review and fixed at the source.
+from statsmodels.stats.multitest import multipletests
+
+fdr_rows = [
+    {"variable": r["variable"], "label": r["label"], "p_raw": r["p_value_raw"]}
+    for r in results
+] + [
+    {"variable": r["var"], "label": r["var"], "p_raw": r["p_raw"]}
+    for r in dur_results
+]
+fdr_df = pd.DataFrame(fdr_rows)
+reject, p_adj, _, _ = multipletests(fdr_df["p_raw"].values, alpha=0.05, method="fdr_bh")
+fdr_df["p_fdr_bh"] = p_adj
+fdr_df["significant_after_fdr"] = reject
+fdr_df = fdr_df.sort_values("p_raw").reset_index(drop=True)
+fdr_df.to_csv(f"{OUT}/cumulative_hardship_fdr_correction.csv", index=False)
+print(f"\n\n=== Benjamini-Hochberg FDR correction across the full {len(fdr_df)}-candidate "
+      f"cumulative/duration screening family ===")
+print(fdr_df.to_string(index=False))
+print(f"Significant after correction: {int(reject.sum())} of {len(fdr_df)}")
+
+
+# ================================================================ selection-leakage check ==========
+# External-review concern: cum_excess_unemployment was SELECTED as the preferred candidate using
+# the full panel, including Greece -- so "the final model was built without ever seeing Greek
+# data" overstates what leave-one-country-out actually tests (it re-estimates coefficients with
+# Greece held out, but the choice of WHICH variable to test that way was made with Greece's own
+# data point already included in the screening). Minimum check requested: rerun the complete
+# candidate screening with Greece dropped from the panel ENTIRELY (not just evaluated out-of-
+# sample -- excluded from model-fitting too), and see whether the same variable would have been
+# selected. No claim here that this is equivalent to full nested selection-within-every-LOO-fold
+# (the stronger, more expensive fix); it is the "at minimum" check.
+
+def screen_candidates_no_greece(candidates, panel_df, base_vars=vars_c_ltu, outcome="subjective_poverty"):
+    panel_ng = panel_df[panel_df.geo != "EL"].copy()
+    rows = []
+    for var, label in candidates.items():
+        vars_ = base_vars + [var]
+        d = panel_ng.dropna(subset=vars_ + [outcome]).copy()
+        if d.geo.nunique() < 10 or d[var].nunique() < 3:
+            rows.append(dict(variable=var, label=label, r2=None, coef=None, p_raw=None, n=len(d),
+                              status="insufficient coverage without Greece"))
+            continue
+        formula = f"{outcome} ~ " + " + ".join(vars_) + " + C(time)"
+        m = smf.ols(formula, data=d).fit(cov_type="cluster", cov_kwds={"groups": d["geo"]})
+        rows.append(dict(variable=var, label=label, r2=round(m.rsquared, 3),
+                          coef=round(float(m.params[var]), 4), p_raw=float(m.pvalues[var]),
+                          n=len(d), status="ok"))
+    return pd.DataFrame(rows)
+
+
+cum_candidates_no_greece = screen_candidates_no_greece(CANDIDATES, panel)
+dur_candidates_dict = {v: v for v in DURATION_CANDIDATES}
+dur_candidates_no_greece = screen_candidates_no_greece(dur_candidates_dict, panel)
+reselect_df = pd.concat([cum_candidates_no_greece, dur_candidates_no_greece], ignore_index=True)
+
+# compare against the original (Greece-included) p-values from the same two batteries
+orig_p = {r["variable"]: r["p_value_raw"] for r in results}
+orig_p.update({r["var"]: r["p_raw"] for r in dur_results})
+reselect_df["p_raw_with_greece"] = reselect_df["variable"].map(orig_p)
+reselect_df = reselect_df.rename(columns={"p_raw": "p_raw_without_greece"})
+reselect_df = reselect_df.sort_values("p_raw_without_greece", na_position="last").reset_index(drop=True)
+reselect_df.to_csv(f"{OUT}/cumulative_hardship_selection_excl_greece.csv", index=False)
+top_without_greece = reselect_df.dropna(subset=["p_raw_without_greece"]).iloc[0]
+print(f"\n\n=== Selection-leakage check: full 18-candidate screening rerun with Greece excluded "
+      f"from the panel entirely (not just LOO-evaluated) ===")
+print(reselect_df.to_string(index=False))
+print(f"\nTop candidate by p-value WITHOUT Greece in the screening panel: "
+      f"{top_without_greece['variable']} (p={top_without_greece['p_raw_without_greece']:.6f}). "
+      f"With Greece included, its p-value was {top_without_greece['p_raw_with_greece']:.6f}. "
+      f"cum_excess_unemployment {'IS' if top_without_greece['variable'] == 'cum_excess_unemployment' else 'is NOT'} "
+      f"still the top candidate when Greece never participates in variable selection.")
+
+
+# ================================================================ rolling-window / decay robustness =
+# External-review concern: cum_excess_unemployment is a floored, non-decreasing running sum -- it
+# can only grow, so on its own it cannot distinguish "genuinely undiminished accumulated scarring"
+# from simply encoding "how many years since the crisis began" (a trend/time proxy). Tests two
+# alternative constructions that CAN fall as old high-excess years age out or get discounted:
+# trailing rolling-window sums (3/5/10-year) and exponentially-decayed running sums (2 decay
+# rates). If the undecayed permanent sum clearly outperforms these, that's real evidence for
+# genuine non-fading accumulation, not just a time-since-crisis proxy; if a rolling/decayed
+# version performs comparably or better, the "permanent, non-fading" framing should be softened.
+unemp_s = unemp.sort_values(["geo", "time"]).copy()
+base_row_u = unemp_s[unemp_s.time == UNEMP_BASE_YEAR][["geo", "unemployment_rate"]].rename(
+    columns={"unemployment_rate": "_base_u"})
+unemp_s = unemp_s.merge(base_row_u, on="geo", how="left")
+unemp_s["excess_u"] = (unemp_s["unemployment_rate"] - unemp_s["_base_u"]).clip(lower=0)
+unemp_s = unemp_s[unemp_s.time >= UNEMP_BASE_YEAR].sort_values(["geo", "time"])
+
+
+def rolling_sum(grp, window):
+    return grp["excess_u"].rolling(window=window, min_periods=1).sum()
+
+
+def decayed_sum(grp, decay):
+    vals = grp["excess_u"].tolist()
+    out, prev = [], 0.0
+    for v in vals:
+        prev = v + decay * prev
+        out.append(prev)
+    return out
+
+
+roll_frames = []
+for g, grp in unemp_s.groupby("geo"):
+    grp = grp.sort_values("time").copy()
+    grp["roll3_excess_unemployment"] = rolling_sum(grp, 3)
+    grp["roll5_excess_unemployment"] = rolling_sum(grp, 5)
+    grp["roll10_excess_unemployment"] = rolling_sum(grp, 10)
+    grp["decay80_excess_unemployment"] = decayed_sum(grp, 0.8)
+    grp["decay90_excess_unemployment"] = decayed_sum(grp, 0.9)
+    roll_frames.append(grp[["geo", "time", "roll3_excess_unemployment", "roll5_excess_unemployment",
+                             "roll10_excess_unemployment", "decay80_excess_unemployment",
+                             "decay90_excess_unemployment"]])
+roll_df = pd.concat(roll_frames)
+panel = panel.merge(roll_df, on=["geo", "time"], how="left")
+
+ROLLING_CANDIDATES = {
+    "cum_excess_unemployment": "Permanent cumulative sum since 2009 (no decay/window -- the preferred variable)",
+    "roll3_excess_unemployment": "Trailing 3-year rolling sum",
+    "roll5_excess_unemployment": "Trailing 5-year rolling sum",
+    "roll10_excess_unemployment": "Trailing 10-year rolling sum",
+    "decay80_excess_unemployment": "Exponentially decayed sum, 20%/yr decay",
+    "decay90_excess_unemployment": "Exponentially decayed sum, 10%/yr decay",
+}
+rolling_results = []
+for var, label in ROLLING_CANDIDATES.items():
+    r = run_model([var], panel)
+    coef, p = r["coefs"][var]
+    p_raw = float(r["model"].pvalues[var])
+    rolling_results.append(dict(variable=var, label=label, r2=r["r2"], n=r["n"], gr_in=r["gr_in"],
+                                 gr_oos=r["gr_oos"], rank=r["rank"], coef=coef, p=p, p_raw=p_raw))
+rolling_df = pd.DataFrame(rolling_results)
+rolling_df.to_csv(f"{OUT}/cumulative_hardship_rolling_decay_battery.csv", index=False)
+print(f"\n\n=== Rolling-window / decay robustness: does permanent (non-fading) accumulation "
+      f"outperform windowed or decayed alternatives? ===")
+print(rolling_df.to_string(index=False))
+best_row = rolling_df.sort_values("gr_oos", key=lambda s: s.abs()).iloc[0]
+print(f"\nSmallest |Greece OOS residual| among the six: {best_row['variable']} "
+      f"(gr_oos={best_row['gr_oos']}). Permanent sum's own gr_oos: "
+      f"{rolling_df[rolling_df.variable == 'cum_excess_unemployment']['gr_oos'].values[0]}.")
 
 
 # ================================================================ replacement test ================
@@ -508,5 +659,6 @@ for f in ["cumulative_hardship_checkpoint.csv", "cumulative_hardship_duration_ba
           "cumulative_hardship_replacement_test.csv", "cumulative_hardship_loo_stability_cum_excess_unemployment.csv",
           "cumulative_hardship_loo_stability_wage_years_below_2008.csv",
           "cumulative_hardship_final_model_year_by_year.csv", "cumulative_hardship_stage1_individual.csv",
-          "cumulative_hardship_stage2_bridge.csv"]:
+          "cumulative_hardship_stage2_bridge.csv", "cumulative_hardship_fdr_correction.csv",
+          "cumulative_hardship_selection_excl_greece.csv", "cumulative_hardship_rolling_decay_battery.csv"]:
     print(f"  {OUT}/{f}")

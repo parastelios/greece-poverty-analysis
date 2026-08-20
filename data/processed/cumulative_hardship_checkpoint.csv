@@ -1,9 +1,9 @@
-variable,label,n_countries,n_obs,r2,gr_avg_residual_insample,gr_avg_residual_oos,gr_rank_oos,coef,p_value
-cum_gdp_shortfall_2008base,"Cumulative GDP shortfall, fixed 2008 basis",27,267,0.916,0.45,5.08,4/27,0.026,0.3201
-pct_below_peak,[current-year] % below own GDP peak (existing Model F variable),27,267,0.914,1.08,2.97,7/27,0.1162,0.6051
-cum_gdp_shortfall_ownpeak,"Cumulative GDP shortfall, own rolling-peak basis",27,267,0.916,0.43,4.72,4/27,0.0273,0.2949
-cum_wage_shortfall_2008base,"Cumulative real-wage shortfall, fixed 2008 basis",27,267,0.915,0.68,2.48,10/27,0.0103,0.2369
-cum_wage_shortfall_ownpeak,"Cumulative real-wage shortfall, own rolling-peak basis",27,267,0.916,0.67,2.29,11/27,0.0113,0.2034
-cum_excess_unemployment,Cumulative excess unemployment above 2009,27,267,0.93,-0.06,-0.82,18/27,0.1688,0.0001
-cum_excess_ltu,Cumulative excess LTU above 2009,27,267,0.917,0.66,3.39,7/27,0.0908,0.2444
-cum_threshold_shortfall,Cumulative real AROP-threshold shortfall since 2008,27,267,0.914,1.23,3.84,7/27,0.0011,0.6451
+variable,label,n_countries,n_obs,r2,gr_avg_residual_insample,gr_avg_residual_oos,gr_rank_oos,coef,p_value,p_value_raw
+cum_gdp_shortfall_2008base,"Cumulative GDP shortfall, fixed 2008 basis",27,267,0.916,0.45,5.08,4/27,0.026,0.3201,0.32006711878513927
+pct_below_peak,[current-year] % below own GDP peak (existing Model F variable),27,267,0.914,1.08,2.97,7/27,0.1162,0.6051,0.6051261801867034
+cum_gdp_shortfall_ownpeak,"Cumulative GDP shortfall, own rolling-peak basis",27,267,0.916,0.43,4.72,4/27,0.0273,0.2949,0.29487643288315846
+cum_wage_shortfall_2008base,"Cumulative real-wage shortfall, fixed 2008 basis",27,267,0.915,0.68,2.48,10/27,0.0103,0.2369,0.23686908461588196
+cum_wage_shortfall_ownpeak,"Cumulative real-wage shortfall, own rolling-peak basis",27,267,0.916,0.67,2.29,11/27,0.0113,0.2034,0.2034462388909234
+cum_excess_unemployment,Cumulative excess unemployment above 2009,27,267,0.93,-0.06,-0.82,18/27,0.1688,0.0001,0.00013235726376829537
+cum_excess_ltu,Cumulative excess LTU above 2009,27,267,0.917,0.66,3.39,7/27,0.0908,0.2444,0.24442888052321754
+cum_threshold_shortfall,Cumulative real AROP-threshold shortfall since 2008,27,267,0.914,1.23,3.84,7/27,0.0011,0.6451,0.6450935258918737

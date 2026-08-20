@@ -20,6 +20,10 @@ gr_trend_a = pd.read_csv(f"{OUT}/gr_residual_trend_A_structural.csv")
 gr_trend_c = pd.read_csv(f"{OUT}/gr_residual_trend_C_plus_arrears_unexpected.csv")
 nested_loo = pd.read_csv(f"{OUT}/nested_loo_summary.csv")
 arope_snapshot = pd.read_csv(f"{OUT}/arope_subjective_snapshot_2025.csv")
+arop_snapshot = pd.read_csv(f"{OUT}/arop_subjective_snapshot_2025.csv")
+cum_stage1 = pd.read_csv(f"{OUT}/cumulative_hardship_stage1_individual.csv")
+cum_stage2 = pd.read_csv(f"{OUT}/cumulative_hardship_stage2_bridge.csv")
+cum_yby = pd.read_csv(f"{OUT}/cumulative_hardship_final_model_year_by_year.csv")
 recovery_idx = pd.read_csv(f"{OUT}/recovery_indexed_trajectories.csv")
 migration = pd.read_csv("../data/raw/migration_nationals_panel.csv")
 real_wages = pd.read_csv(f"{OUT}/real_wages_panel.csv")
@@ -28,6 +32,13 @@ ltu = ltu[ltu.geo.isin(eu_members(2024)) & (ltu.time >= 2009)]
 model_scorecard_ltu = pd.read_csv(f"{OUT}/model_scorecard_ltu.csv")
 loo_c_baseline = pd.read_csv(f"{OUT}/scorecard_loo_C_baseline.csv")
 loo_c_ltu_swap = pd.read_csv(f"{OUT}/scorecard_loo_C_LTU_swap.csv")
+age_arope = pd.read_csv(f"{OUT}/age_breakdown_arope.csv")
+age_arop = pd.read_csv(f"{OUT}/age_breakdown_arop.csv")
+age_dep = pd.read_csv(f"{OUT}/age_breakdown_deprivation.csv")
+age_shiftshare = pd.read_csv(f"{OUT}/age_breakdown_shiftshare_decomposition.csv")
+age_sex = pd.read_csv(f"{OUT}/age_breakdown_65plus_by_sex.csv")
+age_hh_arope = pd.read_csv(f"{OUT}/age_breakdown_household_arope.csv")
+age_hh_arop = pd.read_csv(f"{OUT}/age_breakdown_household_arop.csv")
 
 
 def clean(v):
@@ -176,6 +187,27 @@ bundle = {
          "arope": clean(r["arope"]), "gap": clean(r["gap"])}
         for _, r in arope_snapshot.iterrows()
     ],
+    "arop_snapshot": [
+        {"geo": r["geo"], "label": r["geo_label"], "subjective": clean(r["subjective_poverty"]),
+         "arop": clean(r["arop"]), "gap": clean(r["gap"])}
+        for _, r in arop_snapshot.iterrows()
+    ],
+    "cum_stage1": [
+        {"key": r["key"], "label": r["label"], "gr_oos": clean(r.get("gr_oos")),
+         "p": clean(r.get("p")), "pts_arop_explained": clean(r.get("pts_arop_explained")),
+         "pts_arope_explained": clean(r.get("pts_arope_explained")), "status": r["status"]}
+        for _, r in cum_stage1.iterrows()
+    ],
+    "cum_stage2": [
+        {"step": int(r["step"]), "layer": r["layer"], "type": r["type"],
+         "greece_value": clean(r["greece_value"]), "points_closed": clean(r["points_closed"])}
+        for _, r in cum_stage2.iterrows()
+    ],
+    "cum_year_by_year": [
+        {"time": int(r["time"]), "subjective_poverty": clean(r["subjective_poverty"]),
+         "predicted": clean(r["predicted"]), "residual": clean(r["residual"])}
+        for _, r in cum_yby.iterrows()
+    ],
     "recovery_trajectory": [
         {"time": int(t), **{geo: clean(v) for geo, v in g.set_index("geo")["indexed_to_own_peak"].items()}}
         for t, g in recovery_idx.groupby("time")
@@ -188,6 +220,34 @@ bundle = {
     "real_wages_trajectory": [
         {"time": int(t), **{geo: clean(v) for geo, v in g.set_index("geo")["real_wage_idx2008"].items()}}
         for t, g in real_wages[real_wages.time >= 2008].groupby("time")
+    ],
+    "age_arope_trajectory_gr": [
+        {"time": int(t), **{age: clean(v) for age, v in g.set_index("age")["arope_rate"].items()}}
+        for t, g in age_arope[age_arope.geo == "EL"].groupby("time")
+    ],
+    "age_shiftshare_2024_2025": [
+        {"age": r["age"], "population_share_2024_pct": clean(r["population_share_2024_pct"]),
+         "population_share_2025_pct": clean(r["population_share_2025_pct"]),
+         "arope_rate_2024": clean(r["arope_rate_2024"]), "arope_rate_2025": clean(r["arope_rate_2025"]),
+         "within_group_contribution_pp": clean(r["within_group_contribution_pp"]),
+         "composition_contribution_pp": clean(r["composition_contribution_pp"])}
+        for _, r in age_shiftshare.iterrows()
+    ],
+    "age_elderly_table": [
+        {"time": int(t),
+         "arope_65plus": clean(age_arope[(age_arope.geo == "EL") & (age_arope.age == "Y_GE65") & (age_arope.time == t)]["arope_rate"].values[0]) if len(age_arope[(age_arope.geo == "EL") & (age_arope.age == "Y_GE65") & (age_arope.time == t)]) else None,
+         "arop_65plus": clean(age_arop[(age_arop.geo == "EL") & (age_arop.age == "Y_GE65") & (age_arop.time == t)]["arop_rate"].values[0]) if len(age_arop[(age_arop.geo == "EL") & (age_arop.age == "Y_GE65") & (age_arop.time == t)]) else None,
+         "deprivation_65plus": clean(age_dep[(age_dep.geo == "EL") & (age_dep.age == "Y_GE65") & (age_dep.time == t)]["deprivation_rate"].values[0]) if len(age_dep[(age_dep.geo == "EL") & (age_dep.age == "Y_GE65") & (age_dep.time == t)]) else None,
+         "arope_total": clean(age_arope[(age_arope.geo == "EL") & (age_arope.age == "TOTAL") & (age_arope.time == t)]["arope_rate"].values[0]) if len(age_arope[(age_arope.geo == "EL") & (age_arope.age == "TOTAL") & (age_arope.time == t)]) else None}
+        for t in [2015, 2020, 2023, 2024, 2025]
+    ],
+    "age_65plus_by_sex": [
+        {"time": int(t), **{sex: clean(v) for sex, v in g.set_index("sex")["arope_rate"].items()}}
+        for t, g in age_sex[age_sex.geo == "EL"].groupby("time")
+    ],
+    "age_household_arope": [
+        {"time": int(t), **{f"{geo}_{hh}": clean(v) for (geo, hh), v in g.set_index(["geo", "hhcomp"])["arope_rate"].items()}}
+        for t, g in age_hh_arope.groupby("time")
     ],
     "ltu_trajectory": [
         {"time": int(t), **{geo: clean(v) for geo, v in g.set_index("geo")["ltu_rate"].items()}}

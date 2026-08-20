@@ -253,6 +253,102 @@ Greece's subjective-poverty gap is not mainly an inequality story. Full
 detail in report Methods ("Variables tested but not central to the
 story").
 
+## AROP cross-country snapshot addition (2026-08-20)
+
+| Dataset code | What it is | Key params | Fetched by |
+|---|---|---|---|
+| `ilc_li02` | AROP (reused from Part I) | as above | `37_arop_snapshot.py` |
+
+Mirrors `22_arope_snapshot.py` exactly but for AROP instead of AROPE, producing
+`arop_subjective_snapshot_2025.csv` (27 countries + EU aggregate). Built to
+support the AROP/AROPE Core Reframe (AROP as the primary object, AROPE as a
+secondary bridge) — see `docs/publication_strategy.md` for the full framing
+discussion and the 7-point spine it produced.
+
+## Cumulative-hardship checkpoint addition (2026-08-20)
+
+| Dataset code | What it is | Key params | Fetched by |
+|---|---|---|---|
+| `ilc_li01` | AROP poverty threshold, **national currency** (not EUR) | `statinfo=MED_EI`, `rskpovth=B_60`, `hhcomp=A1`, `unit=NAC` | `38_cumulative_hardship.py` |
+| `une_rt_a` | Headline unemployment, full history | `age=Y15-74`, `unit=PC_ACT`, 2003–2025 requested (usable from 2009) | `38_cumulative_hardship.py` (new full-history fetch, `panel_unemployment_history_2008_2024.csv`, distinct from the shorter 2015–2024 panel `07_panel_fetch.py` uses) |
+
+Tests whether accumulated exposure since the crisis — not just current-year
+conditions — explains Greece's residual gap better than any single-year
+snapshot. Reuses already-fetched panels for GDP (`panel_gdp_history_2008_2024.csv`),
+real wages (`real_wage_idx2008.csv`), and long-term unemployment
+(`panel_long_term_unemployment.csv`); the AROP threshold is fetched fresh in
+**national currency**, not EUR, specifically to avoid exchange-rate
+contamination for non-euro EU countries when deflating by each country's own
+HICP (`panel_hicp_index.csv`).
+
+**Baseline years, and why they differ by variable**: GDP, real wages, and the
+AROP threshold are baselined to **2008** (matching this project's existing
+anchored-poverty convention). Headline unemployment and long-term
+unemployment are baselined to **2009** — confirmed via a direct coverage
+check inside the script (not assumed) that both series lack near-complete
+27-country coverage in 2008. Croatia lacks both 2008 and 2009 data for the
+AROP-threshold series specifically (starts 2010) and is baselined to 2010,
+flagged explicitly in the script's own printed output.
+
+**Construction**: every cumulative variable uses a floored, monotonically
+non-decreasing running sum — `max(0, value - baseline)` per year, summed —
+so a good year can't cancel out an earlier bad one. Tested initially as a
+literal permanent accumulation since the baseline year; a later robustness
+round (below) found this framing needed softening.
+
+**Headline result**: `cum_excess_unemployment` (cumulative excess
+unemployment since 2009), added to the existing Model C-LTU, lifts R²
+from 0.914 to 0.930 and moves Greece's out-of-sample residual from 3.9
+points to −0.8 (the model slightly overpredicts Greece's reported hardship).
+A closely related duration measure, `wage_years_below_2008` (consecutive
+years Greek real wages stayed below their own 2008 level), independently
+supports the same story. **Both are the two candidates that survive
+Benjamini-Hochberg FDR correction** across the full 18-candidate screening
+family (the original 8-variable cumulative battery + a 10-variable
+duration/direction battery) — cumulative excess unemployment comfortably
+(adjusted p=0.0024), the wage-duration measure narrowly (adjusted p=0.0408).
+
+**Two robustness rounds, run in response to external methodological
+review, materially changed how this finding is framed** (full accounting
+in `docs/publication_strategy.md`, "Second-round methodological review"):
+
+1. **Selection-leakage check.** Cumulative excess unemployment was
+   originally selected using the full 27-country panel, Greece included.
+   Rerunning the complete 18-candidate screening with Greece dropped from
+   the panel *entirely* (not just held out for out-of-sample evaluation)
+   found the wage-duration measure actually edges ahead of cumulative
+   excess unemployment (p=0.0036 vs. p=0.0064 without Greece in the
+   screening data). Both remain the two strongest candidates either way —
+   the set doesn't change — but which one ranks first does. All three
+   published documents now present the two as jointly supporting evidence
+   for the same mechanism, not one uniquely identified variable with a
+   clear runner-up.
+2. **Rolling-window / decay-rate robustness.** Because the permanent
+   cumulative sum can only grow, it can't on its own distinguish real
+   accumulated exposure from simply encoding elapsed time since the
+   crisis began. Tested trailing 3-, 5-, and 10-year rolling sums and two
+   exponentially-decayed running sums (20%/year, 10%/year decay) as
+   alternatives. A 3-year window is not significant; a 10-year window
+   fits *at least as well as* the permanent since-2009 sum. All three
+   documents now describe the mechanism as **sustained excess
+   unemployment over roughly the past decade**, not literal permanent,
+   non-fading accumulation since one fixed baseline year.
+
+Both the FDR correction and both robustness batteries are now computed
+*inside* `38_cumulative_hardship.py` itself, from full-precision p-values,
+and declared as script outputs — not generated by a separate one-off
+analysis, which was flagged as a reproducibility gap in the same review
+round and fixed at the source.
+
+**Outputs** (all in `data/processed/`): `cumulative_hardship_checkpoint.csv`,
+`cumulative_hardship_duration_battery.csv`, `cumulative_hardship_replacement_test.csv`,
+`cumulative_hardship_loo_stability_cum_excess_unemployment.csv`,
+`cumulative_hardship_loo_stability_wage_years_below_2008.csv`,
+`cumulative_hardship_final_model_year_by_year.csv`,
+`cumulative_hardship_stage1_individual.csv`, `cumulative_hardship_stage2_bridge.csv`,
+`cumulative_hardship_fdr_correction.csv`, `cumulative_hardship_selection_excl_greece.csv`,
+`cumulative_hardship_rolling_decay_battery.csv`.
+
 ### Pipeline bug found and fixed during this round
 
 Re-running `04_merge_all.py` (needed to get FDR status for the inequality

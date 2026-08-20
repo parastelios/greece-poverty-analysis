@@ -77,6 +77,31 @@ lowest in 2003-2006 (see above).
   Both are provided for the overlap years (2015-2020) so the reader can see the
   level difference the redefinition introduces.
 
+## At-risk-of-poverty-or-social-exclusion rate (AROPE) — a genuine methodology break
+
+- Like the deprivation indicators above, AROPE (`ilc_peps01` legacy /
+  `ilc_peps01n` revised) has a **methodology break at the 2020/2021
+  boundary**, since it partly incorporates the revised material- and
+  social-deprivation definitions described above. This project splices the
+  legacy series (through 2020) with the revised series (from 2021) at that
+  boundary — `21_arope.py` — rather than blending the two vintages into one
+  continuous line.
+- **AROP is treated as this project's primary poverty measure; AROPE is a
+  secondary, motivating benchmark**, not a replacement (the "Core Reframe,"
+  agreed 2026-08-20 — see `docs/publication_strategy.md`). This distinction
+  matters for reading any AROPE-based figure: AROPE narrows the AROP-based
+  subjective-poverty gap (47.6 points) to 39.7 points, but any chart or
+  number that mixes pre-2021 and post-2021 AROPE values without noting the
+  splice should be read with that break in mind. AROPE's three components
+  (income poverty, severe material deprivation, very-low work intensity)
+  are a union, not a weighted average, and **their household-level overlap
+  is not observable from the aggregate country-year tables this project
+  uses** — EU-SILC microdata could support that kind of overlap analysis
+  under controlled research access, but that lies outside this project's
+  aggregate-only Eurostat API pipeline. This project does not claim to
+  reconstruct AROPE from any of its own regression variables as a result;
+  see the published reports' own Methods sections for the full framing.
+
 ## Labour market series
 
 - `une_rt_a` (unemployment rate, age 15-74) only has disseminated values for
@@ -88,6 +113,19 @@ lowest in 2003-2006 (see above).
   which still covers the full crisis and recovery period, the analytically
   important part, but means the very start of the "pre-crisis" window (2003-2008)
   has no unemployment observation to correlate against.
+- **Cumulative-hardship baseline years differ by variable, for this same
+  reason.** The cumulative-hardship checkpoint (`38_cumulative_hardship.py`,
+  see `docs/data_sources.md`) baselines GDP, real wages, and the AROP
+  threshold to **2008**, but headline and long-term unemployment to
+  **2009** — confirmed via a direct 27-country coverage check inside the
+  script, not assumed, matching the `une_rt_a` gap documented above. Its
+  central variable, cumulative excess unemployment, was originally framed
+  as a literal permanent, non-decreasing accumulation since that baseline
+  year; a rolling-window robustness check (added 2026-08-20 in response to
+  external review) found a 10-year trailing window fits at least as well,
+  so this project now describes the mechanism as **sustained exposure over
+  roughly a decade**, not literal permanent accumulation since one fixed
+  year. Full accounting in `docs/publication_strategy.md`.
 
 ## Pre-EU-SILC data
 

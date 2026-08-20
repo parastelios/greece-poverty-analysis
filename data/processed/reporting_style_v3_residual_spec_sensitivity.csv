@@ -1,0 +1,4 @@
+model,n_years,mean_residual,std_residual,trend_pt_per_year
+"Model A (basic: unemployment, income, deprivation, AROP)",10,25.617673479571955,5.893429991756315,1.8591287530817364
+"Model C (+ housing, arrears, unexpected expenses, headline unemployment)",10,11.594035696823827,4.1935985441974815,0.8035616898962601
+"Model C-LTU (as Model C, long-term unemployment replacing headline)",10,3.8557776582365313,6.2936081934890025,1.8194674967627866

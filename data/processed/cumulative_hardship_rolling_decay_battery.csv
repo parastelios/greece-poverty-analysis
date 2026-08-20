@@ -1,0 +1,7 @@
+variable,label,r2,n,gr_in,gr_oos,rank,coef,p,p_raw
+cum_excess_unemployment,Permanent cumulative sum since 2009 (no decay/window -- the preferred variable),0.93,267,-0.06,-0.82,18/27,0.1688,0.0001,0.00013235726376829537
+roll3_excess_unemployment,Trailing 3-year rolling sum,0.917,267,1.36,0.93,14/27,0.2741,0.2929,0.2928747282208968
+roll5_excess_unemployment,Trailing 5-year rolling sum,0.922,267,1.28,0.98,14/27,0.2775,0.0418,0.041823403405178615
+roll10_excess_unemployment,Trailing 10-year rolling sum,0.932,267,0.15,-0.47,18/27,0.2187,0.0,2.259428364902401e-05
+decay80_excess_unemployment,"Exponentially decayed sum, 20%/yr decay",0.931,267,0.56,-1.78,19/27,0.5849,0.0003,0.0002965852742397725
+decay90_excess_unemployment,"Exponentially decayed sum, 10%/yr decay",0.934,267,-0.0,-1.9,19/27,0.3936,0.0001,5.6410934843967276e-05

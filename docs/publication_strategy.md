@@ -2358,3 +2358,1165 @@ proceeds next, now informed by this checkpoint's actual results rather than
 being written before they were known -- avoiding exactly the
 retrofitted-caveats problem the checkpoint-first ordering was chosen to
 prevent.
+
+## AROP/AROPE restructuring across all three outputs (2026-08-20)
+
+All three published documents (`output/report.html`, `output/narrative_companion.html`,
+`output/academic_paper_draft.html`) were rewritten around the agreed 7-point
+spine, using the checkpoint above as the authoritative source for every
+number and framing decision. No new analysis was run in this pass -- this
+was purely a rewrite of prose, charts, and tables around results already
+locked and committed.
+
+**Spine applied consistently to all three:**
+1. AROP puzzle (47.6pt gap, Greece 4th on AROP vs. 1st on subjective, next
+   largest gap Bulgaria at 14.9pt) -- now the primary chart/finding in every
+   document, always shown first.
+2. Shrinking ruler (AROP's moving threshold) -- unchanged content, reordered
+   to follow directly from the AROP puzzle.
+3. AROPE bridge (39.7pt gap, narrows but does not close) -- repositioned as
+   secondary, immediately after AROP, framed as the EU's own acknowledgment
+   that income poverty is too narrow, never as a replacement primary measure.
+4. Part II reframed explicitly as "decomposing AROPE's intuition," stated
+   plainly as not a reconstruction of AROPE (component overlaps unobserved
+   without EU-SILC microdata) in all three documents.
+5. Gap-closing ladder: raw AROP (47.6) -> AROPE (39.7) -> Model A (25.6) ->
+   Model C (11.6) -> Model C-LTU (3.9) -> + cumulative excess unemployment
+   (-0.8), consistent across report.html's new ladder table, the narrative
+   companion's Chapter 8 proof table, and the academic paper's new Table 2.
+6. Main new mechanism -- cumulative excess unemployment since 2009 -- added
+   as a new section/chapter in all three: report.html gets a new "gap-closing
+   ladder" subsection plus updated scorecard (Model G); the narrative
+   companion gets a new Chapter 8 ("The debt that never gets paid down"),
+   renumbering all subsequent chapters (8->12 total, up from 11) and every
+   cross-reference; the academic paper gets a new &sect;6.6 with its own
+   Table 2, renumbering &sect;6.6-6.7 to &sect;6.7-6.8 and &sect;7.1-7.2 to
+   &sect;7.2-7.3, with a new &sect;7.1 stating the AROP-in-crisis-contexts
+   methodological caution.
+7. Discussion: the AROP-in-crisis-contexts caution (relative-income measures
+   can understate deterioration for years during a prolonged collapse; safest
+   read alongside a fixed-standard threshold, a broader measure, and a
+   cumulative-exposure measure) added to all three -- report.html's
+   literature section, the narrative companion's Landing chapter, and the
+   academic paper's new &sect;7.1 -- plus the negative-residual interpretation
+   sentence (agreed exact framing: "does not survive," never "more than
+   100% explained") repeated verbatim in all three.
+
+**Mechanical work specific to each document:**
+- `report.html`: new `DATA.arop_snapshot`, `cum_stage1`, `cum_stage2`,
+  `cum_year_by_year` keys already exported in a prior session (script
+  `37_arop_snapshot.py`, `09_export_report_data.py`); this pass added a new
+  primary AROP dumbbell chart (reusing the existing `dumbbellChart()` JS
+  function), a new gap-closing-ladder table and year-by-year residual line
+  chart populated from `DATA.cum_stage2`/`DATA.cum_year_by_year`, a Model G
+  row in the existing scorecard table, and new Methods `<dl>` entries for
+  the cumulative-excess-unemployment construction and a structural-limitations
+  list. Verified in-browser: new charts/tables render with real injected
+  data (Greece AROP=19.6, subjective=67.2, gap=47.6; ladder table 6 rows
+  matching checkpoint numbers exactly).
+- `narrative_companion.html`: the opening hand-coded SVG dumbbell chart
+  (9 representative countries) was recomputed from AROP data using the
+  same x-axis scale formula as the original AROPE version, verified against
+  the axis tick endpoints. New Chapter 8 added with its own proof table and
+  method notes; all subsequent chapters (former 8-11) renumbered to 9-12,
+  including every in-text cross-reference and the masthead chapter count
+  (11->12). Landing chapter and colophon rewritten to reflect the closed
+  residual and the crisis-context caution.
+- `academic_paper_draft.html`: Figure 1's full 27-country-plus-EU-average
+  SVG dumbbell chart was regenerated programmatically from
+  `arop_subjective_snapshot_2025.csv` using the same coordinate formula as
+  the original (verified against axis endpoints: x(4%)=100, x(72%)=654),
+  rather than hand-edited, given the number of precise coordinates involved.
+  New &sect;6.6 added with its own Table 2 (gap-closing ladder); a pre-existing
+  table also numbered "Table 2" (financial-assistance programs) was
+  renumbered to Table 3 to avoid a duplicate caption. Abstract, Introduction,
+  Discussion, Limitations, and Conclusion rewritten; every stale
+  cross-section reference from the renumbering (&sect;6.6/&sect;7.1/&sect;7.2
+  used in their old sense) was found via full-file grep and corrected.
+
+**Verification before republish:** tag-balance checks (div/section/svg/table/
+tr and, for the academic paper, dl/dt/dd/ul/li) run on all three files;
+each file reloaded in-browser with console-error checks; new chart elements
+counted and cross-checked against expected row/country counts (report.html:
+56 circles for 28-row AROP snapshot; narrative companion: AROP chart renders
+with correct Greece/Bulgaria/Italy/etc. coordinates; academic paper: 58
+circles for the 29-row-including-legend Figure 1). All three republished to
+their existing Artifact URLs (same URLs as prior sessions, favicon
+unchanged: 🇬🇷).
+
+## Literature-review response: FDR correction for the cumulative family,
+## level-of-analysis caveat, and new citations (2026-08-20, later same day)
+
+An external literature review of the restructured spine (user-supplied,
+citation-heavy) confirmed the Core Reframe is well aligned with published
+research, flagged one genuinely new distinctive contribution (no existing
+EU study found using this specific country-level cumulative-excess-
+unemployment construction to explain the subjective-poverty gap), and
+raised four concrete, actionable points. All four were addressed before
+republishing again.
+
+**1. Multiple-testing correction for the cumulative/duration family.**
+The review noted this was still outstanding: several cumulative, baseline,
+and duration constructions were screened in script `38_cumulative_hardship.py`
+before `cum_excess_unemployment` was selected, and that screening family
+had not yet been checked against false-discovery-rate correction the way
+every other exploratory family in this project has been. Ran
+Benjamini-Hochberg correction (`statsmodels.stats.multitest.multipletests`,
+matching the project's existing convention) across all 18 candidates from
+that screening (the original 8-variable cumulative battery + the 10-variable
+duration/direction battery; the replacement test and the final combined
+model are confirmatory follow-ups on the already-selected winner, not part
+of the exploratory family, per this project's existing confirmatory/
+exploratory distinction).
+  - `cum_excess_unemployment`: raw p=0.0001 -> FDR-adjusted p=0.0018.
+    Survives comfortably.
+  - `wage_years_below_2008`: raw p=0.0045 -> FDR-adjusted p=0.0405. Survives,
+    but narrowly -- confirming the reviewer's own prediction that this one
+    "may be more sensitive."
+  - All other 16 candidates: FDR-adjusted p >= 0.25. None survives.
+  Result saved to `data/processed/cumulative_hardship_fdr_correction.csv`.
+  This is exactly the outcome the checkpoint's own framing already assumed
+  (central mechanism vs. narrowly-supporting evidence) -- the correction
+  confirms rather than overturns the existing evidentiary hierarchy, but it
+  is now demonstrated rather than asserted.
+
+**2. AROPE's 2020/2021 methodology break.** The review flagged that any
+chart spanning the boundary needs explicit disclosure. Checked: `report.html`
+already discloses this (both in a chart note and in Methods, matching the
+splice convention already used in `21_arope.py`). `academic_paper_draft.html`
+and `narrative_companion.html` did not have an equivalent disclosure --
+added one to the academic paper's §4 data description; checked the
+narrative companion's specific AROPE figures (2008 and 2014 only) and
+confirmed neither crosses the 2021 boundary, so no correction was needed
+there, only the general point that the mechanism is well-established (see
+below).
+
+**3. Individual-level vs. aggregate-level evidence for the cumulative-exposure
+mechanism.** The review correctly distinguished the (well-established)
+individual-unemployment-scarring literature from this project's own
+country-level aggregate variable, and warned against implying the two are
+the same kind of evidence. Added an explicit level-of-analysis caveat to
+all three documents: the individual-level literature (Lucas et al., 2004;
+Mousteri et al., 2018; Clark & Lepinteur, 2019) tracks personal unemployment
+histories and personal outcomes; this project's `cum_excess_unemployment`
+variable is a country-year aggregate, and its correlation with Greece's
+aggregate subjective-poverty rate is not direct evidence that the specific
+Greek households behind that rate personally experienced sustained
+joblessness. Framed as an ecological-inference limitation the project's
+aggregate Eurostat data cannot close, added to the academic paper's
+Limitations (§8) explicitly.
+
+**4. Framing the shrinking-ruler result as well-established, not novel; and
+using the EU's own persistent-poverty/poverty-dynamics work as a bridge for
+the cumulative-exposure contribution.** Both of these were mostly already
+correctly hedged (the academic paper's §3.1/§3.5 already say the mechanism
+"is well established, including for Greece specifically" and that the
+paper's contribution is the combination, not the mechanism itself) but were
+strengthened with two additional, directly-on-point citations: Leventi &
+Matsaganis (2016, OECD working paper using EUROMOD) independently confirm
+Greece's relative poverty rate barely moved 2009-2014 despite collapsing
+absolute living standards; OECD (2018) reaches the same conclusion in its
+Greece country survey. Separately, added the EU's own persistent-AROP
+indicator and a 2026 European Commission poverty-dynamics study
+(Directorate-General for Employment, Social Affairs and Inclusion, 2026)
+as an explicit bridge: the cumulative-excess-unemployment variable extends,
+one level up, a dynamic-poverty logic the EU already applies to individual
+households (poor this year AND in 2 of the past 3), plus Lin (2016, IMF)
+as macro-level (not individual-level) corroboration of the same
+accumulation logic via labor-market hysteresis.
+
+**New citations added** (all fetched and verified via WebSearch, not
+guessed): Bárcena-Martín, Pérez-Moreno & Rodríguez-Díaz (2020); Clark &
+Lepinteur (2019); Directorate-General for Employment, Social Affairs and
+Inclusion (2026); Leventi & Matsaganis (2016); Lin (2016); Lucas, Clark,
+Georgellis & Diener (2004); Mousteri, Daly & Delaney (2018); OECD (2018);
+Zieleńska & Wnuk (2024) -- the latter two also used to strengthen the
+existing "AROPE cannot be reconstructed, union construction hides
+component overlap" argument in both the academic paper and report.html.
+Several other sources the reviewer named (a Springer AROPE-critique
+article, a ScienceDirect multidimensional-poverty article, an IMF
+hysteresis paper, two individual-scarring papers) were paywalled on first
+attempt; all were successfully identified and verified via WebSearch
+against independent secondary sources (abstracts, IDEAS/RePEc, institutional
+pages) rather than added from the reviewer's own descriptive labels
+unverified -- consistent with this project's standing discipline of never
+citing a source without confirming it independently.
+
+Not added: the reviewer's suggested news-media citations (Reuters, Guardian,
+EU Commission country report, OECD 2024) were deliberately not added to the
+academic paper's literature review, since the reviewer's own guidance was
+that these "should illustrate the public puzzle, not serve as proof of the
+models" -- a role better suited to the report and narrative companion's
+existing external-corroboration sections (Greece in Figures, diaNEOsis,
+Greekonomics.gr) than to a working paper's formal §3. Left as a possible
+future addition if the author wants a "press coverage" aside, not treated
+as a gap in this pass.
+
+All three documents re-verified (tag balance, in-browser console-error
+checks) and republished to their existing Artifact URLs after these
+changes.
+
+## Second-round methodological review: selection leakage, permanence
+## assumption, and reproducibility fixes (2026-08-20, same day, third pass)
+
+A second, more technical external review of the literature-response round
+above found three P1 (blocking) issues and two P2 (wording) issues before
+the round should be committed. All three P1 issues required new analysis,
+not just documentation edits, and were run in full before any document text
+was changed. The reviewer's own framing turned out to be correct on all
+three points; none was a false alarm.
+
+**Fix 1: FDR correction is now computed inside `38_cumulative_hardship.py`
+itself, from full-precision p-values, and declared as a script output.**
+Previously `cumulative_hardship_fdr_correction.csv` was generated by an ad
+hoc one-off analysis outside the script, using the checkpoint CSV's
+4-decimal-rounded `p_value` column as input rather than the underlying
+full-precision p-value. Fixed at the root: both candidate-battery loops
+now also store `p_value_raw` / `p_raw` (unrounded, straight from the fitted
+model's `.pvalues`), and a new section runs
+`statsmodels.stats.multitest.multipletests` on those 18 full-precision
+values directly inside the script, writing
+`cumulative_hardship_fdr_correction.csv` as one of its declared outputs.
+Re-running confirmed the reviewer's own prediction ("the substantive
+conclusion will almost certainly remain unchanged") — the corrected numbers
+are close to, but not identical to, the ad hoc round's rounded-input
+numbers:
+  - `cum_excess_unemployment`: raw p=0.000132 &rarr; FDR-adjusted p=**0.00238**
+    (previously reported, from rounded input, as 0.0018). Still survives
+    comfortably.
+  - `wage_years_below_2008`: raw p=0.004533 &rarr; FDR-adjusted p=**0.0408**
+    (previously reported as 0.0405). Still survives, still narrowly.
+  - All other 16 candidates: unchanged conclusion, none survives
+    (adjusted p&ge;0.25).
+  All three documents' FDR numbers updated to the newly-correct values.
+
+**Fix 2: selection-leakage check — and this one changed the honest story,
+not just the numbers.** The reviewer's core point: `cum_excess_unemployment`
+was picked as "the preferred candidate" using the full 27-country panel,
+Greece included, so language like "the final model was built without ever
+seeing Greek data" (narrative companion) overstates what leave-one-country-out
+actually demonstrates — LOO re-estimates *coefficients* without Greece for
+an *already-chosen* variable; it says nothing about whether Greece's own
+data point influenced *which* variable got chosen in the first place. Ran
+the reviewer's own "at minimum" check: reran the complete 18-candidate
+screening (both battery loops) with Greece dropped from the panel entirely
+— not evaluated out-of-sample, excluded from model-fitting altogether — and
+compared p-values with vs. without Greece in the screening data.
+  **Result: `wage_years_below_2008` (p=0.0036 without Greece) edges out
+  `cum_excess_unemployment` (p=0.0064 without Greece) once Greece is fully
+  excluded from candidate selection.** Both remain highly significant
+  either way, and both are the same two candidates that survive FDR
+  correction with Greece included — the *ranking between the top two*
+  changes, not which two are worth taking seriously. Saved as
+  `cumulative_hardship_selection_excl_greece.csv`. This is a genuine,
+  reportable limitation, not a technicality to bury: it means the
+  "cum_excess_unemployment is unambiguously THE central mechanism, with
+  wage-duration merely supporting" framing was too strong. Documents
+  revised throughout to present cumulative excess unemployment and
+  wage-years-below-2008 as **two closely related, mutually reinforcing
+  measures of sustained hardship** (they correlate at r=0.95 within
+  Greece's own time series specifically), with cumulative excess
+  unemployment retained as the headline construction because it has the
+  cleanest direct interpretation (a labor-market variable, not one step
+  removed via wages) and is the stronger FDR survivor with Greece included
+  in the panel — the way variable selection is actually and legitimately
+  done in this project (Greece's data is a real part of the historical
+  record, not an artificial contaminant) — while being explicit that the
+  two are not independently, unambiguously ranked once Greece is held out
+  of the selection step itself. "Built without ever seeing Greek data" and
+  equivalent phrasing corrected throughout to distinguish LOO coefficient
+  re-estimation (true, tested, stable) from candidate-selection independence
+  (not true, now tested, and closer than the original framing implied).
+  Note on scope: this is the "at minimum" fix the reviewer named, not the
+  stronger (and substantially more expensive) fix of repeating the full
+  18-candidate selection separately inside each of the 27 LOO training
+  folds — flagged as a further, not-yet-done robustness step if this paper
+  moves toward submission.
+
+**Fix 3: permanent-accumulation assumption tested against rolling-window and
+decayed alternatives.** `cum_excess_unemployment` is a floored, strictly
+non-decreasing running sum — on its own it cannot distinguish "genuine
+undiminished accumulated scarring" from simply encoding "how many years
+since the crisis began" (a trend/time proxy that would also always
+increase). Built and tested five alternative constructions from the same
+underlying per-year excess-unemployment series, all of which CAN fall over
+time unlike the permanent sum: trailing 3-, 5-, and 10-year rolling sums,
+and two exponentially-decayed running sums (20%/year and 10%/year decay).
+Each tested the same way as every other candidate (added individually to
+Model C-LTU, R&sup2;, Greece in-sample and out-of-sample residual,
+coefficient, p-value). Saved as `cumulative_hardship_rolling_decay_battery.csv`.
+  Results, sorted by how well each closes Greece's gap:
+  - **10-year rolling window**: R&sup2;=0.932, Greece OOS=&minus;0.47,
+    p=0.000023 — the *strongest* of all six by both R&sup2; and p-value,
+    and closer to a perfect out-of-sample fit than the permanent sum.
+  - Permanent sum (the preferred variable): R&sup2;=0.930, OOS=&minus;0.82,
+    p=0.000132.
+  - 10%/year decay: R&sup2;=0.934, OOS=&minus;1.90, p=0.000056 — strong fit,
+    but overshoots (more negative residual) more than the permanent sum.
+  - 20%/year decay: R&sup2;=0.931, OOS=&minus;1.78, p=0.000297 — same
+    pattern, slightly weaker.
+  - 5-year rolling window: R&sup2;=0.922, OOS=0.98, p=0.0418 — borderline,
+    clearly weaker.
+  - 3-year rolling window: R&sup2;=0.917, OOS=0.93, p=0.293 — **not
+    significant**. A short window loses the effect entirely.
+  **Honest reading**: this is good news for the underlying mechanism and
+  bad news for the specific "permanent, never-fading, must-accumulate-since-
+  exactly-2009" framing. A 3&ndash;5-year window is too short to capture
+  the effect — this rules out "it's just a short recent bad patch." But a
+  10-year rolling window (which literally forgets anything older than a
+  decade) fits *at least as well as*, and by some metrics better than, the
+  permanent since-2009 sum. That means the finding is better described as
+  **sustained excess unemployment over roughly the past decade**, not as
+  literal permanent, undiminished accumulation since the exact crisis start
+  year. This is a more defensible claim than the one it replaces — it's now
+  supported by multiple related constructions converging on the same
+  conclusion, not resting on one specific, somewhat arbitrary choice
+  (summing forever from a fixed 2009 baseline). "Permanent"/"never fades"/
+  similar absolutist language removed from all three documents; replaced
+  with "sustained over roughly a decade" framing, with the rolling-window
+  finding cited as supporting evidence.
+
+**Fix 4 [P2, wording]: AROPE citation overstatement corrected.**
+Bárcena-Martín, Pérez-Moreno &amp; Rodríguez-Díaz (2020)'s published
+abstract supports claims about poverty *depth*, *concurrence of dimensions*,
+and *different multidimensional profiles hidden behind similar AROPE
+rates* — it does not make a claim specifically about *duration*. "Duration"
+removed from the attribution to this source in `report.html` and
+`academic_paper_draft.html`; the severity/concurrence/hidden-profile claims,
+which the abstract does support, are kept. Separately, "Eurostat does not
+publish how AROPE's three components overlap at the household level" was
+narrowed to "the published aggregate tables used here do not reveal
+household-level overlap" — EU-SILC microdata can support overlap analysis
+under controlled research access, so the stronger absolute claim
+("Eurostat does not publish [ever, anywhere]") overstated what is actually
+a data-access limitation of this project's aggregate-only pipeline, not a
+limitation of Eurostat's data holdings in general.
+
+**Fix 5 [P2, wording]: chronology fix in the narrative companion.** "That's
+exactly why this chapter treats cumulative excess unemployment as the
+headline result..." (Chapter 8 method note) reversed the actual order of
+events — the evidentiary hierarchy (central mechanism vs. supporting
+evidence) was set from magnitude, LOO stability, and the replacement test,
+*before* the FDR correction was run late in this session. Corrected to
+"This confirms the chapter's treatment of cumulative excess unemployment as
+the headline result..." — the FDR check is confirmatory of an
+already-made editorial decision, not the basis for it.
+
+No files were changed before this analysis was run and reported in full;
+the reviewer's own note ("No files were changed during this review") is
+accurate and is why this fix-then-report sequence was possible without
+reverting anything.
+
+## Age-breakdown checkpoint (2026-08-20, fourth pass): does the aggregate
+## AROPE recovery conceal a generational redistribution?
+
+Triggered by an external review of a Greece in Figures article
+(`greeceinfigures.com/ftoxeia-kai-koinonikos-apokleismos`) making several
+specific age-group AROPE/AROP/deprivation claims. Per this project's
+standing discipline, none of the article's figures were trusted or
+integrated before independent verification against the live Eurostat API
+(`ilc_peps01n` for AROPE, `ilc_li02` for AROP, `ilc_mdsd11` for severe
+material & social deprivation, `ilc_lvhl11` for very-low-work-intensity;
+new script `39_age_breakdown_arope.py`). This is a checkpoint only — none
+of the three published documents were touched in this pass, per the
+reviewer's own explicit staging ("before integrating this, we should...").
+
+**Verification against the article's specific claims — all confirmed
+against live Eurostat data, to the decimal:**
+- Overall Greek AROPE: 26.9% (2024) → 27.5% (2025). Confirmed.
+- Young adults (18–24): 43.6% (2015, article said "about 44%") → 33.2%
+  (2025). Confirmed as improvement from an exceptionally bad starting
+  point, not deterioration.
+- Children (<18): 27.9% (2024) → 29.6% (2025). Confirmed exactly.
+- 65+ AROPE: 27.7% (2025). Confirmed exactly (not the article's 27.8%).
+- 65+ AROP: 18.8% (2024) → 20.9% (2025). Confirmed exactly.
+- 65+ deprivation: 12.8% (2024) → 14.1% (2025). Confirmed exactly.
+- Child AROP: 22.4% (2024) → 22.8% (2025). Confirmed exactly.
+- Child deprivation: 13.9% (2024) → 15.9% (2025). Confirmed exactly.
+- Overall deprivation: 14.0% (2024) → 14.9% (2025). Confirmed exactly.
+- EU27 65+ AROPE 2025: 18.8% (lowest of any EU age group). Confirmed
+  exactly. EU27 18–24 AROPE 2025: 26.3% (highest). Confirmed exactly.
+- Greece's 65+ AROPE (27.7%) vs. EU27's (18.8%): a 8.9-point gap. The
+  article's "about nine points" is confirmed.
+
+**Three of the article's own claims were checked and found inaccurate —
+the reviewer's suspicion was correct on all three:**
+1. **Age-label error.** The article's "860,000" figure is the AROPE
+   persons-count for `Y_GE60` (860.0 thousand, confirmed), not `Y_GE65`
+   (666.0 thousand) — the article mislabels a 60+ figure as 65+.
+2. **EU ranking error.** The article's heading says Greece ranks 3rd in
+   the EU on AROPE; the live 2025 data (all 27 member states) puts Greece
+   2nd, behind Bulgaria (29.0%) and ahead of Romania (27.4%) — matching
+   Eurostat's own news release, not the article's heading.
+3. **The "roughly eight percentage points since 2015" claim for 65+ AROPE
+   undersells it.** The actual Eurostat figure is 17.5% (2015) → 27.7%
+   (2025) = +10.2 points, not ~8. Full year-by-year trajectory pulled and
+   confirmed monotonic-ish with an acceleration in the last two years
+   (23.9% in 2023, 24.9% in 2024, 27.7% in 2025).
+
+**New finding, not in the article at all: a shift-share decomposition
+shows the elderly increase is not a contributing factor among several —
+it is single-handedly responsible for more than the entire national
+change.** Using each age group's population share (backed out from the
+AROPE persons-in-thousands and rate columns Eurostat publishes alongside
+each other, not assumed) and applying a standard two-term shift-share
+decomposition (within-group rate change vs. between-group population-
+composition shift) to the 2024→2025 national change:
+  - **Within-group (rate) effect: +0.598pp** — dominates the total change.
+  - **Between-group (demographic composition/aging) effect: +0.018pp** —
+    negligible. This directly answers the reviewer's step 5 ("separate
+    demographic aging from increased individual risk"): the population is
+    not meaningfully aging into a higher-risk bracket year over year; the
+    risk itself is rising within the 65+ group specifically.
+  - Per-group contribution to the +0.622pp reconstructed total: Y_LT18
+    +0.283pp, Y18-24 −0.088pp, Y25-49 −0.094pp, Y50-64 −0.154pp, **Y_GE65
+    +0.651pp**. Every working-age group's rate *improved* (negative
+    contribution); the elderly group's own rate increase is larger than
+    the entire net national change, meaning it is offsetting real
+    improvement everywhere else, not just adding to it.
+  Full table: `data/processed/age_breakdown_shiftshare_decomposition.csv`.
+
+**Structural note on very-low-work-intensity**: confirmed directly (not
+assumed) that Eurostat's `ilc_lvhl11` has no age breakdown at all above
+59 — the indicator is structurally defined only for the population aged
+0–59 (a household work-attachment concept). This independently confirms
+the reviewer's own point: the 65+ AROPE increase cannot mechanically
+involve the work-intensity component at all, since that component isn't
+defined for this age group. The 65+ increase must come from AROP, severe
+deprivation, or their (unobservable, per the AROPE-decomposition
+limitation already documented above) overlap — both of which did in fact
+rise for this group (AROP +2.1pp, deprivation +1.3pp, 2024→2025).
+
+**Not yet done, from the reviewer's own 6-step checklist**: household
+type, tenure, and sex robustness checks for the elderly jump (step 6) were
+only partially touched — a real gender gap is visible in the raw data
+(65+ AROPE 2025: women 30.9%, men 23.6%, a 7.3-point gap, not yet
+decomposed further) but a full household-type/tenure-controlled check was
+not run. Flagged as a further step, not yet integrated into any narrative
+claim.
+
+**Disposition**: this is a strong, verified, decision-ready checkpoint —
+every one of the article's checkable claims either confirmed to the
+decimal or specifically corrected, plus a genuinely new decomposition
+result the article didn't attempt. Per the explicit staging instruction,
+no integration into `report.html`, `narrative_companion.html`, or
+`academic_paper_draft.html` has been done yet — awaiting agreement on
+scope and placement (a candidate working title, "Recovery did not reach
+every generation," was proposed alongside the checkpoint request).
+
+### Bounded household-type follow-up (same day, before integration)
+
+Extended `39_age_breakdown_arope.py` with a tightly-scoped household-type
+check, per explicit instruction to clarify *who* among older people is
+most exposed without delaying the section further. Six items requested;
+all six checked directly against Eurostat, three came back as genuine
+findings and three came back as "this cross-tab doesn't exist, reported
+honestly rather than inferred."
+
+**Confirmed findings:**
+- **65+ AROPE by sex, over time** (native age x sex dimension, not
+  inferred): Greek women 65+ rose from 18.7% (2015) to 30.9% (2025),
+  +12.2pp. Greek men 65+ rose from 15.9% to 23.6%, +7.7pp. The gender gap
+  within Greece's own elderly population widened from 2.8pp (2015) to
+  7.3pp (2025). At EU27 level over the same period, women 65+ actually
+  *fell* slightly (20.6% -> 21.2%, roughly flat) and men stayed flat
+  (14.7% -> 15.8%) — Greece's elderly women are diverging sharply from
+  the EU pattern, not simply worse off in the same direction.
+- **Single 65+ households vs. 65+ couples** (`ilc_peps03n`/`ilc_li03`,
+  `hhcomp=A1_GE65` / `A2_GE1_GE65`, a genuine Eurostat household-
+  composition dimension): Greek single-elderly AROPE rose from 23.0%
+  (2015) to **38.7%** (2025), +15.7pp — the single largest generational
+  finding in this whole checkpoint. Greek 65+-couple AROPE rose from
+  18.2% to 26.2%, +8.0pp — real, but roughly half the single-elderly
+  increase. AROP-only tells the same story (single 65+: 20.2% -> 30.7%,
+  +10.5pp; couples: 10.9% -> 17.8%, +6.9pp). Cross-country context: Greek
+  single-elderly households started *below* the EU27 average in 2015
+  (23.0% vs. 26.9%) and are now *above* it (38.7% vs. 30.0%) — a genuine
+  reversal, not just a persistently bad starting position getting worse
+  in parallel with the rest of the EU.
+
+**Checked and found NOT to exist as genuine Eurostat statistics — not
+inferred, reported as absent:**
+- **Sex within single-elderly households.** `ilc_peps03n`/`ilc_li03` have
+  no `sex` dimension at all. `F1`/`M1` in the same tables are single-
+  person households of *any* age, not age-restricted — combining them
+  with `A1_GE65` would infer a cross-tab Eurostat doesn't publish, exactly
+  what the explicit instruction warned against. Not done.
+- **Age/household-type x tenure, as an outcome rate.** `ilc_lvho07c`
+  (housing-cost overburden by tenure) has no age or household-composition
+  dimension at all. `ilc_lvho02` does cross household composition with
+  tenure, but inspection of its actual values shows it is a population-
+  *distribution* table (what share of each household type lives in each
+  tenure category, summing toward 100), not an overburden-*rate* table —
+  using it to claim "single elderly owners face X% housing-cost
+  overburden" would not be a real Eurostat statistic. Tenure is excluded
+  from the household finding as a result, exactly as anticipated by the
+  original conditional instruction ("tenure only if Eurostat provides a
+  genuine age-by-tenure cross-tab").
+- **Formal sampling uncertainty.** Checked the raw SDMX-JSON `status`
+  field (where Eurostat would carry reliability/break flags) on every
+  query in this script directly — empty on all of them. No standard error
+  or confidence interval is exposed by the dissemination API for these
+  cells. The qualitative caution instead: Greece's single-65+ population
+  is real but modest (273 thousand people in 2025, per the AROPE
+  persons-in-thousands column already fetched), so year-over-year
+  single-year movements for this and smaller subgroups carry more normal
+  EU-SILC sampling variance than the national headline rate; the
+  decade-long trend is the load-bearing claim, the single-year 2024->2025
+  jump is corroborating, not independently definitive.
+
+**Revised story, per instruction, replacing the earlier draft framing**:
+Greece's aggregate AROPE increase in 2025 was not caused by population
+aging (shift-share composition effect: +0.018pp, negligible) and was not
+shared evenly across generations. Every working-age group's own rate
+improved. Children saw a real, recent reversal. Among people 65+ — whose
+own deterioration is large enough on its own to outweigh the working-age
+improvement — the burden is concentrated specifically among women and
+people living alone, with single-elderly households showing the single
+largest movement of any group or subgroup checked in this entire
+checkpoint (+15.7pp since 2015) and a reversal from below- to above-EU-
+average over the same span.
+
+**Title changed** per explicit instruction, from the earlier working title
+("Recovery did not reach every generation" — rejected because the
+shift-share result shows several groups *did* improve) to **"The national
+average hid a generational reversal"** (alternate offered: "Recovery
+reached generations unevenly").
+
+**Integration scope agreed, not yet built**: a supporting section in all
+three documents (age-trajectory chart; a 2024->2025 shift-share figure; a
+compact elderly AROP/deprivation/AROPE table; a short household-profile
+paragraph; a methods caveat covering the AROPE union limitation, survey
+uncertainty, and the structural absence of low-work-intensity measurement
+for 65+). Kept separate from the main country-year regression by design —
+this is a within-Greece distributional result, not another candidate
+explanation for the cross-country residual — but positioned to strengthen
+the AROPE-bridge framing and the Discussion.
+
+### Integration built (same day)
+
+All five requested components built into all three documents.
+`09_export_report_data.py` extended to load the six new `age_breakdown_*`
+CSVs and export five new bundle keys
+(`age_arope_trajectory_gr`, `age_shiftshare_2024_2025`,
+`age_elderly_table`, `age_65plus_by_sex`, `age_household_arope`);
+`inject_data.py` re-run to embed the refreshed JSON into `report.html`.
+
+- **`report.html`**: new subsection "The national average hid a
+  generational reversal" in Section 11 (the "scars beneath the gap"
+  section), placed after the migration subsection. A 5-series JS line
+  chart (age-group AROPE trajectories, 2015-2025, using the existing
+  `lineChart()` engine); a `barChart()` shift-share figure (each age
+  group's own contribution to the 2024-to-2025 national change); a
+  JS-populated compact table (65+ AROP/deprivation/AROPE/national-AROPE,
+  five years); a household-profile finding box (sex and household-type
+  breakdown, with EU comparison); a full Methods aside covering
+  construction, the three checked-and-absent cross-tabs, and the
+  qualitative uncertainty caveat. Verified in-browser: 5 chart paths, 10
+  bar-chart rects (5 bars + 5 hit targets), 5 populated table rows
+  matching the source CSVs exactly (2015 row: 13.7/7.1/17.5/32.4; 2025
+  row: 20.9/14.1/27.7/27.5).
+- **`narrative_companion.html`**: new Chapter 10, same title, inserted
+  between the migration chapter (now 9) and the pessimism chapter (now
+  11) — all subsequent chapters renumbered (13 chapters total, up from
+  12), masthead count and every cross-reference updated. Uses the
+  document's existing `.pull` big-number callout and `.proof` table
+  patterns (three tables: age-group 2015-vs-2025, the shift-share
+  breakdown, and the who's-most-exposed household table) rather than new
+  hand-plotted SVG charts, consistent with this document's established
+  mix of prose/pull-quote/proof-table and reserving hand-drawn charts for
+  its most central visual moments.
+- **`academic_paper_draft.html`**: new §6.8 "A generational reversal
+  behind the aggregate AROPE bridge," inserted before the
+  candidate-explanations-ruled-out subsection (renumbered to §6.9).
+  Includes a genuine SVG line chart (Figure 6, programmatically generated
+  from the same source data to guarantee coordinate accuracy, matching
+  this document's existing chart visual style exactly) and a data table
+  (Table 4). Two new Limitations bullets added to §8 covering the
+  descriptive/non-causal status of the finding and the three
+  checked-and-absent sub-breakdowns.
+
+All three re-verified (tag balance; in-browser console-error and
+chart-element checks) and republished to their existing Artifact URLs.
+
+### Follow-up: why 2015 and not further back (same day)
+
+User asked directly why the age-breakdown checkpoint starts in 2015 rather
+than matching the rest of the project's 2003 start. This had not actually
+been verified before being used as the range for all four series (AROPE,
+AROP, deprivation, low-work-intensity) — checked properly rather than
+just explained after the fact:
+
+- **AROP-by-age** (`ilc_li02`): no legacy/revised break at all, confirmed
+  by checking there is no "new" AROP series to splice against. Full
+  history available back to 1995.
+- **AROPE-by-age** (`ilc_peps01n`) and **deprivation-by-age**
+  (`ilc_mdsd11`): carry the same legacy/revised break as the rest of this
+  project's AROPE series, but the revised, age-broken-down version is
+  only disseminated from 2015 onward. Checked whether splicing legacy
+  (`ilc_peps01`/`ilc_mddd11`, back to 2003) with revised data would be
+  safe, the same way the project already splices the whole-population
+  series — it isn't: the 2015-2020 overlap shows an age-specific gap of
+  up to 7.3 points (18-24) and 5.4 points (65+), well past the ~1-3-point
+  gap already tolerated for the whole-population splice, and larger than
+  several of this checkpoint's own headline findings. Not spliced, per
+  direct instruction, and the check is now a permanent, reproducible part
+  of `39_age_breakdown_arope.py` (`age_breakdown_legacy_revised_overlap_check.csv`).
+
+**Resolution, per explicit instruction**: AROP-by-age extended to 2003
+(`YEARS_AROP = range(2003, 2026)`, fetched separately from the other three
+series, which stay 2015-2025). This surfaced a genuinely useful piece of
+context: Greek 65+ AROP was 29.4% in 2003, fell to a low of 11.6% in 2018,
+then rose for seven consecutive years to 20.9% in 2025 — still below its
+2003 level. The current elderly deterioration is a substantial partial
+reversal of an earlier, larger improvement, not unprecedented territory.
+Added as one explanatory paragraph in each document's Methods/method-note
+section (not a new chart, and not pulled into the main 2015-2025
+comparison), using close to the user's own supplied framing verbatim.
+`09_export_report_data.py` and `inject_data.py` re-run (bundle keys
+unaffected in shape, since `age_elderly_table` already filtered to
+specific years present in the data). All three re-verified and
+republished.
+
+## Reporting-style / cultural-premium robustness checkpoint (2026-08-20,
+## fifth pass) — new script `40_reporting_style_robustness.py`
+
+Anticipates the obvious reviewer critique directly rather than waiting for
+it: if Greece already reported the EU's highest subjective poverty before
+the crisis even began, maybe part of the gap is a stable reporting-style
+or cultural effect rather than something material conditions explain. Six
+tests run, matching the reviewer's own list exactly. Checkpoint only — no
+document changes made yet.
+
+**1. Pre-crisis level (2003-2008).** Greece averaged 50.6% subjective
+poverty, 2nd-highest of 26 EU countries with coverage (behind Bulgaria,
+68.6%). **A stable baseline component cannot be ruled out** — this is
+conceded directly, not argued away.
+
+**2. Raw gap widening, pre-crisis vs. current.** Greece's subjective-
+minus-AROP gap: 30.4pt (2003-2008) &rarr; 50.2pt (2019-2024), **+19.8pt**.
+Ranked against all 25 other EU countries with coverage in both windows,
+Greece's widening is **the largest of any country, by a wide margin** —
+median widening among the other 25 was actually **&minus;8.8pt** (most
+countries' gaps *shrank* over the same span, not grew). A pure stable-
+premium story predicts a roughly constant gap over time; this is close to
+the opposite pattern.
+
+**3. Formal difference-in-differences.** Two-way fixed-effects panel
+(country FE absorbs each country's own pre-existing baseline; year FE
+absorbs common EU-wide shocks), with a Greece x post-2009 interaction
+term, clustered by country: **coefficient +22.3 points, p&lt;0.0001**.
+Greece's own incremental shift after 2009, net of its own baseline and
+common EU-wide year effects, is large and highly significant. Noted
+explicitly as a limitation: with a single treated country against 26
+controls, country-clustered SEs are this project's standard convention
+but a real limitation of this specific design (not a fully rigorous
+synthetic-control or permutation-inference test).
+
+**4. Out-of-sample residual stability, current-conditions-only model
+(Model C-LTU, no cumulative-exposure term).** Mean residual 3.9pt, but
+**standard deviation 6.3pt** (larger than the mean) and a **linear trend
+of +1.8pt/year**. A stable premium would show a small, flat residual
+across years; instead the residual starts negative (model overpredicts
+Greece in 2015-2016), crosses zero around 2018, and grows to +11 to +14pt
+by 2021 and 2024 — the same trending pattern the cumulative-hardship
+checkpoint (above) already explained with accumulated labor-market
+exposure, not a constant offset.
+
+**5. Cross-indicator comparison — the most novel and diagnostic test.**
+If Greece's extremity were a generic response-style effect, it should
+show up equally on ALL self-reported wellbeing measures, not just
+financial ones. Checked against Eurostat's overall life-satisfaction
+series (`ilc_pw01`, 2018 and 2021-2024, the years with EU-wide coverage)
+alongside subjective poverty and financial expectations (already in this
+project's pipeline):
+  - **Subjective poverty ("can't make ends meet")**: Greece ranks **1st
+    of 27, every single year** (2018, 2021-2024).
+  - **Financial expectations** (pessimism about the household's own
+    finances next year): Greece ranks **1st of 27, every single year**.
+  - **General life satisfaction**: Greece ranks 4th, 6th, 3rd, 3rd, 2nd
+    worst across the same years — bad, but **not always the extreme, and
+    never as extreme as its financial-hardship ranks**.
+  Greece is not uniformly the most negative self-reporter in the EU on
+  everything — it is specifically and consistently the most negative on
+  financial/material self-assessment. That pattern is hard to reconcile
+  with a generic cultural-pessimism explanation and easier to reconcile
+  with something tied to actual financial circumstances specifically.
+
+**6. Institutional trust.** Not re-tested — Eurostat's holdings remain a
+single year (2013), already documented elsewhere in this project as
+insufficient for any panel or before/after comparison.
+
+**Conclusion, closely matching the framing proposed alongside the request
+(not just adopted uncritically — each piece checked against the actual
+numbers above before accepting it)**: Greece did enter the crisis with
+unusually high reported difficulty (test 1), so a stable reporting
+component cannot be fully ruled out for the *baseline* level. But the
+crisis-era *increase* was itself the largest widening of any EU country
+(tests 2-3), the model residual is unstable and trending rather than flat
+(test 4), and the extremity is specific to financial self-assessment
+rather than general wellbeing (test 5) — three independent pieces of
+evidence, not one, all pointing the same direction. Culture may set part
+of Greece's baseline; it does not explain the crisis-era movement, and
+the fact that accumulated labor-market exposure independently closes most
+of the residual (the cumulative-hardship checkpoint, above) is additional,
+separate evidence against a purely cultural reading of the *current* gap.
+
+**Disposition (superseded by the second-pass battery below)**: strong,
+decision-ready checkpoint, not yet integrated into any of the three
+published documents. Natural placement, per the original framing: a
+robustness/context subsection (e.g. "Is Greece always high because
+Greeks report hardship differently?"), positioned after the main
+cross-country residual/scorecard material as an anticipated-critique
+response, not as a new primary finding.
+
+---
+
+### Reporting-style checkpoint, second pass: full robustness battery + literature review (2026-08-20)
+
+Requested explicitly before integration: a balanced-coverage audit, a full
+DiD robustness battery (event study, alternative treatment dates,
+country-placebo/randomization inference, leave-one-control-out, a
+periphery comparator, synthetic control), standardized (not just ranked)
+cross-indicator deviations, residual-trend specification sensitivity, and
+a four-strand literature review. Implemented in `scripts/41_reporting_style_robustness_v2.py`
+(Parts 1-2) and `scripts/42_reporting_style_robustness_v3.py` (Parts 3-4).
+Every item below was run, not assumed.
+
+#### Part 1 — Balanced-coverage audit for "2nd of 26, 2003-2008"
+
+The first-pass ranking used an **unbalanced** panel (countries with
+however many years of 2003-2008 data they happened to have). Audited
+directly: EU-SILC's true "gentlemen's agreement" launch group — the only
+six countries with full 2003-2008 (6-year) coverage — is **AT, DK, LU,
+BE, EL, IE**. This is confirmed independently by Eurostat's own EU-SILC
+metadata (see literature section below), not just inferred from the data.
+
+  - **Full-coverage-only, n=6 (2003-2008)**: Greece ranks **1st of 6**
+    (50.6%, vs. Ireland 23.9%, Belgium 17.7%, Austria 11.3%, Denmark 7.6%,
+    Luxembourg 6.6%).
+  - **2005-2008 balanced, n=25**: Greece ranks **2nd of 25** (52.6%,
+    behind Bulgaria 68.6%).
+  - **2007-2008 balanced, n=26 (near-complete EU coverage)**: Greece
+    ranks **2nd of 26** (53.5%, behind Bulgaria 65.9%).
+
+All three balanced windows **confirm rather than undermine** the original
+claim — Greece was already at or near the top of the EU distribution
+before the crisis regardless of which properly-balanced panel is used.
+The "2nd of 26" framing understates it slightly: on the one panel with
+genuinely complete 2003-2008 coverage, Greece was 1st, not 2nd.
+
+#### Part 2 — Difference-in-differences robustness battery
+
+All built on a 2007-2025 panel (27 countries, 19 years, n=510 — chosen
+because Part 1 established this is the first window with near-universal
+coverage).
+
+- **Event study** (Greece's year-specific deviation from its own 2008
+  baseline, country + year FE): flat and non-significant pre-2009
+  (2007 coefficient &minus;0.96, p=0.17 — no pre-existing differential
+  trend), then rises sharply and monotonically from 2009 onward, crossing
+  significance by 2011 (p&lt;0.01) and plateauing at 24-29pt from 2015
+  onward. A textbook clean pre-trend/post-break pattern.
+- **Alternative treatment dates** (2009/2010/2011): coefficient stable
+  across all three (20.3, 21.0, 22.3 points), all p&lt;1e-70 — the result
+  does not depend on the exact year chosen.
+- **Country-placebo / randomization inference**: every one of the 27 EU
+  countries treated in turn as if it were "Greece," same model. Greece's
+  true coefficient (+20.3) is the **largest of all 27**, rank 1 of 27 —
+  **empirical p-value = 0.037**. This randomization-inference p-value is
+  the one to trust; the naive cluster-robust p-value (~1e-77) is not
+  credible with a single treated cluster and is reported only for
+  completeness.
+- **Leave-one-control-country-out**: dropping each of the 26 control
+  countries in turn, the Greece x post-2009 coefficient stays in a tight
+  range [19.9, 20.6], all p&lt;0.05 — not driven by any single comparator.
+- **Periphery-only comparator** (Greece vs. Italy, Spain, Portugal,
+  Cyprus, Malta): coefficient +24.5 (p&lt;0.0001) — if anything larger
+  than against the full EU panel, so restricting to Greece's closest
+  structural peers does not weaken the result.
+- **Synthetic control**: first attempt (donor pool = the 5 countries with
+  full 2003-2008 **and** full post-period coverage: AT/BE/DK/IE/LU)
+  **failed outright** — RMSE 25.32pt, optimizer collapsed to ~100%
+  Ireland, because none of these wealthy comparators resemble Greece's
+  high pre-crisis level. Reported as a failed/null result, not hidden,
+  and root-caused to donor-pool composition, not an optimizer bug.
+  **Corrected version**, matching on 2007-2008 instead (per Part 1's own
+  finding that this is the first near-universal-coverage window, opening
+  the donor pool to 25 countries): RMSE&asymp;0.00 pre-period fit, with
+  sensible weights on higher-hardship Southern/Eastern European
+  comparators (Bulgaria 35.8%, Portugal 25.4%, Cyprus 21.4%, Hungary
+  9.9%, Latvia 5.4%, Slovakia 2.1%). Post-2009, actual and synthetic
+  Greece diverge from ~2.3pt (2009) to 30-40pt by 2015-2025 (mean
+  post-period gap 24.75pt) — an independent, non-regression-based
+  confirmation of the DiD result. Both attempts are now reproducible
+  directly from `scripts/41_reporting_style_robustness_v2.py` (the
+  corrected version was initially run ad hoc and has since been folded
+  into the script itself, per this project's standing discipline that
+  every result must be reproducible from a numbered script).
+
+#### Part 3 — Standardized cross-indicator deviations
+
+The first-pass check compared EU *ranks* across subjective poverty,
+financial expectations, and life satisfaction. Requested: standardized
+(z-score) magnitudes, not just ranks, sign-harmonized so all three point
+the same direction (positive = worse than the EU average). For the years
+common to all three series (2018, 2021-2024):
+
+  - Subjective poverty: average |z| = **3.76**
+  - Financial expectations: average |z| = **3.20**
+  - Life satisfaction: average |z| = **1.17**
+
+Greece's deviation on the two financial/material indicators is roughly
+**3x larger in standard-deviation terms** than its deviation on general
+life satisfaction — the same "financial-domain-specific, not generic
+pessimism" conclusion as the rank-based test, now quantified rather than
+just ordinal. If this were a generic response-style effect, all three
+z-scores should be comparably large; they are not.
+
+#### Part 4 — Residual-trend specification sensitivity
+
+Requested: confirm the +1.8pt/year residual trend (test 4 in the
+first-pass checkpoint, Model C-LTU) isn't an artifact of that specific
+model choice, and confirm the residuals are genuinely leave-Greece-out
+predictions each year rather than per-year refits.
+
+**Methodology, stated explicitly** (matching the user's request): one
+model is fit on the other 26 countries' pooled panel only — Greece is
+excluded from estimation entirely — and that single fitted model is used
+to predict Greece's value in every year shown. This is a genuine
+out-of-sample prediction throughout: not a fresh per-year refit, and a
+specification that never sees Greece's own data at any point.
+
+  | Model | Predictors | Mean residual | Std. dev | Trend (pt/yr) |
+  |---|---|---|---|---|
+  | A (basic) | unemployment, income, deprivation, AROP | 25.6 | 5.9 | **+1.86** |
+  | C (+housing/arrears/unexpected) | + housing cost overburden, arrears, unexpected expenses | 11.6 | 4.2 | **+0.80** |
+  | C-LTU (long-term unemployment) | as C, LTU rate replacing headline unemployment | 3.9 | 6.3 | **+1.82** |
+
+All three specifications show a **positive, non-trivial, non-flat**
+trend — the "not a stable premium" finding survives specification
+changes. The exact magnitude varies (Model C's smaller +0.80pt/yr trend
+is plausibly because its housing/arrears variables already absorb part
+of the crisis-era arc; swapping in long-term unemployment for headline
+unemployment removes that absorption and re-exposes a trend similar to
+the basic model). Reported honestly rather than cherry-picking the
+strongest spec: the finding is robust in direction and significance, less
+so in exact magnitude.
+
+#### Literature review (four strands, as requested)
+
+**Strand 1 — subjective-poverty / financial-strain measurement.**
+Eurostat, *"Living conditions in Europe — subjective poverty statistics"*
+(Statistics Explained, data extraction Oct 2025) and the companion
+*Glossary: Subjective poverty*: subjective poverty is derived from the
+EU-SILC "ability to make ends meet" variable (6 categories; "with great
+difficulty" / "with difficulty" = subjectively poor) — a genuinely
+distinct construct from income-based AROP, not a redundant proxy. Useful,
+directly citable, out-of-project confirmation: in the latest published
+EU-wide figures, **Greece's subjective poverty rate is 66.8% against an
+AROP rate of 19.6% — a 47.2-point gap, the largest such gap of any EU
+country** in Eurostat's own headline statistics. That is an independent
+replication of this project's central Part I finding from an entirely
+separate, official, most-recent-year source. European Commission, DG
+Employment/Social Affairs, *"Beyond Income Poverty: Subjective Poverty
+and Indebtedness"* (2024, using 2020 EU-SILC data): frames subjective
+poverty as capturing perceived income adequacy for necessary expenses,
+distinct from and complementary to income poverty, alongside related
+measures (over-indebtedness, housing/food/transport/loan burden).
+
+**Strand 2 — cross-country response-style / anchoring-vignette
+literature.** The specific unipd.it repository page could not be
+accessed directly (403 Forbidden); its likely author, Omar Paccagnella
+(University of Padua, Dept. of Statistical Sciences), works on exactly
+this literature. The representative peer-reviewed result, found and
+verified independently: Angelini, Cavapozzi, Corazzini & Paccagnella
+(2014), *"Do Danes and Italians Rate Life Satisfaction in the Same Way?
+Using Vignettes to Correct for Individual-Specific Scale Biases,"*
+*Oxford Bulletin of Economics and Statistics*. Finding: response-scale
+differences explain much of the raw cross-country variation in reported
+life satisfaction, and vignette-corrected country rankings differ from
+raw rankings — i.e., this general concern (some of cross-country
+variation in self-reports is response style, not substance) is real and
+documented, which is exactly why this robustness section is worth
+running. A closely related finding worth flagging explicitly, because it
+cuts **against** a "Greek cultural pessimism inflates the numbers"
+reading: vignette-corrected studies of childhood hardship exposure find
+that lived hardship causes people to **adopt lower subjective standards**
+(adaptation) — naive, non-vignette-corrected associations between
+hardship and self-reported distress are biased **toward finding a
+muted, not inflated, response**. If this adaptation mechanism applies,
+it would work against Greece's high and rising subjective-poverty
+numbers being a reporting-style artifact — adaptation would, if
+anything, cause under-reporting of accumulated hardship over time, not
+over-reporting.
+
+**Strand 3 — pre-crisis Greek conditions.** Katsikas, Karakitsios,
+Filinis & Petralias (2015), *"Social Profile Report on Poverty, Social
+Exclusion and Inequality Before and After the Crisis in Greece,"*
+Crisis Observatory / ELIAMEP (FRAGMEX research programme). Covers
+1995-2008 as baseline and 2009-2013 as crisis impact. Findings: poverty
+(especially *anchored* poverty) rose sharply after 2009; the contribution
+of unemployed-headed households to aggregate poverty rose sharply while
+pensioner-headed households' contribution fell (the elderly were
+relatively protected). This independently confirms genuine material
+deterioration post-2008, not just a reporting shift, and documents that
+Greece's pre-crisis (1995-2008) poverty profile was already comparatively
+elevated within the EU — consistent with this project's own pre-crisis
+finding. Zambarloukou (2015), *"Greece After the Crisis: Still a South
+European Welfare Model?"* *European Societies*, 17(5), 653-673: frames
+Greece's welfare state as a structurally distinct "South European" model
+(thin universal safety net, heavy reliance on family/informal support)
+both before and after the crisis, arguing the crisis triggered radical
+reform but not a full model change. Supports reading Greece's elevated
+baseline as rooted in genuine structural/institutional features of its
+welfare state, not a survey-response quirk.
+
+**Strand 4 — crisis movement vs. persistent baseline.** The specific
+document requested, SWD(2013) 38, turned out on direct retrieval to be a
+general EU-wide document — *"Evidence on Demographic and Social Trends:
+Social Policies' Contribution to Inclusion, Employment and the Economy"*
+(accompanying the Social Investment Package Communication) — not a
+Greece-specific crisis assessment. Reported honestly rather than
+force-fitted: it does not appear to contain Greece-specific crisis
+analysis, and the ELIAMEP and Zambarloukou sources above (Strand 3)
+already cover this strand directly with Greece-specific pre/post-2008
+data, so no substitute document was pursued further.
+
+**EU-SILC metadata caution, checked directly** (`ec.europa.eu/eurostat/cache/metadata/en/ilc_sieusilc.htm`,
+as specifically flagged): confirms, independently of this project's own
+data-driven coverage audit, that "the EU-SILC project was launched in
+2003 based on a 'gentlemen's agreement' in six Member States (Belgium,
+Denmark, Greece, Ireland, Luxembourg and Austria) and Norway" — an exact
+match to Part 1's own empirically-derived full-coverage-six. The metadata
+also documents a real caveat worth carrying forward: *"there were
+disruptions in series between 2001 and 2005"* during the transition from
+the preceding ECHP survey to EU-SILC, and several other EU-15 countries
+(Germany, Netherlands, UK) plus nine of the ten 2004 accession countries
+did not join until 2005 (with a retrospective-2004-data condition). This
+is exactly why Part 1's three-window balanced-panel approach — rather
+than trusting the unbalanced 2003-2008 average at face value — was the
+right check to run.
+
+#### Final synthesized conclusion (per the user's twice-refined wording, adopted verbatim)
+
+> Greece entered the crisis with an unusually high reported level of
+> financial difficulty, so a persistent country-specific reporting
+> component cannot be excluded. But a stable reporting tendency cannot
+> explain the subsequent deterioration and persistence by itself. The
+> appropriate question is not whether Greeks are culturally pessimistic,
+> but how much of the baseline and later movement remains after
+> comparable material conditions and accumulated exposure are
+> considered.
+
+Every individual test in this battery is consistent with that wording:
+the baseline concession (Part 1) is real and not argued away; every
+crisis-era test (Part 2's six independent checks, Part 3, Part 4) points
+the same direction and survives every robustness variant tried; and the
+literature review supports a structural/institutional reading of the
+baseline (Strand 3) over a cultural-pessimism one, while flagging that
+the general response-style concern this section exists to address
+(Strand 2) is real in the literature but, if anything, cuts against
+rather than for a reporting-artifact explanation of Greece's specific
+pattern.
+
+**Disposition**: coverage audit, full DiD battery, standardized
+cross-indicator comparison, residual-trend specification sensitivity,
+and the four-strand literature review are now all complete and logged.
+This is now a fully decision-ready checkpoint. Per the user's explicit
+instruction, integration into the three published documents
+(`report.html`, `narrative_companion.html`, `academic_paper_draft.html`)
+— positioned after the cumulative-hardship section as a "Could this
+still be reporting culture?" robustness challenge — awaits explicit
+go-ahead before proceeding.
+
+**Integration complete (2026-08-20)**: approved by the user ("yes
+integrate") and applied to all three published documents, each in its
+own voice, in the position specified &mdash; after the cumulative-hardship
+material, as a robustness/context section rather than a new headline
+finding.
+
+  - **`report.html`**: new section `id="reporting-culture"`, "Could this
+    still be reporting culture?", inserted after the Answer-to-Question-2
+    box and before the Literature section; added an unnumbered TOC entry.
+    Four subsections mirror the checkpoint's six tests (pre-crisis level,
+    DiD/event-study/placebo/synthetic-control battery, cross-indicator
+    comparison, literature), each with a `finding` box and a closing
+    `method-aside` pointing to scripts 40&ndash;42.
+  - **`narrative_companion.html`**: new Chapter 13, "Is this just how
+    Greeks talk?", inserted between "What wasn't it" (Ch. 12) and
+    "Landing" (renumbered Ch. 13&rarr;14); the table-of-contents preview
+    paragraph and Landing's own chapter number were both updated to stay
+    consistent. Prose-only, matching the chapter's existing narrative
+    voice, with one closing method note.
+  - **`academic_paper_draft.html`**: new &sect;6.10, "Reporting
+    heterogeneity: a robustness check against cultural-premium
+    explanations," inserted after the RQ2 answer callout, before &sect;7
+    (Discussion); the &sect;1 "seven stages" roadmap paragraph was
+    updated to name it. Six new references added to &sect;references in
+    alphabetical order (Angelini et al. 2014; Cameron &amp; Miller 2015,
+    cited for the cluster-robust-inference caveat already present in the
+    checkpoint's own methodology; two Eurostat citations for the EU-SILC
+    metadata and the independent subjective-poverty replication figure;
+    Katsikas et al. 2015; Zambarloukou 2015). Closes with a "Robustness
+    verdict" callout using the user's twice-refined conclusion wording,
+    explicitly scoped as a robustness check that would only be elevated
+    to a primary finding if the baseline reporting component proved
+    substantial and stable &mdash; which this evidence does not indicate.
+
+All three renders verified directly in-browser (DOM inspection: correct
+heading text, table row counts, finding-box counts, TOC/roadmap links,
+reference-list entries; zero console errors on any of the three pages).
+A pre-existing, unrelated cross-reference bug was noticed in passing
+during this pass (academic paper &sect;1 cites "&sect;6.8, income
+inequality" where it should read "&sect;6.9") and flagged as a separate
+background task rather than folded into this change. Note: this bug was
+later superseded and fixed directly (see 2026-08-20 work-effort-squeeze
+entry below), since the correct target number changed to &sect;6.10 once
+a new subsection was inserted before it.
+
+---
+
+### Work-effort-squeeze checkpoint: user-built, reviewed, corrected, and integrated (2026-08-20)
+
+Prompted by a posted chart showing Greece working the most hours in the
+EU (2025) alongside falling real income &mdash; the user's own hypothesis:
+does working the most while earning the least per hour also feed the
+subjective-poverty gap? The user built and ran the checkpoint
+independently (`scripts/43_work_effort_squeeze.py`), then shared full
+results for review.
+
+**Review process**: every headline number in the user's write-up was
+independently re-derived from the checkpoint's own output CSVs rather
+than taken on trust &mdash; hours/pay levels and ranks, the FDR-corrected
+model battery, the AROP-bridge gap-closing figures, the within-country
+robustness (country-FE and first-difference nulls), the LOO stability
+range, and the redundancy-with-cumulative-unemployment check. All
+reproduced exactly. One real inconsistency was found and subsequently
+fixed by the user: the "employed AROP ranking only sixth" / "AROPE
+second" claims in the original write-up were computed from the broader
+`EMP` (all employed, including self-employed) population, not the `SAL`
+(salaried-only) population the accompanying table displayed &mdash; salaried
+AROP rank is actually 17th of 27, not 6th. This strengthens rather than
+weakens the finding: salaried Greeks look completely ordinary on official
+income poverty and still rank 1st on subjective poverty. A second,
+minor correction from the user during review: employed-population AROPE
+is tied 2nd (Greece and Romania both 16.0%, behind Bulgaria's 16.3%),
+not 3rd &mdash; a rank-without-tie-handling artifact in the reviewer's own
+quick check, confirmed via `rank(method="min")`.
+
+**Key results** (salaried workers, 2025 unless noted): AROP 5.7% (Greece)
+vs. 6.5% (EU27), rank 17th of 27 &mdash; unremarkable. AROPE 12.5% vs. 9.2%,
+rank 3rd. Subjective poverty 59.5% vs. 13.6%, rank 1st of 27 by the
+widest margin in the EU. Hours (2024): 39.8/week all employed (highest in
+EU, EU27 36.0), 41.1 full-time (highest, EU27 38.8), 1,900 annual hours
+per employee (4th-highest, EU27 1,547), salaried-only weekly hours still
+7th-highest (ruling out self-employment composition as the sole driver).
+Hourly compensation, PPS-adjusted: 14.2, lowest in the EU (EU27 29.6).
+Composite "work-effort squeeze" index (relative hours &divide; relative PPS
+hourly pay, EU=100): 230.5, highest in the EU. Real hourly compensation
+remains 27.8% below its 2008 level. Added to Model C-LTU, FDR-corrected
+across a pre-specified 9-candidate family: coefficient 0.078, raw
+p=0.00048, FDR-adjusted p=0.0030; Greece's out-of-sample residual moves
+from +3.9 (rank 6/27) to &minus;3.5 (rank 21/27); stable and significant
+across all 27 leave-one-country-out refits. Alone next to AROP, it closes
+8.8 of the raw 47.6-point gap. A matched national-accounts employee-hours
+version also survives FDR correction (p=0.0063). An unreported-in-the-
+original-writeup hours&times;low-pay interaction term is independently
+significant (coefficient 1.52, p=0.024) but was excluded from the
+pre-specified FDR family and carries a maximum VIF of 9.05 &mdash; kept as
+exploratory corroboration only, never as a headline result.
+
+**Critical limitation, surfaced by the user and independently confirmed**:
+the squeeze fails every within-country dynamic test &mdash; country fixed
+effects (p=0.34), first differences (p=0.73), and Greece's own
+2010&ndash;2024 time-series correlation with subjective poverty (r=&minus;0.03,
+p=0.92). This is genuine, FDR-corrected, cross-country structural
+evidence &mdash; a stable fact about where Greece sits relative to the rest
+of the EU &mdash; not a dynamic mechanism explaining year-to-year movement
+the way long-term or cumulative excess unemployment do. Agreed
+disposition: integrate as supporting evidence, explicitly excluded from
+the scorecard, framed as "who Greece is structurally, not what changed
+year to year."
+
+**Integration, applied to all three published documents**, each keeping
+the agreed salaried-only framing and structural/dynamic distinction:
+
+  - **`report.html`**: new h4 subsection "Working the most hours, earning
+    the least per hour" within Section 11, after the financial-pessimism
+    subsection and before the closing eight-country comparison. Two
+    tables (salaried AROP/AROPE/subjective comparison; hours vs. hourly
+    compensation for a handful of representative countries) replace what
+    would otherwise have been an unwired chart placeholder &mdash; this
+    report's charts are driven by an embedded JS data blob that a
+    checkpoint script's CSVs don't automatically populate, so a
+    `data-table` card was used instead, consistent with how several
+    other Section 11 findings already present.
+  - **`narrative_companion.html`**: new Chapter 12, "Working the most,
+    earning the least," inserted between "Hardship extrapolated" (Ch.
+    11) and "What wasn't it" (renumbered Ch. 12&rarr;13); "Is this just
+    how Greeks talk?" and "Landing" renumbered to Ch. 14 and 15. The
+    roadmap paragraph and all internal chapter cross-references were
+    checked and updated; none pointed past the insertion point
+    incorrectly.
+  - **`academic_paper_draft.html`**: new &sect;6.9, "Hourly work effort
+    and reward: a structural mechanism that isolates the puzzle from
+    unemployment," inserted after &sect;6.8 and before the
+    candidates-ruled-out section (renumbered &sect;6.9&rarr;6.10) and the
+    reporting-heterogeneity robustness section (renumbered
+    &sect;6.10&rarr;6.11). A discussion point was added to &sect;7.2 tying
+    the salaried-only result into the paper's broader argument (two
+    distinct, population-specific expressions of the same underlying
+    claim, not one unified mechanism). A new &sect;8 limitations bullet
+    states the cross-sectional-only caveat explicitly. The &sect;1
+    roadmap paragraph was updated to name &sect;6.9 and to fix, in the
+    same edit, the pre-existing stale "&sect;6.8, income inequality"
+    cross-reference &mdash; now correctly pointing to &sect;6.10, the
+    number it needed to become once this insertion shifted the
+    candidates-ruled-out section.
+    **Concurrency note**: a background task requesting the old,
+    now-incorrect fix ("&sect;6.8"&rarr;"&sect;6.9") had already been
+    started by the user in a separate session before this insertion was
+    planned; it could not be withdrawn once started. Its target fix is
+    superseded by the correct one applied here. If that separate session
+    completes and writes a conflicting edit to the same file, the two
+    should be reconciled by re-checking &sect;1's roadmap sentence points
+    to &sect;6.10, not &sect;6.9.
+
+All three documents verified directly in-browser (DOM inspection: table
+row counts, chapter/subsection sequencing with no gaps or duplicates,
+correct cross-reference numbers, zero console errors on any page).
+
+**Post-integration review, two fixes (2026-08-20)**: the user checked all
+three published documents directly and confirmed the concurrency risk
+above did not materialize &mdash; the academic roadmap correctly reads
+&sect;6.9 (work effort), &sect;6.10 (inequality), &sect;6.11 (reporting
+style). Two further issues found and fixed:
+
+1. **Overstated claim, academic paper &sect;1 roadmap.** "a structural,
+   cross-country-only mechanism that isolates the puzzle from
+   unemployment status entirely" overstated the &sect;6.9 evidence as a
+   demonstrated causal mechanism, when it is cross-country structural
+   evidence that the puzzle persists among salaried workers, not proof
+   that unemployment is irrelevant. Reworded to the user's own
+   suggestion: "supporting cross-country evidence that the puzzle
+   persists even among salaried workers (&sect;6.9, hourly work effort
+   and reward)."
+2. **Pre-existing, unrelated numerical-language contradiction**, found
+   by the user in the age-breakdown material: the EU27 65+ comparison
+   line described EU women's AROPE (20.6%&rarr;21.2%, actually +0.6pp) as
+   having "fell slightly" and EU men's (14.7%&rarr;15.8%, actually
+   +1.1pp) as having "stayed flat" &mdash; both numbers show a rise, not a
+   fall or flat line. This sentence had been present since the original
+   age-breakdown checkpoint, predating the work-effort-squeeze
+   integration, and existed identically in all three published
+   documents (`report.html`, `academic_paper_draft.html`,
+   `narrative_companion.html`). Fixed in all three to state both groups
+   "rose only modestly by comparison" with the correct numbers, keeping
+   the underlying point intact &mdash; Greece's elderly women are
+   diverging sharply from the EU pattern, since Greece's own rise
+   (+12.2pp) dwarfs the EU's (+0.6pp), not because the EU trend runs in
+   the opposite direction.
+
+Confirmed no remaining instances of the incorrect wording in any of the
+three files after the fix.

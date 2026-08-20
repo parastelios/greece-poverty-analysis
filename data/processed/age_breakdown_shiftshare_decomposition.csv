@@ -1,0 +1,6 @@
+age,population_share_2024_pct,population_share_2025_pct,arope_rate_2024,arope_rate_2025,within_group_contribution_pp,composition_contribution_pp
+Y_LT18,16.64,16.41,27.9,29.6,0.283,-0.065
+Y18-24,6.74,6.97,34.5,33.2,-0.088,0.08
+Y25-49,31.37,30.77,25.4,25.1,-0.094,-0.154
+Y50-64,21.99,22.17,28.2,27.5,-0.154,0.05
+Y_GE65,23.25,23.68,24.9,27.7,0.651,0.107
