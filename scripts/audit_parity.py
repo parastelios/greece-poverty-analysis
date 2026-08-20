@@ -89,6 +89,29 @@ for _, r in m.iterrows():
         if not found:
             problems.append((r.id, r.element, r.claim[:58], doc, need))
 
+FORBIDDEN = {
+    "only-precrisis-gdp": [
+        "only eu country below its own pre-crisis",
+        "only eu country that never rejoins",
+        "only one that never rejoins the pack",
+    ],
+    "stale-reproduction": [
+        "end-to-end re-acquisition pipeline remains incomplete",
+        "end-to-end re-acquisition from a clean checkout is still being completed",
+        "automated re-fetching of every raw input is not yet complete",
+    ],
+    "salaried-hours-overclaim": [
+        "salaried workers who work the eu's longest hours",
+        "salaried workers &mdash; who work the eu's longest hours",
+    ],
+}
+for doc, raw in raws.items():
+    low = raw.lower()
+    for rule, phrases in FORBIDDEN.items():
+        for phrase in phrases:
+            if phrase in low:
+                problems.append(("forbid", rule, phrase, doc, "remove"))
+
 print(f"Audited {len(m)} claims x 3 documents\n")
 if problems:
     print(f"{len(problems)} claim/document pairs need a manual check:\n")

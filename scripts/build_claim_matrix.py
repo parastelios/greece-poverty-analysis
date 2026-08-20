@@ -49,7 +49,7 @@ C = [
  ("6.7", "Accumulation", "Aggregate variable, individual-level literature: ecological-inference gap", "level-of-analysis caveat", "n/a", "limitation", "", "n/a", "body","body","note"),
  ("6.8", "Accumulation", "AROP-threshold cumulative shortfall tested and NULL", "p=0.645", "27 EU", "core (null)", "the most anticipated candidate", "cumulative_hardship_checkpoint.csv", "body","body","body"),
 
- ("7.1", "What it looked like", "Greece is the only EU country below its own pre-crisis GDP peak", "-11.2%, 16 yrs; EU median recovery 3 yrs", "27 EU, 2008-2024", "core", "Finland/Luxembourg are different cases", "recovery_trajectory.csv", "body","body","body"),
+ ("7.1", "What it looked like", "Greece has the EU's deepest and longest unresolved pre-crisis GDP shortfall", "-11.2%, 16 yrs; EU median recovery 3 yrs", "27 EU, 2008-2024", "core", "Finland remains 2.3% below 2008; Luxembourg is below a recent 2021 peak", "recovery_trajectory.csv", "body","body","body"),
  ("7.2", "What it looked like", "Real wages remain furthest below 2008 of any EU country", "-31.8%", "27 EU, 2024", "descriptive", "level-only; no independent model power", "real_wage_idx2008.csv", "body","body","body"),
  ("7.3", "What it looked like", "Highest wage-adjusted price pressure in the EU, every category", "1st or 2nd of 27", "27 EU, 2024", "descriptive", "3 yrs coverage; no model test possible", "price_pressure.csv", "body","note","body"),
  ("7.4", "What it looked like", "Mortgage-free owners are overburdened at the EU's highest rate", "25.7% vs next 14.0%", "27 EU, 2024", "descriptive", "subcomponent of a variable already in the model", "housing_tenure.csv", "body","note","body"),
@@ -68,13 +68,21 @@ C = [
 
  ("9.1", "Meaning", "AROP should not be read alone during a national collapse", "recommendation", "n/a", "core", "generalizes better than any Greek finding", "n/a", "body","body","body"),
  ("9.2", "Meaning", "All results are associational, from country-level aggregates", "limitation", "n/a", "limitation", "", "n/a", "body","body","body"),
- ("9.3", "Meaning", "Results reproduce from the archive; full re-acquisition not yet end-to-end", "13 of 15 byte-identical", "n/a", "limitation", "", "00_fetch_missing_raw.py", "note","note","note"),
+ ("9.3", "Meaning", "Results reproduce from the archive and through an isolated end-to-end re-acquisition", "13 of 15 byte-identical", "n/a", "limitation", "live Eurostat revisions mean a fresh pull is not byte-identical to the archived vintage", "Makefile reproduce / 00_fetch_missing_raw.py", "note","note","note"),
  ("9.4", "Meaning", "FDR does not make sequential specifications pre-specified", "four-tier evidence taxonomy", "n/a", "limitation", "", "n/a", "body","body","note"),
 ]
 
 cols = ["id","element","claim","number","population_window","status","caveat","source",
         "report","paper","narrative"]
 df = pd.DataFrame(C, columns=cols)
+importance_by_element = {
+    "The puzzle": "spine", "Shrinking ruler": "spine", "AROPE bridge": "spine",
+    "Current hardship": "spine", "Duration": "spine", "Accumulation": "spine",
+    "What it looked like": "supporting", "Alternatives": "supporting",
+    "Meaning": "spine",
+}
+df.insert(3, "canonical_wording", df["claim"])
+df.insert(4, "importance", df["element"].map(importance_by_element))
 df.to_csv("../docs/claim_matrix.csv", index=False)
 
 print(f"{len(df)} canonical claims across {df.element.nunique()} backbone elements\n")

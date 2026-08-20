@@ -4034,7 +4034,27 @@ the narrative into academic vocabulary. **Parity is now 137 of 137.**
 `make verify` now runs 41 checks (up from 36), including the nested-CV residual,
 Greece's prediction-error rank, and the within-fold FDR count.
 
-**Not started, awaiting confirmation**: the P2 editorial restructuring — reordering
-the technical report around the nine-element backbone, rebuilding the paper and
-narrative from that structure, consolidating Section 11's nine subsections into a
-compact corroborating band, and the final parity audit after the rewrite.
+### Round 5: cross-document editorial alignment and release audit (2026-08-20)
+
+Completed the P2 editorial restructuring across all three outputs. The shared
+argument is now explicit: AROP puzzle, AROPE bridge, shrinking ruler, decomposed
+hardship, duration-sensitive labor-market evidence, material and social
+corroboration, reporting-culture challenge, and a bounded conclusion. The
+technical report retains the full record but adds a Section 11 navigation map
+and collapsible methodological detail; the narrative companion keeps the same
+evidence in an editorial sequence with method notes hidden on first reading;
+the academic paper foregrounds the estimand, nested validation, contribution,
+and limitations.
+
+Corrected three cross-document hierarchy risks during the pass: the fixed
+post-selection Model G residual (&minus;0.8) is no longer presented as the primary
+validation result, which is the fully nested +2.70 residual and rank 19 of 27;
+Greece is described as having the EU's deepest and longest unresolved GDP
+shortfall rather than being the only country below a prior peak; and the real
+wage comparison now acknowledges Hungary and Italy's remaining shortfalls.
+
+Added `canonical_wording` and `importance` fields to the claim matrix and
+expanded `audit_parity.py` with forbidden stale-claim checks. Added
+`docs/current_state.md` as the short, current handoff document. Final release
+requires the numerical, parity, browser, mobile-overflow, and console checks
+listed there; their results are recorded in the commit closing this round.

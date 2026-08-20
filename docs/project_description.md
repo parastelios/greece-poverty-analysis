@@ -3,11 +3,12 @@
 This is the original project brief in full, kept verbatim for reference. It's
 treated as a **north-star spec, not an immediate mandate** — the current
 report is Version 1, built around the two research questions actually posed
-in `output/report.html`. Several items named below (migration/brain drain,
-trust in institutions, real wages, housing tenure, spatial robustness) are
-intentionally out of scope for V1 and tracked as future work; see
-`publication_strategy.md` for what's been done and the project's task list
-for what's planned next.
+in `output/report.html`. The brief predates the completed analysis: migration,
+trust, real wages, housing tenure, age, reporting heterogeneity, work effort,
+and nested validation have since been examined and incorporated at the level
+their evidence supports. Spatial dependence and household microdata remain
+future work. See `current_state.md` for live scope and
+`publication_strategy.md` for the historical decision log.
 
 ---
 

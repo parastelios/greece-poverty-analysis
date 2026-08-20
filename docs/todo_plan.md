@@ -358,10 +358,9 @@ was decided and done, in order.
 - [x] All three documents re-verified (tag balance, in-browser
       console-error checks) and republished to their existing Artifact
       URLs after each round.
-- [ ] Not yet done, flagged for any future round: the stronger version of
-      the selection-leakage fix (repeating the full 18-candidate screening
-      separately inside each of the 27 leave-one-country-out training
-      folds, rather than once with Greece fully excluded).
+- [x] Full nested selection and prediction validation completed in script 44:
+      screening repeated inside all 27 folds and each selected model scored
+      on its held-out country; Greece residual +2.70, rank 19/27.
 
 **Commit**: done — pushed as `d673e11` on 2026-08-20, together with the
 reporting-style and work-effort checkpoints below.
@@ -400,13 +399,11 @@ reporting-style and work-effort checkpoints below.
 
 - [x] **P0.1 Reproducibility.** Clean-room review found raw inputs with no
       producing script. Added `00_fetch_missing_raw.py` (15 files, CHECK mode
-      by default), `verify_build.py` (36 published-value checks), and a
-      `Makefile` (`make verify` / `fetch` / `build`). 14 of 15 files now
-      reproduce exactly; the exception (`panel_gdp_pps`) is a rounding/revision
-      difference in a series that feeds no headline model. Reproducibility
-      claims reworded throughout from "fetched live" to "reproduces from the
-      archived snapshot; full automated re-acquisition scripted but not yet
-      demonstrated end to end."
+      by default), `verify_build.py` (now 41 published-value checks), and a
+      dependency-aware Makefile. Thirteen of 15 files reproduce byte-identically;
+      the two documented differences do not alter a headline model. The isolated
+      `make reproduce` target now demonstrates end-to-end acquisition, build,
+      and verification from a clean committed tree.
 - [x] **P0.2 Gap ladder on one estimand/window.** The ladder mixed 2025 raw
       gaps with 2015–2024 average residuals. Now computed on a common
       2015–2024 window throughout (raw AROP gap 52.6, AROPE 41.5), with the
@@ -438,7 +435,7 @@ reporting-style and work-effort checkpoints below.
       the narrative's landing sequence, framed as illustrations of the central
       argument rather than as additional pillars.
 
-- [ ] **P2 editorial rewrite, not yet started** (held for user confirmation):
+- [x] **P2 editorial alignment completed**:
       consolidate the corroborating band (wages, prices, housing, migration,
       age, work effort) into a shorter section; move model batteries, candidate
       screens, and extended methodological notes into appendices or expandable

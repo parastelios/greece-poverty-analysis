@@ -4,15 +4,16 @@ A data-driven investigation into why Greek households report the EU's highest
 subjective financial strain despite an official (relative-income) poverty
 rate, AROP, that is elevated but not exceptional (4th-highest of 27 EU
 states). The broader official AROPE measure narrows the gap but doesn't
-close it; the report's central new finding is that a country's *cumulative*
-excess unemployment since 2009 — not just its current-year labor-market
-conditions — closes nearly all of what's left. Published report:
+close it. The report's central new result is that duration-sensitive labor-market
+measures — long-term unemployment and sustained excess exposure — remove
+Greece's exceptional outlier status under full nested validation. Published report:
 [The Greek Poverty Paradox](https://claude.ai/code/artifact/81651c87-c049-476b-b481-49adadf42181).
 
 All data originates from the Eurostat API dissemination endpoint; nothing
 in `data/` is hand-entered. Results reproduce from the archived snapshot in
 `data/`; see **Reproducibility status** below for what full re-acquisition
-does and does not yet guarantee. See `docs/comparability_notes.md` for methodology,
+does and does not yet guarantee. See `docs/current_state.md` for the concise
+publication status, `docs/comparability_notes.md` for methodology,
 `docs/data_sources.md` for every Eurostat dataset code used and what it
 feeds, `docs/publication_strategy.md` for the research/decision log behind
 every addition made after the first draft, `docs/project_description.md` for
@@ -46,7 +47,7 @@ make verify
 
 That runs `scripts/verify_build.py`, which checks every headline number quoted
 in the three published documents against what the pipeline actually produced
-(36 checks: headline gaps, the gap-closing ladder, scorecard residuals and
+(41 checks: headline gaps, the gap-closing ladder, scorecard residuals and
 ranks, FDR survivor counts, nested-selection results, the work-effort figures,
 and the placebo inference). It exits non-zero on any mismatch.
 
@@ -206,7 +207,7 @@ Scripts are numbered in dependency order. Run all from inside `scripts/`:
 | 42 | `42_reporting_style_robustness_v3.py` | Standardized (z-score) cross-indicator deviations; residual-trend sensitivity across three model specifications |
 | 43 | `43_work_effort_squeeze.py` | Work-effort squeeze: salaried/self-employed/all-employed hardship decomposition, hours vs. hourly compensation, FDR-corrected 9-candidate battery, within-country robustness (country FE, first differences), preview figures |
 | 44 | `44_nested_selection_validation.py` | Nested selection validation: the full 18-candidate screening repeated independently inside all 27 leave-one-country-out folds |
-| — | `verify_build.py` | Checks all published headline numbers against pipeline outputs (36 checks); run by `make verify` |
+| — | `verify_build.py` | Checks all published headline numbers against pipeline outputs (41 checks); run by `make verify` |
 | — | `09_export_report_data.py` again | Re-run to pick up any new columns before... |
 | — | `inject_data.py` | ...embedding the refreshed JSON into `output/report.html` |
 

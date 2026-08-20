@@ -1,3 +1,4 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Greek Poverty Paradox</title>
 <style>
 :root {
@@ -145,6 +146,9 @@ article i.term { font-style: italic; color: var(--accent-ink); }
 .method p:last-child { margin-bottom: 0; }
 .method b { color: var(--ink); font-weight: 600; }
 .method .num { color: var(--accent-ink); }
+.method-details { margin:20px 0 30px; border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); }
+.method-details summary { cursor:pointer; padding:12px 0; font-family:-apple-system,"Segoe UI",system-ui,sans-serif; font-size:12px; font-weight:650; color:var(--accent-ink); }
+.method-details .method { margin:0 0 14px; }
 
 /* ---------- proof table ---------- */
 .proof {
@@ -435,7 +439,7 @@ table.mini tr.hl td { color: var(--accent-ink); font-weight: 700; }
 <circle cx="606.0" cy="87.1" r="3.4" fill="var(--accent)"/>
 <text x="600.0" y="78.1" text-anchor="end" font-size="12" font-weight="600" fill="var(--accent)" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif">Greece</text>
 </svg>
-      <p class="plot-caption">Real GDP per capita, indexed to each country's own historical peak, 2008&ndash;2024. Every EU country's line is shown; Greece never rejoins the pack. Source: Eurostat.</p>
+      <p class="plot-caption">Real GDP per capita, indexed to each country's own historical peak, 2008&ndash;2024. Every EU country's line is shown; Greece's unresolved shortfall is the deepest and longest. Source: Eurostat.</p>
     </div>
 
     <p>This is where the report's real argument begins to take shape. Not "Greeks compare themselves to an abstract European average and feel bad about it" &mdash; something more specific and more falsifiable: the economy itself never gave most households their old life back. Everything in the chapters that follow is a different, more concrete way of watching that same failure to heal.</p>
@@ -506,7 +510,7 @@ table.mini tr.hl td { color: var(--accent-ink); font-weight: 700; }
       <p class="plot-caption">Real wages (compensation per employee), indexed to each country's own 2008 level, 2008&ndash;2024. Capped at 160 to keep the Greece-comparison zone readable &mdash; a few Eastern European countries (visible flattening at the top) grew well past that line. Source: Eurostat.</p>
     </div>
 
-    <p>Real wages &mdash; compensation per employee, adjusted for inflation &mdash; peaked in Greece in 2009, one year after GDP, before the crisis fully caught up with pay. They bottomed out in 2023, just one year before the most recent data. Every other EU country has either fully recovered its 2008 real wage level or grown well past it, some by enormous margins: Bulgaria's real wages now sit 166% above their 2008 level; Lithuania's, 51% above. Greece is not merely lagging a recovering pack. It is the only EU country whose paycheck never really came back.</p>
+    <p>Real wages &mdash; compensation per employee, adjusted for inflation &mdash; peaked in Greece in 2009 and bottomed out in 2023. By 2024 they remained 31.8% below 2008, the EU's largest shortfall; Hungary was second and Italy third, while most countries had recovered or grown well beyond their old level. Greece is not the only country still below 2008. It is the country with the deepest unresolved paycheck loss.</p>
 
     <div class="method">
       <p class="method-label">Method note</p>
@@ -677,8 +681,8 @@ table.mini tr.hl td { color: var(--accent-ink); font-weight: 700; }
     <p>The construction is simple and deliberately unforgiving. For every country, starting in 2009, take that year's unemployment rate minus the country's own 2009 baseline. If the country is doing better than its own baseline, that year contributes nothing &mdash; not a negative number, not a credit toward a future bad year. Just zero. If it's doing worse, the excess gets added to a running total that only ever grows. A good year can't cancel a bad one that already happened; it can only stop the bleeding from that point forward. The result, for every country, is a single number: how many "excess unemployment-years" it has accumulated since the crisis began.</p>
 
     <div class="pull">
-      <div class="figure num">&minus;0.8pt</div>
-      <div class="cap">Greece's out-of-sample gap once cumulative excess unemployment since 2009 is added to the model built in Chapter 7 &mdash; down from 3.9 points. The model now very slightly <i>overpredicts</i> Greek hardship, rather than underpredicting it.</div>
+      <div class="figure num">+2.7pt</div>
+      <div class="cap">Greece's residual under the fully nested select-then-predict procedure: 19th of 27 on prediction error, with eight countries predicted less accurately. The fixed cumulative model reaches &minus;0.8; +2.7 is the more conservative result because it includes the cost of choosing the variable.</div>
     </div>
 
     <p>This is the single strongest addition tested anywhere in this investigation. Not because it's a clever new variable pulled from nowhere &mdash; it's built entirely from unemployment data already in the model &mdash; but because of what it captures that a snapshot cannot: that Greece didn't just have a bad labor market at various points since 2009, it has been continuously carrying the accumulated weight of one, year on top of year, for longer than almost anywhere else in Europe.</p>
@@ -700,7 +704,7 @@ table.mini tr.hl td { color: var(--accent-ink); font-weight: 700; }
           </tbody>
         </table>
       </div>
-      <p class="proof-foot">Each step either narrows the definition or adds one more layer of accumulated context. By step 6, the model built entirely from the other 26 EU countries predicts Greek hardship at least as well as it predicts anyone else's.</p>
+      <p class="proof-foot">The table shows the fixed-model sequence. Full nested validation then repeats selection inside every fold and places Greece 19th of 27 on prediction error. Both results remove Greece from the exceptional-outlier position; the nested result is the stronger test.</p>
     </div>
 
     <p>The result holds up under scrutiny, not just at face value. Refit the model 27 times, excluding one country at a time, and cumulative excess unemployment's own coefficient never changes sign and never loses significance &mdash; including the refit that excludes Greece itself. That's a check on whether the <i>coefficient</i> is stable once this is the variable being tested, though &mdash; a separate question, addressed below, is whether Greece's own data should have counted toward <i>picking</i> this variable over its closest rival in the first place. It is not a substitute for long-term unemployment, either: replacing long-term unemployment with this cumulative measure, rather than adding it, performs worse. The two are doing different jobs &mdash; one measures who is stuck right now, the other measures how long the whole country has been carrying the weight &mdash; and both matter.</p>
@@ -960,16 +964,27 @@ table.mini tr.hl td { color: var(--accent-ink); font-weight: 700; }
 
     <div class="landing">
       <p>Greece is not a country that simply feels poorer than it is. The standard income-poverty measure, AROP, ranks it 4th-highest of 27 EU countries &mdash; elevated, not extreme. Subjective poverty ranks it 1st, by the widest margin in Europe, every year since 2011. Part of that 47.6-point gap is arithmetic: AROP's own threshold fell along with Greek incomes, missing the sharpest part of the collapse. The EU's broader official measure, AROPE, sees more of the damage &mdash; but still sits 39.7 points below what households report, the largest gap of any EU country either way. Even after correcting the AROP yardstick and testing the gap against comparable countries, a real residual survived, all the way through Chapter 7.</p>
-      <p>That remaining gap turned out not to be one hidden variable. It was a sequence: <b>an economy that never fully came back, a paycheck that fell further than the economy did, ordinary prices that turned heavy against that paycheck, a home that stopped being a shelter from cost even when it was paid off, joblessness that curdled from a spell into a condition, hardship that even holding a job doesn't resolve &mdash; and, underneath all of it, the sheer accumulated weight of carrying that condition for sixteen years rather than three or four.</b> That last layer &mdash; sustained excess unemployment carried over roughly the past decade, not a snapshot of this year alone &mdash; closed nearly everything that was left: once it's the variable being tested, a model trained on the other 26 EU countries, with Greece's own data point held out of that refit, predicts Greek hardship as well as it predicts anyone else's. (Choosing that variable in the first place did use Greece's data, along with everyone else's; a closely related wage-based measure is close enough behind it that the two are best read together, not as one clean winner.) Financial pessimism sits on top of all of it &mdash; not the explanation, but a reasonably accurate memory of having lived through it.</p>
-      <p>What looks, from the outside, like Greek households feeling sorrier for themselves than the statistics justify is, on the evidence here, closer to the opposite: households keeping an accurate internal account of a decade and a half the headline numbers were built to smooth over. This does not mean Greek households are secretly optimistic, or that the gap is somehow "more than fully" explained &mdash; the model now runs very slightly ahead of what households report, not the other way around, and that is a property of the richest specification tested, not a final verdict on Greek psychology.</p>
+      <p>That remaining gap turned out not to be one hidden variable. It was a sequence: <b>the EU's deepest and longest unresolved pre-crisis GDP shortfall, a paycheck that fell further, ordinary prices made heavy by low pay, housing costs that reached even outright owners, joblessness that became long-term, and hardship that holding a job does not automatically resolve.</b> In the fixed model, sustained excess unemployment over roughly the past decade closes the remaining residual. In the stricter test, each fold chooses its own duration measure without seeing the country it must predict; Greece then lands at +2.70 points, 19th of 27, with eight countries predicted less accurately. The family of duration measures, not one hand-picked variable, is the durable result. Financial pessimism sits on top of that history &mdash; not the explanation, but a reasonably accurate memory of having lived through it.</p>
+      <p>What can look from outside like exaggerated Greek pessimism is better described as reported hardship consistent with prolonged material exposure. The fixed model slightly overpredicts Greece; the fully nested procedure leaves a small positive residual. Neither result is a verdict on national psychology. Together they show that Greece is no longer an exceptional reporting outlier once duration is counted.</p>
       <p>There is one lesson here that reaches beyond Greece. AROP is a reasonable way to measure poverty relative to today's median income &mdash; but in a country living through a prolonged, broad-based collapse, a ruler that moves with the thing it's measuring can understate the damage for years at a time, and that is not a flaw unique to Greece or to this report. The practical takeaway is not "distrust AROP." It's that in crisis conditions, AROP is safest read alongside a fixed-standard measure, a broader official indicator like AROPE, and some account of how long the exposure has actually lasted &mdash; not on its own.</p>
-      <p>This is not a closed case. A small residual remains even after every finding in this piece &mdash; household composition, informal income, savings buffers, and institutional factors beyond what Eurostat measures are all still genuinely open questions, named honestly rather than dismissed. Everything here comes from aggregate, country-level Eurostat data, not household microdata, and every relationship reported is associational, not proven causal. What this investigation can say with confidence is narrower and, I think, more useful: the part of the gap it <i>can</i> explain is not mood. It is memory of a decade and a half that, in one independently-checked way after another, took longer to end than almost anywhere else in Europe.</p>
+      <p>This is not a closed case. A small residual remains under the fully nested procedure; household composition, informal income, savings buffers, and institutional factors beyond Eurostat remain open. Everything here uses aggregate country-level data, not household microdata, and every relationship is associational. The defensible conclusion is narrower: Greece no longer looks exceptional once sustained exposure is counted, and the part the evidence explains is not generic mood.</p>
     </div>
 
   </article>
 
   <div class="colophon">
-    <p>This is a narrative companion to <b>The Greek Poverty Paradox</b>, the full technical report behind the modeled and Eurostat-based figures cited here &mdash; exact coefficients, robustness checks, multiple-testing corrections, full citations, and the complete data pipeline. Most modeled numbers above trace to that report's own reproducible Eurostat pipeline; the institutional-trust figures in Chapter 11 are literature and survey context (OECD, Eurobarometer, peer-reviewed sources), not part of the Eurostat pipeline or this report's own models &mdash; both are cited in full in the technical report's Methods section. Data vintage: 2026-08-19 for the core series; the Chapter 12 work-effort series were pulled 2026-08-20. Eurostat revises its own published figures over time, so a later pull from the live API will not reproduce these exact numbers byte-for-byte, even with unchanged methodology.</p>
+    <p>This is the general-audience companion to <b>The Greek Poverty Paradox</b>. The technical report carries the complete coefficients, robustness checks, citations, and pipeline. Results reproduce from the archived vintage and through an isolated end-to-end rebuild; a later Eurostat pull can differ because Eurostat revises historical data. Institutional-trust figures are cited context, not modeled inputs. Data vintage: 2026-08-19 for core series; 2026-08-20 for work effort.</p>
   </div>
 
 </div>
+
+<script>
+document.querySelectorAll('article .method').forEach(block => {
+  const details = document.createElement('details');
+  details.className = 'method-details';
+  const summary = document.createElement('summary');
+  summary.textContent = 'Read the method and caveats';
+  block.parentNode.insertBefore(details, block);
+  details.append(summary, block);
+});
+</script>
