@@ -11,17 +11,34 @@ the panel with that fold's country dropped ENTIRELY (never seen during
 screening), and the fold's winning candidate is recorded.
 
 Selection criterion inside each fold: the added candidate's own coefficient
-p-value, the same criterion the original screening used. The headline outputs:
-  - how many folds select cum_excess_unemployment first,
-  - how many select wage_years_below_2008 first,
-  - whether any fold selects anything outside that top-2 set,
-  - the per-fold p-values for both leading candidates.
+p-value, the same criterion the original screening used. Because 18 candidates
+are screened per fold, those p-values are corrected within each fold
+(Benjamini-Hochberg) as well as reported raw -- selection uses the raw ranking
+(as the original screening did), and the corrected value records whether the
+fold's winner would still clear a multiplicity-adjusted bar in isolation.
+
+Two distinct things are measured, and they should not be conflated:
+
+  (A) SELECTION STABILITY -- which candidate each fold picks when its country
+      is absent from screening entirely. Establishes that the choice of
+      variable is not an artifact of any one country's data.
+
+  (B) NESTED PREDICTIVE PERFORMANCE -- the fold's OWN selected candidate is
+      then fitted on the 26 training countries and used to predict the
+      held-out country, which was involved in neither selection nor fitting.
+      This is the genuine nested cross-validation quantity: it measures how
+      well the whole select-then-fit procedure generalizes, not how well one
+      pre-chosen variable does.
+
+(B) is the stricter claim and is what licenses language about out-of-sample
+predictive validity; (A) alone only licenses claims about stability.
 
 Inputs: cumulative_hardship_candidate_panel.csv, written by
 38_cumulative_hardship.py from the exact panel its own screening used.
 """
 import pandas as pd
 import statsmodels.formula.api as smf
+from statsmodels.stats.multitest import multipletests
 
 OUT = "../data/processed"
 
@@ -66,8 +83,24 @@ for held_out in countries:
                              "coef": float(m.params[var]), "p": float(m.pvalues[var])})
     fr = pd.DataFrame(fold_results).sort_values("p").reset_index(drop=True)
     fr["rank"] = fr.index + 1
+    rej, p_adj, _, _ = multipletests(fr["p"].values, alpha=0.05, method="fdr_bh")
+    fr["p_fdr_within_fold"] = p_adj
+    fr["survives_fdr_within_fold"] = rej
     detail_rows.append(fr)
     top = fr.iloc[0]
+
+    # --- (B) nested prediction: fit THIS fold's own winner on the 26 training
+    # countries, predict the held-out country. Selection and fitting both
+    # exclude the held-out country entirely.
+    win = top["variable"]
+    dv = panel.dropna(subset=vars_c_ltu + [win, "subjective_poverty"])
+    tr, te = dv[dv.geo != held_out], dv[dv.geo == held_out]
+    nested_resid = nested_abs = None
+    if len(te) and tr.geo.nunique() >= 10:
+        f = "subjective_poverty ~ " + " + ".join(vars_c_ltu + [win]) + " + C(time)"
+        mm = smf.ols(f, data=tr).fit(cov_type="cluster", cov_kwds={"groups": tr["geo"]})
+        r = te["subjective_poverty"] - mm.predict(te)
+        nested_resid, nested_abs = float(r.mean()), float(r.abs().mean())
     ceu = fr[fr.variable == "cum_excess_unemployment"].iloc[0]
     wyb = fr[fr.variable == "wage_years_below_2008"].iloc[0]
     fold_rows.append({
@@ -75,6 +108,9 @@ for held_out in countries:
         "selected_first": top["variable"], "selected_p": top["p"],
         "cum_excess_unemployment_rank": int(ceu["rank"]), "cum_excess_unemployment_p": ceu["p"],
         "wage_years_below_2008_rank": int(wyb["rank"]), "wage_years_below_2008_p": wyb["p"],
+        "selected_p_fdr_within_fold": top["p_fdr_within_fold"],
+        "selected_survives_fdr_within_fold": bool(top["survives_fdr_within_fold"]),
+        "nested_mean_residual": nested_resid, "nested_mean_abs_residual": nested_abs,
     })
 
 folds_df = pd.DataFrame(fold_rows)
@@ -97,9 +133,29 @@ print(f"\nFolds selecting a candidate OUTSIDE the top-2 set: {len(outside)}"
 both_top2 = ((folds_df.cum_excess_unemployment_rank <= 2) & (folds_df.wage_years_below_2008_rank <= 2)).sum()
 print(f"Folds where the same two candidates occupy ranks 1-2: {both_top2} of {len(folds_df)}")
 print(f"cum_excess_unemployment: worst rank {folds_df.cum_excess_unemployment_rank.max()}, "
-      f"worst p {folds_df.cum_excess_unemployment_p.max():.5f}")
+      f"worst raw p {folds_df.cum_excess_unemployment_p.max():.5f}")
 print(f"wage_years_below_2008: worst rank {folds_df.wage_years_below_2008_rank.max()}, "
-      f"worst p {folds_df.wage_years_below_2008_p.max():.5f}")
+      f"worst raw p {folds_df.wage_years_below_2008_p.max():.5f}")
+n_fdr = int(folds_df.selected_survives_fdr_within_fold.sum())
+print(f"Folds whose selected winner also survives within-fold FDR correction "
+      f"across the 18 candidates: {n_fdr} of {len(folds_df)}")
+
+print("\n=== (B) Nested predictive performance ===")
+print("Each fold's OWN selected candidate, fitted on 26 training countries, predicting "
+      "the held-out 27th (excluded from both selection and fitting):")
+nres = folds_df.dropna(subset=["nested_mean_residual"])
+print(f"  folds scored: {len(nres)}")
+print(f"  mean absolute residual across held-out countries: {nres.nested_mean_abs_residual.mean():.2f} pts")
+print(f"  median: {nres.nested_mean_abs_residual.median():.2f} pts | "
+      f"worst: {nres.nested_mean_abs_residual.max():.2f} ({nres.loc[nres.nested_mean_abs_residual.idxmax(), 'fold_held_out']})")
+el = nres[nres.fold_held_out == "EL"]
+if len(el):
+    r = el.iloc[0]
+    print(f"  GREECE held out: selected '{r.selected_first}', nested mean residual "
+          f"{r.nested_mean_residual:+.2f} pts (abs {r.nested_mean_abs_residual:.2f})")
+    worse = (nres.nested_mean_abs_residual > r.nested_mean_abs_residual).sum()
+    print(f"  {worse} of the other {len(nres) - 1} countries are predicted WORSE than Greece "
+          f"under their own fold's selected model")
 
 print("\nOutputs written:")
 for f in ["nested_selection_validation_folds.csv", "nested_selection_validation_detail.csv"]:

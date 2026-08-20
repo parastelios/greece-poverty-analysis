@@ -31,6 +31,7 @@ import pandas as pd
 from eurostat import fetch
 
 RAW = Path("../data/raw")
+SUMMARY = []
 WRITE = "--write" in sys.argv
 DEST = RAW if WRITE else Path(tempfile.mkdtemp(prefix="fetch_check_"))
 print(f"Mode: {'WRITE (updating data/raw/)' if WRITE else f'CHECK (temp dir: {DEST})'}\n")
@@ -61,9 +62,15 @@ def compare(name, key_cols, value_col):
         print(f"  [WARN {name}: no overlapping keys between archived and fresh]")
         return
     diff = (m[f"{value_col}_old"] - m[f"{value_col}_new"]).abs()
-    agree = (diff < 0.05).mean()
-    print(f"  vs archived: {len(m)} overlapping rows, {agree:.1%} agree within 0.05 "
-          f"(max abs diff {diff.max():.3f}); archived-only rows: {len(old) - len(m)}, fresh-only: {len(new) - len(m)}")
+    exact = (diff == 0).mean()
+    within = (diff < 0.05).mean()
+    verdict = ("EXACT" if exact == 1.0
+               else "within-tolerance" if within == 1.0
+               else "DIFFERS")
+    print(f"  [{verdict}] {len(m)} overlapping rows: {exact:.1%} byte-identical, "
+          f"{within:.1%} within 0.05 (max abs diff {diff.max():.4f}); "
+          f"archived-only rows: {len(old) - len(m)}, fresh-only: {len(new) - len(m)}")
+    SUMMARY.append((name, verdict, exact, within, diff.max()))
 
 
 YEARS_FULL = range(2000, 2026)
@@ -139,5 +146,18 @@ w = w.merge(base, on="geo", how="inner")
 w["real_wage_idx2008"] = 100 * (w.comp_eur / (w.hicp / w._h08)) / w._c08
 out(w[["geo", "time", "real_wage_idx2008"]], "real_wage_idx2008")
 compare("real_wage_idx2008", ["geo", "time"], "real_wage_idx2008")
+
+if not WRITE and SUMMARY:
+    n_exact = sum(1 for _, v, _, _, _ in SUMMARY if v == "EXACT")
+    n_within = sum(1 for _, v, _, _, _ in SUMMARY if v == "within-tolerance")
+    n_diff = sum(1 for _, v, _, _, _ in SUMMARY if v == "DIFFERS")
+    print(f"\n{'=' * 66}")
+    print(f"SUMMARY of {len(SUMMARY)} re-acquired files vs the archived snapshot:")
+    print(f"  {n_exact} byte-identical on every overlapping row")
+    print(f"  {n_within} within 0.05 on every row but not byte-identical")
+    print(f"  {n_diff} with at least one row differing by more than 0.05")
+    for name, verdict, exact, within, mx in SUMMARY:
+        if verdict != "EXACT":
+            print(f"    - {name}: {verdict} ({exact:.1%} identical, {within:.1%} within 0.05, max diff {mx:.4f})")
 
 print("\nDone." + ("" if WRITE else " (CHECK mode: data/raw/ untouched)"))

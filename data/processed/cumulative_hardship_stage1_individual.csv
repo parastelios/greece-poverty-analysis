@@ -6,7 +6,7 @@ fin_expectations,Financial expectations,270,ok,25.79,0.0,-0.814,26.8,15.7
 tenure_ownl_overburden,Housing tenure burden (mortgage-free owners),273,ok,36.07,0.0004,1.523,16.5,5.5
 unexpected_expenses,Inability to cover unexpected expense,274,ok,38.28,0.0,0.98,14.3,3.3
 wage_years_below_2008,Wage years below 2008,270,ok,38.68,0.019,1.7202,13.9,2.9
-wage_adjusted_pressure,Wage-adjusted price pressure,270,ok,39.31,0.0,116.2407,13.3,2.2
+wage_adjusted_pressure,Wage-adjusted price pressure,270,ok,39.31,0.0,116.2392,13.3,2.2
 material_deprivation,Material deprivation,274,ok,40.0,0.003,1.4655,12.6,1.5
 net_migration_rate_per1000,Migration (net rate per 1000),269,ok,46.92,0.4009,0.6487,5.7,-5.4
 housing_overburden,Housing cost overburden,273,ok,51.53,0.0129,1.1143,1.1,-10.0

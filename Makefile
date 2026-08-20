@@ -1,19 +1,40 @@
 # Greece Poverty Analysis — reproducible build
 #
-# Targets:
-#   make verify   Check that published headline numbers match pipeline outputs (fast, no network)
-#   make fetch    Re-acquire the formerly-orphaned raw inputs (CHECK mode: compares, writes nothing)
-#   make build    Full pipeline rerun from data/raw/ through the published report (network required)
-#   make all      fetch (check) -> build -> verify
+#   make verify      Check published headline numbers against pipeline outputs (fast, offline)
+#   make fetch       Re-acquire formerly-orphaned raw inputs, CHECK mode (compares, writes nothing)
+#   make fetch-write Re-acquire them for real, overwriting data/raw/ (moves the data vintage)
+#   make build       Rerun the analysis pipeline over existing data/raw/, then verify
+#   make reproduce   TRUE end-to-end test: fresh clone in a temp dir, fetch-write, build, verify.
+#                    Leaves this working copy completely untouched.
 #
-# Default is `verify` because it is fast, offline, and answers the question that
-# matters most day to day: do the documents still match the data?
+# Default is `verify` because it is fast, offline, and answers the day-to-day
+# question: do the published documents still match the data behind them?
 
 PY := python3
 SCRIPTS := scripts
 
 .DEFAULT_GOAL := verify
-.PHONY: all verify fetch fetch-write build clean-check
+.PHONY: all verify fetch fetch-write build reproduce
+
+# ---------------------------------------------------------------------------
+# BUILD ORDER IS NOT FILENAME ORDER.
+#
+# 04_merge_all.py rebuilds analysis_dataset.csv from scratch every run. Two
+# later-numbered scripts write derived columns BACK into that same file:
+#   05_threshold_hypothesis.py -> gr_arop_threshold_real_idx2008
+#   21_arope.py                -> gr_arope, eu_arope, gr_eu_arope_gap
+# and 10_robustness_correlations.py READS gr_arope (it is one of the 19
+# variables in the published correlation table).
+#
+# Running in plain numeric order therefore executes 10 before 21 and silently
+# produces an 18-variable table instead of 19 — exactly the stale-output bug
+# this project already hit once. The write-back scripts are hoisted to run
+# immediately after 04, before any consumer.
+# ---------------------------------------------------------------------------
+STAGE_CORE     := 01_fetch_core.py 02_build_master_table.py 03_fetch_supplementary.py 04_merge_all.py
+STAGE_WRITEBACK := 05_threshold_hypothesis.py 21_arope.py
+STAGE_REST := $(filter-out $(STAGE_CORE) $(STAGE_WRITEBACK) 00_fetch_missing_raw.py, \
+                $(notdir $(wildcard $(SCRIPTS)/[0-9][0-9]_*.py)))
 
 verify:
 	cd $(SCRIPTS) && $(PY) verify_build.py
@@ -24,16 +45,28 @@ fetch:
 fetch-write:
 	cd $(SCRIPTS) && $(PY) 00_fetch_missing_raw.py --write
 
-# Ordered rerun. Scripts are numbered in dependency order; 04 must be followed by
-# every write-back script (05, 21), which running in full numeric order guarantees.
-# 09 + inject_data are re-run at the end so the published report picks up any change.
 build:
-	cd $(SCRIPTS) && set -e; \
-	for s in $$(ls [0-9][0-9]_*.py | sort); do \
-	  echo "=== $$s ==="; $(PY) $$s || exit 1; \
+	@cd $(SCRIPTS) && set -e; \
+	for s in $(STAGE_CORE) $(STAGE_WRITEBACK) $(sort $(STAGE_REST)); do \
+	  echo "=== $$s ==="; $(PY) $$s > /dev/null || { echo "FAILED: $$s"; exit 1; }; \
 	done; \
-	echo "=== 09_export_report_data.py (final) ==="; $(PY) 09_export_report_data.py; \
+	echo "=== 09_export_report_data.py (final export) ==="; $(PY) 09_export_report_data.py; \
 	echo "=== inject_data.py ==="; $(PY) inject_data.py
-	$(MAKE) verify
+	@$(MAKE) --no-print-directory verify
+
+# True from-scratch reproduction, isolated from this working copy: exports the
+# committed tree into a temp dir, re-fetches raw inputs there for real, builds,
+# and verifies. Nothing here is modified, so a failure is diagnostic rather than
+# destructive.
+reproduce:
+	@set -e; \
+	D=$$(mktemp -d -t greece-repro-XXXXXX); \
+	echo "Isolated reproduction in $$D"; \
+	git archive HEAD | tar -x -C $$D; \
+	$(MAKE) -C $$D fetch-write; \
+	$(MAKE) -C $$D build; \
+	echo ""; \
+	echo "Isolated reproduction succeeded. Artifacts left in $$D for inspection."; \
+	echo "(This working copy was not modified.)"
 
 all: fetch build

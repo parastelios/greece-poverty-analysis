@@ -3946,3 +3946,95 @@ console errors. `make verify` passes all 36 checks.
 (consolidating the corroborating band, moving batteries/screens/notes into
 appendices, a Section 11 navigation guide, disambiguating the three nearby wage
 figures, mobile presentation, final cross-document audit).
+
+---
+
+### Round 5 (P0.5): closing the reproducibility and inference gaps properly (2026-08-20)
+
+A second external pass confirmed Round 4 closed most of the earlier review but
+found five P0 items still open and six stale statements still standing. All
+addressed; the findings below include one that changes a headline number.
+
+**1. The build order had a real dependency bug — and it was the same one this
+project already hit.** `04_merge_all.py` rebuilds `analysis_dataset.csv` from
+scratch; `05` and `21` write derived columns back into it; and
+`10_robustness_correlations.py` *reads* AROPE, which only `21` supplies. Plain
+numeric order runs `10` before `21`, so the Makefile written in Round 4 would
+have silently regenerated the **18-variable** correlation table whose staleness
+Round 3 had just fixed. Verified empirically: after `04` alone, `gr_arope` is
+absent; after hoisting `05` and `21`, script 10 reports "19 of 19 declared
+predictors found". The Makefile now defines an explicit dependency-ordered
+sequence with the write-back scripts hoisted, and documents why filename order
+is unsafe.
+
+**2. `make all` did not re-acquire anything** — it called `fetch` (CHECK mode,
+writes nothing) and then built from the archive. Added `make reproduce`: exports
+the committed tree into a temp directory via `git archive`, runs `fetch-write`
+there for real, builds, and verifies, leaving the working copy untouched. That
+is the target that answers "does this rebuild from nothing?"
+
+**3. "14 of 15 reproduce exactly" was imprecise.** The check used a 0.05
+tolerance. Measured properly, it is **13 byte-identical, 2 differing**:
+`real_wage_idx2008` (58.1% identical, 99.6% within 0.05, max 0.168 — a derived
+HICP-deflated index) and `panel_gdp_pps` (archive rounded to the nearest 100
+PPS; ~3% since revised; feeds only an alternative specification). The fetch
+script now reports EXACT / within-tolerance / DIFFERS per file with a summary,
+and the README states the corrected figures with a per-file table.
+
+**4. Script 44 measured selection stability, not nested prediction — and
+extending it changed a headline number.** It now measures both, kept explicitly
+distinct: (A) which candidate each fold selects, and (B) that fold's *own*
+selected candidate fitted on 26 training countries and used to predict the
+held-out 27th. Per-fold p-values are additionally FDR-corrected within each
+fold across all 18 candidates (26 of 27 winners survive).
+
+The nested result is materially more conservative than the fixed-specification
+figure, and is now reported as the primary one wherever the claim concerns the
+whole procedure: **Greece's nested residual is +2.70 points (mean absolute error
+4.51), ranking 19th of 27 — eight EU countries are predicted less accurately
+than Greece by their own fold's model.** The Greece fold selects the
+wage-duration measure rather than cumulative excess unemployment, which is
+precisely the already-documented sensitivity, now priced in rather than noted
+beside. The &minus;0.8 residual of Model G remains correct for what it is (a
+fixed specification whose variable was chosen with Greece in the screening
+panel) and both are reported, with the difference between them explained: +2.70
+additionally pays the cost of the selection step. The mid-pack ranking is the
+stronger form of the claim, since it no longer depends on which member of the
+duration/exposure family a fold happens to pick.
+
+**5. Six stale statements removed**: README's "All data is fetched live", its
+"7-point spine" heading over a nine-point list, and its salaried-workers/longest-hours
+conflation; the same conflation in the academic abstract and the report's
+executive summary (salaried employees rank 7th of 27 on hours — it is all
+employed and full-time workers who rank 1st); the report's "none of the eight
+fully closes the gap" (one does); and the academic Methods' description of
+added-variable coefficients as "single planned" and "pre-specified" tests, now
+corrected to state plainly that specifications were developed sequentially and
+are therefore not pre-registered.
+
+#### Alignment infrastructure: the canonical claim matrix
+
+Built `docs/claim_matrix.csv` (via `scripts/build_claim_matrix.py`): **46
+canonical claims across the nine agreed backbone elements**, each with its exact
+number, population/window, evidentiary status, statistical caveat, source file,
+and required treatment per document (body / note / appendix / omit). Status
+distribution: 21 core, 9 limitations, 8 descriptive, 5 post-selection, 2 core
+nulls, 1 exploratory screening.
+
+Built `scripts/audit_parity.py` to check each document against it. First run
+(after fixing a bug where pandas parsed the `"1.1"`-style ids as floats) found
+**two genuine gaps, both in the narrative companion**: the close-to-outcome
+caveat on arrears and unexpected-expense capacity, and the point that FDR
+correction does not make sequential specifications pre-registered. Both were
+real omissions that repeated prose review had not caught — which is the argument
+for the matrix. Both added in the narrative's own register; the auditor's
+fingerprints were broadened to accept register differences rather than forcing
+the narrative into academic vocabulary. **Parity is now 137 of 137.**
+
+`make verify` now runs 41 checks (up from 36), including the nested-CV residual,
+Greece's prediction-error rank, and the within-fold FDR count.
+
+**Not started, awaiting confirmation**: the P2 editorial restructuring — reordering
+the technical report around the nine-element backbone, rebuilding the paper and
+narrative from that structure, consolidating Section 11's nine subsections into a
+compact corroborating band, and the final parity audit after the rewrite.

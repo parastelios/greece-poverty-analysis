@@ -9,8 +9,10 @@ excess unemployment since 2009 — not just its current-year labor-market
 conditions — closes nearly all of what's left. Published report:
 [The Greek Poverty Paradox](https://claude.ai/code/artifact/81651c87-c049-476b-b481-49adadf42181).
 
-All data is fetched live from the Eurostat API dissemination endpoint; nothing
-in `data/` is hand-entered. See `docs/comparability_notes.md` for methodology,
+All data originates from the Eurostat API dissemination endpoint; nothing
+in `data/` is hand-entered. Results reproduce from the archived snapshot in
+`data/`; see **Reproducibility status** below for what full re-acquisition
+does and does not yet guarantee. See `docs/comparability_notes.md` for methodology,
 `docs/data_sources.md` for every Eurostat dataset code used and what it
 feeds, `docs/publication_strategy.md` for the research/decision log behind
 every addition made after the first draft, `docs/project_description.md` for
@@ -59,17 +61,41 @@ mode (the default, writes nothing) it reports agreement against the archive:
 make fetch
 ```
 
-Current status: **14 of 15 reproduce exactly**; `real_wage_idx2008` agrees on
-99.6% of rows (rounding-level differences) and covers more countries than the
-archive. The one genuine exception is `panel_gdp_pps`, stored rounded to the
-nearest 100 PPS in the archive while the API now returns one decimal, with
-~3% of rows since revised by Eurostat — it feeds only an alternative
-specification in `11_panel_extended.py`, never a headline model. What is still
-missing for full end-to-end reproducibility is a clean-checkout guarantee that
-`make build` alone rebuilds every intermediate from nothing; until that is
-demonstrated, the honest claim is *"all results reproduce from the archived
-source-data snapshot; full automated re-acquisition is scripted and verified
-per-file but not yet demonstrated end to end from a clean checkout."*
+Current status, measured by `make fetch` and reported precisely rather than
+rounded up: **13 of 15 files are byte-identical to the archive on every
+overlapping row.** Two are not:
+
+| File | Status | Detail |
+|---|---|---|
+| `real_wage_idx2008` | differs | 58.1% of rows byte-identical, 99.6% within 0.05, max difference 0.168 on an index near 100. It is a derived series (compensation deflated by HICP, rebased to 2008), so small floating-point and revision differences accumulate. Also now covers more countries than the archive. |
+| `panel_gdp_pps` | differs materially | The archive stored it rounded to the nearest 100 PPS while the API now returns one decimal; ~3% of rows have since been revised by Eurostat. It feeds only the alternative `M3_swap_to_GDP_PPS` specification in `11_panel_extended.py` — every headline model uses `aic_pps_pc_k` instead — so it touches no published result. |
+
+Writing this acquisition step surfaced three filter choices that had been
+undocumented precisely *because* the step was missing, each pinned down by
+diffing a fresh fetch against the archive: `statinfo=MED_EI` on both `ilc_li02`
+and `ilc_li09` (without it the fetch silently returns both mean- and
+median-based rows, doubling the table), and `s_adj=NSA` rather than `SA` on
+`ei_bsco_m`.
+
+**A true end-to-end reproduction is now available as its own target:**
+
+```bash
+make reproduce
+```
+
+This exports the committed tree into a temporary directory, re-fetches the raw
+inputs there *for real* (`fetch-write`), runs the full build, and verifies —
+leaving this working copy completely untouched. It is the target that answers
+"does this rebuild from nothing?", where `make verify` only answers "do the
+documents match the data currently on disk?".
+
+**Build order is not filename order.** `04_merge_all.py` rebuilds
+`analysis_dataset.csv` from scratch, and two later-numbered scripts write
+derived columns back into it (`05` → the real AROP threshold, `21` → AROPE),
+while `10_robustness_correlations.py` *reads* AROPE as one of its 19 variables.
+Plain numeric order would run `10` before `21` and silently produce an
+18-variable correlation table. The Makefile hoists the write-back scripts to
+run immediately after `04`; if you run scripts by hand, do the same.
 
 ## Setup
 
@@ -108,7 +134,7 @@ output/              report.html (the published artifact), report_data.json,
                      own §10)
 ```
 
-All three outputs are restructured around the same 7-point spine (agreed
+All three outputs are restructured around the same 9-point spine (agreed
 2026-08-20, see `docs/publication_strategy.md`): (1) the AROP puzzle, (2)
 the shrinking ruler (moving threshold), (3) AROPE as a secondary bridge, not
 a replacement primary measure, (4) Part II as decomposing AROPE's intuition
@@ -118,8 +144,10 @@ the past decade as the main new mechanism (with long-term unemployment and
 a closely related wage-duration measure as jointly supporting evidence —
 see `docs/publication_strategy.md`, "Second-round methodological review,"
 for why this isn't framed as one uniquely identified variable), (7) corroborating
-evidence that the paradox persists even among salaried workers, who work the
-EU's longest hours at its lowest hourly pay (a cross-country structural
+evidence that the paradox persists even among salaried workers, in a country
+that records the EU's longest working hours (across all employed people and
+among full-time workers; salaried employees alone rank 7th of 27) at its
+lowest purchasing-power-adjusted hourly pay (a cross-country structural
 association, deliberately kept off the scorecard — see
 `docs/publication_strategy.md`, "Work-effort-squeeze checkpoint"), (8) a
 robustness section testing whether the whole gap could instead reflect

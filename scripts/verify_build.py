@@ -87,8 +87,17 @@ nf = pd.read_csv(OUT / "nested_selection_validation_folds.csv")
 check("nested-selection folds", len(nf), 27, tol=0)
 check("folds selecting cum_excess_unemployment",
       (nf.selected_first == "cum_excess_unemployment").sum(), 25, tol=0)
-check("cum_excess_unemployment worst-case p across folds",
+check("cum_excess_unemployment worst-case raw p across folds",
       nf.cum_excess_unemployment_p.max(), 0.0064, tol=0.0005)
+check("folds whose winner survives within-fold FDR",
+      int(nf.selected_survives_fdr_within_fold.sum()), 26, tol=0)
+check("nested CV: Greece mean residual",
+      nf[nf.fold_held_out == "EL"].nested_mean_residual.iloc[0], 2.70, tol=0.05)
+check("nested CV: Greece mean absolute error",
+      nf[nf.fold_held_out == "EL"].nested_mean_abs_residual.iloc[0], 4.51, tol=0.05)
+_rank = nf.nested_mean_abs_residual.rank(method="min")[nf.fold_held_out == "EL"].iloc[0]
+check("nested CV: Greece prediction-error rank (of 27)", _rank, 19, tol=0)
+check("nested CV: countries predicted worse than Greece", 27 - _rank, 8, tol=0)
 
 print("\n== Work-effort squeeze (salaried workers, 2025) ==")
 st = pd.read_csv(OUT / "work_effort_status_latest.csv")
