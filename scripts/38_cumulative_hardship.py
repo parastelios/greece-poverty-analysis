@@ -303,6 +303,11 @@ panel = panel.merge(wages_dur, on=["geo", "time"], how="left")
 DURATION_CANDIDATES = [c for c in gdp_dur.columns if c not in ("geo", "time")] + \
                       [c for c in wages_dur.columns if c not in ("geo", "time")]
 
+# Save the fully assembled candidate panel (base C-LTU variables + all 18 screening
+# candidates) so downstream validation scripts (44_nested_selection_validation.py)
+# reuse the exact same inputs without duplicating this construction.
+panel.to_csv(f"{OUT}/cumulative_hardship_candidate_panel.csv", index=False)
+
 def run_model(vars_extra, panel, base_vars=vars_c_ltu, outcome="subjective_poverty"):
     vars_ = base_vars + vars_extra
     d = panel.dropna(subset=vars_ + [outcome]).copy()
@@ -601,9 +606,18 @@ STAGE1_CANDIDATES = {
     "fin_expectations": (fin_exp.rename(columns={"fin_expectations": "val"}), "Financial expectations"),
 }
 
-gr_subj, gr_arop, gr_arope = 67.2, 19.6, 27.5
-raw_arop_gap = gr_subj - gr_arop
-raw_arope_gap = gr_subj - gr_arope
+# Raw gaps for the ladder are computed on the SAME 2015-2024 window as the models'
+# out-of-sample residuals (steps 3-6), so every row of the stage-2 table shares one
+# common period. The single-year 2025 values (67.2/19.6/27.5 -> gaps 47.6/39.7) are
+# the headline numbers elsewhere in the report but are deliberately NOT mixed into
+# this table: a 2025 raw gap next to 2015-2024 average residuals would conflate two
+# windows as well as two estimands. (The estimand difference between raw national
+# gaps and OOS model residuals remains, and is labeled in the table itself.)
+_ad = pd.read_csv(f"{OUT}/analysis_dataset.csv")
+_adw = _ad[(_ad.year >= 2015) & (_ad.year <= 2024)]
+raw_arop_gap = float((_adw.gr_subjective_poverty - _adw.gr_arop).mean())
+raw_arope_gap = float((_adw.gr_subjective_poverty - _adw.gr_arope).mean())
+print(f"\nCommon-window (2015-2024) raw gaps for the ladder: AROP {raw_arop_gap:.1f}, AROPE {raw_arope_gap:.1f}")
 
 stage1_results = []
 for key, (df, label) in STAGE1_CANDIDATES.items():
@@ -633,8 +647,8 @@ print(stage1_df.to_string(index=False))
 
 # ================================================================ Stage 2: layered bridge table ====
 stage2 = [
-    dict(step=1, layer="AROP raw gap", type="raw, single-country", greece_value=raw_arop_gap, points_closed=None),
-    dict(step=2, layer="AROPE bridge", type="raw, single-country", greece_value=raw_arope_gap, points_closed=raw_arop_gap - raw_arope_gap),
+    dict(step=1, layer="AROP raw gap (2015-2024 avg)", type="raw, single-country", greece_value=raw_arop_gap, points_closed=None),
+    dict(step=2, layer="AROPE bridge (2015-2024 avg)", type="raw, single-country", greece_value=raw_arope_gap, points_closed=raw_arop_gap - raw_arope_gap),
     dict(step=3, layer="Basic model: AROP + income + deprivation + headline unemployment (Model A)",
          type="regression, OOS", greece_value=25.6, points_closed=raw_arop_gap - 25.6),
     dict(step=4, layer="+ housing, arrears, unexpected-expense capacity (Model C)",
@@ -646,7 +660,7 @@ stage2 = [
 ]
 stage2_df = pd.DataFrame(stage2)
 stage2_df.to_csv(f"{OUT}/cumulative_hardship_stage2_bridge.csv", index=False)
-print("\n\n=== STAGE 2: layered bridge, subjective poverty minus AROP (47.6pt raw gap) ===")
+print("\n\n=== STAGE 2: layered bridge, subjective poverty minus AROP, all rows on the common 2015-2024 window ===")
 print(stage2_df.to_string(index=False))
 wyb_oos = dur_df[dur_df["var"] == "wage_years_below_2008"]["gr_oos"].values
 print(f"\nSide note (not stacked into the sequence): wage_years_below_2008 alone reaches "

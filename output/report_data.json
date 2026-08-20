@@ -729,144 +729,228 @@
    "r_level": 0.93,
    "r_firstdiff": 0.92,
    "p_firstdiff": 0.0,
+   "p_firstdiff_fdr": 0.0,
+   "survives_fdr_firstdiff": true,
    "r_detrended": 0.86,
-   "p_detrended": 0.0
+   "p_detrended": 0.0,
+   "p_detrended_fdr": 0.0,
+   "survives_fdr_detrended": true
   },
   {
    "variable": "Real household disposable income",
    "r_level": -0.93,
    "r_firstdiff": -0.53,
    "p_firstdiff": 0.0195,
+   "p_firstdiff_fdr": 0.0265,
+   "survives_fdr_firstdiff": true,
    "r_detrended": -0.91,
-   "p_detrended": 0.0
+   "p_detrended": 0.0,
+   "p_detrended_fdr": 0.0,
+   "survives_fdr_detrended": true
   },
   {
    "variable": "Severe material & social deprivation, new",
    "r_level": 0.92,
    "r_firstdiff": 0.38,
    "p_firstdiff": 0.2794,
+   "p_firstdiff_fdr": 0.2949,
+   "survives_fdr_firstdiff": false,
    "r_detrended": 0.11,
-   "p_detrended": 0.7547
+   "p_detrended": 0.7547,
+   "p_detrended_fdr": 0.7547,
+   "survives_fdr_detrended": false
   },
   {
    "variable": "AROP threshold, real terms",
    "r_level": -0.88,
    "r_firstdiff": -0.65,
    "p_firstdiff": 0.001,
+   "p_firstdiff_fdr": 0.0038,
+   "survives_fdr_firstdiff": true,
    "r_detrended": -0.78,
-   "p_detrended": 0.0
+   "p_detrended": 0.0,
+   "p_detrended_fdr": 0.0,
+   "survives_fdr_detrended": true
   },
   {
    "variable": "Housing cost overburden",
    "r_level": 0.86,
    "r_firstdiff": 0.51,
    "p_firstdiff": 0.0174,
+   "p_firstdiff_fdr": 0.0255,
+   "survives_fdr_firstdiff": true,
    "r_detrended": 0.86,
-   "p_detrended": 0.0
+   "p_detrended": 0.0,
+   "p_detrended_fdr": 0.0,
+   "survives_fdr_detrended": true
   },
   {
    "variable": "Severe material deprivation, legacy",
    "r_level": 0.82,
    "r_firstdiff": 0.65,
    "p_firstdiff": 0.0044,
+   "p_firstdiff_fdr": 0.0084,
+   "survives_fdr_firstdiff": true,
    "r_detrended": 0.62,
-   "p_detrended": 0.0061
+   "p_detrended": 0.0061,
+   "p_detrended_fdr": 0.0068,
+   "survives_fdr_detrended": true
   },
   {
    "variable": "Real GDP per capita",
    "r_level": -0.82,
    "r_firstdiff": -0.49,
    "p_firstdiff": 0.0211,
+   "p_firstdiff_fdr": 0.0268,
+   "survives_fdr_firstdiff": true,
    "r_detrended": -0.82,
-   "p_detrended": 0.0
+   "p_detrended": 0.0,
+   "p_detrended_fdr": 0.0,
+   "survives_fdr_detrended": true
   },
   {
    "variable": "Households in arrears",
    "r_level": 0.82,
    "r_firstdiff": 0.47,
    "p_firstdiff": 0.0263,
+   "p_firstdiff_fdr": 0.0313,
+   "survives_fdr_firstdiff": true,
    "r_detrended": 0.67,
-   "p_detrended": 0.0005
+   "p_detrended": 0.0005,
+   "p_detrended_fdr": 0.0006,
+   "survives_fdr_detrended": true
   },
   {
    "variable": "Unemployment rate",
    "r_level": 0.81,
    "r_firstdiff": 0.86,
    "p_firstdiff": 0.0,
+   "p_firstdiff_fdr": 0.0002,
+   "survives_fdr_firstdiff": true,
    "r_detrended": 0.8,
-   "p_detrended": 0.0001
+   "p_detrended": 0.0001,
+   "p_detrended_fdr": 0.0002,
+   "survives_fdr_detrended": true
   },
   {
    "variable": "Cannot keep home adequately warm",
    "r_level": 0.8,
    "r_firstdiff": 0.63,
    "p_firstdiff": 0.0018,
-   "r_detrended": 0.9,
-   "p_detrended": 0.0
+   "p_firstdiff_fdr": 0.0044,
+   "survives_fdr_firstdiff": true,
+   "r_detrended": 0.89,
+   "p_detrended": 0.0,
+   "p_detrended_fdr": 0.0,
+   "survives_fdr_detrended": true
   },
   {
    "variable": "Real wages, compensation per employee",
    "r_level": -0.79,
    "r_firstdiff": -0.21,
    "p_firstdiff": 0.3514,
+   "p_firstdiff_fdr": 0.3514,
+   "survives_fdr_firstdiff": false,
    "r_detrended": -0.42,
-   "p_detrended": 0.0489
+   "p_detrended": 0.0489,
+   "p_detrended_fdr": 0.0516,
+   "survives_fdr_detrended": false
   },
   {
    "variable": "Cannot face unexpected expense",
    "r_level": 0.76,
    "r_firstdiff": 0.52,
    "p_firstdiff": 0.0136,
+   "p_firstdiff_fdr": 0.0216,
+   "survives_fdr_firstdiff": true,
    "r_detrended": 0.58,
-   "p_detrended": 0.0035
+   "p_detrended": 0.0035,
+   "p_detrended_fdr": 0.0042,
+   "survives_fdr_detrended": true
   },
   {
    "variable": "Youth unemployment rate (15-24)",
    "r_level": 0.71,
    "r_firstdiff": 0.79,
    "p_firstdiff": 0.0005,
+   "p_firstdiff_fdr": 0.0022,
+   "survives_fdr_firstdiff": true,
    "r_detrended": 0.81,
-   "p_detrended": 0.0002
+   "p_detrended": 0.0002,
+   "p_detrended_fdr": 0.0003,
+   "survives_fdr_detrended": true
   },
   {
    "variable": "Real household consumption per capita",
    "r_level": -0.7,
    "r_firstdiff": -0.55,
    "p_firstdiff": 0.0076,
+   "p_firstdiff_fdr": 0.0132,
+   "survives_fdr_firstdiff": true,
    "r_detrended": -0.84,
-   "p_detrended": 0.0
+   "p_detrended": 0.0,
+   "p_detrended_fdr": 0.0,
+   "survives_fdr_detrended": true
   },
   {
    "variable": "Employment rate 20-64",
    "r_level": -0.69,
    "r_firstdiff": -0.72,
    "p_firstdiff": 0.0018,
+   "p_firstdiff_fdr": 0.0044,
+   "survives_fdr_firstdiff": true,
    "r_detrended": -0.77,
-   "p_detrended": 0.0003
+   "p_detrended": 0.0003,
+   "p_detrended_fdr": 0.0005,
+   "survives_fdr_detrended": true
   },
   {
    "variable": "HICP inflation, headline",
    "r_level": -0.54,
    "r_firstdiff": -0.25,
    "p_firstdiff": 0.2704,
+   "p_firstdiff_fdr": 0.2949,
+   "survives_fdr_firstdiff": false,
    "r_detrended": -0.67,
-   "p_detrended": 0.0004
+   "p_detrended": 0.0004,
+   "p_detrended_fdr": 0.0006,
+   "survives_fdr_detrended": true
+  },
+  {
+   "variable": "AROPE (poverty or social exclusion)",
+   "r_level": 0.48,
+   "r_firstdiff": 0.74,
+   "p_firstdiff": 0.0001,
+   "p_firstdiff_fdr": 0.0005,
+   "survives_fdr_firstdiff": true,
+   "r_detrended": 0.9,
+   "p_detrended": 0.0,
+   "p_detrended_fdr": 0.0,
+   "survives_fdr_detrended": true
   },
   {
    "variable": "AROP",
    "r_level": 0.19,
    "r_firstdiff": 0.6,
    "p_firstdiff": 0.0029,
+   "p_firstdiff_fdr": 0.0062,
+   "survives_fdr_firstdiff": true,
    "r_detrended": 0.67,
-   "p_detrended": 0.0004
+   "p_detrended": 0.0004,
+   "p_detrended_fdr": 0.0006,
+   "survives_fdr_detrended": true
   },
   {
    "variable": "Income inequality, S80/S20 ratio",
    "r_level": 0.15,
    "r_firstdiff": 0.64,
    "p_firstdiff": 0.0019,
+   "p_firstdiff_fdr": 0.0044,
+   "survives_fdr_firstdiff": true,
    "r_detrended": 0.82,
-   "p_detrended": 0.0
+   "p_detrended": 0.0,
+   "p_detrended_fdr": 0.0,
+   "survives_fdr_detrended": true
   }
  ],
  "spearman": [
@@ -1728,8 +1812,8 @@
    "label": "Arrears",
    "gr_oos": 0.05,
    "p": 0.0,
-   "pts_arop_explained": 47.5,
-   "pts_arope_explained": 39.6,
+   "pts_arop_explained": 52.5,
+   "pts_arope_explained": 41.5,
    "status": "ok"
   },
   {
@@ -1737,8 +1821,8 @@
    "label": "Cumulative excess unemployment",
    "gr_oos": 9.58,
    "p": 0.0,
-   "pts_arop_explained": 38.0,
-   "pts_arope_explained": 30.1,
+   "pts_arop_explained": 43.0,
+   "pts_arope_explained": 32.0,
    "status": "ok"
   },
   {
@@ -1746,8 +1830,8 @@
    "label": "LTU",
    "gr_oos": 21.84,
    "p": 0.0,
-   "pts_arop_explained": 25.8,
-   "pts_arope_explained": 17.9,
+   "pts_arop_explained": 30.8,
+   "pts_arope_explained": 19.7,
    "status": "ok"
   },
   {
@@ -1755,8 +1839,8 @@
    "label": "Financial expectations",
    "gr_oos": 25.79,
    "p": 0.0,
-   "pts_arop_explained": 21.8,
-   "pts_arope_explained": 13.9,
+   "pts_arop_explained": 26.8,
+   "pts_arope_explained": 15.7,
    "status": "ok"
   },
   {
@@ -1764,8 +1848,8 @@
    "label": "Housing tenure burden (mortgage-free owners)",
    "gr_oos": 36.07,
    "p": 0.0,
-   "pts_arop_explained": 11.5,
-   "pts_arope_explained": 3.6,
+   "pts_arop_explained": 16.5,
+   "pts_arope_explained": 5.5,
    "status": "ok"
   },
   {
@@ -1773,8 +1857,8 @@
    "label": "Inability to cover unexpected expense",
    "gr_oos": 38.28,
    "p": 0.0,
-   "pts_arop_explained": 9.3,
-   "pts_arope_explained": 1.4,
+   "pts_arop_explained": 14.3,
+   "pts_arope_explained": 3.3,
    "status": "ok"
   },
   {
@@ -1782,8 +1866,8 @@
    "label": "Wage years below 2008",
    "gr_oos": 38.68,
    "p": 0.02,
-   "pts_arop_explained": 8.9,
-   "pts_arope_explained": 1.0,
+   "pts_arop_explained": 13.9,
+   "pts_arope_explained": 2.9,
    "status": "ok"
   },
   {
@@ -1791,8 +1875,8 @@
    "label": "Wage-adjusted price pressure",
    "gr_oos": 39.31,
    "p": 0.0,
-   "pts_arop_explained": 8.3,
-   "pts_arope_explained": 0.4,
+   "pts_arop_explained": 13.3,
+   "pts_arope_explained": 2.2,
    "status": "ok"
   },
   {
@@ -1800,8 +1884,8 @@
    "label": "Material deprivation",
    "gr_oos": 40.0,
    "p": 0.0,
-   "pts_arop_explained": 7.6,
-   "pts_arope_explained": -0.3,
+   "pts_arop_explained": 12.6,
+   "pts_arope_explained": 1.5,
    "status": "ok"
   },
   {
@@ -1809,8 +1893,8 @@
    "label": "Migration (net rate per 1000)",
    "gr_oos": 46.92,
    "p": 0.4,
-   "pts_arop_explained": 0.7,
-   "pts_arope_explained": -7.2,
+   "pts_arop_explained": 5.7,
+   "pts_arope_explained": -5.4,
    "status": "ok"
   },
   {
@@ -1818,53 +1902,53 @@
    "label": "Housing cost overburden",
    "gr_oos": 51.53,
    "p": 0.01,
-   "pts_arop_explained": -3.9,
-   "pts_arope_explained": -11.8,
+   "pts_arop_explained": 1.1,
+   "pts_arope_explained": -10.0,
    "status": "ok"
   }
  ],
  "cum_stage2": [
   {
    "step": 1,
-   "layer": "AROP raw gap",
+   "layer": "AROP raw gap (2015-2024 avg)",
    "type": "raw, single-country",
-   "greece_value": 47.6,
+   "greece_value": 52.59,
    "points_closed": null
   },
   {
    "step": 2,
-   "layer": "AROPE bridge",
+   "layer": "AROPE bridge (2015-2024 avg)",
    "type": "raw, single-country",
-   "greece_value": 39.7,
-   "points_closed": 7.9
+   "greece_value": 41.54,
+   "points_closed": 11.05
   },
   {
    "step": 3,
    "layer": "Basic model: AROP + income + deprivation + headline unemployment (Model A)",
    "type": "regression, OOS",
    "greece_value": 25.6,
-   "points_closed": 22.0
+   "points_closed": 26.99
   },
   {
    "step": 4,
    "layer": "+ housing, arrears, unexpected-expense capacity (Model C)",
    "type": "regression, OOS",
    "greece_value": 11.6,
-   "points_closed": 36.0
+   "points_closed": 40.99
   },
   {
    "step": 5,
    "layer": "Headline unemployment -> LTU (Model C-LTU)",
    "type": "regression, OOS",
    "greece_value": 3.86,
-   "points_closed": 43.74
+   "points_closed": 48.73
   },
   {
    "step": 6,
    "layer": "+ cumulative excess unemployment (final model)",
    "type": "regression, OOS",
    "greece_value": -0.82,
-   "points_closed": 48.42
+   "points_closed": 53.41
   }
  ],
  "cum_year_by_year": [

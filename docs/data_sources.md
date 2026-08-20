@@ -368,3 +368,92 @@ number (long-term unemployment r=0.933, real wages r=−0.785, youth
 unemployment r=0.711, etc.) is unchanged — the corruption never reached
 any already-published report content, since this was the first time the
 merge had run with those three files present.
+
+---
+
+## Scripts 40–44: reporting-style robustness, work-effort squeeze, nested validation
+
+Added 2026-08-20. Documented here to close a gap flagged in external review:
+these five scripts' datasets were previously undocumented in this file.
+
+### 40–42: reporting-style / cultural-premium robustness
+
+| Dataset | Filters | Feeds |
+|---|---|---|
+| `ilc_pw01` | `sex=T`, `age=Y_GE16`, `isced11=TOTAL`, `unit=RTG` | Overall life satisfaction, used as the non-financial self-report comparator in the cross-indicator test (scripts 40, 42) |
+
+Everything else in scripts 40–42 is built from series already documented above:
+`subjective_poverty_all_countries.csv`, `arop_all_countries.csv`,
+`panel_extended.csv`, `panel_long_term_unemployment.csv`, and
+`panel_financial_expectations.csv`.
+
+**Outputs** (`data/processed/`): `reporting_style_precrisis_level.csv`,
+`reporting_style_gap_widening.csv`, `reporting_style_diff_in_diff.csv`,
+`reporting_style_cltu_year_by_year.csv`, `reporting_style_life_satisfaction.csv`,
+`reporting_style_cross_indicator.csv`, `reporting_style_v2_coverage_2003_2008.csv`,
+`reporting_style_v2_balanced_rankings.csv`, `reporting_style_v2_event_study.csv`,
+`reporting_style_v2_alt_treatment_dates.csv`, `reporting_style_v2_country_placebo.csv`,
+`reporting_style_v2_loo_controls.csv`, `reporting_style_v2_periphery_comparison.csv`,
+`reporting_style_v2_synthetic_control.csv`, `reporting_style_v2_synthetic_control_v2.csv`,
+`reporting_style_v3_standardized_deviations.csv`,
+`reporting_style_v3_residual_spec_sensitivity.csv`.
+
+**Note on the two synthetic controls**: the first (`..._synthetic_control.csv`)
+is a documented failure, kept deliberately — its donor pool was restricted to
+the five countries with full 2003–2008 *and* post-period coverage, all wealthy
+Northern/Western European economies that cannot match Greece's pre-crisis level
+(RMSE 25.3pt, degenerate 100%-Ireland weighting). The corrected version
+(`..._v2.csv`) matches on 2007–2008 instead — the first near-universal-coverage
+window per the same script's own coverage audit — opening the donor pool to 25
+countries and achieving RMSE≈0.
+
+### 43: work-effort squeeze
+
+| Dataset | Filters | Feeds |
+|---|---|---|
+| `lfsa_ewhan2` | `nace_r2=TOTAL`, `age=Y20-64`, `sex=T`, `unit=HR`, `wstatus=EMP/SAL/SELF`, `worktime=TOTAL/FT/PT` | Actual weekly hours by employment status and work-time |
+| `nama_10_lp_ulc` | `na_item=D1_SAL_HW` (EUR, NAC, PPS_EU27_2020), plus `HW_EMP`, `RLPR_HW`, `NLPR_HW` | Compensation per hour worked — the "reward" side of the squeeze index |
+| `nama_10_a10_e` | `nace_r2=TOTAL`, `na_item=SAL_DC`, `unit=THS_HW`/`THS_PER` | National-accounts annual hours per employee (matched employee construction) |
+| `ilc_sbjp03` | `wstatus=EMP/SAL/NSAL/POP`, `unit=PC` | Subjective poverty by activity status — the salaried-worker headline |
+| `ilc_iw01` | `wstatus=EMP/SAL/NSAL`, `sex=T`, `age=Y_GE18`, `unit=PC` | In-work AROP by activity status |
+| `ilc_peps02n` | `wstatus=EMP/SAL/NSAL`, `sex=T`, `age=Y_GE18`, `unit=PC` | In-work AROPE by activity status |
+| `prc_hicp_aind` | `coicop=CP00`, `unit=INX_A_AVG` | Deflator for real hourly compensation (own-2008=100) |
+
+**Outputs**: `work_effort_panel.csv`, `work_effort_hours_by_status.csv`,
+`work_effort_cross_country_latest.csv`, `work_effort_status_latest.csv`,
+`work_effort_employed_hardship_panel.csv`, `work_effort_employed_hardship_latest.csv`,
+`work_effort_model_battery.csv`, `work_effort_employed_model_battery.csv`,
+`work_effort_stage1_arop_bridge.csv`, `work_effort_final_model_increment.csv`,
+`work_effort_within_change_robustness.csv`, `work_effort_greece_correlations.csv`,
+`work_effort_interaction_test.csv`, `work_effort_interaction_vif.csv`,
+`work_effort_loo_*.csv`, `work_effort_rich_model_loo.csv`,
+`work_effort_cumulative_hourly_pay_stage1_loo.csv`, plus five preview figures in
+`work_effort_figures/`.
+
+### 44: nested selection validation
+
+No new Eurostat datasets. Reads `cumulative_hardship_candidate_panel.csv`
+(exported by `38_cumulative_hardship.py` specifically so this script reuses the
+exact screening inputs rather than rebuilding them). Repeats the full
+18-candidate screening inside each of the 27 leave-one-country-out folds.
+
+**Outputs**: `nested_selection_validation_folds.csv`,
+`nested_selection_validation_detail.csv`.
+
+### 00: acquisition of previously-orphaned raw inputs
+
+`00_fetch_missing_raw.py` re-fetches the fifteen raw files that had no
+producing script. Datasets and filters: `ilc_li02` (`statinfo=MED_EI`,
+four `rskpovth` cutoffs, Greece) and `ilc_li01` (same cutoffs, `hhcomp=A1`,
+`unit=EUR`) for the anchored-poverty inputs; `ilc_peps01`/`ilc_peps01n` for
+legacy and revised AROPE; `nama_10_pc` (`P41` and `B1GQ`, `CP_PPS_EU27_2020_HAB`),
+`ilc_mdes05`, `ilc_lvho07a`, `ilc_mdes04`, `ilc_li09` (`statinfo=MED_EI`,
+`rskpovth=B_60`), `tec00104`, `tec00131` for the 2015–2024 cross-country panels;
+`une_rt_a` (`age=Y15-74`) for the unemployment history; `ei_bsco_m`
+(`indic=BS-FS-NY`, `s_adj=NSA`, monthly → annual mean) for financial
+expectations; and `nama_10_lp_ulc` (`D1_SAL_PER`) deflated by `prc_hicp_aind`
+for the real-wage index. Three of these filters were only pinned down by
+diffing a fresh fetch against the archive — `statinfo=MED_EI` on both `ilc_li02`
+and `ilc_li09`, and `s_adj=NSA` rather than `SA` on `ei_bsco_m` — which is
+exactly the kind of undocumented choice the missing acquisition step had been
+hiding.

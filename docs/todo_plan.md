@@ -363,6 +363,85 @@ was decided and done, in order.
       separately inside each of the 27 leave-one-country-out training
       folds, rather than once with Greece fully excluded).
 
-**Commit**: pending user confirmation as of this entry — the user
-explicitly asked to hold off committing until the second review round's
-methodological fixes (above) were complete, which they now are.
+**Commit**: done — pushed as `d673e11` on 2026-08-20, together with the
+reporting-style and work-effort checkpoints below.
+
+
+---
+
+## Round 3 (2026-08-20): two new checkpoints, then a dual-lens review
+
+- [x] **Reporting-style / cultural-premium robustness** (scripts 40–42).
+      Tests whether Greece's gap could reflect reporting heterogeneity rather
+      than material conditions: coverage-audited pre-crisis ranking across
+      three balanced panels, a full DiD battery (event study, alternative
+      treatment dates, country-placebo/randomization inference p=0.037,
+      leave-one-control-out, periphery-only comparison, synthetic control),
+      standardized cross-indicator deviations, residual-trend specification
+      sensitivity, and a four-strand literature review. Integrated into all
+      three documents as a robustness section, not a new pillar.
+- [x] **Work-effort squeeze** (script 43, user-built, independently
+      re-verified). Salaried Greeks rank 17th of 27 on AROP yet 1st at 59.5%
+      on subjective poverty, while working the EU's longest hours at its
+      lowest PPS hourly pay. FDR-corrected, but fails country-FE (p=0.34) and
+      first-difference (p=0.73) tests — integrated as cross-sectional
+      structural evidence, deliberately excluded from the scorecard.
+- [x] **Multiple-testing audit**: found Section 4's live correlation table had
+      never been FDR-corrected on its displayed columns (a separate script
+      corrected a different, orphaned table). Correction moved inside
+      `10_robustness_correlations.py`, computed per-column from full-precision
+      p-values; also resolved a stale 18-vs-19-variable mismatch (AROPE had
+      been added to the script but never re-run).
+- [x] **Dual-lens review pass** (academic reviewer + reporter), then a second
+      external review. Combined verdict: strong quantitative core, coherent
+      story, but real integration debt and four publication blockers.
+
+### Round 4 (2026-08-20): P0 validity + P1 corrections
+
+- [x] **P0.1 Reproducibility.** Clean-room review found raw inputs with no
+      producing script. Added `00_fetch_missing_raw.py` (15 files, CHECK mode
+      by default), `verify_build.py` (36 published-value checks), and a
+      `Makefile` (`make verify` / `fetch` / `build`). 14 of 15 files now
+      reproduce exactly; the exception (`panel_gdp_pps`) is a rounding/revision
+      difference in a series that feeds no headline model. Reproducibility
+      claims reworded throughout from "fetched live" to "reproduces from the
+      archived snapshot; full automated re-acquisition scripted but not yet
+      demonstrated end to end."
+- [x] **P0.2 Gap ladder on one estimand/window.** The ladder mixed 2025 raw
+      gaps with 2015–2024 average residuals. Now computed on a common
+      2015–2024 window throughout (raw AROP gap 52.6, AROPE 41.5), with the
+      raw-gap-vs-residual estimand difference stated in every caption and the
+      table explicitly labeled a sequence, not an additive decomposition.
+- [x] **P0.3 Nested selection validation** (script 44). The full 18-candidate
+      screening repeated independently inside all 27 LOO folds. Cumulative
+      excess unemployment wins 25 of 27; the Greece fold picks the wage-duration
+      measure (already-documented sensitivity), the Finland fold picks a
+      closely related GDP-duration measure; significant in every fold
+      (worst p=0.0064).
+- [x] **P0.4 Evidence labels and causal language.** Added an explicit
+      four-tier taxonomy (pre-planned confirmatory / exploratory screening /
+      post-selection robustness / descriptive corroboration) to both the
+      report's Methods and the paper's §4.3, stating that FDR correction does
+      not convert sequential specifications into pre-specified tests. Softened
+      "mechanism", "isolates the puzzle", and "precise labor-market mechanisms"
+      to marker/association language in headings and summaries.
+- [x] **P1 factual and structural corrections.** Salaried-hours rank (1st →
+      7th of 27, a genuine error in the narrative), coverage period (eighteen →
+      fifteen years), unemployment peak (27.5% attributed vs. 27.8% own
+      series), two stale Section 12 cross-references, duplicate Table 4 in the
+      paper, chapter/stage counts (13→15, twelve→thirteen, seven→nine,
+      six→nine, seven→eight candidates), §6.9 heading overstatement, README
+      run order (00, 40–44, verify_build), data-source documentation for
+      scripts 00 and 40–44, vintage dates, and reference alphabetization.
+- [x] **Reporter-lens hooks**: the salaried-worker fact and the
+      reporting-culture test now appear in the report's executive summary and
+      the narrative's landing sequence, framed as illustrations of the central
+      argument rather than as additional pillars.
+
+- [ ] **P2 editorial rewrite, not yet started** (held for user confirmation):
+      consolidate the corroborating band (wages, prices, housing, migration,
+      age, work effort) into a shorter section; move model batteries, candidate
+      screens, and extended methodological notes into appendices or expandable
+      sections; add a navigation guide at the top of Section 11; clarify the
+      three nearby wage figures (nominal, real per employee, real per hour);
+      mobile presentation pass; final cross-document audit.

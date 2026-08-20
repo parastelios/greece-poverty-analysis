@@ -420,7 +420,11 @@ for var, label in candidates.items():
         "variable": var, "label": label, "n_obs": len(d), "n_countries": d.geo.nunique(),
         "r2": model.rsquared, "coef": model.params[var], "p_value_raw": model.pvalues[var],
         "greece_oos_residual": el.avg_residual_loo, "greece_oos_rank": int(el["rank"]),
-        "points_of_arop_gap_closed": 47.6 - el.avg_residual_loo,
+        # 52.6 = Greece's average raw subjective-minus-AROP gap over the same 2015-2024
+        # window as this panel's OOS residuals -- NOT the single-year 2025 gap (47.6),
+        # so the "points closed" comparison shares one window with the residual it's
+        # compared against (same convention as 38_cumulative_hardship.py's ladder).
+        "points_of_arop_gap_closed": 52.6 - el.avg_residual_loo,
     })
 stage1 = bh_adjust(pd.DataFrame(stage1_rows)).sort_values("p_fdr_bh")
 stage1.to_csv(OUT / "work_effort_stage1_arop_bridge.csv", index=False)

@@ -108,8 +108,12 @@ for _, r in robust.iterrows():
         "r_level": clean(r["r_level"]),
         "r_firstdiff": clean(r["r_firstdiff"]),
         "p_firstdiff": clean_p(r["p_firstdiff"]),
+        "p_firstdiff_fdr": clean_p(r["p_firstdiff_fdr"]),
+        "survives_fdr_firstdiff": bool(r["survives_fdr_firstdiff"]),
         "r_detrended": clean(r["r_detrended"]),
         "p_detrended": clean_p(r["p_detrended"]),
+        "p_detrended_fdr": clean_p(r["p_detrended_fdr"]),
+        "survives_fdr_detrended": bool(r["survives_fdr_detrended"]),
     })
 
 spearman_out = []

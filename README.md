@@ -21,14 +21,55 @@ the brief are intentionally future work, not V1 requirements), and
 
 ## Data vintage
 
-Every file in `data/` and the published report reflect a **live pull from
-the Eurostat API, last rebuilt 2026-08-19**. Eurostat revises its own
+Every file in `data/` and the published report reflect a **Eurostat API pull
+dated 2026-08-19**, except the work-effort series behind Section 11's
+salaried-worker findings (`scripts/43_work_effort_squeeze.py`), pulled
+**2026-08-20**. Eurostat revises its own
 published figures over time (methodology updates, late-reported country
 data, benchmark revisions); re-running the pipeline against the live API
 on a later date will not reproduce these exact numbers byte-for-byte, even
 though nothing in this project's own code will have changed. Treat this
 date as the reference vintage for any specific number quoted in the report
 or in the docs.
+
+## Reproducibility status
+
+**All published results reproduce from the archived source-data snapshot in
+`data/raw/` and `data/processed/`.** Verify this at any time, offline, in
+seconds:
+
+```bash
+make verify
+```
+
+That runs `scripts/verify_build.py`, which checks every headline number quoted
+in the three published documents against what the pipeline actually produced
+(36 checks: headline gaps, the gap-closing ladder, scorecard residuals and
+ranks, FDR survivor counts, nested-selection results, the work-effort figures,
+and the placebo inference). It exits non-zero on any mismatch.
+
+**Full from-scratch re-acquisition is now scripted but not yet byte-exact.**
+An external clean-room review found that a set of raw inputs were read by
+numbered scripts but produced by none — they had been fetched ad hoc during
+development. `scripts/00_fetch_missing_raw.py` closes that gap: it re-fetches
+all fifteen from their documented Eurostat datasets and filters. Run in CHECK
+mode (the default, writes nothing) it reports agreement against the archive:
+
+```bash
+make fetch
+```
+
+Current status: **14 of 15 reproduce exactly**; `real_wage_idx2008` agrees on
+99.6% of rows (rounding-level differences) and covers more countries than the
+archive. The one genuine exception is `panel_gdp_pps`, stored rounded to the
+nearest 100 PPS in the archive while the API now returns one decimal, with
+~3% of rows since revised by Eurostat — it feeds only an alternative
+specification in `11_panel_extended.py`, never a headline model. What is still
+missing for full end-to-end reproducibility is a clean-checkout guarantee that
+`make build` alone rebuilds every intermediate from nothing; until that is
+demonstrated, the honest claim is *"all results reproduce from the archived
+source-data snapshot; full automated re-acquisition is scripted and verified
+per-file but not yet demonstrated end to end from a clean checkout."*
 
 ## Setup
 
@@ -76,7 +117,13 @@ gap down to the final model, (6) sustained excess unemployment over roughly
 the past decade as the main new mechanism (with long-term unemployment and
 a closely related wage-duration measure as jointly supporting evidence —
 see `docs/publication_strategy.md`, "Second-round methodological review,"
-for why this isn't framed as one uniquely identified variable), (7) a
+for why this isn't framed as one uniquely identified variable), (7) corroborating
+evidence that the paradox persists even among salaried workers, who work the
+EU's longest hours at its lowest hourly pay (a cross-country structural
+association, deliberately kept off the scorecard — see
+`docs/publication_strategy.md`, "Work-effort-squeeze checkpoint"), (8) a
+robustness section testing whether the whole gap could instead reflect
+country-specific reporting style rather than material conditions, and (9) a
 Discussion generalizing the AROP-in-crisis-contexts lesson beyond Greece
 specifically.
 
@@ -86,6 +133,7 @@ Scripts are numbered in dependency order. Run all from inside `scripts/`:
 
 | # | Script | Produces |
 |---|---|---|
+| 00 | `00_fetch_missing_raw.py` | Re-acquires the 15 raw inputs that previously had no producing script. CHECK mode by default (compares against the archive, writes nothing); `--write` to actually overwrite `data/raw/` |
 | 01 | `01_fetch_core.py` | AROP + subjective poverty, all countries |
 | 02 | `02_build_master_table.py` | Core Greece/EU master table + rankings |
 | 03 | `03_fetch_supplementary.py` | Income, unemployment, deprivation, housing, etc. |
@@ -125,6 +173,12 @@ Scripts are numbered in dependency order. Run all from inside `scripts/`:
 | 37 | `37_arop_snapshot.py` | Cross-country AROP-vs-subjective snapshot (latest year) — the AROP counterpart to script 22, used as the primary headline comparison |
 | 38 | `38_cumulative_hardship.py` | Cumulative-hardship checkpoint: AROP-threshold fetch (NAC currency), full-history unemployment refetch, cumulative/duration/rolling/decay batteries, selection-leakage check, FDR correction — all outputs listed in `docs/data_sources.md` |
 | 39 | `39_age_breakdown_arope.py` | Age-breakdown checkpoint: AROPE/AROP/deprivation/low-work-intensity by age group, shift-share decomposition, sex and household-composition breakdown for 65+, Greece vs EU27 — see `docs/data_sources.md` |
+| 40 | `40_reporting_style_robustness.py` | Reporting-style checkpoint, first pass: pre-crisis level ranking, raw gap widening, diff-in-differences, out-of-sample residual stability, cross-indicator comparison (life satisfaction vs. financial measures) |
+| 41 | `41_reporting_style_robustness_v2.py` | Robustness battery: EU-SILC coverage audit + three balanced panels, event study, alternative treatment dates, country-placebo/randomization inference, leave-one-control-out, periphery-only comparison, two synthetic controls |
+| 42 | `42_reporting_style_robustness_v3.py` | Standardized (z-score) cross-indicator deviations; residual-trend sensitivity across three model specifications |
+| 43 | `43_work_effort_squeeze.py` | Work-effort squeeze: salaried/self-employed/all-employed hardship decomposition, hours vs. hourly compensation, FDR-corrected 9-candidate battery, within-country robustness (country FE, first differences), preview figures |
+| 44 | `44_nested_selection_validation.py` | Nested selection validation: the full 18-candidate screening repeated independently inside all 27 leave-one-country-out folds |
+| — | `verify_build.py` | Checks all published headline numbers against pipeline outputs (36 checks); run by `make verify` |
 | — | `09_export_report_data.py` again | Re-run to pick up any new columns before... |
 | — | `inject_data.py` | ...embedding the refreshed JSON into `output/report.html` |
 

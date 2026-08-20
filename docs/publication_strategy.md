@@ -3520,3 +3520,429 @@ style). Two further issues found and fixed:
 
 Confirmed no remaining instances of the incorrect wording in any of the
 three files after the fix.
+
+---
+
+### Chart UX: nearest-line hover labels on multi-country line charts (2026-08-20)
+
+Requested: in charts showing many countries' lines at once, hovering
+should identify which line is which, not just show Greece's value.
+
+`report.html`'s shared `lineChart()` JS function (used by every line chart
+in the document) already drew all ~27 EU countries' lines on three charts
+&mdash; GDP-recovery-vs-peak, real wages, long-term unemployment &mdash;
+but the tooltip was hardcoded to show only Greece (`tooltipSeries:
+[{key:'EL', ...}]`), leaving the other 26 gray background lines
+unlabeled on hover.
+
+**Fix**: each line's `<path>` now carries a `data-key` attribute. On
+mousemove within a chart, the function computes the mouse's vertical
+position in chart coordinates and finds whichever "extra" (not-already-
+always-shown) series is closest to it at that year; if within 16px, that
+country's code and value are appended to the tooltip and its line is
+highlighted (bold, switched to the theme's ink color) so it's visually
+traceable against the gray background, with everything reset cleanly on
+mouseleave. Charts where every series is already always shown in the
+tooltip (e.g. the AROPE-by-age-group chart, 5 series) are unaffected,
+since there's nothing "extra" to detect.
+
+Verified directly in-browser via simulated `mouseenter`/`mousemove`
+events at several cursor positions on all three affected charts: correct
+country codes returned when the cursor is actually near a line (e.g.
+Slovenia on the recovery chart, Slovakia on the wages chart), no false
+match when it isn't, and clean reset on `mouseleave`. Zero console
+errors.
+
+**Scope note**: `narrative_companion.html` and `academic_paper_draft.html`
+have no JS interactivity at all &mdash; their charts are static,
+pre-rendered SVG paths with no `<script>`, tooltip elements, or event
+listeners. This fix applies to `report.html` only, the sole document
+with an interactive chart engine; adding hover behavior to the other two
+would mean building chart interactivity from scratch, a separate and
+substantially larger task, not attempted here.
+
+---
+
+### Multiple-testing audit and remediation: Section 4's live correlation table (2026-08-20)
+
+Prompted by the user's audit question ("did we adjust for multiple testing
+everywhere needed?"). Full audit findings, then the user's own independent
+re-derivation (which caught a deeper issue than the one first reported),
+then the fix actually applied.
+
+**Audit finding**: every other multi-candidate battery in the project was
+already correctly FDR-corrected &mdash; cumulative-hardship (script 38,
+18-candidate family), work-effort-squeeze (script 43, two 9-candidate
+families), Section 11's swing-sensitivity test (9 predictors, script 27).
+Age-breakdown (script 39) is purely descriptive, no correction needed.
+Reporting-style robustness (scripts 40-42) is mostly single planned tests
+or already uses an appropriate method (randomization inference for the
+country-placebo test, which doesn't need FDR on top since it produces one
+honest p-value from a reference distribution, not many separate claims).
+
+**The gap**: Section 4's live correlation table (raw / year-over-year /
+trend-removed columns, the one readers actually see) had never had FDR
+correction applied to its year-over-year or trend-removed columns. A
+dedicated correction script (27) existed, but it corrected a *different*,
+earlier, orphaned correlation table (`correlations.csv`, 21 variables,
+contemporaneous + one-year lag, from script 06) that is exported into
+`report_data.json` but never rendered anywhere in the live document. The
+Methods appendix's "16 of 21 survive correction" claim described that
+orphaned analysis, not the table's actual significance flags.
+
+**User's independent re-derivation went further**: reproduced the 18-row
+result exactly (15/18 YoY survive, 16/18 detrended survive, real wages
+flips from raw p=0.0489 to FDR-adjusted p&asymp;0.0518), but also caught that
+`10_robustness_correlations.py`'s own `predictors` dict already declared
+19 variables (including AROPE), while the checked-in CSV and displayed
+table were stale at 18 rows &mdash; the script had been edited to add AROPE
+at some point but never rerun. With AROPE correctly included: 16/19 survive
+YoY, 17/19 survive detrended, real wages narrows further to adjusted
+p&asymp;0.0516. Correct instruction: fix the pipeline/output staleness
+first, do not patch around it by re-deriving a knowingly-incomplete
+18-variable table.
+
+**Remediation applied**:
+
+1. **`scripts/10_robustness_correlations.py`** rewritten to compute
+   BH-FDR correction directly inside itself, separately for each of the
+   three displayed families (level, first-difference, detrended), from
+   full-precision p-values before any rounding for display. Added a
+   warning print for any predictor declared but missing from the
+   analysis dataset, so this specific staleness class can't recur
+   silently. Rerun: **19 of 19** declared predictors now found and
+   tested (confirms the dict/data mismatch is resolved, not just
+   patched around). Verified results match the user's independent
+   re-derivation exactly: level 17/19 survive (AROP and income
+   inequality don't), year-over-year 16/19 survive (severe material &amp;
+   social deprivation's newer measure, real wages, and headline HICP
+   inflation don't), detrended 17/19 survive (severe material & social
+   deprivation's newer measure and real wages don't; HICP is a genuine
+   mixed case &mdash; fails YoY, survives detrended, reported as such
+   rather than smoothed over). Real wages, detrended: raw p=0.0489,
+   FDR-adjusted p=0.0516 &mdash; confirmed to the fourth decimal against
+   the user's own figure.
+2. **`scripts/09_export_report_data.py`** updated to pass the new
+   `p_firstdiff_fdr`, `survives_fdr_firstdiff`, `p_detrended_fdr`,
+   `survives_fdr_detrended` columns through into the exported bundle.
+3. **`report.html`**'s inline `DATA` blob (previously hand-pasted, not
+   auto-synced with `report_data.json`) resynced programmatically: load
+   the regenerated JSON, dump it compact (matching the existing
+   single-line embedded format exactly), and replace the `const DATA =
+   {...};` statement via a precise regex substitution rather than a
+   manual paste, given its size (~60KB). Verified via DOM inspection
+   that `DATA.robustness` now has all 19 rows with the new FDR fields
+   correctly populated, including AROPE.
+4. **`report.html`**'s table-rendering JS changed from raw `p < 0.05`
+   checks to `survives_fdr_firstdiff` / `survives_fdr_detrended` booleans
+   for the "(n.s.)" flags. Verified in-browser via DOM inspection: 19
+   rows render, exactly 3 rows carry an "(n.s.)" flag (severe
+   material &amp; social deprivation-new, real wages, HICP inflation),
+   5 flagged cells total, matching the corrected data exactly.
+5. **`report.html`** narrative paragraph following the table rewritten:
+   states the corrected 16/19 and 17/19 survival counts, names AROPE's
+   strong survival on both tests now that it's included for the first
+   time, names all three variables that fail at least one test (not
+   just one, as the stale text implied), and flags HICP's mixed result
+   honestly. The table's own "n.s." legend note rewritten to define it
+   as "does not survive FDR correction," not raw p&ge;0.05.
+6. **`report.html`** Section 11's real-wages method-aside sentence
+   fixed: "borderline but crosses the conventional 5% threshold" &rarr;
+   "borderline before correction, and does not survive FDR correction
+   ... adjusted p=0.052."
+7. **`report.html`** Methods appendix rewritten to correctly describe
+   the current 19-variable, three-family, in-script correction as the
+   one governing the live table, with the old 21-variable
+   contemporaneous+lag1 screen explicitly relabeled as an earlier,
+   superseded, separately-kept exploratory record &mdash; not cited as
+   governing any live claim.
+8. **`academic_paper_draft.html`**'s equivalent FDR-family paragraph
+   (&sect;4.3) rewritten the same way: correct 19-variable/three-family
+   description as current, old 21-variable screen explicitly marked
+   superseded. `narrative_companion.html` was checked and does not
+   contain this content at all, so needed no fix.
+9. **Event-study multiple testing (point 8 of the user's plan),
+   resolved by inspection rather than by adding a test**: the reporting-
+   style DiD panel (script 41) runs from 2007, with 2008 as the omitted
+   base year, so there is exactly **one** pre-treatment coefficient
+   (2007) in the design &mdash; already the single number reported
+   everywhere this is discussed (coefficient &minus;0.96, p=0.17). A
+   joint pre-trend F-test requires at least two pre-period coefficients
+   to test jointly and doesn't apply here; there is nothing to correct.
+   Checked separately: all three published documents already describe
+   the ~17 post-treatment year-by-year coefficients only as an aggregate
+   pattern ("no sign of the gap already widening before 2009," "rises
+   sharply and monotonically post-2009") and never present any
+   individual year's coefficient as its own significance claim, so no
+   live-document change was needed on this point either.
+
+All fixes verified directly in-browser: `report.html`'s table shows the
+correct 19 rows and n.s. flags via DOM inspection; both `report.html` and
+`academic_paper_draft.html` load with zero console errors after the
+edits; the previously-added nearest-line chart-hover feature (see prior
+entry) re-verified still working correctly after the `DATA` blob resync.
+
+---
+
+### Full dual-lens review pass: academic reviewer + reporter (2026-08-20)
+
+Requested by the user: a complete pass over all documentation, planning,
+analysis, results, and the three published documents, read once as a
+critical academic reviewer (is everything included, correct, and valid)
+and once as a reporter publishing this research (is the story concrete,
+readable, and catchy). Method: full end-to-end reads of all three
+documents' extracted text, README, todo_plan, data_sources,
+comparability_notes; numeric spot-checks of contested figures against
+the pipeline CSVs directly. **Findings reported to the user; no fixes
+applied in this pass** — fix list below is the review's output.
+
+**What holds up (stated first because it's most of the picture)**: every
+load-bearing number cross-checks across the three documents and against
+the pipeline outputs (headline gaps, scorecard rows, DiD battery, FDR
+counts, work-effort figures, age breakdown, salaried table); the
+methodological discipline (OOS validation everywhere, per-family FDR,
+selection-leakage check, permanence testing, evidentiary labels, honest
+nulls) is genuinely strong and consistently applied; the story spine is
+coherent and parallel across all three documents.
+
+**Factual errors found (P1)**:
+1. `narrative_companion.html` Ch. 12 claims Greece's weekly hours are
+   "still highest ... restricted to ... salaried employees only" —
+   false: salaried-only hours rank 7th of 27 (Romania highest, 39.0 vs
+   Greece 38.0). Report and academic versions state 7th correctly; the
+   narrative alone overclaims.
+2. Same paragraph: "Greece's own eighteen-year history" — the
+   work-effort/subjective series for Greece is 15 years (2010–2024,
+   n=15, verified in `work_effort_employed_hardship_panel.csv`).
+3. Cross-document inconsistency: academic §2 says unemployment "peaked
+   at 27.5%" (Pagoulatos's figure); report §4 and the project's own
+   `analysis_dataset.csv` say 27.8% (2013, ages 15–74). Align or
+   attribute explicitly.
+4. `report.html` has two stale "Section 12" cross-references: the
+   executive summary's "Full limitation structure in Section 12"
+   (limitations live in Methods) and the Methods line "distinctive in
+   scale and duration (Section 12)" (that discussion is in Section 11).
+   The literature section's "Answer to Question 2, Section 12" reference
+   is correct and needs no change.
+5. Academic paper: two tables are both numbered "Table 4" (§6.8 elderly
+   and §6.9 salaried — the latter introduced in the work-effort
+   integration without checking the existing sequence), and Table 3
+   (§7.3) appears after both. Renumber document-order: the §6.9 table
+   and everything after shift.
+
+**Stale counts / internal consistency (P2)**:
+6. Narrative header badge "13 chapters" → now 15.
+7. Narrative Ch. 14: "spent twelve chapters explaining" → thirteen.
+8. Narrative Landing: "in eight separate and independently-checked
+   ways" — fragile count (arguably nine with Ch. 12); update or remove
+   the numeral.
+9. Academic §1: "moves through seven stages" — the list that follows now
+   has nine items (work-effort and reporting-heterogeneity were appended
+   without updating the count).
+10. Academic §4.3: "the six-stage argument structure set out in §1" —
+    contradicts §1's own (already-wrong) "seven".
+11. Report Section 11 intro: "tests seven candidates directly ... in
+    three groups" — now eight tested candidates; the work-effort squeeze
+    is absent from the intro's taxonomy.
+12. Academic §6.9 heading still reads "a structural mechanism that
+    isolates the puzzle from unemployment" — the same overstatement the
+    user's earlier review fixed in the §1 roadmap wording; the heading
+    (and the section's first sentence, "entirely apart from unemployment
+    status") kept it.
+
+**Stale scaffolding (P2)**:
+13. README run-order table stops at script 39 — scripts 40–43 missing.
+14. Data-vintage claims ("2026-08-19") in README, all three documents'
+    colophons/badges, and academic §10 are no longer strictly true: the
+    work-effort data (script 43) was pulled 2026-08-20.
+15. `docs/todo_plan.md` predates scripts 40–43 and still says "Commit:
+    pending user confirmation" (commit d673e11 was pushed today);
+    `docs/data_sources.md` has no entries for scripts 40–43's datasets
+    (lfsa_ewhan2, nama_10_lp_ulc/D1_SAL_HW, ilc_sbjp03, ilc_iw01,
+    ilc_peps02n, ilc_pw01, sts_rb_q-adjacent none needed).
+16. Academic §3.5 (Contribution) is stale: still names long-term
+    unemployment as "the single variable that most changes Greece's
+    standing" without mentioning cumulative excess unemployment — the
+    paper's own self-declared central new result — or §6.9/§6.11.
+17. Academic abstract omits both §6.9 (salaried-worker persistence) and
+    §6.11 (reporting-heterogeneity robustness) — the two things a
+    referee/reader most wants signposted.
+18. Academic §4 data-sources paragraph omits §6.9's datasets.
+
+**Methodological soft spots (acknowledge, not necessarily fix)**:
+19. The DiD pre-trend evidence rests on a single pre-treatment
+    coefficient (2007; 2008 is the omitted base) — the academic paper
+    states this precisely; report.html's looser "there's no sign of the
+    gap already widening before 2009" reads stronger than one
+    coefficient strictly supports. One qualifying clause would fix it.
+20. Academic Table 1 stops at Model F (Model G appears only in Table 2
+    and §6.6 text) while report.html's scorecard shows all eight — a
+    referee may ask for G as a Table 1 row.
+21. References: Zambarloukou alphabetized after the Želinský entries.
+22. Two different "wages below 2008" figures (31.8% per-employee, 27.8%
+    per-hour) plus a nominal 13.1% figure appear near each other in
+    Section 11 / Ch. 4–12 with no bridging sentence — correct but
+    reader-confusing; one cross-reference clause each would resolve it.
+
+**Reporter-lens findings**:
+- The two newest and most quotable findings never reach the front doors:
+  report.html's executive summary has no mention of the salaried-worker
+  result (ordinary 17th on AROP, 1st at 59.5% on subjective — arguably
+  the single most striking fact in the project) nor of the "could this
+  still be reporting culture?" test; the narrative's Landing sequence
+  enumerates the scars but skips Ch. 12's "even a job doesn't fix it."
+  One sentence in each place would carry the strongest hook to the
+  readers most likely to stop there.
+- report.html Section 11 has grown to nine h4 subsections; a one-line
+  mini-map at the section top would help navigation.
+- Otherwise the story is in good shape: chapter titles are strong, the
+  honest-nulls style is distinctive, and the spine reads the same way in
+  all three registers.
+
+**Suggested fix order**: P1 items 1–5 first (factual/numbering);
+then P2 consistency counts (6–12) and scaffolding (13–18); then the
+optional soft-spot and reporter items (19–22 and the exec-summary/
+landing hooks) as one final polish pass.
+
+---
+
+### Round 4: P0 validity/reproducibility + P1 corrections (2026-08-20)
+
+Executing a combined external review verdict ("strong quantitative core and
+coherent central story, but not yet publication-ready"), in the reviewer's own
+priority order. P2 editorial rewrite deliberately held for user confirmation.
+
+#### P0.1 — Reproducibility (the highest-priority technical issue)
+
+A clean-room test established what the earlier review could not: numbers match
+the *stored* pipeline outputs, but the project could not acquire every required
+dataset from scratch. Audited directly rather than assumed: 15 files in
+`data/raw/` were read by numbered scripts and produced by none — fetched ad hoc
+during development.
+
+**Built**: `scripts/00_fetch_missing_raw.py`, which re-fetches all fifteen from
+documented datasets/filters. CHECK mode (default) fetches to a temp dir and
+reports agreement against the archive without touching `data/raw/`; `--write`
+performs a real re-acquisition. **Result: 14 of 15 reproduce exactly.**
+`real_wage_idx2008` agrees on 99.6% of rows (rounding) with wider country
+coverage; `panel_gdp_pps` is the one genuine exception (archive stored it
+rounded to the nearest 100 PPS, API now returns one decimal, ~3% of rows since
+revised) and feeds only the alternative `M3_swap_to_GDP_PPS` specification in
+script 11, never a headline model.
+
+Writing the acquisition script surfaced three previously-undocumented filter
+choices that the missing step had been hiding, each pinned down by diffing a
+fresh fetch against the archive: `statinfo=MED_EI` on both `ilc_li02` and
+`ilc_li09` (without it the fetch returns both mean- and median-based rows,
+silently doubling the table), and `s_adj=NSA` rather than `SA` on `ei_bsco_m`
+(NSA reproduces the archive at 100%, SA at 96.6%).
+
+**Also built**: `scripts/verify_build.py` — 36 checks of published headline
+numbers against pipeline outputs (headline gaps, every ladder step, scorecard
+residuals *and* ranks, FDR survivor counts, nested-selection results,
+work-effort figures, placebo inference), exiting non-zero on mismatch. And a
+`Makefile`: `make verify` (fast, offline, the default), `make fetch`,
+`make build`, `make all`. All 36 checks currently pass.
+
+**Claim reworded** in the report's Methods, its data appendix, the paper's §10,
+and the README, from "every series fetched live" to: *all results reproduce
+from the archived source-data snapshot; full automated re-acquisition is
+scripted and verified per-file but not yet demonstrated end to end from a clean
+checkout.*
+
+#### P0.2 — Gap ladder now one estimand-window
+
+The ladder mixed 2025 raw AROP/AROPE gaps (steps 1–2) with 2015–2024 average
+out-of-sample residuals (steps 3–6), then reported differences as "points
+explained" — implying a common decomposition across rows that used different
+estimands *and* different periods. Fixed at the source in
+`38_cumulative_hardship.py`: raw gaps are now computed on the same 2015–2024
+window as the residuals (**AROP 52.6, AROPE 41.5**, replacing 47.6/39.7).
+Points-closed recomputed against 52.6 throughout, in the stage-1 and stage-2
+tables, the work-effort AROP bridge (script 43), and all three documents. The
+remaining raw-gap-vs-residual estimand difference is now stated explicitly in
+every caption, with the table labeled a *sequence*, not an additive
+decomposition. The single-year 2025 figures (47.6/39.7) remain the headline
+numbers elsewhere and are unchanged — they are simply no longer mixed into this
+table.
+
+#### P0.3 — Nested selection validation (script 44)
+
+Prior checks tested coefficient stability for an *already-selected* variable and
+re-ran selection once with Greece excluded. Now the complete 18-candidate
+screening is repeated independently inside all 27 leave-one-country-out folds
+(486 screening regressions), each fold's country dropped from screening
+entirely. `38_cumulative_hardship.py` now exports
+`cumulative_hardship_candidate_panel.csv` so script 44 reuses the exact
+screening inputs rather than rebuilding them.
+
+**Result**: cumulative excess unemployment selected first in **25 of 27 folds**;
+significant in **every** fold (worst-case p=0.0064). The two exceptions both
+land on near-neighbour duration/exposure constructions: the Greece-excluded fold
+picks the wage-duration measure (the already-documented sensitivity), and the
+Finland-excluded fold picks a GDP-duration measure with cumulative excess
+unemployment still ranked 3rd. Selection is stable; the family is not.
+
+#### P0.4 — Evidence labels and causal language
+
+Added an explicit four-tier taxonomy to the report's Methods and the paper's
+§4.3 — *pre-planned confirmatory* / *exploratory screening* / *post-selection
+robustness* / *descriptive corroboration* — stating directly that FDR
+correction controls false discoveries within a family but **does not convert
+sequentially developed specifications into pre-specified tests**, and that the
+later scorecard rows (C-LTU, Model G) therefore rest on out-of-sample, placebo,
+and nested-selection validation rather than in-sample p-values.
+
+Causal language softened where it exceeded an aggregate observational panel:
+§6.5/§6.6 headings changed from "the sharpest mechanism"/"the mechanism that
+closes the residual" to "the sharpest current-conditions marker"/"the addition
+that closes the residual"; "precise labor-market mechanisms" → "specific
+labor-market measures with a clear interpretation"; "This isolates the puzzle
+from unemployment entirely" → "This shows the puzzle persists among people who
+are working"; §1's "mechanisms that most fully account for" → "strongest and
+most stable explanatory markers … associational markers whose robustness is
+established through out-of-sample, placebo, and nested-selection validation,
+not causally identified mechanisms."
+
+#### P1 — Factual and structural corrections
+
+One genuine factual error: the narrative's Chapter 12 claimed Greek salaried-only
+weekly hours were "still highest" in the EU — the true rank is **7th of 27**
+(Romania highest). Rewritten to say the self-employed contribute to the record
+without being the whole story. Also: "eighteen-year history" → fifteen (the
+series is 2010–2024, n=15); unemployment peak now stated as 27.8% on this
+project's own Eurostat series with Pagoulatos's 27.5% explicitly attributed to a
+different vintage; two stale "Section 12" cross-references retargeted (Methods
+and Section 11 — the two remaining "Section 12" references are correct, since
+Section 12 *is* "Answer to Question 2"); the paper's duplicate **Table 4**
+resolved by renumbering to document order (elderly → Table 3, salaried → Table
+4, programs → Table 5); chapter/stage counts corrected (13→15 chapters,
+"twelve"→"thirteen chapters", "seven stages"→nine, "six-stage"→nine, "seven
+candidates"→eight — the report's own "traces seven stages" was checked and is
+correct as written); §6.9's heading overstatement removed; Zambarloukou
+re-alphabetized before the Želinský entries; abstract and §3.5 Contribution
+refreshed to name cumulative excess unemployment as the central result and to
+signpost §6.9 and §6.11; §4 data list extended with §6.9's six datasets;
+README run-order table extended with scripts 00 and 40–44 plus `verify_build`;
+`docs/data_sources.md` given full entries for scripts 00 and 40–44;
+`docs/todo_plan.md` updated (commit status corrected — `d673e11` was pushed —
+plus rounds 3 and 4); vintage dates now disclose the 2026-08-20 work-effort pull
+alongside the 2026-08-19 core.
+
+Reporter-lens hooks added as *illustrations of the central argument, not new
+pillars*: the salaried-worker fact and the reporting-culture test now appear in
+the report's executive summary, and "hardship that even holding a job doesn't
+resolve" was added to the narrative's landing sequence.
+
+#### Verification
+
+All three documents re-checked in-browser after every pass: ladder rows render
+the corrected common-window values, the correlation table still renders 19 rows,
+the paper's captions now read Table 1–5 in order, the narrative shows 15
+chapters with every corrected string present, and all three load with zero
+console errors. `make verify` passes all 36 checks.
+
+**Not done, held for user confirmation**: the P2 editorial rewrite
+(consolidating the corroborating band, moving batteries/screens/notes into
+appendices, a Section 11 navigation guide, disambiguating the three nearby wage
+figures, mobile presentation, final cross-document audit).

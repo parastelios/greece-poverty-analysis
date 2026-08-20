@@ -1,7 +1,7 @@
 step,layer,type,greece_value,points_closed
-1,AROP raw gap,"raw, single-country",47.6,
-2,AROPE bridge,"raw, single-country",39.7,7.899999999999999
-3,Basic model: AROP + income + deprivation + headline unemployment (Model A),"regression, OOS",25.6,22.0
-4,"+ housing, arrears, unexpected-expense capacity (Model C)","regression, OOS",11.6,36.0
-5,Headline unemployment -> LTU (Model C-LTU),"regression, OOS",3.8557776582365313,43.74422234176347
-6,+ cumulative excess unemployment (final model),"regression, OOS",-0.82,48.42
+1,AROP raw gap (2015-2024 avg),"raw, single-country",52.59000000000001,
+2,AROPE bridge (2015-2024 avg),"raw, single-country",41.540000000000006,11.050000000000004
+3,Basic model: AROP + income + deprivation + headline unemployment (Model A),"regression, OOS",25.6,26.99000000000001
+4,"+ housing, arrears, unexpected-expense capacity (Model C)","regression, OOS",11.6,40.99000000000001
+5,Headline unemployment -> LTU (Model C-LTU),"regression, OOS",3.8557776582365313,48.73422234176348
+6,+ cumulative excess unemployment (final model),"regression, OOS",-0.82,53.41000000000001
