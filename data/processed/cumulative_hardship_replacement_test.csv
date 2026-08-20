@@ -1,0 +1,4 @@
+model,r2,n,gr_in,gr_oos,rank,coefs
+C-LTU baseline,0.914,267,1.29,3.86,6/27,"{'ltu_rate': (1.9633, 0.0)}"
+C + cum_excess_unemployment (LTU swapped out),0.911,267,0.43,4.26,7/27,"{'cum_excess_unemployment': (0.2314, 0.0)}"
+C-LTU + cum_excess_unemployment (both),0.93,267,-0.06,-0.82,18/27,"{'ltu_rate': (1.4854, 0.0), 'cum_excess_unemployment': (0.1688, 0.0001)}"

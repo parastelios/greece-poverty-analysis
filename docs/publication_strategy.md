@@ -2149,3 +2149,212 @@ All three files' tag balance re-verified via regex count; all three
 republished to their existing Artifact URLs. Committed and pushed to
 `origin/main` (commit `2032f97` for the academic-paper/chart/GDP-bug round;
 this alignment round follows in a separate commit).
+
+## Cumulative-hardship checkpoint (2026-08-20)
+
+New checkpoint, `scripts/38_cumulative_hardship.py`, run to completion end to
+end (not just interactively) before this entry was written. Motivated by a
+methodological question raised while discussing the AROP/AROPE restructuring:
+does *accumulated* exposure to hardship since the crisis explain Greece's
+subjective-poverty gap better than *current-year* hardship alone? Framed
+explicitly as a generalization of the anchored-poverty method already in the
+report (Section 3's fixed-2008-baseline reconstruction), applied
+systematically to GDP, real wages, unemployment, long-term unemployment, and
+the AROP threshold itself, rather than a new idea bolted on.
+
+### Data and construction
+
+- **AROP threshold, cross-country**: fetched fresh (`ilc_li01`, national
+  currency (NAC), not EUR -- avoids exchange-rate contamination for non-euro
+  countries), deflated by each country's own HICP. Coverage checked before
+  building anything on top of it (the explicit gate agreed before running):
+  clean for all 27 countries, only Croatia lacks 2008/2009 data (series
+  starts 2010, used as Croatia's own baseline, flagged in the script's
+  output).
+- **Headline unemployment, full history**: the existing `panel_unemployment.csv`
+  only covers 2015-2024 (matches the model's own window); a longer-history
+  version was fetched fresh and confirmed to start in **2009**, not 2008, for
+  nearly every country (`panel_unemployment_history_2008_2024.csv`) -- an
+  assumption that would have been wrong if not checked directly. Unemployment
+  and LTU cumulative-excess measures both baselined to 2009 as a result.
+- **Construction rules** (agreed before running, per the discipline
+  established for every other checkpoint in this project): GDP and real-wage
+  cumulative shortfalls use `max(0, 100 - index)` per year, summed -- an
+  accumulated-*damage* measure, not a net-performance score where later
+  growth cancels earlier hardship. Two baselines each (fixed 2008, own
+  rolling peak). Unemployment/LTU use cumulative *excess* above each
+  country's own baseline-year rate, also floored at 0 per year.
+
+### Main results
+
+**Stage 1 (individual, each variable alone + AROP + year FE, clustered by
+country)** -- deliberately the simplest possible baseline, so every
+candidate (whether or not it's already inside the main model) is tested on
+equal footing. Answers "how much does this one variable, alone, help
+translate AROP into subjective poverty" -- explicitly not a causal-
+contribution claim. Full results:
+`data/processed/cumulative_hardship_stage1_individual.csv`.
+
+| Variable | Greece OOS (alone) | Points of 47.6pt AROP gap | Note |
+|---|---:|---:|---|
+| Arrears | 0.05 | 47.5 | Conceptually close to the outcome -- not trusted as a mechanism |
+| Cumulative excess unemployment | 9.58 | 38.0 | Strongest clean standalone structural variable |
+| LTU | 21.84 | 25.8 | Real, but modest alone -- most of its power comes from combination |
+| Financial expectations | 25.79 | 21.8 | Outcome-adjacent by design, caveated throughout the report already |
+| Housing tenure burden | 36.07 | 11.5 | |
+| Unexpected-expense capacity | 38.28 | 9.3 | Also conceptually close to the outcome |
+| Wage years below 2008 | 38.68 | 8.9 | |
+| Wage-adjusted price pressure | 39.31 | 8.3 | |
+| Material deprivation | 40.00 | 7.6 | |
+| Migration | 46.92 | 0.7 | Not significant alone (p=0.40) -- contextual, not explanatory |
+| **Housing cost overburden** | **51.53** | **-3.9** | **Makes Greece look *more* anomalous alone -- confirms independently why Section 9's nested design (housing alone worsens the out-of-sample prediction) was the right call, not an artifact of that one section |
+
+**Stage 2 (layered, sequential)** -- the combined story, `data/processed/cumulative_hardship_stage2_bridge.csv`:
+
+| Step | Layer | Greece value | Points closed (of 47.6) |
+|---|---|---:|---:|
+| 1 | AROP raw gap | 47.6 | -- |
+| 2 | AROPE bridge | 39.7 | 7.9 |
+| 3 | Basic model (Model A) | 25.6 | 22.0 |
+| 4 | + housing, arrears, expense capacity (Model C) | 11.6 | 36.0 |
+| 5 | Headline unemployment -> LTU (Model C-LTU) | 3.9 | 43.7 |
+| 6 | + cumulative excess unemployment (final model) | **-0.8** | 48.4 |
+
+Step 6's negative value is a residual sign flip, not "102% explained": the
+model, once cumulative excess unemployment is added to C-LTU, mildly
+*overpredicts* Greece's subjective poverty rather than leaving a positive
+unexplained gap.
+
+**Robustness, run before treating step 6 as a real finding, not after:**
+- *Replacement test*: cumulative excess unemployment is not a better version
+  of LTU. Replacing LTU with it performs worse (R²=0.911, Greece OOS=4.26)
+  than the C-LTU baseline (R²=0.914, OOS=3.86). Combined, both stay
+  significant with no collinearity destabilization (R²=0.930, OOS=-0.82).
+  It's a genuine additional layer, not a substitute.
+- *Leave-one-country-out stability*: coefficient positive and significant in
+  all 27 refits (range 0.134-0.197), including the refit that excludes
+  Greece itself (coef=0.164, p=0.0064).
+- *Year-by-year check*: the negative average residual is not driven by one
+  anomalous year -- small and mostly negative-to-near-zero across
+  2015-2024 (range -3.25 to +1.01), with exactly one exception (2021,
+  +4.40, plausibly the pandemic-disruption year).
+  Full table: `data/processed/cumulative_hardship_final_model_year_by_year.csv`.
+
+**Exploratory extension: duration/direction, not just cumulative level.**
+Tested separately (`data/processed/cumulative_hardship_duration_battery.csv`):
+does *persistence* (years continuously below baseline, longest historical
+streak, count of negative-change years) explain the gap better than a raw
+cumulative sum? Only one variable clears significance:
+**`wage_years_below_2008`** (years continuously below own 2008 real-wage
+level), p=0.0045, robust under its own leave-one-country-out check
+(positive and significant in all 27 refits, including excluding Greece:
+coef=0.31, p=0.0036). Every GDP-based duration/direction variant is
+non-significant (p=0.74-0.89) -- duration matters for wages specifically,
+not GDP, consistent with the project's existing "GDP is an abstraction, the
+payslip is what households feel" framing (narrative companion, Chapter 4).
+Combined with cumulative excess unemployment: both individually significant
+(R²=0.931, OOS=-1.08), but the within-Greece correlation between them is
+0.95 (panel-wide only 0.54) -- the "two independent channels" claim is
+well-supported as a cross-country statistical result, weaker as a claim
+about what's separably happening inside Greece's own trajectory. Kept as
+**robust supporting evidence, not a seventh layer in the main sequence.**
+
+### Central finding, stated plainly
+
+The gap does not close because of one current-year hardship variable. It
+closes when current hardship is combined with duration and accumulated
+labor-market exposure. **Cumulative excess unemployment since 2009** is the
+central new mechanism: strong alone (Stage 1), strong in combination
+(Stage 2), stable under leave-one-out, and not explainable by definitional
+overlap with the outcome (unlike arrears).
+
+**On the negative residual specifically:** this does not show that Greeks
+are optimistic. It shows that the "Greek pessimism premium" interpretation
+no longer survives once accumulated labor-market exposure is included, in
+this specific (richest-tested) model. Worth featuring as a discussion
+point, with one explicit condition attached: it is a property of the
+richest tested specification (C-LTU + cumulative excess unemployment), not
+the paper's baseline finding, and the write-up should say so rather than
+letting the negative sign read as the report's default characterization of
+Greece.
+
+### Evidentiary status, stated separately for every variable touched
+
+Kept deliberately distinct from the *argument-stage* hierarchy (measurement
+/ residual / scarring / duration / social scars / ruled-out) established in
+the prior alignment-pass round -- this is about statistical/methodological
+trust, that round was about narrative role:
+
+- **Ruled out**: income inequality (pre-existing finding, unaffected by
+  this checkpoint).
+- **Tested, came back null**: cumulative real AROP-threshold shortfall
+  (p=0.645, despite being the checkpoint's most narratively-anticipated
+  candidate going in); GDP-based cumulative and duration/direction variants
+  (all non-significant, p=0.13-0.89).
+- **Contextual scarring evidence, not a modeled cause**: migration
+  (not significant alone, p=0.40, and never entered as a covariate);
+  institutional trust (never modeled at all, per the project's own
+  pre-existing decision -- Eurostat's trust series is too thin to support a
+  trend variable).
+- **Robust supporting evidence, not a scorecard-changing layer**:
+  `wage_years_below_2008`.
+- **Central new cumulative mechanism**: `cum_excess_unemployment`.
+
+### Limitations -- addressed through checkpoint design vs. structural
+
+**Addressed directly by this checkpoint's own design:**
+- *Model-specification risk*: Stage 1 prevents overclaiming any single
+  factor's contribution (several look strong combined but weak or even
+  counterproductive alone -- housing overburden is the clearest case).
+  Stage 2 shows the combination is not arbitrary stacking: each layer was
+  chosen for a stated reason and tested against the prior layer, not
+  assembled post hoc to hit a target number.
+
+**Reduced through framing, applied consistently across this entry and the
+docs to follow:**
+- AROP/AROPE hierarchy: AROP is the paper's main object; AROPE is the
+  bridge, not a co-equal headline measure (decision finalized earlier this
+  round, restated here since this checkpoint's results are built on it).
+- Cumulative-measure choices are documented explicitly (baselines, flooring
+  rule, robustness checks), not left implicit.
+- Arrears and unexpected-expense capacity are labeled conceptually close to
+  the outcome everywhere they appear, including in this checkpoint's own
+  Stage 1 table -- not just in the original report.
+- Short-coverage variables (wage-adjusted pressure's 3-year category-level
+  window, though the "overall consumption" series used here has full
+  2000-2024 coverage and was checked before use) carry coverage notes.
+- Migration and trust are kept explicitly separate from model-tested
+  findings throughout, never silently upgraded to covariate status.
+- AROP's crisis-context misuse becomes a stated discussion contribution
+  (planned for the Discussion section), not a hidden assumption.
+
+**Structural, not reducible by better framing -- stated once here rather
+than re-litigated in every document:**
+- This project uses aggregate country-level Eurostat data throughout, not
+  EU-SILC household microdata.
+- AROPE cannot be literally reconstructed from its components; the overlap
+  between income-poverty, severe deprivation, and low-work-intensity is
+  unobserved without microdata (stated explicitly in the AROP/AROPE
+  restructuring plan, applies equally here).
+- Every result in this checkpoint, like every regression result elsewhere
+  in the project, is associational, not causal.
+- Household balance sheets, savings depletion, informal support, and wealth
+  buffers remain only partially observed (savings rate was tested
+  elsewhere in the project and added no independent power once financial
+  expectations was already in the model).
+- Subjective poverty is self-reported and may still reflect norms or
+  expectations not captured by any variable tested here or previously.
+- Greece's crisis is a distinctive case; the AROP-in-crisis-contexts
+  warning (the discussion contribution) generalizes more readily than any
+  individual substantive Greek finding does.
+
+### Next step
+
+Per the agreed order: the three output documents are not touched by this
+entry. The AROP/AROPE restructuring (Core Reframe: AROP primary, AROPE
+bridge, Part II reframed as decomposing AROPE's intuition rather than
+reconstructing it, discussion critique of AROP-alone-in-crisis-contexts)
+proceeds next, now informed by this checkpoint's actual results rather than
+being written before they were known -- avoiding exactly the
+retrofitted-caveats problem the checkpoint-first ordering was chosen to
+prevent.
