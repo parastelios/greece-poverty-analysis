@@ -35,7 +35,12 @@ All three outputs use the same evidence spine:
 ## Reproducibility and controls
 
 - `make verify`: 41 checks matching published claims to pipeline data.
-- `make reproduce`: isolated live re-acquisition, build, and verification.
+- `make reproduce`: isolated live re-acquisition, build, and publication-vintage
+  comparison. The 2026-08-20 run completed acquisition and all analysis steps,
+  then correctly stopped on one live-source revision: fresh Eurostat real-wage
+  data produce 18 rather than 17 detrended FDR survivors. The other 40
+  headline checks agree. Archived-vintage reproducibility is therefore kept
+  distinct from replication against a changing live source.
 - Thirteen of fifteen formerly orphaned inputs match byte-for-byte. The two
   documented differences do not alter a headline model.
 - `docs/claim_matrix.csv` records canonical wording, importance, window,

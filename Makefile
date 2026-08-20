@@ -10,7 +10,9 @@
 # Default is `verify` because it is fast, offline, and answers the day-to-day
 # question: do the published documents still match the data behind them?
 
-PY := python3
+# Prefer the pinned project environment when it exists. Command-line PY still
+# overrides this, which is useful in CI or another clean environment.
+PY ?= $(if $(wildcard .venv/bin/python),$(abspath .venv/bin/python),python3)
 SCRIPTS := scripts
 
 .DEFAULT_GOAL := verify
@@ -63,8 +65,8 @@ reproduce:
 	D=$$(mktemp -d -t greece-repro-XXXXXX); \
 	echo "Isolated reproduction in $$D"; \
 	git archive HEAD | tar -x -C $$D; \
-	$(MAKE) -C $$D fetch-write; \
-	$(MAKE) -C $$D build; \
+	$(MAKE) -C $$D PY="$(abspath $(PY))" fetch-write; \
+	$(MAKE) -C $$D PY="$(abspath $(PY))" build; \
 	echo ""; \
 	echo "Isolated reproduction succeeded. Artifacts left in $$D for inspection."; \
 	echo "(This working copy was not modified.)"

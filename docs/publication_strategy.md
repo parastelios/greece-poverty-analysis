@@ -4058,3 +4058,25 @@ expanded `audit_parity.py` with forbidden stale-claim checks. Added
 `docs/current_state.md` as the short, current handoff document. Final release
 requires the numerical, parity, browser, mobile-overflow, and console checks
 listed there; their results are recorded in the commit closing this round.
+
+### Round 6: clean-room replication and academic appendix (2026-08-20)
+
+Executed the isolated `make reproduce` path with the pinned project
+environment. Acquisition and all 44 analysis scripts completed. The final
+publication-vintage comparison passed 40 of 41 checks and stopped on one live
+Eurostat revision: the refreshed real-wage series changes the detrended
+correlation from r=&minus;0.425 (FDR p=0.0516, archived vintage) to r=&minus;0.474
+(FDR p=0.0236, live vintage), increasing detrended FDR survivors from 17 to
+18. No other headline check changed. Documentation now distinguishes exact
+archived-vintage reproducibility from replication against a revisable live
+source. The Makefile automatically prefers `.venv` and propagates that
+interpreter into its isolated copy.
+
+Moved the academic paper's full cumulative-hardship screening and validation
+record from the main results flow to Appendix A. Section 6.6 retains the
+estimand, the common-window ladder, the fixed result, the primary nested result,
+the decade-duration interpretation, and the ecological limitation. Appendix A
+retains the replacement test, 18-candidate FDR battery, Greece-exclusion and
+27-fold nested selection details, rolling/decay battery, and individual-level
+literature bridge. Browser validation confirms one Table 2, a working appendix
+TOC link, no console errors, and no horizontal overflow at 390px.

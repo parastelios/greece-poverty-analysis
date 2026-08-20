@@ -78,17 +78,22 @@ and `ilc_li09` (without it the fetch silently returns both mean- and
 median-based rows, doubling the table), and `s_adj=NSA` rather than `SA` on
 `ei_bsco_m`.
 
-**A true end-to-end reproduction is now available as its own target:**
+**An isolated end-to-end live replication is available as its own target:**
 
 ```bash
 make reproduce
 ```
 
 This exports the committed tree into a temporary directory, re-fetches the raw
-inputs there *for real* (`fetch-write`), runs the full build, and verifies —
-leaving this working copy completely untouched. It is the target that answers
-"does this rebuild from nothing?", where `make verify` only answers "do the
-documents match the data currently on disk?".
+inputs there *for real* (`fetch-write`), runs the full build, and compares the
+result with the archived publication vintage, leaving this working copy
+untouched. It prefers the pinned project `.venv` automatically. The 2026-08-20
+run completed the complete pipeline but correctly failed the final comparison
+on one borderline result: revised live real-wage data changed the detrended FDR
+survivor count from 17 to 18; the other 40 headline checks agreed. This is a
+source-vintage difference, not a pipeline failure and not something hidden by
+silently changing the expected value. `make verify` answers the narrower
+question: "do the documents match the archived data currently on disk?".
 
 **Build order is not filename order.** `04_merge_all.py` rebuilds
 `analysis_dataset.csv` from scratch, and two later-numbered scripts write
