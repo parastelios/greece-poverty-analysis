@@ -1,0 +1,10 @@
+weights,seed,reps,n_extreme,p_MC
+rademacher,20250821,999,0,0.001
+rademacher,7,999,0,0.001
+rademacher,99,999,2,0.003
+webb,20250821,999,0,0.001
+webb,7,999,1,0.002
+webb,99,999,1,0.002
+mammen,20250821,999,3,0.004
+mammen,7,999,0,0.001
+mammen,99,999,6,0.007

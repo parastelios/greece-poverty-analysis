@@ -4653,3 +4653,73 @@ exposure. It is not fully accounted for: roughly seven points remain, and Greece
 stays among the three most under-predicted countries in the Union. The defensible
 claim is that material history explains a meaningful share of the Greek gap, not
 that the paradox is resolved.
+
+## P5 result: OUTCOME B — a cross-country scarring marker, and the claim narrows
+
+Interpretation rules committed at `80001ac`, before the script existed.
+
+**Stability: no flags.** Max leave-one-country-out change 12.7% (Cyprus) against
+a 50% bar; **dropping Greece moves the coefficient by −0.8%**, so Greece does not
+drive its own result; no sign reversal; leverage not concentrated in crisis
+countries. Bootstrap consistent across all nine weight/seed combinations
+(Rademacher, Webb, Mammen × three seeds), worst case:
+
+> `p_MC = 0.0070; 6 of 999 bootstrap statistics were at least as extreme as
+> observed; 0.0010 is the simulation resolution floor.`
+
+**Outcome B under the committed rule.** The result is not fragile — it is
+*cross-sectional*.
+
+| | coefficient | se | p |
+|---|---|---|---|
+| **Between** (country mean) | **+0.3323** | 0.0401 | <0.0001 |
+| **Within** (deviation from country mean) | −0.0755 | 0.1905 | 0.692 |
+
+Corroborating, though **not independent** — every one of these exploits the same
+limited within-country variation:
+
+| specification | coefficient on accumulated exposure | p |
+|---|---|---|
+| Country + year FE | −0.0385 | 0.845 |
+| Mundlak within | −0.0755 | 0.692 |
+| First differences | −0.0034 | 0.979 |
+| Country-specific trends | +0.0490 | 0.636 |
+
+The first-difference result is the cleanest statement of it: **newly accumulated
+exposure has essentially no association with the annual change in reported
+hardship** (−0.003, p=0.98).
+
+**What the within null does and does not establish.** The within estimate's
+standard error is 4.8× the between estimate's, with a 95% CI of
+[−0.449, +0.298]. The formal test of within = between returns **p = 0.058 —
+the two are not distinguishable at 5%**. Under the project's three null labels
+this is **inconclusive under available power**, not unsupported with adequate
+sensitivity. The data cannot establish a within-country effect and cannot rule
+one out, though the CI's upper bound does sit just below the between point
+estimate. Reporting this as "there is no within-country effect" would overstate
+it in the opposite direction from the original claim.
+
+**The claim narrows, and this is the substantive result of P5.** Defensible:
+
+> Countries that accumulated more labour-market exposure report more hardship.
+> Accumulated exposure is a cross-country scarring marker that distinguishes
+> Greece from other member states.
+
+Not defensible on this evidence:
+
+> As Greece accumulated more exposure, its reported hardship rose.
+
+The second reading is the more intuitive one and the one a reader will supply
+unprompted, so the documents must rule it out explicitly rather than simply
+avoid asserting it.
+
+**Branch 2 stands.** Per the committed rule, outcomes B and C narrow the claim
+but do not move the branch; only demonstrated instability downgrades it, and
+there is none. The P3 headline — Greece's residual falling from ~27 to ~7 with
+accumulation in the objective-only model — is unaffected, because that is a
+cross-country prediction exercise and the between component is what drives it.
+
+**Also corrected here: an error of mine in the interim summary.** I described
+the four within-country specifications as "four independent tests." They are not
+independent; they are four ways of using the same scarce within-country
+variation, and their agreement is weaker evidence than independence would imply.
