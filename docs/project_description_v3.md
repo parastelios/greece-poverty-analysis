@@ -137,9 +137,12 @@ all declared before fitting.
    countries under their own assistance programmes are admissible. Note that
    v1's weights concentrated on Bulgaria, Portugal and Cyprus, two of which were
    themselves in programmes.
-4. **Match multiple pre-crisis outcome years and objective predictors**, not
-   the outcome gap alone. The current implementation matches on the gap itself,
-   which is what allows a two-point window to fit perfectly.
+4. **Match multiple pre-period outcomes and objective predictors**, rather than
+   only two outcome-gap observations. Lagged outcomes are legitimate synthetic-
+   control predictors and should not be excluded on principle; the defect in the
+   current implementation is that it matches on the gap alone over a two-year
+   window, which is what lets a near-exact fit appear without evidential
+   content.
 5. **Examine donor-weight uniqueness and concentration.** Report the full
    weight vector, not only donors above 1%.
 6. **Leave-one-donor-out sensitivity.**
@@ -448,8 +451,10 @@ that judgement, not as an automatic gate.
 The binding constraint is 27 units. It belongs in the first paragraph of the
 methods, not in a late robustness section. The calculation differs by design:
 
-- **Panel model and the 27-country change model:** simulation-based minimum
-  detectable effect using the actual cluster structure, not a textbook formula.
+- **Panel model (P3):** simulation-based minimum detectable effect using the
+  actual cluster structure, not a textbook formula. (The 27-country change
+  model referenced in an earlier draft is withdrawn — see §5a — so no MDE is
+  required for it.)
 - **Comparative-case design:** placebo resolution — the minimum attainable
   p-value given the eligible placebo count — plus detectable post/pre RMSPE
   separation and sensitivity to donor-pool size.
