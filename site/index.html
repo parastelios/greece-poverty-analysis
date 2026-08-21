@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Greek Poverty Paradox</title>
+<meta name="description" content="Why Greek households report the EU's highest financial strain while official income poverty looks unremarkable — a reproducible Eurostat analysis.">
+<style>
+:root{
+  color-scheme: light;
+  --page:#f9f9f7; --surface-1:#fcfcfb; --surface-2:#f3f2ee;
+  --text-primary:#0b0b0b; --text-secondary:#52514e; --text-muted:#898781;
+  --gridline:#e1e0d9; --border:rgba(11,11,11,0.10);
+  --gr:#2a78d6; --eu:#eb6834; --green:#1baf7a;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--text-primary);
+  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+  -webkit-font-smoothing:antialiased;line-height:1.6}
+.wrap{max-width:820px;margin:0 auto;padding:56px 22px 80px}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--text-muted);margin:0 0 14px}
+h1{font-size:46px;line-height:1.1;letter-spacing:-0.02em;margin:0 0 18px;text-wrap:balance}
+.dek{font-size:17.5px;line-height:1.6;color:var(--text-secondary);max-width:64ch;margin:0 0 8px}
+.stat-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:34px 0 8px}
+.tile{background:var(--surface-1);border:1px solid var(--border);border-radius:10px;padding:16px 18px}
+.tile .l{font-size:11.5px;color:var(--text-muted);margin:0 0 6px}
+.tile .v{font-size:26px;font-weight:700;letter-spacing:-0.02em;margin:0;font-variant-numeric:tabular-nums}
+.tile .v.gr{color:var(--gr)}
+.tile .s{font-size:11.5px;color:var(--text-secondary);margin:5px 0 0}
+h2{font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--text-muted);margin:48px 0 16px}
+.cards{display:grid;gap:14px}
+a.card{display:block;background:var(--surface-1);border:1px solid var(--border);
+  border-radius:12px;padding:22px 24px;text-decoration:none;color:inherit;
+  transition:border-color .15s ease, transform .15s ease}
+a.card:hover{border-color:var(--gr);transform:translateY(-1px)}
+a.card:focus-visible{outline:2px solid var(--gr);outline-offset:2px}
+.card h3{margin:0 0 6px;font-size:19px;letter-spacing:-0.01em}
+.card p{margin:0;font-size:14px;color:var(--text-secondary);max-width:58ch}
+.card .meta{margin-top:10px;font-size:12px;color:var(--text-muted)}
+.note{font-size:13px;color:var(--text-secondary);background:var(--surface-2);
+  border-radius:10px;padding:16px 18px;margin:34px 0 0;max-width:66ch}
+footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--gridline);
+  font-size:12.5px;color:var(--text-muted)}
+footer a{color:var(--text-secondary)}
+@media(max-width:680px){
+  h1{font-size:34px}
+  .stat-row{grid-template-columns:1fr;gap:10px}
+  .wrap{padding:36px 16px 60px}
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --page:#111110; --surface-1:#191918; --surface-2:#222221;
+    --text-primary:#ffffff; --text-secondary:#c3c2b7; --text-muted:#898781;
+    --gridline:#2c2c2a; --border:rgba(255,255,255,0.12); --gr:#3987e5;
+  }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">EU-SILC · Eurostat · 2003–2025</p>
+  <h1>The Greek Poverty Paradox</h1>
+  <p class="dek">Two in three Greek households say they struggle to make ends meet — the highest share in the EU, every year since 2011. The official income-poverty rate ranks Greece a fairly ordinary 4th of 27. This project investigates how much of that 47.6-point gap is real, and what explains it.</p>
+
+  <div class="stat-row">
+    <div class="tile"><p class="l">Subjective poverty, 2025</p><p class="v gr">67.2%</p><p class="s">vs EU 17.6% · rank 1st</p></div>
+    <div class="tile"><p class="l">AROP income poverty, 2025</p><p class="v">19.6%</p><p class="s">vs EU 16.3% · rank 4th</p></div>
+    <div class="tile"><p class="l">Fully nested prediction</p><p class="v">+2.7 pp</p><p class="s">rank 19th of 27</p></div>
+  </div>
+
+  <h2>Three ways to read it</h2>
+  <div class="cards">
+    <a class="card" href="narrative.html">
+      <h3>The narrative companion →</h3>
+      <p>The story in plain language, in fifteen short chapters. Start here if you want to understand what happened and why, without the model tables.</p>
+      <p class="meta">~10,000 words · general audience</p>
+    </a>
+    <a class="card" href="report.html">
+      <h3>The technical report →</h3>
+      <p>The complete evidence record: every model, robustness check, null result, and methodological caveat, with interactive charts.</p>
+      <p class="meta">~38,000 words · full methods and data appendix</p>
+    </a>
+    <a class="card" href="paper.html">
+      <h3>The working paper →</h3>
+      <p>The formal academic version: research questions, nested model specifications, validation strategy, limitations, and references.</p>
+      <p class="meta">~15,000 words · preprint, not peer reviewed</p>
+    </a>
+  </div>
+
+  <p class="note"><b>What the analysis finds, in one line.</b> Part of the gap is arithmetic — a relative poverty line that fell along with collapsing incomes. Most of the rest is duration: not how deep the crisis was, but how long Greek households have carried it. Once accumulated labour-market exposure is in the model, Greece stops being a cross-country outlier. All results are associational, drawn from country-level Eurostat aggregates rather than household microdata.</p>
+
+  <footer>
+    Built from a reproducible Eurostat pipeline; figures reflect an API pull dated 2026-08-19 (work-effort series 2026-08-20).
+    Eurostat revises published figures over time, so a later pull will not reproduce these numbers exactly.
+  </footer>
+</div>
+</body>
+</html>

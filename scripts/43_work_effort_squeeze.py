@@ -464,7 +464,7 @@ vif.to_csv(OUT / "work_effort_interaction_vif.csv", index=False)
 # Recreate the agreed cumulative excess-unemployment variable from the fresh/full history,
 # then ask whether the work-effort squeeze adds anything after the checkpoint's strongest
 # existing mechanism. This is intentionally separate from the pre-specified FDR family.
-unemp = pd.read_csv(RAW / "panel_unemployment_history_2008_2024.csv")[
+unemp = pd.read_csv(RAW / "panel_unemployment_history.csv")[
     ["geo", "time", "unemployment_rate"]
 ].sort_values(["geo", "time"])
 u0 = unemp[unemp.time == 2009][["geo", "unemployment_rate"]].rename(

@@ -122,8 +122,8 @@ for name, code, filters, col in PANELS:
 # --- unemployment full history (2003-2025), all reporting countries ------------
 d = fetch("une_rt_a", time=range(2003, 2026), age=["Y15-74"], sex=["T"], unit=["PC_ACT"])
 out(d[["geo", "time", "value"]].rename(columns={"value": "unemployment_rate"}),
-    "panel_unemployment_history_2008_2024")
-compare("panel_unemployment_history_2008_2024", ["geo", "time"], "unemployment_rate")
+    "panel_unemployment_history")
+compare("panel_unemployment_history", ["geo", "time"], "unemployment_rate")
 
 # --- financial expectations: monthly consumer-survey balance -> annual mean ----
 d = fetch("ei_bsco_m", indic=["BS-FS-NY"], s_adj=["NSA"], unit=["BAL"])

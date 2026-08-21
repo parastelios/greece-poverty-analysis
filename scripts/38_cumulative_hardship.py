@@ -30,6 +30,7 @@ import pandas as pd
 import statsmodels.formula.api as smf
 from eurostat import fetch
 from eu_membership import eu_members
+from currency import normalise_nac_to_euro
 
 RAW = "../data/raw"
 OUT = "../data/processed"
@@ -50,6 +51,12 @@ thresh = fetch(
 )
 thresh = thresh[["geo", "time", "value"]].rename(columns={"value": "arop_threshold_nac"})
 thresh.to_csv(f"{RAW}/arop_threshold_all_countries_nac.csv", index=False)
+# NAC series are in whatever currency the country used at the time, so any
+# country that adopted the euro mid-series has a break that makes an index
+# against a base year on the other side of it meaningless (Slovakia's real
+# threshold read 3.5 against a 2008 koruna base). Normalise before indexing.
+print("Euro-changeover normalisation:")
+thresh = normalise_nac_to_euro(thresh, value_col="arop_threshold_nac")
 print(f"AROP threshold (NAC) fetched: {len(thresh)} rows, {thresh.geo.nunique()} countries")
 cov = thresh.groupby("geo")["time"].agg(["min", "max", "count"])
 gaps = cov[cov["max"] - cov["min"] + 1 != cov["count"]]
@@ -61,7 +68,7 @@ hicp = pd.read_csv(f"{RAW}/panel_hicp_index.csv")
 # ---------------------------------------------------------------- load existing panels -----------
 gdp = pd.read_csv(f"{RAW}/panel_gdp_history_2008_2024.csv")[["geo", "time", "real_gdp_pc"]]
 wages = pd.read_csv(f"{RAW}/real_wage_idx2008.csv")  # already indexed to each country's own 2008=100
-unemp = pd.read_csv(f"{RAW}/panel_unemployment_history_2008_2024.csv")
+unemp = pd.read_csv(f"{RAW}/panel_unemployment_history.csv")
 ltu = pd.read_csv(f"{RAW}/panel_long_term_unemployment.csv")[["geo", "time", "ltu_rate"]]
 
 # ================================================================ build cumulative variables ====

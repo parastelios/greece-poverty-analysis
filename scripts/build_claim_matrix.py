@@ -47,7 +47,12 @@ C = [
  ("6.5", "Accumulation", "Negative residual does NOT mean Greeks are optimistic", "interpretation", "n/a", "limitation", "property of richest spec only", "n/a", "body","body","body"),
  ("6.6", "Accumulation", "Mechanism is ~a decade of sustained exposure, not permanent accumulation", "10-yr window fits >= permanent", "27 EU", "post-selection", "3-5yr windows fail", "cumulative_hardship_rolling_decay_battery.csv", "body","body","note"),
  ("6.7", "Accumulation", "Aggregate variable, individual-level literature: ecological-inference gap", "level-of-analysis caveat", "n/a", "limitation", "", "n/a", "body","body","note"),
- ("6.8", "Accumulation", "AROP-threshold cumulative shortfall tested and NULL", "p=0.645", "27 EU", "core (null)", "the most anticipated candidate", "cumulative_hardship_checkpoint.csv", "body","body","body"),
+ ("6.8", "Accumulation", "AROP-threshold cumulative shortfall tested and NULL", "p=0.291", "27 EU", "core (null)", "the most anticipated candidate", "cumulative_hardship_checkpoint.csv", "body","body","body"),
+
+ ("1.9", "The puzzle", "Breadth of relative disadvantage: worst-quintile share, descriptive only",
+  "21% pre-crisis to 58% from 2012, 68% in 2024, 1st of 27", "27 EU, 25 indicators", "descriptive",
+  "tested as a predictor and NULL (FDR 0.287); excluded from every model; outcome and all covariates removed",
+  "persistence_share_battery.csv", "body","body","body"),
 
  ("7.1", "What it looked like", "Greece has the EU's deepest and longest unresolved pre-crisis GDP shortfall", "-11.2%, 16 yrs; EU median recovery 3 yrs", "27 EU, 2008-2024", "core", "Finland remains 2.3% below 2008; Luxembourg is below a recent 2021 peak", "recovery_trajectory.csv", "body","body","body"),
  ("7.2", "What it looked like", "Real wages remain furthest below 2008 of any EU country", "-31.8%", "27 EU, 2024", "descriptive", "level-only; no independent model power", "real_wage_idx2008.csv", "body","body","body"),

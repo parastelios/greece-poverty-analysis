@@ -2174,7 +2174,7 @@ the AROP threshold itself, rather than a new idea bolted on.
 - **Headline unemployment, full history**: the existing `panel_unemployment.csv`
   only covers 2015-2024 (matches the model's own window); a longer-history
   version was fetched fresh and confirmed to start in **2009**, not 2008, for
-  nearly every country (`panel_unemployment_history_2008_2024.csv`) -- an
+  nearly every country (`panel_unemployment_history.csv`) -- an
   assumption that would have been wrong if not checked directly. Unemployment
   and LTU cumulative-excess measures both baselined to 2009 as a result.
 - **Construction rules** (agreed before running, per the discipline
@@ -2288,7 +2288,7 @@ trust, that round was about narrative role:
 - **Ruled out**: income inequality (pre-existing finding, unaffected by
   this checkpoint).
 - **Tested, came back null**: cumulative real AROP-threshold shortfall
-  (p=0.645, despite being the checkpoint's most narratively-anticipated
+  (p=0.291, despite being the checkpoint's most narratively-anticipated
   candidate going in); GDP-based cumulative and duration/direction variants
   (all non-significant, p=0.13-0.89).
 - **Contextual scarring evidence, not a modeled cause**: migration
@@ -4080,3 +4080,309 @@ retains the replacement test, 18-candidate FDR battery, Greece-exclusion and
 27-fold nested selection details, rolling/decay battery, and individual-level
 literature bridge. Browser validation confirms one Table 2, a working appendix
 TOC link, no console errors, and no horizontal overflow at 390px.
+
+## Euro-changeover currency break in the NAC threshold series, and an EU27-only appendix
+
+Two review findings from the appendix build, both traced back into the
+pipeline.
+
+**The currency break.** `38_cumulative_hardship.py` deliberately uses the AROP
+threshold in national currency (NAC) rather than EUR, to keep exchange-rate
+movement out of a real-terms index. That reasoning is right for countries whose
+currency never changed, but Eurostat's NAC series reports each year in the
+currency the country actually used at the time, so the eight countries that
+adopted the euro mid-series carry an undeflatable level break. Indexing against
+a 2008 base across that break produced nonsense: Slovenia's 2005 real threshold
+read 21,686 against 2008=100, Slovakia's 2009 read 3.5.
+
+`scripts/currency.py` now normalises pre-adoption years using the official
+irrevocable conversion rates. Detection cannot use a naive "is the pre/post
+ratio large" test, because Cyprus, Malta and Latvia had currencies worth *more*
+than a euro -- their conversion rates are below 1 and such a test converts them
+backwards. It instead compares the observed pre/post ratio against the official
+rate and against 1 in log distance, and converts only when the break is the
+better explanation. On this data that selects SI, SK, LT and HR and correctly
+leaves CY, MT, EE and LV alone, which matches Eurostat having already restated
+those four.
+
+**Effect on the published result.** `cum_threshold_shortfall` was reported as a
+null. It stays null: p moves from 0.645 to 0.291 (FDR 0.829 to 0.442), still
+far from significance, and no other variable in the FDR family changes its
+verdict. The three reports and the claim matrix now carry p=0.291. All 41
+`verify_build.py` checks pass. The correction was necessary regardless of the
+outcome -- the previous null rested on corrupted values for four countries --
+but it does not move any conclusion.
+
+**Country set.** The appendix originally drew every geography Eurostat
+publishes, which for the unemployment series meant Bosnia, Montenegro, North
+Macedonia, Serbia, Turkey, Norway, Switzerland and Iceland, plus the EA20/EA21
+aggregates drawn as if they were countries. None of these are in the estimation
+panel, which is the 27 current members. The appendix now restricts to those 27
+so the reader sees the same country set the analysis used, and the surrounding
+prose says so explicitly rather than saying "reporting countries".
+
+## Pre-registration: direction and relative-position battery (checkpoint, family B)
+
+Written before the script was run. Recorded here first so the candidate list,
+the construction rules and the stopping rule cannot be adjusted after seeing
+the p-values.
+
+**Question.** The existing 18-candidate family is mostly accumulation (7 sums)
+and duration (8 run-length measures), with only two direction variables in it
+(`wage_cum_negative_years`, `gdp_cum_negative_years` -- counts of years the
+series fell, both null at p=0.070 and p=0.130) and one level measure
+(`pct_below_peak`, null at p=0.605). Nothing in it measures the *rate* of
+change, and nothing measures how persistently a country sits low *relative to
+the rest of the EU*. Those are the two gaps this checkpoint tests.
+
+**Why a separate family, not an extension.** Benjamini-Hochberg scales every
+adjusted p-value in a family by the family's size. `wage_years_below_2008`
+currently sits at FDR p=0.0408 and survives only while that family has at most
+22 members; at 26 it drops out. Appending new candidates to the existing 18
+would therefore retire a published result as a side effect of asking an
+unrelated question. This battery is declared as its own family and corrected
+within itself. The 18 stay exactly as they are.
+
+For the same reason the existing family is NOT being re-partitioned. It was
+pre-registered as one family before running. Splitting it now, after the
+p-values are known, would move `wage_years_below_2008` from FDR 0.0408 to
+0.0317 -- a stronger-looking result manufactured entirely by a post-hoc choice
+of grouping. That is the exact manoeuvre FDR control exists to prevent.
+
+**Candidates (5, fixed in advance).**
+
+Smoothed first derivatives -- 5-year trailing OLS slope of the country's own
+series, one value per country-year, requiring 5 observations in the window:
+  1. `slope5_real_wage` -- trailing slope of the real wage index (2008=100)
+  2. `slope5_real_gdp` -- trailing slope of real GDP per capita
+  3. `slope5_unemployment` -- trailing slope of the unemployment rate
+
+Relative-position persistence -- cumulative count of years since 2008 spent in
+the worst-performing quintile of the EU distribution for that year:
+  4. `years_worst_quintile_unemp` -- unemployment rate
+  5. `years_worst_quintile_wage` -- real wage index
+
+**Excluded in advance: second derivatives.** A signal-to-noise check on the
+same data gives 0.062 for real wages and 0.051 for real GDP -- between-country
+spread in mean acceleration against within-country year-to-year scatter.
+Countries barely differ in acceleration relative to how much acceleration
+bounces around annually, so an acceleration variable would be close to pure
+noise. It is not tested rather than tested and reported as null, and this
+paragraph is the record of that decision and its basis.
+
+**Method.** Identical to the existing battery so results are comparable: each
+candidate added ONE AT A TIME to Model C-LTU, year fixed effects, standard
+errors clustered by country, evaluated by leave-one-country-out prediction of
+Greece. BH-FDR at 5% within these 5 only.
+
+**Stopping rule.** A candidate is only considered for promotion if it survives
+FDR *and* improves Greece's out-of-sample residual against the Model C-LTU
+baseline. Anything else is reported as a null and stops there. Given that the
+two existing direction variables were both null, the expected outcome is that
+this family is null too; it is being run because "we did not test rate of
+change" is a real gap in the screening, not because a positive is anticipated.
+
+### Result: family B is null
+
+Run after the pre-registration above was written. Nothing is promoted and no
+published result changes.
+
+| candidate | coef | p_raw | FDR | Greece OOS gap |
+|---|---|---|---|---|
+| `slope5_unemployment` | &minus;2.32 | 0.065 | 0.324 | 3.64 |
+| `years_worst_quintile_wage` | +0.25 | 0.166 | 0.414 | 1.41 |
+| `slope5_real_wage` | &minus;0.12 | 0.453 | 0.536 | 3.61 |
+| `slope5_real_gdp` | &minus;0.0005 | 0.478 | 0.536 | 4.64 |
+| `years_worst_quintile_unemp` | +0.25 | 0.536 | 0.536 | 3.88 |
+
+Baseline Model C-LTU on this panel: R&sup2;=0.914, Greek out-of-sample gap 3.86,
+rank 6/27. **0 of 5 survive FDR; 0 of 5 meet the promotion rule.**
+
+Three things worth recording.
+
+**The rate of change genuinely does not explain the gap.** Greece has the most
+steeply *falling* unemployment of all 27 member states over the trailing
+five-year window (&minus;1.86 points a year, rank 27/27) and its real-wage slope
+is 23rd of 27. The direction variable closest to significance,
+`slope5_unemployment`, has the sensible sign and still barely moves Greece's
+gap (3.86 to 3.64). This is consistent with the two direction variables already
+in the original family, both null. Accumulation and duration carry the result;
+direction does not add to them.
+
+**One honest near-miss.** `years_worst_quintile_wage` cuts Greece's
+out-of-sample gap from 3.86 to 1.41 -- the largest single-variable improvement
+anywhere in either family -- while its coefficient is not distinguishable from
+zero (p=0.166, FDR 0.414). It was checked for the obvious failure mode and is
+not a Greece indicator in disguise: Hungary ranks above Greece (16 years to
+14), 12 of 27 countries sit at zero, and the correlation with a pure Greece
+dummy is +0.50. The pre-registered rule requires surviving FDR *and* improving
+the gap, so it is a null and stops here. It is recorded as the one candidate
+worth a confirmatory test on a later data vintage, where it would be a single
+pre-specified hypothesis rather than one of five screened.
+
+**Second derivatives were excluded in advance, not tested and buried.** The
+signal-to-noise basis is in the pre-registration above.
+
+Family A (18 candidates) is untouched and was not re-partitioned, so
+`wage_years_below_2008` remains at FDR 0.0408. `scripts/48_direction_persistence.py`
+is standalone -- it reads the candidate panel, writes
+`direction_persistence_panel.csv` and `direction_persistence_battery.csv`, and
+feeds nothing back into the reports.
+
+### Deep interrogation of the family-B near-miss: it does not survive
+
+`years_worst_quintile_wage` looked promising because it cut Greece's
+out-of-sample gap from 3.86 to 1.41. Five checks
+(`scripts/49_candidate_interrogation.py`) say that improvement is not new
+evidence. All of it is post-selection -- the variable was singled out after
+seeing its result -- and none of it is confirmatory.
+
+**It is largely a re-expression of the wage family.** Correlation +0.948 with
+`cum_wage_shortfall_2008base` (itself tested and null at p=0.237), +0.811 with
+`wage_longest_streak_2008`, +0.711 with the FDR survivor
+`wage_years_below_2008`. More pointedly: **within Greece the correlation with
+the survivor is +1.000.** For the one country whose residual is the research
+question, the two variables are the same variable. Greece never recovers its
+2008 real wage and never leaves the EU's bottom five, so both counters
+increment every year in lockstep (14 and 15 by 2024).
+
+**Head-to-head, the existing survivor dominates it.** Put both in Model C-LTU
+together and the new variable's coefficient *flips sign* (+0.247 alone to
+&minus;0.199 together, p=0.404) while the survivor strengthens (+0.373 to
++0.482, p=0.002) -- and Greece's out-of-sample gap gets *worse* than the
+baseline, 3.86 to 7.00. VIF is unremarkable (4.1 and 3.3), so this is not a
+mechanical collinearity artifact; the variable simply carries no information
+the survivor does not already carry, and adding it costs degrees of freedom.
+
+**It is not even the best gap-shrinker already on the table.**
+`wage_longest_streak_2008` takes Greece's gap to 0.31 -- better than 1.41 --
+and it too is non-significant (p=0.054, FDR 0.253). This is the recurring
+signature worth stating plainly: **in this project, the variables that shrink
+Greece's residual most are not the ones that are statistically significant.**
+Shrinking one country's gap is not evidence; it is what a variable that tracks
+"being Greece" over the relevant range will do regardless of whether it
+identifies a mechanism.
+
+**Greece is not carrying the coefficient**, at least: excluding Greece moves it
+from +0.247 (p=0.166) to +0.164 (p=0.312) -- weaker and still null, but not a
+Greece artifact.
+
+**The literal "low and staying low" reading is a different variable, and it is
+null too.** Ranking on the wage LEVEL (hourly compensation in PPS) rather than
+on recovery against own-2008 gives a genuinely independent measure --
+correlation &minus;0.027 with the survivor. But Greece is not extreme on it:
+7 years in the EU's bottom pay-level quintile, behind Bulgaria and Poland (17
+each), Romania (15) and Latvia (13). In the model it is flatly null
+(p=0.763) and makes Greece's gap slightly *worse*, 3.86 to 4.14.
+
+So both readings fail, for opposite reasons. The recovery reading puts Greece
+at the extreme but is redundant with what is already published; the level
+reading is genuinely new information but Greece is unremarkable on it, so it
+cannot explain a Greece-specific residual. **Nothing is promoted. Family B
+closes as a null, and every published result stands unchanged.**
+
+## Pre-registration: persistence-share battery (checkpoint, family C)
+
+Written before running. Prompted by two observations from review of the
+statistical appendix: (a) family B tested the worst-quintile idea on only two
+underlying series, and (b) reading across the appendix charts, Greece appears
+to sit in the EU's bottom quintile on most measured indicators, with the shift
+dating to the crisis years rather than being a long-standing feature.
+
+**Change of construction.** Family B counted years in the worst quintile
+cumulatively. That count grows mechanically with elapsed time and is not
+comparable across series with different start years. This family uses the
+**share** instead: years in the worst quintile divided by years observed since
+2008, bounded 0 to 1, where 1 means "in the EU's worst quintile every single
+year". Known property, stated in advance: for a country that never leaves the
+bottom, the share is near-constant within the model window, so identification
+is essentially cross-sectional rather than within-country.
+
+**Candidates (6, fixed in advance).** The first five mirror the accumulation
+family's underlying series exactly, so this is a like-for-like comparison of
+"how much damage accumulated" against "how persistently at the bottom":
+  1. `share_worst_unemployment`
+  2. `share_worst_ltu`
+  3. `share_worst_real_wage` (own 2008 = 100)
+  4. `share_worst_real_gdp`
+  5. `share_worst_threshold` (real AROP threshold)
+  6. `share_worst_composite` -- across a panel of independent indicators, the
+     share that place Greece in the worst quintile in that year
+
+**Circularity guard on the composite.** The composite must exclude the outcome
+and every Model C-LTU covariate, or it would predict subjective poverty partly
+from itself. Excluded: `subjective_poverty`, `arop`, `arope`, both deprivation
+series, `arrears`, `housing_overburden`, `unexpected`, `ltu`, `income_pps`.
+The remaining ~25 indicators cover the labour market, output, wages, prices,
+housing conditions, demography and expectations. The descriptive pattern
+survives this guard (Greece 22% of independent indicators pre-crisis, 58% from
+2012), which is why the composite is worth testing rather than discarding.
+
+**Method.** Identical to families A and B: one at a time into Model C-LTU, year
+fixed effects, errors clustered by country, leave-one-country-out prediction of
+Greece, BH-FDR at 5% within these 6 only. Families A and B are untouched.
+
+**Stopping rule.** Survive FDR *and* improve Greece's out-of-sample gap *and*
+survive the head-to-head against `wage_years_below_2008` without a sign flip --
+the third condition added because family B's near-miss passed the first two
+loosely and failed only under head-to-head. Anything else is reported null.
+
+**Prior expectation.** The per-series shares are likely to behave like family
+B, since they are built from the same underlying series that the accumulation
+and duration families already cover. The composite is the genuinely new object
+and the one most at risk of being a "Greece is bad at everything" index rather
+than a mechanism; if it succeeds statistically it should still be reported as
+descriptive corroboration, not as a causal channel.
+
+### Result: family C is null as a model family, but produces a strong descriptive finding
+
+**The battery is null.** 0 of 6 survive FDR; 0 of 6 meet the three
+pre-registered conditions.
+
+| candidate | coef | p_raw | FDR | Greek gap | head-to-head |
+|---|---|---|---|---|---|
+| `share_worst_composite` | +10.36 | 0.083 | 0.287 | 3.99 | no flip, p=0.353 |
+| `share_worst_real_wage` | +3.87 | 0.096 | 0.287 | **&minus;0.46** | **sign flips** |
+| `share_worst_ltu` | +3.23 | 0.377 | 0.692 | 5.21 | no flip |
+| `share_worst_unemployment` | +4.38 | 0.461 | 0.692 | 4.28 | no flip |
+| `share_worst_real_gdp` | +0.70 | 0.702 | 0.842 | 4.95 | sign flips |
+| `share_worst_threshold` | +0.67 | 0.876 | 0.876 | 5.31 | sign flips |
+
+`share_worst_real_wage` repeats family B's pattern exactly: it takes Greece's
+out-of-sample gap to &minus;0.46, essentially closing it, while being
+non-significant (p=0.096) and flipping sign against `wage_years_below_2008`.
+The third pre-registered condition was added for precisely this case and it
+catches it. Three families have now been screened and the conclusion is stable:
+**persistent relative standing adds nothing to the accumulation and duration
+measures already published.**
+
+One incidental correction of an assumption: Greece has *never* been in the EU's
+bottom quintile on real GDP per capita (`share_worst_real_gdp` = 0.00, rank
+21/27). The Greek collapse is a wage, employment and threshold story, not a
+GDP-level story -- Greek GDP per capita remains mid-table in the Union.
+
+**The descriptive finding, which is the real product of this checkpoint.**
+Across 25 indicators chosen to exclude the outcome and every model covariate,
+the share that place Greece in the EU's worst quintile:
+
+```
+2005 15%  2008 25%  2010 35%  2011 55%  2013 57%  2018 60%  2024 68%
+pre-crisis (2005-2010) mean 21%   ->   2012 onward 58%
+```
+
+Greece ranks **1st of 27** on this measure, ahead of Bulgaria (0.68 to 0.50).
+The step change dates to 2011 and there is no recovery in the fourteen years
+since. It is robust to the cutoff -- Greece is 1st of 27 whether "worst" means
+the bottom 10%, 20%, 25% or a third of the Union, and the pre/post jump holds
+at every one (6%->50% at the strictest cutoff, 41%->67% at the loosest).
+
+This belongs in the reports as **descriptive corroboration** (tier 4 of the
+evidence taxonomy), not as a mechanism or a model input. It failed as a
+predictor and must not be presented as one. What it does honestly is answer a
+question the accumulation variables answer badly: it is far easier to say
+"Greece is in the EU's worst fifth on two-thirds of measured indicators, up
+from a fifth before the crisis" than "Greece has accumulated 138
+percentage-point-years of excess unemployment". Same underlying reality,
+enormously different readability -- and the composite is a *summary of the
+condition*, where the accumulation variable is a tested *explanation* of it.
+Nothing is integrated pending a decision.

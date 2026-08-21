@@ -1,0 +1,55 @@
+name: Publish reports to GitHub Pages
+
+# Manual-trigger only, deliberately. GitHub Pages on the free tier requires a
+# public repository and this one is private, so an automatic push trigger would
+# fail on every report change. To enable publishing later: make the repository
+# public (or move the site to a separate public repo), then restore the push
+# trigger commented out below.
+#
+#   push:
+#     branches: [main]
+#     paths:
+#       - 'output/report.html'
+#       - 'output/narrative_companion.html'
+#       - 'output/academic_paper_draft.html'
+#       - 'site/**'
+#       - '.github/workflows/pages.yml'
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      # Assemble the site from the canonical outputs -- the reports are never
+      # duplicated in the repo, only copied at deploy time under shorter names.
+      - name: Assemble site
+        run: |
+          mkdir -p _site
+          cp site/index.html                        _site/index.html
+          cp output/report.html                     _site/report.html
+          cp output/narrative_companion.html        _site/narrative.html
+          cp output/academic_paper_draft.html       _site/paper.html
+          touch _site/.nojekyll
+          ls -la _site
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -1,0 +1,7 @@
+variable,r2,n,n_geo,coef,p_raw,gr_oos,rank,p_fdr_bh,sig_fdr,improves,coef_together,p_together,surv_p,gap_together,no_sign_flip,promotable
+share_worst_composite,0.917,267,27,10.3597,0.08277874617021981,3.99,6/27,0.28732950457822426,False,False,5.9802,0.353,0.0215,2.94,True,False
+share_worst_real_wage,0.916,267,27,3.8652,0.09577650152607474,-0.46,17/27,0.28732950457822426,False,True,-1.2201,0.696,0.0151,4.33,False,False
+share_worst_ltu,0.916,267,27,3.2283,0.377392676742221,5.21,5/27,0.6918089909295863,False,False,2.4417,0.484,0.003,3.91,True,False
+share_worst_unemployment,0.916,267,27,4.3751,0.4612059939530575,4.28,6/27,0.6918089909295863,False,False,2.8851,0.594,0.0065,3.03,True,False
+share_worst_real_gdp,0.914,267,27,0.7027,0.7015805272459513,4.95,5/27,0.8418966326951416,False,False,-1.3167,0.524,0.0019,2.49,False,False
+share_worst_threshold,0.913,257,26,0.6697,0.8763992676457446,5.31,4/26,0.8763992676457446,False,False,-1.8309,0.626,0.0259,3.5,False,False

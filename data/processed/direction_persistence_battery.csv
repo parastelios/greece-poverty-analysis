@@ -1,0 +1,6 @@
+variable,r2,n,n_geo,coef,p_raw,gr_in,gr_oos,rank,p_fdr_bh,significant_after_fdr,improves_gr_oos,promotable
+slope5_unemployment,0.919,267,27,-2.3195,0.06485431069741386,0.96,3.64,7/27,0.32427155348706926,False,True,False
+years_worst_quintile_wage,0.916,267,27,0.2473,0.16561973754319192,0.7,1.41,12/27,0.4140493438579798,False,True,False
+slope5_real_wage,0.914,267,27,-0.117,0.45302573874679153,1.21,3.61,6/27,0.5363085148946253,False,True,False
+slope5_real_gdp,0.914,267,27,-0.0005,0.47808289525724557,1.38,4.64,5/27,0.5363085148946253,False,False,False
+years_worst_quintile_unemp,0.915,267,27,0.2467,0.5363085148946253,1.16,3.88,6/27,0.5363085148946253,False,False,False

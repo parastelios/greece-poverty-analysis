@@ -41,11 +41,12 @@ FP = {
  "6.1": ["&minus;0.8", "-0.8", "−0.8"],
  "6.2": ["0.0024"],
  "6.3": ["25 of 27"],
+ "1.9": ["58%", "worst quintile", "worst fifth"],
  "6.4": ["+2.70", "2.70", "2.7", "19th of 27"],
  "6.5": ["secretly optimistic", "secretly more optimistic", "not that Greek households"],
  "6.6": ["sustained", "10-year", "decade"],
  "6.7": ["individual", "aggregate", "ecological"],
- "6.8": ["0.645"],
+ "6.8": ["0.291"],
  "7.1": ["11.2%"],
  "7.2": ["31.8%"],
  "7.3": ["wage-adjusted", "price pressure"],
@@ -90,6 +91,16 @@ for _, r in m.iterrows():
             problems.append((r.id, r.element, r.claim[:58], doc, need))
 
 FORBIDDEN = {
+    # The breadth-of-disadvantage composite is descriptive corroboration and was
+    # tested as a predictor and found null. If any document ever restates it as a
+    # driver, explanation or cause, that is the regression this rule catches.
+    "breadth-stated-as-cause": [
+        "breadth of disadvantage explains",
+        "because greece is in the worst quintile on",
+        "the worst-quintile share drives",
+        "the breadth measure predicts",
+        "explained by the share of indicators",
+    ],
     "only-precrisis-gdp": [
         "only eu country below its own pre-crisis",
         "only eu country that never rejoins",

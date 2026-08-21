@@ -270,7 +270,7 @@ discussion and the 7-point spine it produced.
 | Dataset code | What it is | Key params | Fetched by |
 |---|---|---|---|
 | `ilc_li01` | AROP poverty threshold, **national currency** (not EUR) | `statinfo=MED_EI`, `rskpovth=B_60`, `hhcomp=A1`, `unit=NAC` | `38_cumulative_hardship.py` |
-| `une_rt_a` | Headline unemployment, full history | `age=Y15-74`, `unit=PC_ACT`, 2003–2025 requested (usable from 2009) | `38_cumulative_hardship.py` (new full-history fetch, `panel_unemployment_history_2008_2024.csv`, distinct from the shorter 2015–2024 panel `07_panel_fetch.py` uses) |
+| `une_rt_a` | Headline unemployment, full history | `age=Y15-74`, `unit=PC_ACT`, 2003–2025 requested (usable from 2009) | `38_cumulative_hardship.py` (new full-history fetch, `panel_unemployment_history.csv`, distinct from the shorter 2015–2024 panel `07_panel_fetch.py` uses) |
 
 Tests whether accumulated exposure since the crisis — not just current-year
 conditions — explains Greece's residual gap better than any single-year

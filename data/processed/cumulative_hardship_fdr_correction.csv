@@ -9,10 +9,10 @@ cum_wage_shortfall_ownpeak,"Cumulative real-wage shortfall, own rolling-peak bas
 wage_longest_streak_peak,wage_longest_streak_peak,0.2333591514453922,0.43997198494179157,False
 cum_wage_shortfall_2008base,"Cumulative real-wage shortfall, fixed 2008 basis",0.23686908461588196,0.43997198494179157,False
 cum_excess_ltu,Cumulative excess LTU above 2009,0.24442888052321754,0.43997198494179157,False
-cum_gdp_shortfall_ownpeak,"Cumulative GDP shortfall, own rolling-peak basis",0.29487643288315846,0.4801006781777089,False
-cum_gdp_shortfall_2008base,"Cumulative GDP shortfall, fixed 2008 basis",0.32006711878513927,0.4801006781777089,False
-pct_below_peak,[current-year] % below own GDP peak (existing Model F variable),0.6051261801867034,0.8294059618609805,False
-cum_threshold_shortfall,Cumulative real AROP-threshold shortfall since 2008,0.6450935258918737,0.8294059618609805,False
+cum_threshold_shortfall,Cumulative real AROP-threshold shortfall since 2008,0.2915313706345972,0.4423146493247377,False
+cum_gdp_shortfall_ownpeak,"Cumulative GDP shortfall, own rolling-peak basis",0.29487643288315846,0.4423146493247377,False
+cum_gdp_shortfall_2008base,"Cumulative GDP shortfall, fixed 2008 basis",0.32006711878513927,0.4431698567794236,False
+pct_below_peak,[current-year] % below own GDP peak (existing Model F variable),0.6051261801867034,0.7780193745257615,False
 gdp_longest_streak_peak,gdp_longest_streak_peak,0.7367710550047909,0.8590756793491124,False
 gdp_longest_streak_2008,gdp_longest_streak_2008,0.7636228260881,0.8590756793491124,False
 gdp_years_below_peak,gdp_years_below_peak,0.8741196829937691,0.8945761394854858,False
