@@ -4480,3 +4480,66 @@ and recession was already underway, so 2009 is arguably contaminated, while
 dropping it costs a year of an already short window. The protocol requires this
 declared before fitting and justified on institutional history rather than fit,
 so it is recorded here as pending rather than chosen quietly.
+
+## P2 FAILS its pre-registered gates
+
+Run under the pre-registration committed at `7cca9c2`, which contained no
+results. Four of six gates fail. Reported as a failure; the comparative design
+does **not** become the narrative spine, and §12's second branch is now
+operative.
+
+**Donor pool:** 20 eligible after excluding Cyprus, Ireland, Portugal and Spain
+as programme countries — the correction v1 never made.
+
+| pre-declared gate | threshold | result | |
+|---|---|---|---|
+| Max single donor weight | ≤ 0.50 | **0.55** | FAIL |
+| Effective donors (inverse Herfindahl) | ≥ 3.0 | **2.0** | FAIL |
+| No leave-one-donor-out sign flip | — | none | PASS |
+| LOO change in effect | ≤ 50% | 30% | PASS |
+| Greece pre-RMSE vs placebo median | ≤ median | **0.91 vs 0.78** | FAIL |
+| Post/pre RMSPE ratio | top 3 | **rank 6 of 21** | FAIL |
+
+**The most damning result is the one that is not a gate.** Synthetic Greece is
+Hungary 0.55 plus Bulgaria 0.45, and it tracks Greece's *outcome* almost exactly
+— pre-period RMSE 0.91 on a series running near 50. But on the pre-declared
+covariates it is a completely different economy:
+
+| covariate, 2005–08 mean | Greece | synthetic | difference |
+|---|---|---|---|
+| Income (AIC per capita, PPS) | 16,660 | 8,610 | **+8,049** |
+| Severe material deprivation | 11.8 | 34.6 | **−22.9** |
+| AROP | 20.1 | 16.7 | +3.4 |
+
+The synthetic has **half Greece's income and three times its deprivation**. This
+is the textbook failure mode: four pre-period outcome observations against
+twenty donors is enough freedom to match the outcome path without matching the
+unit. The pre-registration anticipated exactly this — "four pre-treatment
+outcome observations against up to 25 donors is a permissive environment" — and
+the covariate-balance safeguard did its job.
+
+**A gap in the pre-registration, recorded.** Six placebo units have near-zero
+pre-period fit, which inflates their post/pre ratios arithmetically (Czechia
+54,262). Abadie's convention is to drop such units, and doing so puts Greece at
+rank 1 of 15. **No numeric threshold for that exclusion was pre-declared**, so
+the filtered ranking is reported as a diagnostic and the gate is judged on the
+unfiltered ranking that *was* declared — rank 6, fail. Declaring a placebo
+pre-fit exclusion threshold is required before any future attempt.
+
+**A departure from the pre-registration, also recorded.** The declared covariate
+set was AROP, income, unemployment and deprivation. Unemployment was dropped:
+`une_rt_a` for 2005–2008 returns only France and Sweden. That is the same
+coverage wall that withdrew P4, and it is a fact about the data rather than a
+choice.
+
+**The 2005–2009 sensitivity, reported as promised regardless of fit:** pre-RMSE
+0.93, post gap +26.9 pp, weights Hungary 0.49 / Bulgaria 0.46 / Slovakia 0.05,
+effective donors 2.2. It fails the same gates. Regularisation at λ=0.5 changed
+nothing.
+
+**Consequence.** Greece's post-period divergence of roughly +27 points against
+this synthetic is not reportable as evidence, because the comparison unit is not
+comparable. The paper leads with §12's second branch: the measurement result,
+the breadth of deterioration, the fixed objective-only model at P3, and the
+existing difference-in-differences battery with its country placebo. That is
+weaker than the first branch and every component of it already exists.
