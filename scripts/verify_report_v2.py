@@ -16,7 +16,11 @@ from pathlib import Path
 
 import pandas as pd
 
-REPORT = Path("../output/report.html")
+# Paths resolve from this file, not the working directory: the harness must give
+# the same answer from the repo root, from scripts/, or from a Make recipe.
+HERE = Path(__file__).resolve().parent
+ROOT = HERE.parent
+REPORT = ROOT / "output" / "report.html"
 RAW = REPORT.read_text(encoding="utf-8")
 STRIP = lambda t: re.sub(r"<style.*?</style>", " ",
                          re.sub(r"<script.*?</script>", " ", t, flags=re.S), flags=re.S)
@@ -24,7 +28,7 @@ CLEAN = STRIP(RAW)
 TEXT = re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", CLEAN)))
 LOW = TEXT.lower()
 
-sys.path.insert(0, ".")
+sys.path.insert(0, str(HERE))
 from claim_anchors import claim_containers  # noqa: E402
 
 results = []
@@ -46,7 +50,8 @@ check("1. six V2 claims in anchored containers", not missing,
       f"missing: {missing}" if missing else "10.1-10.6 all anchored")
 
 # 2 -- global pending falls 18 -> 12
-out = subprocess.run([sys.executable, "audit_parity.py"], capture_output=True, text=True).stdout
+out = subprocess.run([sys.executable, str(HERE / "audit_parity.py")], cwd=HERE,
+                     capture_output=True, text=True).stdout
 pend = re.findall(r"^  (10\.\d)\s+.*missing from: (.+)$", out, re.M)
 slots = sum(len(d.split(",")) for _, d in pend)
 check("2. global pending slots == 12", slots == 12, f"{slots} pending (18 at branch point)")
@@ -77,7 +82,7 @@ absent = [k for k, ps in CAVEATS.items() if not any(p.lower() in LOW for p in ps
 check("4. mandatory P3/P5 caveats present", not absent, f"absent: {absent}" if absent else "all present")
 
 # 5 -- movements 1-6 present and in spine order
-spine = pd.read_csv("../docs/shared_spine.csv")
+spine = pd.read_csv(ROOT / "docs" / "shared_spine.csv")
 ids = [f"movement-{i}" for i in range(1, 7)]
 pos = [RAW.find(f'id="{i}"') for i in ids]
 check("5. movements 1-6 in spine order", all(p >= 0 for p in pos) and pos == sorted(pos),
@@ -121,9 +126,21 @@ orphans = ([f"draw:{c}" for c in draws - containers]
 check("7c. no orphaned draw or fill targets", not orphans,
       f"orphans: {orphans}" if orphans else "every draw/fill target exists")
 
+# 7d -- no undefined CSS custom properties. The new central visual referenced
+# --accent, --accent-2, --ink-soft and --ink-mute, none of which this theme
+# defines. The chart still passed the non-empty check while falling back to
+# black on a dark background: technically drawn, effectively invisible.
+defined_vars = set(re.findall(r'(--[a-z0-9-]+)\s*:', RAW))
+used_vars = set(re.findall(r'var\((--[a-z0-9-]+)\)', RAW))
+undef = sorted(used_vars - defined_vars)
+check("7d. no undefined CSS variables", not undef,
+      f"undefined: {undef}" if undef else f"{len(used_vars)} custom properties, all defined")
+
 # 9 -- development verification green
-dev = subprocess.run([sys.executable, "audit_parity.py"], capture_output=True).returncode
-vb = subprocess.run([sys.executable, "verify_build.py"], capture_output=True).returncode
+dev = subprocess.run([sys.executable, str(HERE / "audit_parity.py")], cwd=HERE,
+                     capture_output=True).returncode
+vb = subprocess.run([sys.executable, str(HERE / "verify_build.py")], cwd=HERE,
+                    capture_output=True).returncode
 check("9. development verification green", dev == 0 and vb == 0, f"parity {dev}, build {vb}")
 
 print("=" * 74)
