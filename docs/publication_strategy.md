@@ -4741,7 +4741,7 @@ the four within-country specifications as "four independent tests." They are not
 independent; they are four ways of using the same scarce within-country
 variation, and their agreement is weaker evidence than independence would imply.
 
-## P3a result: Family D is NULL and, worse, sign-inconsistent
+## P3a result: Family D fails the incremental criterion and reverses sign conditionally
 
 Universe, domains, weights, baseline and FDR family frozen at `4e5d54a` before
 any outcome test ran. Nothing was revised afterwards. All five verification
@@ -4781,13 +4781,16 @@ smaller absolute residual. It has the first and fails the second: adding Family
 D makes Greece's out-of-sample prediction **worse**, moving it from third to the
 single most under-predicted country in the Union.
 
-The significant negative coefficient is the diagnostic, not a finding. A
-variable whose descriptive claim is "more multi-domain deterioration" cannot
-credibly carry a conditional coefficient of −2.17 against controls it correlates
-with at +0.58. This is the behaviour of a correlated suppressor, and the
-sensible reading is that once accumulated unemployment and the other objective
-predictors are in the model, the residual variation in accumulated breadth is
-not measuring deterioration at all.
+**The negative coefficient is left uninterpreted, deliberately.** It is a
+*stable conditional sign reversal*, consistent with suppression or construct
+overlap given a +0.58 correlation with `cum_excess_unemployment`. Without a
+within/between decomposition its meaning is unidentified, and that decomposition
+is not run because the pre-declared rule makes it conditional on incremental
+value. An earlier draft of this entry concluded that the residual variation "is
+not measuring deterioration at all." That claim is not supported by anything
+run here and has been withdrawn: declining to interpret a coefficient is the
+correct response to an unidentified quantity, not substituting a different
+interpretation for it.
 
 ### Within/between (step 6): correctly not run
 
@@ -4806,6 +4809,27 @@ declined to interpret.
 Both reproduce the pattern: negative sign, worse Greek prediction. The result is
 not an artefact of the Tier 0 exclusion or of the labour indicators.
 
+### Common-sample verification
+
+Required before freezing, because a residual moving from +6.93 to +10.39 would
+be uninterpretable if it mixed a model change with a sample change.
+
+| | rows | countries | years |
+|---|---|---|---|
+| frozen P3 alone | 269 | 27 | 2015–2024 |
+| frozen P3 + Family D | 269 | 27 | 2015–2024 |
+
+**Identical.** `famD` is complete over the model window, so nothing is dropped
+by adding it. The leave-one-country-out procedure is the same function over the
+same 27 countries with per-fold train/test sizes identical throughout. The
+incremental failure is therefore a clean model comparison.
+
+Two further figures, for context on how the model degrades: 11 of 27 countries
+see their absolute residual worsen, and the mean absolute residual rises from
+4.17 to 4.23. Greece's deterioration (+6.93 to +10.39) is much larger than the
+average, which is consistent with the suppression reading and is why Greece
+moves from third to first.
+
 ### Disposition (step 8)
 
 **Family D remains exploratory and is not promoted.** P3 stays frozen at
@@ -4816,10 +4840,22 @@ untouched.
 another weighting, another baseline, another domain allocation — is precisely
 what the frozen universe forbids, and what the stopping rule exists to prevent.
 
-**What survives is the descriptive finding, unchanged.** Greece ranks 1st of 27
-on accumulated excess breadth at 10.6× the EU median, and on 15 of 25 indicators
-was not in the EU's worst fifth before the crisis and is now. That was always
-labelled descriptive corroboration, it never depended on Family D predicting
-anything, and P3a's failure does not touch it. The critical question was whether
-multi-domain persistence contributes information beyond the frozen
-accumulated-unemployment marker. **It does not.**
+**The individual FDR survivors stay in the screening record only.** `min_wage`
+(−2.79), `unemployment` (+1.54) and `s80s20` (−2.10) point in mixed directions
+and do not support a coherent new hypothesis. They are recorded because the
+screening record is complete or it is not one; they are not carried forward.
+
+### Frozen conclusion for P3a
+
+> Accumulated multidomain breadth is strong descriptive evidence of how widely
+> Greece deteriorated relative to its own pre-crisis position. However, it is
+> not a useful additional predictor once the frozen objective model includes
+> accumulated unemployment: its conditional coefficient reverses sign, and its
+> inclusion worsens Greece's leave-out residual and rank. Family D is therefore
+> retained as descriptive corroboration and rejected as an incremental
+> explanation.
+
+**Model expansion stops here.** The project's final analytical position is
+Branch 2: accumulated labour-market history materially narrows the gap,
+predominantly through between-country differences, while roughly seven points
+remain and Greece stays among the most under-predicted countries in the Union.

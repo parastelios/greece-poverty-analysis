@@ -39,5 +39,27 @@
     "p=0.058 fails to reject within/between equality; it is NOT evidence they are equal, and the point estimates remain materially different (-0.076 vs +0.332).",
     "Call it a within-between equality test, not a Hausman test."
   ],
-  "frozen_at_commit": "2ab35bf"
+  "frozen_at_commit": "2ab35bf",
+  "p3a": {
+    "status": "FROZEN as a negative result. Model expansion stops here.",
+    "conclusion": "Accumulated multidomain breadth is strong descriptive evidence of how widely Greece deteriorated relative to its own pre-crisis position. However, it is not a useful additional predictor once the frozen objective model includes accumulated unemployment: its conditional coefficient reverses sign, and its inclusion worsens Greece's leave-out residual and rank. Family D is therefore retained as descriptive corroboration and rejected as an incremental explanation.",
+    "common_sample_verified": true,
+    "sample": {
+      "rows": 269,
+      "countries": 27,
+      "years": "2015-2024",
+      "identical_to_frozen_P3": true
+    },
+    "greece_residual_p3": 6.93,
+    "greece_residual_p3_plus_famD": 10.39,
+    "greece_rank_p3": 3,
+    "greece_rank_p3_plus_famD": 1,
+    "famD_coef": -2.1685,
+    "famD_p": 0.0044,
+    "corr_with_cum_excess_unemployment": 0.584,
+    "incremental_value": false,
+    "sign_reversal": "stable conditional sign reversal, consistent with suppression or construct overlap; left UNINTERPRETED because the within/between decomposition is conditional on incremental value and was correctly not run",
+    "individual_fdr_survivors": "screening record only; mixed directions, no coherent hypothesis",
+    "tier": "exploratory; cannot and does not alter P3's post-selection tier"
+  }
 }
