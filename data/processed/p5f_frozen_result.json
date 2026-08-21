@@ -29,7 +29,7 @@
     "greece_dropped_change_pct": -0.8,
     "instability_flags": [],
     "bootstrap_worst_p_MC": 0.007,
-    "bootstrap_report": "p_MC = 0.0070; 6 of 999 bootstrap statistics were at least as extreme as observed; 0.0010 is the simulation resolution floor."
+    "bootstrap_report": "Accumulated exposure remained supported across all bootstrap variants (p_MC=0.0005 in the primary restricted specification, the 1/2,000 resolution floor; worst robustness result p_MC=0.0070, 6 exceedances of 999 draws, across Rademacher, Webb and Mammen weights and three seeds)."
   },
   "wording_rules": [
     "Use 'between-country scarring marker', never 'mechanism'.",
@@ -37,7 +37,9 @@
     "State that first differences provide no supporting dynamic evidence.",
     "State that the within estimate is inconclusive under available power.",
     "p=0.058 fails to reject within/between equality; it is NOT evidence they are equal, and the point estimates remain materially different (-0.076 vs +0.332).",
-    "Call it a within-between equality test, not a Hausman test."
+    "Call it a within-between equality test, not a Hausman test.",
+    "Never cite p_MC=0.0070 bare. It is the WORST result across alternative bootstrap specifications, not a competing estimate against the primary 0.0005.",
+    "Name the remaining response-style hypothesis a 'financial-domain-specific reporting difference'. Reserve 'fiscal' for arguments specifically about taxation, public spending or unequal tax treatment."
   ],
   "frozen_at_commit": "2ab35bf",
   "p3a": {
