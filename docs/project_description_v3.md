@@ -513,6 +513,50 @@ attainable grid before it is written down. This applies directly to §4 gate 9.
 
 ---
 
+## 5b. P5 additions required by the P3 result
+
+v2 §8.5's list stands. Six additions follow specifically from what P3 returned.
+
+**1. Country fixed-effects coefficient sensitivity.** Country FE do **not**
+mechanically absorb `cum_excess_unemployment`: it varies within country over
+time. What they do prevent is estimating Greece's own intercept, which is what
+the leave-Greece-out prediction needs — so they cannot be used for the headline
+residual. They *can* test whether the coefficient survives within-country
+variation, and that is a different and worthwhile question.
+
+**2. Within/between (Mundlak) decomposition.** Split the coefficient into its
+between-country and within-country parts. This decides whether +0.281 is
+essentially a cross-sectional level relationship — countries with more
+accumulated exposure report more hardship — or also appears within countries as
+exposure accumulates over time. The second is a substantially stronger claim and
+the project should not assert it without the decomposition.
+
+**3. Influence diagnostics by country.** DFBETAs and leverage on the fixed P3
+specification, reported per country.
+
+**4. Alternative bootstrap weights and seeds.** Rademacher plus at least one
+alternative (Mammen or Webb — Webb is the standard recommendation at few
+clusters), across multiple seeds, to confirm p = 0.0005 is not an artefact of
+one weight scheme or draw.
+
+**5. Full bootstrap reporting.** Repetitions, seed, tail rule (two-sided
+absolute-t), and the minimum attainable p-value given the repetition count. With
+1999 replications and the +1 correction the floor is 1/2000 = 0.0005 — which is
+exactly the reported figure, so it must be stated as "at the resolution floor"
+rather than as a precise value.
+
+**6. Reference-implementation check of the restricted bootstrap.** The first
+implementation was wrong: it used unrestricted residuals and fitted values, did
+not impose the null, and returned p = 0.82 against t = 9.69. The corrected
+version must be checked against an established implementation before its numbers
+enter any document.
+
+Point 5 deserves emphasis: the reported p = 0.0005 is the smallest value the
+procedure can return. It means "no bootstrap draw exceeded the observed t",
+not "p equals 0.0005".
+
+---
+
 ## 6. Constructs, not variables
 
 v1 screened 29 variables representing far fewer ideas. v3 declares the
@@ -743,7 +787,7 @@ gate the current project.
 | **P3** | **Objective-only explanation** (§5; formula fixed, income measure resolved, leakage checked) | §5 branches, on five criteria read together |
 | ~~P4~~ | **Withdrawn** (§5a). Required covariates do not exist in the pre-window | — |
 | **P3a** | **Family D** (§6a): per-indicator, then combined, then in the fixed model | Exploratory only; §6a decision table |
-| **P5** | **Inference and robustness.** Wild-cluster, influence, alternative outcomes, reporting baseline, dependence | v2 §8.5, unchanged |
+| **P5** | **Inference and robustness** (§5b) | v2 §8.5 plus the six additions in §5b |
 | **P6** | **Publication.** Stop variable discovery; rewrite all outputs around whichever designs survived | — |
 | **Phase 2** | Seek Eurostat microdata access | After publication |
 

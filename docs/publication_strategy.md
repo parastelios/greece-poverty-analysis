@@ -4586,9 +4586,18 @@ is +6.93 pp, rank 3 of 27.**
 | objective-only, **without** accumulation | **+27.05** | 1/27 |
 | objective-only, **with** accumulation | **+6.93** | 3/27 |
 
-**The central finding.** Accumulated excess unemployment cuts Greece's gap from
-+27.05 to +6.93 — twenty points — in a specification containing nothing that
-restates the outcome. This is the strongest form of the accumulation result the
+**The central finding, stated as a model comparison rather than a
+decomposition.** The headline wording is:
+
+> Adding accumulated unemployment exposure to the objective-only specification
+> reduces Greece's leave-out residual from approximately 27 to 7 points. Greece
+> nevertheless remains the third most under-predicted country, so accumulated
+> material history substantially narrows but does not resolve the gap.
+
+The twenty points are the difference between two models, not a quantity of
+hardship causally attributed to accumulation. What makes it the strongest form
+of the result so far is that the specification contains nothing that restates
+the outcome. This is the strongest form of the accumulation result the
 project has produced, because it no longer depends on arrears or
 unexpected-expense capacity doing the work. Coefficient +0.281 (se 0.029), sign
 stable across all 27 leave-one-country-out folds (+0.245 to +0.292), VIF 3.28
@@ -4614,10 +4623,28 @@ conservative branch and report the disagreement, which is what was done.
    t = 9.69. Corrected to impose the null via the restricted model. The right
    figures are p = 0.0005 for accumulated unemployment and p = 0.073 for LTU.
 
-The second is worth noting for interpretation: **LTU does not survive
-wild-cluster inference** at conventional levels (p = 0.073), while accumulated
-exposure does comfortably. Duration matters, but accumulation is what carries
-the result.
+The second changes an interpretation, and the correct wording is narrower than
+a head-to-head comparison. Two p-values differing does not establish that two
+coefficients differ significantly. The defensible statement is:
+
+> Conditional on accumulated unemployment and the other objective predictors,
+> LTU is estimated imprecisely under wild-cluster inference (p = 0.073), while
+> accumulated exposure remains strongly supported (p = 0.0005). The evidence is
+> therefore strongest for accumulated labour-market history.
+
+Note also that the naive cluster-robust p-value for LTU was 0.009 — the
+wild-cluster correction is what reveals the imprecision, which is why it was
+pre-declared as the reported inference at 27 clusters.
+
+**Evidentiary status: fixed post-selection validation, not an independent
+confirmatory test.** The specification was pre-committed before this run, and
+the branch rule was fixed in advance. But `cum_excess_unemployment` was
+originally *discovered* on this same panel, in the family-A screening. P3
+therefore validates a pre-specified model on the data that produced the
+hypothesis; it does not constitute independent confirmation. Under the project's
+four-tier taxonomy this is post-selection robustness, and it stays there. An
+independent confirmatory test would require years, data, or an outcome not used
+in selection.
 
 **What P3 establishes, stated at its actual strength.** Greece's reported
 hardship is substantially associated with observable conditions that are not

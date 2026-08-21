@@ -120,26 +120,17 @@ print(f"  Greece mean predicted {pred['mean'].mean():.1f} vs actual "
 
 # ---- the four pre-committed branches ----
 print("\n" + "=" * 74); print("PRE-COMMITTED CONCLUSION BRANCH"); print("=" * 74)
-extreme = rank <= 3          # "the extreme-outlier group"
+from branch_rule import decide, BRANCHES
 sign_stable = bool((np.sign(coefs) == np.sign(coefs[0])).all())
+extreme = rank <= 3
 
-# The pre-committed table, implemented literally. Branch 1 requires BOTH a
-# residual <= 10 AND Greece leaving the extreme-outlier group. An earlier
-# version had an if/else chain whose final `else` defaulted to branch 1, which
-# reported branch 1 while Greece sat at rank 3 -- exactly the over-favourable
-# reading the pre-commitment exists to prevent.
-if abs(gap) > 20 or not sign_stable:
-    branch = "3 - accumulated exposure is CONDITIONAL support; paradox NOT resolved"
-elif abs(gap) <= 10 and not extreme:
-    branch = "1 - STRONG OBJECTIVE SUPPORT"
-elif abs(gap) <= 20:
-    branch = "2 - material history explains a meaningful share, not the full difference"
-else:
-    branch = "3 - accumulated exposure is CONDITIONAL support; paradox NOT resolved"
-
-# §5: where the five criteria disagree, take the more conservative branch and
-# report the disagreement.
-if abs(gap) <= 10 and extreme:
+# The rule now lives in branch_rule.decide(), covered by test_branch_rule.py --
+# 17 tests including boundary values and an exhaustive sweep proving no path
+# returns branch 1 unearned. Prose pre-registration did not prevent the first
+# run reporting branch 1 at rank 3; a tested function does.
+bnum, disagree = decide(gap, rank, len(l), sign_stable)
+branch = f"{bnum} - {BRANCHES[bnum]}"
+if disagree:
     print("  CRITERIA DISAGREE: residual clears the branch-1 bar (<=10) but Greece")
     print("  remains in the extreme-outlier group (rank <=3). Branch 1 requires both.")
     print("  Taking the more conservative branch, as pre-committed.\n")
