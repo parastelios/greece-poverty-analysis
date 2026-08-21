@@ -172,6 +172,62 @@ accepted:**
 - Placebo resolution and the minimum attainable p-value declared in advance.
 - Failure reported as failure, with no post-hoc replacement of the design.
 
+### 4.1 P2 pre-registration — declared before fitting
+
+**Committed to version control before the design was run.** The commit that
+introduces this section contains no P2 results.
+
+**Windows.**
+
+| | choice |
+|---|---|
+| Primary pre-period | **2005–2008** — uncontaminated, 25 donors with complete coverage |
+| Transition year | **2009** — plotted, excluded from both pre-period fitting and the main post-period estimate |
+| Primary post-period | **2010 onward** |
+| Predetermined sensitivity | 2005–2009 pre-period, **reported regardless of whether it improves fit** |
+
+**Institutional justification, not fit-based.** Greece was already in recession
+through 2009; the October 2009 deficit revision changed expectations before the
+formal assistance programme; and including 2009 risks teaching the model part of
+the deterioration it exists to estimate. The sovereign-debt crisis and the policy
+response become unmistakable from 2010.
+
+**Identification is weak and the safeguards exist because of that.** Four
+pre-treatment outcome observations against up to 25 donors is a permissive
+environment: better coverage than v1 had does not remove the problem, it makes
+the problem tractable enough to be worth guarding. Coverage constraints explain
+why v1's two attempts could not work — a six-donor window and a two-observation
+window. They do **not** establish that a better-covered design will work.
+
+**Six safeguards, thresholds declared now:**
+
+1. **Constrained weights.** Non-negative, summing to one, as before — plus a
+   declared regularisation penalty reported alongside the unpenalised fit.
+2. **Pre-fit judged against the placebo distribution**, not Greece's RMSE alone.
+   Greece's pre-period RMSE must sit in the better half of the donor placebo
+   RMSEs; a good absolute fit that is unremarkable among placebos is not
+   evidence.
+3. **Covariate balance** on pre-declared predictors as well as the four outcome
+   points — AROP, income, unemployment, deprivation, averaged 2005–2008.
+4. **Leave-one-donor-out stability**, every donor with non-trivial weight.
+5. **No near-perfect fit treated as evidence in itself.** With four points and
+   many donors, close fit is attainable by construction; it is a precondition,
+   never a result.
+6. **Explicit failure conditions**, any one of which fails the design:
+   - largest single donor weight > 0.50, or effective number of donors
+     (inverse Herfindahl) < 3.0 — excessive concentration;
+   - sign flip, or a change in the post-period effect exceeding 50% of its
+     magnitude, in any leave-one-donor-out fold;
+   - Greece's pre-period RMSE above the median of the placebo RMSEs;
+   - post/pre RMSPE ratio not in the top 3 of the placebo distribution.
+
+**Protocol wording, to carry through the documents:**
+
+> The primary design uses 2005–2008 as the uncontaminated pre-crisis period,
+> treats 2009 as a transition year, and estimates post-crisis divergence from
+> 2010 onward. A 2005–2009 specification is reported as a predetermined
+> sensitivity, not selected according to fit.
+
 **Pre-registered failure condition:** if pre-period fit exceeds the declared
 threshold, the design fails, is reported as failed, and does not become the
 narrative spine. §12 gives the fallback story.

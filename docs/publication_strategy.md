@@ -4463,9 +4463,15 @@ adequate coverage in *every* pre-period year, not on average:
 | 2007–2008 | 26 ← v1's fallback, two observations, the overfit |
 
 v1 chose between a window with six donors and a window with two data points.
-Neither could work. A 2005-based pre-period gives five years against 25 donors
-with complete coverage — an actual comparative design rather than a choice
-between two failures.
+Neither could work. A 2005-based pre-period gives 25 donors with complete
+coverage, which is the first window where the design is even attemptable.
+
+**Correction to an earlier overstatement in this log.** Coverage constraints
+explain why v1's two attempts *could not* work; they do **not** "fully explain"
+the failure in the sense of establishing that a better-covered design *will*
+work. Four pre-treatment outcome observations against 25 donors remains a
+permissive identification environment, and better coverage makes the problem
+tractable rather than removing it. Hence the six safeguards in v3 §4.1.
 
 **The remaining decision is substantive, not statistical, and is left open
 deliberately.** Whether the pre-period ends at 2008 or 2009 depends on when
