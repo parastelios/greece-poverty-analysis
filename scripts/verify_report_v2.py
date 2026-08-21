@@ -105,6 +105,22 @@ class P(hp.HTMLParser):
 p = P(); p.feed(RAW)
 check("7. HTML well-formed", not p.st, f"{len(p.st)} unclosed")
 
+# 7c -- no orphaned draw/fill targets. Removing legacy sections left three chart
+# draw calls and two table-fill blocks pointing at deleted elements; the first
+# null dereference aborted the rest of the script and silently blanked SEVEN
+# charts and two tables, with no console error visible on a static snapshot.
+containers = set(re.findall(r'<svg class="chart" id="([a-z0-9-]+)"', RAW))
+draws = set(re.findall(r"svgId:'([a-z0-9-]+)'", RAW))
+legend_ids = set(re.findall(r'id="(legend-[a-z0-9-]+)"', RAW))
+legend_calls = set(re.findall(r"legend\('([a-z0-9-]+)'", RAW))
+tbl_ids = set(re.findall(r'id="([a-z0-9-]+)"', RAW))
+tbl_refs = set(re.findall(r"querySelector\('#([a-z0-9-]+) tbody'\)", RAW))
+orphans = ([f"draw:{c}" for c in draws - containers]
+           + [f"legend:{c}" for c in legend_calls - legend_ids]
+           + [f"table:{c}" for c in tbl_refs - tbl_ids])
+check("7c. no orphaned draw or fill targets", not orphans,
+      f"orphans: {orphans}" if orphans else "every draw/fill target exists")
+
 # 9 -- development verification green
 dev = subprocess.run([sys.executable, "audit_parity.py"], capture_output=True).returncode
 vb = subprocess.run([sys.executable, "verify_build.py"], capture_output=True).returncode
