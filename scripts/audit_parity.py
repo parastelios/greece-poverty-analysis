@@ -123,6 +123,54 @@ for doc, raw in raws.items():
             if phrase in low:
                 problems.append(("forbid", rule, phrase, doc, "remove"))
 
+# ---------------------------------------------------------------- supersession ----
+# Every V1 claim must receive an explicit V2 disposition. This is the rule that
+# makes keeping both releases safe rather than confusing: a V1 claim can be
+# carried forward, retested, reworded, superseded, retracted or marked V1-only,
+# but it cannot silently disappear from the record.
+#
+# Deliberately NOT enforced here: presence in all three reader-facing documents.
+# Some claims are properly appendix-only -- a technical diagnostic does not
+# belong in the narrative -- and the per-document requirement above already
+# handles that through its "--" marker.
+# NaN is truthy in Python, so `value or ""` leaves a NaN in place and str() turns
+# it into the non-empty string "nan". Every emptiness test below goes through
+# this helper instead.
+def _missing(v):
+    return v is None or (isinstance(v, float) and pd.isna(v)) or not str(v).strip() or str(v).strip().lower() == "nan"
+
+DISPOSITIONS = {"retained", "retested", "reworded", "superseded",
+                "retracted", "v1_only", "undecided"}
+NEEDS_REASON = {"superseded", "retracted", "reworded"}
+NEEDS_REPLACEMENT = {"superseded", "retracted"}
+
+sup = []
+if "v2_disposition" in m.columns:
+    for _, r in m.iterrows():
+        d = "" if _missing(r.get("v2_disposition")) else str(r.get("v2_disposition")).strip()
+        cid = r["id"]
+        if d not in DISPOSITIONS:
+            sup.append((cid, f"disposition '{d}' is not one of {sorted(DISPOSITIONS)}"))
+            continue
+        if d in NEEDS_REASON and _missing(r.get("decision_reason")):
+            sup.append((cid, f"'{d}' requires a decision_reason"))
+        if d in NEEDS_REPLACEMENT and _missing(r.get("replacement_claim_id")):
+            sup.append((cid, f"'{d}' requires a replacement_claim_id (use 'none' if deliberate)"))
+        if d == "superseded" and _missing(r.get("superseded_by")):
+            sup.append((cid, "'superseded' requires superseded_by"))
+
+undecided = sum(1 for _, r in m.iterrows()
+                if not _missing(r.get("v2_disposition"))
+                and str(r.get("v2_disposition")).strip() == "undecided")
+if undecided:
+    print(f"SUPERSESSION: {undecided} of {len(m)} claims still 'undecided' "
+          f"— expected until V2 gates settle; not a failure.\n")
+if sup:
+    print(f"SUPERSESSION PROBLEMS ({len(sup)}):")
+    for cid, msg in sup:
+        print(f"  {cid:5} {msg}")
+    print()
+
 print(f"Audited {len(m)} claims x 3 documents\n")
 if problems:
     print(f"{len(problems)} claim/document pairs need a manual check:\n")
@@ -135,4 +183,4 @@ else:
 print(f"\n{'=' * 70}")
 print(f"{len(m) * 3 - sum(1 for _, r in m.iterrows() for d in DOCS if r[d] == '--') - len(problems)}"
       f" of {len(m) * 3 - sum(1 for _, r in m.iterrows() for d in DOCS if r[d] == '--')} required claim/document pairs present")
-sys.exit(1 if problems else 0)
+sys.exit(1 if (problems or sup) else 0)

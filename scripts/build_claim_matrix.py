@@ -88,6 +88,28 @@ importance_by_element = {
 }
 df.insert(3, "canonical_wording", df["claim"])
 df.insert(4, "importance", df["element"].map(importance_by_element))
+
+# ---------------------------------------------------------------- supersession ----
+# V1's evidence carries forward; V1's framing does not. These columns force that
+# distinction to be made claim by claim rather than left implicit, and the parity
+# auditor refuses to pass while any claim's disposition is undecided.
+#
+#   introduced_in       release the claim first appeared in
+#   v2_disposition      what V2 does with it (see DISPOSITIONS)
+#   superseded_by       release that supersedes it, if any
+#   decision_reason     why -- required for anything other than "undecided"
+#   replacement_claim_id  the V2 claim that takes its place, for superseded/retracted
+#
+# Every claim starts "undecided". Filling these in is a V2 task, done once P0
+# and P3 have settled what survives; the auditor's job is to make sure it is not
+# skipped.
+DISPOSITIONS = ["retained", "retested", "reworded", "superseded",
+                "retracted", "v1_only", "undecided"]
+df.insert(5, "introduced_in", "v1-final")
+df.insert(6, "v2_disposition", "undecided")
+df.insert(7, "superseded_by", "")
+df.insert(8, "decision_reason", "")
+df.insert(9, "replacement_claim_id", "")
 df.to_csv("../docs/claim_matrix.csv", index=False)
 
 print(f"{len(df)} canonical claims across {df.element.nunique()} backbone elements\n")
