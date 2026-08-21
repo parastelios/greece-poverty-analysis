@@ -4518,13 +4518,15 @@ unit. The pre-registration anticipated exactly this — "four pre-treatment
 outcome observations against up to 25 donors is a permissive environment" — and
 the covariate-balance safeguard did its job.
 
-**A gap in the pre-registration, recorded.** Six placebo units have near-zero
-pre-period fit, which inflates their post/pre ratios arithmetically (Czechia
-54,262). Abadie's convention is to drop such units, and doing so puts Greece at
-rank 1 of 15. **No numeric threshold for that exclusion was pre-declared**, so
-the filtered ranking is reported as a diagnostic and the gate is judged on the
-unfiltered ranking that *was* declared — rank 6, fail. Declaring a placebo
-pre-fit exclusion threshold is required before any future attempt.
+**Neither placebo rank is substantive evidence.** The unfiltered rank (6 of 21)
+is distorted by near-zero denominators: six placebo units have pre-period fit so
+close to perfect that their post/pre ratios explode arithmetically (Czechia
+54,262). The filtered rank (1 of 15) uses an exclusion threshold that was
+**not pre-declared**. Both are diagnostics only and neither is reported as a
+result in either direction. P2 fails decisively on the gates that do not depend
+on them: donor concentration, effective-donor count, relative pre-fit, and above
+all covariate imbalance. Declaring a placebo pre-fit exclusion threshold in
+advance is required of any future attempt.
 
 **A departure from the pre-registration, also recorded.** The declared covariate
 set was AROP, income, unemployment and deprivation. Unemployment was dropped:
@@ -4537,9 +4539,90 @@ choice.
 effective donors 2.2. It fails the same gates. Regularisation at λ=0.5 changed
 nothing.
 
-**Consequence.** Greece's post-period divergence of roughly +27 points against
-this synthetic is not reportable as evidence, because the comparison unit is not
-comparable. The paper leads with §12's second branch: the measurement result,
-the breadth of deterioration, the fixed objective-only model at P3, and the
-existing difference-in-differences battery with its country placebo. That is
-weaker than the first branch and every component of it already exists.
+**Locked disposition for P2:**
+
+> Synthetic control was attempted under a pre-registered specification and
+> rejected. Although it closely reproduced Greece's pre-crisis
+> subjective-hardship path, it did so using a concentrated combination of
+> materially incomparable countries. No estimated post-crisis synthetic-control
+> effect is interpreted.
+
+**The +27-point figure is non-reportable** and is guarded in the claim matrix
+and the parity auditor. It is not a small or uncertain effect; it is an effect
+whose comparison unit is invalid, and quoting it with caveats would still be
+quoting it.
+
+**The stopping rule now applies to P2.** No further tuning of the donor pool,
+the covariate set, the regularisation, or the placebo threshold. Re-running a
+failed pre-registered design with adjusted settings until it passes is the
+manoeuvre the pre-registration existed to prevent.
+
+**Kept as a negative methodological result.** The pre-registration, the failed
+outputs and both departures stay in the repository and belong in the appendix.
+The finding is genuinely useful: a visually excellent outcome fit concealed
+severe covariate imbalance, and only a pre-declared balance check exposed it.
+
+**What P3 does and does not carry.** P3 now carries the **material-grounding and
+modelling claim** — whether Greece's reported hardship is associated with
+observable conditions that are not near-restatements of the outcome. It does not
+carry the wider argument alone. That still rests on the validated measurement
+result, anchored poverty and the shrinking threshold, the observed multi-domain
+deterioration, the existing change/DiD evidence with its stated limitations, and
+P3's objective-only conditional association.
+
+## P3 result: BRANCH 2 — material history explains a meaningful share, not all of it
+
+Run exactly as pre-committed in v3 §5. Outcome is the backward-extended official
+indicator; within 2015–2024 that is `ilc_sbjp01` throughout. Tier 0 predictors —
+arrears, unexpected-expense capacity, financial expectations — excluded by
+construction.
+
+**Headline.** n=269, 27 countries, R²=0.907. **Greece's out-of-sample residual
+is +6.93 pp, rank 3 of 27.**
+
+| specification | Greek OOS residual | rank |
+|---|---|---|
+| Model C-LTU (*includes* Tier 0 predictors) | +3.81 | 6/27 |
+| objective-only, **without** accumulation | **+27.05** | 1/27 |
+| objective-only, **with** accumulation | **+6.93** | 3/27 |
+
+**The central finding.** Accumulated excess unemployment cuts Greece's gap from
++27.05 to +6.93 — twenty points — in a specification containing nothing that
+restates the outcome. This is the strongest form of the accumulation result the
+project has produced, because it no longer depends on arrears or
+unexpected-expense capacity doing the work. Coefficient +0.281 (se 0.029), sign
+stable across all 27 leave-one-country-out folds (+0.245 to +0.292), VIF 3.28
+with LTU in the model simultaneously as pre-committed. Wild cluster bootstrap
+p = 0.0005.
+
+**Why the branch is 2 and not 1.** The pre-committed table requires *both* a
+residual ≤ 10 *and* Greece leaving the extreme-outlier group. The residual
+clears its bar at 6.93; the rank does not — Greece is still 3rd of 27, and its
+actual mean (72.0) sits above the model's 95% prediction interval
+[52.7, 77.4] midpoint of 65.0. §5's rule on disagreement is to take the more
+conservative branch and report the disagreement, which is what was done.
+
+**Two errors of mine, both caught before reporting and both recorded.**
+
+1. *The branch logic was wrong and favoured the project.* The if/else chain's
+   final `else` defaulted to branch 1, so the first run printed "STRONG
+   OBJECTIVE SUPPORT" while Greece sat at rank 3. The pre-commitment existed
+   precisely to prevent that reading, and the implementation defeated it. Fixed
+   to follow the table literally.
+2. *The wild cluster bootstrap was invalid.* It used unrestricted residuals and
+   fitted values, which does not impose the null, and returned p = 0.82 against
+   t = 9.69. Corrected to impose the null via the restricted model. The right
+   figures are p = 0.0005 for accumulated unemployment and p = 0.073 for LTU.
+
+The second is worth noting for interpretation: **LTU does not survive
+wild-cluster inference** at conventional levels (p = 0.073), while accumulated
+exposure does comfortably. Duration matters, but accumulation is what carries
+the result.
+
+**What P3 establishes, stated at its actual strength.** Greece's reported
+hardship is substantially associated with observable conditions that are not
+near-restatements of it — chiefly a decade of accumulated labour-market
+exposure. It is not fully accounted for: roughly seven points remain, and Greece
+stays among the three most under-predicted countries in the Union. The defensible
+claim is that material history explains a meaningful share of the Greek gap, not
+that the paradox is resolved.

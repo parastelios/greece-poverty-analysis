@@ -91,6 +91,17 @@ for _, r in m.iterrows():
             problems.append((r.id, r.element, r.claim[:58], doc, need))
 
 FORBIDDEN = {
+    # P2's synthetic control failed its pre-registered gates: the synthetic unit
+    # had half Greece's income and three times its deprivation. The estimated
+    # +27-point post-period divergence is NOT reportable -- not as a headline,
+    # not hedged, not "suggestive". Quoting it with caveats is still quoting it.
+    "p2-synthetic-effect-reported": [
+        "synthetic greece diverges by 27",
+        "27-point divergence from synthetic",
+        "synthetic control shows greece",
+        "compared with its synthetic counterpart, greece",
+        "diverged by roughly 27 points from",
+    ],
     # The breadth-of-disadvantage composite is descriptive corroboration and was
     # tested as a predictor and found null. If any document ever restates it as a
     # driver, explanation or cause, that is the regression this rule catches.
