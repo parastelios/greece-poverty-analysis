@@ -1,0 +1,146 @@
+{
+  "status": "FROZEN before outcome testing. Not revisable after seeing results.",
+  "baseline": "each country's own mean breadth over 2008-2009",
+  "construction": "per indicator, worst-quintile flag with the worse-direction declared ex ante; averaged WITHIN domain, then averaged ACROSS domains with equal domain weight; excess over the country's own baseline, floored at zero, cumulated",
+  "weighting": "equal by DOMAIN, not by indicator",
+  "window": "2008 onward for accumulation; model window 2015-2024",
+  "min_indicators_per_country_year": 8,
+  "variants": {
+    "primary_objective_only": [
+      "arop_threshold_real",
+      "consumption_pc",
+      "debt_to_income",
+      "employment_rate",
+      "hicp",
+      "hicp_food",
+      "hicp_housing",
+      "hourly_comp",
+      "life_satisfaction",
+      "min_wage",
+      "net_migration",
+      "pct_below_peak",
+      "real_gdp_pc",
+      "real_income_idx",
+      "real_wages_idx",
+      "s80s20",
+      "saving_rate",
+      "transfer_effect",
+      "unemployment",
+      "wadj_a01",
+      "warm",
+      "work_effort_squeeze",
+      "working_hours",
+      "youth_unemployment"
+    ],
+    "sensitivity_all_indicators": [
+      "arop_threshold_real",
+      "consumption_pc",
+      "debt_to_income",
+      "employment_rate",
+      "fin_expectations",
+      "hicp",
+      "hicp_food",
+      "hicp_housing",
+      "hourly_comp",
+      "life_satisfaction",
+      "min_wage",
+      "net_migration",
+      "pct_below_peak",
+      "real_gdp_pc",
+      "real_income_idx",
+      "real_wages_idx",
+      "s80s20",
+      "saving_rate",
+      "transfer_effect",
+      "unemployment",
+      "wadj_a01",
+      "warm",
+      "work_effort_squeeze",
+      "working_hours",
+      "youth_unemployment"
+    ],
+    "sensitivity_non_labour": [
+      "arop_threshold_real",
+      "consumption_pc",
+      "debt_to_income",
+      "hicp",
+      "hicp_food",
+      "hicp_housing",
+      "life_satisfaction",
+      "min_wage",
+      "net_migration",
+      "pct_below_peak",
+      "real_gdp_pc",
+      "real_income_idx",
+      "real_wages_idx",
+      "s80s20",
+      "saving_rate",
+      "transfer_effect",
+      "wadj_a01",
+      "warm"
+    ]
+  },
+  "domains": {
+    "Poverty measures": [
+      "arop_threshold_real",
+      "s80s20"
+    ],
+    "Income & output": [
+      "consumption_pc",
+      "debt_to_income",
+      "hicp",
+      "hicp_food",
+      "hicp_housing",
+      "min_wage",
+      "pct_below_peak",
+      "real_gdp_pc",
+      "real_income_idx",
+      "saving_rate",
+      "transfer_effect"
+    ],
+    "Labour market": [
+      "employment_rate",
+      "unemployment",
+      "youth_unemployment"
+    ],
+    "Expectations": [
+      "fin_expectations",
+      "life_satisfaction"
+    ],
+    "Work effort": [
+      "hourly_comp",
+      "real_wages_idx",
+      "work_effort_squeeze",
+      "working_hours"
+    ],
+    "Demography": [
+      "net_migration"
+    ],
+    "Prices": [
+      "wadj_a01"
+    ],
+    "Housing & strain": [
+      "warm"
+    ]
+  },
+  "tier0_excluded": [
+    "fin_expectations"
+  ],
+  "circular_excluded": [
+    "arop",
+    "arope",
+    "arrears",
+    "deprivation_legacy",
+    "deprivation_new",
+    "housing_overburden",
+    "income_pps",
+    "ltu",
+    "subjective_poverty",
+    "unexpected"
+  ],
+  "fdr_family": "the individual accumulated indicators in the PRIMARY variant, corrected together with Benjamini-Hochberg at 5%",
+  "outcomes": [
+    "hardship level (primary)",
+    "hardship minus AROP (secondary)"
+  ]
+}
