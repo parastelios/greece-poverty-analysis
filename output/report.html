@@ -206,7 +206,7 @@ footer { margin-top: 70px; padding-top: 20px; border-top: 1px solid var(--gridli
   <p><b>The AROPE bridge.</b> The EU's own broader official measure, AROPE (income poverty <i>or</i> severe deprivation <i>or</i> very-low work intensity), is the official system's own recognition that income poverty alone is too narrow. It narrows Greece's gap to 39.7 points &mdash; but does not close it, and Greece's AROPE-based gap is still, by a wide margin, the largest of any EU country. AROPE motivates the rest of this report rather than replacing AROP as its primary object.</p>
   <p><b>Decomposing AROPE's intuition, not reconstructing it.</b> AROPE's three components overlap at the household level in ways Eurostat doesn't publish, so this report cannot literally reconstruct AROPE from aggregate data. What it does instead is test AROPE's underlying premise &mdash; that hardship is multidimensional &mdash; by adding deprivation- and hardship-adjacent variables to a cross-country model one at a time and in combination, and tracking how much of Greece's AROP-based gap they close.</p>
   <p><b>The gap-closing ladder.</b> On a common 2015&ndash;2024 window, Greece's average raw AROP gap is 52.6 points. Comparing Greece to other EU countries with similar unemployment, income, and material hardship narrows that to 25.6 points out-of-sample. Adding housing costs, arrears, and unexpected-expense capacity narrows it further, to 11.6. Replacing headline unemployment with long-term unemployment (12 months or more out of work) &mdash; the single most consequential change tested &mdash; cuts it to 3.9. Every step is tested the strict way: out-of-sample, using a model fit on the other 26 countries only.</p>
-  <p><b>What closes the rest: duration and sustained exposure.</b> Long-term unemployment measures who is currently stuck; it does not measure the labor-market history a country has carried. In the fixed specification, adding cumulative excess unemployment moves Greece's residual from 3.9 to &minus;0.8. The stricter test repeats candidate selection and estimation inside every held-out-country fold. There Greece records a +2.70-point residual and ranks 19th of 27 on prediction error: eight countries are predicted less accurately. That is the primary result. It identifies a stable family of duration measures, not one uniquely chosen variable, and removes the basis for an exceptional "Greek pessimism premium" without implying causality or hidden optimism.</p>
+  <p><b>What closes the rest: duration and sustained exposure.</b> Long-term unemployment measures who is currently stuck; it does not measure the labor-market history a country has carried. In the fixed specification, adding cumulative excess unemployment moves Greece's residual from 3.9 to &minus;0.8 <i>(legacy, superseded)</i>. The stricter test repeats candidate selection and estimation inside every held-out-country fold. There Greece records a +2.70-point residual <i>(legacy, superseded)</i> and ranks 19th of 27 on prediction error: eight countries are predicted less accurately. That is the primary result. It identifies a stable family of duration measures, not one uniquely chosen variable, and removes the basis for an exceptional "Greek pessimism premium" without implying causality or hidden optimism.</p>
   <p><b>The scars became social too, not only economic.</b> A net 290,281 Greek nationals left the country between 2008 and 2024 (2.6% of the 2008 population), concentrated in exactly the years income and jobs were collapsing. Trust in national government fell to a historic low of 7% in 2012 and has recovered only partially since. Neither is modeled as a regression variable &mdash; both are treated as context for the mechanism above, not as independent, tested causes. <b>Ruled out:</b> income inequality &mdash; Greece's inequality is elevated but not exceptional, and adding it to the model explains none of the gap. <b>Tested and came back null:</b> a cumulative shortfall in the AROP poverty threshold itself, despite being the most narratively obvious candidate (Section 11).</p>
   <p><b>Two checks that sharpen the story rather than adding pillars.</b> Even having a job doesn't resolve the puzzle: salaried Greek workers rank an unremarkable 17th of 27 EU countries on official income poverty, yet nearly six in ten of them &mdash; 59.5%, first in the EU by a wide margin &mdash; say they struggle to make ends meet &mdash; in a country that records the EU's longest working hours overall (salaried employees alone rank 7th of 27) at its lowest purchasing-power-adjusted hourly pay (Section 11). And the most obvious skeptical objection &mdash; that Greeks simply <i>report</i> hardship differently &mdash; is tested directly rather than waved off: a stable reporting style cannot explain why Greece's gap widened after 2009 by more than any other EU country's, nor why the extremity is specific to financial questions rather than spread across all self-reports ("Could this still be reporting culture?", after Section 12).</p>
  
@@ -222,30 +222,42 @@ footer { margin-top: 70px; padding-top: 20px; border-top: 1px solid var(--gridli
 </div>
 
 <nav class="toc">
-  <div class="toc-part">Part I &mdash; Does subjective poverty reflect real hardship?</div>
-  <a href="#paradox">1. The paradox</a>
-  <a href="#yardstick">2. Why AROP behaves differently: the moving threshold</a>
-  <a href="#anchored">3. A fixed yardstick: anchored poverty</a>
-  <a href="#tracking">4. Does it track real conditions in Greece?</a>
-  <a href="#generalize">5. Does the relationship hold across Europe?</a>
-  <a href="#answer1">6. Answer to Question 1</a>
-  <div class="toc-part">Part II &mdash; Why is Greece still an outlier?</div>
-  <a href="#outlier">7. Greece versus comparable EU countries</a>
-  <a href="#explains">8. What housing and financial strain explain</a>
-  <a href="#lgo">9. Leave-Greece-out prediction</a>
-  <a href="#scorecard">10. The scorecard: how much each layer explains</a>
-  <a href="#scarring-pessimism">11. The scars beneath the gap</a>
-  <a href="#answer2">12. Answer to Question 2</a>
+  <div class="toc-part">The argument, in six movements</div>
+  <a href="#movement-1"><b>1.</b> The puzzle &mdash; and the official bridge</a>
+  <a href="#movement-2"><b>2.</b> The ruler moved</a>
+  <a href="#movement-3"><b>3.</b> How broad the deterioration was</a>
+  <a href="#movement-4"><b>4.</b> The objective-only model &mdash; 27 points to 7</a>
+  <a href="#movement-5"><b>5.</b> What the result is not</a>
+  <a href="#movement-6"><b>6.</b> Discussion</a>
+  <div class="toc-part">Within the movements</div>
+  <a href="#paradox">The paradox: subjective poverty vs. official measures</a>
+  <a href="#yardstick">Why AROP behaves differently: the moving threshold</a>
+  <a href="#anchored">A fixed yardstick: anchored poverty</a>
+  <a href="#tracking">Does it track real conditions in Greece?</a>
+  <a href="#generalize">Does the relationship hold across Europe?</a>
+  <a href="#scarring-pessimism">The scars beneath the gap</a>
+  <a href="#objective-only">A model that excludes anything resembling the answer</a>
+  <a href="#qualification">Between countries, not within them &mdash; and two failed designs</a>
   <a href="#reporting-culture">Could this still be reporting culture?</a>
-  <div class="toc-part">Reference</div>
+  <div class="toc-part">Legacy &amp; reference</div>
+  <a href="#part2">Superseded: the earlier model ladder</a>
   <a href="#literature">Where this fits in the research literature</a>
   <a href="#methodology">Methods, robustness &amp; limitations</a>
 </nav>
 
-<div class="part-header" id="part1">
-  <p class="part-eyebrow">Part I</p>
-  <h2>Does subjective poverty reflect real economic hardship?</h2>
-  <p><b>Question 1:</b> To what extent does Greece's exceptionally high subjective poverty reflect measurable deterioration in living standards that relative-income poverty does not capture?</p>
+<div class="part-header" id="movement-1">
+  <p class="part-eyebrow">Movement 1</p>
+  <h2>The puzzle</h2>
+  <p><b>The question:</b> Greek households report the EU's highest difficulty making ends meet, while the official income-poverty rate places Greece high but not alone. How large is that divergence, and does the EU's own broader measure close it?</p>
+  <p class="method-aside" data-claim-id="10.6"><b>What is being measured.</b> The outcome throughout is the
+  <b>backward-extended official subjective-hardship indicator</b>: Eurostat's own published series
+  (<code>ilc_sbjp01</code>) from 2010 onward, and before 2010 the identical <code>DIF&nbsp;+&nbsp;GRT</code>
+  construction from the underlying survey. The two were reconciled across all 432 overlapping
+  country-years: 318 agree exactly, 114 differ by a single rounding step, and none differs by more
+  than 0.1&nbsp;points. This is not a bespoke measure competing with an official statistic &mdash; it
+  <i>is</i> the official statistic, carried back to 2003 by the rule Eurostat itself applies from
+  2010. Note the limit of that validation: it establishes the aggregation rule, not that pre-2010
+  vintages are free of national survey breaks.</p>
 </div>
 
 <section id="paradox">
@@ -343,6 +355,12 @@ footer { margin-top: 70px; padding-top: 20px; border-top: 1px solid var(--gridli
     C-LTU covariates are removed before the share is computed. Full construction and the null result are in <code>scripts/50_persistence_share.py</code>. The statistical appendix lists all 25 indicators individually, showing where Greece sat in the EU distribution on each at its earliest usable year and where it sits now &mdash; so the composite can be audited rather than taken on trust.</p>
   <p class="note">EU aggregate for subjective poverty has no coverage before 2007; EU aggregate composition also changes over time (more countries joined, then the UK left) &mdash; see Methods for exact years. In 2003&ndash;2004 only 6&ndash;13 countries had comparable data yet, so Greece's early rank is indicative only, not the level.</p>
 </section>
+
+<div class="part-header" id="movement-2">
+  <p class="part-eyebrow">Movement 2</p>
+  <h2>The ruler moved</h2>
+  <p><b>The question:</b> AROP is defined against the current national median. When the median itself collapses, what happens to the measure &mdash; and what does a fixed yardstick show instead?</p>
+</div>
 
 <section id="yardstick">
   <span class="q-label">2</span>
@@ -450,106 +468,11 @@ footer { margin-top: 70px; padding-top: 20px; border-top: 1px solid var(--gridli
   </div>
 </section>
 
-<div class="part-header" id="part2">
-  <p class="part-eyebrow">Part II</p>
-  <h2>Why is Greece still an outlier?</h2>
-  <p><b>Question 2:</b> How much of Greece's cross-country subjective-poverty gap can measurable financial hardship account for, and how much remains unexplained?</p>
-  <p>Section 1 showed that AROPE, the EU's own broader official measure, narrows the AROP-based gap but does not close it. Part II picks up that motivation directly: AROPE is a union of three conditions &mdash; income poverty, severe material deprivation, or very-low household work intensity &mdash; and the published aggregate tables this report draws on don't reveal how those three overlap at the household level, so this report cannot literally decompose AROPE from its own country-level data (EU-SILC microdata could support that kind of overlap analysis under controlled research access, but that's outside this report's aggregate-only Eurostat pipeline). This is not just a data-availability caveat; it echoes a real methodological critique in the literature: Zieleńska &amp; Wnuk (2024) argue AROPE's union construction presents what is really a set of normative choices as a neutral technical aggregate, and Bárcena-Martín, Pérez-Moreno &amp; Rodríguez-Díaz (2020) show formally that countries with near-identical AROPE rates can hide very different underlying multidimensional poverty profiles, because a union indicator like AROPE discards information about how severe, how concurrent, and how combined a household's disadvantages are. What this report can do, and does, is test the same underlying premise AROPE embodies &mdash; that income poverty alone is too narrow a lens &mdash; by adding deprivation-adjacent and hardship-adjacent variables to the model separately and seeing how much of Greece's gap they close. <b>This is a decomposition of AROPE's intuition, not a reconstruction of AROPE itself.</b></p>
+<div class="part-header" id="movement-3">
+  <p class="part-eyebrow">Movement 3</p>
+  <h2>How broad the deterioration was</h2>
+  <p><b>The question:</b> A single headline number says how far Greece fell on one measure. It does not say how much of Greek life the fall touched. Before any model, this movement reports the record in the units people actually live in &mdash; wages, prices against wages, housing, work, migration, age.</p>
 </div>
-
-<section id="outlier">
-  <span class="q-label">7</span>
-  <h3 class="sec-title">Greece versus comparable EU countries</h3>
-  <p class="lede">This part of the report switches from "does subjective poverty make sense over time" to "does Greece's <i>level</i> make sense compared to other countries with similar conditions." A model is fit across all EU countries predicting subjective poverty from unemployment, income, and material hardship; Greece's actual number minus what the model predicts is its "unexplained" residual &mdash; the part its economic conditions alone don't account for.</p>
-  <div class="card">
-    <p class="chart-title">Average unexplained residual by country, 2015&ndash;2024</p>
-    <p class="chart-sub">Positive = households report more difficulty than unemployment, income, and material hardship predict</p>
-    <div class="chart-wrap"><svg class="chart" id="chart-bars" viewBox="0 0 860 620" preserveAspectRatio="xMidYMid meet"></svg><div class="tooltip" id="tt-bars"></div></div>
-  </div>
-  <div class="finding">
-    On this starting comparison, Greece has the largest unexplained gap of any EU country &mdash; ahead of Cyprus and Croatia, the next-highest. The rest of Part II asks how much of that gap survives once more of the picture is filled in.
-  </div>
-  <p class="method-aside"><b>Method:</b> income is measured in purchasing-power-adjusted terms (accounting for the fact that a euro buys more in Greece than in Denmark), not raw currency &mdash; the standard way to compare living standards <i>between</i> countries. Swapping in raw currency-adjusted income instead barely changed the result (Greece's average residual moved by 0.2 points), so this choice turned out to matter much less than expected going in.</p>
-</section>
-
-<section id="explains">
-  <span class="q-label">8</span>
-  <h3 class="sec-title">What housing and financial strain explain</h3>
-  <p class="lede">The comparison above uses only four broad economic variables. Adding more specific measures of financial pressure &mdash; the cost of housing relative to income, and whether a household is behind on bills or couldn't cover a surprise expense &mdash; shows how much of Greece's unexplained gap those variables can statistically account for. Two of them (arrears, inability to cover an unexpected expense) are conceptually close to the outcome itself &mdash; worth keeping in mind when reading how much they explain.</p>
-  <div class="card table-scroll">
-    <table class="data-table" id="nested-table">
-      <thead><tr><th>Comparison includes&hellip;</th><th>Adds</th><th>How well it fits</th><th>Greece's avg. gap</th><th>Greece's 2024 gap</th><th>Same result, fixed country list</th></tr></thead>
-      <tbody></tbody>
-    </table>
-  </div>
-  <p class="table-caption">The last column reruns every comparison on the same fixed set of 24 countries throughout (rather than the full, changing EU membership used elsewhere), to check the result isn't an artifact of which countries had data available in which years. It comes out within 1&ndash;2 points of the main version every time.</p>
-
-  <div class="card">
-    <p class="chart-title">Greece's unexplained gap by year: basic comparison vs. richer comparison</p>
-    <div class="legend" id="legend-residtrend"></div>
-    <div class="chart-wrap"><svg class="chart" id="chart-residtrend" viewBox="0 0 860 260" preserveAspectRatio="xMidYMid meet"></svg><div class="tooltip" id="tt-residtrend"></div></div>
-  </div>
-
-  <div class="finding">
-    <b>Housing costs and bill/expense strain explain most of the gap &mdash; not all of it.</b> Starting from the basic comparison (unemployment, income, hardship, AROP income poverty), Greece's average gap is 15.1 points. Adding housing costs brings it to 8.8. Adding missed bills and inability-to-cover-an-unexpected-expense brings it down to 2.2 &mdash; close to zero for most of 2015&ndash;2019. But a real gap of around 6 points re-emerges by 2024, and it's concentrated in the 2020s rather than spread evenly across the whole period. Two further checks &mdash; a household's overall debt burden, and how much Greece's welfare system reduces poverty compared to other countries &mdash; were tested and added essentially nothing on top of what housing and bill/expense strain already explain; in this comparison, neither shows up as an additional factor once those are already accounted for.
-  </div>
-  <p class="method-aside"><b>Method:</b> household debt-to-income and the poverty-reducing effect of social transfers were added as a further check; both come back statistically indistinguishable from zero once the other variables are already in the model. That doesn't rule either one out as a real factor &mdash; it means this specific comparison doesn't find independent evidence for them, which is a more careful claim than "ruling out," since their effects could easily be tangled up with housing and arrears rather than separate from them.</p>
-</section>
-
-<section id="lgo">
-  <span class="q-label">9</span>
-  <h3 class="sec-title">Leave-Greece-out: the cleanest test</h3>
-  <p class="lede">Every comparison so far includes Greece in the data used to build it, which means Greece's own pattern could be quietly bending the comparison toward itself. This is the sharpest way to rule that out: build the comparison model using only the <b>other 26</b> EU countries, then ask what it would have predicted for Greece &mdash; a genuine out-of-sample prediction Greece had no part in shaping.</p>
-  <div class="card">
-    <p class="chart-title">Greece: actual vs. predicted by a model that never saw Greece's data</p>
-    <div class="legend" id="legend-lgo"></div>
-    <div class="chart-wrap"><svg class="chart" id="chart-lgo" viewBox="0 0 860 260" preserveAspectRatio="xMidYMid meet"></svg><div class="tooltip" id="tt-lgo"></div></div>
-    <div class="foot-note"><span>Model built on 26 EU states, evaluated on Greece</span><span>2015&ndash;2024</span></div>
-  </div>
-  <div class="finding">
-    Even this more honest test, using Section 8's richest comparison (basic conditions + housing + bills/expenses), shows a persistent 6&ndash;20 point gap in <b>every single year</b> &mdash; including years where the in-sample version of the same comparison showed almost nothing. The next part digs into why those two versions disagree so much.
-  </div>
-
-  <h4>Is that gap actually unusual, or is it just normal noise from leaving a country out?</h4>
-  <p>Leaving Greece out changes the comparison group, which on its own could shift the result by some amount for any country, not just Greece. To find out how much of a shift is normal, the same exercise was repeated for <b>every</b> country in the panel &mdash; each one left out in turn, with the model rebuilt on the remaining 26 and used to predict the excluded country. And to connect this to Section 8's in-sample finding, it was repeated for all three of that section's nested comparisons (basic economic conditions; + housing; + bills and expenses), not just the richest one.</p>
-  <div class="card table-scroll">
-    <table class="data-table" id="nested-loo-table">
-      <thead><tr><th>Comparison includes&hellip;</th><th>Greece's out-of-sample gap</th><th>Greece's rank</th><th>Next-largest country</th></tr></thead>
-      <tbody></tbody>
-    </table>
-  </div>
-  <div class="finding">
-    <b>Greece has the largest out-of-sample gap under every specification tested &mdash; but the path isn't a smooth decline the way the in-sample version was, and by the richest comparison, Greece is no longer alone at the extreme.</b> Going from the basic comparison to "+ housing" doesn't shrink Greece's out-of-sample gap the way it did in-sample (Section 8) &mdash; it grows, from 25.6 to 35.5 points, well clear of the next-largest country in both cases (Luxembourg at 18.5, then Cyprus at 19.4). Only once bills and expenses are added on top does Greece's gap fall sharply, to 11.6 &mdash; still the largest of the 27, but now only narrowly ahead of Luxembourg (10.7), not clear of the pack the way it was under the other two comparisons. That mismatch between the smooth in-sample decline (15.1 &rarr; 8.8 &rarr; 2.2, Section 8) and this bumpier out-of-sample one is itself informative: part of why the in-sample version looks so clean is that those models get to see Greece's own data while fitting, which this test deliberately doesn't allow. The out-of-sample view is the more honest one, and its actual message is narrower than "housing and cash-flow strain explain the gap": the full combination of variables gets Greece's predicted difficulty much closer to what's reported than the basic comparison does, but Greece remains the single hardest country to predict under every version of the model tested.
-  </div>
-</section>
-
-<section id="scorecard">
-  <span class="q-label">10</span>
-  <h3 class="sec-title">The scorecard: how much each layer explains</h3>
-  <p class="lede">Sections 7&ndash;9 and Section 11 each add one more layer to the comparison and report the result separately. Here they are side by side &mdash; eight versions of the same model, each shown two ways: how much of Greece's gap disappears when the model is allowed to see Greece's own data (in-sample), and how much survives when it isn't (out-of-sample, the stricter test). Models A&ndash;D use only variables already introduced in Sections 7&ndash;8; Models E and F add two new ones &mdash; financial expectations and a "scarring stock" measuring how far below its own historical peak a country's income still is; C-LTU changes an existing variable rather than adding one; G adds cumulative excess unemployment since 2009 on top of C-LTU &mdash; all defined and explained in full in Section 11, right after this table.</p>
-  <div class="card table-scroll">
-    <table class="data-table">
-      <thead><tr><th>Model</th><th>Fit (R&sup2;)</th><th>Greece's gap, in-sample</th><th>Greece's gap, out-of-sample</th><th>Greece's rank, out-of-sample</th></tr></thead>
-      <tbody>
-        <tr><td>A: unemployment, income, deprivation, AROP income-poverty rate</td><td>0.76</td><td>15.1</td><td>25.6</td><td>1st of 27</td></tr>
-        <tr><td>B: A + housing cost overburden</td><td>0.78</td><td>8.8</td><td>35.5</td><td>1st of 27</td></tr>
-        <tr><td>C: B + arrears, unexpected-expense capacity</td><td>0.89</td><td>2.2</td><td>11.6</td><td>1st of 27</td></tr>
-        <tr><td>C-LTU: C, but long-term unemployment (12mo+) replaces headline unemployment &mdash; preferred labor-market spec</td><td>0.91</td><td>1.3</td><td>3.9</td><td>6th of 27</td></tr>
-        <tr><td>D: C + household debt-to-income, transfer effect</td><td>0.89</td><td>2.2</td><td>13.0</td><td>1st of 27</td></tr>
-        <tr><td>E: C + financial expectations, saving rate</td><td>0.90</td><td>1.3</td><td>3.6</td><td>10th of 27</td></tr>
-        <tr><td>F: C + scarring stock (% below own income peak)</td><td>0.90</td><td>1.3</td><td>7.1</td><td>4th of 27</td></tr>
-        <tr class="hl"><td>G: C-LTU + cumulative excess unemployment &mdash; fixed post-selection specification</td><td>0.93</td><td>&minus;0.1</td><td>&minus;0.8</td><td>18th of 27</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="finding">
-    <span class="badge-approx">Core finding</span> <b>Duration changes the result more than any other dimension tested.</b> Replacing headline unemployment with long-term unemployment cuts Greece's out-of-sample gap from 11.6 to 3.9. The fixed cumulative specification reaches &minus;0.8, but the full select-then-fit procedure is more conservative: +2.70, rank 19th of 27. Most other candidates barely move the number and housing alone makes it worse. Section 11 separates the fixed-model association from the nested result and then shows what the prolonged exposure looked like in household terms.
-  </div>
-  <div class="finding">
-    <b>Two further things stand out among the rest.</b> The in-sample and out-of-sample columns tell different stories at almost every step &mdash; housing (Model B) looks like it helps in-sample (15.1 &rarr; 8.8) but makes the out-of-sample prediction worse (25.6 &rarr; 35.5), and debt/transfers (Model D) does nothing either way. Separately from C-LTU, two further extensions of baseline Model C close real, if smaller, further ground: financial pessimism (Model E, down to 3.6 and off the top rank entirely) and the scarring stock (Model F, down to 7.1) &mdash; both built on Model C, not on C-LTU, so their gains aren't stacked on top of the labor-market swap. Section 11 finds real overlap between both of those and long-term unemployment once they're tested together, which softens how independent their contributions really are. Financial expectations (Model E) closes the most ground of anything tested besides C-LTU, but it's also the variable this report caveats hardest, because it's conceptually close to the outcome itself.
-  </div>
-  <p class="method-aside"><b>Method:</b> all models use the same panel-regression setup (year fixed effects, country-clustered standard errors) and the same base sample; out-of-sample numbers are each model's own leave-one-country-out average residual for Greece, computed the same way as Section 9's table. C-LTU's own coefficient on long-term unemployment is stable and highly significant (p&lt;0.001) across every one of the 27 leave-one-country-out refits, including the one that excludes Greece itself &mdash; not an artifact of Greece's own data. Stability is not the same as precision, however: under the wild cluster bootstrap appropriate to 27 clusters, long-term unemployment is estimated imprecisely (p=0.073), while accumulated exposure remained supported across all bootstrap variants (p_MC=0.0005 in the primary specification; worst robustness result p_MC=0.0070 across alternative weight schemes and seeds). The evidence is therefore strongest for accumulated labour-market history. Full per-country results for every model: <code>model_scorecard.csv</code>, <code>model_scorecard_ltu.csv</code>, and <code>scorecard_loo_*.csv</code>.</p>
-</section>
 
 <section id="scarring-pessimism">
   <span class="q-label">11</span>
@@ -557,7 +480,7 @@ footer { margin-top: 70px; padding-top: 20px; border-top: 1px solid var(--gridli
   <p class="lede">This section has one central test and one corroborating record. The central test asks whether <b>duration</b> matters: long-term unemployment first, then sustained exposure under full nested validation. The corroborating record asks what that history looked like in output, pay, prices, housing, migration, age, expectations, and work. Those findings strengthen interpretation but are not eight equal mechanisms or eight scorecard additions.</p>
   <div class="story-map" aria-label="Section 11 reading guide">
     <a href="#ltu-marker"><b>1. Duration</b><span>11.6 &rarr; 3.9</span></a>
-    <a href="#cumulative-marker"><b>2. Sustained exposure</b><span>nested residual +2.70; rank 19/27</span></a>
+    <a href="#cumulative-marker"><b>2. Sustained exposure</b><span>legacy nested residual +2.70; rank 19/27</span></a>
     <a href="#material-record"><b>3. Material record</b><span>GDP, pay, prices, housing</span></a>
     <a href="#social-record"><b>4. Social record</b><span>migration, age, expectations, work</span></a>
   </div>
@@ -702,7 +625,7 @@ footer { margin-top: 70px; padding-top: 20px; border-top: 1px solid var(--gridli
     </table>
   </div>
   <div class="finding">
-    <span class="badge-approx">Core finding</span> <b>Cumulative excess unemployment since 2009 is the strongest single addition tested anywhere in this report.</b> Added on top of Model C-LTU, it lifts the fit from R&sup2; 0.914 to 0.930 and moves Greece's out-of-sample gap from 3.9 points to &minus;0.8 &mdash; the model now slightly <i>overpredicts</i> Greece's reported hardship rather than underpredicting it. Once it's the variable being tested, its own coefficient stays positive and stable when the model is refit 27 times, once with each country excluded in turn (range 0.134&ndash;0.197, no sign flips anywhere), and remains statistically significant even in the refit that excludes Greece entirely (coefficient 0.164, p=0.0064) &mdash; that specific result isn't an artifact of Greece's own data point. Whether Greece's data should have counted toward <i>choosing</i> this variable over the alternatives in the first place is a separate question, addressed directly below.
+    <span class="badge-approx">Core finding</span> <b>Cumulative excess unemployment since 2009 is the strongest single addition tested anywhere in this report.</b> Added on top of Model C-LTU, it lifts the fit from R&sup2; 0.914 to 0.930 and moves Greece's out-of-sample gap from 3.9 points to &minus;0.8 <i>(legacy, superseded)</i> &mdash; the model now slightly <i>overpredicts</i> Greece's reported hardship rather than underpredicting it. Once it's the variable being tested, its own coefficient stays positive and stable when the model is refit 27 times, once with each country excluded in turn (range 0.134&ndash;0.197, no sign flips anywhere), and remains statistically significant even in the refit that excludes Greece entirely (coefficient 0.164, p=0.0064) &mdash; that specific result isn't an artifact of Greece's own data point. Whether Greece's data should have counted toward <i>choosing</i> this variable over the alternatives in the first place is a separate question, addressed directly below.
   </div>
   <div class="card">
     <p class="chart-title">Greece: reported subjective poverty vs. the final model's prediction, 2015&ndash;2024</p>
@@ -855,13 +778,282 @@ footer { margin-top: 70px; padding-top: 20px; border-top: 1px solid var(--gridli
   </div>
 </section>
 
+<div class="part-header" id="movement-4">
+  <p class="part-eyebrow">Movement 4</p>
+  <h2>The objective-only model</h2>
+  <p><b>The question:</b> How much of Greece's reported hardship is associated with observable conditions that are <i>not</i> near-restatements of the outcome itself?</p>
+</div>
+
+<section id="objective-only">
+  <span class="q-label">4</span>
+  <h3 class="sec-title">A model that excludes anything resembling the answer</h3>
+
+  <p class="lede">Earlier versions of this analysis leaned on two predictors &mdash; being behind on
+  bills, and having no buffer for an unexpected expense &mdash; that are close to the outcome
+  itself. Someone who cannot meet an unexpected expense is, in most ordinary senses, already having
+  difficulty making ends meet. Models containing them fit better and explain less. This movement
+  reports the result from a specification that excludes them by construction.</p>
+
+  <p class="method-aside"><b>What is in and what is out.</b> The specification is fixed in advance:
+  severe material and social deprivation, housing-cost overburden, long-term unemployment, income
+  (actual individual consumption per capita in PPS), years of real wages below their own 2008
+  level, and accumulated excess unemployment, with year fixed effects, unweighted, on 269
+  country-years across all 27 member states. <b>Excluded by construction</b> as proximate to the
+  outcome: arrears, inability to meet an unexpected expense, and financial expectations. Greece is
+  left out of fitting and then predicted, so the number below is what a model that has never seen
+  Greece gets wrong about Greece.</p>
+
+  <div class="finding" data-claim-id="10.1">
+    <b>Without accumulated history, the objective-only model fails badly on Greece.</b>
+    Using only current conditions &mdash; deprivation, housing costs, long-term unemployment,
+    income and the real-wage record &mdash; Greece's out-of-sample residual is
+    <b>+27.05&nbsp;points</b>, the <b>largest of all 27 member states</b>. On observable current
+    circumstances alone, Greek households report far more hardship than any European comparison
+    predicts.
+  </div>
+
+  <div class="finding" data-claim-id="10.2">
+    <b>Adding the accumulated record of unemployment narrows the gap to a seventh of that.</b>
+    Adding accumulated unemployment exposure to the objective-only specification reduces Greece's
+    leave-out residual <b>from approximately 27 to 7 points</b> (+6.93), moving Greece from 1st to
+    <b>3rd of 27</b>. Greece nevertheless remains the third most under-predicted country in the
+    Union: accumulated material history substantially narrows the puzzle but does not resolve it.
+  </div>
+
+  <p class="method-aside"><b>How to read that reduction.</b> It is a <b>model comparison, not a
+  causal decomposition</b>. Twenty points is the difference between two specifications estimated on
+  the identical 269-row sample with the identical leave-one-country-out procedure; it is not a
+  quantity of hardship attributable to accumulation. The coefficient on accumulated exposure is
+  +0.281, stable in sign across all 27 leave-one-country-out folds, with a variance inflation
+  factor of 3.3 alongside long-term unemployment in the same model. Evidentiary status:
+  <b>post-selection robustness, not independent confirmation</b> &mdash; accumulated excess
+  unemployment was discovered on this same panel, so this validates a pre-specified model against
+  the data that produced the hypothesis.</p>
+
+  <p class="method-aside" data-claim-id="legacy"><b>On the smaller residuals in earlier
+  specifications.</b> Specifications that admitted arrears and unexpected-expense capacity produced
+  visibly smaller Greek residuals than the +6.93 reported here &mdash; in the richest of them the
+  residual approached zero. Those results are not being hidden: they are reported in full in the
+  statistical appendix and are <b>superseded</b>, not refuted. They are proximity-sensitive, in the
+  precise sense that their apparent explanatory success comes from predictors that restate the
+  outcome. A model that explains difficulty making ends meet using arrears has not explained much.
+  The headline figure is therefore the larger, more honest +6.93 from the objective-only
+  specification, and the earlier ladder is kept in the appendix as a legacy record.</p>
+</section>
+
+<div class="part-header" id="movement-5">
+  <p class="part-eyebrow">Movement 5</p>
+  <h2>What the result is not</h2>
+  <p><b>The question:</b> A narrowed gap invites a reading the evidence does not support. This movement states what the finding rules out, what remains unresolved, and which alternative explanations were tested and failed.</p>
+</div>
+
+<section id="qualification">
+  <span class="q-label">5</span>
+  <h3 class="sec-title">The association is between countries, not within them</h3>
+
+  <div class="finding" data-claim-id="10.3">
+    <b>The evidence is predominantly between countries.</b> Splitting the accumulated-exposure
+    coefficient into its between-country and within-country parts gives <b>+0.332 between</b>
+    (p&lt;0.0001) and <b>&minus;0.076 within</b> (p=0.692). Countries that accumulated more
+    labour-market exposure report more hardship. The panel does <b>not</b> establish that as a
+    given country accumulated more exposure, its own reported hardship rose.
+  </div>
+
+  <p>Three further tests point the same way, and they are not independent &mdash; each uses the same
+  scarce within-country variation. Country and year fixed effects together give &minus;0.039; first
+  differences, which ask whether a year's newly accumulated exposure tracks that year's change in
+  reported hardship, give &minus;0.003 (p=0.98); country-specific linear trends give +0.049.</p>
+
+  <p class="method-aside"><b>What the within-country null does and does not establish.</b> The
+  within estimate's standard error is 4.8 times the between estimate's, with a 95% interval of
+  [&minus;0.449, +0.298]. A within&ndash;between equality test returns p=0.058, which <i>fails to
+  reject</i> equality and is <b>not</b> evidence that the two are equal &mdash; the point estimates
+  remain materially different. The within component is therefore <b>inconclusive under available
+  power</b>, not unsupported with adequate sensitivity. This analysis can neither establish a
+  within-country dynamic effect nor rule one out. Accumulated exposure should be described as a
+  <b>between-country scarring marker</b>, never as a mechanism, and the sentence "as exposure
+  accumulated, hardship increased" is not supported by anything here.</p>
+
+  <p class="method-aside">Stability, by contrast, is not in doubt. Dropping any single country moves
+  the coefficient by at most 12.7% (Cyprus); dropping <i>Greece</i> moves it by 0.8%, so Greece is
+  not driving its own result. Accumulated exposure remained supported across all bootstrap variants
+  (p_MC=0.0005 in the primary specification; worst robustness result p_MC=0.0070 across alternative
+  weight schemes and seeds).</p>
+
+  <h4>Two alternative explanations were built, pre-registered, and failed</h4>
+
+  <div class="finding" data-claim-id="10.4">
+    <b>The comparative (synthetic-control) design failed its pre-registered gates.</b> A synthetic
+    Greece was assembled from countries resembling pre-crisis Greece, with the donor pool, windows
+    and pass criteria fixed in writing beforehand. It failed four of six gates. The decisive failure
+    was not statistical but substantive: the synthetic unit that best matched Greece's pre-crisis
+    <i>outcome</i> had roughly <b>half Greece's income and three times its deprivation</b>. A
+    comparison unit that is not comparable cannot support an estimate, so <b>no post-crisis
+    synthetic-control effect is interpreted anywhere in this report</b>.
+  </div>
+
+  <div class="finding" data-claim-id="10.5">
+    <b>Breadth of deterioration is descriptive only.</b> The multi-domain breadth measure from
+    Movement 3 &mdash; on which Greece ranks first in the Union &mdash; was also tested as a
+    predictor. Added to the objective-only model it does <b>not</b> improve prediction: Greece's
+    residual moves the wrong way, from +6.93 to +10.39, making Greece the single most
+    under-predicted country. Its conditional coefficient reverses sign, a stable reversal consistent
+    with suppression or construct overlap, and it is left uninterpreted. The breadth finding stands
+    as a description of how widely Greece deteriorated; it is <b>not</b> an additional explanation.
+  </div>
+
+  <p class="method-aside">Both failures are reported because a screening record that keeps only its
+  successes is not a record. The same applies to the nulls already noted: income inequality,
+  household debt, welfare-transfer effectiveness, and the cumulative shortfall in the poverty
+  threshold itself all failed to add explanatory power once the model included what it includes.</p>
+</section>
+
+<div class="part-header" id="part2">
+  <p class="part-eyebrow">Legacy &mdash; superseded specifications</p>
+  <h2>The earlier model ladder, kept for the record</h2>
+  <p class="method-aside"><b>Read this section as a record, not as a result.</b> Everything below
+  is the earlier, <b>proximity-sensitive</b> model ladder: specifications that admitted arrears and
+  unexpected-expense capacity, predictors close enough to the outcome that their explanatory
+  success is partly circular. They produced smaller Greek residuals than the objective-only
+  headline in Movement 4 &mdash; and that is precisely why they are <b>superseded</b>. The figures
+  are retained here and in the statistical appendix because omitting them would look selective, and
+  because the reasoning that retired them is itself part of the evidence. <b>None of the residuals
+  in this section is a current headline estimate.</b> The headline is +6.93 from the objective-only
+  specification.</p>
+</div>
+
+<section id="outlier">
+  <span class="q-label">7</span>
+  <h3 class="sec-title">Greece versus comparable EU countries</h3>
+  <p class="lede">This part of the report switches from "does subjective poverty make sense over time" to "does Greece's <i>level</i> make sense compared to other countries with similar conditions." A model is fit across all EU countries predicting subjective poverty from unemployment, income, and material hardship; Greece's actual number minus what the model predicts is its "unexplained" residual &mdash; the part its economic conditions alone don't account for.</p>
+  <div class="card">
+    <p class="chart-title">Average unexplained residual by country, 2015&ndash;2024</p>
+    <p class="chart-sub">Positive = households report more difficulty than unemployment, income, and material hardship predict</p>
+    <div class="chart-wrap"><svg class="chart" id="chart-bars" viewBox="0 0 860 620" preserveAspectRatio="xMidYMid meet"></svg><div class="tooltip" id="tt-bars"></div></div>
+  </div>
+  <div class="finding">
+    On this starting comparison, Greece has the largest unexplained gap of any EU country &mdash; ahead of Cyprus and Croatia, the next-highest. The rest of Part II asks how much of that gap survives once more of the picture is filled in.
+  </div>
+  <p class="method-aside"><b>Method:</b> income is measured in purchasing-power-adjusted terms (accounting for the fact that a euro buys more in Greece than in Denmark), not raw currency &mdash; the standard way to compare living standards <i>between</i> countries. Swapping in raw currency-adjusted income instead barely changed the result (Greece's average residual moved by 0.2 points), so this choice turned out to matter much less than expected going in.</p>
+</section>
+
+<section id="explains">
+  <span class="q-label">8</span>
+  <h3 class="sec-title">What housing and financial strain explain</h3>
+  <p class="lede">The comparison above uses only four broad economic variables. Adding more specific measures of financial pressure &mdash; the cost of housing relative to income, and whether a household is behind on bills or couldn't cover a surprise expense &mdash; shows how much of Greece's unexplained gap those variables can statistically account for. Two of them (arrears, inability to cover an unexpected expense) are conceptually close to the outcome itself &mdash; worth keeping in mind when reading how much they explain.</p>
+  <div class="card table-scroll">
+    <table class="data-table" id="nested-table">
+      <thead><tr><th>Comparison includes&hellip;</th><th>Adds</th><th>How well it fits</th><th>Greece's avg. gap</th><th>Greece's 2024 gap</th><th>Same result, fixed country list</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <p class="table-caption">The last column reruns every comparison on the same fixed set of 24 countries throughout (rather than the full, changing EU membership used elsewhere), to check the result isn't an artifact of which countries had data available in which years. It comes out within 1&ndash;2 points of the main version every time.</p>
+
+  <div class="card">
+    <p class="chart-title">Greece's unexplained gap by year: basic comparison vs. richer comparison</p>
+    <div class="legend" id="legend-residtrend"></div>
+    <div class="chart-wrap"><svg class="chart" id="chart-residtrend" viewBox="0 0 860 260" preserveAspectRatio="xMidYMid meet"></svg><div class="tooltip" id="tt-residtrend"></div></div>
+  </div>
+
+  <div class="finding">
+    <b>Housing costs and bill/expense strain explain most of the gap &mdash; not all of it.</b> Starting from the basic comparison (unemployment, income, hardship, AROP income poverty), Greece's average gap is 15.1 points. Adding housing costs brings it to 8.8. Adding missed bills and inability-to-cover-an-unexpected-expense brings it down to 2.2 &mdash; close to zero for most of 2015&ndash;2019. But a real gap of around 6 points re-emerges by 2024, and it's concentrated in the 2020s rather than spread evenly across the whole period. Two further checks &mdash; a household's overall debt burden, and how much Greece's welfare system reduces poverty compared to other countries &mdash; were tested and added essentially nothing on top of what housing and bill/expense strain already explain; in this comparison, neither shows up as an additional factor once those are already accounted for.
+  </div>
+  <p class="method-aside"><b>Method:</b> household debt-to-income and the poverty-reducing effect of social transfers were added as a further check; both come back statistically indistinguishable from zero once the other variables are already in the model. That doesn't rule either one out as a real factor &mdash; it means this specific comparison doesn't find independent evidence for them, which is a more careful claim than "ruling out," since their effects could easily be tangled up with housing and arrears rather than separate from them.</p>
+</section>
+
+<section id="lgo">
+  <span class="q-label">9</span>
+  <h3 class="sec-title">Leave-Greece-out: the cleanest test</h3>
+  <p class="lede">Every comparison so far includes Greece in the data used to build it, which means Greece's own pattern could be quietly bending the comparison toward itself. This is the sharpest way to rule that out: build the comparison model using only the <b>other 26</b> EU countries, then ask what it would have predicted for Greece &mdash; a genuine out-of-sample prediction Greece had no part in shaping.</p>
+  <div class="card">
+    <p class="chart-title">Greece: actual vs. predicted by a model that never saw Greece's data</p>
+    <div class="legend" id="legend-lgo"></div>
+    <div class="chart-wrap"><svg class="chart" id="chart-lgo" viewBox="0 0 860 260" preserveAspectRatio="xMidYMid meet"></svg><div class="tooltip" id="tt-lgo"></div></div>
+    <div class="foot-note"><span>Model built on 26 EU states, evaluated on Greece</span><span>2015&ndash;2024</span></div>
+  </div>
+  <div class="finding">
+    Even this more honest test, using Section 8's richest comparison (basic conditions + housing + bills/expenses), shows a persistent 6&ndash;20 point gap in <b>every single year</b> &mdash; including years where the in-sample version of the same comparison showed almost nothing. The next part digs into why those two versions disagree so much.
+  </div>
+
+  <h4>Is that gap actually unusual, or is it just normal noise from leaving a country out?</h4>
+  <p>Leaving Greece out changes the comparison group, which on its own could shift the result by some amount for any country, not just Greece. To find out how much of a shift is normal, the same exercise was repeated for <b>every</b> country in the panel &mdash; each one left out in turn, with the model rebuilt on the remaining 26 and used to predict the excluded country. And to connect this to Section 8's in-sample finding, it was repeated for all three of that section's nested comparisons (basic economic conditions; + housing; + bills and expenses), not just the richest one.</p>
+  <div class="card table-scroll">
+    <table class="data-table" id="nested-loo-table">
+      <thead><tr><th>Comparison includes&hellip;</th><th>Greece's out-of-sample gap</th><th>Greece's rank</th><th>Next-largest country</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <div class="finding">
+    <b>Greece has the largest out-of-sample gap under every specification tested &mdash; but the path isn't a smooth decline the way the in-sample version was, and by the richest comparison, Greece is no longer alone at the extreme.</b> Going from the basic comparison to "+ housing" doesn't shrink Greece's out-of-sample gap the way it did in-sample (Section 8) &mdash; it grows, from 25.6 to 35.5 points, well clear of the next-largest country in both cases (Luxembourg at 18.5, then Cyprus at 19.4). Only once bills and expenses are added on top does Greece's gap fall sharply, to 11.6 &mdash; still the largest of the 27, but now only narrowly ahead of Luxembourg (10.7), not clear of the pack the way it was under the other two comparisons. That mismatch between the smooth in-sample decline (15.1 &rarr; 8.8 &rarr; 2.2, Section 8) and this bumpier out-of-sample one is itself informative: part of why the in-sample version looks so clean is that those models get to see Greece's own data while fitting, which this test deliberately doesn't allow. The out-of-sample view is the more honest one, and its actual message is narrower than "housing and cash-flow strain explain the gap": the full combination of variables gets Greece's predicted difficulty much closer to what's reported than the basic comparison does, but Greece remains the single hardest country to predict under every version of the model tested.
+  </div>
+</section>
+
+<section id="scorecard">
+  <span class="q-label">10</span>
+  <h3 class="sec-title">The scorecard: how much each layer explains</h3>
+  <p class="lede">Sections 7&ndash;9 and Section 11 each add one more layer to the comparison and report the result separately. Here they are side by side &mdash; eight versions of the same model, each shown two ways: how much of Greece's gap disappears when the model is allowed to see Greece's own data (in-sample), and how much survives when it isn't (out-of-sample, the stricter test). Models A&ndash;D use only variables already introduced in Sections 7&ndash;8; Models E and F add two new ones &mdash; financial expectations and a "scarring stock" measuring how far below its own historical peak a country's income still is; C-LTU changes an existing variable rather than adding one; G adds cumulative excess unemployment since 2009 on top of C-LTU &mdash; all defined and explained in full in Section 11, right after this table.</p>
+  <div class="card table-scroll">
+    <table class="data-table">
+      <thead><tr><th>Model</th><th>Fit (R&sup2;)</th><th>Greece's gap, in-sample</th><th>Greece's gap, out-of-sample</th><th>Greece's rank, out-of-sample</th></tr></thead>
+      <tbody>
+        <tr><td>A: unemployment, income, deprivation, AROP income-poverty rate</td><td>0.76</td><td>15.1</td><td>25.6</td><td>1st of 27</td></tr>
+        <tr><td>B: A + housing cost overburden</td><td>0.78</td><td>8.8</td><td>35.5</td><td>1st of 27</td></tr>
+        <tr><td>C: B + arrears, unexpected-expense capacity</td><td>0.89</td><td>2.2</td><td>11.6</td><td>1st of 27</td></tr>
+        <tr><td>C-LTU: C, but long-term unemployment (12mo+) replaces headline unemployment &mdash; preferred labor-market spec</td><td>0.91</td><td>1.3</td><td>3.9</td><td>6th of 27</td></tr>
+        <tr><td>D: C + household debt-to-income, transfer effect</td><td>0.89</td><td>2.2</td><td>13.0</td><td>1st of 27</td></tr>
+        <tr><td>E: C + financial expectations, saving rate</td><td>0.90</td><td>1.3</td><td>3.6</td><td>10th of 27</td></tr>
+        <tr><td>F: C + scarring stock (% below own income peak)</td><td>0.90</td><td>1.3</td><td>7.1</td><td>4th of 27</td></tr>
+        <tr class="hl"><td>G: C-LTU + cumulative excess unemployment &mdash; fixed post-selection specification</td><td>0.93</td><td>&minus;0.1</td><td>&minus;0.8 <i>(legacy)</i></td><td>18th of 27</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="finding">
+    <span class="badge-approx">Core finding</span> <b>Duration changes the result more than any other dimension tested.</b> Replacing headline unemployment with long-term unemployment cuts Greece's out-of-sample gap from 11.6 to 3.9. The fixed cumulative specification reaches &minus;0.8 and the full select-then-fit procedure gives +2.70, rank 19th of 27 &mdash; both <i>legacy, superseded</i> figures from proximity-sensitive specifications. Most other candidates barely move the number and housing alone makes it worse. Section 11 separates the fixed-model association from the nested result and then shows what the prolonged exposure looked like in household terms.
+  </div>
+  <div class="finding">
+    <b>Two further things stand out among the rest.</b> The in-sample and out-of-sample columns tell different stories at almost every step &mdash; housing (Model B) looks like it helps in-sample (15.1 &rarr; 8.8) but makes the out-of-sample prediction worse (25.6 &rarr; 35.5), and debt/transfers (Model D) does nothing either way. Separately from C-LTU, two further extensions of baseline Model C close real, if smaller, further ground: financial pessimism (Model E, down to 3.6 and off the top rank entirely) and the scarring stock (Model F, down to 7.1) &mdash; both built on Model C, not on C-LTU, so their gains aren't stacked on top of the labor-market swap. Section 11 finds real overlap between both of those and long-term unemployment once they're tested together, which softens how independent their contributions really are. Financial expectations (Model E) closes the most ground of anything tested besides C-LTU, but it's also the variable this report caveats hardest, because it's conceptually close to the outcome itself.
+  </div>
+  <p class="method-aside"><b>Method:</b> all models use the same panel-regression setup (year fixed effects, country-clustered standard errors) and the same base sample; out-of-sample numbers are each model's own leave-one-country-out average residual for Greece, computed the same way as Section 9's table. C-LTU's own coefficient on long-term unemployment is stable and highly significant (p&lt;0.001) across every one of the 27 leave-one-country-out refits, including the one that excludes Greece itself &mdash; not an artifact of Greece's own data. Stability is not the same as precision, however: under the wild cluster bootstrap appropriate to 27 clusters, long-term unemployment is estimated imprecisely (p=0.073), while accumulated exposure remained supported across all bootstrap variants (p_MC=0.0005 in the primary specification; worst robustness result p_MC=0.0070 across alternative weight schemes and seeds). The evidence is therefore strongest for accumulated labour-market history. Full per-country results for every model: <code>model_scorecard.csv</code>, <code>model_scorecard_ltu.csv</code>, and <code>scorecard_loo_*.csv</code>.</p>
+</section>
+
+
+
 <section id="answer2">
   <div class="answer-box">
     <h4>Answer to Question 2</h4>
     <p>Nearly all of it, once the model accounts for accumulated exposure rather than just current conditions &mdash; but getting there takes several layers, and it's worth walking through what each one actually does. Adding housing costs and cash-flow problems (missed bills, no buffer for a surprise expense) to a basic comparison of unemployment, income, and material hardship shrinks Greece's apparent gap from 15.1 points to 2.2 when the model is allowed to see Greece's own data. Tested more strictly, out of sample &mdash; predicting Greece from a model trained only on the other 26 countries &mdash; the same combination still narrows the raw 47.6-point AROP gap to 11.6 points, though the path there isn't smooth (housing on its own makes the out-of-sample prediction worse, not better). Under every version of this comparison that uses headline unemployment, Greece has the largest gap of any EU country. Household debt and the poverty-reducing effect of Greece's welfare system were tested directly and provided no additional explanatory power in this specification &mdash; a narrower finding than ruling them out, since their effects could be tangled up with variables already included.</p>
-    <p>Section 11 tests what closes the rest. Swapping headline unemployment for long-term unemployment cuts the out-of-sample gap from 11.6 points to 3.9. In the fixed specification, cumulative excess unemployment moves it to &minus;0.8. The stricter end-to-end procedure repeats variable selection inside every held-out-country fold: Greece's residual is then +2.70 points, ranking 19th of 27, with eight countries predicted less accurately. That conservative result is the primary evidence that Greece is no longer exceptional once sustained labor-market exposure is counted. It does not mean Greek households are secretly optimistic; it means the "unexplained pessimism" interpretation does not survive the full procedure. Supporting evidence reinforces the material history without changing the preferred scorecard: Greece has the EU's deepest and longest unresolved pre-crisis GDP shortfall (Finland remains slightly below 2008 too), the EU's highest wage-adjusted price pressure in every category tested, and the highest housing-cost overburden among mortgage-free owners. Income inequality and cumulative AROP-threshold loss were tested and did not explain the gap.</p>
+    <p>Section 11 tests what closes the rest. Swapping headline unemployment for long-term unemployment cuts the out-of-sample gap from 11.6 points to 3.9. In the fixed specification, cumulative excess unemployment moves it to &minus;0.8 <i>(legacy, superseded)</i>. The stricter end-to-end procedure repeats variable selection inside every held-out-country fold: Greece's residual is then +2.70 points <i>(legacy, superseded)</i>, ranking 19th of 27, with eight countries predicted less accurately. That conservative result is the primary evidence that Greece is no longer exceptional once sustained labor-market exposure is counted. It does not mean Greek households are secretly optimistic; it means the "unexplained pessimism" interpretation does not survive the full procedure. Supporting evidence reinforces the material history without changing the preferred scorecard: Greece has the EU's deepest and longest unresolved pre-crisis GDP shortfall (Finland remains slightly below 2008 too), the EU's highest wage-adjusted price pressure in every category tested, and the highest housing-cost overburden among mortgage-free owners. Income inequality and cumulative AROP-threshold loss were tested and did not explain the gap.</p>
   </div>
 </section>
+
+<div class="part-header" id="movement-6">
+  <p class="part-eyebrow">Movement 6</p>
+  <h2>Discussion</h2>
+  <p><b>The question:</b> What does this evidence support, what does it leave open, and what should not be concluded from it?</p>
+
+  <p>The Greek result is materially grounded and it is not fully explained. Those two statements
+  are both true and neither replaces the other. A model containing nothing that restates the
+  outcome leaves Greece 27 points under-predicted on current conditions alone; adding the
+  accumulated record of unemployment brings that to roughly 7. Greece nonetheless remains the third
+  most under-predicted country in the Union, and the association is carried by differences
+  <i>between</i> countries rather than by change within Greece over time.</p>
+
+  <p>What that supports is a specific and limited claim: Greek households' reports of hardship
+  track a measurable material history, and a country that spent a decade accumulating labour-market
+  damage looks much less anomalous than one judged on this year's conditions. What it does not
+  support is any statement that the puzzle is solved, that the mechanism is identified, or that
+  accumulation caused the reports. The evidence is associational, drawn from country-level
+  aggregates, and cannot speak to what happened inside any household.</p>
+
+  <p>On the cultural explanation, the position is narrower than either side of the usual argument.
+  Greece did report unusually high hardship before the crisis, so a stable national component
+  cannot be dismissed. But a stable component cannot produce a widening, and the widening is the
+  largest of any member state. What remains genuinely open is a <b>financial-domain-specific
+  reporting difference</b> &mdash; a change in how Greek households answer money questions
+  specifically, brought about by the crisis itself. The domain-specificity evidence in this
+  movement rules out generic national gloom. It does not rule that out, and no aggregate design
+  used here can.</p>
+</div>
 
 <section id="reporting-culture">
   <h3 class="sec-title">Could this still be reporting culture?</h3>
@@ -1068,16 +1260,16 @@ footer { margin-top: 70px; padding-top: 20px; border-top: 1px solid var(--gridli
   <h4>Cumulative excess unemployment: source, construction, and evidentiary status</h4>
   <dl class="method-item">
     <dd><b>Construction:</b> for each country, a 2009 baseline unemployment rate (the earliest year with near-complete 27-country coverage for both headline and long-term unemployment, confirmed by direct coverage check rather than assumed). For every subsequent year, that year's unemployment rate minus the baseline rate, floored at zero (a year at or below baseline contributes nothing, rather than offsetting a later bad year), summed cumulatively through 2024. This produces a running total of "excess unemployment-years" carried since the crisis began, distinct from the current-year snapshot headline or long-term unemployment rates already in the model. The equivalent construction was also tested for long-term unemployment, GDP per capita (two baselines: fixed-2008 and each country's own rolling historical peak), real wages (same two baselines), and the AROP poverty threshold itself (fetched in national currency to avoid exchange-rate contamination, deflated by each country's own HICP).</dd>
-    <dd><b>What was tested, and what survived:</b> every cumulative candidate was added, one at a time, to the Model C-LTU baseline. Cumulative excess unemployment was the strongest (R&sup2; 0.914&rarr;0.930, Greece's out-of-sample gap 3.9&rarr;&minus;0.8). A duration/direction battery on GDP and wages (years below 2008, years below own peak, longest continuous shortfall streak, cumulative negative-growth years) found one further significant candidate &mdash; years spent below Greece's own 2008 real-wage level (p=0.0045) &mdash; and several non-significant ones (all GDP-based variants, p=0.13&ndash;0.89). A cumulative shortfall in the AROP poverty threshold itself, despite being the most narratively anticipated candidate given Section 2's moving-threshold finding, came back statistically null (p=0.291).</dd>
-    <dd><b>Replacement test:</b> to check this isn't long-term unemployment relabeled, cumulative excess unemployment was tested as a <i>replacement</i> for long-term unemployment as well as an addition. Replacement performs worse (R&sup2; 0.911, Greece's out-of-sample gap 4.3) than either the long-term-unemployment baseline (R&sup2; 0.914, gap 3.9) or the combined model (R&sup2; 0.930, gap &minus;0.8) &mdash; evidence this is a genuine additional layer, not a substitute. Variance inflation factors in the combined model stay reasonable (maximum 4.5).</dd>
+    <dd><b>What was tested, and what survived:</b> every cumulative candidate was added, one at a time, to the Model C-LTU baseline. Cumulative excess unemployment was the strongest (R&sup2; 0.914&rarr;0.930, Greece's out-of-sample gap 3.9&rarr;&minus;0.8, both legacy and superseded). A duration/direction battery on GDP and wages (years below 2008, years below own peak, longest continuous shortfall streak, cumulative negative-growth years) found one further significant candidate &mdash; years spent below Greece's own 2008 real-wage level (p=0.0045) &mdash; and several non-significant ones (all GDP-based variants, p=0.13&ndash;0.89). A cumulative shortfall in the AROP poverty threshold itself, despite being the most narratively anticipated candidate given Section 2's moving-threshold finding, came back statistically null (p=0.291).</dd>
+    <dd><b>Replacement test:</b> to check this isn't long-term unemployment relabeled, cumulative excess unemployment was tested as a <i>replacement</i> for long-term unemployment as well as an addition. Replacement performs worse (R&sup2; 0.911, Greece's out-of-sample gap 4.3) than either the long-term-unemployment baseline (R&sup2; 0.914, gap 3.9) or the combined model (R&sup2; 0.930, gap &minus;0.8 &mdash; legacy, superseded) &mdash; evidence this is a genuine additional layer, not a substitute. Variance inflation factors in the combined model stay reasonable (maximum 4.5).</dd>
     <dd><b>Stability checks:</b> refitting 27 times, once with each country excluded in turn, cumulative excess unemployment's coefficient stays positive and significant throughout (range 0.134&ndash;0.197, no sign flips), including the refit that excludes Greece itself (coefficient 0.164, p=0.0064). The wage-duration variable passes the same check (range 0.31&ndash;0.54, always significant; excluding Greece: 0.31, p=0.0036). A year-by-year check of the final model's residual for Greece (fit excluding Greece) shows small, mostly negative-to-near-zero residuals for nine of ten years 2015&ndash;2024 (&minus;3.25 to +1.01), with one exception (2021, +4.40, plausibly pandemic-related) &mdash; not a single-year artifact.</dd>
     <dd><b>Why the wage-duration variable is kept as supporting evidence, not a further scorecard layer:</b> combined with cumulative excess unemployment, both variables remain statistically significant (R&sup2; 0.931, gap &minus;1.1), but within Greece's own 2003&ndash;2025 time series the two are highly correlated (0.95, versus 0.54 across the full 27-country panel) &mdash; too entangled in Greece's specific case to treat credibly as two independent mechanisms, even though the panel-wide relationship supports both as real.</dd>
     <dd><b>Multiple-testing correction across the full cumulative/duration family:</b> the original 8-candidate cumulative battery and the 10-candidate duration/direction battery were screened together as one exploratory family (18 tests total, the same discipline applied elsewhere in this report), then checked against Benjamini-Hochberg false-discovery-rate correction &mdash; computed inside <code>scripts/38_cumulative_hardship.py</code> itself from full-precision p-values, not as a separate one-off calculation. Cumulative excess unemployment survives comfortably (raw p=0.00013, FDR-adjusted p=0.0024). The wage-duration variable survives, but narrowly (raw p=0.0045, FDR-adjusted p=0.0408, just inside the conventional 0.05 threshold). None of the other 16 candidates survives correction (adjusted p&ge;0.25 in every case). Full correction table: <code>cumulative_hardship_fdr_correction.csv</code>.</dd>
-    <dd><b>A selection-sensitivity check, reported honestly rather than smoothed over:</b> cumulative excess unemployment was picked as the preferred candidate using the full 27-country panel, Greece included &mdash; the way variable screening is legitimately done in this report, since Greece's data is a real part of the historical record. But that means the leave-one-country-out checks above test whether the <i>already-chosen</i> variable's coefficient is stable without Greece, not whether Greece's own data point influenced <i>which</i> variable got chosen in the first place. Checked directly: rerunning the full 18-candidate screening with Greece dropped from the panel entirely (not just held out for evaluation, excluded from the fitting altogether), the wage-duration measure edges ahead of cumulative excess unemployment (p=0.0036 vs. p=0.0064, both still highly significant either way). The two candidates that matter don't change &mdash; the same two survive FDR correction whether or not Greece is in the screening panel &mdash; but which of them ranks first is closer than the headline framing suggests. Read as two closely related, mutually reinforcing measures of sustained hardship (they correlate at 0.95 within Greece's own data, as noted above), not as one uniquely, unambiguously identified mechanism with the other as a clear runner-up. Cumulative excess unemployment is kept as the headline construction here because it has the more direct interpretation (a labor-market variable, not one step removed via wages) and remains the stronger FDR survivor with Greece properly included in screening. Full comparison: <code>cumulative_hardship_selection_excl_greece.csv</code>. <b>The stronger version of this check has now also been run</b> (<code>scripts/44_nested_selection_validation.py</code>): the complete 18-candidate screening repeated independently inside every one of the 27 leave-one-country-out folds &mdash; each country dropped from the screening entirely, not merely held out for evaluation. Cumulative excess unemployment is selected first in 25 of 27 folds; the Greece-excluded fold selects the wage-duration measure (the sensitivity already documented above), and one further fold (Finland excluded) selects a closely related GDP-duration measure, with cumulative excess unemployment still ranked 3rd there and significant in every single fold (worst-case p=0.0064). Selection is stable, and the two exceptions both land on near-neighbor duration/exposure constructions rather than on anything outside the family; in 26 of 27 folds the fold's own winner also survives FDR correction applied within that fold. <b>The procedure was then scored end to end</b>, which is the stricter test: in each fold, that fold's <i>own</i> selected variable is fitted on the 26 training countries and used to predict the held-out 27th, which took part in neither selection nor fitting. Greece's residual under that fully nested procedure is <b>+2.70 points</b> (mean absolute error 4.51), ranking 19th of 27 &mdash; <b>eight EU countries are predicted less accurately than Greece</b> by their own fold's model. That number, not the &minus;0.8 of the fixed final specification, is the one to cite when the claim is about the whole select-then-fit procedure rather than one already-chosen variable: &minus;0.8 comes from a model whose variable was picked with Greece in the screening panel, while +2.70 also pays the cost of that selection step. Both say the same thing substantively &mdash; Greece stops being a cross-country outlier once accumulated exposure is in the model &mdash; but +2.70, and the mid-pack ranking behind it, is the more conservative and more defensible version. Full per-fold results: <code>nested_selection_validation_folds.csv</code>, <code>nested_selection_validation_detail.csv</code>.</dd>
-    <dd><b>Testing the "permanent accumulation" assumption directly:</b> because the cumulative sum can only grow, on its own it can't distinguish genuine undiminished accumulated exposure from simply encoding "years since the crisis began." Tested five alternative constructions from the same underlying data, each of which <i>can</i> fall over time: trailing 3-, 5-, and 10-year rolling sums, and two exponentially-decayed running sums (20%/year and 10%/year decay). A 3-year window is too short to capture the effect at all (not statistically significant); a 5-year window is borderline. But a 10-year rolling window fits at least as well as the permanent since-2009 sum &mdash; slightly better, in fact (R&sup2; 0.932 vs. 0.930, Greece's out-of-sample gap &minus;0.47 vs. &minus;0.82, both very significant) &mdash; and both decay-rate versions also fit strongly. The honest reading: this is evidence the mechanism is real and not a short-term artifact, but it's better described as sustained excess unemployment over roughly the past decade than as literal permanent, never-fading accumulation since one specific baseline year &mdash; a claim now backed by several related constructions converging on the same conclusion, not resting on a single, somewhat arbitrary choice. Full battery: <code>cumulative_hardship_rolling_decay_battery.csv</code>.</dd>
+    <dd><b>A selection-sensitivity check, reported honestly rather than smoothed over:</b> cumulative excess unemployment was picked as the preferred candidate using the full 27-country panel, Greece included &mdash; the way variable screening is legitimately done in this report, since Greece's data is a real part of the historical record. But that means the leave-one-country-out checks above test whether the <i>already-chosen</i> variable's coefficient is stable without Greece, not whether Greece's own data point influenced <i>which</i> variable got chosen in the first place. Checked directly: rerunning the full 18-candidate screening with Greece dropped from the panel entirely (not just held out for evaluation, excluded from the fitting altogether), the wage-duration measure edges ahead of cumulative excess unemployment (p=0.0036 vs. p=0.0064, both still highly significant either way). The two candidates that matter don't change &mdash; the same two survive FDR correction whether or not Greece is in the screening panel &mdash; but which of them ranks first is closer than the headline framing suggests. Read as two closely related, mutually reinforcing measures of sustained hardship (they correlate at 0.95 within Greece's own data, as noted above), not as one uniquely, unambiguously identified mechanism with the other as a clear runner-up. Cumulative excess unemployment is kept as the headline construction here because it has the more direct interpretation (a labor-market variable, not one step removed via wages) and remains the stronger FDR survivor with Greece properly included in screening. Full comparison: <code>cumulative_hardship_selection_excl_greece.csv</code>. <b>The stronger version of this check has now also been run</b> (<code>scripts/44_nested_selection_validation.py</code>): the complete 18-candidate screening repeated independently inside every one of the 27 leave-one-country-out folds &mdash; each country dropped from the screening entirely, not merely held out for evaluation. Cumulative excess unemployment is selected first in 25 of 27 folds; the Greece-excluded fold selects the wage-duration measure (the sensitivity already documented above), and one further fold (Finland excluded) selects a closely related GDP-duration measure, with cumulative excess unemployment still ranked 3rd there and significant in every single fold (worst-case p=0.0064). Selection is stable, and the two exceptions both land on near-neighbor duration/exposure constructions rather than on anything outside the family; in 26 of 27 folds the fold's own winner also survives FDR correction applied within that fold. <b>The procedure was then scored end to end</b>, which is the stricter test: in each fold, that fold's <i>own</i> selected variable is fitted on the 26 training countries and used to predict the held-out 27th, which took part in neither selection nor fitting. Greece's residual under that fully nested procedure is <b>+2.70 points</b> <i>(legacy, superseded by the objective-only headline)</i> (mean absolute error 4.51), ranking 19th of 27 &mdash; <b>eight EU countries are predicted less accurately than Greece</b> by their own fold's model. That number, not the &minus;0.8 of the fixed final specification &mdash; both superseded by the objective-only headline in Movement 4 &mdash; is the one to cite when the claim is about the whole select-then-fit procedure rather than one already-chosen variable: &minus;0.8, a legacy superseded figure, comes from a model whose variable was picked with Greece in the screening panel, while +2.70 also pays the cost of that selection step. Both say the same thing substantively &mdash; Greece stops being a cross-country outlier once accumulated exposure is in the model &mdash; but +2.70 &mdash; a legacy, superseded figure &mdash; and the mid-pack ranking behind it, is the more conservative and more defensible version. Full per-fold results: <code>nested_selection_validation_folds.csv</code>, <code>nested_selection_validation_detail.csv</code>.</dd>
+    <dd><b>Testing the "permanent accumulation" assumption directly:</b> because the cumulative sum can only grow, on its own it can't distinguish genuine undiminished accumulated exposure from simply encoding "years since the crisis began." Tested five alternative constructions from the same underlying data, each of which <i>can</i> fall over time: trailing 3-, 5-, and 10-year rolling sums, and two exponentially-decayed running sums (20%/year and 10%/year decay). A 3-year window is too short to capture the effect at all (not statistically significant); a 5-year window is borderline. But a 10-year rolling window fits at least as well as the permanent since-2009 sum &mdash; slightly better, in fact (R&sup2; 0.932 vs. 0.930, Greece's out-of-sample gap &minus;0.47 vs. &minus;0.82, both legacy superseded figures, both very significant) &mdash; and both decay-rate versions also fit strongly. The honest reading: this is evidence the mechanism is real and not a short-term artifact, but it's better described as sustained excess unemployment over roughly the past decade than as literal permanent, never-fading accumulation since one specific baseline year &mdash; a claim now backed by several related constructions converging on the same conclusion, not resting on a single, somewhat arbitrary choice. Full battery: <code>cumulative_hardship_rolling_decay_battery.csv</code>.</dd>
     <dd><b>Not without precedent: extending an idea the EU already applies at the individual level.</b> Eurostat's own persistent-poverty indicator counts someone poor only if they're AROP-poor in the current year <i>and</i> in at least two of the previous three &mdash; because a single-year snapshot is known to miss how widespread and durable poverty experience actually is. A 2026 European Commission study of EU-SILC longitudinal data (2011&ndash;2022) reaches the same conclusion and explicitly recommends dynamic measures for policy design. Cumulative excess unemployment applies the same logic one level up: instead of asking whether a household was poor across several recent years, it asks whether a country's labor market stayed depressed relative to its own baseline across several recent years. At the macro level, this also mirrors the "hysteresis" mechanism the IMF has documented for the euro area &mdash; prolonged unemployment eroding skills and detaching workers from the labor force in ways that compound rather than reset year to year.</dd>
     <dd><b>What this variable can and can't show: a level-of-analysis caveat.</b> The individual-level literature on unemployment scarring is substantial: past unemployment continues to depress life satisfaction even after re-employment (a 15-year German panel study), each additional six-month unemployment spell predicts lower later-life satisfaction across 14 European countries even controlling for current conditions, and cumulative unemployment before age 30 predicts lower wellbeing at 30 in British cohort data. All three measure individual employment histories and individual outcomes. This report's cumulative excess-unemployment variable is a country-year aggregate, and its correlation with Greece's aggregate subjective-poverty rate is not direct evidence that the specific Greek households driving that rate personally experienced sustained joblessness. The aggregate result is consistent with the same underlying mechanism documented at the individual level, but this report doesn't observe individual employment histories, and the two kinds of evidence shouldn't be conflated.</dd>
-    <dd><b>On the interpretation of the negative out-of-sample residual:</b> a residual of &minus;0.8 means the richest specification tested slightly overpredicts Greece's reported hardship, not that Greek households are secretly less pessimistic than their conditions warrant. This is a property of this specific, richest specification (Model C-LTU plus cumulative excess unemployment), not the report's baseline finding, and should not be read as "the gap is more than 100% explained" &mdash; a phrasing this report deliberately avoids.</dd>
+    <dd><b>On the interpretation of the negative out-of-sample residual (legacy, superseded):</b> a residual of &minus;0.8 means the richest specification tested slightly overpredicts Greece's reported hardship, not that Greek households are secretly less pessimistic than their conditions warrant. This is a property of this specific, richest specification (Model C-LTU plus cumulative excess unemployment), not the report's baseline finding, and should not be read as "the gap is more than 100% explained" &mdash; a phrasing this report deliberately avoids.</dd>
     <dd>Full derivation, every candidate tested, and all robustness checks: <code>scripts/38_cumulative_hardship.py</code>; output tables <code>cumulative_hardship_checkpoint.csv</code>, <code>cumulative_hardship_duration_battery.csv</code>, <code>cumulative_hardship_replacement_test.csv</code>, <code>cumulative_hardship_loo_stability_cum_excess_unemployment.csv</code>, <code>cumulative_hardship_loo_stability_wage_years_below_2008.csv</code>, <code>cumulative_hardship_final_model_year_by_year.csv</code>, <code>cumulative_hardship_stage1_individual.csv</code>, <code>cumulative_hardship_stage2_bridge.csv</code>, <code>cumulative_hardship_fdr_correction.csv</code>, <code>cumulative_hardship_selection_excl_greece.csv</code>, <code>cumulative_hardship_rolling_decay_battery.csv</code>; full narrative log in <code>docs/publication_strategy.md</code>.</dd>
   </dl>
 
