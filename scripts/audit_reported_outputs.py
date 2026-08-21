@@ -36,6 +36,11 @@ SCHEMA = {
     "direction_persistence_battery.csv": {"p_raw": "p_value", "p_fdr_bh": "p_value",
                                           "coef": "coefficient", "r2": "r2", "n": "count"},
     "cumulative_hardship_fdr_correction.csv": {"p_raw": "p_value", "p_fdr_bh": "p_value"},
+    "p3a_individual_indicators.csv": {"coef": "coefficient", "p_raw": "p_value",
+                                      "p_fdr": "p_value", "greece_resid": "residual",
+                                      "rank": "rank"},
+    "p3a_results.csv":               {"coef": "coefficient", "p": "p_value",
+                                      "greece": "residual", "rank": "rank"},
 }
 NULLABLE = {("p2_specifications.csv", "post_gap")}
 

@@ -4740,3 +4740,86 @@ cross-country prediction exercise and the between component is what drives it.
 the four within-country specifications as "four independent tests." They are not
 independent; they are four ways of using the same scarce within-country
 variation, and their agreement is weaker evidence than independence would imply.
+
+## P3a result: Family D is NULL and, worse, sign-inconsistent
+
+Universe, domains, weights, baseline and FDR family frozen at `4e5d54a` before
+any outcome test ran. Nothing was revised afterwards. All five verification
+gates ran before this interpretation was written: 428 reported quantities
+validated across 11 artifacts, 41/41, 140/140.
+
+### Standalone (steps 2–3)
+
+**Individual accumulated indicators, FDR-corrected within the frozen family:**
+
+| outcome | survivors | of |
+|---|---|---|
+| hardship level | 2 (`min_wage` −2.79, `unemployment` +1.54) | 19 |
+| hardship − AROP | 1 (`s80s20` −2.10) | 19 |
+
+Two of the three survivors carry **negative** coefficients — more accumulated
+deterioration associated with *less* hardship. That is the first sign that the
+construction is not measuring what its descriptive story claims.
+
+**The composite alone**, on a minimal `AROP + year effects` baseline: coefficient
++5.94, p = 0.118, Greece's residual **+44.83, rank 1/27**. Not significant, and
+far worse than the frozen P3's +6.93.
+
+### Incremental (steps 4–5)
+
+| | Greece residual | rank | R² |
+|---|---|---|---|
+| frozen P3 | **+6.93** | 3/27 | 0.907 |
+| frozen P3 + Family D | **+10.39** | **1/27** | 0.915 |
+
+`famD` coefficient **−2.1685** (se 0.762, p = 0.0044), sign stable across all 27
+LOO folds (−2.60 to −1.50), VIF 3.27, correlation with
+`cum_excess_unemployment` +0.584.
+
+**INCREMENTAL VALUE: NO.** The pre-declared test required p < 0.05 *and* a
+smaller absolute residual. It has the first and fails the second: adding Family
+D makes Greece's out-of-sample prediction **worse**, moving it from third to the
+single most under-predicted country in the Union.
+
+The significant negative coefficient is the diagnostic, not a finding. A
+variable whose descriptive claim is "more multi-domain deterioration" cannot
+credibly carry a conditional coefficient of −2.17 against controls it correlates
+with at +0.58. This is the behaviour of a correlated suppressor, and the
+sensible reading is that once accumulated unemployment and the other objective
+predictors are in the model, the residual variation in accumulated breadth is
+not measuring deterioration at all.
+
+### Within/between (step 6): correctly not run
+
+The audit was mandatory *only if* Family D showed incremental value. It does
+not, so there is no dynamic interpretation to guard against. Running it anyway
+would be manufacturing a decomposition of a coefficient the project has just
+declined to interpret.
+
+### Sensitivities (step 7), frozen in advance
+
+| variant | coefficient | p | Greece residual | rank |
+|---|---|---|---|---|
+| all-indicator | −1.48 | 0.026 | +8.23 | 2/27 |
+| non-labour | −1.15 | 0.060 | +11.16 | 1/27 |
+
+Both reproduce the pattern: negative sign, worse Greek prediction. The result is
+not an artefact of the Tier 0 exclusion or of the labour indicators.
+
+### Disposition (step 8)
+
+**Family D remains exploratory and is not promoted.** P3 stays frozen at
+post-selection robustness, exactly as pre-committed, and `p5f-frozen` is
+untouched.
+
+**No further composite was constructed.** The obvious move on seeing this — try
+another weighting, another baseline, another domain allocation — is precisely
+what the frozen universe forbids, and what the stopping rule exists to prevent.
+
+**What survives is the descriptive finding, unchanged.** Greece ranks 1st of 27
+on accumulated excess breadth at 10.6× the EU median, and on 15 of 25 indicators
+was not in the EU's worst fifth before the crisis and is now. That was always
+labelled descriptive corroboration, it never depended on Family D predicting
+anything, and P3a's failure does not touch it. The critical question was whether
+multi-domain persistence contributes information beyond the frozen
+accumulated-unemployment marker. **It does not.**
