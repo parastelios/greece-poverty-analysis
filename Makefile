@@ -38,8 +38,14 @@ STAGE_WRITEBACK := 05_threshold_hypothesis.py 21_arope.py
 STAGE_REST := $(filter-out $(STAGE_CORE) $(STAGE_WRITEBACK) 00_fetch_missing_raw.py, \
                 $(notdir $(wildcard $(SCRIPTS)/[0-9][0-9]_*.py)))
 
+# `verify` runs all three gates. The branch-rule tests are included because a
+# test file nothing invokes is documentation, not enforcement -- and the P3
+# branch bug (a default `else` returning the strongest conclusion) is exactly
+# the class of error that a passing-but-unrun test suite fails to catch.
 verify:
+	cd $(SCRIPTS) && $(PY) test_branch_rule.py
 	cd $(SCRIPTS) && $(PY) verify_build.py
+	cd $(SCRIPTS) && $(PY) audit_parity.py
 
 fetch:
 	cd $(SCRIPTS) && $(PY) 00_fetch_missing_raw.py

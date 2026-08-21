@@ -515,6 +515,17 @@ attainable grid before it is written down. This applies directly to §4 gate 9.
 
 ## 5b. P5 additions required by the P3 result
 
+**P5 runs before P3a, and the order is load-bearing.** Family D's incremental
+test is a test *against* `cum_excess_unemployment`. If P5 shows that +0.281 is
+mainly cross-sectional, driven by one country, or unstable under alternative
+inference, that changes how Family D's result must be read. Running the
+exploratory family first would let a second result influence the audit of the
+baseline it is measured against. The audited P3 result is frozen at **P5f**
+before Family D is touched, and Family D cannot alter P3's evidentiary tier
+whatever it returns.
+
+
+
 v2 §8.5's list stands. Six additions follow specifically from what P3 returned.
 
 **1. Country fixed-effects coefficient sensitivity.** Country FE do **not**
@@ -551,9 +562,19 @@ not impose the null, and returned p = 0.82 against t = 9.69. The corrected
 version must be checked against an established implementation before its numbers
 enter any document.
 
-Point 5 deserves emphasis: the reported p = 0.0005 is the smallest value the
-procedure can return. It means "no bootstrap draw exceeded the observed t",
-not "p equals 0.0005".
+**Required bootstrap reporting format**, verbatim:
+
+> `p_MC = 0.0005; 0 of 1,999 bootstrap statistics were at least as extreme as
+> observed; 0.0005 is the simulation resolution floor.`
+
+The reported value is the smallest the procedure can return. It means no
+bootstrap draw exceeded the observed t, not that p equals 0.0005.
+
+**Do not chase a smaller p-value by raising the replication count.** P5 needs
+only to establish that the conclusion sits comfortably below the chosen
+evidentiary threshold. Increasing replications to move 0.0005 to 0.00005 adds
+nothing to the argument and invites reading precision into a simulation
+artefact.
 
 ---
 
@@ -786,8 +807,9 @@ gate the current project.
 | **P2** | **Comparative trajectory.** Rebuild synthetic control under §4's eleven gates | Allowed to fail; failure is reported |
 | **P3** | **Objective-only explanation** (§5; formula fixed, income measure resolved, leakage checked) | §5 branches, on five criteria read together |
 | ~~P4~~ | **Withdrawn** (§5a). Required covariates do not exist in the pre-window | — |
-| **P3a** | **Family D** (§6a): per-indicator, then combined, then in the fixed model | Exploratory only; §6a decision table |
-| **P5** | **Inference and robustness** (§5b) | v2 §8.5 plus the six additions in §5b |
+| **P5** | **Inference and influence audit** (§5b) — runs BEFORE P3a | v2 §8.5 plus the six additions in §5b; must confirm P3 remains branch 2 |
+| **P5f** | **Freeze the audited P3 result** | Nothing downstream may alter it |
+| **P3a** | **Family D** (§6a): per-indicator, FDR, composite alone, then incremental against the FROZEN P3 | Exploratory only; §6a decision table; cannot change P3's tier whatever it returns |
 | **P6** | **Publication.** Stop variable discovery; rewrite all outputs around whichever designs survived | — |
 | **Phase 2** | Seek Eurostat microdata access | After publication |
 
