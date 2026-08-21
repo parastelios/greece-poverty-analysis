@@ -50,6 +50,18 @@ verify:
 	cd $(SCRIPTS) && $(PY) verify_build.py
 	cd $(SCRIPTS) && $(PY) audit_parity.py
 
+# Strict gate for shipping V2. Everything `verify` runs, plus: no pending V2
+# claim, no unfilled required document slot, no undecided disposition. A green
+# `make verify` must never be mistaken for a shippable release.
+release-verify:
+	cd $(SCRIPTS) && $(PY) test_branch_rule.py
+	cd $(SCRIPTS) && $(PY) test_mundlak_rule.py
+	cd $(SCRIPTS) && $(PY) test_validate_outputs.py
+	cd $(SCRIPTS) && $(PY) audit_reported_outputs.py
+	cd $(SCRIPTS) && $(PY) verify_build.py
+	cd $(SCRIPTS) && $(PY) audit_parity.py --release
+	@echo "RELEASE VERIFICATION PASSED"
+
 fetch:
 	cd $(SCRIPTS) && $(PY) 00_fetch_missing_raw.py
 

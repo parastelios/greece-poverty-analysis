@@ -13,6 +13,15 @@ import re, html, sys
 from pathlib import Path
 import pandas as pd
 
+# Two modes, deliberately.
+#   development (default) : pending V2 claims are reported and the gate passes,
+#                           so the rewrite can proceed incrementally
+#   release (--release)   : any pending V2 claim, unfilled required document slot
+#                           or undecided disposition FAILS, so a green
+#                           development check can never accidentally certify an
+#                           incomplete V2 release
+RELEASE = "--release" in sys.argv
+
 DOCS = {"report": "../output/report.html",
         "paper": "../output/academic_paper_draft.html",
         "narrative": "../output/narrative_companion.html"}
@@ -180,6 +189,12 @@ if "v2_disposition" in m.columns:
         if d == "superseded" and _missing(r.get("superseded_by")):
             sup.append((cid, "'superseded' requires superseded_by"))
 
+if RELEASE:
+    for _, r in m.iterrows():
+        if not _missing(r.get("v2_disposition")) and \
+           str(r.get("v2_disposition")).strip() == "undecided":
+            sup.append((r["id"], "release mode: disposition still 'undecided'"))
+
 undecided = sum(1 for _, r in m.iterrows()
                 if not _missing(r.get("v2_disposition"))
                 and str(r.get("v2_disposition")).strip() == "undecided")
@@ -205,12 +220,16 @@ if "introduced_in" in m.columns:
         by_id = {}
         for cid, doc in pending:
             by_id.setdefault(cid, []).append(doc)
-        print(f"PENDING REWRITE: {len(by_id)} V2 claim(s) declared in the matrix but not "
+        label = "RELEASE BLOCKER" if RELEASE else "PENDING REWRITE"
+        print(f"{label}: {len(by_id)} V2 claim(s) declared in the matrix but not "
               f"yet written into the documents (P6 step 5):")
         for cid, docs in sorted(by_id.items()):
             row = m[m["id"] == cid].iloc[0]
             print(f"  {cid:6} {str(row['claim'])[:58]:59} missing from: {', '.join(docs)}")
         print()
+        if RELEASE:
+            problems.extend([(cid, "v2-pending", "not yet written", doc, "write")
+                             for cid, doc in pending])
 
 print(f"Audited {len(m)} claims x 3 documents\n")
 if problems:
@@ -221,7 +240,8 @@ if problems:
 else:
     print("PARITY OK: every claim required in a document was found in it.")
 
-print(f"\n{'=' * 70}")
+print(f"\nMODE: {'RELEASE (strict)' if RELEASE else 'development'}")
+print(f"{'=' * 70}")
 print(f"{len(m) * 3 - sum(1 for _, r in m.iterrows() for d in DOCS if r[d] == '--') - len(problems)}"
       f" of {len(m) * 3 - sum(1 for _, r in m.iterrows() for d in DOCS if r[d] == '--')} required claim/document pairs present")
 sys.exit(1 if (problems or sup) else 0)
