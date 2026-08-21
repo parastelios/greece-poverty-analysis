@@ -510,13 +510,14 @@ function drawBars(host,key,p){
   const vals=rows.flatMap(r=>[r.oos,r.insample]).filter(v=>v!==null);
   const lo=Math.min(0,...vals), hi=Math.max(...vals);
   const xs=v=>padL+(v-lo)/(hi-lo)*plotW;
-  const ns='http://www.w3.org/2000/svg';
-  const svg=document.createElementNS(ns,'svg');
-  svg.setAttribute('viewBox',`0 0 ${W} ${H}`); svg.setAttribute('class','chart');
-  const el=(t,a)=>{const e=document.createElementNS(ns,t);for(const k in a)e.setAttribute(k,a[k]);return e;};
+  const {svg,el,hover,rowHit,row}=panelSvg(host,W,H);
   svg.appendChild(el('line',{x1:xs(0),x2:xs(0),y1:10,y2:H-36,class:'gridline'}));
   rows.forEach((r,i)=>{
     const y=16+i*rowH;
+    hover(rowHit(y-2,rowH),()=>`<div class="y">${r.pretty||r.label||r.model}</div>`
+      +row('out-of-sample gap',r.oos.toFixed(1)+' pp')
+      +(r.insample===null||r.insample===undefined?'':row('in-sample gap',r.insample.toFixed(1)+' pp'))
+      +(r.r2===null||r.r2===undefined?'':row('R&sup2;',r.r2)));
     const t=el('text',{x:padL-10,y:y+13,'text-anchor':'end',class:'axis-label',
       style:'font-size:11.5px'});
     t.textContent=r.pretty||r.model; svg.appendChild(t);
@@ -539,25 +540,49 @@ function drawBars(host,key,p){
   const lab=el('text',{x:xs(0),y:H-14,'text-anchor':'middle',class:'axis-label'});
   lab.textContent="Greece's average residual, percentage points (0 = predicted exactly)";
   svg.appendChild(lab);
-  const wrap=document.createElement('div'); wrap.className='chart-wrap';
-  wrap.appendChild(svg); host.appendChild(wrap);
 }
 
 function panelSvg(host,W,H){
   const ns='http://www.w3.org/2000/svg';
   const svg=document.createElementNS(ns,'svg');
   svg.setAttribute('viewBox',`0 0 ${W} ${H}`); svg.setAttribute('class','chart');
-  host.appendChild(svg);
+  // The diagnostics used to append the bare svg, which left them with nowhere to
+  // put a tooltip -- every one of them was inert. They now get the same wrap+tip
+  // the line charts use, plus hover() to bind a target to its readout.
+  const wrap=document.createElement('div'); wrap.className='chart-wrap';
+  const tip=document.createElement('div'); tip.className='tip';
+  wrap.appendChild(svg); wrap.appendChild(tip); host.appendChild(wrap);
   const el=(t,a={})=>{const e=document.createElementNS(ns,t);for(const k in a)e.setAttribute(k,a[k]);return e;};
-  return {svg,el};
+  const hover=(node,html)=>{
+    node.style.cursor='crosshair';
+    node.addEventListener('mousemove',ev=>{
+      const rc=svg.getBoundingClientRect();
+      tip.innerHTML=typeof html==='function'?html():html;
+      tip.style.left=Math.min(72,Math.max(4,(ev.clientX-rc.left)/rc.width*100))+'%';
+      tip.style.top=Math.max(2,(ev.clientY-rc.top)/rc.height*100-8)+'%';
+      tip.style.opacity=1;
+    });
+    node.addEventListener('mouseleave',()=>{tip.style.opacity=0;});
+  };
+  // full-width invisible band for row-per-record charts
+  const rowHit=(y,h)=>{const r=el('rect',{x:0,y:y,width:W,height:h,fill:'transparent',class:'hit'});
+    svg.appendChild(r); return r;};
+  const row=(n,v)=>`<div class="r">${n}<span class="v">${v}</span></div>`;
+  return {svg,el,tip,hover,rowHit,row};
 }
 
 function drawLadder(host,p){
   const rows=p.rows,W=860,rowH=37,H=rows.length*rowH+52,padL=315,padR=70;
-  const {svg,el}=panelSvg(host,W,H), vals=rows.map(r=>+r.greece_value);
+  const {svg,el,hover,rowHit,row}=panelSvg(host,W,H), vals=rows.map(r=>+r.greece_value);
   const lo=Math.min(-2,...vals),hi=Math.max(...vals),X=v=>padL+(v-lo)/(hi-lo)*(W-padL-padR);
   svg.appendChild(el('line',{x1:X(0),x2:X(0),y1:12,y2:H-35,class:'gridline'}));
   rows.forEach((r,i)=>{const v=+r.greece_value,y=12+i*rowH;
+    hover(rowHit(y-rowH/2,rowH),()=>`<div class="y">${r.layer}</div>`
+      +row('step',r.step)
+      +row('evidence type',r.type)
+      +row("Greece's value",(+r.greece_value).toFixed(2)+' pp')
+      +(r.points_closed===null||r.points_closed===undefined?''
+        :row('closed so far',(+r.points_closed).toFixed(2)+' pp')));
     const label=el('text',{x:padL-10,y:y+15,'text-anchor':'end',class:'axis-label',style:'font-size:11.5px'});
     label.textContent=r.step_label||r.layer||r.step;svg.appendChild(label);
     const x0=X(Math.min(0,v)),w=Math.abs(X(v)-X(0));
@@ -637,11 +662,17 @@ function drawPositionLadder(host,p){
 
 function drawCandidate(host,p){
   const rows=[...p.rows].sort((a,b)=>a.p_fdr_bh-b.p_fdr_bh),W=860,rowH=25,H=rows.length*rowH+58,padL=285,padR=55;
-  const {svg,el}=panelSvg(host,W,H),max=Math.max(2.2,...rows.map(r=>-Math.log10(Math.max(r.p_fdr_bh,1e-8))));
+  const {svg,el,hover,rowHit,row}=panelSvg(host,W,H),max=Math.max(2.2,...rows.map(r=>-Math.log10(Math.max(r.p_fdr_bh,1e-8))));
   const X=v=>padL+v/max*(W-padL-padR),cut=-Math.log10(.05);
   svg.appendChild(el('line',{x1:X(cut),x2:X(cut),y1:8,y2:H-36,stroke:'var(--eu)',
     'stroke-width':1.3,'stroke-dasharray':'5 4'}));
   rows.forEach((r,i)=>{const y=12+i*rowH,x=-Math.log10(Math.max(r.p_fdr_bh,1e-8));
+    hover(rowHit(y-4,rowH),()=>`<div class="y">${r.pretty||r.variable}</div>`
+      +row('raw p',r.p_raw<1e-4?r.p_raw.toExponential(2):r.p_raw.toFixed(4))
+      +row('BH-adjusted q',r.p_fdr_bh.toFixed(4))
+      +row('survives FDR 5%',r.significant_after_fdr?'yes':'no')
+      +row('coefficient',r.coef)
+      +row("Greece's OOS gap",r.gr_oos));
     const lab=el('text',{x:padL-9,y:y+10,'text-anchor':'end',class:'axis-label',style:'font-size:10.5px'});
     lab.textContent=r.pretty||r.variable;svg.appendChild(lab);
     svg.appendChild(el('line',{x1:padL,x2:X(x),y1:y+6,y2:y+6,stroke:'var(--gridline)','stroke-width':2}));
@@ -655,8 +686,11 @@ function drawCandidate(host,p){
 
 function drawSelection(host,p){
   const rows=p.rows,W=860,H=rows.length*42+48,padL=330,padR=70;
-  const {svg,el}=panelSvg(host,W,H),X=v=>padL+v/27*(W-padL-padR);
+  const {svg,el,hover,rowHit,row}=panelSvg(host,W,H),X=v=>padL+v/27*(W-padL-padR);
   rows.forEach((r,i)=>{const y=14+i*42;
+    hover(rowHit(y,40),()=>`<div class="y">${r.pretty||r.variable}</div>`
+      +row('selected first in',`${r.count} of 27 folds`)
+      +row('share of folds',`${(r.count/27*100).toFixed(0)}%`));
     const lab=el('text',{x:padL-10,y:y+15,'text-anchor':'end',class:'axis-label'});
     lab.textContent=r.pretty||r.variable;svg.appendChild(lab);
     svg.appendChild(el('rect',{x:padL,y:y+3,width:X(r.count)-padL,height:18,rx:3,fill:'var(--gr)'}));
@@ -666,7 +700,7 @@ function drawSelection(host,p){
 }
 
 function drawPartial(host,p){
-  const W=860,H=430,L=65,R=25,T=20,B=55,{svg,el}=panelSvg(host,W,H),pts=p.points;
+  const W=860,H=430,L=65,R=25,T=20,B=55,{svg,el,hover,row}=panelSvg(host,W,H),pts=p.points;
   let xs=pts.map(d=>d.x_resid),ys=pts.map(d=>d.y_resid),xl=Math.min(...xs),xh=Math.max(...xs),yl=Math.min(...ys),yh=Math.max(...ys);
   const px=(xh-xl)*.08||1,py=(yh-yl)*.08||1;xl-=px;xh+=px;yl-=py;yh+=py;
   const X=v=>L+(v-xl)/(xh-xl)*(W-L-R),Y=v=>T+(yh-v)/(yh-yl)*(H-T-B);
@@ -674,8 +708,14 @@ function drawPartial(host,p){
   svg.appendChild(el('line',{x1:L,x2:W-R,y1:Y(0),y2:Y(0),class:'gridline'}));
   svg.appendChild(el('line',{x1:X(xl),x2:X(xh),y1:Y(p.coef*xl),y2:Y(p.coef*xh),
     stroke:'var(--hi)','stroke-width':2}));
-  pts.forEach(d=>{const gr=d.geo==='EL';svg.appendChild(el('circle',{cx:X(d.x_resid),cy:Y(d.y_resid),r:gr?6:3.5,
-    fill:gr?'var(--gr)':'var(--faint)',opacity:gr?1:.55}));});
+  pts.forEach(d=>{const gr=d.geo==='EL';
+    const c=el('circle',{cx:X(d.x_resid),cy:Y(d.y_resid),r:gr?6:3.5,
+      fill:gr?'var(--gr)':'var(--faint)',opacity:gr?1:.55});
+    svg.appendChild(c);
+    hover(c,()=>`<div class="y">${NAMES[d.geo]||d.geo} ${d.time}</div>`
+      +row('accumulated unemployment',d.x_resid.toFixed(2))
+      +row('subjective poverty',d.y_resid.toFixed(2))
+      +`<div class="r" style="opacity:.7">both residualised on the C-LTU controls</div>`);});
   const title=el('text',{x:W-R,y:T+12,'text-anchor':'end',class:'axis-label',style:'font-weight:700'});
   title.textContent=`coefficient ${p.coef.toFixed(3)} · p ${p.p.toFixed(4)}`;svg.appendChild(title);
   const xlab=el('text',{x:L+(W-L-R)/2,y:H-12,'text-anchor':'middle',class:'axis-label'});
@@ -684,10 +724,14 @@ function drawPartial(host,p){
 
 function drawDumbbell(host,p){
   const rows=[...p.rows].sort((a,b)=>b.nested-b.nested),W=860,rowH=22,H=rows.length*rowH+50,L=95,R=55;
-  const {svg,el}=panelSvg(host,W,H),vals=rows.flatMap(r=>[r.baseline,r.nested]),lo=Math.min(-5,...vals),hi=Math.max(15,...vals);
+  const {svg,el,hover,rowHit,row}=panelSvg(host,W,H),vals=rows.flatMap(r=>[r.baseline,r.nested]),lo=Math.min(-5,...vals),hi=Math.max(15,...vals);
   const X=v=>L+(v-lo)/(hi-lo)*(W-L-R);
   svg.appendChild(el('line',{x1:X(0),x2:X(0),y1:8,y2:H-34,stroke:'var(--hi)','stroke-dasharray':'4 4'}));
   rows.forEach((r,i)=>{const y=12+i*rowH,gr=r.geo==='EL';
+    hover(rowHit(y-rowH/2,rowH),()=>`<div class="y">${NAMES[r.geo]||r.geo}</div>`
+      +row('C-LTU residual',r.baseline.toFixed(2)+' pp')
+      +row('nested selection',r.nested.toFixed(2)+' pp')
+      +row('change',(r.nested-r.baseline>=0?'+':'')+(r.nested-r.baseline).toFixed(2)+' pp'));
     const lab=el('text',{x:L-8,y:y+4,'text-anchor':'end',class:'axis-label',style:gr?'font-weight:700;fill:var(--gr)':'font-size:10px'});
     lab.textContent=gr?'Greece':r.geo;svg.appendChild(lab);
     svg.appendChild(el('line',{x1:X(r.baseline),x2:X(r.nested),y1:y,y2:y,stroke:gr?'var(--gr)':'var(--gridline)','stroke-width':gr?2.5:1.5}));
@@ -699,12 +743,18 @@ function drawDumbbell(host,p){
 }
 
 function drawHeatmap(host,p){
-  const labels=p.labels,n=labels.length,W=860,H=620,L=190,T=95,cell=Math.min(52,(W-L-30)/n),{svg,el}=panelSvg(host,W,H);
+  const labels=p.labels,n=labels.length,W=860,H=620,L=190,T=95,cell=Math.min(52,(W-L-30)/n),{svg,el,hover,row}=panelSvg(host,W,H);
   labels.forEach((lab,i)=>{const tx=el('text',{x:L+i*cell+cell/2,y:T-8,'text-anchor':'start',class:'axis-label',
     transform:`rotate(-45 ${L+i*cell+cell/2} ${T-8})`,style:'font-size:10px'});tx.textContent=lab;svg.appendChild(tx);
     const ty=el('text',{x:L-8,y:T+i*cell+cell*.65,'text-anchor':'end',class:'axis-label',style:'font-size:10px'});ty.textContent=lab;svg.appendChild(ty);});
-  p.values.forEach((row,i)=>row.forEach((v,j)=>{const a=Math.abs(v),col=v>=0?`rgba(42,120,214,${.12+.78*a})`:`rgba(235,104,52,${.12+.78*a})`;
-    svg.appendChild(el('rect',{x:L+j*cell,y:T+i*cell,width:cell-1,height:cell-1,fill:col}));
+  // NB: name this rowVals, not row -- panelSvg's row() helper is in scope here
+  p.values.forEach((rowVals,i)=>rowVals.forEach((v,j)=>{const a=Math.abs(v),col=v>=0?`rgba(42,120,214,${.12+.78*a})`:`rgba(235,104,52,${.12+.78*a})`;
+    const cr=el('rect',{x:L+j*cell,y:T+i*cell,width:cell-1,height:cell-1,fill:col});
+    svg.appendChild(cr);
+    hover(cr,()=>`<div class="y">${labels[i]} &times; ${labels[j]}</div>`
+      +row('correlation',v.toFixed(3))
+      +row('shared variance',(v*v*100).toFixed(0)+'%')
+      +(i===j?'<div class="r" style="opacity:.7">a variable with itself</div>':''));
     const t=el('text',{x:L+j*cell+cell/2,y:T+i*cell+cell*.62,'text-anchor':'middle',class:'axis-label',style:'font-size:9px;fill:var(--text-primary)'});
     t.textContent=v.toFixed(2);svg.appendChild(t);}));
 }
