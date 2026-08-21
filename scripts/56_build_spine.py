@@ -1,5 +1,11 @@
 """P6 step 5 prerequisite: the shared cross-document spine.
 
+CANONICAL OWNERSHIP, NOT A BAN ON ECHOES. Each claim is owned by exactly one
+movement -- that is where it is established, with its number and caveat. An
+executive summary or conclusion may echo it concisely, but the echo must point
+back to the same canonical claim and the same number. What is forbidden is a
+second, differently-worded establishment of the same claim elsewhere.
+
 A structured map, not prose. Every document is written FROM this; none of them
 is the source. Drafting the technical report first and letting the others
 inherit from it is how a shared spine silently becomes one document's outline.
@@ -110,10 +116,12 @@ SPINE = [
   "that reported a nested-selection figure. Superseded by claim 10.2 and retained "
   "only as legacy, proximity-sensitive results.",
   "legacy / superseded",
-  "MUST NOT be quoted as headline estimates. Each is labelled superseded with a "
-  "pointer to 10.2. Appendix only -- absent from all three reader-facing documents.",
-  "legacy ladder table",
-  (NONE, NONE, NONE, FULL)),
+  "Exact figures are appendix-only and MUST NOT be quoted as headline estimates. "
+  "But the report and paper MUST state QUALITATIVELY that proximity-sensitive "
+  "specifications produced smaller residuals and why they were superseded -- "
+  "silently omitting them would look selective. Narrative may omit entirely.",
+  "legacy ladder table (appendix); qualitative note (report, paper)",
+  (BRIEF, BRIEF, NONE, FULL)),
 ]
 
 rows = []

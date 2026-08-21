@@ -148,13 +148,13 @@ Detail levels: `full` / `summary` / `brief` / `-` (absent).
 
 **Tier.** legacy / superseded
 
-**Mandatory caveat.** MUST NOT be quoted as headline estimates. Each is labelled superseded with a pointer to 10.2. Appendix only -- absent from all three reader-facing documents.
+**Mandatory caveat.** Exact figures are appendix-only and MUST NOT be quoted as headline estimates. But the report and paper MUST state QUALITATIVELY that proximity-sensitive specifications produced smaller residuals and why they were superseded -- silently omitting them would look selective. Narrative may omit entirely.
 
-**Required visual.** legacy ladder table
+**Required visual.** legacy ladder table (appendix); qualitative note (report, paper)
 
 | report | paper | narrative | appendix |
 |---|---|---|---|
-| - | - | - | full |
+| brief | brief | - | full |
 
 ---
 

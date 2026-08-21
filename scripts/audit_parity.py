@@ -32,10 +32,14 @@ FP = {
  # them as PENDING REWRITE until the documents carry them.
  "10.1": ["27.05", "27.0", "objective-only"],
  "10.2": ["6.93", "+6.93", "27 to 7"],
- "10.3": ["between-country", "predominantly between"],
+ # "between-country" alone matched an unrelated existing methods phrase
+ # ("within- vs. between-country models"), and "ilc_sbjp01" alone matched a chart
+ # source line. Both would have passed an unwritten claim. Fingerprints for V2
+ # claims use the canonical wording, not a fragment of it.
+ "10.3": ["predominantly between countries", "predominantly between-country"],
  "10.4": ["synthetic-control design", "failed its pre-registered", "did not work"],
  "10.5": ["multidomain breadth", "multi-domain breadth", "breadth measure"],
- "10.6": ["ilc_sbjp01", "official subjective-hardship"],
+ "10.6": ["backward-extended official", "official subjective-hardship indicator"],
  "1.1": ["67.2", "two out of three", "highest share anywhere"],
  "1.2": ["4th-highest", "4th of 27"],
  "1.3": ["47.6", "14.9"],
@@ -94,7 +98,12 @@ def text_of(p):
 
 m = pd.read_csv("../docs/claim_matrix.csv", dtype=str)  # ids like "1.1" must stay strings
 texts = {k: text_of(v) for k, v in DOCS.items()}
-raws = {k: Path(v).read_text(encoding="utf-8") for k, v in DOCS.items()}
+# Scripts and styles are stripped from the RAW text too. Searching the raw HTML
+# is useful for markup and entities, but an embedded data blob made "6.93"
+# match '"mt": 56.93' and certified an unwritten claim as present.
+_strip = lambda t: re.sub(r"<style.*?</style>", " ",
+                          re.sub(r"<script.*?</script>", " ", t, flags=re.S), flags=re.S)
+raws = {k: _strip(Path(v).read_text(encoding="utf-8")) for k, v in DOCS.items()}
 
 problems = []
 for _, r in m.iterrows():
