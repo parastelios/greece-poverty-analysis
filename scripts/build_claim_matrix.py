@@ -49,6 +49,29 @@ C = [
  ("6.7", "Accumulation", "Aggregate variable, individual-level literature: ecological-inference gap", "level-of-analysis caveat", "n/a", "limitation", "", "n/a", "body","body","note"),
  ("6.8", "Accumulation", "AROP-threshold cumulative shortfall tested and NULL", "p=0.291", "27 EU", "core (null)", "the most anticipated candidate", "cumulative_hardship_checkpoint.csv", "body","body","body"),
 
+ ("10.1", "Objective-only model", "Without accumulation the objective-only model leaves Greece the largest EU residual",
+  "+27.05pt OOS, 1st of 27", "27 EU, 2015-2024", "core", "no Tier 0 predictors: excludes arrears, unexpected-expense capacity, financial expectations",
+  "p3_objective_only.csv", "body","body","body"),
+ ("10.2", "Objective-only model", "Accumulated unemployment narrows the objective-only gap; it does not close it",
+  "+27.05 -> +6.93pt, rank 3 of 27", "27 EU, 2015-2024", "core", "model comparison, not a causal decomposition; identical 269-row sample both specs",
+  "p5f_frozen_result.json", "body","body","body"),
+ ("10.3", "Objective-only model", "The association is predominantly between countries, not within them",
+  "between +0.332 p<0.0001; within -0.076 p=0.692", "27 EU, 2015-2024", "post-selection",
+  "within estimate inconclusive under available power; equality test p=0.058 fails to reject, is not evidence of equality",
+  "p5_audit.csv", "body","body","note"),
+ ("10.4", "Failed designs", "The comparative/synthetic-control design was pre-registered and failed",
+  "pre-RMSE 0.91 vs placebo median 0.78; 4 of 6 gates failed", "20 donors, 2005-2008", "core (null)",
+  "synthetic unit had half Greece's income and 3x its deprivation; no post-crisis effect is interpreted",
+  "p2_specifications.csv", "body","body","note"),
+ ("10.5", "Failed designs", "Multidomain breadth is descriptive only; it fails the incremental test",
+  "famD -2.17 p=0.0044; Greece +6.93 -> +10.39", "27 EU, 2015-2024", "core (null)",
+  "stable conditional sign reversal, left uninterpreted; identical sample verified",
+  "p3a_results.csv", "body","note","note"),
+ ("10.6", "Measurement", "The outcome is Eurostat's official subjective-hardship indicator, extended backward",
+  "432 country-years, none differing by >0.1pp", "27 EU, 2010-2025", "core",
+  "ilc_sbjp01 from 2010; validated DIF+GRT construction before 2010",
+  "p0_outcome_reconciliation.csv", "body","body","note"),
+
  ("1.9", "The puzzle", "Breadth of relative disadvantage: worst-quintile share, descriptive only",
   "21% pre-crisis to 58% from 2012, 68% in 2024, 1st of 27", "27 EU, 25 indicators", "descriptive",
   "tested as a predictor and NULL (FDR 0.287); excluded from every model; outcome and all covariates removed",
@@ -103,13 +126,64 @@ df.insert(4, "importance", df["element"].map(importance_by_element))
 # Every claim starts "undecided". Filling these in is a V2 task, done once P0
 # and P3 have settled what survives; the auditor's job is to make sure it is not
 # skipped.
-DISPOSITIONS = ["retained", "retested", "reworded", "superseded",
-                "retracted", "v1_only", "undecided"]
+DISPOSITIONS = ["retained", "reworded", "superseded", "rejected",
+                "descriptive_only", "future_research", "retested",
+                "v1_only", "undecided"]
+
+# V2 disposition for every V1 claim. Assigned once, here, so the decision is in
+# version control rather than in prose. The three residuals that competed as
+# headline estimates -- 2.70 (nested), 3.81/3.9 (C-LTU), -0.8 (Model G) -- are
+# superseded by the objective-only result and survive only as legacy,
+# proximity-sensitive specifications.
+DISPOSITION = {
+ "1.1":("retained",""), "1.2":("retained",""), "1.3":("retained",""),
+ "1.4":("retained",""), "1.9":("descriptive_only",
+   "tested as a predictor and null (FDR 0.287); descriptive corroboration only"),
+ "2.1":("retained",""), "2.2":("retained",""), "2.3":("retained",""),
+ "2.4":("retained",""), "2.5":("retained",""),
+ "3.1":("retained",""), "3.2":("retained",""), "3.3":("retained",""),
+ "4.1":("retained",""),
+ "4.2":("superseded",
+   "the 25.6->35.5->11.6 ladder depends on Tier 0 predictors; legacy only"),
+ "4.3":("retained","strengthened by P3: the objective-only model excludes these by construction"),
+ "4.4":("retained",""),
+ "5.1":("retained",""),
+ "5.2":("superseded",
+   "11.6->3.9 is proximity-sensitive; the objective-only ladder replaces it"),
+ "5.3":("reworded",
+   "LTU is stable across LOO refits but imprecise under wild-cluster inference (p=0.073)"),
+ "6.1":("superseded",
+   "3.9->-0.8 replaced by the objective-only 27.05->6.93; -0.8 required Tier 0 predictors"),
+ "6.2":("retained",""), "6.3":("retained",""),
+ "6.4":("superseded",
+   "the +2.70 nested figure no longer competes as a headline; legacy specification"),
+ "6.5":("retained",""), "6.6":("retained",""), "6.7":("retained",""),
+ "6.8":("retained",""),
+ "7.1":("retained",""), "7.2":("retained",""), "7.3":("retained",""),
+ "7.4":("retained",""), "7.5":("retained",""), "7.6":("retained",""),
+ "7.7":("retained",""), "7.8":("retained",""),
+ "8.1":("retained",""), "8.2":("retained",""), "8.3":("retained",""),
+ "8.4":("reworded",
+   "a country-placebo/permutation reference distribution under exchangeability, "
+   "not randomization inference"),
+ "8.5":("retained",""),
+ "8.6":("reworded",
+   "rules out a GENERIC response-style account; does not exclude a fiscally "
+   "specific one -- see the competing account in v3 12a"),
+ "8.7":("future_research",
+   "institutional trust remains context; the fiscal-experience account needs a "
+   "separate sourced descriptive checkpoint before entering the discussion"),
+ "9.1":("retained",""), "9.2":("retained",""), "9.3":("retained",""),
+ "9.4":("retained",""),
+}
+REPLACEMENT = {"4.2":"10.2","5.2":"10.2","6.1":"10.2","6.4":"10.2"}
 df.insert(5, "introduced_in", "v1-final")
-df.insert(6, "v2_disposition", "undecided")
-df.insert(7, "superseded_by", "")
-df.insert(8, "decision_reason", "")
-df.insert(9, "replacement_claim_id", "")
+df.insert(6, "v2_disposition", df["id"].map(lambda i: DISPOSITION.get(i, ("retained", ""))[0]))
+df.insert(7, "superseded_by", df["id"].map(
+    lambda i: "v2" if DISPOSITION.get(i, ("", ""))[0] == "superseded" else ""))
+df.insert(8, "decision_reason", df["id"].map(lambda i: DISPOSITION.get(i, ("", ""))[1]))
+df.insert(9, "replacement_claim_id", df["id"].map(lambda i: REPLACEMENT.get(i, "")))
+df.loc[df["id"].str.startswith("10."), ["introduced_in", "v2_disposition"]] = ["v2", "retained"]
 df.to_csv("../docs/claim_matrix.csv", index=False)
 
 print(f"{len(df)} canonical claims across {df.element.nunique()} backbone elements\n")

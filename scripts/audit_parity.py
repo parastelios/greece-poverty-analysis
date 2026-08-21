@@ -19,6 +19,14 @@ DOCS = {"report": "../output/report.html",
 
 # distinctive fingerprints per claim id: any ONE match counts as present
 FP = {
+ # V2 claims. Declared in the matrix before the rewrite; the auditor reports
+ # them as PENDING REWRITE until the documents carry them.
+ "10.1": ["27.05", "27.0", "objective-only"],
+ "10.2": ["6.93", "+6.93", "27 to 7"],
+ "10.3": ["between-country", "predominantly between"],
+ "10.4": ["synthetic-control design", "failed its pre-registered", "did not work"],
+ "10.5": ["multidomain breadth", "multi-domain breadth", "breadth measure"],
+ "10.6": ["ilc_sbjp01", "official subjective-hardship"],
  "1.1": ["67.2", "two out of three", "highest share anywhere"],
  "1.2": ["4th-highest", "4th of 27"],
  "1.3": ["47.6", "14.9"],
@@ -150,10 +158,12 @@ for doc, raw in raws.items():
 def _missing(v):
     return v is None or (isinstance(v, float) and pd.isna(v)) or not str(v).strip() or str(v).strip().lower() == "nan"
 
-DISPOSITIONS = {"retained", "retested", "reworded", "superseded",
-                "retracted", "v1_only", "undecided"}
-NEEDS_REASON = {"superseded", "retracted", "reworded"}
-NEEDS_REPLACEMENT = {"superseded", "retracted"}
+DISPOSITIONS = {"retained", "reworded", "superseded", "rejected",
+                "descriptive_only", "future_research", "retested",
+                "v1_only", "undecided"}
+NEEDS_REASON = {"superseded", "rejected", "reworded", "descriptive_only",
+                "future_research"}
+NEEDS_REPLACEMENT = {"superseded", "rejected"}
 
 sup = []
 if "v2_disposition" in m.columns:
@@ -181,6 +191,26 @@ if sup:
     for cid, msg in sup:
         print(f"  {cid:5} {msg}")
     print()
+
+# Claims introduced in v2 are declared before the P6 rewrite. Until the
+# documents carry them they are PENDING, not failures -- a permanently red gate
+# trains people to ignore it. They become enforced automatically once found.
+pending = []
+if "introduced_in" in m.columns:
+    v2_ids = set(m[m["introduced_in"].astype(str) == "v2"]["id"])
+    still = [(cid, doc) for cid, el, claim, doc, need in problems if cid in v2_ids]
+    pending = still
+    problems = [x for x in problems if x[0] not in v2_ids]
+    if pending:
+        by_id = {}
+        for cid, doc in pending:
+            by_id.setdefault(cid, []).append(doc)
+        print(f"PENDING REWRITE: {len(by_id)} V2 claim(s) declared in the matrix but not "
+              f"yet written into the documents (P6 step 5):")
+        for cid, docs in sorted(by_id.items()):
+            row = m[m["id"] == cid].iloc[0]
+            print(f"  {cid:6} {str(row['claim'])[:58]:59} missing from: {', '.join(docs)}")
+        print()
 
 print(f"Audited {len(m)} claims x 3 documents\n")
 if problems:

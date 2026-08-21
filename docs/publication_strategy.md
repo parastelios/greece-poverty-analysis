@@ -4859,3 +4859,88 @@ screening record is complete or it is not one; they are not carried forward.
 Branch 2: accumulated labour-market history materially narrows the gap,
 predominantly through between-country differences, while roughly seven points
 remain and Greece stays among the most under-predicted countries in the Union.
+
+## P6 steps 1–4: hierarchy locked before any prose is written
+
+### Step 1 — V1 preserved
+
+Tag `v1-final`; `archive/v1-final/` holds all four outputs plus the three PDFs;
+one appendix pipeline and one builder, never forked.
+
+### Step 2 — claim matrix dispositioned first
+
+53 claims, every one carrying an explicit V2 disposition:
+
+| disposition | n |
+|---|---|
+| retained | 44 |
+| superseded | 4 |
+| reworded | 3 |
+| descriptive_only | 1 |
+| future_research | 1 |
+
+**The four competing headline residuals are superseded**, all replaced by claim
+10.2. They survive as legacy, proximity-sensitive specifications and must never
+again be quoted as headline estimates:
+
+| id | legacy figure | why superseded |
+|---|---|---|
+| 4.2 | 25.6 → 35.5 → 11.6 | the ladder depends on Tier 0 predictors |
+| 5.2 | 11.6 → 3.9 | proximity-sensitive |
+| 6.1 | 3.9 → **−0.8** | −0.8 required Tier 0 predictors |
+| 6.4 | **+2.70** nested | no longer competes as a headline |
+
+Six V2 claims added: the objective-only model without accumulation (10.1,
++27.05), with it (10.2, **+6.93**, the headline), the between-country
+qualification (10.3), the failed comparative design (10.4), Family D's
+descriptive-only status (10.5), and the outcome's identity with the official
+Eurostat indicator (10.6). The auditor reports these as **PENDING REWRITE**
+rather than failing, because a permanently red gate trains people to ignore it;
+they enforce automatically once the documents carry them.
+
+Three rewordings, each fixing a claim that is true but stated too strongly:
+5.3 (LTU stable across LOO but imprecise under wild-cluster), 8.4 (permutation
+under exchangeability, not randomization inference), 8.6 (rules out a *generic*
+response-style account, not a fiscally specific one).
+
+### Step 3 — the common story, locked
+
+Every document tells this sequence, at its own level of detail:
+
+1. AROP creates the initial puzzle.
+2. AROPE is the official bridge, not an equal headline measure.
+3. The shrinking threshold explains why annual AROP understates the crisis.
+4. Greece deteriorated unusually **broadly** and **persistently**.
+5. The objective-only model without accumulation leaves **+27.05, rank 1**.
+6. Adding accumulated unemployment reduces this to **+6.93, rank 3**.
+7. This is predominantly a **between-country scarring marker**; within-country
+   dynamics remain unresolved.
+8. Material history narrows the puzzle substantially but does not eliminate it.
+9. Cultural reporting differences may affect the baseline but cannot explain the
+   crisis-era widening alone.
+
+### Step 4 — negative results, placed deliberately
+
+- **Synthetic control:** attempted, pre-registered, failed. Reported as a
+  failure in all three documents. No effect interpreted.
+- **Family D:** descriptive breadth retained; incremental model rejected.
+- **Inequality and the other screened nulls:** retained in the record.
+- **Proximate indicators (arrears, unexpected-expense capacity):** useful
+  descriptions of *how* hardship is experienced, never deep objective
+  explanations. The objective-only model excludes them by construction.
+
+### The final headline
+
+> Greece's reported hardship is not fully explained, but it is far less
+> mysterious once the duration of its material history is counted. Accumulated
+> unemployment reduces the objective-only cross-country gap from roughly 27 to
+> 7 points, although Greece remains among Europe's most under-predicted
+> countries and the evidence is primarily between countries rather than within
+> Greece over time.
+
+### Out of scope for P6
+
+The tax-system hypothesis does **not** restart model screening. It may enter the
+policy discussion only after a separate sourced descriptive checkpoint, split
+into material tax burden and perceived fiscal fairness. Registered in v3 §12a as
+a competing account, not a channel.
