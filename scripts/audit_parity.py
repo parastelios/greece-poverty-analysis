@@ -13,6 +13,8 @@ import re, html, sys
 from pathlib import Path
 import pandas as pd
 
+from claim_anchors import claim_containers
+
 # Two modes, deliberately.
 #   development (default) : pending V2 claims are reported and the gate passes,
 #                           so the rewrite can proceed incrementally
@@ -105,31 +107,6 @@ _strip = lambda t: re.sub(r"<style.*?</style>", " ",
                           re.sub(r"<script.*?</script>", " ", t, flags=re.S), flags=re.S)
 raws = {k: _strip(Path(v).read_text(encoding="utf-8")) for k, v in DOCS.items()}
 
-def claim_containers(raw, cid):
-    """Text inside every element carrying data-claim-id="<cid>".
-
-    A document-wide fingerprint search can be satisfied by unrelated prose or by
-    chart data that happens to contain the number -- both already happened here.
-    V2 claims must therefore be anchored in an explicit container, and the
-    fingerprint is checked against that container's text only.
-    """
-    out = []
-    for mm in re.finditer(
-            r'<(\w+)[^>]*\bdata-claim-id\s*=\s*["\']([^"\']+)["\'][^>]*>', raw):
-        tag, ids = mm.group(1), mm.group(2)
-        if cid not in [x.strip() for x in ids.split()]:
-            continue
-        i, depth = mm.end(), 1
-        pat = re.compile(r"</?" + tag + r"\b", re.I)
-        while depth:
-            nxt = pat.search(raw, i)
-            if not nxt:
-                break
-            depth += -1 if nxt.group(0).startswith("</") else 1
-            i = nxt.end()
-        inner = raw[mm.end():i]
-        out.append(html.unescape(re.sub(r"<[^>]+>", " ", inner)))
-    return out
 
 
 v2_ids_pre = (set(m[m["introduced_in"].astype(str) == "v2"]["id"])

@@ -7,9 +7,7 @@ than trusted.
 """
 import re, html, sys
 
-src = open("audit_parity.py").read()
-body = src.split("def claim_containers")[1].split("v2_ids_pre")[0]
-exec("def claim_containers" + body)
+from claim_anchors import claim_containers
 
 CASES = [
     ("matches inside its container",
