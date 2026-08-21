@@ -4667,8 +4667,14 @@ countries. Bootstrap consistent across all nine weight/seed combinations
 > `p_MC = 0.0070; 6 of 999 bootstrap statistics were at least as extreme as
 > observed; 0.0010 is the simulation resolution floor.`
 
-**Outcome B under the committed rule.** The result is not fragile — it is
-*cross-sectional*.
+**Outcome B under the committed rule.** The accurate summary is not "the result
+is cross-sectional" but:
+
+> The observed association is **predominantly between countries**. Countries
+> with greater accumulated unemployment exposure report greater hardship, and
+> this relationship is stable under influence and inference checks. The
+> available panel does not establish a corresponding within-country dynamic
+> effect, but its within-country estimate is too imprecise to rule one out.
 
 | | coefficient | se | p |
 |---|---|---|---|
@@ -4691,13 +4697,24 @@ hardship** (−0.003, p=0.98).
 
 **What the within null does and does not establish.** The within estimate's
 standard error is 4.8× the between estimate's, with a 95% CI of
-[−0.449, +0.298]. The formal test of within = between returns **p = 0.058 —
-the two are not distinguishable at 5%**. Under the project's three null labels
-this is **inconclusive under available power**, not unsupported with adequate
-sensitivity. The data cannot establish a within-country effect and cannot rule
-one out, though the CI's upper bound does sit just below the between point
-estimate. Reporting this as "there is no within-country effect" would overstate
-it in the opposite direction from the original claim.
+[−0.449, +0.298]. A **within–between equality test** on the Mundlak coefficients
+returns p = 0.058.
+
+Three things must be said carefully about that number:
+
+- It **fails to reject** equality at 5%. It is **not** evidence that the within
+  and between effects are equal. The point estimates remain materially
+  different: −0.076 against +0.332.
+- It is a linear-hypothesis test on the Mundlak coefficients with
+  country-clustered errors. It is **not** described as a Hausman test, because
+  the calculation does not implement the covariance structure that description
+  requires.
+- Under the project's three null labels the within component is **inconclusive
+  under available power**, not unsupported with adequate sensitivity.
+
+The data cannot establish a within-country effect and cannot rule one out.
+Reporting this as "there is no within-country effect" would overstate it in the
+opposite direction from the original claim.
 
 **The claim narrows, and this is the substantive result of P5.** Defensible:
 

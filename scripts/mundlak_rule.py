@@ -1,5 +1,11 @@
 """P5 interpretation rules, committed before P5 was run.
 
+TERMINOLOGY: the comparison of the within and between coefficients is a
+WITHIN-BETWEEN EQUALITY TEST -- a linear hypothesis on the Mundlak coefficients
+with country-clustered errors. It is deliberately not called a Hausman test,
+which would require a covariance structure this does not implement. And failing
+to reject equality is not evidence of equality.
+
 Same discipline as branch_rule.py, for the same reason: the P3 branch bug showed
 that a rule written only in prose can be defeated by its implementation.
 

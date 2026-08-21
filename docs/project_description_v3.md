@@ -762,9 +762,28 @@ appearing after family A remains exploratory until it succeeds under a fixed
 specification on years, data, or an outcome not used in selection. It must not
 be reclassified as confirmatory on the strength of the theory alone.
 
-**Timing.** Not tested until P0 is complete and the fixed P3 model has been
-estimated. Family D is an addition to the exploratory record, not a
-modification of the pre-specified model.
+**Timing.** Not tested until P0 is complete, the fixed P3 model has been
+estimated, and P5 has audited it (P5f). Family D is an addition to the
+exploratory record, not a modification of the pre-specified model.
+
+**Mandatory within/between audit, carried forward from P5.** P5 found that
+accumulated unemployment exposure is supported **predominantly between
+countries** (between +0.332, p<0.0001; within −0.076, p=0.692, inconclusive
+under available power). Accumulated multi-domain breadth is built the same way —
+a cumulative index that encodes a country's long-run position — so:
+
+> If Family D adds incrementally, it must receive its own within/between
+> decomposition **before** any dynamic interpretation is attached to it.
+
+The failure mode this prevents is specific and easy to walk into: two
+persistent cross-country indices can appear to explain one another simply
+because both encode countries' long-run positions, and an incremental
+improvement in cross-country prediction would then be misread as evidence of a
+dynamic process. Family D gets the same audit its predecessor got, and on the
+same terms.
+
+**Family D cannot strengthen P3's evidentiary tier**, even if it improves
+prediction. P3 is frozen at post-selection robustness.
 
 ---
 

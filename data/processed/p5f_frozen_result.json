@@ -1,0 +1,43 @@
+{
+  "status": "FROZEN at P5f. Nothing downstream may alter these values.",
+  "frozen_claim": "In the fixed post-selection objective model, accumulated unemployment exposure substantially narrows Greece's cross-country prediction residual. The association is stable and not driven by Greece or another single country, but it is supported primarily by between-country differences. The analysis does not demonstrate that annual increases in accumulated exposure caused or tracked annual increases in hardship within Greece.",
+  "evidentiary_tier": "post-selection robustness, not independent confirmation: cum_excess_unemployment was discovered on this same panel in family-A screening",
+  "branch": "2 - material history explains a meaningful share, not the full difference",
+  "p3": {
+    "greece_oos_residual": 6.93,
+    "rank": "3/27",
+    "r2": 0.907,
+    "n": 269,
+    "residual_without_accumulation": 27.05,
+    "residual_with_cltu_tier0": 3.81
+  },
+  "p5": {
+    "between": 0.3323,
+    "between_p": 1.1501264437928441e-16,
+    "within": -0.0755,
+    "within_p": 0.6919,
+    "within_ci": [
+      -0.4489,
+      0.2979
+    ],
+    "within_between_equality_test_p": 0.0581,
+    "mundlak_outcome": "B - between-country scarring marker",
+    "country_fe": -0.0385,
+    "first_differences": -0.0034,
+    "country_trends": 0.049,
+    "max_loo_change_pct": 12.7,
+    "greece_dropped_change_pct": -0.8,
+    "instability_flags": [],
+    "bootstrap_worst_p_MC": 0.007,
+    "bootstrap_report": "p_MC = 0.0070; 6 of 999 bootstrap statistics were at least as extreme as observed; 0.0010 is the simulation resolution floor."
+  },
+  "wording_rules": [
+    "Use 'between-country scarring marker', never 'mechanism'.",
+    "Never write 'as exposure accumulated, hardship increased'.",
+    "State that first differences provide no supporting dynamic evidence.",
+    "State that the within estimate is inconclusive under available power.",
+    "p=0.058 fails to reject within/between equality; it is NOT evidence they are equal, and the point estimates remain materially different (-0.076 vs +0.332).",
+    "Call it a within-between equality test, not a Hausman test."
+  ],
+  "frozen_at_commit": "2ab35bf"
+}
