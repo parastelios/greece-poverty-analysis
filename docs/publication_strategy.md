@@ -4435,3 +4435,42 @@ now made on rounded differences. The true figure is 100%.
 
 **Next:** P2 (comparative design, allowed to fail) and P3 (objective-only
 model), in that order.
+
+### P0 follow-up: the four locked rules, and a viable pre-period for P2
+
+**Four rules now binding on all V2 work** (v3 §4a.1): the outcome is the
+*backward-extended official subjective-hardship indicator*; `ilc_sbjp01` is used
+directly from 2010 and the validated `DIF + GRT` construction only before 2010;
+the overlap validates the **aggregation rule**, not the freedom of pre-2010
+vintages from national survey breaks; and no document may say Eurostat published
+`ilc_sbjp01` before 2010 — those values are derived from official components
+using a rule validated against the later official series.
+
+`scripts/outcome.py` makes rule 2 operative. The splice is smooth, as it must be
+if the two are one measure: Greece 57.0 (2009, extension) → 58.4 (2010,
+official). 579 country-years, 27 countries, 2003–2025. V1 is frozen and does not
+use it.
+
+**A viable P2 pre-period exists, and v1 never used it.** The binding gate is
+adequate coverage in *every* pre-period year, not on average:
+
+| window | countries with complete coverage |
+|---|---|
+| 2003–2009 | **6** ← v1's window, and why its fit failed at RMSE 25.3 |
+| 2004–2009 | 13 |
+| **2005–2009** | **25** |
+| 2007–2009 | 26 |
+| 2007–2008 | 26 ← v1's fallback, two observations, the overfit |
+
+v1 chose between a window with six donors and a window with two data points.
+Neither could work. A 2005-based pre-period gives five years against 25 donors
+with complete coverage — an actual comparative design rather than a choice
+between two failures.
+
+**The remaining decision is substantive, not statistical, and is left open
+deliberately.** Whether the pre-period ends at 2008 or 2009 depends on when
+Greece is treated as crisis-exposed: the deficit revision came in October 2009
+and recession was already underway, so 2009 is arguably contaminated, while
+dropping it costs a year of an already short window. The protocol requires this
+declared before fitting and justified on institutional history rather than fit,
+so it is recorded here as pending rather than chosen quietly.

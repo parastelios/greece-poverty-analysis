@@ -157,6 +157,21 @@ all declared before fitting.
 11. **Augmented synthetic control or synthetic DiD only as pre-specified
     sensitivity**, never as a rescue after the primary fit fails.
 
+**Enforcement checklist, all required before any comparative result is
+accepted:**
+
+- Fixed pre-period and donor pool declared before fitting.
+- Adequate outcome coverage in **every** pre-period year, not on average.
+- Pre-period fit assessed across the **full window**, never two selected years.
+  This is the specific failure of the existing implementation.
+- No crisis-exposed control quietly treated as an unaffected donor. v1's weights
+  concentrated on Bulgaria, Portugal and Cyprus; two were in their own
+  programmes.
+- **Both** outcomes tested separately: the hardship level (primary) and the
+  subjective-minus-AROP gap (secondary). Never interchanged.
+- Placebo resolution and the minimum attainable p-value declared in advance.
+- Failure reported as failure, with no post-hoc replacement of the design.
+
 **Pre-registered failure condition:** if pre-period fit exceeds the declared
 threshold, the design fails, is reported as failed, and does not become the
 narrative spine. §12 gives the fallback story.
@@ -213,6 +228,51 @@ itself reported.
 The last row matters most. If `ilc_sbjp01` measures a different construct, the
 right response is two outcomes honestly reported, not a robustness check that
 quietly privileges the constructed one.
+
+---
+
+### 4a.1 P0 result and the four rules it locks
+
+**P0 passed on row 1.** Across 432 overlapping country-years (2010–2025), 318
+agree exactly, 114 differ by exactly one rounding step, none by more than
+0.1 pp. Cross-country Spearman is 1.00 in every year; the within-Greece trend
+correlation is 1.000; refitting Model C-LTU on the official series moves the
+Greek out-of-sample gap from +3.86 to +3.81 with identical rank and R². Greece
+reads 67.2 and ranks 1 of 27 on both. `ilc_sbjp01` **is** the DIF + GRT
+aggregation of `ilc_mdes09`, published with age and sex breakdowns instead of
+household-composition ones.
+
+Four rules follow and are binding for all V2 work.
+
+**Rule 1 — terminology.** The outcome is the **backward-extended official
+subjective-hardship indicator**. The phrase "constructed subjective-poverty
+outcome" is retired: it implies an alternative to an official statistic, and
+P0 establishes there is no such alternative. This replaces the older language
+across V2 documents. V1 is frozen and is not retro-edited.
+
+**Rule 2 — construction.** Use `ilc_sbjp01` **directly from 2010 onward**, and
+the validated `DIF + GRT` construction **only before 2010**. Where Eurostat
+publishes the indicator, the project uses Eurostat's own figure rather than
+recomputing it. The splice point is 2010 and is stated wherever the series
+appears.
+
+**Rule 3 — what the validation does and does not cover.** Numerical equivalence
+over 2010–2025 validates the **aggregation rule**. It does **not** establish
+that every pre-2010 observation is free of national survey breaks. The
+aggregation is verified; the earlier vintages' comparability is not, and is a
+separate question that the overlap cannot answer.
+
+**Rule 4 — provenance wording.** Never write that Eurostat published
+`ilc_sbjp01` before 2010. It does not. Pre-2010 observations are **derived from
+official components using a rule validated against the later official series**.
+That is a weaker and accurate claim; the stronger one would be false.
+
+**The sentence that should carry through the project:**
+
+> The project uses Eurostat's official subjective-hardship concept. Its pre-2010
+> observations are a validated backward extension derived from Eurostat's
+> underlying response categories.
+
 
 ---
 
