@@ -4386,3 +4386,52 @@ percentage-point-years of excess unemployment". Same underlying reality,
 enormously different readability -- and the composite is a *summary of the
 condition*, where the accumulation variable is a tested *explanation* of it.
 Nothing is integrated pending a decision.
+
+## P0 complete: the constructed outcome IS the official Eurostat indicator
+
+First of the v3 gates, run under the §4a protocol with the tolerance declared
+in the script before any value was inspected.
+
+**Result: decision-table row 1 — proceed.** The two series are the same measure.
+
+| check | bar | result |
+|---|---|---|
+| Median absolute difference | ≤ 2.0 pp | **0.00 pp** |
+| Within 5 pp | ≥ 90% | **100%** |
+| Cross-country Spearman, every year | ≥ 0.90 | **1.00** (min 0.999) |
+| Within-Greece trend correlation | ≥ 0.90 | **1.000** |
+| Model conclusions | unchanged | Greek OOS gap 3.86 → 3.81, rank 6/27 both, R² 0.914 both |
+
+Across 432 overlapping country-years: 318 agree exactly, 114 differ by exactly
+one rounding step, and **none differ by more than 0.1 pp**. Greece reads 67.2
+and ranks 1 of 27 on both.
+
+**What this settles.** `ilc_sbjp01` *is* the DIF + GRT aggregation of
+`ilc_mdes09`, published with age and sex breakdowns instead of
+household-composition ones. The project's outcome was never a bespoke construct
+competing with an official statistic; it is the official indicator, computed
+from the source dataset. The §4a branch where the official series becomes a
+separate primary outcome does not arise.
+
+**What this unlocks.** Eurostat publishes `ilc_sbjp01` only from 2010, while
+`ilc_mdes09` runs from 2003. Because the two are identical where they overlap,
+the constructed series is a **backward extension of the official indicator**,
+not a substitute for it — which is what makes a 2003–2009 pre-crisis baseline
+available to P2 at all. Had they diverged, the comparative design would have
+been left with no usable pre-period on the official measure.
+
+**A reasoning error, recorded rather than corrected away.** The first pass
+inferred from the dimension structures that the two had different population
+bases — household versus person — because `ilc_mdes09` carries `hhcomp` and no
+age/sex, and `ilc_sbjp01` the reverse. That inference was wrong: these are
+alternative breakdowns of one measure, and a dimension difference is not a
+base difference. Checks 2 and 3 refuted it. The note stays in
+`scripts/51_p0_outcome_reconciliation.py` so the error is visible.
+
+A second slip, also worth recording: an interim summary reported "86.3% within
+rounding", implying 13.7% disagreed. That was floating-point — `21.5 − 21.4`
+evaluates to 0.1000000000000014, which fails a `<= 0.1` test. Comparisons are
+now made on rounded differences. The true figure is 100%.
+
+**Next:** P2 (comparative design, allowed to fail) and P3 (objective-only
+model), in that order.
