@@ -128,7 +128,8 @@ SECTIONS = [
                 ("panel", "model_actual_vs_predicted"),
                 ("panel", "partial_cumulative_unemployment"),
                 ("panel", "residual_dumbbell"),
-                ("panel", "predictor_correlation")]),
+                ("panel", "predictor_correlation"),
+                ("panel", "all_candidate_correlation")]),
 
     dict(id="candidates", num="10", title="The full candidate family (mostly nulls)",
          blurb="Eighteen cumulative and duration constructions were screened together before "
@@ -421,6 +422,7 @@ function drawPanel(host, key, p){
   if (p.kind === 'partial') return drawPartial(host, p);
   if (p.kind === 'dumbbell') return drawDumbbell(host, p);
   if (p.kind === 'heatmap') return drawHeatmap(host, p);
+  if (p.kind === 'heatmap_big') return drawHeatmapBig(host, p);
   const W=860,H=320,padL=52,padR=250,padT=14,padB=30;
   const plotW=W-padL-padR, plotH=H-padT-padB, years=p.years;
   const xs=y=>padL+(years.length===1?plotW/2:(y-years[0])/(years[years.length-1]-years[0])*plotW);
@@ -742,6 +744,47 @@ function drawDumbbell(host,p){
   a.textContent='Country out-of-sample residual (pp): orange C-LTU → green nested selection';svg.appendChild(a);
 }
 
+function drawHeatmapBig(host,p){
+  const labels=p.labels,n=labels.length;
+  // 37 variables in 860px: cells land near 17px, too small for printed numbers,
+  // so this one is colour + hover only. Family dividers carry the structure.
+  const L=232,T=150,R=14,B=14,cell=Math.min(30,(860-L-R)/n);
+  const W=860,H=T+n*cell+B;
+  const {svg,el,hover,row}=panelSvg(host,W,H);
+  labels.forEach((lab,i)=>{
+    const cx=L+i*cell+cell/2;
+    const tx=el('text',{x:cx,y:T-6,'text-anchor':'start',class:'axis-label',
+      transform:`rotate(-55 ${cx} ${T-6})`,style:'font-size:8.5px'});
+    tx.textContent=lab.length>26?lab.slice(0,25)+'…':lab; svg.appendChild(tx);
+    const ty=el('text',{x:L-6,y:T+i*cell+cell*0.68,'text-anchor':'end',class:'axis-label',
+      style:'font-size:8.5px'});
+    ty.textContent=lab.length>34?lab.slice(0,33)+'…':lab; svg.appendChild(ty);
+  });
+  p.values.forEach((rowVals,i)=>rowVals.forEach((v,j)=>{
+    const a=Math.abs(v);
+    const col = i===j ? 'var(--gridline)'
+              : (v>=0?`rgba(42,120,214,${0.10+0.80*a})`:`rgba(235,104,52,${0.10+0.80*a})`);
+    const c=el('rect',{x:L+j*cell,y:T+i*cell,width:cell-0.5,height:cell-0.5,fill:col});
+    svg.appendChild(c);
+    if(i!==j) hover(c,()=>`<div class="y">${labels[i]}<br>&times; ${labels[j]}</div>`
+      +row('correlation',v.toFixed(3))
+      +row('shared variance',(v*v*100).toFixed(0)+'%')
+      +row('direction',v>=0?'same direction':'opposite direction'));
+  }));
+  // family dividers + block labels
+  (p.bounds||[]).forEach(b=>{
+    const x=L+b*cell, y=T+b*cell;
+    svg.appendChild(el('line',{x1:x,x2:x,y1:T,y2:T+n*cell,stroke:'var(--text-primary)','stroke-width':1.1,opacity:.55}));
+    svg.appendChild(el('line',{x1:L,x2:L+n*cell,y1:y,y2:y,stroke:'var(--text-primary)','stroke-width':1.1,opacity:.55}));
+  });
+  (p.blocks||[]).forEach(b=>{
+    const y=T+(b.start+b.n/2)*cell;
+    const t=el('text',{x:12,y:y,class:'axis-label',
+      style:'font-size:9px;font-weight:700;fill:var(--text-secondary)'});
+    t.textContent=b.name.split(' - ')[0]; svg.appendChild(t);
+  });
+}
+
 function drawHeatmap(host,p){
   const labels=p.labels,n=labels.length,W=860,H=620,L=190,T=95,cell=Math.min(52,(W-L-30)/n),{svg,el,hover,row}=panelSvg(host,W,H);
   labels.forEach((lab,i)=>{const tx=el('text',{x:L+i*cell+cell/2,y:T-8,'text-anchor':'start',class:'axis-label',
@@ -1017,6 +1060,70 @@ panels["predictor_correlation"] = dict(
     note="High correlation does not make two variables identical, but it warns against reading "
          "their coefficients as isolated causal contributions.", eu_basis="",
     labels=corr_labels, values=corr.values.round(3).tolist())
+
+# The heatmap above is scoped to the final model, which answers "does this
+# specification have a collinearity problem". It does not answer the other
+# question the screening raises: how much do the 29 screened candidates
+# duplicate each other? Families B and C were dismissed largely on redundancy
+# (one candidate correlated 0.948 with an already-tested null), and that
+# argument should be visible rather than asserted in prose. All three families
+# plus the model's own covariates and the outcome go in one matrix, blocked by
+# family so the redundancy shows up as structure.
+FAMILY_BLOCKS = [
+    ("Outcome", ["subjective_poverty"]),
+    ("Model C-LTU covariates",
+     ["arop", "aic_pps_pc_k", "severe_mat_soc_deprivation", "ltu_rate",
+      "housing_cost_overburden", "arrears", "unexpected_expenses"]),
+    ("Family A - accumulation & duration (18 screened)", None),   # filled from the FDR file
+    ("Family B - direction & standing (5)", None),
+    ("Family C - persistence share (6)", None),
+]
+try:
+    allp = pd.read_csv(OUT / "persistence_share_panel.csv")
+    famA = pd.read_csv(OUT / "cumulative_hardship_fdr_correction.csv").variable.tolist()
+    famB = pd.read_csv(OUT / "direction_persistence_battery.csv").variable.tolist()
+    famC = pd.read_csv(OUT / "persistence_share_battery.csv").variable.tolist()
+    blocks = [(FAMILY_BLOCKS[0][0], FAMILY_BLOCKS[0][1]),
+              (FAMILY_BLOCKS[1][0], FAMILY_BLOCKS[1][1]),
+              (FAMILY_BLOCKS[2][0], famA),
+              (FAMILY_BLOCKS[3][0], famB),
+              (FAMILY_BLOCKS[4][0], famC)]
+    order, bounds, blabels = [], [], []
+    for name, vs in blocks:
+        vs = [v for v in vs if v in allp.columns]
+        if not vs:
+            continue
+        blabels.append(dict(name=name, start=len(order), n=len(vs)))
+        order += vs
+        bounds.append(len(order))
+    pretty = {"subjective_poverty": "SUBJECTIVE POVERTY (outcome)", "arop": "AROP",
+              "aic_pps_pc_k": "AIC (PPS)", "severe_mat_soc_deprivation": "Deprivation",
+              "ltu_rate": "LTU", "housing_cost_overburden": "Housing",
+              "arrears": "Arrears", "unexpected_expenses": "Unexpected expense"}
+    labels = [pretty.get(v, v.replace("_", " ")) for v in order]
+    cm = allp[order].corr()
+    panels["all_candidate_correlation"] = dict(
+        label="Every screened candidate against every other",
+        group="Model diagnostics", unit="Pearson correlation, country-year panel",
+        kind="heatmap_big",
+        note=f"All {len(order)} variables the project tested anywhere: the outcome, the seven "
+             "Model C-LTU covariates, and the three screening families, blocked by family with "
+             "dividing lines. Cells are too small to print numbers at this size, so hover any "
+             "cell for the pair, its correlation and the variance they share. The redundancy "
+             "that closed families B and C is OFF the diagonal blocks, not inside them: family "
+             "B is internally diverse (mean |r| 0.19), but its members pair almost one-to-one "
+             "with family C and with family A's wage measures \u2014 years-worst-quintile-wage "
+             "against share-worst-real-wage is 0.964, against cumulative wage shortfall 0.948. "
+             "Those bright cells spanning the family dividers are the picture of three families "
+             "measuring one thing three ways. Read it as description of overlap, not as evidence "
+             "about any variable's effect \u2014 correlation among predictors says nothing about "
+             "which of them explains the outcome.",
+        eu_basis="", labels=labels, values=cm.values.round(3).tolist(),
+        blocks=blabels, bounds=bounds[:-1])
+    print(f"  all_candidate_correlation          {len(order)} variables, "
+          f"{len(blabels)} family blocks")
+except Exception as e:
+    print(f"  [WARN] all_candidate_correlation: {e}")
 
 # FDR family and nested-selection stability.
 fdr = pd.read_csv(OUT / "cumulative_hardship_fdr_correction.csv")
@@ -1336,6 +1443,105 @@ GLOSSARY = [
    "Direction code used in selected business and expectations series."),
  ]),
 ]
+
+# ---------------------------------------------------------------------------
+# The variable dictionary is generated, not hand-written: every name that
+# appears in a model, a screening family or a chart is pulled from the same
+# files the analysis runs on, so a renamed or dropped variable cannot leave a
+# stale definition sitting in the glossary.
+VAR_GLOSS = {
+    "subjective_poverty": ("The outcome. Share of households reporting difficulty or great "
+        "difficulty making ends meet (EU-SILC ilc_mdes09, DIF + GRT)."),
+    "arop": ("At-risk-of-poverty rate: share below 60% of the national median equivalised "
+        "income. A Model C-LTU covariate."),
+    "aic_pps_pc_k": ("Actual individual consumption per capita in PPS, thousands. The income "
+        "term in every cross-country model."),
+    "severe_mat_soc_deprivation": ("Severe material and social deprivation: lacking at least 7 "
+        "of 13 affordability items."),
+    "ltu_rate": ("Long-term unemployment: unemployed 12 months or more, share of the active "
+        "population. The strongest single correlate in the project."),
+    "housing_cost_overburden": ("Share of people whose housing costs exceed 40% of disposable "
+        "income."),
+    "arrears": ("Share in arrears on mortgage, rent, utilities or hire-purchase."),
+    "unexpected_expenses": ("Share unable to meet an unexpected required expense from own "
+        "resources."),
+    "cum_excess_unemployment": ("THE HEADLINE MECHANISM. Unemployment above each country's own "
+        "2009 rate, floored at zero and summed year over year since 2009, in accumulated "
+        "percentage-point-years. Survives FDR at q=0.002; Greece 138 against an EU median of 6."),
+    "cum_excess_ltu": ("The same accumulation applied to long-term unemployment. Null."),
+    "wage_years_below_2008": ("SECOND FDR SURVIVOR. Consecutive years real wages have been "
+        "below their own 2008 level \u2014 a current run that resets on recovery, not a total. "
+        "Greece 15 years. Survives FDR at q=0.041."),
+    "cum_threshold_shortfall": ("Accumulated shortfall of the real AROP threshold against its "
+        "own 2008 level. The most narratively anticipated candidate; null (p=0.291)."),
+    "pct_below_peak": ("How far current GDP per capita sits below the country's own historical "
+        "peak. A stock measure of scarring. Null."),
+    "share_worst_composite": ("Share of independent indicators placing the country in the EU's "
+        "worst quintile that year. Descriptive only \u2014 tested and null (FDR 0.287)."),
+    "years_worst_quintile_wage": ("Cumulative years in the EU's bottom quintile on real wages "
+        "indexed to own 2008. The family-B near-miss; redundant with the wage family "
+        "(r=+0.948) and rejected."),
+}
+VAR_PREFIX = [
+    ("cum_gdp_shortfall", "Accumulated GDP shortfall against a baseline, summed since 2008."),
+    ("cum_wage_shortfall", "Accumulated real-wage shortfall against a baseline, summed since 2008."),
+    ("gdp_years_below", "Consecutive years GDP has been below a baseline (current run, resets on recovery)."),
+    ("wage_years_below", "Consecutive years real wages have been below a baseline (current run, resets on recovery)."),
+    ("gdp_longest_streak", "Longest unbroken run of years GDP was below a baseline (running maximum, never falls)."),
+    ("wage_longest_streak", "Longest unbroken run of years wages were below a baseline (running maximum, never falls)."),
+    ("gdp_cum_negative", "Count of years GDP fell year on year, at any level."),
+    ("wage_cum_negative", "Count of years real wages fell year on year, at any level."),
+    ("slope5_", "Five-year trailing OLS slope of the series \u2014 its rate of change. Family B."),
+    ("years_worst_quintile", "Cumulative years spent in the EU's worst quintile. Family B."),
+    ("share_worst", "Share of observed years since 2008 in the EU's worst quintile, 0 to 1. Family C."),
+]
+
+
+def variable_glossary():
+    """Build the variable entries from the panel and the three battery files."""
+    import pandas as _pd
+    try:
+        allp = _pd.read_csv(OUT / "persistence_share_panel.csv")
+        famA = _pd.read_csv(OUT / "cumulative_hardship_fdr_correction.csv")
+        famB = _pd.read_csv(OUT / "direction_persistence_battery.csv").variable.tolist()
+        famC = _pd.read_csv(OUT / "persistence_share_battery.csv").variable.tolist()
+    except Exception as e:
+        print(f"  [WARN] variable glossary: {e}")
+        return []
+    survivors = set(famA[famA.significant_after_fdr].variable)
+    covars = ["subjective_poverty", "arop", "aic_pps_pc_k", "severe_mat_soc_deprivation",
+              "ltu_rate", "housing_cost_overburden", "arrears", "unexpected_expenses"]
+    groups = [("Model variables \u2014 the outcome and the Model C-LTU covariates", covars),
+              ("Screened candidates, family A \u2014 accumulation and duration (18)",
+               famA.variable.tolist()),
+              ("Screened candidates, family B \u2014 direction and relative standing (5)", famB),
+              ("Screened candidates, family C \u2014 persistence share (6)", famC)]
+    out = []
+    for title, names in groups:
+        entries = []
+        for v in names:
+            if v not in allp.columns and v not in covars:
+                continue
+            desc = VAR_GLOSS.get(v)
+            if desc is None:
+                desc = next((d for pre, d in VAR_PREFIX if v.startswith(pre)), "")
+                if "2008" in v and "own" not in desc:
+                    desc += " Baseline: the country's own 2008 level."
+                elif "peak" in v:
+                    desc += " Baseline: the country's own rolling historical peak."
+            tag = ""
+            if v in survivors:
+                tag = " <b>Survives FDR correction.</b>"
+            elif v in set(famA.variable) | set(famB) | set(famC):
+                tag = " Tested and null."
+            entries.append((v, "", (desc + tag).strip()))
+        if entries:
+            out.append((title, entries))
+    return out
+
+
+GLOSSARY += variable_glossary()
+
 
 
 def glossary_html():
