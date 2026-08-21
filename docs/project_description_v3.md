@@ -446,6 +446,104 @@ that judgement, not as an automatic gate.
 
 ---
 
+## 6a. Family D: accumulated multi-domain deterioration (registered, untested)
+
+Registered here before testing. **Exploratory, and it cannot become
+confirmatory later** — see the classification note at the end of this section.
+
+**The idea.** Families A–C all measure accumulation on a *single* indicator, or
+breadth across indicators at a *point in time*. Neither measures accumulation
+across time and domains jointly: how long, and how broadly, a country
+deteriorated relative to its own pre-crisis position. That is a distinct
+mechanism in the cumulative-disadvantage literature — chronic multi-domain
+disadvantage rather than one deep channel — and it is untested here.
+
+**Construction, fixed now.**
+
+1. For each indicator, per country-year, flag whether the country sits in the
+   EU's worst quintile that year. Worse-direction declared per indicator, ex
+   ante, as in the descriptive composite.
+2. Aggregate to a breadth score **weighting domains equally, not indicators**.
+   The current descriptive composite weights indicators equally, which lets one
+   domain dominate: of its 25 indicators, 11 are Income & output while Housing,
+   Prices and Demography have one each — an 11:1 imbalance. Family D computes
+   the within-domain share first, then averages across the eight domains.
+3. Take the **excess over the country's own 2008–09 breadth baseline**, floored
+   at zero, and cumulate. Raw accumulation is not used: it cannot distinguish
+   *always at the bottom* from *fell to the bottom*, and ranks Bulgaria and
+   Romania above Greece for exactly that reason. The floored-excess form mirrors
+   the family-A unemployment construction.
+
+**Variants, declared in advance:**
+
+- **Primary:** objective-only — excludes arrears, unexpected-expense capacity
+  and financial expectations, consistent with §5's Tier 0 exclusion.
+- **Sensitivity 1:** all-indicator version.
+- **Sensitivity 2:** non-labour version (drops the seven labour-market
+  indicators), which tests whether the measure is labour-market scarring under
+  another name.
+
+**Test sequence, in this order:**
+
+1. **Alone, per indicator.** Accumulated deterioration for every indicator
+   separately, tested against **both** outcomes (§4a: the hardship level as
+   primary, the subjective-minus-AROP gap as secondary). Correct the whole
+   family for multiple testing. Report separately those indicators where Greece
+   was *already* in the worst fifth before 2008 and those where it deteriorated
+   after — currently 10 and 15 of 25 respectively.
+2. **Combined, alone.** Add the composite to a minimal common baseline
+   (`AROP + year effects`). Report coefficient, Greece's out-of-sample residual,
+   rank, and leave-one-country-out stability.
+3. **Combined, in the fixed model.** Add to the pre-specified §5 objective
+   specification. Report incremental fit, coefficient stability, VIFs, direct
+   comparison against `cum_excess_unemployment`, and whether Greece's residual
+   changes materially.
+4. **Construction sensitivities.** Worst quintile versus continuous
+   standardised distance; alternative pre-crisis baselines; floored excess
+   versus net change; balanced-indicator samples; the two variants above.
+
+**Expected redundancy, recorded before testing.** Correlation with
+`cum_excess_unemployment` is **+0.83**, and **+0.76** after removing all labour
+indicators; with `cum_excess_ltu`, +0.83. It is near-orthogonal to current
+conditions (deprivation +0.00, income +0.08). So it is distinct in construction
+and co-moving in this sample. **The most likely outcome is that it adds little
+conditionally**, exactly as families B and C did at higher correlations. That
+expectation is written here so that a null is not later presented as a surprise,
+and a small positive is not over-read.
+
+**Decision rules:**
+
+| Outcome | Consequence |
+|---|---|
+| Survives FDR within family D *and* improves Greece's residual *and* stable under leave-one-out | Exploratory support; requires independent validation before any confirmatory claim |
+| Significant but redundant with `cum_excess_unemployment` (VIF high, residual unchanged) | Report as the same finding measured differently, not as an additional channel |
+| Null | Report as null; the descriptive result below stands regardless |
+
+**What stands regardless of the model result.** Greece ranks **1st of 27** on
+accumulated excess breadth, 10.6× the EU median, with Italy, Spain, Cyprus and
+Croatia next — crisis countries, not chronically poor ones. And on 15 of 25
+indicators Greece was *not* in the EU's worst fifth before the crisis and is
+now. That is descriptive corroboration under the existing taxonomy: evidence
+that the crisis produced persistent deterioration across many domains rather
+than in unemployment alone. It is reportable even if the variable explains
+nothing conditionally, and it must carry the descriptive label if so.
+
+**Classification note, recorded permanently.** The raw accumulated-breadth
+measure was built first and ranked Greece third. The excess-over-own-baseline
+correction was made **after seeing that result**. The correction has a clear
+theoretical basis and copies an existing family-A construction, but it was
+still developed after inspecting the data. Family D is therefore exploratory
+and stays exploratory: under the standing rule in §8, a discovery first
+appearing after family A remains exploratory until it succeeds under a fixed
+specification on years, data, or an outcome not used in selection. It must not
+be reclassified as confirmatory on the strength of the theory alone.
+
+**Timing.** Not tested until P0 is complete and the fixed P3 model has been
+estimated. Family D is an addition to the exploratory record, not a
+modification of the pre-specified model.
+
+---
+
 ## 7. Power, by design type
 
 The binding constraint is 27 units. It belongs in the first paragraph of the
@@ -528,6 +626,7 @@ gate the current project.
 | **P2** | **Comparative trajectory.** Rebuild synthetic control under §4's eleven gates | Allowed to fail; failure is reported |
 | **P3** | **Objective-only explanation** (§5; formula fixed, income measure resolved, leakage checked) | §5 branches, on five criteria read together |
 | ~~P4~~ | **Withdrawn** (§5a). Required covariates do not exist in the pre-window | — |
+| **P3a** | **Family D** (§6a): per-indicator, then combined, then in the fixed model | Exploratory only; §6a decision table |
 | **P5** | **Inference and robustness.** Wild-cluster, influence, alternative outcomes, reporting baseline, dependence | v2 §8.5, unchanged |
 | **P6** | **Publication.** Stop variable discovery; rewrite all outputs around whichever designs survived | — |
 | **Phase 2** | Seek Eurostat microdata access | After publication |
