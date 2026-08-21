@@ -678,6 +678,87 @@ and every component of it already exists.
 
 ---
 
+## 12a. A competing account the design does not exclude: fiscal experience and reported hardship
+
+Registered as a **competing account**, not a channel. It is written here so
+that Phase 2 has the prediction in writing before the data arrives.
+
+**The account.** Greece combines relatively heavy taxation of work with limited
+family relief and substantial advance-payment obligations on business income,
+while banking and shipping operate under exceptional fiscal arrangements created
+for other policy reasons. If that asymmetry, together with the externally-set
+conditionality of three assistance programmes, changed how Greek households
+evaluate and report their circumstances, then part of the outcome is measuring
+an institutional judgement rather than a material state.
+
+**Why it is a competing account and not supporting evidence.** The chain ends in
+pessimism. The project's central claim is that Greek hardship is materially
+grounded rather than a mood, so a mechanism that produces reported hardship via
+a changed evaluation of the state **competes with that claim**. Presented as an
+additional explanatory channel it would read as reintroducing a psychological
+account once the measurable ones were exhausted. It belongs in discussion and
+limitations, never in results.
+
+**It is not the account the project already rejected.** Two things are being
+kept apart:
+
+- A *time-invariant* reporting premium. Rejected: the widening is crisis-timed,
+  and a stable premium cannot produce post-2010 divergence.
+- A *crisis-induced change* in response behaviour. **Not rejected**, and §4
+  already states that no aggregate design here can difference it out.
+
+This account is the second. It is a specific, motivated version of the open
+question, not a new one.
+
+**The existing defence does not exclude it.** The paper's argument against
+response-style effects is domain specificity: a *generic* response-style account
+predicts uniform extremity across all self-reported wellbeing, and the data show
+extremity concentrated in financial measures. "Generic" carries that argument.
+A sense of unfair **fiscal** treatment would also be financially specific, so
+the domain-specificity evidence rules out general gloom and leaves this account
+standing. The discussion must say so rather than let a reader assume otherwise.
+Consistent with it: Greece sits in the EU's worst quintile on financial
+expectations in all 16 observed years, including pre-crisis, while its
+life-satisfaction extremity is milder.
+
+**Evidentiary discipline for the fiscal facts.** Comparable and citable:
+tax-to-GDP and tax structure (`gov_10a_taxag`) and the labour tax wedge
+(`earn_nt_taxwedge`), both 27 countries 2008–2025, usable as descriptive
+comparisons. The sharpest of these is not the headline wedge — single-worker
+39.3% against an OECD 35.1% is a 4.2-point gap — but **family relief**: a
+one-earner couple with two children faces 37.5% against an OECD 26.2%, fourth
+highest, a gap nearly three times larger, and it connects to the project's
+existing household-composition and age work.
+
+Not comparable, and therefore case-study background only: the 55% advance
+payment on business income (a burden of *timing*, invisible in every standard
+tax indicator, and worst when income is unstable), bank deferred-tax credits,
+and shipping tonnage taxation. These cannot be country-year predictors and the
+causal path from a sectoral tax regime to a household's ability to make ends
+meet is too long and too confounded to model.
+
+**Wording that must hold.** Rule asymmetry is documented; **burden** asymmetry
+is not, and incidence analysis to establish it is out of scope. The claim is
+that Greece taxes work relatively heavily with limited family relief and
+front-loaded business obligations, while banking and shipping operate under
+exceptional arrangements made for different reasons — not that ordinary Greeks
+pay while banks and shipowners do not.
+
+**Testable form, deferred.** If the account is right, **measurement invariance
+fails** for the making-ends-meet item: Greek respondents using the response
+scale differently after the crisis. That is already priority 1 of the Phase 2
+microdata track (§9). This section exists so the prediction is on record
+beforehand rather than constructed afterwards to fit whatever the microdata
+shows.
+
+**Where it goes in the documents.** Discussion and limitations, beside the
+reporting-heterogeneity section. Ervasti, Kouvo and Venetoklis (2019) — already
+cited, showing the crisis damaged Greek trust in political and impartial
+institutions while leaving interpersonal trust intact — currently does little
+work in the paper and would carry real weight here.
+
+---
+
 ## 13. Where this proposal is most likely to be wrong
 
 - **The comparative design may fail.** On current evidence that is the more
