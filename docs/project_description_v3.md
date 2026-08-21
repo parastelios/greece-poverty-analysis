@@ -562,6 +562,49 @@ not impose the null, and returned p = 0.82 against t = 9.69. The corrected
 version must be checked against an established implementation before its numbers
 enter any document.
 
+### 5b.1 P5 interpretation rules — committed before running
+
+Implemented in `scripts/mundlak_rule.py`, covered by `test_mundlak_rule.py`
+(23 tests), and run inside `make verify`.
+
+**What P5 can and cannot decide.** Country-FE and Mundlak models cannot
+reproduce the leave-Greece-out residual — country fixed effects absorb exactly
+the Greek intercept that prediction requires. They therefore **cannot assign a
+P3 branch**. They audit the *interpretation* of the accumulation coefficient.
+Branch 2 remains the headline classification from the frozen objective-only
+prediction model unless P5 demonstrates instability.
+
+**Four Mundlak outcomes, fixed in advance:**
+
+| | within | between | reading |
+|---|---|---|---|
+| **A** | supported | supported | accumulated exposure distinguishes countries **and** tracks deterioration within them |
+| **B** | no | supported | a cross-country scarring marker; do **not** claim additional exposure raises hardship within a country |
+| **C** | supported | no | accumulating exposure tracks internal change, but Greece's cross-country position needs another explanation |
+| **D** | no | no, or unstable | downgrade the P3 accumulation claim |
+
+"Supported" means coefficient positive and p < 0.05. Instability forces D.
+
+**Two additional sensitivities:**
+
+1. **First differences.** The annual change in cumulative exposure *is* that
+   year's newly accumulated excess unemployment. Test whether new exposure
+   tracks the annual change in reported hardship.
+2. **Country-specific linear trends.** Cumulative variables are mechanically
+   persistent, so a trend sensitivity separates differential scarring from
+   country-specific trending paths. **Given the short panel, treat loss of
+   significance as imprecision** unless the estimate also collapses or reverses.
+
+**Instability criteria, predefined — any one triggers:** sign reversal in a
+leave-one-country-out fold; a single omitted country moving the estimate by more
+than 50%; Greece alone moving it by more than 50% (Greece driving its own
+result); dependence on one bootstrap weight distribution or seed; leverage
+concentrated in fewer than three crisis countries.
+
+**Downgrade rule.** P5 may move P3's branch only on demonstrated instability,
+never on a Mundlak outcome alone. Outcomes B and C **narrow the claim**; they do
+not move the branch.
+
 **Required bootstrap reporting format**, verbatim:
 
 > `p_MC = 0.0005; 0 of 1,999 bootstrap statistics were at least as extreme as
