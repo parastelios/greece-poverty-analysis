@@ -35,7 +35,7 @@ and the claims have been frozen.
 | Current stage | EDA |
 | Last completed stage | PRE |
 | Branch | `p6-rewrite` |
-| HEAD | `476e177` Publish E minimum detectable effects; two simulation bugs found and fixed |
+| HEAD | `ff369a7` Add the V2 research record: a plain-words log of every stage |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-22 |
 | Frozen V1 reference | `v1-final` |
@@ -201,19 +201,47 @@ build if it appears in any output document.
 
 ### In plain words
 
-We predicted each country's hardship level from objective conditions only —
-deliberately excluding measures that are really just hardship restated (arrears,
-being unable to meet an unexpected expense). Greece's actual hardship sits far
-above what those conditions predict: **27 points above**, the worst gap in
-Europe. Then we added one variable — how much cumulative excess unemployment
-the country has absorbed since the crisis — and the gap fell to **7 points**.
-So accumulated history explains a large share of the puzzle, but not all of it.
-Greece is still an outlier, just no longer an extreme one.
+We predicted each country's hardship level from objective conditions,
+deliberately excluding the measures closest to the outcome — arrears, being
+unable to meet an unexpected expense, financial expectations. Greece's actual
+hardship sits far above what those conditions predict: **27 points above**, the
+worst gap in Europe. Then we added one variable — how much cumulative excess
+unemployment the country has absorbed since the crisis — and the gap fell to
+**7 points**.
+
+So adding accumulated unemployment substantially narrows Greece's cross-country
+prediction residual. It does not eliminate it. **Greece remains among the three
+most under-predicted countries in Europe**, which is what kept this at Branch 2
+rather than Branch 1.
+
+One caveat on the label. "Objective conditions" is looser than it sounds. Of
+P3's six predictors, `severe_mat_soc_deprivation` is classified by E0 as
+`proximate_same_instrument` — it comes from the same survey instrument as the
+outcome and belongs to construct P1, the diagnostic-only construct. P3 excludes
+the *closest* proximate measures, but it is not literally free of
+same-instrument hardship indicators. This does not change any frozen number; it
+narrows what the model may be called.
 
 ### Question
 
-With proximate hardship indicators excluded, how large is Greece's residual,
+With the Tier-0 proximate indicators excluded, how large is Greece's residual,
 and does accumulated exposure narrow it?
+
+### Specification
+
+Six predictors plus year fixed effects, all fixed in advance:
+
+| Predictor | E0 proximity class |
+|---|---|
+| `severe_mat_soc_deprivation` | **`proximate_same_instrument`** (construct P1) |
+| `housing_cost_overburden` | `objective` |
+| `ltu_rate` | `objective` |
+| `aic_pps_pc_k` | `objective` |
+| `wage_years_below_2008` | derived accumulation |
+| `cum_excess_unemployment` | derived accumulation |
+
+Excluded by construction (Tier 0): arrears, inability to meet an unexpected
+expense, financial expectations.
 
 ### Results
 
@@ -257,13 +285,23 @@ screening. It has not been validated out of sample.
 ### In plain words
 
 This is the most important limitation in the whole project, so it is worth
-stating carefully. The accumulated-unemployment result works by comparing
-*countries to each other* — countries that absorbed more accumulated
-unemployment have higher hardship. It does **not** work within a country over
-time: inside Greece, years with more accumulated exposure are not years with
-more hardship. The between-country signal is strong and statistically solid;
-the within-country signal is flat and, given how little power we have, simply
-inconclusive.
+stating carefully — and carefully means resisting the stronger sentence that
+keeps suggesting itself.
+
+The accumulated-unemployment result works by comparing *countries to each
+other*: countries that absorbed more accumulated unemployment have higher
+hardship. That signal is strong and statistically solid.
+
+The second half is where the wording has to stay disciplined. **We found no
+supporting within-country evidence, and the estimate is too imprecise to
+establish or rule out such a relationship.** It is flat and inconclusive, not
+demonstrated to be absent.
+
+Two things this specifically does not say. It does not say the relationship
+fails *inside Greece*: the within coefficient pools year-to-year variation
+across all 27 countries, so it is not a Greece-specific time series, and we
+never estimated one. And it does not say there is no dynamic relationship —
+only that this analysis does not demonstrate one.
 
 That means we may describe this as a *scarring marker that distinguishes
 countries*. We may **never** write "as exposure accumulated, hardship rose."
@@ -344,8 +382,11 @@ comparison is clean.
 
 ### Decision
 
-**Null / rejected** as an incremental predictor. The universe was frozen in
-`p3a_frozen_universe.json` before testing.
+**Failed the incremental criterion, and reversed sign conditionally.** This is
+a result about the specification, not a power-based null: breadth measurably
+worsened the model it was added to. No MDE was computed for this family, so it
+must not be recorded as *unsupported with adequate power*. The universe was
+frozen in `p3a_frozen_universe.json` before testing.
 
 ### Where the detail lives
 
@@ -735,11 +776,17 @@ Allowed statuses: `proposed`, `pre-registered`, `frozen`, `superseded`,
 | R-02 | P3 | hardship level | `cum_excess_unemployment` | cross-country residual | n=269 | +6.93 (rank 3/27) | — | — | p=0.0005 primary | max 12.7% | above MDE | accumulated history narrows most of the gap | `supported` | `p3_objective_only.csv` |
 | R-03 | P5 | hardship level | `cum_excess_unemployment` | between-country | n=269 | +0.3323 | <0.0001 | — | worst p=0.0070 | Greece −0.8% | above MDE | between-country scarring marker | `supported` | `p5_audit.csv` |
 | R-04 | P5 | hardship level | `cum_excess_unemployment` | within-country | n=269 | −0.0755 | 0.692 | — | — | — | below MDE | no dynamic evidence | `inconclusive_under_available_power` | `p5_audit.csv` |
-| R-05 | P3a | hardship level | accumulated breadth (Family D) | cross-country residual | n=269 | residual 10.39 (rank 1/27) | — | — | — | — | — | worsens the frozen model | `unsupported_with_adequate_power` | `p3a_results.csv` |
+| R-05 | P3a | hardship level | accumulated breadth (Family D) | cross-country residual | n=269 | residual 10.39 (rank 1/27); coefficient −2.17 | — | — | — | — | no MDE computed for this family | failed the incremental criterion and reversed sign conditionally; reversal left uninterpreted | `failed_incremental_criterion` | `p3a_results.csv` |
 
 Allowed statuses: `supported`, `unsupported_with_adequate_power`,
-`inconclusive_under_available_power`, `descriptive_only`, `infeasible`,
-`superseded`.
+`inconclusive_under_available_power`, `failed_incremental_criterion`,
+`descriptive_only`, `infeasible`, `superseded`.
+
+`unsupported_with_adequate_power` requires a published MDE showing the test
+could have detected an effect of the relevant size. Without one, use
+`inconclusive_under_available_power`. `failed_incremental_criterion` is for a
+predictor that measurably *worsened* the specification it was added to — a
+result about the model, not about statistical power.
 
 ## Claim Register
 
