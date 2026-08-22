@@ -1,0 +1,130 @@
+{
+  "status": "FROZEN construct map. Pre-registration, MDEs and decision criteria are NOT part of this artifact and come next.",
+  "constructs": {
+    "C1": {
+      "name": "Material resources",
+      "primary": "aic_pps_pc",
+      "sensitivities": [
+        "gdp_pps_pc",
+        "real_gdp_pc",
+        "consumption_pc",
+        "hourly_comp"
+      ],
+      "accumulated": "adverse shortfall from own pre-crisis level",
+      "accumulated_base": 2008,
+      "construction": "direct_excess",
+      "note": "pooled |r| 0.84-0.90 among members and stable across all three views: these are one construct measured five ways, so one representative"
+    },
+    "C2": {
+      "name": "Labour-market exclusion",
+      "primary": "ltu_rate",
+      "sensitivities": [
+        "unemployment_rate",
+        "youth_unemployment",
+        "employment_rate"
+      ],
+      "accumulated": "cum_excess_unemployment",
+      "accumulated_sensitivity": "cum_excess_ltu",
+      "accumulated_base": 2009,
+      "construction": "direct_excess",
+      "note": "DIFFERENT REPRESENTATIVE BY ESTIMAND, declared in advance and not a post-hoc substitution within one model: LTU for the current snapshot, cumulative excess unemployment for accumulated history. Base 2009 because full-panel unemployment coverage begins there"
+    },
+    "C3": {
+      "name": "Loss against own past",
+      "primary": [
+        "real_wages_idx",
+        "real_income_idx",
+        "arop_threshold_real",
+        "pct_below_peak"
+      ],
+      "sensitivities": [
+        "standardised composite of the four"
+      ],
+      "accumulated": "shortfall area and duration below baseline, construction-specific",
+      "accumulated_base": 2008,
+      "construction": "fixed_base_shortfall + duration_below_base",
+      "note": "FOUR INDIVIDUAL PRIMARIES, no primary composite: the four answer different questions. A composite is a sensitivity only -- families B, C and D each failed as composites and D produced a stable sign reversal"
+    },
+    "C4": {
+      "name": "Wage-adjusted affordability",
+      "primary": "wadj_a01",
+      "sensitivities": [],
+      "standalone_retest": "work_effort_squeeze",
+      "accumulated": "persistent excess above the EU-relative benchmark, if interpretable",
+      "accumulated_base": 2008,
+      "construction": "direct_excess",
+      "never_with": [
+        "work_effort_squeeze"
+      ],
+      "note": "r = 0.963 with work_effort_squeeze in ALL THREE views -- the same measurement twice. They may never enter a specification together"
+    },
+    "C5": {
+      "name": "Inflation exposure",
+      "primary": "hicp",
+      "sensitivities": [
+        "hicp_food",
+        "hicp_housing"
+      ],
+      "accumulated": "cumulative price growth compounded from a fixed base",
+      "accumulated_base": 2008,
+      "construction": "compounded_change",
+      "note": "SEPARATED FROM C4 on the evidence: wadj_a01 correlates 0.058/0.087/0.011 with these three pooled, and all three REVERSE SIGN between the between (+0.48/+0.64/+0.22) and within (-0.29/-0.25/-0.13) views. A price level and an inflation rate are not variants of one construct. BASE 2008: HICP has 27 reporters from 2004, so 2008 is fully covered and matches the project's dominant pre-crisis convention"
+    },
+    "C6": {
+      "name": "Housing pressure",
+      "primary": "housing_cost_overburden",
+      "sensitivities": [
+        "tenure drill-down, descriptive only"
+      ],
+      "accumulated": "cumulative excess from the earliest reliable baseline",
+      "accumulated_base": 2010,
+      "construction": "direct_excess",
+      "note": "BASE 2010, NOT 2008: ilc_lvho07a reaches 27 reporters only from 2010 (25 in 2008-2009, 23 in 2005). A 2008 base would leave two countries without one. The departure from the project's 2008 convention is deliberate and recorded here"
+    },
+    "P1": {
+      "name": "Proximate material hardship",
+      "primary": "severe_mat_soc_deprivation",
+      "sensitivities": [
+        "arrears",
+        "unexpected_expenses",
+        "warm"
+      ],
+      "accumulated": "diagnostic only",
+      "accumulated_base": null,
+      "construction": "direct_excess",
+      "headline_eligible": false,
+      "note": "DIAGNOSTIC ONLY, never a headline explanation. All four are EU-SILC self-reported affordability items from the same instrument as the outcome. Run to quantify how much apparent explanation is restatement"
+    }
+  },
+  "contextual_and_legacy": {
+    "net_migration": "contextual scarring hypothesis; causal position ambiguous (both a response to and a contributor to labour-market damage)",
+    "s80s20": "retest of a known inequality null (claim 8.1); must be labelled a retest, never a fresh candidate",
+    "saving_rate": "ambiguous-direction balance-sheet context; high saving may be prudence or demand collapse",
+    "debt_to_income": "ambiguous-direction balance-sheet context; reverses sign between pooled (+0.68 with real GDP) and within (-0.65)",
+    "working_hours": "descriptive component of the work-effort story only",
+    "arop_before_transfers": "separate policy specification; mechanically related to AROP",
+    "transfer_effect": "separate policy specification; definitionally AROP before minus after"
+  },
+  "testing_structure": [
+    "1. Describe every variable: levels, trajectories, ranks, all three correlation views.",
+    "2. Test the six objective constructs individually against the common baseline.",
+    "3. Sensitivity substitutions within each construct, FDR within construct.",
+    "4. The four C3 measures reported individually, FDR within C3.",
+    "5. P1 run separately as a proximity diagnostic.",
+    "6. COMBINED MODEL IS THE ALREADY-FROZEN P3 SPECIFICATION. The 15 pairwise family combinations are NOT reopened.",
+    "7. Current vs accumulated representatives compared on identical samples.",
+    "8. Between/within decomposition for any accumulated result that looks informative."
+  ],
+  "interpretation_rule": "The correlation matrices identify duplication and sign reversals. They do not select variables. Correlations with the two gap outcomes are partly ARITHMETIC (the gaps contain AROP and AROPE by subtraction), and correlations with AROPE are partly DEFINITIONALLY STRUCTURED (AROPE is a union containing AROP, deprivation and low work intensity, and aggregate data do not reveal the component overlaps).",
+  "resolved_decisions": {
+    "compounded_inflation_base": "2008 (27 reporters from 2004; matches project convention)",
+    "housing_overburden_base": "2010 (27 reporters only from 2010; 25 in 2008-09)"
+  },
+  "open_decisions": [
+    "exact transformations",
+    "equal-sample rules",
+    "MDEs",
+    "FDR family definitions",
+    "decision criteria"
+  ]
+}
