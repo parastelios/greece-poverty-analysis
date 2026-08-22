@@ -1,0 +1,158 @@
+{
+  "status": "PRE-REGISTERED. The commit introducing this file contains no E results.",
+  "construct_map_source": "data/processed/construct_map_frozen.json",
+  "outcomes": {
+    "primary": {
+      "name": "hardship level",
+      "formula": "subjective_poverty ~ arop + C(time) + <construct>",
+      "note": "AROP enters as a covariate. This is the estimand every headline claim uses."
+    },
+    "secondary": {
+      "name": "hardship minus AROP",
+      "formula": "(subjective_poverty - arop) ~ C(time) + <construct>",
+      "note": "AROP is NOT added again on the right-hand side: it is already inside the outcome by subtraction, and regressing the gap on AROP is algebraically valid but not interpretable.",
+      "authority": "A secondary result CANNOT override a primary null. It may qualify or illustrate a primary finding; it may never create one."
+    }
+  },
+  "transformations": {
+    "aic_pps_pc": {
+      "construct": "C1",
+      "adverse": "lower_is_worse",
+      "current": "level, PPS per capita",
+      "accumulated": "sum over years >= 2008 of max(0, 100 - 100*x_t/x_2008)",
+      "baseline": 2008,
+      "floor": true,
+      "estimand_note": "current = standing; accumulated = damage"
+    },
+    "ltu_rate": {
+      "construct": "C2",
+      "adverse": "higher_is_worse",
+      "current": "level, % of active population",
+      "accumulated": null,
+      "baseline": null,
+      "floor": null,
+      "estimand_note": "current-snapshot representative only"
+    },
+    "cum_excess_unemployment": {
+      "construct": "C2",
+      "adverse": "higher_is_worse",
+      "current": null,
+      "accumulated": "sum over years >= 2009 of max(0, u_t - u_2009)",
+      "baseline": 2009,
+      "floor": true,
+      "estimand_note": "accumulated representative only; base 2009 on coverage. ALREADY BUILT AND FROZEN -- reused, not reconstructed"
+    },
+    "real_wages_idx": {
+      "construct": "C3",
+      "adverse": "lower_is_worse",
+      "current": "index, own 2008 = 100",
+      "accumulated": "sum over years >= 2008 of max(0, 100 - x_t); duration = count of consecutive years with x_t < 100",
+      "baseline": 2008,
+      "floor": true,
+      "estimand_note": "shortfall AREA and DURATION are separate quantities and are reported separately, never summed"
+    },
+    "real_income_idx": {
+      "construct": "C3",
+      "adverse": "lower_is_worse",
+      "current": "index, own 2008 = 100",
+      "accumulated": "sum over years >= 2008 of max(0, 100 - x_t); duration = count of consecutive years with x_t < 100",
+      "baseline": 2008,
+      "floor": true,
+      "estimand_note": "shortfall AREA and DURATION are separate quantities and are reported separately, never summed"
+    },
+    "arop_threshold_real": {
+      "construct": "C3",
+      "adverse": "lower_is_worse",
+      "current": "index, own 2008 = 100",
+      "accumulated": "sum over years >= 2008 of max(0, 100 - x_t); duration = count of consecutive years with x_t < 100",
+      "baseline": 2008,
+      "floor": true,
+      "estimand_note": "shortfall AREA and DURATION are separate quantities and are reported separately, never summed"
+    },
+    "pct_below_peak": {
+      "construct": "C3",
+      "adverse": "higher_is_worse",
+      "current": "% below own running GDP peak",
+      "accumulated": "sum over years >= 2008 of x_t (already non-negative by construction)",
+      "baseline": 2008,
+      "floor": false,
+      "estimand_note": "area under the shortfall curve; the series is already a shortfall"
+    },
+    "wadj_a01": {
+      "construct": "C4",
+      "adverse": "higher_is_worse",
+      "current": "index, EU27 = 100",
+      "accumulated": "sum over years >= 2008 of max(0, x_t - 100)",
+      "baseline": "EU27 = 100 benchmark, years >= 2008",
+      "floor": true,
+      "estimand_note": "excess above the EU-relative benchmark, not above the country's own past"
+    },
+    "hicp": {
+      "construct": "C5",
+      "adverse": "higher_is_worse",
+      "current": "% annual change",
+      "accumulated": "compounded: prod over years 2008..t of (1 + r_s/100) - 1",
+      "baseline": 2008,
+      "floor": false,
+      "estimand_note": "COMPOUNDED, NOT SUMMED. See the wording rules: this is cumulative price growth, not affordability and not hardship"
+    },
+    "housing_cost_overburden": {
+      "construct": "C6",
+      "adverse": "higher_is_worse",
+      "current": "% of people",
+      "accumulated": "sum over years >= 2010 of max(0, x_t - x_2010)",
+      "baseline": 2010,
+      "floor": true,
+      "estimand_note": "See the wording rules: deterioration SINCE 2010, not total burden"
+    },
+    "severe_mat_soc_deprivation": {
+      "construct": "P1",
+      "adverse": "higher_is_worse",
+      "current": "% of people",
+      "accumulated": "sum over years >= 2008 of max(0, x_t - x_2008)",
+      "baseline": 2008,
+      "floor": true,
+      "estimand_note": "DIAGNOSTIC ONLY; never a headline explanation"
+    }
+  },
+  "wording_rules": {
+    "housing_accumulated": "Summing excess above the 2010 country baseline measures ACCUMULATED DETERIORATION SINCE 2010, not total accumulated housing burden. A country already heavily overburdened in 2010 receives no credit for that initial level. Never describe it as 'total housing burden' or 'how overburdened a country has been'.",
+    "inflation_accumulated": "Compounded HICP since 2008 measures CUMULATIVE PRICE GROWTH, not affordability and not hardship. Prices rising says nothing on its own about whether households can afford them; wage-adjusted affordability is a separate construct (C4) and is where that question is addressed. Never describe C5 as an affordability or hardship measure.",
+    "estimand_labelling": "Current and accumulated versions of a construct are DIFFERENT ESTIMANDS and are always labelled as such. They are never presented as two measurements of one thing."
+  },
+  "samples": {
+    "window": "2015-2024",
+    "equal_sample_rule": "Any current-versus-accumulated comparison MUST run on identical observations. Where the two differ in coverage, both are refit on the intersection and the intersection result is the one compared.",
+    "reporting": "Every result reports countries, years and observations.",
+    "coverage_sensitivity": "Where a construct's coverage differs from the common sample, a common-sample sensitivity is reported alongside.",
+    "frozen_p3": "The frozen P3 specification stays on its ORIGINAL 269-row sample and is not refit to any E sample."
+  },
+  "multiplicity": {
+    "families": [
+      "BH family 1: current primary representatives, primary outcome",
+      "BH family 2: accumulated primary representatives, primary outcome",
+      "BH family 3: secondary outcome, corrected separately"
+    ],
+    "sensitivity_rule": "A sensitivity variant CANNOT become a discovery when its primary representative fails. Sensitivities qualify a supported primary; they never substitute for a failed one.",
+    "scope": "Correction does NOT span the project's earlier searches. Families A, B, C and D were separate exploratory episodes; E's correction covers E only, and E's results inherit exploratory status from that fact."
+  },
+  "inference": [
+    "Country-clustered point estimates.",
+    "Wild cluster bootstrap for ANYTHING described as supported.",
+    "Leave-one-country-out sign and coefficient stability.",
+    "Between/within decomposition for every accumulated result.",
+    "First differences REQUIRED before any dynamic wording is permitted."
+  ],
+  "decision_rule_all_must_hold": [
+    "direction matches the pre-registration",
+    "FDR-adjusted result survives within its declared family",
+    "wild-cluster bootstrap supports it",
+    "coefficient is leave-one-country-out stable in sign",
+    "Greece's EQUAL-SAMPLE absolute residual improves",
+    "no proximity or construction-overlap rule is violated"
+  ],
+  "mde": "Minimum detectable effects are computed by simulation on the actual cluster structure and published BEFORE any E result. Reported in standardized effect units and, where useful, translated into original units. A null whose effect size sits below available power is labelled INCONCLUSIVE UNDER AVAILABLE POWER, not unsupported with adequate sensitivity.",
+  "combined_model": "E maps and tests constructs. The combined specification REMAINS FROZEN P3. No pairwise combination search, no alternative combined-model search, no forward or backward selection.",
+  "frozen_protection": "Nothing in E may alter p5f-frozen. E's purpose is to make the path to that result transparent and to document which competing constructs survive or fail. If an E result appears to contradict a frozen claim, the frozen claim stands and the contradiction is reported as an open question.",
+  "committed_at": "2103b3d"
+}
