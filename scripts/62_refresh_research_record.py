@@ -52,6 +52,8 @@ STAGES = [
      ["e_mde.csv"], "a747e7a", "476e177"),
     ("EDA", "What do the candidate variables actually look like?",
      ["e_descriptives.csv"], "", ""),
+    ("EA", "How much of the P3 result depends on a same-instrument predictor?",
+     ["ea_results.csv"], "ea_preregistration.json", ""),
     ("E1", "Which current-level constructs are associated with hardship?",
      ["e1_results.csv"], "a747e7a", ""),
     ("E2", "Do sensitivity variants change the current-level conclusions?",
@@ -79,6 +81,7 @@ ANCHORS = {
     "E0": "e0--data-and-construct-map",
     "PRE": "pre--pre-registration-and-power",
     "EDA": "eda--descriptive-groundwork",
+    "EA": "ea--deprivation-free-companion-audit",
     "E1": "e1--current-level-constructs",
     "E2": "e2--current-level-sensitivities",
     "E3": "e3--diagnostic-and-contextual-checks",
@@ -175,6 +178,7 @@ ARTIFACT_PURPOSE = {
     "construct_map_frozen.json": ("E0", "FROZEN six constructs plus one diagnostic"),
     "e_preregistration.json": ("PRE", "FROZEN outcomes, transformations, decision rule"),
     "e_mde.csv": ("PRE", "Power curve; MDE 0.70 SD = 9.29 points at 80%"),
+    "ea_preregistration.json": ("EA", "FROZEN deprivation-free companion spec and decision rule"),
 }
 
 

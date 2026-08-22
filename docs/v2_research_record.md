@@ -35,7 +35,7 @@ and the claims have been frozen.
 | Current stage | EDA |
 | Last completed stage | PRE |
 | Branch | `p6-rewrite` |
-| HEAD | `ff369a7` Add the V2 research record: a plain-words log of every stage |
+| HEAD | `7a45a9f` Correct six review findings in the P3 and P5 record entries |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-22 |
 | Frozen V1 reference | `v1-final` |
@@ -53,6 +53,16 @@ and the claims have been frozen.
 - Raw gaps and regression residuals are not a formal decomposition.
 - Proximate hardship indicators cannot become the headline explanation.
 - No Family E result may alter P3, P5, or `p5f-frozen`.
+- Freezing a result protects its numbers and interpretation. It does not
+  protect an inaccurate label, and it does not forbid a pre-registered audit of
+  what the result depends on.
+- Evidence that deprivation predicts hardship is **not** equivalent to evidence
+  from income, employment, wage or housing data. Both are analytically
+  relevant; both are reported as separate layers, never forced under one
+  "objective" label.
+- E1 and E4 use the neutral baseline `AROP + year effects`. P3 returns only at
+  E6, as the frozen combined benchmark reported alongside the deprivation-free
+  companion.
 
 ## Stage Index
 
@@ -67,6 +77,7 @@ and the claims have been frozen.
 | E0 | What data and constructs are suitable for testing? | complete | — | `2103b3d` | [E0](#e0--data-and-construct-map) |
 | PRE | What exact tests and decision rules are fixed before analysis? | complete | `a747e7a` | `476e177` | [PRE](#pre--pre-registration-and-power) |
 | EDA | What do the candidate variables actually look like? | **next** | — | — | [EDA](#eda--descriptive-groundwork) |
+| EA | How much of the P3 result depends on a same-instrument predictor? | pending | `ea_preregistration.json` | — | [EA](#ea--deprivation-free-companion-audit) |
 | E1 | Which current-level constructs are associated with hardship? | pending | `a747e7a` | — | [E1](#e1--current-level-constructs) |
 | E2 | Do sensitivity variants change the current-level conclusions? | pending | `a747e7a` | — | [E2](#e2--current-level-sensitivities) |
 | E3 | What do the diagnostic and contextual checks show? | pending | `a747e7a` | — | [E3](#e3--diagnostic-and-contextual-checks) |
@@ -199,6 +210,13 @@ build if it appears in any output document.
 
 ## P3 — How much of Greece's gap do objective conditions explain?
 
+> **Label corrected 2026-08-22.** This is the **frozen P3 mixed-distance
+> model**, not an objective-only model: it excludes the closest Tier-0
+> indicators but retains official severe material and social deprivation, drawn
+> from the same survey system as the outcome. The numbers, specification and
+> interpretation below are frozen and unchanged. What changed is the label and
+> the addition of a pre-registered audit — see [EA](#ea--deprivation-free-companion-audit).
+
 ### In plain words
 
 We predicted each country's hardship level from objective conditions,
@@ -214,13 +232,18 @@ prediction residual. It does not eliminate it. **Greece remains among the three
 most under-predicted countries in Europe**, which is what kept this at Branch 2
 rather than Branch 1.
 
-One caveat on the label. "Objective conditions" is looser than it sounds. Of
-P3's six predictors, `severe_mat_soc_deprivation` is classified by E0 as
-`proximate_same_instrument` — it comes from the same survey instrument as the
-outcome and belongs to construct P1, the diagnostic-only construct. P3 excludes
-the *closest* proximate measures, but it is not literally free of
-same-instrument hardship indicators. This does not change any frozen number; it
-narrows what the model may be called.
+One caveat on the label, and it is not only a caveat. Of P3's six predictors,
+`severe_mat_soc_deprivation` is classified by E0 as `proximate_same_instrument`
+— it comes from the same survey system as the outcome and belongs to construct
+P1, the diagnostic-only construct. So this model excludes the *closest*
+proximate measures but is not free of same-instrument hardship indicators.
+
+Freezing P3 protects its numbers from being changed after the fact. It does not
+oblige us to keep calling it "objective-only" once one predictor is known to
+break the proximity rule we adopted later. So the model keeps its numbers and
+gets an accurate name — the **frozen P3 mixed-distance model** — and the
+question of how much the result depends on that one predictor is settled by a
+pre-registered audit rather than by wording. See [EA](#ea--deprivation-free-companion-audit).
 
 ### Question
 
@@ -616,6 +639,106 @@ Nothing inferential. Descriptive corroboration tier only.
 
 ---
 
+## EA — Deprivation-free companion audit
+
+### In plain words
+
+P3's headline model contains one predictor that, by the rules we adopted later,
+should not be in a headline model: severe material and social deprivation comes
+from the same survey system as the outcome we are trying to explain. Using it to
+predict hardship is closer to explaining a thing with itself than the other five
+predictors are.
+
+We are not going to fix this by choosing better words. We run **one** extra
+model — same countries, same years, same year effects, the same five remaining
+predictors, with that one variable removed — and see what happens to the result.
+Nothing gets substituted in its place, and we do not go looking for a better
+companion if the first one disappoints. That is the whole point of writing this
+down beforehand.
+
+Three things can happen, and all three were decided before the model was run. If
+the result largely survives, the cleaner model becomes the headline. If it
+weakens moderately, we report a range instead of a single number and say openly
+that it depends on how strictly you define distance from the outcome. If it
+collapses, we say plainly that the P3 result depends materially on a
+same-instrument deprivation measure.
+
+The rule that matters most is the one preventing us from cheating: **we may
+never pick between the two models just because one produces the smaller
+residual.** Both get reported whatever happens.
+
+### Question
+
+How much of the frozen P3 result depends on `severe_mat_soc_deprivation`, a
+predictor E0 classifies `proximate_same_instrument`?
+
+### Two roles
+
+| | Frozen P3 | Companion |
+|---|---|---|
+| Status | audited historical benchmark, unchanged | new, pre-specified |
+| Label | frozen P3 **mixed-distance** model | deprivation-free companion |
+| Predictors | 6 | 5 |
+| `severe_mat_soc_deprivation` | retained | **removed** |
+| Sample | 2015-2024, n = 269 | identical |
+| Year effects | yes | identical |
+| Substitutions | -- | **none permitted** |
+
+### Comparisons required
+
+Identical observations (verified by row count and index) - Greece residual and
+rank - accumulated-unemployment coefficient - wild-cluster inference -
+leave-one-country-out stability - VIFs - within/between decomposition **only if**
+the companion becomes headline.
+
+### Decision rule
+
+Implemented as `scripts/ea_rule.py`, tested by `scripts/test_ea_rule.py`
+(37 tests). The function is the pre-registration; the prose below describes it.
+
+> Prose alone already failed once here. The first P3 run reported the strongest
+> branch because an if/else chain ended in a default `else`.
+
+| Outcome | Condition | Consequence |
+|---|---|---|
+| **A** | degradation <= 3.0 points, rank does not deteriorate, all stability gates pass | companion becomes the cleaner headline specification |
+| **B** | degradation <= 8.0 points | material support, reported as an explicit **range** across proximity choices |
+| **C** | degradation > 8.0 points, rank deteriorates, or any stability gate fails | frozen P3 depends materially on an official but same-instrument deprivation measure |
+
+Degradation is the companion's absolute residual minus frozen P3's 6.93.
+Thresholds are anchored to the 20.12-point narrowing accumulation delivers
+(27.05 -> 6.93): 3.0 points is about 15% of it, 8.0 points about 40%.
+
+**Hard gates, any one forcing C:** coefficient not positive - bootstrap does not
+support - not LOO sign-stable - max VIF > 10.0 - Greece's rank deteriorates.
+
+**The anti-selection rule.** Outcome A is earned by proximity cleanliness plus
+stability, never by producing the smaller residual. A companion residual
+*smaller* than frozen P3's is recorded and never rewarded -- dropping a predictor
+cannot improve out-of-sample standing for a reason this design can attribute.
+Both specifications are reported under every outcome, including A.
+
+### Minimum detectable effect
+
+No new MDE. EA compares two specifications on identical observations rather than
+running a new significance test. If the companion becomes headline, its
+within/between evidence inherits the published floor of 0.70 SD = 9.29 points
+and its labelling rule.
+
+### What this does not establish
+
+Nothing about `p5f-frozen`, which EA may not alter. And a clean companion result
+would not make the model "objective" in the strict sense -- it would make it
+free of *same-instrument* predictors, which is a narrower claim.
+
+### Where the detail lives
+
+`scripts/63_ea_preregistration.py`, `scripts/ea_rule.py`,
+`scripts/test_ea_rule.py` -
+`data/processed/ea_preregistration.json`
+
+---
+
 ## E1 — Current-level constructs
 
 ### In plain words
@@ -764,6 +887,10 @@ Nothing inferential. Descriptive corroboration tier only.
 | D-06 | 2026-08-22 | E0 | Construct map frozen: six objective constructs plus one diagnostic | Correlation, redundancy and non-independence evidence across three views | Empirically-fitted family groupings | `frozen` | — | `2103b3d` |
 | D-07 | 2026-08-22 | PRE | Family E pre-registration frozen | Committed with zero results present | Testing the 15 pairwise family combinations | `frozen` | — | `a747e7a` |
 | D-08 | 2026-08-22 | PRE | MDE published at 0.70 SD = 9.29 points before any E result | Simulation on the actual cluster structure | Publishing E results without a power floor | `frozen` | — | `476e177` |
+| D-09 | 2026-08-22 | EA | P3 relabelled *frozen P3 mixed-distance model*; numbers unchanged | `severe_mat_soc_deprivation` is `proximate_same_instrument`, construct P1 | Keeping the "objective-only" label; re-estimating frozen P3 | `frozen` | D-03 label only | — |
+| D-10 | 2026-08-22 | EA | One deprivation-free companion pre-registered; no substitutions, no further searching | Documented classification inconsistency, not a result | Searching for a better companion; leaving it to wording | `pre-registered` | — | — |
+| D-11 | 2026-08-22 | EA | Selection between the two specifications may never be made on residual size | A smaller residual from dropping a predictor is not attributable improvement | Choosing whichever model looks better | `frozen` | — | — |
+| D-12 | 2026-08-22 | EA | E1 and E4 use the neutral baseline `AROP + year effects`, not P3 | P3 carries a P1 predictor and must not seed the construct tests | Using P3 as the E-stage baseline | `frozen` | — | — |
 
 Allowed statuses: `proposed`, `pre-registered`, `frozen`, `superseded`,
 `withdrawn`, `infeasible`.
@@ -851,4 +978,5 @@ Current state of `docs/claim_matrix.csv`: **53 claims**.
 | E0 | `construct_map_frozen.json` | FROZEN six constructs plus one diagnostic | present |
 | PRE | `e_preregistration.json` | FROZEN outcomes, transformations, decision rule | present |
 | PRE | `e_mde.csv` | Power curve; MDE 0.70 SD = 9.29 points at 80% | present |
+| EA | `ea_preregistration.json` | FROZEN deprivation-free companion spec and decision rule | present |
 <!-- AUTO:END artifact-index -->

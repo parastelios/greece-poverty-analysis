@@ -45,6 +45,7 @@ STAGE_REST := $(filter-out $(STAGE_CORE) $(STAGE_WRITEBACK) 00_fetch_missing_raw
 verify:
 	cd $(SCRIPTS) && $(PY) test_branch_rule.py
 	cd $(SCRIPTS) && $(PY) test_mundlak_rule.py
+	cd $(SCRIPTS) && $(PY) test_ea_rule.py
 	cd $(SCRIPTS) && $(PY) test_validate_outputs.py
 	cd $(SCRIPTS) && $(PY) test_claim_containers.py
 	cd $(SCRIPTS) && $(PY) audit_reported_outputs.py
@@ -64,6 +65,7 @@ verify-report-v2:
 release-verify:
 	cd $(SCRIPTS) && $(PY) test_branch_rule.py
 	cd $(SCRIPTS) && $(PY) test_mundlak_rule.py
+	cd $(SCRIPTS) && $(PY) test_ea_rule.py
 	cd $(SCRIPTS) && $(PY) test_validate_outputs.py
 	cd $(SCRIPTS) && $(PY) test_claim_containers.py
 	cd $(SCRIPTS) && $(PY) audit_reported_outputs.py
