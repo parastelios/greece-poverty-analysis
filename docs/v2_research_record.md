@@ -35,7 +35,7 @@ and the claims have been frozen.
 | Current stage | EDA |
 | Last completed stage | EA |
 | Branch | `p6-rewrite` |
-| HEAD | `70a5078` Pre-register the EA deprivation-free companion audit; no results in this commit |
+| HEAD | `d7ddf0a` EA result: OUTCOME C. Frozen P3 depends materially on deprivation |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-22 |
 | Frozen V1 reference | `v1-final` |
@@ -424,37 +424,129 @@ frozen in `p3a_frozen_universe.json` before testing.
 
 ### In plain words
 
-Family E reopens the search for explanatory variables, this time properly. E0
-is the groundwork: assemble every candidate variable in one panel, write down
-what each one actually measures, check which ones are secretly the same
-variable wearing different clothes, and group them into a small number of
-*constructs* defined by theory rather than by which grouping happened to fit
-best.
+E0 was a data preparation and quality-control stage. **No new models were run
+and no search for significant results took place.** Five things happened.
 
-Two errors were caught in review and corrected. First, the correlation tables
-originally left out the outcome itself, which made the intended exploration
-impossible. Second, four variables were wrongly marked as ineligible for
-accumulation when the project had already successfully built accumulations from
-all four — one of which was a surviving result from an earlier stage.
+**1. Put the data in one place.** We combined the existing model data with
+additional variables from the statistical appendix. The result covers 27 EU
+countries from 2015 to 2024.
 
-### Work completed
+**2. Checked whether the data are complete.** We recorded how many countries and
+years are available for every variable. Most have complete coverage; a few have
+clearly documented gaps.
 
-Extended panel: **27 countries × 2015–2024 = 270 rows, 68 columns**, merging 17
-series from the statistical appendix, plus AROPE (`ilc_peps01n`, verified at 27
-reporters in every year).
+**3. Described what every variable actually measures.** For each one we recorded
+its source and unit; whether higher or lower values indicate hardship; whether
+it is objective, self-reported or contextual; whether it overlaps with another
+variable; and whether and how it can be accumulated over time.
 
-Variable registry: **31 variables**, each carrying label, unit, source, domain,
-adverse direction, stock/flow status, construction type, proximity class, role
-and construct assignment.
+**4. Separated variables that look similar but measure different things.**
+Inflation is not the price level. Migration is not unemployment. Inequality is
+not deprivation. Working hours alone do not necessarily indicate hardship. And
+arrears and unexpected expenses sit very close to the subjective-hardship
+question itself.
 
-Three correlation views — pooled, between-country, within-country — each
-carrying five comparator columns: `subjective_poverty`, `arop`, `arope`,
-`gap_subj_arop`, `gap_subj_arope`.
+**5. Compared relationships in three different ways** — across all
+country-years, between countries' average positions, and within countries as
+conditions changed over time. Some relationships that look strong across
+countries turn weak or reverse direction within them. Pooled correlations alone
+would have produced misleading variable groups.
 
-### Roles assigned
+That work supported six defensible questions:
+
+- Do material resources matter?
+- Does labour-market exclusion matter?
+- Does falling behind one's own past matter?
+- Does wage-adjusted affordability matter?
+- Does accumulated inflation matter?
+- Does housing pressure matter?
+
+A seventh group — proximate hardship indicators such as arrears — is kept
+visible but **cannot be used as the headline explanation**, because it is too
+close to the outcome being explained.
+
+So E0's result is not a statistical conclusion. It is a documented map of the
+available evidence, plus rules preventing incompatible, duplicated or circular
+variables from being mixed in the next stage.
+
+> Two errors were caught in review and corrected. The correlation tables
+> originally left out the outcome itself, which made the intended exploration
+> impossible. And four variables were wrongly marked ineligible for
+> accumulation when the project had already built accumulations from all four —
+> one of them a surviving result from an earlier stage.
+
+---
+
+### Step 1 — The combined dataset
+
+One table: **27 EU countries · 2015–2024 · 270 country-year rows · 68 columns**,
+carrying hardship, AROP, AROPE and the candidate variables together. Seventeen
+series were merged in from the statistical appendix.
+
+`data/processed/e0_extended_panel.csv`
+
+### Step 2 — Coverage results
+
+Coverage is generally strong: **24 of 31 variables are complete at 270/270**,
+all 27 countries in every year. The seven exceptions are all documented:
+
+| Variable | n_obs | Countries | What is missing |
+|---|---:|---:|---|
+| `arop_threshold_real` | 260 | 26 | **Croatia** entirely — its threshold series begins too late to index to 2008 |
+| `arrears` | 268 | 27 | Luxembourg 2018, 2019 |
+| `saving_rate` | 268 | 27 | Bulgaria 2023, 2024 |
+| `debt_to_income` | 268 | 27 | Bulgaria 2023, 2024 |
+| `real_income_idx` | 268 | 27 | Bulgaria 2023, 2024 |
+| `net_migration` | 269 | 27 | Portugal 2024 |
+| `housing_cost_overburden` | 269 | 27 | France 2021 |
+
+Revised AROPE covers all 27 countries in every year, verified, with no splice
+required.
+
+Most comparisons can therefore use the full panel. Anything involving the real
+AROP threshold runs on a smaller sample or as a clearly labelled sensitivity
+check — and because the gap is one whole country rather than scattered
+country-years, that sample is 26 countries, not 27.
+
+`data/processed/e0_coverage.csv` — columns mean:
+
+| Column | Meaning |
+|---|---|
+| `n_obs` | available country-years |
+| `pct` | percentage coverage |
+| `countries` | countries represented |
+| `min_year_reporters` | smallest number of countries available in any one year |
+| `years` | years with observations |
+
+### Step 3 — Variable-classification results
+
+Each of the **31 variables** is documented by: meaning and unit; Eurostat
+source; expected adverse direction; whether it is a level, flow or derived
+measure; whether it is objective, proximate, contextual or mechanically
+related; how it could be accumulated; and whether it is a primary measure,
+sensitivity, contextual item or retest.
+
+| Variable | Classification |
+|---|---|
+| `aic_pps_pc` | primary resources measure (C1) |
+| `ltu_rate` | primary current labour measure (C2) |
+| `wadj_a01` | wage-adjusted affordability (C4) |
+| `hicp` | **inflation, not a price-level measure** (C5) |
+| `arrears`, `unexpected_expenses` | proximate, same survey framework as hardship (P1) |
+| `net_migration` | contextual — **not** unemployment |
+| `s80s20` | inequality retest — **not** deprivation |
+| `debt_to_income`, `saving_rate` | ambiguous-direction context |
+| `work_effort_squeeze` | overlaps strongly with hours and hourly compensation |
+
+`cum_excess_unemployment` is the primary *historical* labour measure, but it is
+**not** one of the 31 registry rows — it is a derived accumulation carried in
+from the earlier P3 work, and it appears in the frozen construct map as C2's
+accumulated representative rather than in the E0 registry.
+
+Roles assigned across the 31:
 
 | Role | Count |
-|---|---|
+|---|---:|
 | Primary representative | 9 |
 | Sensitivity variant | 9 |
 | Proximate diagnostic | 4 |
@@ -463,19 +555,47 @@ carrying five comparator columns: `subjective_poverty`, `arop`, `arope`,
 | Standalone retest | 2 |
 | Standalone retest of known null | 1 |
 
-### Construction and non-independence findings
+`data/processed/e0_variable_registry.csv`
 
-Six-way accumulation taxonomy replaced the earlier binary eligible/ineligible
-field: `direct_excess`, `fixed_base_shortfall`, `duration_below_base`,
-`compounded_change`, `ambiguous_direction`, `not_applicable`.
+Related technical detail:
 
-**35 non-independence flags** raised across four types (`arithmetic_coupling`,
-`definitional_overlap`, `component_overlap`, `construction_overlap`).
+| File | Holds |
+|---|---|
+| `e0_provenance.json` | sources and versions |
+| `e0_lineage.csv` | shared construction inputs |
+| `e0_nonindependence_flags.csv` | definitional and construction overlaps — **35 flags** across four types |
 
-Key redundancy finding: `wadj_a01` and `work_effort_squeeze` correlate at
-**r = 0.963 in all three views** — they may never enter a model together.
+### Step 4 — Correlation results
 
-### Construct-map decisions
+The three views showed that relationships depend on which question is being
+asked.
+
+| Pair | Pooled | Between | Within | Reading |
+|---|---:|---:|---:|---|
+| `aic_pps_pc` – `consumption_pc` | 0.899 | 0.972 | 0.831 | resources measures are highly redundant |
+| `aic_pps_pc` – `hourly_comp` | 0.903 | 0.915 | 0.932 | |
+| `ltu_rate` – `unemployment_rate` | 0.914 | 0.897 | 0.961 | labour measures are highly redundant |
+| `ltu_rate` – `employment_rate` | −0.769 | −0.759 | −0.802 | |
+| `wadj_a01` – `work_effort_squeeze` | **0.963** | 0.968 | 0.924 | two versions of one structural position — may never enter a model together |
+| `wadj_a01` – `hicp` | 0.058 | **0.480** | **−0.285** | **sign reverses** — inflation and affordability are not one construct |
+| `wadj_a01` – `hicp_food` | 0.087 | 0.637 | −0.253 | sign reverses |
+| `wadj_a01` – `hicp_housing` | 0.011 | 0.222 | −0.130 | sign reverses |
+
+The three HICP pairs are the reason C5 was separated from C4 on evidence rather
+than preference: near-zero pooled, moderately positive between countries,
+negative within them.
+
+| File | Holds |
+|---|---|
+| `e0_corr_pooled.csv` | across all country-years |
+| `e0_corr_between.csv` | between countries' average positions |
+| `e0_corr_within.csv` | within countries over time |
+| `e0_redundancy.csv` | primary–sensitivity redundancy, all three views, with `sign_flips` |
+
+All three correlation views carry five comparator columns: `subjective_poverty`,
+`arop`, `arope`, `gap_subj_arop`, `gap_subj_arope`.
+
+### Step 5 — The frozen construct map
 
 Six objective constructs plus one diagnostic:
 
@@ -489,16 +609,29 @@ Six objective constructs plus one diagnostic:
 | C6 | Housing pressure | `housing_cost_overburden`, base year **2010** |
 | P1 | Proximate material hardship | `severe_mat_soc_deprivation` — **diagnostic only, never headline** |
 
-C5 was separated from C4 on evidence, not preference: inflation rates correlate
-near zero with wage-adjusted affordability and reverse sign between the pooled
-and between views.
-
 C6 uses 2010 rather than 2008 because coverage only reaches 27 reporters from
 2010.
 
+`data/processed/construct_map_frozen.json`
+
+### Construction and non-independence findings
+
+A six-way accumulation taxonomy replaced the earlier binary
+eligible/ineligible field: `direct_excess`, `fixed_base_shortfall`,
+`duration_below_base`, `compounded_change`, `ambiguous_direction`,
+`not_applicable`.
+
+**35 non-independence flags** across four types: `arithmetic_coupling`,
+`definitional_overlap`, `component_overlap`, `construction_overlap`.
+
 ### What E0 does not establish
 
-Nothing empirical about the outcome. E0 is construction and classification only.
+Nothing empirical about the outcome. E0 is construction and classification
+only. The data are mostly complete, but many candidate variables overlap, some
+have ambiguous meanings, and pooled correlations alone would have produced
+misleading families. What E0 buys is that the next stage can test clearly
+separated hypotheses instead of searching across a loosely assembled variable
+list.
 
 ### Where the detail lives
 
