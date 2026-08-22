@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 428" width="660" height="428" role="img" aria-label="What converged and what diverged" font-family="Helvetica,Arial,sans-serif">
+<rect width="660" height="428" fill="#ffffff"/>
+<text x="20.0" y="26.0" font-size="13" fill="#1f2933" text-anchor="start" font-weight="bold">Greece's distance from the EU median: what closed, what did not</text>
+<text x="20.0" y="44.0" font-size="10.5" fill="#6b7280" text-anchor="start" font-weight="normal">Change in the gap since 2015, as a share of the 2015 gap</text>
+<line x1="405.0" y1="62.0" x2="405.0" y2="370.0" stroke="#6b7280" stroke-width="1.5"/>
+<text x="405.0" y="386.0" font-size="9" fill="#6b7280" text-anchor="middle" font-weight="normal">no change</text>
+<text x="250.0" y="386.0" font-size="9" fill="#6b7280" text-anchor="middle" font-weight="normal">gap doubled</text>
+<text x="560.0" y="386.0" font-size="9" fill="#6b7280" text-anchor="middle" font-weight="normal">gap closed</text>
+<text x="236.0" y="85.0" font-size="9.5" fill="#1f2933" text-anchor="end" font-weight="normal">ltu_rate</text>
+<rect x="405.0" y="74.0" width="110.2" height="14.0" fill="#2f855a" rx="2"/>
+<text x="522.2" y="85.0" font-size="9" fill="#1f2933" text-anchor="start" font-weight="bold">+71%</text>
+<text x="236.0" y="107.0" font-size="9.5" fill="#1f2933" text-anchor="end" font-weight="normal">pct_below_peak</text>
+<rect x="405.0" y="96.0" width="85.1" height="14.0" fill="#2f855a" rx="2"/>
+<text x="497.1" y="107.0" font-size="9" fill="#1f2933" text-anchor="start" font-weight="bold">+55%</text>
+<text x="236.0" y="129.0" font-size="9.5" fill="#1f2933" text-anchor="end" font-weight="normal">housing_cost_overburden</text>
+<rect x="405.0" y="118.0" width="61.5" height="14.0" fill="#2f855a" rx="2"/>
+<text x="473.5" y="129.0" font-size="9" fill="#1f2933" text-anchor="start" font-weight="bold">+40%</text>
+<text x="236.0" y="151.0" font-size="9.5" fill="#1f2933" text-anchor="end" font-weight="normal">arope</text>
+<rect x="405.0" y="140.0" width="40.7" height="14.0" fill="#2f855a" rx="2"/>
+<text x="452.7" y="151.0" font-size="9" fill="#1f2933" text-anchor="start" font-weight="bold">+26%</text>
+<text x="236.0" y="173.0" font-size="9.5" fill="#1f2933" text-anchor="end" font-weight="normal">arop</text>
+<rect x="405.0" y="162.0" width="30.4" height="14.0" fill="#2f855a" rx="2"/>
+<text x="442.4" y="173.0" font-size="9" fill="#1f2933" text-anchor="start" font-weight="bold">+20%</text>
+<text x="236.0" y="195.0" font-size="9.5" fill="#1f2933" text-anchor="end" font-weight="normal">arop_threshold_real</text>
+<rect x="405.0" y="184.0" width="3.7" height="14.0" fill="#6b7280" rx="2"/>
+<text x="415.7" y="195.0" font-size="9" fill="#1f2933" text-anchor="start" font-weight="bold">+2%</text>
+<text x="236.0" y="217.0" font-size="9.5" fill="#1f2933" text-anchor="end" font-weight="normal">severe_mat_soc_deprivation</text>
+<rect x="405.0" y="206.0" width="1.6" height="14.0" fill="#6b7280" rx="2"/>
+<text x="413.6" y="217.0" font-size="9" fill="#1f2933" text-anchor="start" font-weight="bold">+1%</text>
+<text x="236.0" y="239.0" font-size="9.5" fill="#1f2933" text-anchor="end" font-weight="normal">subjective_poverty</text>
+<rect x="402.5" y="228.0" width="2.5" height="14.0" fill="#6b7280" rx="2"/>
+<text x="395.5" y="239.0" font-size="9" fill="#1f2933" text-anchor="end" font-weight="bold">-2%</text>
+<text x="236.0" y="261.0" font-size="9.5" fill="#1f2933" text-anchor="end" font-weight="normal">real_income_idx</text>
+<rect x="396.0" y="250.0" width="9.0" height="14.0" fill="#6b7280" rx="2"/>
+<text x="389.0" y="261.0" font-size="9" fill="#1f2933" text-anchor="end" font-weight="bold">-6%</text>
+<text x="236.0" y="283.0" font-size="9.5" fill="#1f2933" text-anchor="end" font-weight="normal">gap_subj_arop</text>
+<rect x="395.3" y="272.0" width="9.7" height="14.0" fill="#6b7280" rx="2"/>
+<text x="388.3" y="283.0" font-size="9" fill="#1f2933" text-anchor="end" font-weight="bold">-6%</text>
+<text x="236.0" y="305.0" font-size="9.5" fill="#1f2933" text-anchor="end" font-weight="normal">gap_subj_arope</text>
+<rect x="392.2" y="294.0" width="12.8" height="14.0" fill="#6b7280" rx="2"/>
+<text x="385.2" y="305.0" font-size="9" fill="#1f2933" text-anchor="end" font-weight="bold">-8%</text>
+<text x="236.0" y="327.0" font-size="9.5" fill="#1f2933" text-anchor="end" font-weight="normal">real_wages_idx</text>
+<rect x="283.9" y="316.0" width="121.1" height="14.0" fill="#c0392b" rx="2"/>
+<text x="276.9" y="327.0" font-size="9" fill="#1f2933" text-anchor="end" font-weight="bold">-78%</text>
+<text x="236.0" y="349.0" font-size="9.5" fill="#1f2933" text-anchor="end" font-weight="normal">aic_pps_pc</text>
+<rect x="260.8" y="338.0" width="144.2" height="14.0" fill="#c0392b" rx="2"/>
+<text x="253.8" y="349.0" font-size="9" fill="#1f2933" text-anchor="end" font-weight="bold">-93%</text>
+<text x="236.0" y="371.0" font-size="9.5" fill="#1f2933" text-anchor="end" font-weight="normal">wadj_a01</text>
+<rect x="250.0" y="360.0" width="155.0" height="14.0" fill="#c0392b" rx="2"/>
+<text x="243.0" y="371.0" font-size="9" fill="#1f2933" text-anchor="end" font-weight="bold">-255%*</text>
+<rect x="24.0" y="404.0" width="11.0" height="11.0" fill="#2f855a" rx="2"/>
+<text x="40.0" y="413.0" font-size="9.5" fill="#6b7280" text-anchor="start" font-weight="normal">converging</text>
+<rect x="119.0" y="404.0" width="11.0" height="11.0" fill="#6b7280" rx="2"/>
+<text x="135.0" y="413.0" font-size="9.5" fill="#6b7280" text-anchor="start" font-weight="normal">flat</text>
+<rect x="214.0" y="404.0" width="11.0" height="11.0" fill="#c0392b" rx="2"/>
+<text x="230.0" y="413.0" font-size="9.5" fill="#6b7280" text-anchor="start" font-weight="normal">diverging</text>
+<text x="319.0" y="413.0" font-size="9" fill="#6b7280" text-anchor="start" font-weight="normal">* bar clipped at 100%</text>
+</svg>

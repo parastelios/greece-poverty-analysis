@@ -1,8 +1,28 @@
-# Publication strategy notes
+# Publication strategy notes — CLOSED ARCHIVE (pre-EA)
+
+> **This file stopped being the running log on 2026-08-22.**
+>
+> Everything from stage EA onward lives in
+> [`v2_research_record.md`](v2_research_record.md), rendered as
+> `output/research_record.html`. **Do not append here.** Two running logs drift,
+> and this one had grown past 300 KB — long past the point where anyone could
+> read it as a summary, which was its whole purpose.
+>
+> What this file remains authoritative for, and what the notebook does not
+> duplicate:
+>
+> - the verified literature table and the citation checks behind it
+> - the V1 analysis history, its review rounds, and the reasoning behind
+>   decisions taken before Family E
+> - dated narrative of the P0/P2/P3/P5/P3a stages, in more detail than the
+>   notebook's summaries carry
+>
+> The notebook's stage entries link back here by section name wherever the long
+> version matters. Nothing in this file has been edited or removed — it is
+> frozen as of the last pre-EA entry, not rewritten.
 
 Started 2026-08-18, after a ChatGPT-assisted literature scoping discussion. This
-file is the durable record; update it as the picture changes rather than
-re-deriving it from scratch each time.
+file was the durable record through the pre-EA work; it is now closed.
 
 ## Verified literature (checked against primary sources, not just ChatGPT's summary)
 

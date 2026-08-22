@@ -22,12 +22,15 @@ The technical report, academic paper, and narrative companion are not updated
 stage by stage. They are revised only after the analytical sequence is complete
 and the claims have been frozen.
 
+This notebook is the running log. `publication_strategy.md` was closed on
+2026-08-22 and holds the pre-EA history; nothing new goes there.
+
 **Sources of truth.** This document does not restate them, it points at them:
 
 | Thing | Lives in | Maintained by |
 |---|---|---|
 | The 53 published claims and their disposition | `docs/claim_matrix.csv` | `scripts/build_claim_matrix.py`, audited by `audit_parity.py` |
-| Full dated decision log with reasoning | `docs/publication_strategy.md` | hand-written, append-only |
+| Pre-EA history, literature checks, long-form stage narrative | `docs/publication_strategy.md` | **closed archive** — do not append |
 | The protocol V2 follows | `docs/project_description_v3.md` | hand-written |
 | Frozen P3/P5/P3a values and wording rules | `data/processed/p5f_frozen_result.json` | frozen, never edited |
 | Frozen construct map | `data/processed/construct_map_frozen.json` | frozen, never edited |
@@ -38,10 +41,10 @@ and the claims have been frozen.
 <!-- AUTO:BEGIN document-control -->
 | Field | Value |
 |---|---|
-| Current stage | EDA |
+| Current stage | E1 |
 | Last completed stage | EA |
 | Branch | `p6-rewrite` |
-| HEAD | `ad37d6a` Expand E0 into a step-by-step account with per-step results and file pointers |
+| HEAD | `7f1cfe9` Turn the research record into a readable notebook: figures, review notes, HTML |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-22 |
 | Frozen V1 reference | `v1-final` |
@@ -82,9 +85,9 @@ and the claims have been frozen.
 | P3a | Does breadth of disadvantage add anything? | complete | `p3a_frozen_universe.json` | — | [P3a](#p3a--does-breadth-of-disadvantage-add-anything) |
 | E0 | What data and constructs are suitable for testing? | complete | — | `2103b3d` | [E0](#e0--data-and-construct-map) |
 | PRE | What exact tests and decision rules are fixed before analysis? | complete | `a747e7a` | `476e177` | [PRE](#pre--pre-registration-and-power) |
-| EDA | What do the candidate variables actually look like? | **next** | — | — | [EDA](#eda--descriptive-groundwork) |
+| EDA | What do the candidate variables actually look like? | complete | — | — | [EDA](#eda--descriptive-groundwork) |
 | EA | How much of the P3 result depends on a same-instrument predictor? | complete | `ea_preregistration.json` | — | [EA](#ea--deprivation-free-companion-audit) |
-| E1 | Which current-level constructs are associated with hardship? | pending | `a747e7a` | — | [E1](#e1--current-level-constructs) |
+| E1 | Which current-level constructs are associated with hardship? | **next** | `a747e7a` | — | [E1](#e1--current-level-constructs) |
 | E2 | Do sensitivity variants change the current-level conclusions? | pending | `a747e7a` | — | [E2](#e2--current-level-sensitivities) |
 | E3 | What do the diagnostic and contextual checks show? | pending | `a747e7a` | — | [E3](#e3--diagnostic-and-contextual-checks) |
 | E4 | Which accumulated constructs are associated with hardship? | pending | `a747e7a` | — | [E4](#e4--accumulated-exposure) |
@@ -864,22 +867,154 @@ commits `a747e7a` (pre-registration, no results), `476e177` (MDE)
 
 ### In plain words
 
-Before any testing: what do these variables actually look like? Levels,
-trajectories over time, where Greece ranks, and how everything correlates in
-all three views. No models, no p-values, no claims — this stage exists so the
-modelling that follows is read against a picture of the data rather than in the
-abstract.
+Before testing anything, what does the data actually look like? This stage runs
+no models, produces no p-values and can neither support nor refute anything. It
+exists so the modelling that follows is read against a picture of the data
+rather than in the abstract.
 
-### Question
-### Data and sample
-### Levels and trajectories
-### Ranks
+Three things came out of it, and together they set up everything after.
+
+**The gap is enormous and AROPE barely dents it.** Greek subjective hardship
+runs about 53 points above AROP. Switching to AROPE — the EU's broader measure,
+which adds material deprivation and low work intensity — closes only about a
+fifth of that. Forty-three points remain.
+
+**Greece is not an outlier on everything, but it is an extreme outlier on
+several things at once.** It is worst in the EU on long-term unemployment,
+wage-adjusted affordability and housing-cost overburden, and last of 27 on real
+wages. Yet on relative income poverty (AROP) it ranks 7th — unremarkable.
+
+**Two very different recoveries happened at once.** The labour market genuinely
+recovered: Greece's long-term unemployment gap closed by 71%. Wages and
+resources went the other way — real wages diverged 78%, material resources 93%.
+And the hardship gap itself did neither. It is **flat**: 48.8 points in 2015,
+49.6 in 2024.
+
+That last combination is the whole reason the later stages look at accumulated
+history rather than current conditions. Something recovered and hardship did not
+follow it down.
+
+> A caution about this stage that applies to all of it: these are descriptive
+> patterns, and the construct map (`2103b3d`) and E test pre-registration
+> (`a747e7a`) were both frozen **before** this ran. Nothing seen here was
+> allowed to choose what gets tested.
+
+### The paradox, and the AROPE bridge
+
+![The gap AROPE does not close](figures/paradox.svg)
+
+| Year | Subjective | AROP | AROPE | subj − AROP | subj − AROPE | AROPE closes |
+|---:|---:|---:|---:|---:|---:|---:|
+| 2015 | 77.7 | 21.4 | 32.4 | 56.3 | 45.3 | 11.0 |
+| 2019 | 71.0 | 17.9 | 29.0 | 53.1 | 42.0 | 11.1 |
+| 2022 | 68.4 | 18.8 | 26.3 | 49.6 | 42.1 | 7.5 |
+| 2024 | 66.7 | 19.6 | 26.9 | 47.1 | 39.8 | 7.3 |
+
+Mean gap against AROP **52.6 points**; against AROPE **42.8**. AROPE closes
+**9.8 points — 19%** — and its contribution is *shrinking*, from 11.0 points in
+2015 to 7.3 in 2024.
+
+So the broader measure helps, and is worth using. It does not resolve the
+paradox.
+
+### Where Greece ranks
+
+Rank 1 = worst in the EU27, on each variable's own adverse direction. Latest
+year available.
+
+| Construct | Variable | Greece | EU median | Rank |
+|---|---|---:|---:|---:|
+| outcome | `subjective_poverty` | 66.7 | 17.1 | **1/27** |
+| outcome | `arop` | 19.6 | 15.5 | 7/27 |
+| outcome | `arope` | 26.9 | 19.6 | 3/27 |
+| outcome | `gap_subj_arop` | 47.1 | 1.2 | **1/27** |
+| C1 | `aic_pps_pc` | 21,310 | 24,129 | 22/27 |
+| C2 | `ltu_rate` | 5.4 | 1.7 | **1/27** |
+| C3 | `real_wages_idx` | 68.2 | 111.8 | **27/27** |
+| C3 | `real_income_idx` | 84.1 | 120.6 | **26/26** |
+| C3 | `arop_threshold_real` | 78.8 | 119.1 | **26/26** |
+| C3 | `pct_below_peak` | 11.2 | 0.0 | **1/27** |
+| C4 | `wadj_a01` | 173.1 | 121.0 | **1/27** |
+| C5 | `hicp` | 3.0 | 2.6 | 9/27 |
+| C6 | `housing_cost_overburden` | 28.9 | 6.7 | **1/27** |
+| P1 | `severe_mat_soc_deprivation` | 14.0 | 4.3 | 3/27 |
+
+The AROP rank of 7 next to the subjective rank of 1 is the paradox in a single
+row. Note also that all four C3 measures — loss against one's own past — put
+Greece at or near the bottom of Europe.
+
+### What recovered, and what did not
+
+![Greece's distance from the EU median: what closed, what did not](figures/recovery.svg)
+
+Movement in Greece's gap against the EU median, 2015 → 2024, as a share of the
+2015 gap. Under 10% counts as flat.
+
+| Variable | Gap 2015 | Gap 2024 | Shift | Rank | Trend |
+|---|---:|---:|---:|---:|---|
+| `ltu_rate` | 12.8 | 3.7 | **+71%** | 1 → 1 | converging |
+| `pct_below_peak` | 24.8 | 11.2 | +55% | 1 → 1 | converging |
+| `housing_cost_overburden` | 36.8 | 22.2 | +40% | 1 → 1 | converging |
+| `arope` | 9.9 | 7.3 | +26% | 3 → 3 | converging |
+| `arop` | 5.1 | 4.1 | +20% | 7 → 7 | converging |
+| `severe_mat_soc_deprivation` | 9.8 | 9.7 | +1% | 4 → 3 | flat |
+| `arop_threshold_real` | −41.3 | −40.3 | +2% | 26 → 26 | flat |
+| **`subjective_poverty`** | 48.8 | 49.6 | **−2%** | 1 → 1 | **flat** |
+| `real_income_idx` | −34.5 | −36.5 | −6% | 27 → 26 | flat |
+| `gap_subj_arop` | 43.2 | 45.9 | −6% | 1 → 1 | flat |
+| `gap_subj_arope` | 38.9 | 42.1 | −8% | 1 → 1 | flat |
+| `real_wages_idx` | −24.5 | −43.7 | **−78%** | 26 → 27 | diverging |
+| `aic_pps_pc` | −1,460.7 | −2,819.2 | −93% | 16 → 22 | diverging |
+| `wadj_a01` | 14.7 | 52.1 | −255% | 10 → 1 | diverging |
+
+`hicp` is excluded: it is an annual inflation *rate*, so comparing 2015's value
+with 2024's is not a recovery comparison at all.
+
+**Converging (5):** long-term unemployment, share below peak, housing
+overburden, AROP, AROPE.
+**Flat (6):** real income, real threshold, deprivation, and the outcome and both
+outcome gaps.
+**Diverging (3):** real wages, material resources, wage-adjusted affordability.
+
+The labour market recovered substantially and hardship did not follow. Incomes
+and wages did not recover at all.
+
 ### Correlation views
+
+Already produced at E0 and not repeated here: `e0_corr_pooled.csv`,
+`e0_corr_between.csv`, `e0_corr_within.csv`, plus `e0_redundancy.csv`. See
+[E0 step 4](#e0-data-and-construct-map) for the sign reversals that shaped the
+construct map.
+
 ### What this does not establish
 
-Nothing inferential. Descriptive corroboration tier only.
+Nothing inferential. Descriptive corroboration tier only. In particular:
+
+- A variable converging or diverging says nothing about whether it *explains*
+  hardship. `ltu_rate` converged strongly and is still the construct with the
+  strongest prior support.
+- The flat outcome gap is not evidence that nothing works. It is the thing to
+  be explained.
+- No correlation, rank or trajectory here may be cited as support for any
+  construct. The tests that can do that are pre-registered and have not run.
+
+### Notes from review
+
+An earlier version of the recovery table used a plain "did the gap shrink"
+flag, which classified `arop_threshold_real` as converging on a movement of 1.0
+point across nine years, and `severe_mat_soc_deprivation` on 0.1. Both are flat
+in any meaningful sense. Movement is now measured against the size of the
+original gap with a 10% flat band, which changed six rows.
+
+`hicp` was in the recovery table as well, comparing two different years'
+inflation rates as though they were levels — precisely the category error E0
+was built to catch, reappearing one stage later in different clothing.
 
 ### Where the detail lives
+
+`scripts/67_eda_descriptives.py` ·
+`data/processed/e_descriptives.csv`, `e_descriptive_ranks.csv`,
+`e_descriptive_recovery.csv`
 
 ---
 
@@ -1377,5 +1512,8 @@ Current state of `docs/claim_matrix.csv`: **53 claims**.
 | PRE | `e_mde.csv` | Power curve; MDE 0.70 SD = 9.29 points at 80% | present |
 | EA | `ea_preregistration.json` | FROZEN deprivation-free companion spec and decision rule | present |
 | EA | `ea_results.csv` | Outcome C: residual reverses +6.93 -> -9.39 | present |
+| EDA | `e_descriptives.csv` | Greece hardship vs AROP vs AROPE by year | present |
+| EDA | `e_descriptive_ranks.csv` | Greece's rank per variable per year | present |
+| EDA | `e_descriptive_recovery.csv` | Gap movement 2015-2024, trend classified | present |
 | EA | `ea_companion_residuals.csv` | Companion residual ladder, 27 countries | present |
 <!-- AUTO:END artifact-index -->

@@ -315,6 +315,94 @@ def fig_coverage():
     write("coverage.svg", svg(W, H, "\n".join(b), "E0 coverage gaps"))
 
 
+
+# --------------------------------------------------------------------------
+# 8. The paradox and the AROPE bridge
+# --------------------------------------------------------------------------
+def fig_paradox():
+    d = pd.read_csv(PROC / "e_descriptives.csv")
+    W, H = 660, 330
+    x0, y0, x1, y1 = 70, 250, 470, 60
+    yr0, yr1 = int(d.time.min()), int(d.time.max())
+    sx = lambda v: x0 + (v - yr0) / (yr1 - yr0) * (x1 - x0)
+    sy = lambda v: y0 - v / 85.0 * (y0 - y1)
+    b = [text(20, 26, "The gap AROPE does not close", 13, INK, weight="bold"),
+         text(20, 44, "Greece, percent of population", 10.5, MUTE)]
+    for v in range(0, 81, 20):
+        b.append(line(x0, sy(v), x1, sy(v), GRID))
+        b.append(text(x0 - 8, sy(v) + 4, str(v), 9.5, MUTE, "end"))
+    for yr in range(yr0, yr1 + 1, 3):
+        b.append(text(sx(yr), y0 + 18, str(yr), 9.5, MUTE, "middle"))
+    series = [("gr_subjective_poverty", GR, "subjective hardship"),
+              ("gr_arope", WARN, "AROPE"),
+              ("gr_arop", EU, "AROP")]
+    # shade what AROPE adds over AROP
+    up = " ".join(f"{sx(r.time):.1f},{sy(r.gr_arope):.1f}" for r in d.itertuples())
+    dn = " ".join(f"{sx(r.time):.1f},{sy(r.gr_arop):.1f}"
+                  for r in reversed(list(d.itertuples())))
+    b.append(f'<polygon points="{up} {dn}" fill="{WARN}" opacity="0.13"/>')
+    for col, c, lab in series:
+        pts = " ".join(f"{sx(r.time):.1f},{sy(getattr(r, col)):.1f}"
+                       for r in d.itertuples())
+        b.append(f'<polyline points="{pts}" fill="none" stroke="{c}" stroke-width="2.5"/>')
+        last = d.iloc[-1]
+        b.append(text(x1 + 10, sy(getattr(last, col)) + 4, lab, 10, c,
+                      "start", "bold"))
+    first, lastr = d.iloc[0], d.iloc[-1]
+    for r, lab in [(first, str(yr0)), (lastr, str(yr1))]:
+        b.append(line(sx(r.time), sy(r.gr_subjective_poverty),
+                      sx(r.time), sy(r.gr_arop), INK, 1, "2,2"))
+    b.append(text(20, H - 34, f"AROPE closes {d.gap_vs_arop.mean() - d.gap_vs_arope.mean():.1f} "
+                  f"of the {d.gap_vs_arop.mean():.1f}-point AROP gap on average "
+                  f"({(d.gap_vs_arop.mean() - d.gap_vs_arope.mean()) / d.gap_vs_arop.mean():.0%}),",
+                  10, MUTE))
+    b.append(text(20, H - 20, f"leaving {d.gap_vs_arope.mean():.1f} points unexplained. "
+                  f"Shaded band = what AROPE adds to AROP.", 10, MUTE))
+    write("paradox.svg", svg(W, H, "\n".join(b), "Subjective hardship against AROP and AROPE"))
+
+
+# --------------------------------------------------------------------------
+# 9. What recovered and what did not
+# --------------------------------------------------------------------------
+def fig_recovery():
+    d = pd.read_csv(PROC / "e_descriptive_recovery.csv")
+    d = d[~d.trend.str.startswith("not applicable")]
+    order = {"converging": 0, "flat": 1, "diverging": 2}
+    d = d.assign(o=d.trend.map(order)).sort_values(["o", "gap_shift_rel"],
+                                                   ascending=[True, False])
+    W, H = 660, 60 + len(d) * 22 + 60
+    x0, x1 = 250, 560
+    sx = lambda v: x0 + (max(min(v, 1.0), -1.0) + 1) / 2 * (x1 - x0)
+    b = [text(20, 26, "Greece's distance from the EU median: what closed, what did not",
+              13, INK, weight="bold"),
+         text(20, 44, "Change in the gap since 2015, as a share of the 2015 gap",
+              10.5, MUTE)]
+    y = 74
+    cols = {"converging": GOOD, "flat": MUTE, "diverging": GR}
+    b.append(line(sx(0), 62, sx(0), 62 + len(d) * 22, MUTE, 1.5))
+    b.append(text(sx(0), H - 42, "no change", 9, MUTE, "middle"))
+    b.append(text(sx(-1), H - 42, "gap doubled", 9, MUTE, "middle"))
+    b.append(text(sx(1), H - 42, "gap closed", 9, MUTE, "middle"))
+    for r in d.itertuples():
+        c = cols[r.trend]
+        v = max(min(r.gap_shift_rel, 1.0), -1.0)
+        a, bb = (sx(0), sx(v)) if v > 0 else (sx(v), sx(0))
+        b.append(text(x0 - 14, y + 11, r.variable, 9.5, INK, "end"))
+        b.append(rect(a, y, bb - a, 14, c))
+        clipped = "*" if abs(r.gap_shift_rel) > 1.0 else ""
+        b.append(text(sx(v) + (7 if v > 0 else -7), y + 11,
+                      f"{r.gap_shift_rel:+.0%}{clipped}", 9, INK,
+                      "start" if v > 0 else "end", "bold"))
+        y += 22
+    lx = 24
+    for name, c in cols.items():
+        b.append(rect(lx, H - 24, 11, 11, c))
+        b.append(text(lx + 16, H - 15, name, 9.5, MUTE))
+        lx += 95
+    b.append(text(lx + 10, H - 15, "* bar clipped at 100%", 9, MUTE))
+    write("recovery.svg", svg(W, H, "\n".join(b), "What converged and what diverged"))
+
+
 def check_overflow():
     """Fail if any label runs past its viewBox.
 
@@ -347,6 +435,7 @@ def check_overflow():
 
 print("figures ->", FIG.relative_to(ROOT))
 for f in (fig_ea_reversal, fig_ladders, fig_narrowing, fig_mde,
-          fig_between_within, fig_sign_reversal, fig_coverage):
+          fig_between_within, fig_sign_reversal, fig_coverage,
+          fig_paradox, fig_recovery):
     f()
 check_overflow()

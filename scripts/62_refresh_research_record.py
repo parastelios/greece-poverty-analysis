@@ -180,6 +180,9 @@ ARTIFACT_PURPOSE = {
     "e_mde.csv": ("PRE", "Power curve; MDE 0.70 SD = 9.29 points at 80%"),
     "ea_preregistration.json": ("EA", "FROZEN deprivation-free companion spec and decision rule"),
     "ea_results.csv": ("EA", "Outcome C: residual reverses +6.93 -> -9.39"),
+    "e_descriptives.csv": ("EDA", "Greece hardship vs AROP vs AROPE by year"),
+    "e_descriptive_ranks.csv": ("EDA", "Greece's rank per variable per year"),
+    "e_descriptive_recovery.csv": ("EDA", "Gap movement 2015-2024, trend classified"),
     "ea_companion_residuals.csv": ("EA", "Companion residual ladder, 27 countries"),
 }
 
