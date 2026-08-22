@@ -1,0 +1,27 @@
+{
+  "arope_provenance": {
+    "dataset": "ilc_peps01n",
+    "filters": {
+      "age": [
+        "TOTAL"
+      ],
+      "sex": [
+        "T"
+      ],
+      "unit": [
+        "PC"
+      ]
+    },
+    "note": "revised AROPE, consistent across the whole 2015-2024 window (27 reporters every year) -- no legacy/revised splice is needed here, unlike the long descriptive series in the appendix",
+    "reporters_per_year": 27
+  },
+  "anchored_omitted": "anchored poverty is a Greece-only reconstruction (anchor_rates.csv has no geo dimension); it cannot enter a 27-country correlation panel and is omitted rather than approximated",
+  "comparators": [
+    "subjective_poverty",
+    "arop",
+    "arope",
+    "gap_subj_arop",
+    "gap_subj_arope"
+  ],
+  "arope_wording": "AROPE's relationships to AROP, deprivation and low work intensity are partly DEFINITIONALLY STRUCTURED, not necessarily mechanically deterministic: AROPE is a union, and aggregate data do not reveal the component overlaps that would fix the relationship exactly."
+}

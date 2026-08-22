@@ -43,6 +43,8 @@ SCHEMA = {
                                       "greece": "residual", "rank": "rank"},
     "e0_coverage.csv":               {"n_obs": "count", "pct": "share",
                                       "countries": "count", "years": "count"},
+    "e0_redundancy.csv":             {"pooled": "correlation", "between": "correlation",
+                                      "within": "correlation"},
 }
 NULLABLE = {("p2_specifications.csv", "post_gap")}
 

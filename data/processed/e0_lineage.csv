@@ -1,0 +1,11 @@
+derived,shares_inputs_with
+wadj_a01,"price_level, wage_level"
+work_effort_squeeze,"hourly_comp, working_hours"
+working_hours,working_hours
+hourly_comp,hourly_comp
+transfer_effect,"arop, arop_before_transfers"
+pct_below_peak,real_gdp_pc
+arope,"arop, severe_mat_soc_deprivation, low work intensity (union)"
+severe_mat_soc_deprivation,"warm, arrears, unexpected_expenses (items)"
+gap_subj_arop,"subjective_poverty, arop"
+gap_subj_arope,"subjective_poverty, arope"

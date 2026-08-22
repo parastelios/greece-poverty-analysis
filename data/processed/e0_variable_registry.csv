@@ -1,32 +1,32 @@
-name,label,unit,source,domain_provisional,adverse_direction,stock_flow,accumulation_eligible,proximity_class,note
-aic_pps_pc,Actual individual consumption per capita,PPS,nama_10_pc,income/output,lower_is_worse,stock,eligible,objective,
-gdp_pps_pc,GDP per capita,PPS,nama_10_pc,income/output,lower_is_worse,stock,eligible,objective,
-real_gdp_pc,Real GDP per capita,chain-linked EUR,sdg_08_10,income/output,lower_is_worse,stock,eligible,objective,
-consumption_pc,Real household consumption per capita,chain-linked EUR,nama_10_pc,income/output,lower_is_worse,stock,eligible,objective,
-hourly_comp,Compensation per hour worked,PPS,nama_10_lp_ulc,income/output,lower_is_worse,stock,eligible,objective,
-saving_rate,Household saving rate,% of disp. income,tec00131,buffers,ambiguous,flow,ambiguous_sign,objective,low saving may be hardship OR low precaution; high saving may be prudence OR demand collapse
-unemployment_rate,Unemployment rate,% active,une_rt_a,labour market,higher_is_worse,flow,eligible,objective,
-ltu_rate,Long-term unemployment,% active,une_ltu_a,labour market,higher_is_worse,flow,eligible,objective,
-youth_unemployment,Youth unemployment 15-24,% active,une_rt_a,labour market,higher_is_worse,flow,eligible,objective,
-employment_rate,Employment rate 20-64,% pop,sdg_08_30,labour market,lower_is_worse,flow,eligible,objective,
-working_hours,Actual weekly hours,hours,lfsa_ewhan2,labour market,ambiguous,flow,ambiguous_sign,objective,long hours may be effort under strain OR simply more work available
-real_wages_idx,"Real wages, own 2008=100",index,derived,loss vs own past,lower_is_worse,stock,already_indexed,objective,"nama_10_lp_ulc D1_SAL_PER deflated by prc_hicp_aind, rebased to own 2008"
-real_income_idx,"Real household disposable income, 2008=100",index,tepsr_wc310,loss vs own past,lower_is_worse,stock,already_indexed,objective,
-arop_threshold_real,"Real AROP threshold, own 2008=100",index,derived,loss vs own past,lower_is_worse,stock,already_indexed,objective,"ilc_li01 NAC, euro-changeover normalised (currency.py), HICP-deflated, own 2008 base"
-pct_below_peak,Distance below own GDP peak,% below peak,derived,loss vs own past,higher_is_worse,stock,already_indexed,objective,running maximum of real_gdp_pc
-hicp,"HICP inflation, headline",% annual change,prc_hicp_aind,inflation,higher_is_worse,flow,rate_of_change,objective,NOT a cross-country price level: an index of change
-hicp_food,"HICP inflation, food",% annual change,prc_hicp_aind,inflation,higher_is_worse,flow,rate_of_change,objective,NOT a cross-country price level
-hicp_housing,"HICP inflation, housing & energy",% annual change,prc_hicp_aind,inflation,higher_is_worse,flow,rate_of_change,objective,NOT a cross-country price level
-wadj_a01,Wage-adjusted price pressure,"index, EU=100",derived,price level,higher_is_worse,stock,eligible,objective,prc_ppp_ind price level / nominal compensation wage level; both EU27=100
-work_effort_squeeze,Work-effort squeeze,"index, EU=100",derived,composite,higher_is_worse,stock,eligible,objective,"OVERLAP: built from working_hours and hourly_comp, both also registered here"
-severe_mat_soc_deprivation,Severe material & social deprivation,% people,ilc_mdsd11,deprivation,higher_is_worse,stock,eligible,proximate_same_instrument,EU-SILC affordability items: same instrument as the outcome
-housing_cost_overburden,Housing cost overburden,% people,ilc_lvho07a,housing,higher_is_worse,stock,eligible,objective,
-debt_to_income,Household debt to income,% disp. income,tec00104,buffers,ambiguous,stock,ambiguous_sign,objective,"low debt may be resilience, deleveraging OR credit exclusion"
-s80s20,Income quintile share ratio,ratio,ilc_di11,inequality,higher_is_worse,stock,eligible,objective,
-net_migration,Net migration of nationals,"per 1,000",derived,demography,lower_is_worse,flow,eligible,contextual,"migr_emi1ctz / migr_imm1ctz, citizen=NAT"
-arrears,Arrears on bills,% people,ilc_mdes05,affordability,higher_is_worse,stock,eligible,proximate_same_instrument,"EU-SILC self-report, same respondent and instrument as the outcome"
-unexpected_expenses,Cannot meet unexpected expense,% people,ilc_mdes04,affordability,higher_is_worse,stock,eligible,proximate_same_instrument,"EU-SILC self-report, same instrument"
-warm,Cannot keep home adequately warm,% people,ilc_mdes01,affordability,higher_is_worse,stock,eligible,proximate_same_instrument,EU-SILC self-report; also a component of severe material deprivation
-arop,At-risk-of-poverty rate,% people,ilc_li02,comparator,higher_is_worse,stock,eligible,comparator_baseline,
-arop_before_transfers,AROP before social transfers,% people,ilc_li09,comparator,higher_is_worse,stock,eligible,mechanical_with_arop,
-transfer_effect,AROP removed by transfers,pp,derived,comparator,lower_is_worse,stock,eligible,mechanical_with_arop,arop_before_transfers minus arop: definitionally AROP
+name,label,unit,source,domain_provisional,adverse_direction,stock_flow,proximity_class,note,construction,duration_below_base_available,role
+aic_pps_pc,Actual individual consumption per capita,PPS,nama_10_pc,income/output,lower_is_worse,stock,objective,,direct_excess,False,primary_representative
+gdp_pps_pc,GDP per capita,PPS,nama_10_pc,income/output,lower_is_worse,stock,objective,,direct_excess,False,sensitivity_variant
+real_gdp_pc,Real GDP per capita,chain-linked EUR,sdg_08_10,income/output,lower_is_worse,stock,objective,,direct_excess,False,sensitivity_variant
+consumption_pc,Real household consumption per capita,chain-linked EUR,nama_10_pc,income/output,lower_is_worse,stock,objective,,direct_excess,False,sensitivity_variant
+hourly_comp,Compensation per hour worked,PPS,nama_10_lp_ulc,income/output,lower_is_worse,stock,objective,,direct_excess,False,sensitivity_variant
+saving_rate,Household saving rate,% of disp. income,tec00131,buffers,ambiguous,flow,objective,low saving may be hardship OR low precaution; high saving may be prudence OR demand collapse,ambiguous_direction,False,contextual_descriptive
+unemployment_rate,Unemployment rate,% active,une_rt_a,labour market,higher_is_worse,flow,objective,,direct_excess,False,sensitivity_variant
+ltu_rate,Long-term unemployment,% active,une_ltu_a,labour market,higher_is_worse,flow,objective,,direct_excess,False,primary_representative
+youth_unemployment,Youth unemployment 15-24,% active,une_rt_a,labour market,higher_is_worse,flow,objective,,direct_excess,False,sensitivity_variant
+employment_rate,Employment rate 20-64,% pop,sdg_08_30,labour market,lower_is_worse,flow,objective,,direct_excess,False,sensitivity_variant
+working_hours,Actual weekly hours,hours,lfsa_ewhan2,labour market,ambiguous,flow,objective,long hours may be effort under strain OR simply more work available,ambiguous_direction,False,contextual_descriptive
+real_wages_idx,"Real wages, own 2008=100",index,derived,loss vs own past,lower_is_worse,stock,objective,"nama_10_lp_ulc D1_SAL_PER deflated by prc_hicp_aind, rebased to own 2008",fixed_base_shortfall,True,primary_representative
+real_income_idx,"Real household disposable income, 2008=100",index,tepsr_wc310,loss vs own past,lower_is_worse,stock,objective,,fixed_base_shortfall,True,primary_representative
+arop_threshold_real,"Real AROP threshold, own 2008=100",index,derived,loss vs own past,lower_is_worse,stock,objective,"ilc_li01 NAC, euro-changeover normalised (currency.py), HICP-deflated, own 2008 base",fixed_base_shortfall,True,primary_representative
+pct_below_peak,Distance below own GDP peak,% below peak,derived,loss vs own past,higher_is_worse,stock,objective,running maximum of real_gdp_pc,fixed_base_shortfall,True,primary_representative
+hicp,"HICP inflation, headline",% annual change,prc_hicp_aind,inflation,higher_is_worse,flow,objective,NOT a cross-country price level: an index of change,compounded_change,False,sensitivity_variant
+hicp_food,"HICP inflation, food",% annual change,prc_hicp_aind,inflation,higher_is_worse,flow,objective,NOT a cross-country price level,compounded_change,False,sensitivity_variant
+hicp_housing,"HICP inflation, housing & energy",% annual change,prc_hicp_aind,inflation,higher_is_worse,flow,objective,NOT a cross-country price level,compounded_change,False,sensitivity_variant
+wadj_a01,Wage-adjusted price pressure,"index, EU=100",derived,price level,higher_is_worse,stock,objective,prc_ppp_ind price level / nominal compensation wage level; both EU27=100,direct_excess,False,primary_representative
+work_effort_squeeze,Work-effort squeeze,"index, EU=100",derived,composite,higher_is_worse,stock,objective,"OVERLAP: built from working_hours and hourly_comp, both also registered here",direct_excess,False,standalone_retest
+severe_mat_soc_deprivation,Severe material & social deprivation,% people,ilc_mdsd11,deprivation,higher_is_worse,stock,proximate_same_instrument,EU-SILC affordability items: same instrument as the outcome,direct_excess,False,proximate_diagnostic
+housing_cost_overburden,Housing cost overburden,% people,ilc_lvho07a,housing,higher_is_worse,stock,objective,,direct_excess,False,primary_representative
+debt_to_income,Household debt to income,% disp. income,tec00104,buffers,ambiguous,stock,objective,"low debt may be resilience, deleveraging OR credit exclusion",ambiguous_direction,False,contextual_descriptive
+s80s20,Income quintile share ratio,ratio,ilc_di11,inequality,higher_is_worse,stock,objective,,direct_excess,False,standalone_retest_of_known_null
+net_migration,Net migration of nationals,"per 1,000",derived,demography,lower_is_worse,flow,contextual,"migr_emi1ctz / migr_imm1ctz, citizen=NAT",direct_excess,False,standalone_retest
+arrears,Arrears on bills,% people,ilc_mdes05,affordability,higher_is_worse,stock,proximate_same_instrument,"EU-SILC self-report, same respondent and instrument as the outcome",direct_excess,False,proximate_diagnostic
+unexpected_expenses,Cannot meet unexpected expense,% people,ilc_mdes04,affordability,higher_is_worse,stock,proximate_same_instrument,"EU-SILC self-report, same instrument",direct_excess,False,proximate_diagnostic
+warm,Cannot keep home adequately warm,% people,ilc_mdes01,affordability,higher_is_worse,stock,proximate_same_instrument,EU-SILC self-report; also a component of severe material deprivation,direct_excess,False,proximate_diagnostic
+arop,At-risk-of-poverty rate,% people,ilc_li02,comparator,higher_is_worse,stock,comparator_baseline,,direct_excess,False,mechanical_comparator
+arop_before_transfers,AROP before social transfers,% people,ilc_li09,comparator,higher_is_worse,stock,mechanical_with_arop,,direct_excess,False,mechanical_comparator
+transfer_effect,AROP removed by transfers,pp,derived,comparator,lower_is_worse,stock,mechanical_with_arop,arop_before_transfers minus arop: definitionally AROP,direct_excess,False,mechanical_comparator

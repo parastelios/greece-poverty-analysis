@@ -1,0 +1,12 @@
+primary,sensitivity,pooled,between,within,flag,sign_flips
+aic_pps_pc,gdp_pps_pc,0.866,0.864,0.929,,False
+aic_pps_pc,real_gdp_pc,0.842,0.921,0.592,,False
+aic_pps_pc,consumption_pc,0.899,0.972,0.831,,False
+aic_pps_pc,hourly_comp,0.903,0.915,0.932,,False
+ltu_rate,unemployment_rate,0.914,0.897,0.961,,False
+ltu_rate,youth_unemployment,0.853,0.853,0.866,,False
+ltu_rate,employment_rate,-0.769,-0.759,-0.802,,False
+wadj_a01,hicp,0.058,0.48,-0.285,,True
+wadj_a01,hicp_food,0.087,0.637,-0.253,,True
+wadj_a01,hicp_housing,0.011,0.222,-0.13,,True
+wadj_a01,work_effort_squeeze,0.963,0.968,0.924,,False
