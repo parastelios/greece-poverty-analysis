@@ -45,6 +45,9 @@ SCHEMA = {
                                       "countries": "count", "years": "count"},
     "e0_redundancy.csv":             {"pooled": "correlation", "between": "correlation",
                                       "within": "correlation"},
+    "e_mde.csv":                     {"effect_sd_per_sd": "coefficient",
+                                      "effect_points_per_sd": "coefficient",
+                                      "power": "share"},
 }
 NULLABLE = {("p2_specifications.csv", "post_gap")}
 
