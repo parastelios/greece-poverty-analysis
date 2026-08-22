@@ -41,6 +41,8 @@ SCHEMA = {
                                       "rank": "rank"},
     "p3a_results.csv":               {"coef": "coefficient", "p": "p_value",
                                       "greece": "residual", "rank": "rank"},
+    "e0_coverage.csv":               {"n_obs": "count", "pct": "share",
+                                      "countries": "count", "years": "count"},
 }
 NULLABLE = {("p2_specifications.csv", "post_gap")}
 
