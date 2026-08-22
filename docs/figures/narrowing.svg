@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 240" width="700" height="240" role="img" aria-label="Narrowing in each model" font-family="Helvetica,Arial,sans-serif">
+<rect width="700" height="240" fill="#ffffff"/>
+<text x="20.0" y="26.0" font-size="13" fill="#1f2933" text-anchor="start" font-weight="bold">What adding accumulated unemployment does, in each model</text>
+<line x1="226.7" y1="60.0" x2="226.7" y2="175.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="226.7" y="193.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">-10</text>
+<line x1="310.0" y1="60.0" x2="310.0" y2="175.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="310.0" y="193.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">+0</text>
+<line x1="393.3" y1="60.0" x2="393.3" y2="175.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="393.3" y="193.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">+10</text>
+<line x1="476.7" y1="60.0" x2="476.7" y2="175.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="476.7" y="193.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">+20</text>
+<line x1="560.0" y1="60.0" x2="560.0" y2="175.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="560.0" y="193.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">+30</text>
+<line x1="310.0" y1="54.0" x2="310.0" y2="181.0" stroke="#6b7280" stroke-width="1.5"/>
+<text x="196.0" y="99.0" font-size="11" fill="#1f2933" text-anchor="end" font-weight="normal">Frozen P3</text>
+<line x1="535.4" y1="95.0" x2="367.8" y2="95.0" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="3,3"/>
+<circle cx="535.4" cy="95" r="6" fill="#b7791f"/>
+<circle cx="367.8" cy="95" r="6" fill="#2f855a"/>
+<text x="535.4" y="82.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">+27.05</text>
+<text x="367.8" y="82.0" font-size="9.5" fill="#1f2933" text-anchor="middle" font-weight="bold">+6.93</text>
+<text x="568.0" y="99.0" font-size="9.5" fill="#2f855a" text-anchor="start" font-weight="bold">narrows</text>
+<text x="196.0" y="149.0" font-size="11" fill="#1f2933" text-anchor="end" font-weight="normal">Companion</text>
+<line x1="389.3" y1="145.0" x2="231.7" y2="145.0" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="3,3"/>
+<circle cx="389.3" cy="145" r="6" fill="#b7791f"/>
+<circle cx="231.7" cy="145" r="6" fill="#c0392b"/>
+<text x="389.3" y="132.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">+9.52</text>
+<text x="231.7" y="132.0" font-size="9.5" fill="#1f2933" text-anchor="middle" font-weight="bold">-9.39</text>
+<text x="568.0" y="149.0" font-size="9.5" fill="#c0392b" text-anchor="start" font-weight="bold">crosses zero</text>
+<text x="20.0" y="222.0" font-size="10" fill="#6b7280" text-anchor="start" font-weight="normal">Amber = without accumulation. In frozen P3 the gap narrows toward zero; in the companion it passes through it.</text>
+</svg>

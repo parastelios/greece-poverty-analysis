@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 690 220" width="690" height="220" role="img" aria-label="Between vs within" font-family="Helvetica,Arial,sans-serif">
+<rect width="690" height="220" fill="#ffffff"/>
+<text x="20.0" y="26.0" font-size="13" fill="#1f2933" text-anchor="start" font-weight="bold">The effect is between countries, not within them</text>
+<text x="20.0" y="44.0" font-size="10.5" fill="#6b7280" text-anchor="start" font-weight="normal">Accumulated-unemployment coefficient</text>
+<line x1="256.8" y1="68.0" x2="256.8" y2="155.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="256.8" y="173.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">-0.4</text>
+<line x1="305.9" y1="68.0" x2="305.9" y2="155.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="305.9" y="173.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">-0.2</text>
+<line x1="355.0" y1="68.0" x2="355.0" y2="155.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="355.0" y="173.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">+0.0</text>
+<line x1="404.1" y1="68.0" x2="404.1" y2="155.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="404.1" y="173.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">+0.2</text>
+<line x1="453.2" y1="68.0" x2="453.2" y2="155.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="453.2" y="173.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">+0.4</text>
+<line x1="355.0" y1="62.0" x2="355.0" y2="161.0" stroke="#6b7280" stroke-width="1.5"/>
+<text x="355.0" y="58.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">no effect</text>
+<text x="206.0" y="99.0" font-size="11" fill="#1f2933" text-anchor="end" font-weight="normal">Between countries</text>
+<circle cx="436.6" cy="95" r="6" fill="#2f855a"/>
+<text x="502.0" y="99.0" font-size="10.5" fill="#1f2933" text-anchor="start" font-weight="bold">+0.3323</text>
+<text x="502.0" y="112.0" font-size="9" fill="#6b7280" text-anchor="start" font-weight="normal">p &lt; 0.0001</text>
+<text x="206.0" y="139.0" font-size="11" fill="#1f2933" text-anchor="end" font-weight="normal">Within countries</text>
+<line x1="244.8" y1="135.0" x2="428.1" y2="135.0" stroke="#6b7280" stroke-width="2"/>
+<line x1="244.8" y1="130.0" x2="244.8" y2="140.0" stroke="#6b7280" stroke-width="2"/>
+<line x1="428.1" y1="130.0" x2="428.1" y2="140.0" stroke="#6b7280" stroke-width="2"/>
+<circle cx="336.5" cy="135" r="6" fill="#6b7280"/>
+<text x="502.0" y="139.0" font-size="10.5" fill="#1f2933" text-anchor="start" font-weight="bold">-0.0755</text>
+<text x="502.0" y="152.0" font-size="9" fill="#6b7280" text-anchor="start" font-weight="normal">p = 0.692, inconclusive</text>
+<text x="20.0" y="202.0" font-size="10" fill="#6b7280" text-anchor="start" font-weight="normal">The within estimate's interval spans zero widely: no supporting evidence, and too imprecise to rule out.</text>
+</svg>

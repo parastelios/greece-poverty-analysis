@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 250" width="660" height="250" role="img" aria-label="Greece residual reverses from +6.93 to -9.39" font-family="Helvetica,Arial,sans-serif">
+<rect width="660" height="250" fill="#ffffff"/>
+<text x="20.0" y="26.0" font-size="13" fill="#1f2933" text-anchor="start" font-weight="bold">Greece's residual reverses when deprivation is removed</text>
+<text x="20.0" y="44.0" font-size="10.5" fill="#6b7280" text-anchor="start" font-weight="normal">Positive = model under-predicts Greek hardship. Negative = over-predicts.</text>
+<line x1="200.0" y1="70.0" x2="200.0" y2="190.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="200.0" y="208.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">-12</text>
+<line x1="246.7" y1="70.0" x2="246.7" y2="190.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="246.7" y="208.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">-8</text>
+<line x1="293.3" y1="70.0" x2="293.3" y2="190.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="293.3" y="208.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">-4</text>
+<line x1="340.0" y1="70.0" x2="340.0" y2="190.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="340.0" y="208.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">+0</text>
+<line x1="386.7" y1="70.0" x2="386.7" y2="190.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="386.7" y="208.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">+4</text>
+<line x1="433.3" y1="70.0" x2="433.3" y2="190.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="433.3" y="208.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">+8</text>
+<line x1="480.0" y1="70.0" x2="480.0" y2="190.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="480.0" y="208.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">+12</text>
+<line x1="340.0" y1="62.0" x2="340.0" y2="196.0" stroke="#6b7280" stroke-width="1.5"/>
+<text x="340.0" y="58.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">perfect prediction</text>
+<text x="188.0" y="114.0" font-size="11" fill="#1f2933" text-anchor="end" font-weight="bold">Frozen P3</text>
+<text x="188.0" y="128.0" font-size="9" fill="#6b7280" text-anchor="end" font-weight="normal">mixed-distance</text>
+<rect x="340.0" y="99.0" width="80.9" height="22.0" fill="#c0392b" rx="2"/>
+<text x="496.0" y="114.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="bold">+6.93</text>
+<text x="552.0" y="114.0" font-size="10" fill="#6b7280" text-anchor="start" font-weight="normal">rank 3/27</text>
+<text x="188.0" y="164.0" font-size="11" fill="#1f2933" text-anchor="end" font-weight="bold">Companion</text>
+<text x="188.0" y="178.0" font-size="9" fill="#6b7280" text-anchor="end" font-weight="normal">deprivation-free</text>
+<rect x="230.4" y="149.0" width="109.6" height="22.0" fill="#3d6fb4" rx="2"/>
+<text x="496.0" y="164.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="bold">-9.39</text>
+<text x="552.0" y="164.0" font-size="10" fill="#6b7280" text-anchor="start" font-weight="normal">rank 25/27</text>
+<text x="20.0" y="236.0" font-size="10" fill="#6b7280" text-anchor="start" font-weight="normal">Identical rows (n=269). R² 0.907 → 0.821. Outcome C.</text>
+</svg>

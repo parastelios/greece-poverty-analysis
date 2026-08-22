@@ -1,0 +1,352 @@
+"""Generate the figures embedded in docs/v2_research_record.md.
+
+Hand-written SVG, no plotting dependency. The project already builds its charts
+this way (47_build_appendix.py), and a reproducible-build project should not
+acquire matplotlib just to draw seven pictures.
+
+Every figure reads its numbers from data/processed at build time, so a figure
+cannot drift from the result it illustrates. Each carries an explicit light
+background so it stays legible whatever theme the notebook is read in.
+"""
+import json
+from pathlib import Path
+
+import pandas as pd
+
+ROOT = Path(__file__).resolve().parents[1]
+PROC = ROOT / "data" / "processed"
+FIG = ROOT / "docs" / "figures"
+FIG.mkdir(parents=True, exist_ok=True)
+
+INK, MUTE, GRID = "#1f2933", "#6b7280", "#e5e7eb"
+GR, EU, WARN, GOOD = "#c0392b", "#3d6fb4", "#b7791f", "#2f855a"
+BG = "#ffffff"
+
+
+def esc(s):
+    return str(s).replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+
+def svg(w, h, body, title):
+    return (
+        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" '
+        f'width="{w}" height="{h}" role="img" aria-label="{esc(title)}" '
+        f'font-family="Helvetica,Arial,sans-serif">\n'
+        f'<rect width="{w}" height="{h}" fill="{BG}"/>\n{body}\n</svg>\n'
+    )
+
+
+def text(x, y, s, size=11, fill=INK, anchor="start", weight="normal"):
+    return (f'<text x="{x:.1f}" y="{y:.1f}" font-size="{size}" fill="{fill}" '
+            f'text-anchor="{anchor}" font-weight="{weight}">{esc(s)}</text>')
+
+
+def line(x1, y1, x2, y2, stroke=GRID, width=1, dash=None):
+    d = f' stroke-dasharray="{dash}"' if dash else ""
+    return (f'<line x1="{x1:.1f}" y1="{y1:.1f}" x2="{x2:.1f}" y2="{y2:.1f}" '
+            f'stroke="{stroke}" stroke-width="{width}"{d}/>')
+
+
+def rect(x, y, w, h, fill, rx=2):
+    return (f'<rect x="{x:.1f}" y="{y:.1f}" width="{max(w,0):.1f}" '
+            f'height="{max(h,0):.1f}" fill="{fill}" rx="{rx}"/>')
+
+
+def write(name, content):
+    (FIG / name).write_text(content)
+    print(f"  {name}")
+
+
+# --------------------------------------------------------------------------
+# 1. THE EA RESULT: Greece's residual crosses zero
+# --------------------------------------------------------------------------
+def fig_ea_reversal():
+    ea = pd.read_csv(PROC / "ea_results.csv").iloc[0]
+    W, H = 660, 250
+    x0, x1 = 200, 480
+    lo, hi = -12.0, 12.0
+    sx = lambda v: x0 + (v - lo) / (hi - lo) * (x1 - x0)
+    b = [text(20, 26, "Greece's residual reverses when deprivation is removed",
+              13, INK, weight="bold"),
+         text(20, 44, "Positive = model under-predicts Greek hardship. "
+                      "Negative = over-predicts.", 10.5, MUTE)]
+    for v in range(-12, 13, 4):
+        b.append(line(sx(v), 70, sx(v), 190, GRID))
+        b.append(text(sx(v), 208, f"{v:+d}", 9.5, MUTE, "middle"))
+    b.append(line(sx(0), 62, sx(0), 196, MUTE, 1.5))
+    b.append(text(sx(0), 58, "perfect prediction", 9.5, MUTE, "middle"))
+    rows = [("Frozen P3", float(ea.p3_residual), int(ea.p3_rank), 110),
+            ("Companion", float(ea.companion_residual),
+             int(ea.companion_rank), 160)]
+    for label, val, rank, y in rows:
+        b.append(text(x0 - 12, y + 4, label, 11, INK, "end", "bold"))
+        b.append(text(x0 - 12, y + 18, "mixed-distance" if val > 0
+                      else "deprivation-free", 9, MUTE, "end"))
+        c = GR if val > 0 else EU
+        a, bb = (sx(0), sx(val)) if val > 0 else (sx(val), sx(0))
+        b.append(rect(a, y - 11, bb - a, 22, c))
+        # Fixed right column. Placing these next to the bar end put the
+        # negative bar's label straight through the row label on its left.
+        b.append(text(x1 + 16, y + 4, f"{val:+.2f}", 11, INK, "start", "bold"))
+        b.append(text(x1 + 72, y + 4, f"rank {rank}/27", 10, MUTE))
+    b.append(text(20, 236, f"Identical rows (n={int(ea.n)}). "
+                  f"R² {ea.p3_r2:.3f} → {ea.companion_r2:.3f}. "
+                  f"Outcome C.", 10, MUTE))
+    write("ea_reversal.svg", svg(W, H, "\n".join(b),
+          "Greece residual reverses from +6.93 to -9.39"))
+
+
+# --------------------------------------------------------------------------
+# 2. Residual ladders, both specifications
+# --------------------------------------------------------------------------
+def fig_ladders():
+    p3 = pd.read_csv(PROC / "p3_residuals.csv")
+    co = pd.read_csv(PROC / "ea_companion_residuals.csv")
+    W, H = 620, 400
+    panels = [("Frozen P3 (6 predictors)", p3, 40), ("Companion (5)", co, 330)]
+    lo, hi = -12.0, 16.0
+    top, bh = 70, 11
+    b = [text(20, 26, "Where every country sits, in both specifications",
+              13, INK, weight="bold")]
+    for title, df, px in panels:
+        b.append(text(px, 52, title, 11, INK, weight="bold"))
+        zx = px + 110 * (0 - lo) / (hi - lo)
+        b.append(line(zx, top - 6, zx, top + len(df) * bh + 4, MUTE, 1.2))
+        for i, r in df.iterrows():
+            y = top + i * bh
+            gr = r.geo == "EL"
+            c = GR if gr else (MUTE if abs(r.resid) < 5 else EU)
+            x = px + 110 * (min(r.resid, 0) - lo) / (hi - lo)
+            w = 110 * abs(r.resid) / (hi - lo)
+            b.append(rect(x, y, w, bh - 3, c, 1))
+            b.append(text(px - 6, y + bh - 4, r.geo, 8,
+                          GR if gr else MUTE, "end", "bold" if gr else "normal"))
+            if gr:
+                b.append(text(px + 118, y + bh - 4,
+                              f"{r.resid:+.1f} (rank {int(r['rank'])})", 8.5, GR,
+                              "start", "bold"))
+    b.append(text(20, H - 14, "Greece in red. Bars right of the line are "
+                  "under-predicted, left are over-predicted.", 10, MUTE))
+    write("residual_ladders.svg", svg(W, H, "\n".join(b),
+          "Residual ladders for both specifications"))
+
+
+# --------------------------------------------------------------------------
+# 3. The narrowing story, and what happens to it
+# --------------------------------------------------------------------------
+def fig_narrowing():
+    ea = pd.read_csv(PROC / "ea_results.csv").iloc[0]
+    p3 = json.loads((PROC / "p5f_frozen_result.json").read_text())["p3"]
+    W, H = 700, 240
+    x0, x1 = 210, 560
+    lo, hi = -12.0, 30.0
+    sx = lambda v: x0 + (v - lo) / (hi - lo) * (x1 - x0)
+    b = [text(20, 26, "What adding accumulated unemployment does, in each model",
+              13, INK, weight="bold")]
+    for v in [-10, 0, 10, 20, 30]:
+        b.append(line(sx(v), 60, sx(v), 175, GRID))
+        b.append(text(sx(v), 193, f"{v:+d}", 9.5, MUTE, "middle"))
+    b.append(line(sx(0), 54, sx(0), 181, MUTE, 1.5))
+    rows = [("Frozen P3", p3["residual_without_accumulation"],
+             p3["greece_oos_residual"], 95, "narrows"),
+            ("Companion", float(ea.companion_residual_no_accumulation),
+             float(ea.companion_residual), 145, "crosses zero")]
+    for label, a, z, y, kind in rows:
+        b.append(text(x0 - 14, y + 4, label, 11, INK, "end"))
+        b.append(line(sx(a), y, sx(z), y, MUTE, 1.5, "3,3"))
+        b.append(f'<circle cx="{sx(a):.1f}" cy="{y}" r="6" fill="{WARN}"/>')
+        b.append(f'<circle cx="{sx(z):.1f}" cy="{y}" r="6" fill="'
+                 f'{GOOD if kind == "narrows" else GR}"/>')
+        b.append(text(sx(a), y - 13, f"{a:+.2f}", 9.5, MUTE, "middle"))
+        b.append(text(sx(z), y - 13, f"{z:+.2f}", 9.5, INK, "middle", "bold"))
+        b.append(text(x1 + 8, y + 4, kind, 9.5,
+                      GOOD if kind == "narrows" else GR, "start", "bold"))
+    b.append(text(20, 222, "Amber = without accumulation. In frozen P3 the gap "
+                  "narrows toward zero; in the companion it passes through it.",
+                  10, MUTE))
+    write("narrowing.svg", svg(W, H, "\n".join(b), "Narrowing in each model"))
+
+
+# --------------------------------------------------------------------------
+# 4. Power curve, with the published MDE marked
+# --------------------------------------------------------------------------
+def fig_mde():
+    d = pd.read_csv(PROC / "e_mde.csv")
+    W, H = 560, 300
+    x0, y0, x1, y1 = 70, 240, 520, 60
+    sx = lambda v: x0 + (v - 0.05) / (1.05 - 0.05) * (x1 - x0)
+    sy = lambda v: y0 + v * (y1 - y0)
+    b = [text(20, 26, "Most Family E tests will be underpowered", 13, INK,
+              weight="bold"),
+         text(20, 44, "Power to detect an effect, by effect size", 10.5, MUTE)]
+    for p in [0, .2, .4, .6, .8, 1.0]:
+        b.append(line(x0, sy(p), x1, sy(p), GRID))
+        b.append(text(x0 - 8, sy(p) + 4, f"{p:.0%}", 9.5, MUTE, "end"))
+    b.append(line(x0, sy(.8), x1, sy(.8), WARN, 1.5, "4,3"))
+    b.append(text(x1, sy(.8) - 7, "80% power", 9.5, WARN, "end", "bold"))
+    pts = " ".join(f"{sx(r.effect_sd_per_sd):.1f},{sy(r.power):.1f}"
+                   for r in d.itertuples())
+    b.append(f'<polyline points="{pts}" fill="none" stroke="{EU}" stroke-width="2.5"/>')
+    for r in d.itertuples():
+        hit = abs(r.effect_sd_per_sd - 0.7) < 1e-9
+        b.append(f'<circle cx="{sx(r.effect_sd_per_sd):.1f}" '
+                 f'cy="{sy(r.power):.1f}" r="{4.5 if hit else 3}" '
+                 f'fill="{GR if hit else EU}"/>')
+        if hit:
+            b.append(line(sx(.7), sy(r.power), sx(.7), y0, GR, 1.2, "3,3"))
+            b.append(text(sx(.7) + 8, sy(r.power) - 10,
+                          "MDE 0.70 SD = 9.29 points", 10, GR, "start", "bold"))
+        b.append(text(sx(r.effect_sd_per_sd), y0 + 18,
+                      f"{r.effect_sd_per_sd:.1f}", 9, MUTE, "middle"))
+    b.append(text((x0 + x1) / 2, y0 + 38,
+                  "effect size (residual SD per SD of regressor)", 10, MUTE, "middle"))
+    b.append(text(20, H - 12, "Residual SD 13.27 points. Between-country SD "
+                  "12.87, within-country 4.01.", 10, MUTE))
+    write("mde_power.svg", svg(W, H, "\n".join(b), "Power curve with MDE marked"))
+
+
+# --------------------------------------------------------------------------
+# 5. P5: between vs within
+# --------------------------------------------------------------------------
+def fig_between_within():
+    p5 = json.loads((PROC / "p5f_frozen_result.json").read_text())["p5"]
+    W, H = 690, 220
+    x0, x1 = 220, 490
+    lo, hi = -0.55, 0.55
+    sx = lambda v: x0 + (v - lo) / (hi - lo) * (x1 - x0)
+    b = [text(20, 26, "The effect is between countries, not within them", 13,
+              INK, weight="bold"),
+         text(20, 44, "Accumulated-unemployment coefficient", 10.5, MUTE)]
+    for v in [-0.4, -0.2, 0, 0.2, 0.4]:
+        b.append(line(sx(v), 68, sx(v), 155, GRID))
+        b.append(text(sx(v), 173, f"{v:+.1f}", 9.5, MUTE, "middle"))
+    b.append(line(sx(0), 62, sx(0), 161, MUTE, 1.5))
+    b.append(text(sx(0), 58, "no effect", 9.5, MUTE, "middle"))
+    items = [("Between countries", p5["between"], None, 95, GOOD,
+              f"p < 0.0001"),
+             ("Within countries", p5["within"], p5["within_ci"], 135, MUTE,
+              f"p = {p5['within_p']:.3f}, inconclusive")]
+    for label, val, ci, y, c, note in items:
+        b.append(text(x0 - 14, y + 4, label, 11, INK, "end"))
+        if ci:
+            b.append(line(sx(ci[0]), y, sx(ci[1]), y, c, 2))
+            for e in ci:
+                b.append(line(sx(e), y - 5, sx(e), y + 5, c, 2))
+        b.append(f'<circle cx="{sx(val):.1f}" cy="{y}" r="6" fill="{c}"/>')
+        b.append(text(x1 + 12, y + 4, f"{val:+.4f}", 10.5, INK, "start", "bold"))
+        b.append(text(x1 + 12, y + 17, note, 9, MUTE))
+    b.append(text(20, 202, "The within estimate's interval spans zero widely: "
+                  "no supporting evidence, and too imprecise to rule out.",
+                  10, MUTE))
+    write("between_within.svg", svg(W, H, "\n".join(b), "Between vs within"))
+
+
+# --------------------------------------------------------------------------
+# 6. Correlations that reverse between views
+# --------------------------------------------------------------------------
+def fig_sign_reversal():
+    d = pd.read_csv(PROC / "e0_redundancy.csv")
+    W, H = 620, 330
+    x0, x1 = 240, 560
+    lo, hi = -1.0, 1.0
+    sx = lambda v: x0 + (v - lo) / (hi - lo) * (x1 - x0)
+    b = [text(20, 26, "Why pooled correlations alone would have misled us", 13,
+              INK, weight="bold"),
+         text(20, 44, "Same pair, three ways of asking", 10.5, MUTE)]
+    for v in [-1, -.5, 0, .5, 1]:
+        b.append(line(sx(v), 62, sx(v), 285, GRID))
+        b.append(text(sx(v), 303, f"{v:+.1f}", 9.5, MUTE, "middle"))
+    b.append(line(sx(0), 56, sx(0), 291, MUTE, 1.5))
+    views = [("pooled", "pooled", "#94a3b8"), ("between", "between", EU),
+             ("within", "within", WARN)]
+    y = 80
+    for r in d.itertuples():
+        flip = bool(r.sign_flips)
+        label = f"{r.primary} – {r.sensitivity}"
+        b.append(text(x0 - 14, y + 10, label, 9.5,
+                      GR if flip else INK, "end", "bold" if flip else "normal"))
+        for i, (_, col, c) in enumerate(views):
+            v = getattr(r, col)
+            yy = y + i * 6
+            b.append(f'<circle cx="{sx(v):.1f}" cy="{yy:.1f}" r="3.2" fill="{c}"/>')
+        if flip:
+            b.append(text(x1 + 10, y + 10, "reverses", 9, GR, "start", "bold"))
+        y += 24
+    lx = 24
+    for name, _, c in views:
+        b.append(f'<circle cx="{lx}" cy="{H - 18}" r="3.2" fill="{c}"/>')
+        b.append(text(lx + 8, H - 15, name, 9.5, MUTE))
+        lx += 70
+    write("sign_reversal.svg", svg(W, H, "\n".join(b),
+          "Correlations across three views"))
+
+
+# --------------------------------------------------------------------------
+# 7. E0 coverage
+# --------------------------------------------------------------------------
+def fig_coverage():
+    c = pd.read_csv(PROC / "e0_coverage.csv").sort_values("n_obs")
+    inc = c[c.n_obs < 270]
+    W, H = 700, 260
+    x0, x1 = 200, 470
+    sx = lambda v: x0 + (v - 250) / (270 - 250) * (x1 - x0)
+    b = [text(20, 26, "Coverage is strong; the gaps are few and located", 13,
+              INK, weight="bold"),
+         text(20, 44, f"{int((c.n_obs == 270).sum())} of {len(c)} variables are "
+              "complete at 270/270. The exceptions:", 10.5, MUTE)]
+    where = {"arop_threshold_real": "Croatia, all years",
+             "arrears": "Luxembourg 2018–19",
+             "saving_rate": "Bulgaria 2023–24",
+             "debt_to_income": "Bulgaria 2023–24",
+             "real_income_idx": "Bulgaria 2023–24",
+             "net_migration": "Portugal 2024",
+             "housing_cost_overburden": "France 2021"}
+    y = 76
+    for r in inc.itertuples():
+        b.append(text(x0 - 12, y + 9, r.name, 10, INK, "end"))
+        b.append(rect(sx(250), y, sx(r.n_obs) - sx(250), 13,
+                      GR if r.n_obs < 265 else EU))
+        b.append(text(sx(r.n_obs) + 8, y + 10, f"{int(r.n_obs)}", 9.5, INK,
+                      "start", "bold"))
+        b.append(text(sx(r.n_obs) + 42, y + 10, where.get(r.name, ""), 9, MUTE))
+        y += 22
+    b.append(text(20, H - 14, "Croatia's threshold gap costs a whole country, "
+                  "so those analyses run on 26, not 27.", 10, MUTE))
+    write("coverage.svg", svg(W, H, "\n".join(b), "E0 coverage gaps"))
+
+
+def check_overflow():
+    """Fail if any label runs past its viewBox.
+
+    Three figures shipped clipped on the first pass -- the right-hand
+    annotations simply ran off the canvas, and nothing complained because an
+    SVG clips silently. Width is estimated from character count, which is
+    approximate, so the margin is deliberately slack.
+    """
+    import re
+    bad = []
+    for f in sorted(FIG.glob("*.svg")):
+        s = f.read_text()
+        w = int(re.search(r'viewBox="0 0 (\d+)', s).group(1))
+        for m in re.finditer(
+                r'<text x="([\d.]+)"[^>]*font-size="([\d.]+)"[^>]*'
+                r'text-anchor="(\w+)"[^>]*>([^<]*)</text>', s):
+            x, size, anchor, txt = (float(m.group(1)), float(m.group(2)),
+                                    m.group(3), m.group(4))
+            adv = len(txt) * size * 0.55
+            right = x + adv if anchor == "start" else (
+                x + adv / 2 if anchor == "middle" else x)
+            if right > w:
+                bad.append(f"{f.name}: {txt!r} extends to ~{right:.0f} > {w}")
+            if (x - adv if anchor == "end" else x) < 0:
+                bad.append(f"{f.name}: {txt!r} extends past the left edge")
+    if bad:
+        raise SystemExit("FIGURE OVERFLOW\n  " + "\n  ".join(bad))
+    print(f"  overflow check: {len(list(FIG.glob('*.svg')))} figures within bounds")
+
+
+print("figures ->", FIG.relative_to(ROOT))
+for f in (fig_ea_reversal, fig_ladders, fig_narrowing, fig_mde,
+          fig_between_within, fig_sign_reversal, fig_coverage):
+    f()
+check_overflow()

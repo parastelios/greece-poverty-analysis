@@ -1,0 +1,851 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>V2 Research Record</title><style>
+:root{--bg:#fbfaf7;--panel:#fff;--ink:#1f2933;--soft:#4a5568;--mute:#7b8794;
+--line:#e3e0d8;--accent:#7a4b2a;--accent-soft:#f0e6dc;--code:#f4f1ec;
+--gr:#c0392b;--ok:#2f855a;--warn:#b7791f;--max:52rem;--fig-min:620px}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){
+--bg:#16181c;--panel:#1d2025;--ink:#e8e6e1;--soft:#b6bcc5;--mute:#8b929c;
+--line:#2e333a;--accent:#d9a273;--accent-soft:#2a2218;--code:#23262c;
+--gr:#e8776a;--ok:#68b98a;--warn:#d9a441}}
+:root[data-theme=dark]{--bg:#16181c;--panel:#1d2025;--ink:#e8e6e1;--soft:#b6bcc5;
+--mute:#8b929c;--line:#2e333a;--accent:#d9a273;--accent-soft:#2a2218;
+--code:#23262c;--gr:#e8776a;--ok:#68b98a;--warn:#d9a441}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+font:16px/1.65 Charter,"Bitstream Charter","Iowan Old Style",Georgia,serif;
+-webkit-font-smoothing:antialiased}
+.wrap{display:grid;grid-template-columns:16rem minmax(0,var(--max));
+gap:3rem;justify-content:center;padding:2.5rem 1.5rem 6rem}
+nav{position:sticky;top:2.5rem;align-self:start;max-height:calc(100vh - 5rem);
+overflow-y:auto;font-family:ui-sans-serif,system-ui,sans-serif;font-size:.8rem}
+nav h2{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;
+color:var(--mute);margin:0 0 .75rem;font-weight:600}
+nav a{display:block;padding:.28rem .6rem;color:var(--soft);text-decoration:none;
+border-left:2px solid transparent;line-height:1.35}
+nav a:hover{color:var(--accent);border-left-color:var(--accent);
+background:var(--accent-soft)}
+main{min-width:0}
+h1{font-size:2.1rem;line-height:1.15;margin:0 0 .4rem;letter-spacing:-.01em;
+text-wrap:balance}
+h2{font-size:1.5rem;margin:3.5rem 0 1rem;padding-top:1.4rem;
+border-top:1px solid var(--line);text-wrap:balance;letter-spacing:-.005em}
+h3{font-size:1.06rem;margin:2rem 0 .6rem;color:var(--accent);
+font-family:ui-sans-serif,system-ui,sans-serif;font-weight:650;
+letter-spacing:.005em}
+p{margin:0 0 1rem}
+a{color:var(--accent)}
+code{font:.85em/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;
+background:var(--code);padding:.12em .38em;border-radius:3px;
+word-break:break-word}
+blockquote{margin:1.4rem 0;padding:.9rem 1.2rem;background:var(--panel);
+border-left:3px solid var(--accent);border-radius:0 4px 4px 0;color:var(--soft)}
+blockquote p{margin:0;font-size:.94rem}
+ul,ol{margin:0 0 1rem;padding-left:1.3rem}
+li{margin:.3rem 0}
+hr{border:0;border-top:1px solid var(--line);margin:2.5rem 0}
+.tw{overflow-x:auto;margin:1.2rem 0;border:1px solid var(--line);
+border-radius:6px;background:var(--panel)}
+table{border-collapse:collapse;width:100%;
+font:.86rem/1.45 ui-sans-serif,system-ui,sans-serif;
+font-variant-numeric:tabular-nums}
+th{text-align:left;padding:.6rem .8rem;border-bottom:1.5px solid var(--line);
+font-weight:650;color:var(--soft);font-size:.78rem;letter-spacing:.03em;
+text-transform:uppercase;white-space:nowrap}
+td{padding:.55rem .8rem;border-bottom:1px solid var(--line);vertical-align:top}
+tbody tr:last-child td{border-bottom:0}
+.fig{margin:1.6rem 0;padding:1rem;background:var(--panel);
+border:1px solid var(--line);border-radius:6px;text-align:center;
+overflow-x:auto;-webkit-overflow-scrolling:touch}
+.fig svg,.svg{max-width:100%;height:auto;border-radius:3px}
+/* Below the breakpoint a figure SCROLLS rather than shrinking. Letting it
+   shrink to fit 375px put the smallest labels at ~4 effective pixels. */
+@media(max-width:56rem){.fig svg,.svg{min-width:var(--fig-min);max-width:none}}
+.missing{color:var(--gr);font-family:ui-sans-serif,system-ui,sans-serif}
+.sub{color:var(--mute);font:.9rem/1.5 ui-sans-serif,system-ui,sans-serif;
+margin-bottom:2rem}
+@media(max-width:56rem){.wrap{grid-template-columns:minmax(0,1fr);gap:0;
+padding:1.5rem 1.1rem 4rem}nav{position:static;max-height:none;
+margin-bottom:2rem;padding-bottom:1.2rem;border-bottom:1px solid var(--line);
+columns:2;font-size:.75rem}h1{font-size:1.6rem}h2{font-size:1.25rem}
+body{font-size:15px}}
+@media print{nav{display:none}.wrap{grid-template-columns:1fr}}
+</style></head><body><div class="wrap"><nav><h2>Contents</h2><a href="#how-to-read-this">How to read this</a><a href="#document-control">Document Control</a><a href="#ground-rules">Ground Rules</a><a href="#stage-index">Stage Index</a><a href="#standard-stage-template">Standard Stage Template</a><a href="#p0-is-our-outcome-measure-the-real-thing">P0 — Is our outcome measure the real thing?</a><a href="#p2-can-we-build-a-synthetic-comparison-country">P2 — Can we build a synthetic comparison country?</a><a href="#p3-how-much-of-greecex27s-gap-do-objective-conditions-explain">P3 — How much of Greece&#x27;s gap do objective conditions explain?</a><a href="#p5-is-that-a-real-relationship-or-a-difference-between-countries">P5 — Is that a real relationship, or a difference between countries?</a><a href="#p3a-does-breadth-of-disadvantage-add-anything">P3a — Does breadth of disadvantage add anything?</a><a href="#e0-data-and-construct-map">E0 — Data and construct map</a><a href="#pre-pre-registration-and-power">PRE — Pre-registration and power</a><a href="#eda-descriptive-groundwork">EDA — Descriptive groundwork</a><a href="#ea-deprivation-free-companion-audit">EA — Deprivation-free companion audit</a><a href="#e1-current-level-constructs">E1 — Current-level constructs</a><a href="#e2-current-level-sensitivities">E2 — Current-level sensitivities</a><a href="#e3-diagnostic-and-contextual-checks">E3 — Diagnostic and contextual checks</a><a href="#e4-accumulated-exposure">E4 — Accumulated exposure</a><a href="#e5-accumulation-sensitivities">E5 — Accumulation sensitivities</a><a href="#e6-frozen-combined-model">E6 — Frozen combined model</a><a href="#e7-current-versus-accumulated-comparison">E7 — Current versus accumulated comparison</a><a href="#final-claim-freeze-and-publication">Final — Claim freeze and publication</a><a href="#decision-register">Decision Register</a><a href="#results-register">Results Register</a><a href="#claim-register">Claim Register</a><a href="#corrections-and-supersessions">Corrections and Supersessions</a><a href="#artifact-index">Artifact Index</a></nav><main><h1>V2 Research Record</h1>
+<h2 id="how-to-read-this">How to read this</h2>
+<p>This is the living record of the V2 analysis. It documents what was planned, what was run, what was found, and what decision followed at each stage.</p>
+<p>Every stage below opens with <strong>In plain words</strong> — a short, non-technical account of what the step was for and what came out of it. If you read nothing else, read those. Everything after that heading is the formal record.</p>
+<p>Every stage ends with <strong>Where the detail lives</strong> — the script that produced it, the files it wrote, and the commit that froze it.</p>
+<p>Some stages also carry <strong>Notes from review</strong> — why a decision went the way it did, what was argued against, and what was caught by review rather than by the code. These exist because the reasoning is the first thing to evaporate. Six months from now the numbers will still be in the CSVs; the argument that produced them will not be anywhere else.</p>
+<p>The technical report, academic paper, and narrative companion are not updated stage by stage. They are revised only after the analytical sequence is complete and the claims have been frozen.</p>
+<p><strong>Sources of truth.</strong> This document does not restate them, it points at them:</p>
+<div class="tw"><table><thead><tr><th style="text-align:left">Thing</th><th style="text-align:left">Lives in</th><th style="text-align:left">Maintained by</th></tr></thead><tbody><tr><td style="text-align:left">The 53 published claims and their disposition</td><td style="text-align:left"><code>docs/claim_matrix.csv</code></td><td style="text-align:left"><code>scripts/build_claim_matrix.py</code>, audited by <code>audit_parity.py</code></td></tr><tr><td style="text-align:left">Full dated decision log with reasoning</td><td style="text-align:left"><code>docs/publication_strategy.md</code></td><td style="text-align:left">hand-written, append-only</td></tr><tr><td style="text-align:left">The protocol V2 follows</td><td style="text-align:left"><code>docs/project_description_v3.md</code></td><td style="text-align:left">hand-written</td></tr><tr><td style="text-align:left">Frozen P3/P5/P3a values and wording rules</td><td style="text-align:left"><code>data/processed/p5f_frozen_result.json</code></td><td style="text-align:left">frozen, never edited</td></tr><tr><td style="text-align:left">Frozen construct map</td><td style="text-align:left"><code>data/processed/construct_map_frozen.json</code></td><td style="text-align:left">frozen, never edited</td></tr><tr><td style="text-align:left">Frozen E pre-registration</td><td style="text-align:left"><code>data/processed/e_preregistration.json</code></td><td style="text-align:left">frozen, never edited</td></tr></tbody></table></div>
+<h2 id="document-control">Document Control</h2>
+<div class="tw"><table><thead><tr><th style="text-align:left">Field</th><th style="text-align:left">Value</th></tr></thead><tbody><tr><td style="text-align:left">Current stage</td><td style="text-align:left">EDA</td></tr><tr><td style="text-align:left">Last completed stage</td><td style="text-align:left">EA</td></tr><tr><td style="text-align:left">Branch</td><td style="text-align:left"><code>p6-rewrite</code></td></tr><tr><td style="text-align:left">HEAD</td><td style="text-align:left"><code>ad37d6a</code> Expand E0 into a step-by-step account with per-step results and file pointers</td></tr><tr><td style="text-align:left">Uncommitted changes</td><td style="text-align:left">yes</td></tr><tr><td style="text-align:left">Last refreshed</td><td style="text-align:left">2026-08-22</td></tr><tr><td style="text-align:left">Frozen V1 reference</td><td style="text-align:left"><code>v1-final</code></td></tr><tr><td style="text-align:left">Frozen V2 analytical reference</td><td style="text-align:left"><code>p5f-frozen</code></td></tr></tbody></table></div>
+<h2 id="ground-rules">Ground Rules</h2>
+<ul><li>Pre-registration is committed before the corresponding test is run.</li><li>Results are committed separately from their pre-registration.</li><li>Exploratory analyses remain exploratory.</li><li>Superseded decisions and claims are retained and linked to replacements.</li><li>Null, inconclusive, infeasible, and unsupported results remain visible.</li><li>Current and accumulated measures are different estimands.</li><li>Raw gaps and regression residuals are not a formal decomposition.</li><li>Proximate hardship indicators cannot become the headline explanation.</li><li>No Family E result may alter P3, P5, or <code>p5f-frozen</code>.</li><li>Freezing a result protects its numbers and interpretation. It does not protect an inaccurate label, and it does not forbid a pre-registered audit of what the result depends on.</li><li>Evidence that deprivation predicts hardship is <strong>not</strong> equivalent to evidence from income, employment, wage or housing data. Both are analytically relevant; both are reported as separate layers, never forced under one &quot;objective&quot; label.</li><li>E1 and E4 use the neutral baseline <code>AROP + year effects</code>. P3 returns only at E6, as the frozen combined benchmark reported alongside the deprivation-free companion.</li></ul>
+<h2 id="stage-index">Stage Index</h2>
+<div class="tw"><table><thead><tr><th style="text-align:left">Stage</th><th style="text-align:left">Question</th><th style="text-align:left">Status</th><th style="text-align:left">Pre-registration</th><th style="text-align:left">Result</th><th style="text-align:left">Entry</th></tr></thead><tbody><tr><td style="text-align:left">P0</td><td style="text-align:left">Is our outcome measure the real thing?</td><td style="text-align:left">complete</td><td style="text-align:left">—</td><td style="text-align:left">—</td><td style="text-align:left"><a href="#p0--is-our-outcome-measure-the-real-thing">P0</a></td></tr><tr><td style="text-align:left">P2</td><td style="text-align:left">Can we build a synthetic comparison country?</td><td style="text-align:left">complete</td><td style="text-align:left">—</td><td style="text-align:left">—</td><td style="text-align:left"><a href="#p2--can-we-build-a-synthetic-comparison-country">P2</a></td></tr><tr><td style="text-align:left">P3</td><td style="text-align:left">How much of Greece&#x27;s gap do objective conditions explain?</td><td style="text-align:left">complete</td><td style="text-align:left">—</td><td style="text-align:left">—</td><td style="text-align:left"><a href="#p3--how-much-of-greeces-gap-do-objective-conditions-explain">P3</a></td></tr><tr><td style="text-align:left">P5</td><td style="text-align:left">Is that a real relationship, or a difference between countries?</td><td style="text-align:left">complete</td><td style="text-align:left">—</td><td style="text-align:left"><code>p5f-frozen</code></td><td style="text-align:left"><a href="#p5--is-that-a-real-relationship-or-a-difference-between-countries">P5</a></td></tr><tr><td style="text-align:left">P3a</td><td style="text-align:left">Does breadth of disadvantage add anything?</td><td style="text-align:left">complete</td><td style="text-align:left"><code>p3a_frozen_universe.json</code></td><td style="text-align:left">—</td><td style="text-align:left"><a href="#p3a--does-breadth-of-disadvantage-add-anything">P3a</a></td></tr><tr><td style="text-align:left">E0</td><td style="text-align:left">What data and constructs are suitable for testing?</td><td style="text-align:left">complete</td><td style="text-align:left">—</td><td style="text-align:left"><code>2103b3d</code></td><td style="text-align:left"><a href="#e0--data-and-construct-map">E0</a></td></tr><tr><td style="text-align:left">PRE</td><td style="text-align:left">What exact tests and decision rules are fixed before analysis?</td><td style="text-align:left">complete</td><td style="text-align:left"><code>a747e7a</code></td><td style="text-align:left"><code>476e177</code></td><td style="text-align:left"><a href="#pre--pre-registration-and-power">PRE</a></td></tr><tr><td style="text-align:left">EDA</td><td style="text-align:left">What do the candidate variables actually look like?</td><td style="text-align:left"><strong>next</strong></td><td style="text-align:left">—</td><td style="text-align:left">—</td><td style="text-align:left"><a href="#eda--descriptive-groundwork">EDA</a></td></tr><tr><td style="text-align:left">EA</td><td style="text-align:left">How much of the P3 result depends on a same-instrument predictor?</td><td style="text-align:left">complete</td><td style="text-align:left"><code>ea_preregistration.json</code></td><td style="text-align:left">—</td><td style="text-align:left"><a href="#ea--deprivation-free-companion-audit">EA</a></td></tr><tr><td style="text-align:left">E1</td><td style="text-align:left">Which current-level constructs are associated with hardship?</td><td style="text-align:left">pending</td><td style="text-align:left"><code>a747e7a</code></td><td style="text-align:left">—</td><td style="text-align:left"><a href="#e1--current-level-constructs">E1</a></td></tr><tr><td style="text-align:left">E2</td><td style="text-align:left">Do sensitivity variants change the current-level conclusions?</td><td style="text-align:left">pending</td><td style="text-align:left"><code>a747e7a</code></td><td style="text-align:left">—</td><td style="text-align:left"><a href="#e2--current-level-sensitivities">E2</a></td></tr><tr><td style="text-align:left">E3</td><td style="text-align:left">What do the diagnostic and contextual checks show?</td><td style="text-align:left">pending</td><td style="text-align:left"><code>a747e7a</code></td><td style="text-align:left">—</td><td style="text-align:left"><a href="#e3--diagnostic-and-contextual-checks">E3</a></td></tr><tr><td style="text-align:left">E4</td><td style="text-align:left">Which accumulated constructs are associated with hardship?</td><td style="text-align:left">pending</td><td style="text-align:left"><code>a747e7a</code></td><td style="text-align:left">—</td><td style="text-align:left"><a href="#e4--accumulated-exposure">E4</a></td></tr><tr><td style="text-align:left">E5</td><td style="text-align:left">Do accumulated-measure sensitivities change those conclusions?</td><td style="text-align:left">pending</td><td style="text-align:left"><code>a747e7a</code></td><td style="text-align:left">—</td><td style="text-align:left"><a href="#e5--accumulation-sensitivities">E5</a></td></tr><tr><td style="text-align:left">E6</td><td style="text-align:left">Does the frozen combined model remain appropriate?</td><td style="text-align:left">pending</td><td style="text-align:left"><code>a747e7a</code></td><td style="text-align:left">—</td><td style="text-align:left"><a href="#e6--frozen-combined-model">E6</a></td></tr><tr><td style="text-align:left">E7</td><td style="text-align:left">Do accumulated measures add information beyond current snapshots?</td><td style="text-align:left">pending</td><td style="text-align:left"><code>a747e7a</code></td><td style="text-align:left">—</td><td style="text-align:left"><a href="#e7--current-versus-accumulated-comparison">E7</a></td></tr><tr><td style="text-align:left">FINAL</td><td style="text-align:left">What survives into the final reports?</td><td style="text-align:left">pending</td><td style="text-align:left">—</td><td style="text-align:left">—</td><td style="text-align:left"><a href="#final--claim-freeze-and-publication">FINAL</a></td></tr></tbody></table></div>
+<h2 id="standard-stage-template">Standard Stage Template</h2>
+<p>Every analytical stage uses these headings, in this order:</p>
+<h3 id="in-plain-words">In plain words</h3>
+<h3 id="question">Question</h3>
+<h3 id="pre-registered-specification">Pre-registered specification</h3>
+<h3 id="data-and-sample">Data and sample</h3>
+<h3 id="minimum-detectable-effect">Minimum detectable effect</h3>
+<h3 id="results">Results</h3>
+<h3 id="robustness-and-validation">Robustness and validation</h3>
+<h3 id="interpretation">Interpretation</h3>
+<h3 id="what-this-does-not-establish">What this does not establish</h3>
+<h3 id="decision">Decision</h3>
+<h3 id="open-issues">Open issues</h3>
+<h3 id="where-the-detail-lives">Where the detail lives</h3>
+<hr>
+<h1>Part I — Completed stages</h1>
+<h2 id="p0-is-our-outcome-measure-the-real-thing">P0 — Is our outcome measure the real thing?</h2>
+<h3 id="in-plain-words">In plain words</h3>
+<p>Before testing anything, we had to know whether the hardship series we built ourselves was actually the official European statistic, or something we had invented that merely resembled it. It turned out to be the official one. Where both exist, they agree almost perfectly — the typical difference is zero, and no country-year differs by more than a tenth of a percentage point. So the series was renamed to say what it is: the official indicator, extended backwards in time before the official version begins.</p>
+<h3 id="question">Question</h3>
+<p>Is the constructed <code>DIF+GRT</code> series the same quantity as Eurostat <code>ilc_sbjp01</code>?</p>
+<h3 id="results">Results</h3>
+<div class="tw"><table><thead><tr><th style="text-align:left">Check</th><th style="text-align:left">Tolerance set before running</th><th style="text-align:left">Result</th></tr></thead><tbody><tr><td style="text-align:left">Median absolute difference</td><td style="text-align:left">≤ 0.5 pp</td><td style="text-align:left"><strong>0.0 pp</strong></td></tr><tr><td style="text-align:left">Share of country-years within 5 pp</td><td style="text-align:left">≥ 0.95</td><td style="text-align:left"><strong>1.00</strong></td></tr><tr><td style="text-align:left">Minimum cross-sectional Spearman rank correlation</td><td style="text-align:left">≥ 0.90</td><td style="text-align:left"><strong>0.999</strong></td></tr><tr><td style="text-align:left">Greece trend correlation</td><td style="text-align:left">≥ 0.90</td><td style="text-align:left"><strong>0.99999</strong></td></tr></tbody></table></div>
+<p>432 overlapping country-years; 318 exact matches; none differing by more than 0.1 pp.</p>
+<h3 id="decision">Decision</h3>
+<p><strong>Passed.</strong> The outcome is renamed the <em>backward-extended official subjective- hardship indicator</em>. Four wording rules were locked: terminology; that the splice occurs at 2010; that validation covers only the overlap period; and that pre-2010 provenance is ours, not Eurostat&#x27;s.</p>
+<h3 id="notes-from-review">Notes from review</h3>
+<p>The tolerances were declared before the comparison ran, which mattered more than it looked at the time: the agreement turned out to be near-perfect, and a tolerance set <em>afterwards</em> would have been unfalsifiable no matter what number it contained.</p>
+<p>The renaming was not cosmetic. Calling it &quot;our constructed series&quot; understated what it is and invited a reviewer to ask why we had not simply used the official indicator. Calling it &quot;the official indicator&quot; would have overstated the pre-2010 segment, which has no official counterpart. The compound name is the only one that survives both objections.</p>
+<h3 id="what-this-does-not-establish">What this does not establish</h3>
+<p>Nothing about the pre-2010 segment, which has no official counterpart to be validated against.</p>
+<h3 id="where-the-detail-lives">Where the detail lives</h3>
+<p><code>scripts/51_p0_outcome_reconciliation.py</code>, <code>scripts/outcome.py</code> · <code>data/processed/p0_outcome_reconciliation.csv</code>, <code>p0_verdict.csv</code> · <code>docs/publication_strategy.md</code> § &quot;P0 complete&quot;</p>
+<hr>
+<h2 id="p2-can-we-build-a-synthetic-comparison-country">P2 — Can we build a synthetic comparison country?</h2>
+<h3 id="in-plain-words">In plain words</h3>
+<p>The idea was to construct an artificial &quot;Greece&quot; out of a weighted blend of other European countries that matched Greece before the crisis, then see how far the real Greece diverged from it afterwards. This failed, and we recorded the failure instead of quietly dropping it. The blend collapsed onto essentially two countries — Hungary and Bulgaria — which between them have about half Greece&#x27;s income and three times its deprivation rate. A comparison built on that is not a comparison. The large post-crisis divergence the method produced is therefore <strong>not reportable as a result</strong>, and a rule in the audit script forbids it appearing in any document.</p>
+<h3 id="question">Question</h3>
+<p>Is a synthetic-control comparative design viable on this panel?</p>
+<h3 id="pre-registered-specification">Pre-registered specification</h3>
+<p>Primary pre-period 2005–2008 (2009 excluded as a transition year), six gates fixed before running.</p>
+<h3 id="results">Results</h3>
+<div class="tw"><table><thead><tr><th style="text-align:left">Specification</th><th style="text-align:left">Pre-period RMSE</th><th style="text-align:left">Max donor weight</th><th style="text-align:left">Effective donors</th></tr></thead><tbody><tr><td style="text-align:left">2005–2008, unpenalised</td><td style="text-align:left">0.91</td><td style="text-align:left">0.55</td><td style="text-align:left">1.98</td></tr><tr><td style="text-align:left">2005–2008, regularised (λ=0.5)</td><td style="text-align:left">0.91</td><td style="text-align:left">0.55</td><td style="text-align:left">1.98</td></tr><tr><td style="text-align:left">2005–2009</td><td style="text-align:left">0.93</td><td style="text-align:left">0.49</td><td style="text-align:left">2.22</td></tr></tbody></table></div>
+<p>Donor weights: Hungary 0.552, Bulgaria 0.448, everything else ≈ 0.</p>
+<p><strong>Failed 4 of 6 gates</strong>: donor concentration, covariate imbalance on income, covariate imbalance on deprivation, and effective donor count.</p>
+<h3 id="decision">Decision</h3>
+<p><strong>Rejected as infeasible.</strong> The +27 pp divergence figure is marked non-reportable via <code>FORBIDDEN</code> rules in <code>audit_parity.py</code>, which fails the build if it appears in any output document.</p>
+<h3 id="notes-from-review">Notes from review</h3>
+<p>An earlier draft reported this design as evidence, citing a near-exact pre-crisis fit. That fit existed only on a degenerate two-point window (2007–2008). On the honest 2003–2008 window the RMSE is 25.3 — a failure. The error reached three published documents before review caught it.</p>
+<p>A separate error travelled with it: <code>p=0.037</code> was attributed to synthetic-control placebo inference when it comes from the TWFE country-placebo test.</p>
+<p>The machine-enforced ban exists because of how that first error propagated. A figure that is merely <em>documented</em> as unreportable gets copied into a summary by someone reading quickly. One that fails the build does not.</p>
+<h3 id="where-the-detail-lives">Where the detail lives</h3>
+<p><code>scripts/52_p2_comparative_design.py</code> · <code>data/processed/p2_specifications.csv</code>, <code>p2_donor_weights.csv</code>, <code>p2_placebo_distribution.csv</code> · <code>docs/publication_strategy.md</code> § &quot;P2 FAILS its pre-registered gates&quot;</p>
+<hr>
+<h2 id="p3-how-much-of-greecex27s-gap-do-objective-conditions-explain">P3 — How much of Greece&#x27;s gap do objective conditions explain?</h2>
+<blockquote><p><strong>Label corrected 2026-08-22.</strong> This is the <strong>frozen P3 mixed-distance model</strong>, not an objective-only model: it excludes the closest Tier-0 indicators but retains official severe material and social deprivation, drawn from the same survey system as the outcome. The numbers, specification and interpretation below are frozen and unchanged. What changed is the label and the addition of a pre-registered audit — see <a href="#ea--deprivation-free-companion-audit">EA</a>.</p></blockquote>
+<h3 id="in-plain-words">In plain words</h3>
+<p>We predicted each country&#x27;s hardship level from objective conditions, deliberately excluding the measures closest to the outcome — arrears, being unable to meet an unexpected expense, financial expectations. Greece&#x27;s actual hardship sits far above what those conditions predict: <strong>27 points above</strong>, the worst gap in Europe. Then we added one variable — how much cumulative excess unemployment the country has absorbed since the crisis — and the gap fell to <strong>7 points</strong>.</p>
+<p>So adding accumulated unemployment substantially narrows Greece&#x27;s cross-country prediction residual. It does not eliminate it. <strong>Greece remains among the three most under-predicted countries in Europe</strong>, which is what kept this at Branch 2 rather than Branch 1.</p>
+<p>One caveat on the label, and it is not only a caveat. Of P3&#x27;s six predictors, <code>severe_mat_soc_deprivation</code> is classified by E0 as <code>proximate_same_instrument</code> — it comes from the same survey system as the outcome and belongs to construct P1, the diagnostic-only construct. So this model excludes the <em>closest</em> proximate measures but is not free of same-instrument hardship indicators.</p>
+<p>Freezing P3 protects its numbers from being changed after the fact. It does not oblige us to keep calling it &quot;objective-only&quot; once one predictor is known to break the proximity rule we adopted later. So the model keeps its numbers and gets an accurate name — the <strong>frozen P3 mixed-distance model</strong> — and the question of how much the result depends on that one predictor is settled by a pre-registered audit rather than by wording. See <a href="#ea--deprivation-free-companion-audit">EA</a>.</p>
+<h3 id="question">Question</h3>
+<p>With the Tier-0 proximate indicators excluded, how large is Greece&#x27;s residual, and does accumulated exposure narrow it?</p>
+<h3 id="specification">Specification</h3>
+<p>Six predictors plus year fixed effects, all fixed in advance:</p>
+<div class="tw"><table><thead><tr><th style="text-align:left">Predictor</th><th style="text-align:left">E0 proximity class</th></tr></thead><tbody><tr><td style="text-align:left"><code>severe_mat_soc_deprivation</code></td><td style="text-align:left"><strong><code>proximate_same_instrument</code></strong> (construct P1)</td></tr><tr><td style="text-align:left"><code>housing_cost_overburden</code></td><td style="text-align:left"><code>objective</code></td></tr><tr><td style="text-align:left"><code>ltu_rate</code></td><td style="text-align:left"><code>objective</code></td></tr><tr><td style="text-align:left"><code>aic_pps_pc_k</code></td><td style="text-align:left"><code>objective</code></td></tr><tr><td style="text-align:left"><code>wage_years_below_2008</code></td><td style="text-align:left">derived accumulation</td></tr><tr><td style="text-align:left"><code>cum_excess_unemployment</code></td><td style="text-align:left">derived accumulation</td></tr></tbody></table></div>
+<p>Excluded by construction (Tier 0): arrears, inability to meet an unexpected expense, financial expectations.</p>
+<h3 id="results">Results</h3>
+<div class="tw"><table><thead><tr><th style="text-align:left">Specification</th><th style="text-align:left">Greece residual</th><th style="text-align:left">Rank</th></tr></thead><tbody><tr><td style="text-align:left">Objective conditions, no accumulation</td><td style="text-align:left"><strong>+27.05</strong></td><td style="text-align:left">1 of 27</td></tr><tr><td style="text-align:left">Plus <code>cum_excess_unemployment</code></td><td style="text-align:left"><strong>+6.93</strong></td><td style="text-align:left">3 of 27</td></tr><tr><td style="text-align:left">Plus Tier-0 proximate indicators (diagnostic only)</td><td style="text-align:left">+3.81</td><td style="text-align:left">—</td></tr></tbody></table></div>
+<p>Model fit R² = 0.907, n = 269.</p>
+<h3 id="decision">Decision</h3>
+<p><strong>Branch 2 of 4</strong> — <em>material history explains a meaningful share, not the full difference.</em> Chosen by <code>scripts/branch_rule.py</code>, a tested function (17 tests), not by judgement: the residual clears the ≤10 bar, but the rank stays inside the extreme-outlier group (≤3), which rules out Branch 1.</p>
+<blockquote><p>This branch rule exists because an earlier hand-written version defaulted to the strongest conclusion and reported &quot;strong objective support&quot; while Greece sat at rank 3. Prose pre-registration did not prevent that; a tested function does.</p></blockquote>
+<h3 id="notes-from-review">Notes from review</h3>
+<p>The branch rule is the origin of a policy now applied to every decision rule in the project. The pre-commitment was correct and written down in advance; the implementation had an if/else chain whose final <code>else</code> returned the strongest available conclusion. Nothing in the prose was wrong. The code simply did not implement it, and the first run published the wrong branch.</p>
+<p>Since then a decision rule is a tested function or it is not a rule. <code>branch_rule</code> (17 tests), <code>mundlak_rule</code> (23), <code>ea_rule</code> (47). The EA run proved the policy was not paranoia: that rule failed too, on a case its author had not imagined.</p>
+<h3 id="evidentiary-tier">Evidentiary tier</h3>
+<p><strong>Post-selection robustness, not independent confirmation.</strong> <code>cum_excess_unemployment</code> was discovered on this same panel during family-A screening. It has not been validated out of sample.</p>
+<h3 id="where-the-detail-lives">Where the detail lives</h3>
+<p><code>scripts/53_p3_objective_only.py</code>, <code>scripts/branch_rule.py</code>, <code>scripts/test_branch_rule.py</code> · <code>data/processed/p3_objective_only.csv</code>, <code>p3_residuals.csv</code> · <code>docs/publication_strategy.md</code> § &quot;P3 result: BRANCH 2&quot;</p>
+<hr>
+<h2 id="p5-is-that-a-real-relationship-or-a-difference-between-countries">P5 — Is that a real relationship, or a difference between countries?</h2>
+<h3 id="in-plain-words">In plain words</h3>
+<p>This is the most important limitation in the whole project, so it is worth stating carefully — and carefully means resisting the stronger sentence that keeps suggesting itself.</p>
+<p>The accumulated-unemployment result works by comparing <em>countries to each other</em>: countries that absorbed more accumulated unemployment have higher hardship. That signal is strong and statistically solid.</p>
+<p>The second half is where the wording has to stay disciplined. <strong>We found no supporting within-country evidence, and the estimate is too imprecise to establish or rule out such a relationship.</strong> It is flat and inconclusive, not demonstrated to be absent.</p>
+<p>Two things this specifically does not say. It does not say the relationship fails <em>inside Greece</em>: the within coefficient pools year-to-year variation across all 27 countries, so it is not a Greece-specific time series, and we never estimated one. And it does not say there is no dynamic relationship — only that this analysis does not demonstrate one.</p>
+<p>That means we may describe this as a <em>scarring marker that distinguishes countries</em>. We may <strong>never</strong> write &quot;as exposure accumulated, hardship rose.&quot; That sentence is not supported.</p>
+<h3 id="results">Results</h3>
+<div class="tw"><table><thead><tr><th style="text-align:left">Component</th><th style="text-align:left">Estimate</th><th style="text-align:left">p</th></tr></thead><tbody><tr><td style="text-align:left">Between-country</td><td style="text-align:left"><strong>+0.3323</strong></td><td style="text-align:left">&lt; 0.0001</td></tr><tr><td style="text-align:left">Within-country</td><td style="text-align:left"><strong>−0.0755</strong></td><td style="text-align:left">0.692</td></tr><tr><td style="text-align:left">Test of within = between</td><td style="text-align:left">—</td><td style="text-align:left">0.058</td></tr><tr><td style="text-align:left">Country fixed effects</td><td style="text-align:left">−0.0385</td><td style="text-align:left">—</td></tr><tr><td style="text-align:left">First differences</td><td style="text-align:left">−0.0034</td><td style="text-align:left">—</td></tr><tr><td style="text-align:left">Country-specific trends</td><td style="text-align:left">+0.0490</td><td style="text-align:left">—</td></tr></tbody></table></div>
+<p>Mundlak outcome <strong>B — between-country scarring marker</strong>.</p>
+<figure class="fig" aria-label="The effect is between countries, not within them"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 690 220" class="svg" role="img" aria-label="Between vs within" font-family="Helvetica,Arial,sans-serif">
+<rect width="690" height="220" fill="#ffffff"/>
+<text x="20.0" y="26.0" font-size="13" fill="#1f2933" text-anchor="start" font-weight="bold">The effect is between countries, not within them</text>
+<text x="20.0" y="44.0" font-size="10.5" fill="#6b7280" text-anchor="start" font-weight="normal">Accumulated-unemployment coefficient</text>
+<line x1="256.8" y1="68.0" x2="256.8" y2="155.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="256.8" y="173.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">-0.4</text>
+<line x1="305.9" y1="68.0" x2="305.9" y2="155.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="305.9" y="173.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">-0.2</text>
+<line x1="355.0" y1="68.0" x2="355.0" y2="155.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="355.0" y="173.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">+0.0</text>
+<line x1="404.1" y1="68.0" x2="404.1" y2="155.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="404.1" y="173.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">+0.2</text>
+<line x1="453.2" y1="68.0" x2="453.2" y2="155.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="453.2" y="173.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">+0.4</text>
+<line x1="355.0" y1="62.0" x2="355.0" y2="161.0" stroke="#6b7280" stroke-width="1.5"/>
+<text x="355.0" y="58.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">no effect</text>
+<text x="206.0" y="99.0" font-size="11" fill="#1f2933" text-anchor="end" font-weight="normal">Between countries</text>
+<circle cx="436.6" cy="95" r="6" fill="#2f855a"/>
+<text x="502.0" y="99.0" font-size="10.5" fill="#1f2933" text-anchor="start" font-weight="bold">+0.3323</text>
+<text x="502.0" y="112.0" font-size="9" fill="#6b7280" text-anchor="start" font-weight="normal">p &lt; 0.0001</text>
+<text x="206.0" y="139.0" font-size="11" fill="#1f2933" text-anchor="end" font-weight="normal">Within countries</text>
+<line x1="244.8" y1="135.0" x2="428.1" y2="135.0" stroke="#6b7280" stroke-width="2"/>
+<line x1="244.8" y1="130.0" x2="244.8" y2="140.0" stroke="#6b7280" stroke-width="2"/>
+<line x1="428.1" y1="130.0" x2="428.1" y2="140.0" stroke="#6b7280" stroke-width="2"/>
+<circle cx="336.5" cy="135" r="6" fill="#6b7280"/>
+<text x="502.0" y="139.0" font-size="10.5" fill="#1f2933" text-anchor="start" font-weight="bold">-0.0755</text>
+<text x="502.0" y="152.0" font-size="9" fill="#6b7280" text-anchor="start" font-weight="normal">p = 0.692, inconclusive</text>
+<text x="20.0" y="202.0" font-size="10" fill="#6b7280" text-anchor="start" font-weight="normal">The within estimate's interval spans zero widely: no supporting evidence, and too imprecise to rule out.</text>
+</svg>
+</figure>
+<h3 id="robustness-and-validation">Robustness and validation</h3>
+<p>Wild cluster bootstrap, null-imposed: <strong>p = 0.0005</strong> in the primary specification (the 1/2,000 resolution floor). Worst result across Rademacher, Webb and Mammen weights × three seeds: <strong>p = 0.0070</strong>.</p>
+<p>Leave-one-country-out: max change 12.7%; dropping Greece changes it by −0.8%. No instability flags.</p>
+<blockquote><p>The first bootstrap implementation used unrestricted residuals and returned p = 0.82 against t = 9.69 — obvious nonsense. Fixed by refitting under the null and resampling those residuals.</p></blockquote>
+<h3 id="what-this-does-not-establish">What this does not establish</h3>
+<p>That annual increases in accumulated exposure caused, or even tracked, annual increases in hardship within Greece. The p = 0.058 equality test <strong>fails to reject</strong> equality; it is not evidence the two are equal, and the point estimates remain materially different (−0.076 against +0.332).</p>
+<h3 id="decision">Decision</h3>
+<p><strong>Frozen</strong> at tag <code>p5f-frozen</code>. Eight wording rules locked in <code>p5f_frozen_result.json</code>. Classification performed by <code>scripts/mundlak_rule.py</code> (23 tests), not by judgement.</p>
+<h3 id="notes-from-review">Notes from review</h3>
+<p>This is the stage that most changed what the project is allowed to claim, and the wording rules are strict because the tempting sentence is so close to the defensible one.</p>
+<p>&quot;As exposure accumulated, hardship rose&quot; is banned outright. It describes a within-country dynamic the analysis does not support, and it is what most readers will assume the between-country result means unless told otherwise.</p>
+<p>The <code>p=0.058</code> equality test caused a specific argument. It fails to reject equality of the within and between coefficients — and it is <em>not</em> evidence they are equal. The point estimates remain −0.076 and +0.332. A rule was locked requiring both facts to be stated together, because quoting the p-value alone implies a conclusion the test cannot deliver.</p>
+<p>The bootstrap was also wrong on the first attempt: unrestricted residuals gave p=0.82 against t=9.69. Nonsense loud enough to notice — which is the only reason it was caught, and an argument for reporting test statistics alongside p-values.</p>
+<h3 id="where-the-detail-lives">Where the detail lives</h3>
+<p><code>scripts/54_p5_inference_audit.py</code>, <code>scripts/mundlak_rule.py</code>, <code>scripts/test_mundlak_rule.py</code> · <code>data/processed/p5_audit.csv</code>, <code>p5_bootstrap.csv</code>, <code>p5_influence.csv</code>, <code>p5f_frozen_result.json</code> · <code>docs/publication_strategy.md</code> § &quot;P5 result: OUTCOME B&quot;</p>
+<hr>
+<h2 id="p3a-does-breadth-of-disadvantage-add-anything">P3a — Does breadth of disadvantage add anything?</h2>
+<h3 id="in-plain-words">In plain words</h3>
+<p>We tested whether counting how many <em>different kinds</em> of hardship a country accumulates adds predictive value beyond what we already had. It does not — it actively makes things worse. Adding it pushed Greece&#x27;s gap from 7 points back up to 10, and Greece from rank 3 back to rank 1. The variable also flipped sign in a way we could not interpret, so we left it uninterpreted rather than constructing a story around it. Recorded as a null.</p>
+<h3 id="results">Results</h3>
+<div class="tw"><table><thead><tr><th style="text-align:left">Specification</th><th style="text-align:left">Greece residual</th><th style="text-align:left">Rank</th><th style="text-align:left">n</th></tr></thead><tbody><tr><td style="text-align:left">Frozen P3</td><td style="text-align:left">6.93</td><td style="text-align:left">3 of 27</td><td style="text-align:left">269</td></tr><tr><td style="text-align:left">P3 + accumulated breadth</td><td style="text-align:left"><strong>10.39</strong></td><td style="text-align:left"><strong>1 of 27</strong></td><td style="text-align:left">269</td></tr></tbody></table></div>
+<p>Breadth coefficient −2.17, a stable conditional sign reversal, <strong>left uninterpreted</strong> by decision.</p>
+<p>Common-sample verification confirms 269 rows in both specifications, so the comparison is clean.</p>
+<h3 id="decision">Decision</h3>
+<p><strong>Failed the incremental criterion, and reversed sign conditionally.</strong> This is a result about the specification, not a power-based null: breadth measurably worsened the model it was added to. No MDE was computed for this family, so it must not be recorded as <em>unsupported with adequate power</em>. The universe was frozen in <code>p3a_frozen_universe.json</code> before testing.</p>
+<h3 id="notes-from-review">Notes from review</h3>
+<p>The sign reversal was left uninterpreted deliberately, and that was a choice made against real temptation. A conditional coefficient of −2.17 on a breadth measure invites a story about compensating adjustment or habituation. Any such story would have been constructed after seeing the sign, on a variable that had just failed its pre-registered test.</p>
+<p>Freezing the universe first is what made the null publishable. Without it, a failed breadth measure would simply have been dropped and never mentioned — which is how null results disappear.</p>
+<h3 id="where-the-detail-lives">Where the detail lives</h3>
+<p><code>scripts/55a_p3a_freeze_universe.py</code>, <code>scripts/55b_p3a_family_d.py</code> · <code>data/processed/p3a_frozen_universe.json</code>, <code>p3a_results.csv</code>, <code>p3a_individual_indicators.csv</code> · <code>docs/publication_strategy.md</code> § &quot;P3a result&quot;</p>
+<hr>
+<h2 id="e0-data-and-construct-map">E0 — Data and construct map</h2>
+<h3 id="in-plain-words">In plain words</h3>
+<p>E0 was a data preparation and quality-control stage. <strong>No new models were run and no search for significant results took place.</strong> Five things happened.</p>
+<p><strong>1. Put the data in one place.</strong> We combined the existing model data with additional variables from the statistical appendix. The result covers 27 EU countries from 2015 to 2024.</p>
+<p><strong>2. Checked whether the data are complete.</strong> We recorded how many countries and years are available for every variable. Most have complete coverage; a few have clearly documented gaps.</p>
+<p><strong>3. Described what every variable actually measures.</strong> For each one we recorded its source and unit; whether higher or lower values indicate hardship; whether it is objective, self-reported or contextual; whether it overlaps with another variable; and whether and how it can be accumulated over time.</p>
+<p><strong>4. Separated variables that look similar but measure different things.</strong> Inflation is not the price level. Migration is not unemployment. Inequality is not deprivation. Working hours alone do not necessarily indicate hardship. And arrears and unexpected expenses sit very close to the subjective-hardship question itself.</p>
+<p><strong>5. Compared relationships in three different ways</strong> — across all country-years, between countries&#x27; average positions, and within countries as conditions changed over time. Some relationships that look strong across countries turn weak or reverse direction within them. Pooled correlations alone would have produced misleading variable groups.</p>
+<p>That work supported six defensible questions:</p>
+<ul><li>Do material resources matter?</li><li>Does labour-market exclusion matter?</li><li>Does falling behind one&#x27;s own past matter?</li><li>Does wage-adjusted affordability matter?</li><li>Does accumulated inflation matter?</li><li>Does housing pressure matter?</li></ul>
+<p>A seventh group — proximate hardship indicators such as arrears — is kept visible but <strong>cannot be used as the headline explanation</strong>, because it is too close to the outcome being explained.</p>
+<p>So E0&#x27;s result is not a statistical conclusion. It is a documented map of the available evidence, plus rules preventing incompatible, duplicated or circular variables from being mixed in the next stage.</p>
+<h3 id="notes-from-review">Notes from review</h3>
+<p>The first proposed grouping was rejected, and the reasons are worth keeping.</p>
+<p><em>Families were being fitted, not theorised.</em> <code>net_migration</code> and <code>s80s20</code> had been assigned to whichever family they correlated with best — immediately after stating that correlation should validate theory groupings, not define them. Both are now contextual or standalone retests.</p>
+<p><em>&quot;Coherence&quot; was an undefined number.</em> A ratio of within-family to between-family mean |r|, presented as if it were interpretable on its own.</p>
+<p><em>HICP was a category error.</em> The three HICP series are inflation <em>rates</em>, and they had been pooled as country &quot;price levels&quot;. The correlation evidence then settled the matter independently: near-zero pooled against <code>wadj_a01</code>, and sign-reversing between the views.</p>
+<p><em>Four variables were wrongly ruled out.</em> <code>real_wages_idx</code>, <code>real_income_idx</code>, <code>arop_threshold_real</code> and <code>pct_below_peak</code> were marked &quot;already indexed&quot; and so ineligible for accumulation — when the project had already built accumulations from all four, one of which (<code>wage_years_below_2008</code>) was an FDR survivor.</p>
+<p>The binary eligible/ineligible field was the root cause of that last error, and it was replaced with the six-way taxonomy rather than corrected in place.</p>
+<blockquote><p>Two errors were caught in review and corrected. The correlation tables originally left out the outcome itself, which made the intended exploration impossible. And four variables were wrongly marked ineligible for accumulation when the project had already built accumulations from all four — one of them a surviving result from an earlier stage.</p></blockquote>
+<hr>
+<h3 id="step-1-the-combined-dataset">Step 1 — The combined dataset</h3>
+<p>One table: <strong>27 EU countries · 2015–2024 · 270 country-year rows · 68 columns</strong>, carrying hardship, AROP, AROPE and the candidate variables together. Seventeen series were merged in from the statistical appendix.</p>
+<p><code>data/processed/e0_extended_panel.csv</code></p>
+<h3 id="step-2-coverage-results">Step 2 — Coverage results</h3>
+<p>Coverage is generally strong: <strong>24 of 31 variables are complete at 270/270</strong>, all 27 countries in every year. The seven exceptions are all documented:</p>
+<div class="tw"><table><thead><tr><th style="text-align:left">Variable</th><th style="text-align:right">n_obs</th><th style="text-align:right">Countries</th><th style="text-align:left">What is missing</th></tr></thead><tbody><tr><td style="text-align:left"><code>arop_threshold_real</code></td><td style="text-align:right">260</td><td style="text-align:right">26</td><td style="text-align:left"><strong>Croatia</strong> entirely — its threshold series begins too late to index to 2008</td></tr><tr><td style="text-align:left"><code>arrears</code></td><td style="text-align:right">268</td><td style="text-align:right">27</td><td style="text-align:left">Luxembourg 2018, 2019</td></tr><tr><td style="text-align:left"><code>saving_rate</code></td><td style="text-align:right">268</td><td style="text-align:right">27</td><td style="text-align:left">Bulgaria 2023, 2024</td></tr><tr><td style="text-align:left"><code>debt_to_income</code></td><td style="text-align:right">268</td><td style="text-align:right">27</td><td style="text-align:left">Bulgaria 2023, 2024</td></tr><tr><td style="text-align:left"><code>real_income_idx</code></td><td style="text-align:right">268</td><td style="text-align:right">27</td><td style="text-align:left">Bulgaria 2023, 2024</td></tr><tr><td style="text-align:left"><code>net_migration</code></td><td style="text-align:right">269</td><td style="text-align:right">27</td><td style="text-align:left">Portugal 2024</td></tr><tr><td style="text-align:left"><code>housing_cost_overburden</code></td><td style="text-align:right">269</td><td style="text-align:right">27</td><td style="text-align:left">France 2021</td></tr></tbody></table></div>
+<p>Revised AROPE covers all 27 countries in every year, verified, with no splice required.</p>
+<p>Most comparisons can therefore use the full panel. Anything involving the real AROP threshold runs on a smaller sample or as a clearly labelled sensitivity check — and because the gap is one whole country rather than scattered country-years, that sample is 26 countries, not 27.</p>
+<figure class="fig" aria-label="Coverage gaps, located"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 260" class="svg" role="img" aria-label="E0 coverage gaps" font-family="Helvetica,Arial,sans-serif">
+<rect width="700" height="260" fill="#ffffff"/>
+<text x="20.0" y="26.0" font-size="13" fill="#1f2933" text-anchor="start" font-weight="bold">Coverage is strong; the gaps are few and located</text>
+<text x="20.0" y="44.0" font-size="10.5" fill="#6b7280" text-anchor="start" font-weight="normal">24 of 31 variables are complete at 270/270. The exceptions:</text>
+<text x="188.0" y="85.0" font-size="10" fill="#1f2933" text-anchor="end" font-weight="normal">arop_threshold_real</text>
+<rect x="200.0" y="76.0" width="135.0" height="13.0" fill="#c0392b" rx="2"/>
+<text x="343.0" y="86.0" font-size="9.5" fill="#1f2933" text-anchor="start" font-weight="bold">260</text>
+<text x="377.0" y="86.0" font-size="9" fill="#6b7280" text-anchor="start" font-weight="normal">Croatia, all years</text>
+<text x="188.0" y="107.0" font-size="10" fill="#1f2933" text-anchor="end" font-weight="normal">arrears</text>
+<rect x="200.0" y="98.0" width="243.0" height="13.0" fill="#3d6fb4" rx="2"/>
+<text x="451.0" y="108.0" font-size="9.5" fill="#1f2933" text-anchor="start" font-weight="bold">268</text>
+<text x="485.0" y="108.0" font-size="9" fill="#6b7280" text-anchor="start" font-weight="normal">Luxembourg 2018–19</text>
+<text x="188.0" y="129.0" font-size="10" fill="#1f2933" text-anchor="end" font-weight="normal">saving_rate</text>
+<rect x="200.0" y="120.0" width="243.0" height="13.0" fill="#3d6fb4" rx="2"/>
+<text x="451.0" y="130.0" font-size="9.5" fill="#1f2933" text-anchor="start" font-weight="bold">268</text>
+<text x="485.0" y="130.0" font-size="9" fill="#6b7280" text-anchor="start" font-weight="normal">Bulgaria 2023–24</text>
+<text x="188.0" y="151.0" font-size="10" fill="#1f2933" text-anchor="end" font-weight="normal">debt_to_income</text>
+<rect x="200.0" y="142.0" width="243.0" height="13.0" fill="#3d6fb4" rx="2"/>
+<text x="451.0" y="152.0" font-size="9.5" fill="#1f2933" text-anchor="start" font-weight="bold">268</text>
+<text x="485.0" y="152.0" font-size="9" fill="#6b7280" text-anchor="start" font-weight="normal">Bulgaria 2023–24</text>
+<text x="188.0" y="173.0" font-size="10" fill="#1f2933" text-anchor="end" font-weight="normal">real_income_idx</text>
+<rect x="200.0" y="164.0" width="243.0" height="13.0" fill="#3d6fb4" rx="2"/>
+<text x="451.0" y="174.0" font-size="9.5" fill="#1f2933" text-anchor="start" font-weight="bold">268</text>
+<text x="485.0" y="174.0" font-size="9" fill="#6b7280" text-anchor="start" font-weight="normal">Bulgaria 2023–24</text>
+<text x="188.0" y="195.0" font-size="10" fill="#1f2933" text-anchor="end" font-weight="normal">net_migration</text>
+<rect x="200.0" y="186.0" width="256.5" height="13.0" fill="#3d6fb4" rx="2"/>
+<text x="464.5" y="196.0" font-size="9.5" fill="#1f2933" text-anchor="start" font-weight="bold">269</text>
+<text x="498.5" y="196.0" font-size="9" fill="#6b7280" text-anchor="start" font-weight="normal">Portugal 2024</text>
+<text x="188.0" y="217.0" font-size="10" fill="#1f2933" text-anchor="end" font-weight="normal">housing_cost_overburden</text>
+<rect x="200.0" y="208.0" width="256.5" height="13.0" fill="#3d6fb4" rx="2"/>
+<text x="464.5" y="218.0" font-size="9.5" fill="#1f2933" text-anchor="start" font-weight="bold">269</text>
+<text x="498.5" y="218.0" font-size="9" fill="#6b7280" text-anchor="start" font-weight="normal">France 2021</text>
+<text x="20.0" y="246.0" font-size="10" fill="#6b7280" text-anchor="start" font-weight="normal">Croatia's threshold gap costs a whole country, so those analyses run on 26, not 27.</text>
+</svg>
+</figure>
+<p><code>data/processed/e0_coverage.csv</code> — columns mean:</p>
+<div class="tw"><table><thead><tr><th style="text-align:left">Column</th><th style="text-align:left">Meaning</th></tr></thead><tbody><tr><td style="text-align:left"><code>n_obs</code></td><td style="text-align:left">available country-years</td></tr><tr><td style="text-align:left"><code>pct</code></td><td style="text-align:left">percentage coverage</td></tr><tr><td style="text-align:left"><code>countries</code></td><td style="text-align:left">countries represented</td></tr><tr><td style="text-align:left"><code>min_year_reporters</code></td><td style="text-align:left">smallest number of countries available in any one year</td></tr><tr><td style="text-align:left"><code>years</code></td><td style="text-align:left">years with observations</td></tr></tbody></table></div>
+<h3 id="step-3-variable-classification-results">Step 3 — Variable-classification results</h3>
+<p>Each of the <strong>31 variables</strong> is documented by: meaning and unit; Eurostat source; expected adverse direction; whether it is a level, flow or derived measure; whether it is objective, proximate, contextual or mechanically related; how it could be accumulated; and whether it is a primary measure, sensitivity, contextual item or retest.</p>
+<div class="tw"><table><thead><tr><th style="text-align:left">Variable</th><th style="text-align:left">Classification</th></tr></thead><tbody><tr><td style="text-align:left"><code>aic_pps_pc</code></td><td style="text-align:left">primary resources measure (C1)</td></tr><tr><td style="text-align:left"><code>ltu_rate</code></td><td style="text-align:left">primary current labour measure (C2)</td></tr><tr><td style="text-align:left"><code>wadj_a01</code></td><td style="text-align:left">wage-adjusted affordability (C4)</td></tr><tr><td style="text-align:left"><code>hicp</code></td><td style="text-align:left"><strong>inflation, not a price-level measure</strong> (C5)</td></tr><tr><td style="text-align:left"><code>arrears</code>, <code>unexpected_expenses</code></td><td style="text-align:left">proximate, same survey framework as hardship (P1)</td></tr><tr><td style="text-align:left"><code>net_migration</code></td><td style="text-align:left">contextual — <strong>not</strong> unemployment</td></tr><tr><td style="text-align:left"><code>s80s20</code></td><td style="text-align:left">inequality retest — <strong>not</strong> deprivation</td></tr><tr><td style="text-align:left"><code>debt_to_income</code>, <code>saving_rate</code></td><td style="text-align:left">ambiguous-direction context</td></tr><tr><td style="text-align:left"><code>work_effort_squeeze</code></td><td style="text-align:left">overlaps strongly with hours and hourly compensation</td></tr></tbody></table></div>
+<p><code>cum_excess_unemployment</code> is the primary <em>historical</em> labour measure, but it is <strong>not</strong> one of the 31 registry rows — it is a derived accumulation carried in from the earlier P3 work, and it appears in the frozen construct map as C2&#x27;s accumulated representative rather than in the E0 registry.</p>
+<p>Roles assigned across the 31:</p>
+<div class="tw"><table><thead><tr><th style="text-align:left">Role</th><th style="text-align:right">Count</th></tr></thead><tbody><tr><td style="text-align:left">Primary representative</td><td style="text-align:right">9</td></tr><tr><td style="text-align:left">Sensitivity variant</td><td style="text-align:right">9</td></tr><tr><td style="text-align:left">Proximate diagnostic</td><td style="text-align:right">4</td></tr><tr><td style="text-align:left">Contextual descriptive</td><td style="text-align:right">3</td></tr><tr><td style="text-align:left">Mechanical comparator</td><td style="text-align:right">3</td></tr><tr><td style="text-align:left">Standalone retest</td><td style="text-align:right">2</td></tr><tr><td style="text-align:left">Standalone retest of known null</td><td style="text-align:right">1</td></tr></tbody></table></div>
+<p><code>data/processed/e0_variable_registry.csv</code></p>
+<p>Related technical detail:</p>
+<div class="tw"><table><thead><tr><th style="text-align:left">File</th><th style="text-align:left">Holds</th></tr></thead><tbody><tr><td style="text-align:left"><code>e0_provenance.json</code></td><td style="text-align:left">sources and versions</td></tr><tr><td style="text-align:left"><code>e0_lineage.csv</code></td><td style="text-align:left">shared construction inputs</td></tr><tr><td style="text-align:left"><code>e0_nonindependence_flags.csv</code></td><td style="text-align:left">definitional and construction overlaps — <strong>35 flags</strong> across four types</td></tr></tbody></table></div>
+<h3 id="step-4-correlation-results">Step 4 — Correlation results</h3>
+<p>The three views showed that relationships depend on which question is being asked.</p>
+<div class="tw"><table><thead><tr><th style="text-align:left">Pair</th><th style="text-align:right">Pooled</th><th style="text-align:right">Between</th><th style="text-align:right">Within</th><th style="text-align:left">Reading</th></tr></thead><tbody><tr><td style="text-align:left"><code>aic_pps_pc</code> – <code>consumption_pc</code></td><td style="text-align:right">0.899</td><td style="text-align:right">0.972</td><td style="text-align:right">0.831</td><td style="text-align:left">resources measures are highly redundant</td></tr><tr><td style="text-align:left"><code>aic_pps_pc</code> – <code>hourly_comp</code></td><td style="text-align:right">0.903</td><td style="text-align:right">0.915</td><td style="text-align:right">0.932</td><td style="text-align:left"></td></tr><tr><td style="text-align:left"><code>ltu_rate</code> – <code>unemployment_rate</code></td><td style="text-align:right">0.914</td><td style="text-align:right">0.897</td><td style="text-align:right">0.961</td><td style="text-align:left">labour measures are highly redundant</td></tr><tr><td style="text-align:left"><code>ltu_rate</code> – <code>employment_rate</code></td><td style="text-align:right">−0.769</td><td style="text-align:right">−0.759</td><td style="text-align:right">−0.802</td><td style="text-align:left"></td></tr><tr><td style="text-align:left"><code>wadj_a01</code> – <code>work_effort_squeeze</code></td><td style="text-align:right"><strong>0.963</strong></td><td style="text-align:right">0.968</td><td style="text-align:right">0.924</td><td style="text-align:left">two versions of one structural position — may never enter a model together</td></tr><tr><td style="text-align:left"><code>wadj_a01</code> – <code>hicp</code></td><td style="text-align:right">0.058</td><td style="text-align:right"><strong>0.480</strong></td><td style="text-align:right"><strong>−0.285</strong></td><td style="text-align:left"><strong>sign reverses</strong> — inflation and affordability are not one construct</td></tr><tr><td style="text-align:left"><code>wadj_a01</code> – <code>hicp_food</code></td><td style="text-align:right">0.087</td><td style="text-align:right">0.637</td><td style="text-align:right">−0.253</td><td style="text-align:left">sign reverses</td></tr><tr><td style="text-align:left"><code>wadj_a01</code> – <code>hicp_housing</code></td><td style="text-align:right">0.011</td><td style="text-align:right">0.222</td><td style="text-align:right">−0.130</td><td style="text-align:left">sign reverses</td></tr></tbody></table></div>
+<p>The three HICP pairs are the reason C5 was separated from C4 on evidence rather than preference: near-zero pooled, moderately positive between countries, negative within them.</p>
+<figure class="fig" aria-label="Why pooled correlations alone would have misled us"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 330" class="svg" role="img" aria-label="Correlations across three views" font-family="Helvetica,Arial,sans-serif">
+<rect width="620" height="330" fill="#ffffff"/>
+<text x="20.0" y="26.0" font-size="13" fill="#1f2933" text-anchor="start" font-weight="bold">Why pooled correlations alone would have misled us</text>
+<text x="20.0" y="44.0" font-size="10.5" fill="#6b7280" text-anchor="start" font-weight="normal">Same pair, three ways of asking</text>
+<line x1="240.0" y1="62.0" x2="240.0" y2="285.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="240.0" y="303.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">-1.0</text>
+<line x1="320.0" y1="62.0" x2="320.0" y2="285.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="320.0" y="303.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">-0.5</text>
+<line x1="400.0" y1="62.0" x2="400.0" y2="285.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="400.0" y="303.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">+0.0</text>
+<line x1="480.0" y1="62.0" x2="480.0" y2="285.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="480.0" y="303.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">+0.5</text>
+<line x1="560.0" y1="62.0" x2="560.0" y2="285.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="560.0" y="303.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">+1.0</text>
+<line x1="400.0" y1="56.0" x2="400.0" y2="291.0" stroke="#6b7280" stroke-width="1.5"/>
+<text x="226.0" y="90.0" font-size="9.5" fill="#1f2933" text-anchor="end" font-weight="normal">aic_pps_pc – gdp_pps_pc</text>
+<circle cx="538.6" cy="80.0" r="3.2" fill="#94a3b8"/>
+<circle cx="538.2" cy="86.0" r="3.2" fill="#3d6fb4"/>
+<circle cx="548.6" cy="92.0" r="3.2" fill="#b7791f"/>
+<text x="226.0" y="114.0" font-size="9.5" fill="#1f2933" text-anchor="end" font-weight="normal">aic_pps_pc – real_gdp_pc</text>
+<circle cx="534.7" cy="104.0" r="3.2" fill="#94a3b8"/>
+<circle cx="547.4" cy="110.0" r="3.2" fill="#3d6fb4"/>
+<circle cx="494.7" cy="116.0" r="3.2" fill="#b7791f"/>
+<text x="226.0" y="138.0" font-size="9.5" fill="#1f2933" text-anchor="end" font-weight="normal">aic_pps_pc – consumption_pc</text>
+<circle cx="543.8" cy="128.0" r="3.2" fill="#94a3b8"/>
+<circle cx="555.5" cy="134.0" r="3.2" fill="#3d6fb4"/>
+<circle cx="533.0" cy="140.0" r="3.2" fill="#b7791f"/>
+<text x="226.0" y="162.0" font-size="9.5" fill="#1f2933" text-anchor="end" font-weight="normal">aic_pps_pc – hourly_comp</text>
+<circle cx="544.5" cy="152.0" r="3.2" fill="#94a3b8"/>
+<circle cx="546.4" cy="158.0" r="3.2" fill="#3d6fb4"/>
+<circle cx="549.1" cy="164.0" r="3.2" fill="#b7791f"/>
+<text x="226.0" y="186.0" font-size="9.5" fill="#1f2933" text-anchor="end" font-weight="normal">ltu_rate – unemployment_rate</text>
+<circle cx="546.2" cy="176.0" r="3.2" fill="#94a3b8"/>
+<circle cx="543.5" cy="182.0" r="3.2" fill="#3d6fb4"/>
+<circle cx="553.8" cy="188.0" r="3.2" fill="#b7791f"/>
+<text x="226.0" y="210.0" font-size="9.5" fill="#1f2933" text-anchor="end" font-weight="normal">ltu_rate – youth_unemployment</text>
+<circle cx="536.5" cy="200.0" r="3.2" fill="#94a3b8"/>
+<circle cx="536.5" cy="206.0" r="3.2" fill="#3d6fb4"/>
+<circle cx="538.6" cy="212.0" r="3.2" fill="#b7791f"/>
+<text x="226.0" y="234.0" font-size="9.5" fill="#1f2933" text-anchor="end" font-weight="normal">ltu_rate – employment_rate</text>
+<circle cx="277.0" cy="224.0" r="3.2" fill="#94a3b8"/>
+<circle cx="278.6" cy="230.0" r="3.2" fill="#3d6fb4"/>
+<circle cx="271.7" cy="236.0" r="3.2" fill="#b7791f"/>
+<text x="226.0" y="258.0" font-size="9.5" fill="#c0392b" text-anchor="end" font-weight="bold">wadj_a01 – hicp</text>
+<circle cx="409.3" cy="248.0" r="3.2" fill="#94a3b8"/>
+<circle cx="476.8" cy="254.0" r="3.2" fill="#3d6fb4"/>
+<circle cx="354.4" cy="260.0" r="3.2" fill="#b7791f"/>
+<text x="570.0" y="258.0" font-size="9" fill="#c0392b" text-anchor="start" font-weight="bold">reverses</text>
+<text x="226.0" y="282.0" font-size="9.5" fill="#c0392b" text-anchor="end" font-weight="bold">wadj_a01 – hicp_food</text>
+<circle cx="413.9" cy="272.0" r="3.2" fill="#94a3b8"/>
+<circle cx="501.9" cy="278.0" r="3.2" fill="#3d6fb4"/>
+<circle cx="359.5" cy="284.0" r="3.2" fill="#b7791f"/>
+<text x="570.0" y="282.0" font-size="9" fill="#c0392b" text-anchor="start" font-weight="bold">reverses</text>
+<text x="226.0" y="306.0" font-size="9.5" fill="#c0392b" text-anchor="end" font-weight="bold">wadj_a01 – hicp_housing</text>
+<circle cx="401.8" cy="296.0" r="3.2" fill="#94a3b8"/>
+<circle cx="435.5" cy="302.0" r="3.2" fill="#3d6fb4"/>
+<circle cx="379.2" cy="308.0" r="3.2" fill="#b7791f"/>
+<text x="570.0" y="306.0" font-size="9" fill="#c0392b" text-anchor="start" font-weight="bold">reverses</text>
+<text x="226.0" y="330.0" font-size="9.5" fill="#1f2933" text-anchor="end" font-weight="normal">wadj_a01 – work_effort_squeeze</text>
+<circle cx="554.1" cy="320.0" r="3.2" fill="#94a3b8"/>
+<circle cx="554.9" cy="326.0" r="3.2" fill="#3d6fb4"/>
+<circle cx="547.8" cy="332.0" r="3.2" fill="#b7791f"/>
+<circle cx="24" cy="312" r="3.2" fill="#94a3b8"/>
+<text x="32.0" y="315.0" font-size="9.5" fill="#6b7280" text-anchor="start" font-weight="normal">pooled</text>
+<circle cx="94" cy="312" r="3.2" fill="#3d6fb4"/>
+<text x="102.0" y="315.0" font-size="9.5" fill="#6b7280" text-anchor="start" font-weight="normal">between</text>
+<circle cx="164" cy="312" r="3.2" fill="#b7791f"/>
+<text x="172.0" y="315.0" font-size="9.5" fill="#6b7280" text-anchor="start" font-weight="normal">within</text>
+</svg>
+</figure>
+<div class="tw"><table><thead><tr><th style="text-align:left">File</th><th style="text-align:left">Holds</th></tr></thead><tbody><tr><td style="text-align:left"><code>e0_corr_pooled.csv</code></td><td style="text-align:left">across all country-years</td></tr><tr><td style="text-align:left"><code>e0_corr_between.csv</code></td><td style="text-align:left">between countries&#x27; average positions</td></tr><tr><td style="text-align:left"><code>e0_corr_within.csv</code></td><td style="text-align:left">within countries over time</td></tr><tr><td style="text-align:left"><code>e0_redundancy.csv</code></td><td style="text-align:left">primary–sensitivity redundancy, all three views, with <code>sign_flips</code></td></tr></tbody></table></div>
+<p>All three correlation views carry five comparator columns: <code>subjective_poverty</code>, <code>arop</code>, <code>arope</code>, <code>gap_subj_arop</code>, <code>gap_subj_arope</code>.</p>
+<h3 id="step-5-the-frozen-construct-map">Step 5 — The frozen construct map</h3>
+<p>Six objective constructs plus one diagnostic:</p>
+<div class="tw"><table><thead><tr><th style="text-align:left">ID</th><th style="text-align:left">Construct</th><th style="text-align:left">Primary representative</th></tr></thead><tbody><tr><td style="text-align:left">C1</td><td style="text-align:left">Material resources</td><td style="text-align:left"><code>aic_pps_pc</code></td></tr><tr><td style="text-align:left">C2</td><td style="text-align:left">Labour-market exclusion</td><td style="text-align:left"><code>ltu_rate</code> (current) / <code>cum_excess_unemployment</code> (accumulated)</td></tr><tr><td style="text-align:left">C3</td><td style="text-align:left">Loss against own past</td><td style="text-align:left">four individual primaries, <strong>no composite</strong></td></tr><tr><td style="text-align:left">C4</td><td style="text-align:left">Wage-adjusted affordability</td><td style="text-align:left"><code>wadj_a01</code></td></tr><tr><td style="text-align:left">C5</td><td style="text-align:left">Inflation exposure</td><td style="text-align:left"><code>hicp</code></td></tr><tr><td style="text-align:left">C6</td><td style="text-align:left">Housing pressure</td><td style="text-align:left"><code>housing_cost_overburden</code>, base year <strong>2010</strong></td></tr><tr><td style="text-align:left">P1</td><td style="text-align:left">Proximate material hardship</td><td style="text-align:left"><code>severe_mat_soc_deprivation</code> — <strong>diagnostic only, never headline</strong></td></tr></tbody></table></div>
+<p>C6 uses 2010 rather than 2008 because coverage only reaches 27 reporters from 2010.</p>
+<p><code>data/processed/construct_map_frozen.json</code></p>
+<h3 id="construction-and-non-independence-findings">Construction and non-independence findings</h3>
+<p>A six-way accumulation taxonomy replaced the earlier binary eligible/ineligible field: <code>direct_excess</code>, <code>fixed_base_shortfall</code>, <code>duration_below_base</code>, <code>compounded_change</code>, <code>ambiguous_direction</code>, <code>not_applicable</code>.</p>
+<p><strong>35 non-independence flags</strong> across four types: <code>arithmetic_coupling</code>, <code>definitional_overlap</code>, <code>component_overlap</code>, <code>construction_overlap</code>.</p>
+<h3 id="what-e0-does-not-establish">What E0 does not establish</h3>
+<p>Nothing empirical about the outcome. E0 is construction and classification only. The data are mostly complete, but many candidate variables overlap, some have ambiguous meanings, and pooled correlations alone would have produced misleading families. What E0 buys is that the next stage can test clearly separated hypotheses instead of searching across a loosely assembled variable list.</p>
+<h3 id="where-the-detail-lives">Where the detail lives</h3>
+<p><code>scripts/57_e0_extended_panel.py</code>, <code>scripts/58_e0_extension.py</code>, <code>scripts/59_freeze_construct_map.py</code> · <code>data/processed/e0_extended_panel.csv</code>, <code>e0_variable_registry.csv</code>, <code>e0_coverage.csv</code>, <code>e0_corr_{pooled,between,within}.csv</code>, <code>e0_nonindependence_flags.csv</code>, <code>e0_redundancy.csv</code>, <code>e0_lineage.csv</code>, <code>e0_provenance.json</code>, <code>construct_map_frozen.json</code> · commits <code>9223306</code>, <code>e791e01</code>, <code>2103b3d</code></p>
+<hr>
+<h2 id="pre-pre-registration-and-power">PRE — Pre-registration and power</h2>
+<h3 id="in-plain-words">In plain words</h3>
+<p>Everything about how Family E will be tested was written down and committed to git <strong>before any result existed</strong> — the exact model, the exact transformations, what counts as success, and how much of a signal we could realistically detect.</p>
+<p>That last part is the uncomfortable one. The power calculation says we can only reliably detect effects of about <strong>9.3 points</strong>, which is very large. Most of what we are about to test will probably come back looking like nothing — but &quot;we found nothing&quot; and &quot;there is nothing&quot; are different statements. Anything below that threshold gets labelled <strong>inconclusive under available power</strong>, not <em>unsupported</em>.</p>
+<p>The reason the threshold is so high is visible in the numbers: almost all the usable variation is between countries (SD 12.87) rather than within them (SD 4.01). That is the same fact P5 found, arrived at from a different direction.</p>
+<h3 id="questions-and-outcomes">Questions and outcomes</h3>
+<div class="tw"><table><thead><tr><th style="text-align:left"></th><th style="text-align:left">Formula</th></tr></thead><tbody><tr><td style="text-align:left"><strong>Primary</strong></td><td style="text-align:left"><code>subjective_poverty ~ arop + C(time) + &lt;construct&gt;</code></td></tr><tr><td style="text-align:left"><strong>Secondary</strong></td><td style="text-align:left"><code>(subjective_poverty - arop) ~ C(time) + &lt;construct&gt;</code></td></tr></tbody></table></div>
+<p>AROP is not re-added on the right-hand side of the secondary formula — it is already inside the outcome by subtraction.</p>
+<p><strong>A secondary result cannot override a primary null.</strong> It may qualify or illustrate a primary finding; it may never create one.</p>
+<h3 id="transformations-and-baselines">Transformations and baselines</h3>
+<p>Exact formula, direction, baseline and floor fixed for all 11 primaries. All accumulations verified as <strong>running sums with no backward leakage of future information</strong>.</p>
+<p>Two wording distinctions carried in from review:</p>
+<ul><li><strong>Housing accumulation</strong> measures deterioration <em>since the 2010 baseline</em>, not total burden. A country already overburdened in 2010 receives no credit for that level.</li><li><strong>Compounded HICP</strong> measures cumulative <em>price growth</em>, not affordability and not hardship. Affordability is C4&#x27;s separate question.</li></ul>
+<h3 id="multiple-testing-families">Multiple-testing families</h3>
+<p>Three declared BH families: current primaries, accumulated primaries, secondary outcome. Correction does <strong>not</strong> span the earlier exploratory families A–D.</p>
+<p>Sensitivity variants cannot become discoveries when the primary fails.</p>
+<h3 id="minimum-detectable-effects">Minimum detectable effects</h3>
+<div class="tw"><table><thead><tr><th style="text-align:right">Effect (SD per SD)</th><th style="text-align:right">Effect (points per SD)</th><th style="text-align:right">Power</th></tr></thead><tbody><tr><td style="text-align:right">0.1</td><td style="text-align:right">1.33</td><td style="text-align:right">0.117</td></tr><tr><td style="text-align:right">0.2</td><td style="text-align:right">2.65</td><td style="text-align:right">0.233</td></tr><tr><td style="text-align:right">0.3</td><td style="text-align:right">3.98</td><td style="text-align:right">0.390</td></tr><tr><td style="text-align:right">0.4</td><td style="text-align:right">5.31</td><td style="text-align:right">0.535</td></tr><tr><td style="text-align:right">0.5</td><td style="text-align:right">6.64</td><td style="text-align:right">0.672</td></tr><tr><td style="text-align:right">0.6</td><td style="text-align:right">7.96</td><td style="text-align:right">0.797</td></tr><tr><td style="text-align:right"><strong>0.7</strong></td><td style="text-align:right"><strong>9.29</strong></td><td style="text-align:right"><strong>0.895</strong></td></tr><tr><td style="text-align:right">0.8</td><td style="text-align:right">10.62</td><td style="text-align:right">0.970</td></tr><tr><td style="text-align:right">0.9</td><td style="text-align:right">11.95</td><td style="text-align:right">0.988</td></tr><tr><td style="text-align:right">1.0</td><td style="text-align:right">13.27</td><td style="text-align:right">0.995</td></tr></tbody></table></div>
+<p><strong>MDE at 80% power ≈ 0.70 residual SD = 9.29 points.</strong></p>
+<figure class="fig" aria-label="Power curve with the published MDE marked"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 300" class="svg" role="img" aria-label="Power curve with MDE marked" font-family="Helvetica,Arial,sans-serif">
+<rect width="560" height="300" fill="#ffffff"/>
+<text x="20.0" y="26.0" font-size="13" fill="#1f2933" text-anchor="start" font-weight="bold">Most Family E tests will be underpowered</text>
+<text x="20.0" y="44.0" font-size="10.5" fill="#6b7280" text-anchor="start" font-weight="normal">Power to detect an effect, by effect size</text>
+<line x1="70.0" y1="240.0" x2="520.0" y2="240.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="62.0" y="244.0" font-size="9.5" fill="#6b7280" text-anchor="end" font-weight="normal">0%</text>
+<line x1="70.0" y1="204.0" x2="520.0" y2="204.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="62.0" y="208.0" font-size="9.5" fill="#6b7280" text-anchor="end" font-weight="normal">20%</text>
+<line x1="70.0" y1="168.0" x2="520.0" y2="168.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="62.0" y="172.0" font-size="9.5" fill="#6b7280" text-anchor="end" font-weight="normal">40%</text>
+<line x1="70.0" y1="132.0" x2="520.0" y2="132.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="62.0" y="136.0" font-size="9.5" fill="#6b7280" text-anchor="end" font-weight="normal">60%</text>
+<line x1="70.0" y1="96.0" x2="520.0" y2="96.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="62.0" y="100.0" font-size="9.5" fill="#6b7280" text-anchor="end" font-weight="normal">80%</text>
+<line x1="70.0" y1="60.0" x2="520.0" y2="60.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="62.0" y="64.0" font-size="9.5" fill="#6b7280" text-anchor="end" font-weight="normal">100%</text>
+<line x1="70.0" y1="96.0" x2="520.0" y2="96.0" stroke="#b7791f" stroke-width="1.5" stroke-dasharray="4,3"/>
+<text x="520.0" y="89.0" font-size="9.5" fill="#b7791f" text-anchor="end" font-weight="bold">80% power</text>
+<polyline points="92.5,218.9 137.5,198.1 182.5,169.8 227.5,143.7 272.5,119.0 317.5,96.5 362.5,78.9 407.5,65.4 452.5,62.2 497.5,60.9" fill="none" stroke="#3d6fb4" stroke-width="2.5"/>
+<circle cx="92.5" cy="218.9" r="3" fill="#3d6fb4"/>
+<text x="92.5" y="258.0" font-size="9" fill="#6b7280" text-anchor="middle" font-weight="normal">0.1</text>
+<circle cx="137.5" cy="198.1" r="3" fill="#3d6fb4"/>
+<text x="137.5" y="258.0" font-size="9" fill="#6b7280" text-anchor="middle" font-weight="normal">0.2</text>
+<circle cx="182.5" cy="169.8" r="3" fill="#3d6fb4"/>
+<text x="182.5" y="258.0" font-size="9" fill="#6b7280" text-anchor="middle" font-weight="normal">0.3</text>
+<circle cx="227.5" cy="143.7" r="3" fill="#3d6fb4"/>
+<text x="227.5" y="258.0" font-size="9" fill="#6b7280" text-anchor="middle" font-weight="normal">0.4</text>
+<circle cx="272.5" cy="119.0" r="3" fill="#3d6fb4"/>
+<text x="272.5" y="258.0" font-size="9" fill="#6b7280" text-anchor="middle" font-weight="normal">0.5</text>
+<circle cx="317.5" cy="96.5" r="3" fill="#3d6fb4"/>
+<text x="317.5" y="258.0" font-size="9" fill="#6b7280" text-anchor="middle" font-weight="normal">0.6</text>
+<circle cx="362.5" cy="78.9" r="4.5" fill="#c0392b"/>
+<line x1="362.5" y1="78.9" x2="362.5" y2="240.0" stroke="#c0392b" stroke-width="1.2" stroke-dasharray="3,3"/>
+<text x="370.5" y="68.9" font-size="10" fill="#c0392b" text-anchor="start" font-weight="bold">MDE 0.70 SD = 9.29 points</text>
+<text x="362.5" y="258.0" font-size="9" fill="#6b7280" text-anchor="middle" font-weight="normal">0.7</text>
+<circle cx="407.5" cy="65.4" r="3" fill="#3d6fb4"/>
+<text x="407.5" y="258.0" font-size="9" fill="#6b7280" text-anchor="middle" font-weight="normal">0.8</text>
+<circle cx="452.5" cy="62.2" r="3" fill="#3d6fb4"/>
+<text x="452.5" y="258.0" font-size="9" fill="#6b7280" text-anchor="middle" font-weight="normal">0.9</text>
+<circle cx="497.5" cy="60.9" r="3" fill="#3d6fb4"/>
+<text x="497.5" y="258.0" font-size="9" fill="#6b7280" text-anchor="middle" font-weight="normal">1.0</text>
+<text x="295.0" y="278.0" font-size="10" fill="#6b7280" text-anchor="middle" font-weight="normal">effect size (residual SD per SD of regressor)</text>
+<text x="20.0" y="288.0" font-size="10" fill="#6b7280" text-anchor="start" font-weight="normal">Residual SD 13.27 points. Between-country SD 12.87, within-country 4.01.</text>
+</svg>
+</figure>
+<p>Residual SD 13.27 · between-country SD <strong>12.87</strong> · within-country SD <strong>4.01</strong>.</p>
+<blockquote><p>Two bugs were found and fixed in this simulation before publication. Noise drawn by permuting residuals within country preserved each country&#x27;s mean and so correlated with the regressor — a planted +5.31 came back as −2.35, wrong in sign and magnitude. And detection counted any p &lt; 0.05 as a hit regardless of coefficient sign. Both would have published nonsense.</p></blockquote>
+<h3 id="decision-criteria">Decision criteria</h3>
+<p>All six must hold:</p>
+<ol><li>Direction matches the pre-registration</li><li>FDR-adjusted result survives within its declared family</li><li>Wild-cluster bootstrap supports it</li><li>Coefficient is leave-one-country-out stable in sign</li><li>Greece&#x27;s <strong>equal-sample</strong> absolute residual improves</li><li>No proximity or construction-overlap rule is violated</li></ol>
+<h3 id="frozen-model-safeguards">Frozen-model safeguards</h3>
+<p>The combined model is the frozen P3 specification. The 15 pairwise family combinations are <strong>not</strong> reopened. Nothing in E may alter <code>p5f-frozen</code>.</p>
+<h3 id="where-the-detail-lives">Where the detail lives</h3>
+<p><code>scripts/60_e_preregistration.py</code>, <code>scripts/61_e_mde.py</code> · <code>data/processed/e_preregistration.json</code>, <code>e_mde.csv</code> · commits <code>a747e7a</code> (pre-registration, no results), <code>476e177</code> (MDE)</p>
+<hr>
+<h1>Part II — Pending stages</h1>
+<h2 id="eda-descriptive-groundwork">EDA — Descriptive groundwork</h2>
+<h3 id="in-plain-words">In plain words</h3>
+<p>Before any testing: what do these variables actually look like? Levels, trajectories over time, where Greece ranks, and how everything correlates in all three views. No models, no p-values, no claims — this stage exists so the modelling that follows is read against a picture of the data rather than in the abstract.</p>
+<h3 id="question">Question</h3>
+<h3 id="data-and-sample">Data and sample</h3>
+<h3 id="levels-and-trajectories">Levels and trajectories</h3>
+<h3 id="ranks">Ranks</h3>
+<h3 id="correlation-views">Correlation views</h3>
+<h3 id="what-this-does-not-establish">What this does not establish</h3>
+<p>Nothing inferential. Descriptive corroboration tier only.</p>
+<h3 id="where-the-detail-lives">Where the detail lives</h3>
+<hr>
+<h2 id="ea-deprivation-free-companion-audit">EA — Deprivation-free companion audit</h2>
+<h3 id="in-plain-words">In plain words</h3>
+<p>P3&#x27;s headline model contains one predictor that, by the rules we adopted later, should not be in a headline model: severe material and social deprivation comes from the same survey system as the outcome we are trying to explain. Using it to predict hardship is closer to explaining a thing with itself than the other five predictors are.</p>
+<p>We are not going to fix this by choosing better words. We run <strong>one</strong> extra model — same countries, same years, same year effects, the same five remaining predictors, with that one variable removed — and see what happens to the result. Nothing gets substituted in its place, and we do not go looking for a better companion if the first one disappoints. That is the whole point of writing this down beforehand.</p>
+<p>Three things can happen, and all three were decided before the model was run. If the result largely survives, the cleaner model becomes the headline. If it weakens moderately, we report a range instead of a single number and say openly that it depends on how strictly you define distance from the outcome. If it collapses, we say plainly that the P3 result depends materially on a same-instrument deprivation measure.</p>
+<p>The rule that matters most is the one preventing us from cheating: <strong>we may never pick between the two models just because one produces the smaller residual.</strong> Both get reported whatever happens.</p>
+<h3 id="question">Question</h3>
+<p>How much of the frozen P3 result depends on <code>severe_mat_soc_deprivation</code>, a predictor E0 classifies <code>proximate_same_instrument</code>?</p>
+<h3 id="two-roles">Two roles</h3>
+<div class="tw"><table><thead><tr><th style="text-align:left"></th><th style="text-align:left">Frozen P3</th><th style="text-align:left">Companion</th></tr></thead><tbody><tr><td style="text-align:left">Status</td><td style="text-align:left">audited historical benchmark, unchanged</td><td style="text-align:left">new, pre-specified</td></tr><tr><td style="text-align:left">Label</td><td style="text-align:left">frozen P3 <strong>mixed-distance</strong> model</td><td style="text-align:left">deprivation-free companion</td></tr><tr><td style="text-align:left">Predictors</td><td style="text-align:left">6</td><td style="text-align:left">5</td></tr><tr><td style="text-align:left"><code>severe_mat_soc_deprivation</code></td><td style="text-align:left">retained</td><td style="text-align:left"><strong>removed</strong></td></tr><tr><td style="text-align:left">Sample</td><td style="text-align:left">2015-2024, n = 269</td><td style="text-align:left">identical</td></tr><tr><td style="text-align:left">Year effects</td><td style="text-align:left">yes</td><td style="text-align:left">identical</td></tr><tr><td style="text-align:left">Substitutions</td><td style="text-align:left">--</td><td style="text-align:left"><strong>none permitted</strong></td></tr></tbody></table></div>
+<h3 id="comparisons-required">Comparisons required</h3>
+<p>Identical observations (verified by row count and index) - Greece residual and rank - accumulated-unemployment coefficient - wild-cluster inference - leave-one-country-out stability - VIFs - within/between decomposition <strong>only if</strong> the companion becomes headline.</p>
+<h3 id="decision-rule">Decision rule</h3>
+<p>Implemented as <code>scripts/ea_rule.py</code>, tested by <code>scripts/test_ea_rule.py</code> (37 tests). The function is the pre-registration; the prose below describes it.</p>
+<blockquote><p>Prose alone already failed once here. The first P3 run reported the strongest branch because an if/else chain ended in a default <code>else</code>.</p></blockquote>
+<div class="tw"><table><thead><tr><th style="text-align:left">Outcome</th><th style="text-align:left">Condition</th><th style="text-align:left">Consequence</th></tr></thead><tbody><tr><td style="text-align:left"><strong>A</strong></td><td style="text-align:left">degradation &lt;= 3.0 points, rank does not deteriorate, all stability gates pass</td><td style="text-align:left">companion becomes the cleaner headline specification</td></tr><tr><td style="text-align:left"><strong>B</strong></td><td style="text-align:left">degradation &lt;= 8.0 points</td><td style="text-align:left">material support, reported as an explicit <strong>range</strong> across proximity choices</td></tr><tr><td style="text-align:left"><strong>C</strong></td><td style="text-align:left">degradation &gt; 8.0 points, rank deteriorates, or any stability gate fails</td><td style="text-align:left">frozen P3 depends materially on an official but same-instrument deprivation measure</td></tr></tbody></table></div>
+<p>Degradation is the companion&#x27;s absolute residual minus frozen P3&#x27;s 6.93. Thresholds are anchored to the 20.12-point narrowing accumulation delivers (27.05 -&gt; 6.93): 3.0 points is about 15% of it, 8.0 points about 40%.</p>
+<p><strong>Hard gates, any one forcing C:</strong> coefficient not positive - bootstrap does not support - not LOO sign-stable - max VIF &gt; 10.0 - Greece&#x27;s rank deteriorates.</p>
+<p><strong>The anti-selection rule.</strong> Outcome A is earned by proximity cleanliness plus stability, never by producing the smaller residual. A companion residual <em>smaller</em> than frozen P3&#x27;s is recorded and never rewarded -- dropping a predictor cannot improve out-of-sample standing for a reason this design can attribute. Both specifications are reported under every outcome, including A.</p>
+<h3 id="notes-from-review">Notes from review</h3>
+<p>EA exists because of a label, and the argument that produced it is worth recording precisely.</p>
+<p>Review found that P3 — described throughout as the &quot;objective-only&quot; model — contains <code>severe_mat_soc_deprivation</code>, which E0 later classified <code>proximate_same_instrument</code>, construct P1: the construct the E pre-registration reserves as diagnostic-only and never headline. P3 excludes the <em>closest</em> proximate measures, but is not free of same-instrument ones.</p>
+<p>The first proposed fix was wording: relabel and move on. That was rejected, and correctly. The reasoning: freezing a result protects its specification, numbers and interpretation from post-hoc alteration — it does not oblige anyone to keep using an inaccurate label, and it does not forbid a pre-registered audit of what the result depends on. Two roles, not one correction.</p>
+<p>The anti-selection rule was written before the run for an obvious reason: with two specifications on the table, whichever produced the smaller residual would have been extremely easy to prefer for stated reasons that were not the real ones.</p>
+<p>The 3.0 and 8.0 point bands are the one number chosen without external anchor. They are pinned to the 20.12-point narrowing accumulation delivers (≈15% and ≈40%), so &quot;moderate&quot; and &quot;sharp&quot; mean something on this problem — but a different anchoring would have given different bands, and that should be remembered if EA is ever cited as a precedent.</p>
+<h3 id="minimum-detectable-effect">Minimum detectable effect</h3>
+<p>No new MDE. EA compares two specifications on identical observations rather than running a new significance test. If the companion becomes headline, its within/between evidence inherits the published floor of 0.70 SD = 9.29 points and its labelling rule.</p>
+<h3 id="results">Results</h3>
+<p>Frozen P3 reproduced exactly on this run: residual +6.93, rank 3/27, R² 0.907, n = 269. Nothing frozen changed.</p>
+<div class="tw"><table><thead><tr><th style="text-align:left"></th><th style="text-align:right">Frozen P3</th><th style="text-align:right">Companion</th></tr></thead><tbody><tr><td style="text-align:left">Predictors</td><td style="text-align:right">6</td><td style="text-align:right">5</td></tr><tr><td style="text-align:left">n</td><td style="text-align:right">269</td><td style="text-align:right">269 (identical rows)</td></tr><tr><td style="text-align:left">R²</td><td style="text-align:right">0.907</td><td style="text-align:right"><strong>0.821</strong></td></tr><tr><td style="text-align:left">Greece residual</td><td style="text-align:right"><strong>+6.93</strong></td><td style="text-align:right"><strong>−9.39</strong></td></tr><tr><td style="text-align:left">Greece rank</td><td style="text-align:right">3 of 27</td><td style="text-align:right">25 of 27</td></tr><tr><td style="text-align:left"><code>cum_excess_unemployment</code></td><td style="text-align:right">+0.2808 (se 0.0290)</td><td style="text-align:right">+0.2271 (se 0.0459)</td></tr><tr><td style="text-align:left">Wild-cluster bootstrap p</td><td style="text-align:right">0.0005</td><td style="text-align:right">0.0285</td></tr><tr><td style="text-align:left">LOO coefficient range</td><td style="text-align:right">—</td><td style="text-align:right">+0.1655 to +0.2490, sign-stable</td></tr><tr><td style="text-align:left">Max VIF</td><td style="text-align:right">—</td><td style="text-align:right">4.82</td></tr></tbody></table></div>
+<p>Equal-sample rule: <code>severe_mat_soc_deprivation</code> had no additional missing values, so re-deriving complete cases would have given the same 269 rows. The constraint bound nothing here — but it was verified before estimation, not after.</p>
+<p><strong>Greece&#x27;s residual reverses sign.</strong> Frozen P3 under-predicts Greek hardship by 6.93 points. The companion <em>over</em>-predicts it by 9.39. Rank 25 of 27 is third from the opposite end of the ladder: Greece did not leave the extreme group, it crossed to the other tail.</p>
+<figure class="fig" aria-label="Greece&#x27;s residual reverses when deprivation is removed"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 250" class="svg" role="img" aria-label="Greece residual reverses from +6.93 to -9.39" font-family="Helvetica,Arial,sans-serif">
+<rect width="660" height="250" fill="#ffffff"/>
+<text x="20.0" y="26.0" font-size="13" fill="#1f2933" text-anchor="start" font-weight="bold">Greece's residual reverses when deprivation is removed</text>
+<text x="20.0" y="44.0" font-size="10.5" fill="#6b7280" text-anchor="start" font-weight="normal">Positive = model under-predicts Greek hardship. Negative = over-predicts.</text>
+<line x1="200.0" y1="70.0" x2="200.0" y2="190.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="200.0" y="208.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">-12</text>
+<line x1="246.7" y1="70.0" x2="246.7" y2="190.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="246.7" y="208.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">-8</text>
+<line x1="293.3" y1="70.0" x2="293.3" y2="190.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="293.3" y="208.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">-4</text>
+<line x1="340.0" y1="70.0" x2="340.0" y2="190.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="340.0" y="208.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">+0</text>
+<line x1="386.7" y1="70.0" x2="386.7" y2="190.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="386.7" y="208.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">+4</text>
+<line x1="433.3" y1="70.0" x2="433.3" y2="190.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="433.3" y="208.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">+8</text>
+<line x1="480.0" y1="70.0" x2="480.0" y2="190.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="480.0" y="208.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">+12</text>
+<line x1="340.0" y1="62.0" x2="340.0" y2="196.0" stroke="#6b7280" stroke-width="1.5"/>
+<text x="340.0" y="58.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">perfect prediction</text>
+<text x="188.0" y="114.0" font-size="11" fill="#1f2933" text-anchor="end" font-weight="bold">Frozen P3</text>
+<text x="188.0" y="128.0" font-size="9" fill="#6b7280" text-anchor="end" font-weight="normal">mixed-distance</text>
+<rect x="340.0" y="99.0" width="80.9" height="22.0" fill="#c0392b" rx="2"/>
+<text x="496.0" y="114.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="bold">+6.93</text>
+<text x="552.0" y="114.0" font-size="10" fill="#6b7280" text-anchor="start" font-weight="normal">rank 3/27</text>
+<text x="188.0" y="164.0" font-size="11" fill="#1f2933" text-anchor="end" font-weight="bold">Companion</text>
+<text x="188.0" y="178.0" font-size="9" fill="#6b7280" text-anchor="end" font-weight="normal">deprivation-free</text>
+<rect x="230.4" y="149.0" width="109.6" height="22.0" fill="#3d6fb4" rx="2"/>
+<text x="496.0" y="164.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="bold">-9.39</text>
+<text x="552.0" y="164.0" font-size="10" fill="#6b7280" text-anchor="start" font-weight="normal">rank 25/27</text>
+<text x="20.0" y="236.0" font-size="10" fill="#6b7280" text-anchor="start" font-weight="normal">Identical rows (n=269). R² 0.907 → 0.821. Outcome C.</text>
+</svg>
+</figure>
+<figure class="fig" aria-label="Where every country sits, in both specifications"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 400" class="svg" role="img" aria-label="Residual ladders for both specifications" font-family="Helvetica,Arial,sans-serif">
+<rect width="620" height="400" fill="#ffffff"/>
+<text x="20.0" y="26.0" font-size="13" fill="#1f2933" text-anchor="start" font-weight="bold">Where every country sits, in both specifications</text>
+<text x="40.0" y="52.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="bold">Frozen P3 (6 predictors)</text>
+<line x1="87.1" y1="64.0" x2="87.1" y2="371.0" stroke="#6b7280" stroke-width="1.2"/>
+<rect x="87.1" y="70.0" width="34.6" height="8.0" fill="#3d6fb4" rx="1"/>
+<text x="34.0" y="77.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">LU</text>
+<rect x="87.1" y="81.0" width="27.7" height="8.0" fill="#3d6fb4" rx="1"/>
+<text x="34.0" y="88.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">CY</text>
+<rect x="87.1" y="92.0" width="27.2" height="8.0" fill="#c0392b" rx="1"/>
+<text x="34.0" y="99.0" font-size="8" fill="#c0392b" text-anchor="end" font-weight="bold">EL</text>
+<text x="158.0" y="99.0" font-size="8.5" fill="#c0392b" text-anchor="start" font-weight="bold">+6.9 (rank 3)</text>
+<rect x="87.1" y="103.0" width="24.8" height="8.0" fill="#3d6fb4" rx="1"/>
+<text x="34.0" y="110.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">LV</text>
+<rect x="87.1" y="114.0" width="19.1" height="8.0" fill="#6b7280" rx="1"/>
+<text x="34.0" y="121.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">HU</text>
+<rect x="87.1" y="125.0" width="15.9" height="8.0" fill="#6b7280" rx="1"/>
+<text x="34.0" y="132.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">BG</text>
+<rect x="87.1" y="136.0" width="13.9" height="8.0" fill="#6b7280" rx="1"/>
+<text x="34.0" y="143.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">CZ</text>
+<rect x="87.1" y="147.0" width="12.9" height="8.0" fill="#6b7280" rx="1"/>
+<text x="34.0" y="154.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">SK</text>
+<rect x="87.1" y="158.0" width="12.3" height="8.0" fill="#6b7280" rx="1"/>
+<text x="34.0" y="165.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">BE</text>
+<rect x="87.1" y="169.0" width="12.0" height="8.0" fill="#6b7280" rx="1"/>
+<text x="34.0" y="176.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">IE</text>
+<rect x="87.1" y="180.0" width="10.3" height="8.0" fill="#6b7280" rx="1"/>
+<text x="34.0" y="187.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">HR</text>
+<rect x="87.1" y="191.0" width="7.3" height="8.0" fill="#6b7280" rx="1"/>
+<text x="34.0" y="198.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">FR</text>
+<rect x="87.1" y="202.0" width="5.3" height="8.0" fill="#6b7280" rx="1"/>
+<text x="34.0" y="209.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">AT</text>
+<rect x="87.1" y="213.0" width="5.1" height="8.0" fill="#6b7280" rx="1"/>
+<text x="34.0" y="220.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">PT</text>
+<rect x="87.1" y="224.0" width="5.0" height="8.0" fill="#6b7280" rx="1"/>
+<text x="34.0" y="231.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">MT</text>
+<rect x="87.1" y="235.0" width="2.2" height="8.0" fill="#6b7280" rx="1"/>
+<text x="34.0" y="242.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">PL</text>
+<rect x="87.1" y="246.0" width="0.6" height="8.0" fill="#6b7280" rx="1"/>
+<text x="34.0" y="253.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">DK</text>
+<rect x="83.2" y="257.0" width="3.9" height="8.0" fill="#6b7280" rx="1"/>
+<text x="34.0" y="264.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">SE</text>
+<rect x="76.7" y="268.0" width="10.5" height="8.0" fill="#6b7280" rx="1"/>
+<text x="34.0" y="275.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">SI</text>
+<rect x="73.5" y="279.0" width="13.6" height="8.0" fill="#6b7280" rx="1"/>
+<text x="34.0" y="286.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">NL</text>
+<rect x="70.8" y="290.0" width="16.4" height="8.0" fill="#6b7280" rx="1"/>
+<text x="34.0" y="297.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">LT</text>
+<rect x="70.2" y="301.0" width="16.9" height="8.0" fill="#6b7280" rx="1"/>
+<text x="34.0" y="308.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">DE</text>
+<rect x="69.5" y="312.0" width="17.6" height="8.0" fill="#6b7280" rx="1"/>
+<text x="34.0" y="319.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">EE</text>
+<rect x="67.2" y="323.0" width="19.9" height="8.0" fill="#3d6fb4" rx="1"/>
+<text x="34.0" y="330.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">FI</text>
+<rect x="62.2" y="334.0" width="24.9" height="8.0" fill="#3d6fb4" rx="1"/>
+<text x="34.0" y="341.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">IT</text>
+<rect x="46.6" y="345.0" width="40.5" height="8.0" fill="#3d6fb4" rx="1"/>
+<text x="34.0" y="352.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">RO</text>
+<rect x="45.4" y="356.0" width="41.7" height="8.0" fill="#3d6fb4" rx="1"/>
+<text x="34.0" y="363.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">ES</text>
+<text x="330.0" y="52.0" font-size="11" fill="#1f2933" text-anchor="start" font-weight="bold">Companion (5)</text>
+<line x1="377.1" y1="64.0" x2="377.1" y2="371.0" stroke="#6b7280" stroke-width="1.2"/>
+<rect x="377.1" y="70.0" width="60.8" height="8.0" fill="#3d6fb4" rx="1"/>
+<text x="324.0" y="77.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">LU</text>
+<rect x="377.1" y="81.0" width="57.6" height="8.0" fill="#3d6fb4" rx="1"/>
+<text x="324.0" y="88.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">BG</text>
+<rect x="377.1" y="92.0" width="42.2" height="8.0" fill="#3d6fb4" rx="1"/>
+<text x="324.0" y="99.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">CY</text>
+<rect x="377.1" y="103.0" width="38.3" height="8.0" fill="#3d6fb4" rx="1"/>
+<text x="324.0" y="110.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">RO</text>
+<rect x="377.1" y="114.0" width="29.1" height="8.0" fill="#3d6fb4" rx="1"/>
+<text x="324.0" y="121.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">HU</text>
+<rect x="377.1" y="125.0" width="24.1" height="8.0" fill="#3d6fb4" rx="1"/>
+<text x="324.0" y="132.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">IE</text>
+<rect x="377.1" y="136.0" width="20.7" height="8.0" fill="#3d6fb4" rx="1"/>
+<text x="324.0" y="143.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">BE</text>
+<rect x="377.1" y="147.0" width="18.3" height="8.0" fill="#6b7280" rx="1"/>
+<text x="324.0" y="154.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">LV</text>
+<rect x="377.1" y="158.0" width="15.2" height="8.0" fill="#6b7280" rx="1"/>
+<text x="324.0" y="165.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">FR</text>
+<rect x="377.1" y="169.0" width="3.7" height="8.0" fill="#6b7280" rx="1"/>
+<text x="324.0" y="176.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">AT</text>
+<rect x="377.1" y="180.0" width="2.4" height="8.0" fill="#6b7280" rx="1"/>
+<text x="324.0" y="187.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">PT</text>
+<rect x="377.1" y="191.0" width="1.4" height="8.0" fill="#6b7280" rx="1"/>
+<text x="324.0" y="198.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">MT</text>
+<rect x="375.7" y="202.0" width="1.5" height="8.0" fill="#6b7280" rx="1"/>
+<text x="324.0" y="209.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">HR</text>
+<rect x="374.5" y="213.0" width="2.7" height="8.0" fill="#6b7280" rx="1"/>
+<text x="324.0" y="220.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">SK</text>
+<rect x="370.0" y="224.0" width="7.1" height="8.0" fill="#6b7280" rx="1"/>
+<text x="324.0" y="231.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">LT</text>
+<rect x="362.9" y="235.0" width="14.3" height="8.0" fill="#6b7280" rx="1"/>
+<text x="324.0" y="242.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">CZ</text>
+<rect x="362.8" y="246.0" width="14.3" height="8.0" fill="#6b7280" rx="1"/>
+<text x="324.0" y="253.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">DK</text>
+<rect x="360.2" y="257.0" width="17.0" height="8.0" fill="#6b7280" rx="1"/>
+<text x="324.0" y="264.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">PL</text>
+<rect x="359.3" y="268.0" width="17.9" height="8.0" fill="#6b7280" rx="1"/>
+<text x="324.0" y="275.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">SE</text>
+<rect x="358.0" y="279.0" width="19.1" height="8.0" fill="#6b7280" rx="1"/>
+<text x="324.0" y="286.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">NL</text>
+<rect x="356.8" y="290.0" width="20.3" height="8.0" fill="#3d6fb4" rx="1"/>
+<text x="324.0" y="297.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">IT</text>
+<rect x="353.6" y="301.0" width="23.6" height="8.0" fill="#3d6fb4" rx="1"/>
+<text x="324.0" y="308.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">DE</text>
+<rect x="352.3" y="312.0" width="24.9" height="8.0" fill="#3d6fb4" rx="1"/>
+<text x="324.0" y="319.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">SI</text>
+<rect x="350.4" y="323.0" width="26.7" height="8.0" fill="#3d6fb4" rx="1"/>
+<text x="324.0" y="330.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">FI</text>
+<rect x="340.2" y="334.0" width="36.9" height="8.0" fill="#c0392b" rx="1"/>
+<text x="324.0" y="341.0" font-size="8" fill="#c0392b" text-anchor="end" font-weight="bold">EL</text>
+<text x="448.0" y="341.0" font-size="8.5" fill="#c0392b" text-anchor="start" font-weight="bold">-9.4 (rank 25)</text>
+<rect x="337.6" y="345.0" width="39.5" height="8.0" fill="#3d6fb4" rx="1"/>
+<text x="324.0" y="352.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">ES</text>
+<rect x="337.4" y="356.0" width="39.8" height="8.0" fill="#3d6fb4" rx="1"/>
+<text x="324.0" y="363.0" font-size="8" fill="#6b7280" text-anchor="end" font-weight="normal">EE</text>
+<text x="20.0" y="386.0" font-size="10" fill="#6b7280" text-anchor="start" font-weight="normal">Greece in red. Bars right of the line are under-predicted, left are over-predicted.</text>
+</svg>
+</figure>
+<p>Removing deprivation also destroys the narrowing story. In frozen P3, accumulation moves Greece +27.05 → +6.93. In the companion the same comparison is +9.52 → −9.39: not a narrowing, a crossing.</p>
+<figure class="fig" aria-label="What adding accumulated unemployment does, in each model"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 240" class="svg" role="img" aria-label="Narrowing in each model" font-family="Helvetica,Arial,sans-serif">
+<rect width="700" height="240" fill="#ffffff"/>
+<text x="20.0" y="26.0" font-size="13" fill="#1f2933" text-anchor="start" font-weight="bold">What adding accumulated unemployment does, in each model</text>
+<line x1="226.7" y1="60.0" x2="226.7" y2="175.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="226.7" y="193.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">-10</text>
+<line x1="310.0" y1="60.0" x2="310.0" y2="175.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="310.0" y="193.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">+0</text>
+<line x1="393.3" y1="60.0" x2="393.3" y2="175.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="393.3" y="193.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">+10</text>
+<line x1="476.7" y1="60.0" x2="476.7" y2="175.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="476.7" y="193.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">+20</text>
+<line x1="560.0" y1="60.0" x2="560.0" y2="175.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="560.0" y="193.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">+30</text>
+<line x1="310.0" y1="54.0" x2="310.0" y2="181.0" stroke="#6b7280" stroke-width="1.5"/>
+<text x="196.0" y="99.0" font-size="11" fill="#1f2933" text-anchor="end" font-weight="normal">Frozen P3</text>
+<line x1="535.4" y1="95.0" x2="367.8" y2="95.0" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="3,3"/>
+<circle cx="535.4" cy="95" r="6" fill="#b7791f"/>
+<circle cx="367.8" cy="95" r="6" fill="#2f855a"/>
+<text x="535.4" y="82.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">+27.05</text>
+<text x="367.8" y="82.0" font-size="9.5" fill="#1f2933" text-anchor="middle" font-weight="bold">+6.93</text>
+<text x="568.0" y="99.0" font-size="9.5" fill="#2f855a" text-anchor="start" font-weight="bold">narrows</text>
+<text x="196.0" y="149.0" font-size="11" fill="#1f2933" text-anchor="end" font-weight="normal">Companion</text>
+<line x1="389.3" y1="145.0" x2="231.7" y2="145.0" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="3,3"/>
+<circle cx="389.3" cy="145" r="6" fill="#b7791f"/>
+<circle cx="231.7" cy="145" r="6" fill="#c0392b"/>
+<text x="389.3" y="132.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">+9.52</text>
+<text x="231.7" y="132.0" font-size="9.5" fill="#1f2933" text-anchor="middle" font-weight="bold">-9.39</text>
+<text x="568.0" y="149.0" font-size="9.5" fill="#c0392b" text-anchor="start" font-weight="bold">crosses zero</text>
+<text x="20.0" y="222.0" font-size="10" fill="#6b7280" text-anchor="start" font-weight="normal">Amber = without accumulation. In frozen P3 the gap narrows toward zero; in the companion it passes through it.</text>
+</svg>
+</figure>
+<h3 id="the-decision-rule-failed-and-had-to-be-corrected">The decision rule failed, and had to be corrected</h3>
+<p><strong>The rule as pre-registered returned Outcome A.</strong> That verdict was wrong, and the reason matters more than the result.</p>
+<p><code>decide()</code> compared <em>absolute</em> residuals: |−9.39| − |6.93| = +2.46 points, inside band A&#x27;s 3.0-point threshold. And its rank gate was one-tailed — it checked only whether Greece became <em>more</em> under-predicted, so rank 3 → 25 registered as an improvement.</p>
+<p>Both are implementation defects, not disagreements with the pre-registration. The pre-registered prose for Outcome A reads &quot;companion still materially narrows Greece&#x27;s residual.&quot; A residual crossing zero does not narrow under any reading of that sentence. The function diverged from the condition it was written to implement — the same class of failure as the P3 <code>branch_rule</code> default <code>else</code>, which also returned the strongest conclusion on a case its author had not anticipated.</p>
+<p>Two corrections, both regression-tested:</p>
+<ul><li><strong>Sign reversal is not narrowing.</strong> A residual crossing zero returns C unless it lands within 3.0 points of zero, in which case it genuinely did narrow.</li><li><strong>Extremeness is two-tailed.</strong> Tail position is <code>min(rank, n − rank + 1)</code>, so rank 3 and rank 25 of 27 both score 3. Greece&#x27;s tail position is <em>unchanged</em>.</li></ul>
+<p><code>test_ea_rule.py</code> grew from 37 to 47 tests; the observed case (−9.39 at rank 25) is now a named regression test.</p>
+<h3 id="notes-from-review">Notes from review</h3>
+<p>Two things about this correction need to be defensible, not just stated.</p>
+<p><strong>Why this is fixing an implementation, not moving a goalpost.</strong> The pre-registered prose for Outcome A reads <em>&quot;companion still materially narrows Greece&#x27;s residual.&quot;</em> A residual crossing zero does not narrow under any reading of that sentence. So the function and the frozen prose disagreed, and the prose is the pre-registration. The prose was not touched.</p>
+<p><strong>What would make this illegitimate.</strong> If the prose had been ambiguous — if it had said &quot;improves&quot; or &quot;performs comparably&quot; — then choosing an interpretation after seeing −9.39 would be exactly the post-hoc rule-fitting the whole protocol exists to prevent. The fix survives only because &quot;narrows&quot; is unambiguous about direction.</p>
+<p>The reversal tolerance (3.0 points) <em>was</em> chosen while looking at the result. It does not change this verdict — any tolerance below 9.39 yields C — but it was not set blind, and it should be treated as provisional if EA is reused.</p>
+<p>Worth noting what the defect was not: not a coding slip. Both defects come from the same unexamined assumption — that the residual would stay positive and only shrink. Every test written before the run shared that assumption, which is why 47 tests passed while the rule was wrong.</p>
+<h3 id="decision">Decision</h3>
+<p><strong>Outcome C — the frozen P3 result depends materially on an official but same-instrument deprivation measure.</strong></p>
+<p>Both specifications are reported, per the anti-selection rule.</p>
+<h3 id="interpretation">Interpretation</h3>
+<p><code>severe_mat_soc_deprivation</code> was carrying the fit. Without it, R² falls from 0.907 to 0.821, and the remaining predictors — long-term unemployment, income, wage history, accumulated unemployment — predict Greece should report <em>substantially more</em> hardship than it does.</p>
+<p>That is a finding about the evidence layers, not a repair of P3. Greece&#x27;s hardship tracks its deprivation closely; conditional on labour-market and income data alone it is over-predicted. The two layers do not tell the same story, which is precisely why they may not sit under one &quot;objective&quot; label.</p>
+<h3 id="what-this-does-not-establish">What this does not establish</h3>
+<p>That the companion is the better model — it is not, and Outcome C means it does not take the headline. That deprivation &quot;causes&quot; the fit. And nothing about <code>p5f-frozen</code>, which is unchanged and was re-verified on this run.</p>
+<p>The accumulated-unemployment coefficient survives in the companion (+0.2271, bootstrap p = 0.0285, LOO sign-stable), so the accumulation result is not itself an artefact of deprivation. What depends on deprivation is Greece&#x27;s <em>position</em> relative to prediction, not the coefficient.</p>
+<h3 id="what-this-does-not-establish">What this does not establish</h3>
+<p>Nothing about <code>p5f-frozen</code>, which EA may not alter. And a clean companion result would not make the model &quot;objective&quot; in the strict sense -- it would make it free of <em>same-instrument</em> predictors, which is a narrower claim.</p>
+<h3 id="where-the-detail-lives">Where the detail lives</h3>
+<p><code>scripts/63_ea_preregistration.py</code>, <code>scripts/ea_rule.py</code>, <code>scripts/test_ea_rule.py</code> - <code>data/processed/ea_preregistration.json</code></p>
+<hr>
+<h2 id="e1-current-level-constructs">E1 — Current-level constructs</h2>
+<h3 id="in-plain-words">In plain words</h3>
+<h3 id="question">Question</h3>
+<h3 id="pre-registered-specification">Pre-registered specification</h3>
+<h3 id="data-and-sample">Data and sample</h3>
+<h3 id="minimum-detectable-effect">Minimum detectable effect</h3>
+<h3 id="results">Results</h3>
+<h3 id="robustness-and-validation">Robustness and validation</h3>
+<h3 id="interpretation">Interpretation</h3>
+<h3 id="what-this-does-not-establish">What this does not establish</h3>
+<h3 id="decision">Decision</h3>
+<h3 id="where-the-detail-lives">Where the detail lives</h3>
+<hr>
+<h2 id="e2-current-level-sensitivities">E2 — Current-level sensitivities</h2>
+<h3 id="in-plain-words">In plain words</h3>
+<h3 id="question">Question</h3>
+<h3 id="pre-registered-substitutions">Pre-registered substitutions</h3>
+<h3 id="equal-sample-comparisons">Equal-sample comparisons</h3>
+<h3 id="results">Results</h3>
+<h3 id="multiple-testing-adjustment">Multiple-testing adjustment</h3>
+<h3 id="interpretation">Interpretation</h3>
+<h3 id="decision">Decision</h3>
+<h3 id="where-the-detail-lives">Where the detail lives</h3>
+<hr>
+<h2 id="e3-diagnostic-and-contextual-checks">E3 — Diagnostic and contextual checks</h2>
+<h3 id="in-plain-words">In plain words</h3>
+<h3 id="proximate-material-hardship-family">Proximate material-hardship family</h3>
+<h3 id="inequality-retest">Inequality retest</h3>
+<h3 id="migration-and-demographic-context">Migration and demographic context</h3>
+<h3 id="saving-and-household-balance-sheet-context">Saving and household balance-sheet context</h3>
+<h3 id="work-effort-squeeze-retest">Work-effort squeeze retest</h3>
+<h3 id="transfer-policy-specification">Transfer-policy specification</h3>
+<h3 id="results">Results</h3>
+<h3 id="interpretation-limits">Interpretation limits</h3>
+<h3 id="decision">Decision</h3>
+<h3 id="where-the-detail-lives">Where the detail lives</h3>
+<hr>
+<h2 id="e4-accumulated-exposure">E4 — Accumulated exposure</h2>
+<h3 id="in-plain-words">In plain words</h3>
+<h3 id="question">Question</h3>
+<h3 id="eligible-constructs">Eligible constructs</h3>
+<h3 id="transformations-and-baselines">Transformations and baselines</h3>
+<h3 id="data-and-equal-sample-rules">Data and equal-sample rules</h3>
+<h3 id="minimum-detectable-effect">Minimum detectable effect</h3>
+<h3 id="results">Results</h3>
+<h3 id="multiple-testing-adjustment">Multiple-testing adjustment</h3>
+<h3 id="robustness-and-validation">Robustness and validation</h3>
+<h3 id="within-between-decomposition">Within-between decomposition</h3>
+<h3 id="first-difference-evidence">First-difference evidence</h3>
+<h3 id="interpretation">Interpretation</h3>
+<h3 id="decision">Decision</h3>
+<h3 id="where-the-detail-lives">Where the detail lives</h3>
+<hr>
+<h2 id="e5-accumulation-sensitivities">E5 — Accumulation sensitivities</h2>
+<h3 id="in-plain-words">In plain words</h3>
+<h3 id="question">Question</h3>
+<h3 id="pre-registered-alternatives">Pre-registered alternatives</h3>
+<h3 id="equal-sample-comparisons">Equal-sample comparisons</h3>
+<h3 id="results">Results</h3>
+<h3 id="multiple-testing-adjustment">Multiple-testing adjustment</h3>
+<h3 id="interpretation">Interpretation</h3>
+<h3 id="decision">Decision</h3>
+<h3 id="where-the-detail-lives">Where the detail lives</h3>
+<hr>
+<h2 id="e6-frozen-combined-model">E6 — Frozen combined model</h2>
+<h3 id="in-plain-words">In plain words</h3>
+<h3 id="purpose">Purpose</h3>
+<h3 id="frozen-specification">Frozen specification</h3>
+<h3 id="relationship-to-e1e5">Relationship to E1–E5</h3>
+<h3 id="results-carried-forward">Results carried forward</h3>
+<h3 id="prohibited-reinterpretations">Prohibited reinterpretations</h3>
+<h3 id="decision">Decision</h3>
+<h3 id="where-the-detail-lives">Where the detail lives</h3>
+<hr>
+<h2 id="e7-current-versus-accumulated-comparison">E7 — Current versus accumulated comparison</h2>
+<h3 id="in-plain-words">In plain words</h3>
+<h3 id="question">Question</h3>
+<h3 id="head-to-head-rules">Head-to-head rules</h3>
+<h3 id="equal-sample-verification">Equal-sample verification</h3>
+<h3 id="results">Results</h3>
+<h3 id="greece-residual-and-rank">Greece residual and rank</h3>
+<h3 id="leave-one-country-out-stability">Leave-one-country-out stability</h3>
+<h3 id="within-between-evidence">Within-between evidence</h3>
+<h3 id="first-difference-evidence">First-difference evidence</h3>
+<h3 id="interpretation">Interpretation</h3>
+<h3 id="what-this-does-not-establish">What this does not establish</h3>
+<h3 id="decision">Decision</h3>
+<h3 id="where-the-detail-lives">Where the detail lives</h3>
+<hr>
+<h2 id="final-claim-freeze-and-publication">Final — Claim freeze and publication</h2>
+<h3 id="in-plain-words">In plain words</h3>
+<h3 id="findings-retained">Findings retained</h3>
+<h3 id="findings-reworded">Findings reworded</h3>
+<h3 id="findings-superseded">Findings superseded</h3>
+<h3 id="null-and-inconclusive-findings">Null and inconclusive findings</h3>
+<h3 id="failed-or-infeasible-designs">Failed or infeasible designs</h3>
+<h3 id="headline-eligible-claims">Headline-eligible claims</h3>
+<h3 id="mandatory-caveats">Mandatory caveats</h3>
+<h3 id="report-placement">Report placement</h3>
+<h3 id="final-verification">Final verification</h3>
+<h3 id="freeze-commit-and-tag">Freeze commit and tag</h3>
+<hr>
+<h1>Registers</h1>
+<h2 id="decision-register">Decision Register</h2>
+<div class="tw"><table><thead><tr><th style="text-align:left">ID</th><th style="text-align:left">Date</th><th style="text-align:left">Stage</th><th style="text-align:left">Decision</th><th style="text-align:left">Evidence and reason</th><th style="text-align:left">Alternatives rejected</th><th style="text-align:left">Status</th><th style="text-align:left">Supersedes</th><th style="text-align:left">Commit</th></tr></thead><tbody><tr><td style="text-align:left">D-01</td><td style="text-align:left">2026-08-21</td><td style="text-align:left">P0</td><td style="text-align:left">Outcome renamed <em>backward-extended official subjective-hardship indicator</em></td><td style="text-align:left">432 overlapping country-years, median abs diff 0.0 pp, none &gt;0.1 pp</td><td style="text-align:left">Treating the series as our own construction</td><td style="text-align:left"><code>frozen</code></td><td style="text-align:left">—</td><td style="text-align:left">—</td></tr><tr><td style="text-align:left">D-02</td><td style="text-align:left">2026-08-21</td><td style="text-align:left">P2</td><td style="text-align:left">Synthetic-control design rejected as infeasible; divergence figure non-reportable</td><td style="text-align:left">Failed 4 of 6 pre-registered gates; donors collapse to HU 0.55 + BG 0.45</td><td style="text-align:left">Reporting the +27 pp divergence with caveats</td><td style="text-align:left"><code>infeasible</code></td><td style="text-align:left">—</td><td style="text-align:left">—</td></tr><tr><td style="text-align:left">D-03</td><td style="text-align:left">2026-08-21</td><td style="text-align:left">P3</td><td style="text-align:left">Branch 2 — material history explains a meaningful share, not all</td><td style="text-align:left">Residual 27.05 → 6.93, but rank stays 3 of 27</td><td style="text-align:left">Branch 1 (strong objective support)</td><td style="text-align:left"><code>frozen</code></td><td style="text-align:left">—</td><td style="text-align:left">—</td></tr><tr><td style="text-align:left">D-04</td><td style="text-align:left">2026-08-21</td><td style="text-align:left">P5</td><td style="text-align:left">Mundlak outcome B — between-country scarring marker</td><td style="text-align:left">Between +0.332 (p&lt;0.0001), within −0.076 (p=0.692)</td><td style="text-align:left">Any dynamic within-country wording</td><td style="text-align:left"><code>frozen</code></td><td style="text-align:left">D-03 wording</td><td style="text-align:left"><code>p5f-frozen</code></td></tr><tr><td style="text-align:left">D-05</td><td style="text-align:left">2026-08-21</td><td style="text-align:left">P3a</td><td style="text-align:left">Family D rejected as incremental predictor</td><td style="text-align:left">Residual worsens 6.93 → 10.39, rank 3 → 1 on the same 269 rows</td><td style="text-align:left">Interpreting the −2.17 sign reversal</td><td style="text-align:left"><code>frozen</code></td><td style="text-align:left">—</td><td style="text-align:left">—</td></tr><tr><td style="text-align:left">D-06</td><td style="text-align:left">2026-08-22</td><td style="text-align:left">E0</td><td style="text-align:left">Construct map frozen: six objective constructs plus one diagnostic</td><td style="text-align:left">Correlation, redundancy and non-independence evidence across three views</td><td style="text-align:left">Empirically-fitted family groupings</td><td style="text-align:left"><code>frozen</code></td><td style="text-align:left">—</td><td style="text-align:left"><code>2103b3d</code></td></tr><tr><td style="text-align:left">D-07</td><td style="text-align:left">2026-08-22</td><td style="text-align:left">PRE</td><td style="text-align:left">Family E pre-registration frozen</td><td style="text-align:left">Committed with zero results present</td><td style="text-align:left">Testing the 15 pairwise family combinations</td><td style="text-align:left"><code>frozen</code></td><td style="text-align:left">—</td><td style="text-align:left"><code>a747e7a</code></td></tr><tr><td style="text-align:left">D-08</td><td style="text-align:left">2026-08-22</td><td style="text-align:left">PRE</td><td style="text-align:left">MDE published at 0.70 SD = 9.29 points before any E result</td><td style="text-align:left">Simulation on the actual cluster structure</td><td style="text-align:left">Publishing E results without a power floor</td><td style="text-align:left"><code>frozen</code></td><td style="text-align:left">—</td><td style="text-align:left"><code>476e177</code></td></tr><tr><td style="text-align:left">D-09</td><td style="text-align:left">2026-08-22</td><td style="text-align:left">EA</td><td style="text-align:left">P3 relabelled <em>frozen P3 mixed-distance model</em>; numbers unchanged</td><td style="text-align:left"><code>severe_mat_soc_deprivation</code> is <code>proximate_same_instrument</code>, construct P1</td><td style="text-align:left">Keeping the &quot;objective-only&quot; label; re-estimating frozen P3</td><td style="text-align:left"><code>frozen</code></td><td style="text-align:left">D-03 label only</td><td style="text-align:left">—</td></tr><tr><td style="text-align:left">D-10</td><td style="text-align:left">2026-08-22</td><td style="text-align:left">EA</td><td style="text-align:left">One deprivation-free companion pre-registered; no substitutions, no further searching</td><td style="text-align:left">Documented classification inconsistency, not a result</td><td style="text-align:left">Searching for a better companion; leaving it to wording</td><td style="text-align:left"><code>pre-registered</code></td><td style="text-align:left">—</td><td style="text-align:left">—</td></tr><tr><td style="text-align:left">D-11</td><td style="text-align:left">2026-08-22</td><td style="text-align:left">EA</td><td style="text-align:left">Selection between the two specifications may never be made on residual size</td><td style="text-align:left">A smaller residual from dropping a predictor is not attributable improvement</td><td style="text-align:left">Choosing whichever model looks better</td><td style="text-align:left"><code>frozen</code></td><td style="text-align:left">—</td><td style="text-align:left">—</td></tr><tr><td style="text-align:left">D-12</td><td style="text-align:left">2026-08-22</td><td style="text-align:left">EA</td><td style="text-align:left">E1 and E4 use the neutral baseline <code>AROP + year effects</code>, not P3</td><td style="text-align:left">P3 carries a P1 predictor and must not seed the construct tests</td><td style="text-align:left">Using P3 as the E-stage baseline</td><td style="text-align:left"><code>frozen</code></td><td style="text-align:left">—</td><td style="text-align:left">—</td></tr><tr><td style="text-align:left">D-13</td><td style="text-align:left">2026-08-22</td><td style="text-align:left">EA</td><td style="text-align:left">Outcome C: frozen P3 depends materially on a same-instrument deprivation measure</td><td style="text-align:left">Greece&#x27;s residual reverses, +6.93 → −9.39; R² 0.907 → 0.821</td><td style="text-align:left">Outcome A, which the defective rule returned</td><td style="text-align:left"><code>frozen</code></td><td style="text-align:left">—</td><td style="text-align:left">—</td></tr><tr><td style="text-align:left">D-14</td><td style="text-align:left">2026-08-22</td><td style="text-align:left">EA</td><td style="text-align:left"><code>ea_rule</code> corrected: sign reversal is not narrowing; extremeness is two-tailed</td><td style="text-align:left">Function diverged from the pre-registered prose it implements</td><td style="text-align:left">Publishing Outcome A; changing the pre-registered prose instead</td><td style="text-align:left"><code>frozen</code></td><td style="text-align:left">—</td><td style="text-align:left">—</td></tr></tbody></table></div>
+<p>Allowed statuses: <code>proposed</code>, <code>pre-registered</code>, <code>frozen</code>, <code>superseded</code>, <code>withdrawn</code>, <code>infeasible</code>.</p>
+<h2 id="results-register">Results Register</h2>
+<div class="tw"><table><thead><tr><th style="text-align:left">ID</th><th style="text-align:left">Stage</th><th style="text-align:left">Outcome</th><th style="text-align:left">Construct or predictor</th><th style="text-align:left">Estimand</th><th style="text-align:left">Sample</th><th style="text-align:right">Estimate</th><th style="text-align:right">Raw p</th><th style="text-align:right">FDR p</th><th style="text-align:left">Wild-bootstrap</th><th style="text-align:left">LOO</th><th style="text-align:left">MDE assessment</th><th style="text-align:left">Interpretation</th><th style="text-align:left">Status</th><th style="text-align:left">Output</th></tr></thead><tbody><tr><td style="text-align:left">R-01</td><td style="text-align:left">P3</td><td style="text-align:left">hardship level</td><td style="text-align:left">objective conditions, no accumulation</td><td style="text-align:left">cross-country residual</td><td style="text-align:left">n=269</td><td style="text-align:right">+27.05 (rank 1/27)</td><td style="text-align:right">—</td><td style="text-align:right">—</td><td style="text-align:left">—</td><td style="text-align:left">—</td><td style="text-align:left">—</td><td style="text-align:left">Greece is the largest outlier in Europe</td><td style="text-align:left"><code>supported</code></td><td style="text-align:left"><code>p3_objective_only.csv</code></td></tr><tr><td style="text-align:left">R-02</td><td style="text-align:left">P3</td><td style="text-align:left">hardship level</td><td style="text-align:left"><code>cum_excess_unemployment</code></td><td style="text-align:left">cross-country residual</td><td style="text-align:left">n=269</td><td style="text-align:right">+6.93 (rank 3/27)</td><td style="text-align:right">—</td><td style="text-align:right">—</td><td style="text-align:left">p=0.0005 primary</td><td style="text-align:left">max 12.7%</td><td style="text-align:left">above MDE</td><td style="text-align:left">accumulated history narrows most of the gap</td><td style="text-align:left"><code>supported</code></td><td style="text-align:left"><code>p3_objective_only.csv</code></td></tr><tr><td style="text-align:left">R-03</td><td style="text-align:left">P5</td><td style="text-align:left">hardship level</td><td style="text-align:left"><code>cum_excess_unemployment</code></td><td style="text-align:left">between-country</td><td style="text-align:left">n=269</td><td style="text-align:right">+0.3323</td><td style="text-align:right">&lt;0.0001</td><td style="text-align:right">—</td><td style="text-align:left">worst p=0.0070</td><td style="text-align:left">Greece −0.8%</td><td style="text-align:left">above MDE</td><td style="text-align:left">between-country scarring marker</td><td style="text-align:left"><code>supported</code></td><td style="text-align:left"><code>p5_audit.csv</code></td></tr><tr><td style="text-align:left">R-04</td><td style="text-align:left">P5</td><td style="text-align:left">hardship level</td><td style="text-align:left"><code>cum_excess_unemployment</code></td><td style="text-align:left">within-country</td><td style="text-align:left">n=269</td><td style="text-align:right">−0.0755</td><td style="text-align:right">0.692</td><td style="text-align:right">—</td><td style="text-align:left">—</td><td style="text-align:left">—</td><td style="text-align:left">below MDE</td><td style="text-align:left">no dynamic evidence</td><td style="text-align:left"><code>inconclusive_under_available_power</code></td><td style="text-align:left"><code>p5_audit.csv</code></td></tr><tr><td style="text-align:left">R-06</td><td style="text-align:left">EA</td><td style="text-align:left">hardship level</td><td style="text-align:left">companion, <code>severe_mat_soc_deprivation</code> removed</td><td style="text-align:left">cross-country residual</td><td style="text-align:left">n=269, identical rows</td><td style="text-align:right">residual −9.39 (rank 25/27); R² 0.821</td><td style="text-align:right">—</td><td style="text-align:right">—</td><td style="text-align:left">p=0.0285 for <code>cum_excess_unemployment</code></td><td style="text-align:left">sign-stable, +0.1655 to +0.2490</td><td style="text-align:left">no new MDE; comparison on identical observations</td><td style="text-align:left">residual reverses sign; frozen P3 depends materially on a same-instrument measure</td><td style="text-align:left"><code>outcome_C</code></td><td style="text-align:left"><code>ea_results.csv</code></td></tr><tr><td style="text-align:left">R-05</td><td style="text-align:left">P3a</td><td style="text-align:left">hardship level</td><td style="text-align:left">accumulated breadth (Family D)</td><td style="text-align:left">cross-country residual</td><td style="text-align:left">n=269</td><td style="text-align:right">residual 10.39 (rank 1/27); coefficient −2.17</td><td style="text-align:right">—</td><td style="text-align:right">—</td><td style="text-align:left">—</td><td style="text-align:left">—</td><td style="text-align:left">no MDE computed for this family</td><td style="text-align:left">failed the incremental criterion and reversed sign conditionally; reversal left uninterpreted</td><td style="text-align:left"><code>failed_incremental_criterion</code></td><td style="text-align:left"><code>p3a_results.csv</code></td></tr></tbody></table></div>
+<p>Allowed statuses: <code>supported</code>, <code>unsupported_with_adequate_power</code>, <code>inconclusive_under_available_power</code>, <code>failed_incremental_criterion</code>, <code>descriptive_only</code>, <code>infeasible</code>, <code>superseded</code>.</p>
+<p><code>outcome_C</code> is EA&#x27;s pre-registered verdict label, not a generic status.</p>
+<p><code>unsupported_with_adequate_power</code> requires a published MDE showing the test could have detected an effect of the relevant size. Without one, use <code>inconclusive_under_available_power</code>. <code>failed_incremental_criterion</code> is for a predictor that measurably <em>worsened</em> the specification it was added to — a result about the model, not about statistical power.</p>
+<h2 id="claim-register">Claim Register</h2>
+<p>Claims are <strong>not</strong> duplicated here. The single source of truth is <code>docs/claim_matrix.csv</code> — 53 claims with <code>introduced_in</code>, <code>v2_disposition</code>, <code>superseded_by</code>, <code>decision_reason</code> and <code>replacement_claim_id</code>, enforced against the published documents by <code>scripts/audit_parity.py</code> on every build.</p>
+<p>Current state of <code>docs/claim_matrix.csv</code>: <strong>53 claims</strong>.</p>
+<div class="tw"><table><thead><tr><th style="text-align:left">V2 disposition</th><th style="text-align:right">Claims</th></tr></thead><tbody><tr><td style="text-align:left">retained</td><td style="text-align:right">44</td></tr><tr><td style="text-align:left">superseded</td><td style="text-align:right">4</td></tr><tr><td style="text-align:left">reworded</td><td style="text-align:right">3</td></tr><tr><td style="text-align:left">descriptive_only</td><td style="text-align:right">1</td></tr><tr><td style="text-align:left">future_research</td><td style="text-align:right">1</td></tr></tbody></table></div>
+<h2 id="corrections-and-supersessions">Corrections and Supersessions</h2>
+<div class="tw"><table><thead><tr><th style="text-align:left">ID</th><th style="text-align:left">Date</th><th style="text-align:left">Original statement or decision</th><th style="text-align:left">Problem</th><th style="text-align:left">Correction</th><th style="text-align:left">Affected artifacts</th><th style="text-align:left">Commit</th></tr></thead><tbody><tr><td style="text-align:left">C-01</td><td style="text-align:left">2026-08-21</td><td style="text-align:left">Synthetic control showed a near-exact pre-crisis fit</td><td style="text-align:left">The fit was on a degenerate two-point window; the honest 2003–2008 window gives RMSE 25.3</td><td style="text-align:left">Design recorded as failed; figure made non-reportable</td><td style="text-align:left">report, narrative, paper, <code>project_description_v3.md</code></td><td style="text-align:left">—</td></tr><tr><td style="text-align:left">C-02</td><td style="text-align:left">2026-08-21</td><td style="text-align:left"><code>p=0.037</code> attributed to synthetic-control placebo inference</td><td style="text-align:left">It comes from the TWFE country-placebo test</td><td style="text-align:left">Attribution corrected in all four documents</td><td style="text-align:left">report, narrative, paper, v3</td><td style="text-align:left">—</td></tr><tr><td style="text-align:left">C-03</td><td style="text-align:left">2026-08-21</td><td style="text-align:left">P3 reported &quot;strong objective support&quot; (Branch 1)</td><td style="text-align:left">Hand-written if/else defaulted to the strongest branch; Greece was at rank 3</td><td style="text-align:left">Extracted to <code>branch_rule.py</code> with 17 tests</td><td style="text-align:left"><code>53_p3_objective_only.py</code></td><td style="text-align:left">—</td></tr><tr><td style="text-align:left">C-04</td><td style="text-align:left">2026-08-21</td><td style="text-align:left">Wild bootstrap returned p=0.82 against t=9.69</td><td style="text-align:left">Unrestricted residuals used instead of null-imposed</td><td style="text-align:left">Refit under the null and resample those residuals</td><td style="text-align:left"><code>54_p5_inference_audit.py</code></td><td style="text-align:left">—</td></tr><tr><td style="text-align:left">C-05</td><td style="text-align:left">2026-08-22</td><td style="text-align:left"><code>real_wages_idx</code>, <code>real_income_idx</code>, <code>arop_threshold_real</code>, <code>pct_below_peak</code> marked accumulation-ineligible</td><td style="text-align:left">The project had already built successful accumulations from all four, one an FDR survivor</td><td style="text-align:left">Binary field replaced by a six-way construction taxonomy</td><td style="text-align:left"><code>e0_variable_registry.csv</code></td><td style="text-align:left"><code>e791e01</code></td></tr><tr><td style="text-align:left">C-06</td><td style="text-align:left">2026-08-22</td><td style="text-align:left">E0 correlation views omitted <code>subjective_poverty</code> and AROPE entirely</td><td style="text-align:left">Made the intended exploration impossible</td><td style="text-align:left">Five comparator columns added to all three views</td><td style="text-align:left"><code>e0_corr_*.csv</code></td><td style="text-align:left"><code>e791e01</code></td></tr><tr><td style="text-align:left">C-08</td><td style="text-align:left">2026-08-22</td><td style="text-align:left">EA rule returned Outcome A on the live run</td><td style="text-align:left">Compared absolute residuals across a sign flip (+2.46, inside band A) and gated rank one-tailed, so rank 3 → 25 read as improvement</td><td style="text-align:left">Sign reversal returns C unless within 3.0 points of zero; tail position <code>min(rank, n−rank+1)</code>; 10 new regression tests</td><td style="text-align:left"><code>ea_rule.py</code>, <code>test_ea_rule.py</code></td><td style="text-align:left">—</td></tr><tr><td style="text-align:left">C-07</td><td style="text-align:left">2026-08-22</td><td style="text-align:left">MDE simulation reported power 1.00 at 0.66 points and 0.00 at 6.64</td><td style="text-align:left">Within-country residual permutation correlated noise with the regressor; detection ignored coefficient sign</td><td style="text-align:left">Variance-component noise; sign-aware detection</td><td style="text-align:left"><code>61_e_mde.py</code></td><td style="text-align:left"><code>476e177</code></td></tr></tbody></table></div>
+<h2 id="artifact-index">Artifact Index</h2>
+<div class="tw"><table><thead><tr><th style="text-align:left">Stage</th><th style="text-align:left">Artifact</th><th style="text-align:left">Purpose</th><th style="text-align:left">Status</th></tr></thead><tbody><tr><td style="text-align:left">P0</td><td style="text-align:left"><code>p0_outcome_reconciliation.csv</code></td><td style="text-align:left">Official vs constructed series, country-year</td><td style="text-align:left">present</td></tr><tr><td style="text-align:left">P0</td><td style="text-align:left"><code>p0_verdict.csv</code></td><td style="text-align:left">The four pre-declared tolerance checks</td><td style="text-align:left">present</td></tr><tr><td style="text-align:left">P2</td><td style="text-align:left"><code>p2_specifications.csv</code></td><td style="text-align:left">Synthetic-control fit across three pre-periods</td><td style="text-align:left">present</td></tr><tr><td style="text-align:left">P2</td><td style="text-align:left"><code>p2_donor_weights.csv</code></td><td style="text-align:left">Donor weights showing the two-country collapse</td><td style="text-align:left">present</td></tr><tr><td style="text-align:left">P2</td><td style="text-align:left"><code>p2_placebo_distribution.csv</code></td><td style="text-align:left">Placebo inference distribution</td><td style="text-align:left">present</td></tr><tr><td style="text-align:left">P3</td><td style="text-align:left"><code>p3_objective_only.csv</code></td><td style="text-align:left">Objective-only model, residuals by specification</td><td style="text-align:left">present</td></tr><tr><td style="text-align:left">P3</td><td style="text-align:left"><code>p3_residuals.csv</code></td><td style="text-align:left">Per-country residuals and ranks</td><td style="text-align:left">present</td></tr><tr><td style="text-align:left">P3a</td><td style="text-align:left"><code>p3a_frozen_universe.json</code></td><td style="text-align:left">Family D universe, frozen before testing</td><td style="text-align:left">present</td></tr><tr><td style="text-align:left">P3a</td><td style="text-align:left"><code>p3a_results.csv</code></td><td style="text-align:left">Incremental test of accumulated breadth</td><td style="text-align:left">present</td></tr><tr><td style="text-align:left">P3a</td><td style="text-align:left"><code>p3a_individual_indicators.csv</code></td><td style="text-align:left">Per-indicator breadth components</td><td style="text-align:left">present</td></tr><tr><td style="text-align:left">P5</td><td style="text-align:left"><code>p5_audit.csv</code></td><td style="text-align:left">Mundlak within/between decomposition</td><td style="text-align:left">present</td></tr><tr><td style="text-align:left">P5</td><td style="text-align:left"><code>p5_bootstrap.csv</code></td><td style="text-align:left">Wild cluster bootstrap across weights and seeds</td><td style="text-align:left">present</td></tr><tr><td style="text-align:left">P5</td><td style="text-align:left"><code>p5_influence.csv</code></td><td style="text-align:left">Leave-one-country-out stability</td><td style="text-align:left">present</td></tr><tr><td style="text-align:left">P5</td><td style="text-align:left"><code>p5f_frozen_result.json</code></td><td style="text-align:left">FROZEN P3/P5/P3a values and eight wording rules</td><td style="text-align:left">present</td></tr><tr><td style="text-align:left">E0</td><td style="text-align:left"><code>e0_extended_panel.csv</code></td><td style="text-align:left">27 countries x 2015-2024 candidate panel</td><td style="text-align:left">present</td></tr><tr><td style="text-align:left">E0</td><td style="text-align:left"><code>e0_variable_registry.csv</code></td><td style="text-align:left">31 variables: units, roles, construction, proximity</td><td style="text-align:left">present</td></tr><tr><td style="text-align:left">E0</td><td style="text-align:left"><code>e0_coverage.csv</code></td><td style="text-align:left">Reporter counts by variable and year</td><td style="text-align:left">present</td></tr><tr><td style="text-align:left">E0</td><td style="text-align:left"><code>e0_corr_pooled.csv</code></td><td style="text-align:left">Pooled correlations incl. five outcome comparators</td><td style="text-align:left">present</td></tr><tr><td style="text-align:left">E0</td><td style="text-align:left"><code>e0_corr_between.csv</code></td><td style="text-align:left">Between-country correlations</td><td style="text-align:left">present</td></tr><tr><td style="text-align:left">E0</td><td style="text-align:left"><code>e0_corr_within.csv</code></td><td style="text-align:left">Within-country correlations</td><td style="text-align:left">present</td></tr><tr><td style="text-align:left">E0</td><td style="text-align:left"><code>e0_nonindependence_flags.csv</code></td><td style="text-align:left">35 flags across four overlap types</td><td style="text-align:left">present</td></tr><tr><td style="text-align:left">E0</td><td style="text-align:left"><code>e0_redundancy.csv</code></td><td style="text-align:left">Primary-vs-sensitivity redundancy, all three views</td><td style="text-align:left">present</td></tr><tr><td style="text-align:left">E0</td><td style="text-align:left"><code>e0_lineage.csv</code></td><td style="text-align:left">How each derived variable was constructed</td><td style="text-align:left">present</td></tr><tr><td style="text-align:left">E0</td><td style="text-align:left"><code>e0_provenance.json</code></td><td style="text-align:left">Source series and vintage</td><td style="text-align:left">present</td></tr><tr><td style="text-align:left">E0</td><td style="text-align:left"><code>construct_map_frozen.json</code></td><td style="text-align:left">FROZEN six constructs plus one diagnostic</td><td style="text-align:left">present</td></tr><tr><td style="text-align:left">PRE</td><td style="text-align:left"><code>e_preregistration.json</code></td><td style="text-align:left">FROZEN outcomes, transformations, decision rule</td><td style="text-align:left">present</td></tr><tr><td style="text-align:left">PRE</td><td style="text-align:left"><code>e_mde.csv</code></td><td style="text-align:left">Power curve; MDE 0.70 SD = 9.29 points at 80%</td><td style="text-align:left">present</td></tr><tr><td style="text-align:left">EA</td><td style="text-align:left"><code>ea_preregistration.json</code></td><td style="text-align:left">FROZEN deprivation-free companion spec and decision rule</td><td style="text-align:left">present</td></tr><tr><td style="text-align:left">EA</td><td style="text-align:left"><code>ea_results.csv</code></td><td style="text-align:left">Outcome C: residual reverses +6.93 -&gt; -9.39</td><td style="text-align:left">present</td></tr><tr><td style="text-align:left">EA</td><td style="text-align:left"><code>ea_companion_residuals.csv</code></td><td style="text-align:left">Companion residual ladder, 27 countries</td><td style="text-align:left">present</td></tr></tbody></table></div></main></div></body></html>

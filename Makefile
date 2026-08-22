@@ -52,6 +52,8 @@ verify:
 	cd $(SCRIPTS) && $(PY) verify_build.py
 	cd $(SCRIPTS) && $(PY) audit_parity.py
 	cd $(SCRIPTS) && $(PY) 62_refresh_research_record.py
+	$(PY) $(SCRIPTS)/65_record_figures.py
+	$(PY) $(SCRIPTS)/66_build_record_html.py
 
 # Strict gate for shipping V2. Everything `verify` runs, plus: no pending V2
 # claim, no unfilled required document slot, no undecided disposition. A green

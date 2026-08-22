@@ -12,6 +12,12 @@ else, read those. Everything after that heading is the formal record.
 Every stage ends with **Where the detail lives** — the script that produced it,
 the files it wrote, and the commit that froze it.
 
+Some stages also carry **Notes from review** — why a decision went the way it
+did, what was argued against, and what was caught by review rather than by the
+code. These exist because the reasoning is the first thing to evaporate. Six
+months from now the numbers will still be in the CSVs; the argument that
+produced them will not be anywhere else.
+
 The technical report, academic paper, and narrative companion are not updated
 stage by stage. They are revised only after the analytical sequence is complete
 and the claims have been frozen.
@@ -35,7 +41,7 @@ and the claims have been frozen.
 | Current stage | EDA |
 | Last completed stage | EA |
 | Branch | `p6-rewrite` |
-| HEAD | `d7ddf0a` EA result: OUTCOME C. Frozen P3 depends materially on deprivation |
+| HEAD | `ad37d6a` Expand E0 into a step-by-step account with per-step results and file pointers |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-22 |
 | Frozen V1 reference | `v1-final` |
@@ -144,6 +150,19 @@ hardship indicator*. Four wording rules were locked: terminology; that the
 splice occurs at 2010; that validation covers only the overlap period; and
 that pre-2010 provenance is ours, not Eurostat's.
 
+### Notes from review
+
+The tolerances were declared before the comparison ran, which mattered more than
+it looked at the time: the agreement turned out to be near-perfect, and a
+tolerance set *afterwards* would have been unfalsifiable no matter what number
+it contained.
+
+The renaming was not cosmetic. Calling it "our constructed series" understated
+what it is and invited a reviewer to ask why we had not simply used the official
+indicator. Calling it "the official indicator" would have overstated the pre-2010
+segment, which has no official counterpart. The compound name is the only one
+that survives both objections.
+
 ### What this does not establish
 
 Nothing about the pre-2010 segment, which has no official counterpart to be
@@ -198,6 +217,20 @@ covariate imbalance on deprivation, and effective donor count.
 **Rejected as infeasible.** The +27 pp divergence figure is marked
 non-reportable via `FORBIDDEN` rules in `audit_parity.py`, which fails the
 build if it appears in any output document.
+
+### Notes from review
+
+An earlier draft reported this design as evidence, citing a near-exact
+pre-crisis fit. That fit existed only on a degenerate two-point window
+(2007–2008). On the honest 2003–2008 window the RMSE is 25.3 — a failure. The
+error reached three published documents before review caught it.
+
+A separate error travelled with it: `p=0.037` was attributed to synthetic-control
+placebo inference when it comes from the TWFE country-placebo test.
+
+The machine-enforced ban exists because of how that first error propagated. A
+figure that is merely *documented* as unreportable gets copied into a summary
+by someone reading quickly. One that fails the build does not.
 
 ### Where the detail lives
 
@@ -288,6 +321,19 @@ the extreme-outlier group (≤3), which rules out Branch 1.
 > sat at rank 3. Prose pre-registration did not prevent that; a tested function
 > does.
 
+### Notes from review
+
+The branch rule is the origin of a policy now applied to every decision rule in
+the project. The pre-commitment was correct and written down in advance; the
+implementation had an if/else chain whose final `else` returned the strongest
+available conclusion. Nothing in the prose was wrong. The code simply did not
+implement it, and the first run published the wrong branch.
+
+Since then a decision rule is a tested function or it is not a rule.
+`branch_rule` (17 tests), `mundlak_rule` (23), `ea_rule` (47). The EA run proved
+the policy was not paranoia: that rule failed too, on a case its author had not
+imagined.
+
 ### Evidentiary tier
 
 **Post-selection robustness, not independent confirmation.**
@@ -343,6 +389,8 @@ That sentence is not supported.
 
 Mundlak outcome **B — between-country scarring marker**.
 
+![The effect is between countries, not within them](figures/between_within.svg)
+
 ### Robustness and validation
 
 Wild cluster bootstrap, null-imposed: **p = 0.0005** in the primary
@@ -368,6 +416,26 @@ remain materially different (−0.076 against +0.332).
 **Frozen** at tag `p5f-frozen`. Eight wording rules locked in
 `p5f_frozen_result.json`. Classification performed by `scripts/mundlak_rule.py`
 (23 tests), not by judgement.
+
+### Notes from review
+
+This is the stage that most changed what the project is allowed to claim, and
+the wording rules are strict because the tempting sentence is so close to the
+defensible one.
+
+"As exposure accumulated, hardship rose" is banned outright. It describes a
+within-country dynamic the analysis does not support, and it is what most
+readers will assume the between-country result means unless told otherwise.
+
+The `p=0.058` equality test caused a specific argument. It fails to reject
+equality of the within and between coefficients — and it is *not* evidence they
+are equal. The point estimates remain −0.076 and +0.332. A rule was locked
+requiring both facts to be stated together, because quoting the p-value alone
+implies a conclusion the test cannot deliver.
+
+The bootstrap was also wrong on the first attempt: unrestricted residuals gave
+p=0.82 against t=9.69. Nonsense loud enough to notice — which is the only reason
+it was caught, and an argument for reporting test statistics alongside p-values.
 
 ### Where the detail lives
 
@@ -410,6 +478,18 @@ a result about the specification, not a power-based null: breadth measurably
 worsened the model it was added to. No MDE was computed for this family, so it
 must not be recorded as *unsupported with adequate power*. The universe was
 frozen in `p3a_frozen_universe.json` before testing.
+
+### Notes from review
+
+The sign reversal was left uninterpreted deliberately, and that was a choice
+made against real temptation. A conditional coefficient of −2.17 on a breadth
+measure invites a story about compensating adjustment or habituation. Any such
+story would have been constructed after seeing the sign, on a variable that had
+just failed its pre-registered test.
+
+Freezing the universe first is what made the null publishable. Without it, a
+failed breadth measure would simply have been dropped and never mentioned —
+which is how null results disappear.
 
 ### Where the detail lives
 
@@ -469,6 +549,31 @@ So E0's result is not a statistical conclusion. It is a documented map of the
 available evidence, plus rules preventing incompatible, duplicated or circular
 variables from being mixed in the next stage.
 
+### Notes from review
+
+The first proposed grouping was rejected, and the reasons are worth keeping.
+
+*Families were being fitted, not theorised.* `net_migration` and `s80s20` had
+been assigned to whichever family they correlated with best — immediately after
+stating that correlation should validate theory groupings, not define them. Both
+are now contextual or standalone retests.
+
+*"Coherence" was an undefined number.* A ratio of within-family to
+between-family mean |r|, presented as if it were interpretable on its own.
+
+*HICP was a category error.* The three HICP series are inflation *rates*, and
+they had been pooled as country "price levels". The correlation evidence then
+settled the matter independently: near-zero pooled against `wadj_a01`, and
+sign-reversing between the views.
+
+*Four variables were wrongly ruled out.* `real_wages_idx`, `real_income_idx`,
+`arop_threshold_real` and `pct_below_peak` were marked "already indexed" and so
+ineligible for accumulation — when the project had already built accumulations
+from all four, one of which (`wage_years_below_2008`) was an FDR survivor.
+
+The binary eligible/ineligible field was the root cause of that last error, and
+it was replaced with the six-way taxonomy rather than corrected in place.
+
 > Two errors were caught in review and corrected. The correlation tables
 > originally left out the outcome itself, which made the intended exploration
 > impossible. And four variables were wrongly marked ineligible for
@@ -507,6 +612,8 @@ Most comparisons can therefore use the full panel. Anything involving the real
 AROP threshold runs on a smaller sample or as a clearly labelled sensitivity
 check — and because the gap is one whole country rather than scattered
 country-years, that sample is 26 countries, not 27.
+
+![Coverage gaps, located](figures/coverage.svg)
 
 `data/processed/e0_coverage.csv` — columns mean:
 
@@ -584,6 +691,8 @@ asked.
 The three HICP pairs are the reason C5 was separated from C4 on evidence rather
 than preference: near-zero pooled, moderately positive between countries,
 negative within them.
+
+![Why pooled correlations alone would have misled us](figures/sign_reversal.svg)
 
 | File | Holds |
 |---|---|
@@ -714,6 +823,8 @@ Sensitivity variants cannot become discoveries when the primary fails.
 | 1.0 | 13.27 | 0.995 |
 
 **MDE at 80% power ≈ 0.70 residual SD = 9.29 points.**
+
+![Power curve with the published MDE marked](figures/mde_power.svg)
 
 Residual SD 13.27 · between-country SD **12.87** · within-country SD **4.01**.
 
@@ -851,6 +962,34 @@ stability, never by producing the smaller residual. A companion residual
 cannot improve out-of-sample standing for a reason this design can attribute.
 Both specifications are reported under every outcome, including A.
 
+### Notes from review
+
+EA exists because of a label, and the argument that produced it is worth
+recording precisely.
+
+Review found that P3 — described throughout as the "objective-only" model —
+contains `severe_mat_soc_deprivation`, which E0 later classified
+`proximate_same_instrument`, construct P1: the construct the E pre-registration
+reserves as diagnostic-only and never headline. P3 excludes the *closest*
+proximate measures, but is not free of same-instrument ones.
+
+The first proposed fix was wording: relabel and move on. That was rejected, and
+correctly. The reasoning: freezing a result protects its specification, numbers
+and interpretation from post-hoc alteration — it does not oblige anyone to keep
+using an inaccurate label, and it does not forbid a pre-registered audit of what
+the result depends on. Two roles, not one correction.
+
+The anti-selection rule was written before the run for an obvious reason: with
+two specifications on the table, whichever produced the smaller residual would
+have been extremely easy to prefer for stated reasons that were not the real
+ones.
+
+The 3.0 and 8.0 point bands are the one number chosen without external anchor.
+They are pinned to the 20.12-point narrowing accumulation delivers (≈15% and
+≈40%), so "moderate" and "sharp" mean something on this problem — but a
+different anchoring would have given different bands, and that should be
+remembered if EA is ever cited as a precedent.
+
 ### Minimum detectable effect
 
 No new MDE. EA compares two specifications on identical observations rather than
@@ -884,9 +1023,15 @@ bound nothing here — but it was verified before estimation, not after.
 from the opposite end of the ladder: Greece did not leave the extreme group, it
 crossed to the other tail.
 
+![Greece's residual reverses when deprivation is removed](figures/ea_reversal.svg)
+
+![Where every country sits, in both specifications](figures/residual_ladders.svg)
+
 Removing deprivation also destroys the narrowing story. In frozen P3,
 accumulation moves Greece +27.05 → +6.93. In the companion the same comparison
 is +9.52 → −9.39: not a narrowing, a crossing.
+
+![What adding accumulated unemployment does, in each model](figures/narrowing.svg)
 
 ### The decision rule failed, and had to be corrected
 
@@ -915,6 +1060,31 @@ Two corrections, both regression-tested:
 
 `test_ea_rule.py` grew from 37 to 47 tests; the observed case (−9.39 at rank 25)
 is now a named regression test.
+
+### Notes from review
+
+Two things about this correction need to be defensible, not just stated.
+
+**Why this is fixing an implementation, not moving a goalpost.** The
+pre-registered prose for Outcome A reads *"companion still materially narrows
+Greece's residual."* A residual crossing zero does not narrow under any reading
+of that sentence. So the function and the frozen prose disagreed, and the prose
+is the pre-registration. The prose was not touched.
+
+**What would make this illegitimate.** If the prose had been ambiguous — if it
+had said "improves" or "performs comparably" — then choosing an interpretation
+after seeing −9.39 would be exactly the post-hoc rule-fitting the whole protocol
+exists to prevent. The fix survives only because "narrows" is unambiguous about
+direction.
+
+The reversal tolerance (3.0 points) *was* chosen while looking at the result. It
+does not change this verdict — any tolerance below 9.39 yields C — but it was
+not set blind, and it should be treated as provisional if EA is reused.
+
+Worth noting what the defect was not: not a coding slip. Both defects come from
+the same unexamined assumption — that the residual would stay positive and only
+shrink. Every test written before the run shared that assumption, which is why
+47 tests passed while the rule was wrong.
 
 ### Decision
 
