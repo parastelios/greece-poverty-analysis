@@ -179,6 +179,8 @@ ARTIFACT_PURPOSE = {
     "e_preregistration.json": ("PRE", "FROZEN outcomes, transformations, decision rule"),
     "e_mde.csv": ("PRE", "Power curve; MDE 0.70 SD = 9.29 points at 80%"),
     "ea_preregistration.json": ("EA", "FROZEN deprivation-free companion spec and decision rule"),
+    "ea_results.csv": ("EA", "Outcome C: residual reverses +6.93 -> -9.39"),
+    "ea_companion_residuals.csv": ("EA", "Companion residual ladder, 27 countries"),
 }
 
 

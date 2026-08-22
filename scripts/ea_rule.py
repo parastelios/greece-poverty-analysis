@@ -51,6 +51,11 @@ BAND_B_MAX_DEGRADATION = 8.0
 # A predictor's variance inflation above this is treated as a stability failure.
 VIF_CEILING = 10.0
 
+# A residual that CROSSES ZERO has not narrowed, it has reversed: the model now
+# over-predicts Greece instead of under-predicting it. Only a reversal that lands
+# near zero counts as narrowing, and "near zero" is band A's own threshold.
+REVERSAL_TOLERANCE = 3.0
+
 OUTCOMES = {
     "A": "companion is the cleaner headline specification",
     "B": "material support, reported as a range across proximity choices",
@@ -108,11 +113,36 @@ def decide(
         notes.append("stability failure forces outcome C")
         return "C", degradation, notes
 
-    # Rank may not deteriorate. Lower rank number = more under-predicted = worse.
-    if companion_rank < p3_rank:
+    # SIGN REVERSAL. Outcome A's pre-registered condition is that the companion
+    # "still materially narrows Greece's residual". A residual that crosses zero
+    # has not narrowed under any reading of that sentence -- the model has
+    # switched from under-predicting Greece to over-predicting it, which is a
+    # different failure, not a smaller one. Comparing magnitudes across the flip
+    # would score +6.93 -> -9.39 as a 2.46-point degradation, inside band A.
+    reversed_sign = (
+        companion_residual * p3_residual < 0
+        and abs(companion_residual) > REVERSAL_TOLERANCE
+    )
+    if reversed_sign:
         notes.append(
-            f"rank deteriorates from {p3_rank} to {companion_rank} "
-            "(lower is more under-predicted)"
+            f"residual REVERSES SIGN, {p3_residual:+.2f} -> "
+            f"{companion_residual:+.2f}: the companion over-predicts Greece "
+            "rather than narrowing the gap. This is not narrowing."
+        )
+        return "C", degradation, notes
+
+    # Extremeness is a TWO-TAILED property. Rank 1 is the most under-predicted
+    # country and rank n the most over-predicted; both are extremes. Measuring
+    # only the under-predicted tail scored Greece's move from rank 3 to rank 25
+    # as an improvement, when rank 25 of 27 is third from the opposite end --
+    # exactly as extreme, on the other side.
+    p3_tail = min(p3_rank, n_countries - p3_rank + 1)
+    companion_tail = min(companion_rank, n_countries - companion_rank + 1)
+    if companion_tail < p3_tail:
+        notes.append(
+            f"tail position deteriorates from {p3_tail} to {companion_tail} "
+            f"(rank {p3_rank} -> {companion_rank} of {n_countries}; "
+            "both tails count as extreme)"
         )
         return "C", degradation, notes
 

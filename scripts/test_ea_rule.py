@@ -81,9 +81,32 @@ for kw in [dict(cum_coef_positive=False), dict(bootstrap_supports=False),
     check(f"note emitted for {list(kw)[0]}",
           any("forces outcome C" in n for n in notes), True)
 
-print("\nnegative residuals are compared on magnitude")
-check("companion at -7.5 behaves like +7.5", outcome(-7.5, 3, 27, **CLEAN), "A")
-check("companion at -20.0 behaves like +20", outcome(-20.0, 5, 27, **CLEAN), "C")
+print("\nSIGN REVERSAL is not narrowing (defect found on the live EA run)")
+# The observed case: companion residual -9.39 at rank 25/27. Magnitude
+# comparison alone scored this +2.46, inside band A, and the one-tailed rank
+# gate read rank 25 as an improvement over rank 3.
+check("the observed EA case -> C",           outcome(-9.39, 25, 27, **CLEAN), "C")
+o, deg, notes = decide(-9.39, 25, 27, **CLEAN)
+check("degradation still reported as +2.46", round(deg, 2), 2.46)
+check("reversal is named in the notes",
+      any("REVERSES SIGN" in n for n in notes), True)
+check("reversal beats a band-A magnitude",   outcome(-7.0, 25, 27, **CLEAN), "C")
+check("reversal near zero IS narrowing",     outcome(-2.0, 14, 27, **CLEAN), "A")
+check("reversal at the 3.0 tolerance is narrowing",
+      outcome(-3.0, 14, 27, **CLEAN), "A")
+check("reversal just past tolerance -> C",   outcome(-3.01, 14, 27, **CLEAN), "C")
+check("same-sign negatives compare on magnitude",
+      decide(-7.5, 3, 27, p3_residual=-6.93, **CLEAN)[0], "A")
+
+print("\nextremeness is TWO-TAILED: both ends of the ladder are extreme")
+check("rank 25/27 is tail position 3, same as rank 3",
+      outcome(7.5, 25, 27, **CLEAN), "A")
+check("rank 26/27 is tail position 2, worse -> C",
+      outcome(7.5, 26, 27, **CLEAN), "C")
+check("rank 27/27 is tail position 1, worst -> C",
+      outcome(7.5, 27, 27, **CLEAN), "C")
+check("rank 14/27 is mid-ladder, best -> A",
+      outcome(7.5, 14, 27, **CLEAN), "A")
 
 print("\ninput validation")
 for bad, exc in [((7.0, 0, 27), ValueError), ((7.0, 28, 27), ValueError),

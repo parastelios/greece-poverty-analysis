@@ -33,9 +33,9 @@ and the claims have been frozen.
 | Field | Value |
 |---|---|
 | Current stage | EDA |
-| Last completed stage | PRE |
+| Last completed stage | EA |
 | Branch | `p6-rewrite` |
-| HEAD | `7a45a9f` Correct six review findings in the P3 and P5 record entries |
+| HEAD | `70a5078` Pre-register the EA deprivation-free companion audit; no results in this commit |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-22 |
 | Frozen V1 reference | `v1-final` |
@@ -77,7 +77,7 @@ and the claims have been frozen.
 | E0 | What data and constructs are suitable for testing? | complete | — | `2103b3d` | [E0](#e0--data-and-construct-map) |
 | PRE | What exact tests and decision rules are fixed before analysis? | complete | `a747e7a` | `476e177` | [PRE](#pre--pre-registration-and-power) |
 | EDA | What do the candidate variables actually look like? | **next** | — | — | [EDA](#eda--descriptive-groundwork) |
-| EA | How much of the P3 result depends on a same-instrument predictor? | pending | `ea_preregistration.json` | — | [EA](#ea--deprivation-free-companion-audit) |
+| EA | How much of the P3 result depends on a same-instrument predictor? | complete | `ea_preregistration.json` | — | [EA](#ea--deprivation-free-companion-audit) |
 | E1 | Which current-level constructs are associated with hardship? | pending | `a747e7a` | — | [E1](#e1--current-level-constructs) |
 | E2 | Do sensitivity variants change the current-level conclusions? | pending | `a747e7a` | — | [E2](#e2--current-level-sensitivities) |
 | E3 | What do the diagnostic and contextual checks show? | pending | `a747e7a` | — | [E3](#e3--diagnostic-and-contextual-checks) |
@@ -725,6 +725,94 @@ running a new significance test. If the companion becomes headline, its
 within/between evidence inherits the published floor of 0.70 SD = 9.29 points
 and its labelling rule.
 
+### Results
+
+Frozen P3 reproduced exactly on this run: residual +6.93, rank 3/27, R² 0.907,
+n = 269. Nothing frozen changed.
+
+| | Frozen P3 | Companion |
+|---|---:|---:|
+| Predictors | 6 | 5 |
+| n | 269 | 269 (identical rows) |
+| R² | 0.907 | **0.821** |
+| Greece residual | **+6.93** | **−9.39** |
+| Greece rank | 3 of 27 | 25 of 27 |
+| `cum_excess_unemployment` | +0.2808 (se 0.0290) | +0.2271 (se 0.0459) |
+| Wild-cluster bootstrap p | 0.0005 | 0.0285 |
+| LOO coefficient range | — | +0.1655 to +0.2490, sign-stable |
+| Max VIF | — | 4.82 |
+
+Equal-sample rule: `severe_mat_soc_deprivation` had no additional missing values,
+so re-deriving complete cases would have given the same 269 rows. The constraint
+bound nothing here — but it was verified before estimation, not after.
+
+**Greece's residual reverses sign.** Frozen P3 under-predicts Greek hardship by
+6.93 points. The companion *over*-predicts it by 9.39. Rank 25 of 27 is third
+from the opposite end of the ladder: Greece did not leave the extreme group, it
+crossed to the other tail.
+
+Removing deprivation also destroys the narrowing story. In frozen P3,
+accumulation moves Greece +27.05 → +6.93. In the companion the same comparison
+is +9.52 → −9.39: not a narrowing, a crossing.
+
+### The decision rule failed, and had to be corrected
+
+**The rule as pre-registered returned Outcome A.** That verdict was wrong, and
+the reason matters more than the result.
+
+`decide()` compared *absolute* residuals: |−9.39| − |6.93| = +2.46 points, inside
+band A's 3.0-point threshold. And its rank gate was one-tailed — it checked only
+whether Greece became *more* under-predicted, so rank 3 → 25 registered as an
+improvement.
+
+Both are implementation defects, not disagreements with the pre-registration.
+The pre-registered prose for Outcome A reads "companion still materially
+narrows Greece's residual." A residual crossing zero does not narrow under any
+reading of that sentence. The function diverged from the condition it was
+written to implement — the same class of failure as the P3 `branch_rule` default
+`else`, which also returned the strongest conclusion on a case its author had
+not anticipated.
+
+Two corrections, both regression-tested:
+
+- **Sign reversal is not narrowing.** A residual crossing zero returns C unless
+  it lands within 3.0 points of zero, in which case it genuinely did narrow.
+- **Extremeness is two-tailed.** Tail position is `min(rank, n − rank + 1)`, so
+  rank 3 and rank 25 of 27 both score 3. Greece's tail position is *unchanged*.
+
+`test_ea_rule.py` grew from 37 to 47 tests; the observed case (−9.39 at rank 25)
+is now a named regression test.
+
+### Decision
+
+**Outcome C — the frozen P3 result depends materially on an official but
+same-instrument deprivation measure.**
+
+Both specifications are reported, per the anti-selection rule.
+
+### Interpretation
+
+`severe_mat_soc_deprivation` was carrying the fit. Without it, R² falls from
+0.907 to 0.821, and the remaining predictors — long-term unemployment, income,
+wage history, accumulated unemployment — predict Greece should report
+*substantially more* hardship than it does.
+
+That is a finding about the evidence layers, not a repair of P3. Greece's
+hardship tracks its deprivation closely; conditional on labour-market and income
+data alone it is over-predicted. The two layers do not tell the same story, which
+is precisely why they may not sit under one "objective" label.
+
+### What this does not establish
+
+That the companion is the better model — it is not, and Outcome C means it does
+not take the headline. That deprivation "causes" the fit. And nothing about
+`p5f-frozen`, which is unchanged and was re-verified on this run.
+
+The accumulated-unemployment coefficient survives in the companion (+0.2271,
+bootstrap p = 0.0285, LOO sign-stable), so the accumulation result is not itself
+an artefact of deprivation. What depends on deprivation is Greece's *position*
+relative to prediction, not the coefficient.
+
 ### What this does not establish
 
 Nothing about `p5f-frozen`, which EA may not alter. And a clean companion result
@@ -891,6 +979,8 @@ free of *same-instrument* predictors, which is a narrower claim.
 | D-10 | 2026-08-22 | EA | One deprivation-free companion pre-registered; no substitutions, no further searching | Documented classification inconsistency, not a result | Searching for a better companion; leaving it to wording | `pre-registered` | — | — |
 | D-11 | 2026-08-22 | EA | Selection between the two specifications may never be made on residual size | A smaller residual from dropping a predictor is not attributable improvement | Choosing whichever model looks better | `frozen` | — | — |
 | D-12 | 2026-08-22 | EA | E1 and E4 use the neutral baseline `AROP + year effects`, not P3 | P3 carries a P1 predictor and must not seed the construct tests | Using P3 as the E-stage baseline | `frozen` | — | — |
+| D-13 | 2026-08-22 | EA | Outcome C: frozen P3 depends materially on a same-instrument deprivation measure | Greece's residual reverses, +6.93 → −9.39; R² 0.907 → 0.821 | Outcome A, which the defective rule returned | `frozen` | — | — |
+| D-14 | 2026-08-22 | EA | `ea_rule` corrected: sign reversal is not narrowing; extremeness is two-tailed | Function diverged from the pre-registered prose it implements | Publishing Outcome A; changing the pre-registered prose instead | `frozen` | — | — |
 
 Allowed statuses: `proposed`, `pre-registered`, `frozen`, `superseded`,
 `withdrawn`, `infeasible`.
@@ -903,11 +993,14 @@ Allowed statuses: `proposed`, `pre-registered`, `frozen`, `superseded`,
 | R-02 | P3 | hardship level | `cum_excess_unemployment` | cross-country residual | n=269 | +6.93 (rank 3/27) | — | — | p=0.0005 primary | max 12.7% | above MDE | accumulated history narrows most of the gap | `supported` | `p3_objective_only.csv` |
 | R-03 | P5 | hardship level | `cum_excess_unemployment` | between-country | n=269 | +0.3323 | <0.0001 | — | worst p=0.0070 | Greece −0.8% | above MDE | between-country scarring marker | `supported` | `p5_audit.csv` |
 | R-04 | P5 | hardship level | `cum_excess_unemployment` | within-country | n=269 | −0.0755 | 0.692 | — | — | — | below MDE | no dynamic evidence | `inconclusive_under_available_power` | `p5_audit.csv` |
+| R-06 | EA | hardship level | companion, `severe_mat_soc_deprivation` removed | cross-country residual | n=269, identical rows | residual −9.39 (rank 25/27); R² 0.821 | — | — | p=0.0285 for `cum_excess_unemployment` | sign-stable, +0.1655 to +0.2490 | no new MDE; comparison on identical observations | residual reverses sign; frozen P3 depends materially on a same-instrument measure | `outcome_C` | `ea_results.csv` |
 | R-05 | P3a | hardship level | accumulated breadth (Family D) | cross-country residual | n=269 | residual 10.39 (rank 1/27); coefficient −2.17 | — | — | — | — | no MDE computed for this family | failed the incremental criterion and reversed sign conditionally; reversal left uninterpreted | `failed_incremental_criterion` | `p3a_results.csv` |
 
 Allowed statuses: `supported`, `unsupported_with_adequate_power`,
 `inconclusive_under_available_power`, `failed_incremental_criterion`,
 `descriptive_only`, `infeasible`, `superseded`.
+
+`outcome_C` is EA's pre-registered verdict label, not a generic status.
 
 `unsupported_with_adequate_power` requires a published MDE showing the test
 could have detected an effect of the relevant size. Without one, use
@@ -944,6 +1037,7 @@ Current state of `docs/claim_matrix.csv`: **53 claims**.
 | C-04 | 2026-08-21 | Wild bootstrap returned p=0.82 against t=9.69 | Unrestricted residuals used instead of null-imposed | Refit under the null and resample those residuals | `54_p5_inference_audit.py` | — |
 | C-05 | 2026-08-22 | `real_wages_idx`, `real_income_idx`, `arop_threshold_real`, `pct_below_peak` marked accumulation-ineligible | The project had already built successful accumulations from all four, one an FDR survivor | Binary field replaced by a six-way construction taxonomy | `e0_variable_registry.csv` | `e791e01` |
 | C-06 | 2026-08-22 | E0 correlation views omitted `subjective_poverty` and AROPE entirely | Made the intended exploration impossible | Five comparator columns added to all three views | `e0_corr_*.csv` | `e791e01` |
+| C-08 | 2026-08-22 | EA rule returned Outcome A on the live run | Compared absolute residuals across a sign flip (+2.46, inside band A) and gated rank one-tailed, so rank 3 → 25 read as improvement | Sign reversal returns C unless within 3.0 points of zero; tail position `min(rank, n−rank+1)`; 10 new regression tests | `ea_rule.py`, `test_ea_rule.py` | — |
 | C-07 | 2026-08-22 | MDE simulation reported power 1.00 at 0.66 points and 0.00 at 6.64 | Within-country residual permutation correlated noise with the regressor; detection ignored coefficient sign | Variance-component noise; sign-aware detection | `61_e_mde.py` | `476e177` |
 
 ## Artifact Index
@@ -979,4 +1073,6 @@ Current state of `docs/claim_matrix.csv`: **53 claims**.
 | PRE | `e_preregistration.json` | FROZEN outcomes, transformations, decision rule | present |
 | PRE | `e_mde.csv` | Power curve; MDE 0.70 SD = 9.29 points at 80% | present |
 | EA | `ea_preregistration.json` | FROZEN deprivation-free companion spec and decision rule | present |
+| EA | `ea_results.csv` | Outcome C: residual reverses +6.93 -> -9.39 | present |
+| EA | `ea_companion_residuals.csv` | Companion residual ladder, 27 countries | present |
 <!-- AUTO:END artifact-index -->

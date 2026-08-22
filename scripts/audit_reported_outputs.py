@@ -48,6 +48,23 @@ SCHEMA = {
     "e_mde.csv":                     {"effect_sd_per_sd": "coefficient",
                                       "effect_points_per_sd": "coefficient",
                                       "power": "share"},
+    "ea_results.csv":                {"p3_residual": "residual",
+                                      "p3_rank": "rank",
+                                      "p3_r2": "r2",
+                                      "companion_residual": "residual",
+                                      "companion_rank": "rank",
+                                      "companion_r2": "r2",
+                                      "degradation": "coefficient",
+                                      "companion_residual_no_accumulation": "residual",
+                                      "cum_coef_p3": "coefficient",
+                                      "cum_coef_companion": "coefficient",
+                                      "cum_se_companion": "coefficient",
+                                      "bootstrap_t": "coefficient",
+                                      "bootstrap_p": "p_value",
+                                      "loo_coef_min": "coefficient",
+                                      "loo_coef_max": "coefficient",
+                                      "max_vif": "coefficient",
+                                      "n": "count"},
 }
 NULLABLE = {("p2_specifications.csv", "post_gap")}
 
