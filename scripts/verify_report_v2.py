@@ -136,6 +136,23 @@ undef = sorted(used_vars - defined_vars)
 check("7d. no undefined CSS variables", not undef,
       f"undefined: {undef}" if undef else f"{len(used_vars)} custom properties, all defined")
 
+# 7e -- inline SVG legibility at mobile width. A chart authored on a wide viewBox
+# scales down hard on a 375px screen: the first version of the central visual used
+# a 700-wide box and rendered its labels at 5.4 effective pixels. Non-empty,
+# correctly coloured, and unreadable. Charts drawn by the JS use a shared width;
+# hand-authored inline SVGs must be checked individually.
+MOBILE_W, CARD_FRAC, MIN_PX = 375, 0.845, 7.0
+inline = re.findall(r'<svg viewBox="0 0 (\d+) \d+"[^>]*>(.*?)</svg>', RAW, re.S)
+tiny = []
+for vb_w, body in inline:
+    scale = (MOBILE_W * CARD_FRAC) / int(vb_w)
+    for fs in re.findall(r'font-size="([\d.]+)"', body):
+        if float(fs) * scale < MIN_PX:
+            tiny.append(f"viewBox {vb_w}: {fs}px -> {float(fs)*scale:.1f}px effective")
+check("7e. inline SVG text legible at 375px", not tiny,
+      f"{len(tiny)} label(s) below {MIN_PX}px: {tiny[:3]}" if tiny
+      else f"{len(inline)} inline chart(s), all labels >= {MIN_PX}px effective")
+
 # 9 -- development verification green
 dev = subprocess.run([sys.executable, str(HERE / "audit_parity.py")], cwd=HERE,
                      capture_output=True).returncode
