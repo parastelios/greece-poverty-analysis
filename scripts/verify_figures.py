@@ -18,6 +18,7 @@ import chart_engine as ce
 
 ROOT = Path(__file__).resolve().parents[1]
 TARGETS = [p for p in [ROOT / "output" / "prototype.html",
+                       ROOT / "output" / "batch1.html",
                        ROOT / "output" / "report.html"] if p.exists()]
 
 F = []
@@ -54,42 +55,44 @@ for path in TARGETS:
     #    Both are now derived from one canonical Series, and the checksum of the
     #    exact labels and rounded values is written into both the chart host and
     #    the table. If they were built separately, the two will not match.
-    mism, unchecked = [], []
-    for b in blocks:
-        fid = re.search(r'id="([^"]+)"', b).group(1)
-        host = re.search(r'data-chart="[^"]*"[^>]*data-checksum="([^"]*)"', b)
-        tbl = re.search(r'<table data-checksum="([^"]+)">(.*?)</table>', b, re.S)
-        if not host or not host.group(1) or not tbl:
-            unchecked.append(fid)
-            continue
-        # RECOMPUTE from what is actually rendered. Comparing the two stored
-        # attributes proves nothing: the builder writes the same string into
-        # both, so a tampered or divergently-generated table still matches.
-        # A negative test caught this -- the first version passed on a table
-        # whose value had been altered.
+    def _hash_table(inner):
         cols = [re.sub(r"<[^>]+>", "", c).strip()
-                for c in re.findall(r"<th[^>]*>(.*?)</th>", tbl.group(2), re.S)][1:]
+                for c in re.findall(r"<th[^>]*>(.*?)</th>", inner, re.S)][1:]
         rows = []
-        for tr in re.findall(r"<tr>(.*?)</tr>", tbl.group(2), re.S):
+        for tr in re.findall(r"<tr>(.*?)</tr>", inner, re.S):
             cells = []
             for c in re.findall(r"<td[^>]*>(.*?)</td>", tr, re.S):
                 v = htmlmod.unescape(re.sub(r"<[^>]+>", "", c)).strip()
-                # canonical() emits "" for a null; the table renders an em-dash
                 cells.append("" if v in ("\u2014", "-", "&mdash;") else v)
             if cells:
                 rows.append(cells)
         if not rows:
+            return None
+        blob = json.dumps({"cols": cols, "rows": rows}, sort_keys=True)
+        return hashlib.sha256(blob.encode()).hexdigest()[:16]
+
+    mism, unchecked = [], []
+    for b in blocks:
+        fid = re.search(r'id="([^"]+)"', b).group(1)
+        host = re.search(r'data-chart="[^"]*"[^>]*data-checksum="([^"]*)"', b)
+        tbls = re.findall(r'<table data-checksum="([^"]+)"[^>]*>(.*?)</table>', b, re.S)
+        if not host or not host.group(1) or not tbls:
             unchecked.append(fid)
             continue
-        blob = json.dumps({"cols": cols, "rows": rows}, sort_keys=True)
-        recomputed = hashlib.sha256(blob.encode()).hexdigest()[:16]
-        if recomputed != tbl.group(1):
-            mism.append(f"{fid}: table content hashes {recomputed}, "
-                        f"attribute says {tbl.group(1)}")
-        elif host.group(1) != tbl.group(1):
-            mism.append(f"{fid}: chart {host.group(1)} vs table {tbl.group(1)}")
+        # RECOMPUTE from what is rendered. Comparing the two stored attributes
+        # proves nothing -- the builder writes the same string into both, so a
+        # tampered table still matches. A negative test caught that.
+        # Multi-view figures carry one table per view; all are checked.
+        for stored, inner in tbls:
+            got = _hash_table(inner)
+            if got is None:
+                unchecked.append(f"{fid} (empty table)")
+            elif got != stored:
+                mism.append(f"{fid}: table content hashes {got}, attribute says {stored}")
+        if host.group(1) not in [s for s, _ in tbls]:
+            mism.append(f"{fid}: chart checksum {host.group(1)} matches no table")
     check("chart and table agree by RECOMPUTED value checksum",
-          not mism, "; ".join(mism))
+          not mism, "; ".join(mism[:4]))
     check("every figure carries a checksum on both sides",
           not unchecked,
           "figures built without a canonical Series: " + ", ".join(unchecked))

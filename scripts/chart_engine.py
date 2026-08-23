@@ -109,6 +109,13 @@ transition:opacity .1s}
 .legend{display:flex;flex-wrap:wrap;gap:.35rem 1rem;padding:.3rem 0 .1rem;
 max-width:100%;
 font:.76rem/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--text-secondary)}
+.viewbar{display:flex;flex-wrap:wrap;gap:.3rem;padding:0 1.1rem .6rem}
+.viewbtn{font:600 .74rem/1 ui-sans-serif,system-ui,sans-serif;padding:.35rem .6rem;
+border:1px solid var(--border);background:transparent;color:var(--text-secondary);
+border-radius:4px;cursor:pointer}
+.viewbtn[aria-selected="true"]{background:var(--gr);border-color:var(--gr);color:#fff}
+.viewbtn:hover{color:var(--gr)}
+.viewbtn[aria-selected="true"]:hover{color:#fff}
 .lg-item{display:inline-flex;align-items:center;gap:.4rem;white-space:nowrap;
 flex:0 1 auto;min-width:0}
 @media(max-width:34rem){.legend{gap:.3rem .7rem;font-size:.72rem}}
@@ -312,11 +319,108 @@ JS = r"""
       if(e.key==='Escape')tp.classList.remove('on');});
   }
 
-  const KINDS={panel:panel,coefficient:coefficient};
+
+  /* -------------------------------------------------------- ladder (new) */
+  /* All countries on one measure, ranked, with Greece and the EU marked.
+     Answers "is Greece unusual, or at one end of a continuum?" -- which a
+     Greece-only time series cannot. */
+  function ladder(host,d){
+    const W=widthFor(host), n=d.rows.length;
+    const rowH=W<480?15:17, padL=W<480?42:54, padR=W<480?46:64, padT=18, padB=26;
+    const H=padT+n*rowH+padB, pw=W-padL-padR;
+    let lo=Math.min(0,...d.rows.map(r=>r.value)), hi=Math.max(...d.rows.map(r=>r.value));
+    hi+=(hi-lo)*0.06||1;
+    const xs=v=>padL+(v-lo)/(hi-lo)*pw;
+    const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,class:'chart',role:'img',
+      'aria-label':d.alt||'ranked comparison of all countries'});
+    [lo,(lo+hi)/2,hi].forEach(v=>{
+      svg.appendChild(el('line',{x1:xs(v),x2:xs(v),y1:padT-4,y2:padT+n*rowH,class:'gridline'}));
+      const t=el('text',{x:xs(v),y:H-8,'text-anchor':'middle',class:'axis-label'});
+      t.textContent=fmt(v,d.dp);svg.appendChild(t);});
+    if(d.reference!=null){
+      svg.appendChild(el('line',{x1:xs(d.reference),x2:xs(d.reference),
+        y1:padT-4,y2:padT+n*rowH,class:'zero-line','stroke-dasharray':'4 3'}));
+      const rt=el('text',{x:xs(d.reference),y:padT-7,'text-anchor':'middle',
+        class:'axis-label',style:'fill:var(--eu);font-weight:700'});
+      rt.textContent=d.referenceLabel||'EU median';svg.appendChild(rt);}
+    const marks=[];
+    d.rows.forEach((r,i)=>{
+      const y=padT+i*rowH+rowH/2, hl=!!r.highlight;
+      svg.appendChild(el('rect',{x:padL,y:y-rowH/2+1,width:Math.max(0,xs(r.value)-padL),
+        height:rowH-3,rx:1.5,fill:`var(--${hl?'gr':'text-muted'})`,opacity:hl?1:.32}));
+      const lb=el('text',{x:padL-6,y:y+3.5,'text-anchor':'end',class:'axis-label',
+        style:hl?'fill:var(--gr);font-weight:700':''});
+      lb.textContent=r.label;svg.appendChild(lb);
+      if(hl||i===0||i===n-1){const vt=el('text',{x:xs(r.value)+5,y:y+3.5,class:'axis-label',
+        style:hl?'fill:var(--gr);font-weight:700':''});
+        vt.textContent=fmt(r.value,d.dp);svg.appendChild(vt);}
+      marks.push({y:y,r:r,i:i});});
+    host.insertBefore(svg,host.firstChild);
+    const tp=tip(host);let idx=-1;
+    const show=i=>{if(i<0||i>=marks.length)return;idx=i;const r=marks[i].r;
+      tp.innerHTML=`<strong>${r.name||r.label}</strong><br>${fmt(r.value,d.dp)}${d.unit?' '+d.unit:''}`
+        +(r.detail?'<br>'+r.detail:'')+`<br><span style="opacity:.6">rank ${i+1} of ${marks.length}</span>`;
+      tp.classList.add('on');
+      const rc=svg.getBoundingClientRect(),hr=host.getBoundingClientRect();
+      tp.style.left=Math.min(hr.width-tp.offsetWidth-8,padL/W*rc.width+10)+'px';
+      tp.style.top=Math.max(2,Math.min(rc.height-tp.offsetHeight-4,
+        (marks[i].y/H)*rc.height-tp.offsetHeight/2))+'px';
+      say(host,`${r.name||r.label}, ${fmt(r.value,d.dp)}, rank ${i+1} of ${marks.length}`);};
+    svg.addEventListener('mousemove',e=>{const rc=svg.getBoundingClientRect();
+      const y=(e.clientY-rc.top)/rc.height*H;let b=0,bd=1e9;
+      marks.forEach((m,i)=>{const dd=Math.abs(m.y-y);if(dd<bd){bd=dd;b=i;}});show(b);});
+    svg.addEventListener('mouseleave',()=>tp.classList.remove('on'));
+    host.addEventListener('keydown',e=>{
+      if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();
+        show(Math.max(0,Math.min(marks.length-1,(idx<0?-1:idx)+(e.key==='ArrowDown'?1:-1))));}
+      if(e.key==='Home'){e.preventDefault();show(0);}
+      if(e.key==='End'){e.preventDefault();show(marks.length-1);}
+      if(e.key==='Escape')tp.classList.remove('on');});
+  }
+
+  const KINDS={panel:panel,coefficient:coefficient,ladder:ladder};
+
+
+  // VIEW SWITCHING. Some questions need more than one look -- the real
+  // threshold and the anchored comparison, or AROPE by component, age,
+  // household and shift-share. Views live in one figure so the reader does not
+  // lose the question while changing the picture.
+  function mountViews(host){
+    const payloads=[...host.querySelectorAll('script[type="application/json"]')];
+    if(payloads.length<2)return false;
+    const bar=document.createElement('div');bar.className='viewbar';
+    bar.setAttribute('role','tablist');
+    const draw=i=>{
+      const d=JSON.parse(payloads[i].textContent);
+      host.querySelectorAll('svg,.legend,.tip,.sr').forEach(n=>n.remove());
+      (KINDS[payloads[i].dataset.kind||host.dataset.chart]||panel)(host,d);
+      [...bar.children].forEach((b,j)=>{b.setAttribute('aria-selected',j===i?'true':'false');
+        b.tabIndex=j===i?0:-1;});
+      // Scope from the FIGURE, not the chart host: the fallback tables live in
+      // the <details> sibling, so querying the host matched nothing and every
+      // view's table stayed visible at once.
+      const fig=host.closest('figure')||document;
+      fig.querySelectorAll('table[data-view]').forEach(tb=>{
+        tb.hidden = tb.dataset.view !== String(i);});
+    };
+    payloads.forEach((pl,i)=>{
+      const b=document.createElement('button');b.type='button';b.className='viewbtn';
+      b.setAttribute('role','tab');b.textContent=pl.dataset.label||('View '+(i+1));
+      b.addEventListener('click',()=>draw(i));
+      b.addEventListener('keydown',e=>{
+        if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();
+          const j=(i+(e.key==='ArrowRight'?1:-1)+payloads.length)%payloads.length;
+          bar.children[j].focus();draw(j);}});
+      bar.appendChild(b);});
+    host.parentNode.insertBefore(bar,host);
+    draw(0);
+    return true;
+  }
 
   function mount(){
     document.querySelectorAll('[data-chart]').forEach(host=>{
       if(host.dataset.drawn)return;
+      if(mountViews(host)){host.dataset.drawn='1';return;}
       const payload=host.querySelector('script[type="application/json"]');
       if(!payload)return;
       const d=JSON.parse(payload.textContent);
@@ -327,7 +431,8 @@ JS = r"""
       host.dataset.drawn='1';
     });
   }
-  function redraw(){document.querySelectorAll('[data-chart]').forEach(h=>h.dataset.drawn='');mount();}
+  function redraw(){document.querySelectorAll('.viewbar').forEach(b=>b.remove());
+    document.querySelectorAll('[data-chart]').forEach(h=>h.dataset.drawn='');mount();}
   document.addEventListener('DOMContentLoaded',mount);
   if(document.readyState!=='loading')mount();
   let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(redraw,180);});
@@ -353,10 +458,11 @@ import hashlib
 class Series:
     """Canonical data for one figure: labelled rows of (label, values)."""
 
-    def __init__(self, columns, dp=1):
+    def __init__(self, columns, dp=1, title=""):
         self.columns = list(columns)     # header for the value columns
         self.rows = []                   # (label, [values], meta dict)
         self.dp = dp
+        self.title = title
 
     def add(self, label, values, **meta):
         if len(values) != len(self.columns):
@@ -379,7 +485,7 @@ class Series:
                           sort_keys=True)
         return hashlib.sha256(blob.encode()).hexdigest()[:16]
 
-    def fallback_table(self, first_header="", numeric=True):
+    def fallback_table(self, first_header="", numeric=True, view=None):
         head = "".join(f'<th class="num">{html.escape(c)}</th>'
                        if numeric else f"<th>{html.escape(c)}</th>"
                        for c in self.columns)
@@ -389,7 +495,10 @@ class Series:
                             if numeric else f"<td>{c or '&mdash;'}</td>"
                             for c in row[1:])
             body.append(f"<tr><td>{html.escape(row[0])}</td>{cells}</tr>")
-        return (f'<table data-checksum="{self.checksum()}">'
+        v = f' data-view="{view}"' if view is not None else ""
+        cap = (f"<caption>{html.escape(str(self.title))}</caption>"
+               if getattr(self, "title", "") else "")
+        return (f'<table data-checksum="{self.checksum()}"{v}>{cap}'
                 f'<thead><tr><th>{html.escape(first_header)}</th>{head}</tr></thead>'
                 f"<tbody>{''.join(body)}</tbody></table>")
 
@@ -401,6 +510,9 @@ def figure(fid, caption, question, badge, host_kind, payload, fallback_html,
     The fallback is always in the DOM, so screen readers and print both reach
     the numbers whether or not the chart draws.
     """
+    # pandas reads an empty manifest cell as NaN, a float, which html.escape
+    # cannot take. Coerce before testing truthiness.
+    caveat = "" if caveat is None or caveat != caveat else str(caveat).strip()
     cav = (f'<p class="fig-caveat"><strong>Read with this.</strong> '
            f'{html.escape(caveat)}</p>' if caveat else "")
     link = (f' <a href="{appendix_link}">Full evidence in the appendix</a>.'

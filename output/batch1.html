@@ -1,0 +1,638 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Batch 1 &mdash; stages 1 and 2</title><style>
+:root {
+  color-scheme: light;
+  --page:           #f9f9f7;
+  --surface-1:      #fcfcfb;
+  --surface-2:      #f3f2ee;
+  --text-primary:   #0b0b0b;
+  --text-secondary: #52514e;
+  --text-muted:     #898781;
+  --gridline:       #e1e0d9;
+  --baseline:       #c3c2b7;
+  --border:         rgba(11,11,11,0.10);
+  --series-gr:      #2a78d6;
+  --series-gr-wash: rgba(42,120,214,0.10);
+  --series-eu:      #eb6834;
+  --series-eu-wash: rgba(235,104,52,0.10);
+  --series-3:       #1baf7a;
+  --series-4:       #eda100;
+  --series-5:       #4a3aa7;
+  --band-fill:      rgba(137,135,129,0.08);
+  --good:           #0ca30c;
+  --critical:       #d03b3b;
+}
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --page:           #0d0d0d;
+    --surface-1:      #1a1a19;
+    --surface-2:      #222221;
+    --text-primary:   #ffffff;
+    --text-secondary: #c3c2b7;
+    --text-muted:     #898781;
+    --gridline:       #2c2c2a;
+    --baseline:       #383835;
+    --border:         rgba(255,255,255,0.10);
+    --series-gr:      #3987e5;
+    --series-gr-wash: rgba(57,135,229,0.13);
+    --series-eu:      #d95926;
+    --series-eu-wash: rgba(217,89,38,0.14);
+    --series-3:       #199e70;
+    --series-4:       #c98500;
+    --series-5:       #9085e9;
+    --band-fill:      rgba(137,135,129,0.10);
+    --good:           #0ca30c;
+    --critical:       #e66767;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page:           #0d0d0d;
+  --surface-1:      #1a1a19;
+  --surface-2:      #222221;
+  --text-primary:   #ffffff;
+  --text-secondary: #c3c2b7;
+  --text-muted:     #898781;
+  --gridline:       #2c2c2a;
+  --baseline:       #383835;
+  --border:         rgba(255,255,255,0.10);
+  --series-gr:      #3987e5;
+  --series-gr-wash: rgba(57,135,229,0.13);
+  --series-eu:      #d95926;
+  --series-eu-wash: rgba(217,89,38,0.14);
+  --series-3:       #199e70;
+  --series-4:       #c98500;
+  --series-5:       #9085e9;
+  --band-fill:      rgba(137,135,129,0.10);
+  --good:           #0ca30c;
+  --critical:       #e66767;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--page); }
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: var(--text-primary);
+  background: var(--page);
+}
+.wrap { max-width: 860px; margin: 0 auto; padding: 56px 24px 90px; }
+
+header.hero { margin-bottom: 32px; }
+.eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin: 0 0 12px; }
+h1 { font-size: 34px; line-height: 1.15; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 16px; text-wrap: balance; }
+.dek { font-size: 17px; line-height: 1.55; color: var(--text-secondary); max-width: 65ch; margin: 0 0 6px; }
+.meta { font-size: 12.5px; color: var(--text-muted); margin-top: 18px; }
+
+.summary-box { background: var(--surface-1); border: 1px solid var(--border); border-radius: 14px; padding: 26px 28px; margin: 28px 0; }
+.summary-box .eyebrow { margin-bottom: 10px; }
+.summary-box p { font-size: 15px; line-height: 1.65; color: var(--text-primary); margin: 0 0 14px; max-width: 70ch; }
+.summary-box p:last-child { margin-bottom: 0; }
+.summary-box p.limits { font-size: 13px; color: var(--text-secondary); border-top: 1px solid var(--gridline); padding-top: 14px; margin-top: 4px; }
+
+.stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin: 32px 0 8px; }
+.stat-tile { background: var(--surface-1); padding: 16px 16px; }
+.stat-label { font-size: 11.5px; color: var(--text-muted); margin: 0 0 6px; }
+.stat-value { font-size: 24px; font-weight: 700; letter-spacing: -0.01em; }
+.stat-value.gr { color: var(--series-gr); }
+.stat-sub { font-size: 11.5px; color: var(--text-secondary); margin-top: 4px; }
+
+.part-header { margin: 64px 0 8px; padding-top: 28px; border-top: 3px solid var(--series-gr); }
+.part-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--series-gr); margin: 0 0 8px; }
+.part-header h2 { font-size: 26px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 12px; text-wrap: balance; }
+.part-header p { font-size: 15px; line-height: 1.65; color: var(--text-secondary); max-width: 68ch; }
+.part-header p b { color: var(--text-primary); }
+
+section { margin: 44px 0; }
+section h3.sec-title { font-size: 19px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 6px; text-wrap: balance; }
+section .lede { font-size: 14.5px; color: var(--text-secondary); line-height: 1.6; max-width: 68ch; margin: 0 0 22px; }
+section p { font-size: 14.5px; line-height: 1.65; color: var(--text-primary); max-width: 68ch; }
+section p.note { font-size: 12.5px; color: var(--text-muted); line-height: 1.55; max-width: 68ch; }
+section p.method-aside { font-size: 12.5px; color: var(--text-muted); line-height: 1.55; max-width: 68ch; margin-top: 8px; }
+section p.method-aside b { color: var(--text-secondary); font-weight: 600; }
+section h4 { font-size: 13px; font-weight: 700; margin: 18px 0 8px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.03em; }
+.method-item { margin-bottom: 22px; }
+.method-item dt { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+.method-item dd { margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--text-secondary); max-width: 68ch; }
+.method-item dd + dd { margin-top: 6px; }
+.method-item code { font-size: 12px; background: var(--surface-2); padding: 1px 5px; border-radius: 4px; color: var(--text-primary); overflow-wrap:anywhere; word-break:break-word; }
+.q-label { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; color: var(--text-muted); background: var(--surface-2); border-radius: 5px; padding: 2px 7px; margin-bottom: 10px; margin-right: 6px; }
+.badge-approx { display: inline-block; font-size: 10.5px; font-weight: 600; letter-spacing: 0.02em; color: var(--series-4); background: color-mix(in srgb, var(--series-4) 15%, transparent); border-radius: 5px; padding: 2px 7px; margin-left: 6px; vertical-align: middle; }
+
+.card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 22px 22px 10px; }
+.chart-title { font-size: 14px; font-weight: 600; margin: 0 0 2px; }
+.chart-sub { font-size: 12px; color: var(--text-secondary); margin: 0 0 12px; }
+.legend { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-secondary); }
+.legend-swatch { width: 10px; height: 10px; border-radius: 2px; flex: none; }
+.chart-wrap { position: relative; }
+svg.chart { width: 100%; height: auto; display: block; overflow: visible; }
+.gridline { stroke: var(--gridline); stroke-width: 1; }
+.baseline { stroke: var(--baseline); stroke-width: 1; }
+.axis-label { fill: var(--text-muted); font-size: 10.5px; }
+.crisis-band { fill: var(--band-fill); }
+.crisis-line { stroke: var(--text-muted); stroke-width: 1; stroke-dasharray: 2 3; }
+.crisis-label { fill: var(--text-muted); font-size: 10px; }
+.direct-label { font-size: 11px; font-weight: 600; }
+.direct-label-sub { fill: var(--text-secondary); font-size: 9.5px; }
+.hit-target { fill: transparent; }
+.hover-dot { stroke: var(--surface-1); stroke-width: 2; opacity: 0; }
+.crosshair { stroke: var(--text-muted); stroke-width: 1; opacity: 0; }
+.tooltip { position: absolute; pointer-events: none; opacity: 0; transition: opacity .08s ease; background: var(--surface-1); border: 1px solid var(--border); border-radius: 8px; padding: 8px 11px; font-size: 12px; box-shadow: 0 4px 14px rgba(0,0,0,0.14); white-space: nowrap; transform: translate(-50%,-100%); z-index: 5; }
+.tooltip .t-year { color: var(--text-muted); font-size: 10.5px; margin-bottom: 3px; }
+.tooltip .t-row { display: flex; align-items: center; gap: 6px; font-weight: 600; }
+.tooltip .t-row + .t-row { margin-top: 2px; }
+.tooltip .dot { width: 7px; height: 7px; border-radius: 50%; flex: none; }
+.foot-note { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 12px 2px 2px; font-size: 10.5px; color: var(--text-muted); border-top: 1px solid var(--gridline); margin-top: 14px; }
+
+table.data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+table.data-table th, table.data-table td { text-align: right; padding: 7px 10px; border-bottom: 1px solid var(--gridline); font-variant-numeric: tabular-nums; }
+table.data-table th:first-child, table.data-table td:first-child { text-align: left; font-variant-numeric: normal; }
+table.data-table th { color: var(--text-muted); font-weight: 500; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.03em; }
+table.data-table td.sig { color: var(--text-muted); font-size: 11px; }
+table.data-table td.hl, table.data-table tr.hl td { color: var(--series-gr); font-weight: 600; }
+.table-scroll { overflow-x: auto; }
+.table-caption { font-size: 12px; color: var(--text-secondary); margin: 0 0 10px; }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.story-map { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin:18px 0 28px; max-width:68ch; }
+.story-map a { display:flex; flex-direction:column; gap:3px; padding:12px 14px; border:1px solid var(--border); border-radius:8px; color:var(--text-primary); text-decoration:none; background:var(--surface-1); }
+.story-map a:hover { border-color:var(--series-gr); }
+.story-map span { color:var(--text-muted); font-size:11.5px; }
+@media (max-width: 720px) {
+  .wrap { padding: 24px 14px 64px; }
+  .two-col, .story-map { grid-template-columns: 1fr; }
+  .stat-row { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .card, .answer-box { padding-left:14px; padding-right:14px; }
+  table.data-table { min-width:620px; }
+  .hero h1 { font-size:34px; }
+}
+
+.finding { background: var(--surface-2); border-radius: 10px; padding: 16px 18px; margin: 18px 0; font-size: 13.5px; line-height: 1.6; }
+.finding b { color: var(--text-primary); }
+.method-details { max-width:68ch; margin:10px 0 16px; border-top:1px solid var(--gridline); }
+.method-details summary { cursor:pointer; padding:9px 0; color:var(--text-secondary); font-size:12px; font-weight:600; }
+.method-details[open] summary { color:var(--series-gr); }
+.method-details .method-aside { margin:2px 0 12px; }
+
+.answer-box { background: var(--surface-1); border: 1px solid var(--border); border-left: 3px solid var(--series-gr); border-radius: 10px; padding: 24px 26px; margin-top: 12px; }
+.answer-box h4 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--series-gr); margin: 0 0 10px; }
+.answer-box p { font-size: 14.5px; }
+
+.toc { display: flex; flex-direction: column; gap: 4px; font-size: 13px; margin-top: 14px; }
+.toc .toc-part { font-weight: 700; color: var(--text-primary); margin-top: 10px; }
+.toc .toc-part:first-child { margin-top: 0; }
+.toc a { color: var(--text-secondary); text-decoration: none; border-bottom: 1px solid transparent; padding-left: 14px; display: inline-block; }
+.toc a:hover { color: var(--series-gr); border-bottom-color: var(--series-gr); }
+
+footer { margin-top: 70px; padding-top: 20px; border-top: 1px solid var(--gridline); font-size: 11.5px; color: var(--text-muted); line-height: 1.6; }
+</style>
+<style>
+.figure{margin:1.8rem 0;border:1px solid var(--border);border-radius:8px;
+background:var(--surface-1);overflow:hidden}
+.figure > figcaption{padding:.9rem 1.1rem .2rem;font:600 .95rem/1.35
+ui-sans-serif,system-ui,sans-serif;color:var(--text-primary)}
+.fig-meta{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;
+padding:0 1.1rem .7rem}
+.badge{font:600 .66rem/1 ui-sans-serif,system-ui,sans-serif;text-transform:uppercase;
+letter-spacing:.06em;padding:.3rem .5rem;border-radius:3px;
+background:var(--accent-soft,rgba(61,111,180,.12));color:var(--eu)}
+.fig-q{font:.82rem/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--text-secondary)}
+.chart-live{padding:.2rem 1.1rem 1rem;position:relative}
+.chart-live:focus-visible{outline:2px solid var(--eu);outline-offset:2px}
+.chart{width:100%;height:auto;display:block;touch-action:pan-y}
+.gridline{stroke:var(--border);stroke-width:1}
+.axis-label{fill:var(--text-muted);font:11px ui-sans-serif,system-ui,sans-serif}
+.line-faint{fill:none;stroke:var(--text-muted);stroke-width:1;opacity:.28}
+.line-eu{fill:none;stroke:var(--eu);stroke-width:2.2;stroke-dasharray:5 3}
+.line-gr{fill:none;stroke:var(--gr);stroke-width:2.8}
+.zero-line{stroke:var(--text-muted);stroke-width:1.4}
+.cursor-line{stroke:var(--text-secondary);stroke-width:1;stroke-dasharray:3 3}
+.tip{position:absolute;pointer-events:none;background:var(--surface-2);
+border:1px solid var(--border);border-radius:5px;padding:.45rem .6rem;
+font:.76rem/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--text-primary);
+box-shadow:0 3px 12px rgba(0,0,0,.14);max-width:15rem;z-index:5;opacity:0;
+transition:opacity .1s}
+.tip.on{opacity:1}
+.legend{display:flex;flex-wrap:wrap;gap:.35rem 1rem;padding:.3rem 0 .1rem;
+max-width:100%;
+font:.76rem/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--text-secondary)}
+.viewbar{display:flex;flex-wrap:wrap;gap:.3rem;padding:0 1.1rem .6rem}
+.viewbtn{font:600 .74rem/1 ui-sans-serif,system-ui,sans-serif;padding:.35rem .6rem;
+border:1px solid var(--border);background:transparent;color:var(--text-secondary);
+border-radius:4px;cursor:pointer}
+.viewbtn[aria-selected="true"]{background:var(--gr);border-color:var(--gr);color:#fff}
+.viewbtn:hover{color:var(--gr)}
+.viewbtn[aria-selected="true"]:hover{color:#fff}
+.lg-item{display:inline-flex;align-items:center;gap:.4rem;white-space:nowrap;
+flex:0 1 auto;min-width:0}
+@media(max-width:34rem){.legend{gap:.3rem .7rem;font-size:.72rem}}
+.tip b{color:var(--gr)}
+.fig-caveat{margin:0;padding:.7rem 1.1rem;border-top:1px solid var(--border);
+background:var(--accent-soft,rgba(192,57,43,.05));
+font:.78rem/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--text-secondary)}
+.fig-caveat strong{color:var(--gr)}
+.fallback{border-top:1px solid var(--border)}
+.fallback > summary{padding:.6rem 1.1rem;cursor:pointer;
+font:.78rem/1 ui-sans-serif,system-ui,sans-serif;color:var(--text-secondary)}
+.fallback > summary:hover{color:var(--gr)}
+.fallback table{border-collapse:collapse;width:100%;
+font:.78rem/1.4 ui-sans-serif,system-ui,sans-serif;font-variant-numeric:tabular-nums}
+.fallback th,.fallback td{padding:.4rem .8rem;border-bottom:1px solid var(--border);
+text-align:left}
+.fallback td.num,.fallback th.num{text-align:right}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media print{
+  .chart-live{display:none}
+  .fallback{border-top:0}
+  .fallback > summary{display:none}
+  .fallback[open],.fallback{display:block}
+  .figure{break-inside:avoid;border-color:#999}
+}
+
+:root{--gr:var(--series-gr);--eu:var(--series-eu);--ok:#2f855a;--warn:#b7791f}
+body{max-width:52rem;margin:0 auto;padding:2rem 1.2rem 5rem}
+h2{margin:2.8rem 0 .6rem}
+.proto-note{border:1px dashed var(--border);border-radius:6px;padding:.9rem 1.1rem;
+margin-bottom:2rem;font:.82rem/1.5 ui-sans-serif,system-ui,sans-serif;
+color:var(--text-secondary)}
+</style></head><body>
+<p class="proto-note"><strong>Batch 1.</strong> Stages 1 and 2 from the frozen
+manifest &mdash; five figures, including the new <em>ladder</em> type and
+multi-view switching. Stage 2 carries three figures because the moving
+threshold, the AROPE bridge and what sits behind AROPE are three different
+questions.</p>
+
+<h2>Stage 1 &mdash; The paradox</h2>
+<p>Greeks report difficulty making ends meet at a rate far above what the
+official relative-poverty rate would suggest. Over 2015&ndash;2024 the gap
+averages 52.6 points, and Greece ranks first of 27 on reported hardship while
+ranking seventh on at-risk-of-poverty. The two measures are not describing the
+same thing.</p>
+<figure class="figure" id="F1">
+<figcaption>Reported hardship and income poverty remain far apart, despite some narrowing</figcaption>
+<div class="fig-meta"><span class="badge">descriptive</span>
+<span class="fig-q">How far apart are reported hardship and official income poverty for Greece, and does the distance close over time?</span></div>
+<div class="chart-live" data-chart="panel" tabindex="0"
+     data-checksum="ce62f167b7411dd2" aria-describedby="F1-fb">
+<script type="application/json">{"years": [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024], "dp": 1, "alt": "Greek reported hardship against income poverty, 2015 to 2024", "series": [{"label": "Greece: reported hardship", "tone": "gr", "style": "solid", "weight": "strong", "values": [77.7, 76.8, 77.2, 74.1, 71.0, 69.8, 71.0, 68.4, 67.0, 66.7]}, {"label": "Greece: income poverty", "tone": "eu", "style": "solid", "weight": "strong", "values": [21.4, 21.2, 20.2, 18.5, 17.9, 17.7, 19.6, 18.8, 18.9, 19.6]}, {"label": "EU median: reported hardship", "tone": "gr", "style": "dashed", "weight": "light", "values": [28.9, 25.9, 22.6, 20.5, 18.5, 16.8, 15.4, 17.9, 16.6, 17.1]}, {"label": "EU median: income poverty", "tone": "eu", "style": "dashed", "weight": "light", "values": [16.3, 16.5, 15.9, 16.4, 15.4, 16.1, 15.7, 15.6, 15.4, 15.5]}]}</script>
+</div><p class="fig-caveat"><strong>Read with this.</strong> AROPE is deliberately absent here. It enters at Stage 2 as the bridge, and showing it now would pre-empt that step.</p>
+<details class="fallback" id="F1-fb"><summary>Show the numbers <a href="statistical_appendix.html">Full evidence in the appendix</a>.</summary>
+<table data-checksum="ce62f167b7411dd2"><thead><tr><th>Series</th><th class="num">2015</th><th class="num">2016</th><th class="num">2017</th><th class="num">2018</th><th class="num">2019</th><th class="num">2020</th><th class="num">2021</th><th class="num">2022</th><th class="num">2023</th><th class="num">2024</th></tr></thead><tbody><tr><td>Greece: reported hardship</td><td class="num">77.7</td><td class="num">76.8</td><td class="num">77.2</td><td class="num">74.1</td><td class="num">71.0</td><td class="num">69.8</td><td class="num">71.0</td><td class="num">68.4</td><td class="num">67.0</td><td class="num">66.7</td></tr><tr><td>Greece: income poverty</td><td class="num">21.4</td><td class="num">21.2</td><td class="num">20.2</td><td class="num">18.5</td><td class="num">17.9</td><td class="num">17.7</td><td class="num">19.6</td><td class="num">18.8</td><td class="num">18.9</td><td class="num">19.6</td></tr><tr><td>EU median: reported hardship</td><td class="num">28.9</td><td class="num">25.9</td><td class="num">22.6</td><td class="num">20.5</td><td class="num">18.5</td><td class="num">16.8</td><td class="num">15.4</td><td class="num">17.9</td><td class="num">16.6</td><td class="num">17.1</td></tr><tr><td>EU median: income poverty</td><td class="num">16.3</td><td class="num">16.5</td><td class="num">15.9</td><td class="num">16.4</td><td class="num">15.4</td><td class="num">16.1</td><td class="num">15.7</td><td class="num">15.6</td><td class="num">15.4</td><td class="num">15.5</td></tr></tbody></table></details>
+</figure>
+<p>The obvious question is whether Greece is merely at one end of a continuum.
+It is not: the distance between Greece and the next country is larger than the
+distance spanning most of the rest of the distribution.</p>
+<figure class="figure" id="F2">
+<figcaption>Greece is not at the end of a continuum &mdash; it is separated from it</figcaption>
+<div class="fig-meta"><span class="badge">descriptive</span>
+<span class="fig-q">Is Greece unusual, or at one end of a continuum?</span></div>
+<div class="chart-live" data-chart="ladder" tabindex="0"
+     data-checksum="f639c1b2c9ef36dc" aria-describedby="F2-fb">
+<script type="application/json">{"rows": [{"label": "Greece", "name": "Greece", "value": 66.7, "highlight": true}, {"label": "Bulgaria", "name": "Bulgaria", "value": 37.4, "highlight": false}, {"label": "Slovakia", "name": "Slovakia", "value": 28.7, "highlight": false}, {"label": "Romania", "name": "Romania", "value": 23.8, "highlight": false}, {"label": "Latvia", "name": "Latvia", "value": 23.3, "highlight": false}, {"label": "Spain", "name": "Spain", "value": 21.9, "highlight": false}, {"label": "France", "name": "France", "value": 21.8, "highlight": false}, {"label": "Portugal", "name": "Portugal", "value": 21.8, "highlight": false}, {"label": "Cyprus", "name": "Cyprus", "value": 20.8, "highlight": false}, {"label": "Croatia", "name": "Croatia", "value": 19.8, "highlight": false}, {"label": "Hungary", "name": "Hungary", "value": 19.8, "highlight": false}, {"label": "Italy", "name": "Italy", "value": 18.7, "highlight": false}, {"label": "Malta", "name": "Malta", "value": 17.3, "highlight": false}, {"label": "Belgium", "name": "Belgium", "value": 17.1, "highlight": false}, {"label": "Ireland", "name": "Ireland", "value": 16.9, "highlight": false}, {"label": "Czechia", "name": "Czechia", "value": 14.2, "highlight": false}, {"label": "Slovenia", "name": "Slovenia", "value": 13.6, "highlight": false}, {"label": "Austria", "name": "Austria", "value": 13.1, "highlight": false}, {"label": "Denmark", "name": "Denmark", "value": 12.8, "highlight": false}, {"label": "Poland", "name": "Poland", "value": 11.5, "highlight": false}, {"label": "Lithuania", "name": "Lithuania", "value": 11.4, "highlight": false}, {"label": "Estonia", "name": "Estonia", "value": 9.9, "highlight": false}, {"label": "Sweden", "name": "Sweden", "value": 9.9, "highlight": false}, {"label": "Finland", "name": "Finland", "value": 8.9, "highlight": false}, {"label": "Luxembourg", "name": "Luxembourg", "value": 8.5, "highlight": false}, {"label": "Germany", "name": "Germany", "value": 7.3, "highlight": false}, {"label": "Netherlands", "name": "Netherlands", "value": 7.3, "highlight": false}], "dp": 1, "unit": "%", "reference": 17.1, "referenceLabel": "EU median", "alt": "All 27 EU countries ranked on reported hardship"}</script>
+</div>
+<details class="fallback" id="F2-fb"><summary>Show the numbers <a href="statistical_appendix.html">Full evidence in the appendix</a>.</summary>
+<table data-checksum="f639c1b2c9ef36dc"><thead><tr><th>Country</th><th class="num">Reported hardship (%)</th></tr></thead><tbody><tr><td>Greece</td><td class="num">66.7</td></tr><tr><td>Bulgaria</td><td class="num">37.4</td></tr><tr><td>Slovakia</td><td class="num">28.7</td></tr><tr><td>Romania</td><td class="num">23.8</td></tr><tr><td>Latvia</td><td class="num">23.3</td></tr><tr><td>Spain</td><td class="num">21.9</td></tr><tr><td>France</td><td class="num">21.8</td></tr><tr><td>Portugal</td><td class="num">21.8</td></tr><tr><td>Cyprus</td><td class="num">20.8</td></tr><tr><td>Croatia</td><td class="num">19.8</td></tr><tr><td>Hungary</td><td class="num">19.8</td></tr><tr><td>Italy</td><td class="num">18.7</td></tr><tr><td>Malta</td><td class="num">17.3</td></tr><tr><td>Belgium</td><td class="num">17.1</td></tr><tr><td>Ireland</td><td class="num">16.9</td></tr><tr><td>Czechia</td><td class="num">14.2</td></tr><tr><td>Slovenia</td><td class="num">13.6</td></tr><tr><td>Austria</td><td class="num">13.1</td></tr><tr><td>Denmark</td><td class="num">12.8</td></tr><tr><td>Poland</td><td class="num">11.5</td></tr><tr><td>Lithuania</td><td class="num">11.4</td></tr><tr><td>Estonia</td><td class="num">9.9</td></tr><tr><td>Sweden</td><td class="num">9.9</td></tr><tr><td>Finland</td><td class="num">8.9</td></tr><tr><td>Luxembourg</td><td class="num">8.5</td></tr><tr><td>Germany</td><td class="num">7.3</td></tr><tr><td>Netherlands</td><td class="num">7.3</td></tr></tbody></table></details>
+</figure>
+
+<h2>Stage 2 &mdash; The AROPE bridge</h2>
+<p>Relative income poverty counts people below 60% of the <em>current</em>
+national median. When national income collapses the threshold falls with it, so
+a household can stay above a shrinking line while becoming materially worse off.
+That is not a defect of AROP &mdash; it measures relative position, and does so
+correctly &mdash; but it cannot register a fall that affects everyone at once.</p>
+<figure class="figure" id="F3">
+<figcaption>The line moved: a falling threshold, and what a fixed one shows instead</figcaption>
+<div class="fig-meta"><span class="badge">descriptive</span>
+<span class="fig-q">What happened to the line Greek poverty is measured against, and what does a fixed line show instead?</span></div>
+<div class="chart-live" data-chart="panel" tabindex="0"
+     data-checksum="61537afe7b2e198c" aria-describedby="F3-fb">
+<script type="application/json" data-kind="panel" data-label="Real threshold, 2008 = 100">{"years": [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024], "dp": 1, "alt": "Real poverty threshold indexed to each country's own 2008 level", "series": [{"label": "Greece: real poverty threshold", "tone": "gr", "style": "solid", "weight": "strong", "values": [65.1, 65.0, 65.1, 66.8, 69.3, 75.2, 74.5, 74.2, 75.2, 78.8]}, {"label": "EU median: real poverty threshold", "tone": "eu", "style": "dashed", "weight": "normal", "values": [106.5, 108.8, 109.5, 111.4, 113.8, 119.9, 120.4, 114.5, 113.5, 119.1]}]}</script><script type="application/json" data-kind="panel" data-label="Anchored vs floating poverty">{"years": [2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025], "dp": 1, "alt": "Greek anchored poverty against the floating income-poverty rate", "series": [{"label": "Greece: anchored poverty", "tone": "gr", "style": "solid", "weight": "strong", "values": [25.6, 22.8, 20.7, 21.5, 21.2, 19.7, 17.0, 18.0, 24.6, 33.3, 39.7, 40.6, 39.8, 39.8, 38.3, 37.3, 34.6, 30.8, 32.7, 33.6, 32.0, 30.2, 27.5]}, {"label": "Greece: income poverty", "tone": "eu", "style": "solid", "weight": "normal", "values": [20.7, 19.9, 19.6, 20.5, 20.3, 20.1, 19.7, 20.1, 21.4, 23.1, 23.1, 22.1, 21.4, 21.2, 20.2, 18.5, 17.9, 17.7, 19.6, 18.8, 18.9, 19.6, 19.6]}]}</script>
+</div><p class="fig-caveat"><strong>Read with this.</strong> The anchored series is an approximation built in this project and is labelled as such wherever it appears.</p>
+<details class="fallback" id="F3-fb"><summary>Show the numbers <a href="statistical_appendix.html">Full evidence in the appendix</a>.</summary>
+<table data-checksum="61537afe7b2e198c" data-view="0"><caption>Real threshold, 2008 = 100</caption><thead><tr><th>Series</th><th class="num">2015</th><th class="num">2016</th><th class="num">2017</th><th class="num">2018</th><th class="num">2019</th><th class="num">2020</th><th class="num">2021</th><th class="num">2022</th><th class="num">2023</th><th class="num">2024</th></tr></thead><tbody><tr><td>Greece: real poverty threshold</td><td class="num">65.1</td><td class="num">65.0</td><td class="num">65.1</td><td class="num">66.8</td><td class="num">69.3</td><td class="num">75.2</td><td class="num">74.5</td><td class="num">74.2</td><td class="num">75.2</td><td class="num">78.8</td></tr><tr><td>EU median: real poverty threshold</td><td class="num">106.5</td><td class="num">108.8</td><td class="num">109.5</td><td class="num">111.4</td><td class="num">113.8</td><td class="num">119.9</td><td class="num">120.4</td><td class="num">114.5</td><td class="num">113.5</td><td class="num">119.1</td></tr></tbody></table><table data-checksum="0c360100221a1d3e" data-view="1"><caption>Anchored vs floating poverty</caption><thead><tr><th>Series</th><th class="num">2003</th><th class="num">2004</th><th class="num">2005</th><th class="num">2006</th><th class="num">2007</th><th class="num">2008</th><th class="num">2009</th><th class="num">2010</th><th class="num">2011</th><th class="num">2012</th><th class="num">2013</th><th class="num">2014</th><th class="num">2015</th><th class="num">2016</th><th class="num">2017</th><th class="num">2018</th><th class="num">2019</th><th class="num">2020</th><th class="num">2021</th><th class="num">2022</th><th class="num">2023</th><th class="num">2024</th><th class="num">2025</th></tr></thead><tbody><tr><td>Greece: anchored poverty</td><td class="num">25.6</td><td class="num">22.8</td><td class="num">20.7</td><td class="num">21.5</td><td class="num">21.2</td><td class="num">19.7</td><td class="num">17.0</td><td class="num">18.0</td><td class="num">24.6</td><td class="num">33.3</td><td class="num">39.7</td><td class="num">40.6</td><td class="num">39.8</td><td class="num">39.8</td><td class="num">38.3</td><td class="num">37.3</td><td class="num">34.6</td><td class="num">30.8</td><td class="num">32.7</td><td class="num">33.6</td><td class="num">32.0</td><td class="num">30.2</td><td class="num">27.5</td></tr><tr><td>Greece: income poverty</td><td class="num">20.7</td><td class="num">19.9</td><td class="num">19.6</td><td class="num">20.5</td><td class="num">20.3</td><td class="num">20.1</td><td class="num">19.7</td><td class="num">20.1</td><td class="num">21.4</td><td class="num">23.1</td><td class="num">23.1</td><td class="num">22.1</td><td class="num">21.4</td><td class="num">21.2</td><td class="num">20.2</td><td class="num">18.5</td><td class="num">17.9</td><td class="num">17.7</td><td class="num">19.6</td><td class="num">18.8</td><td class="num">18.9</td><td class="num">19.6</td><td class="num">19.6</td></tr></tbody></table></details>
+</figure>
+<p>So the EU's broader measure is the natural next step. AROPE adds material
+deprivation and low work intensity to income poverty, and it does move Greece
+closer to its reported hardship.</p>
+<figure class="figure" id="F4">
+<figcaption>AROPE narrows the puzzle by about a fifth, and its contribution is shrinking</figcaption>
+<div class="fig-meta"><span class="badge">descriptive</span>
+<span class="fig-q">What does AROPE add to AROP, and is that addition growing?</span></div>
+<div class="chart-live" data-chart="panel" tabindex="0"
+     data-checksum="0d5c4210c0919c0f" aria-describedby="F4-fb">
+<script type="application/json">{"years": [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024], "dp": 1, "alt": "Greek hardship gap against AROP and against AROPE", "series": [{"label": "Gap against income poverty", "tone": "gr", "style": "solid", "weight": "strong", "values": [56.3, 55.6, 57.0, 55.6, 53.1, 52.1, 51.4, 49.6, 48.1, 47.1]}, {"label": "Gap against AROPE", "tone": "eu", "style": "solid", "weight": "strong", "values": [45.3, 44.2, 45.0, 43.8, 42.0, 42.4, 42.7, 42.1, 40.9, 39.8]}]}</script>
+</div><p class="fig-caveat"><strong>Read with this.</strong> AROPE components overlap and MAY NOT be added together: it is a union of income poverty, deprivation and low work intensity, and aggregate data do not reveal the overlaps</p>
+<details class="fallback" id="F4-fb"><summary>Show the numbers <a href="statistical_appendix.html">Full evidence in the appendix</a>.</summary>
+<table data-checksum="0d5c4210c0919c0f"><thead><tr><th>Series</th><th class="num">2015</th><th class="num">2016</th><th class="num">2017</th><th class="num">2018</th><th class="num">2019</th><th class="num">2020</th><th class="num">2021</th><th class="num">2022</th><th class="num">2023</th><th class="num">2024</th></tr></thead><tbody><tr><td>Gap against income poverty</td><td class="num">56.3</td><td class="num">55.6</td><td class="num">57.0</td><td class="num">55.6</td><td class="num">53.1</td><td class="num">52.1</td><td class="num">51.4</td><td class="num">49.6</td><td class="num">48.1</td><td class="num">47.1</td></tr><tr><td>Gap against AROPE</td><td class="num">45.3</td><td class="num">44.2</td><td class="num">45.0</td><td class="num">43.8</td><td class="num">42.0</td><td class="num">42.4</td><td class="num">42.7</td><td class="num">42.1</td><td class="num">40.9</td><td class="num">39.8</td></tr></tbody></table></details>
+</figure>
+<p>It closes about a fifth of the distance and its contribution is shrinking,
+from 11.0 points in 2015 to 7.3 in 2024. Underneath, the three components and
+the age groups did not move together.</p>
+<figure class="figure" id="F5">
+<figcaption>What sits behind AROPE, and which groups moved</figcaption>
+<div class="fig-meta"><span class="badge">descriptive</span>
+<span class="fig-q">What sits behind AROPE, and did every age group move the same way?</span></div>
+<div class="chart-live" data-chart="panel" tabindex="0"
+     data-checksum="7074a64e25224a91" aria-describedby="F5-fb">
+<script type="application/json" data-kind="panel" data-label="Components">{"years": [], "dp": 1, "alt": "The three AROPE components for Greece", "series": [{"label": "Income poverty", "tone": "gr", "style": "solid", "weight": "normal", "values": []}, {"label": "Material deprivation", "tone": "eu", "style": "solid", "weight": "normal", "values": []}, {"label": "Low work intensity", "tone": "series-3", "style": "solid", "weight": "normal", "values": []}]}</script><script type="application/json" data-kind="panel" data-label="By age">{"years": [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025], "dp": 1, "alt": "Greek AROPE by age group, with 65 and over emphasised", "series": [{"label": "All ages", "tone": "text-muted", "style": "solid", "weight": "light", "values": [32.4, 32.6, 32.2, 30.3, 29.0, 27.4, 28.3, 26.3, 26.1, 26.9, 27.5]}, {"label": "Under 18", "tone": "series-4", "style": "solid", "weight": "normal", "values": [37.7, 37.2, 36.5, 34.1, 31.2, 30.8, 32.0, 28.1, 28.1, 27.9, 29.6]}, {"label": "18&ndash;24", "tone": "series-5", "style": "solid", "weight": "normal", "values": [43.6, 44.6, 42.1, 39.0, 37.5, 35.0, 37.5, 33.4, 33.1, 34.5, 33.2]}, {"label": "25&ndash;49", "tone": "series-3", "style": "solid", "weight": "normal", "values": [35.0, 36.1, 35.2, 31.9, 30.1, 28.3, 29.3, 26.9, 24.9, 25.4, 25.1]}, {"label": "50&ndash;64", "tone": "eu", "style": "solid", "weight": "normal", "values": [34.8, 35.3, 34.9, 33.4, 31.9, 29.2, 30.5, 27.6, 26.3, 28.2, 27.5]}, {"label": "65 and over", "tone": "gr", "style": "solid", "weight": "strong", "values": [17.5, 16.6, 18.4, 19.2, 20.5, 19.4, 19.3, 21.0, 23.9, 24.9, 27.7]}]}</script><script type="application/json" data-kind="coefficient" data-label="Shift-share">{"rows": [{"label": "Under 18", "est": 0.283, "lo": 0.0, "hi": 0.283, "tone": "gr", "strong": true, "right": "-0.065 comp.", "detail": "within-group <b>+0.283 pp<\/b><br>composition -0.065 pp<br>rate 27.9 &rarr; 29.6"}, {"label": "18-24", "est": -0.088, "lo": -0.088, "hi": 0.0, "tone": "text-muted", "strong": false, "right": "+0.080 comp.", "detail": "within-group <b>-0.088 pp<\/b><br>composition +0.080 pp<br>rate 34.5 &rarr; 33.2"}, {"label": "25-49", "est": -0.094, "lo": -0.094, "hi": 0.0, "tone": "text-muted", "strong": false, "right": "-0.154 comp.", "detail": "within-group <b>-0.094 pp<\/b><br>composition -0.154 pp<br>rate 25.4 &rarr; 25.1"}, {"label": "50-64", "est": -0.154, "lo": -0.154, "hi": 0.0, "tone": "text-muted", "strong": false, "right": "+0.050 comp.", "detail": "within-group <b>-0.154 pp<\/b><br>composition +0.050 pp<br>rate 28.2 &rarr; 27.5"}, {"label": "65 and over", "est": 0.651, "lo": 0.0, "hi": 0.651, "tone": "gr", "strong": true, "right": "+0.107 comp.", "detail": "within-group <b>+0.651 pp<\/b><br>composition +0.107 pp<br>rate 24.9 &rarr; 27.7"}], "alt": "Shift-share: within-group against compositional contribution to the 2024-2025 change"}</script>
+</div><p class="fig-caveat"><strong>Read with this.</strong> These are changes in group-level rates, not evidence about the same individuals over time. The 2024-2025 national increase was driven primarily by within-group changes, especially deterioration among people aged 65+, rather than population ageing. AROPE components are a UNION and may not be summed.</p>
+<details class="fallback" id="F5-fb"><summary>Show the numbers <a href="statistical_appendix.html">Full evidence in the appendix</a>.</summary>
+<table data-checksum="7074a64e25224a91" data-view="0"><caption>Components</caption><thead><tr><th>Series</th></tr></thead><tbody><tr><td>Income poverty</td></tr><tr><td>Material deprivation</td></tr><tr><td>Low work intensity</td></tr></tbody></table><table data-checksum="1e18ae7de91e01f8" data-view="1"><caption>By age</caption><thead><tr><th>Series</th><th class="num">2015</th><th class="num">2016</th><th class="num">2017</th><th class="num">2018</th><th class="num">2019</th><th class="num">2020</th><th class="num">2021</th><th class="num">2022</th><th class="num">2023</th><th class="num">2024</th><th class="num">2025</th></tr></thead><tbody><tr><td>All ages</td><td class="num">32.4</td><td class="num">32.6</td><td class="num">32.2</td><td class="num">30.3</td><td class="num">29.0</td><td class="num">27.4</td><td class="num">28.3</td><td class="num">26.3</td><td class="num">26.1</td><td class="num">26.9</td><td class="num">27.5</td></tr><tr><td>Under 18</td><td class="num">37.7</td><td class="num">37.2</td><td class="num">36.5</td><td class="num">34.1</td><td class="num">31.2</td><td class="num">30.8</td><td class="num">32.0</td><td class="num">28.1</td><td class="num">28.1</td><td class="num">27.9</td><td class="num">29.6</td></tr><tr><td>18&amp;ndash;24</td><td class="num">43.6</td><td class="num">44.6</td><td class="num">42.1</td><td class="num">39.0</td><td class="num">37.5</td><td class="num">35.0</td><td class="num">37.5</td><td class="num">33.4</td><td class="num">33.1</td><td class="num">34.5</td><td class="num">33.2</td></tr><tr><td>25&amp;ndash;49</td><td class="num">35.0</td><td class="num">36.1</td><td class="num">35.2</td><td class="num">31.9</td><td class="num">30.1</td><td class="num">28.3</td><td class="num">29.3</td><td class="num">26.9</td><td class="num">24.9</td><td class="num">25.4</td><td class="num">25.1</td></tr><tr><td>50&amp;ndash;64</td><td class="num">34.8</td><td class="num">35.3</td><td class="num">34.9</td><td class="num">33.4</td><td class="num">31.9</td><td class="num">29.2</td><td class="num">30.5</td><td class="num">27.6</td><td class="num">26.3</td><td class="num">28.2</td><td class="num">27.5</td></tr><tr><td>65 and over</td><td class="num">17.5</td><td class="num">16.6</td><td class="num">18.4</td><td class="num">19.2</td><td class="num">20.5</td><td class="num">19.4</td><td class="num">19.3</td><td class="num">21.0</td><td class="num">23.9</td><td class="num">24.9</td><td class="num">27.7</td></tr></tbody></table><table data-checksum="b9db99c54a75a228" data-view="2"><caption>Shift-share</caption><thead><tr><th>Series</th><th class="num">Within-group (pp)</th><th class="num">Composition (pp)</th></tr></thead><tbody><tr><td>Under 18</td><td class="num">0.283</td><td class="num">-0.065</td></tr><tr><td>18-24</td><td class="num">-0.088</td><td class="num">0.080</td></tr><tr><td>25-49</td><td class="num">-0.094</td><td class="num">-0.154</td></tr><tr><td>50-64</td><td class="num">-0.154</td><td class="num">0.050</td></tr><tr><td>65 and over</td><td class="num">0.651</td><td class="num">0.107</td></tr></tbody></table></details>
+</figure>
+<script>
+(function(){
+  const NS='http://www.w3.org/2000/svg';
+  const el=(t,a)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;};
+  const cssv=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const fmt=(v,d)=>v==null?'—':(Math.abs(v)>=1000?v.toLocaleString(undefined,{maximumFractionDigits:0}):v.toFixed(d==null?1:d));
+
+  // Width is chosen from the container, not hardcoded. A fixed 860 rendered
+  // labels at ~4 effective pixels on a phone.
+  function widthFor(host){ const w=host.clientWidth||640; return Math.max(320,Math.min(920,w)); }
+
+  function tip(host){
+    let t=host.querySelector('.tip');
+    if(!t){t=document.createElement('div');t.className='tip';host.appendChild(t);}
+    return t;
+  }
+  function say(host,msg){
+    let s=host.querySelector('.sr');
+    if(!s){s=document.createElement('div');s.className='sr';s.setAttribute('aria-live','polite');host.appendChild(s);}
+    s.textContent=msg;
+  }
+
+  /* ---------------------------------------------------------------- panel */
+  function panel(host,d){
+    const W=widthFor(host), H=Math.round(W*0.42);
+    // Right padding is derived from the longest end label, not fixed: a fixed
+    // 14% clipped "Greece: hardship" in the first prototype.
+    const longest=Math.max(0,...d.series.filter(s=>s.label).map(s=>s.label.length));
+    const padL=46,padR=Math.min(W*0.34,Math.max(52,longest*6.2+14)),padT=12,padB=28;
+    const pw=W-padL-padR, ph=H-padT-padB, yrs=d.years;
+    const xs=y=>padL+(yrs.length<2?pw/2:(y-yrs[0])/(yrs[yrs.length-1]-yrs[0])*pw);
+    let lo=Infinity,hi=-Infinity;
+    d.series.forEach(s=>s.values.forEach(v=>{if(v!=null){lo=Math.min(lo,v);hi=Math.max(hi,v);}}));
+    if(!isFinite(lo)){lo=0;hi=1;}
+    const pad=(hi-lo)*0.10||1; hi+=pad; lo=(lo<0)?lo-pad:Math.max(0,lo-pad);
+    const ys=v=>padT+ph-(v-lo)/(hi-lo)*ph;
+    const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,class:'chart',role:'img',
+      'aria-label':d.alt||d.caption||'chart'});
+    for(let i=0;i<=4;i++){const v=lo+(hi-lo)*i/4,y=ys(v);
+      svg.appendChild(el('line',{x1:padL,x2:W-padR,y1:y,y2:y,class:'gridline'}));
+      const t=el('text',{x:padL-6,y:y+3.5,'text-anchor':'end',class:'axis-label'});
+      t.textContent=fmt(v,d.dp);svg.appendChild(t);}
+    const step=Math.max(1,Math.ceil(yrs.length/(W<480?4:8)));
+    yrs.forEach((y,i)=>{if(i%step&&i!==yrs.length-1)return;
+      const t=el('text',{x:xs(y),y:H-padB+16,'text-anchor':'middle',class:'axis-label'});
+      t.textContent=y;svg.appendChild(t);});
+    const cur=el('line',{class:'cursor-line',y1:padT,y2:padT+ph,x1:-9,x2:-9});
+    svg.appendChild(cur);
+    const DASH={solid:'',dashed:'6 3',dotted:'2 3'};
+    const WT={strong:2.8,normal:1.8,light:1.4};
+    const ends=[];
+    d.series.forEach(s=>{let p='',pen=false;
+      s.values.forEach((v,i)=>{if(v==null){pen=false;return;}
+        p+=(pen?' L ':' M ')+xs(yrs[i])+','+ys(v);pen=true;});
+      // Line and label take their colour from the SAME tone. Previously the
+      // stroke came from a CSS class and the label from the tone, so both
+      // "income poverty" series drew as identical grey while their labels were
+      // blue and orange -- unreadable, and the reader could not tell which line
+      // was which.
+      if(p)svg.appendChild(el('path',{d:p,fill:'none',
+        stroke:`var(--${s.tone||'text-muted'})`,
+        'stroke-width':WT[s.weight||'normal'],
+        'stroke-dasharray':DASH[s.style||'solid'],
+        opacity:s.weight==='light'?0.75:1}));
+      const li=(()=>{for(let i=s.values.length-1;i>=0;i--)if(s.values[i]!=null)return i;return -1;})();
+      // With a legend present, end-labelling every series just crowds the right
+      // margin. Only the emphasised series get an end label; the legend carries
+      // the rest.
+      const labelled=d.series.filter(x=>x.label).length<=2||s.weight!=='light';
+      if(li>=0&&s.label&&labelled)ends.push({y:ys(s.values[li]),x:xs(yrs[li])+6,s:s});
+    });
+    // End labels collide when series converge -- three of them stacked on one
+    // pixel row in the first prototype. Sort by y and push apart by a minimum
+    // gap, keeping each label anchored to its own line by a short leader.
+    const GAP=W<480?12:13.5;
+    ends.sort((a,b)=>a.y-b.y);
+    for(let i=1;i<ends.length;i++)
+      if(ends[i].y-ends[i-1].y<GAP)ends[i].y=ends[i-1].y+GAP;
+    const overflow=ends.length?Math.max(0,ends[ends.length-1].y-(padT+ph)):0;
+    if(overflow)ends.forEach(e=>e.y-=overflow);
+    ends.forEach(e=>{
+      const yl=ys(e.s.values[(()=>{for(let i=e.s.values.length-1;i>=0;i--)
+        if(e.s.values[i]!=null)return i;return 0;})()]);
+      if(Math.abs(yl-e.y)>2)
+        svg.appendChild(el('line',{x1:e.x-3,x2:e.x+2,y1:yl,y2:e.y-3,
+          stroke:`var(--${e.s.tone||'text-muted'})`,'stroke-width':1,opacity:.5}));
+      const t=el('text',{x:e.x+4,y:e.y,class:'axis-label',
+        style:`fill:var(--${e.s.tone||'text-muted'});font-weight:700`});
+      t.textContent=e.s.label;svg.appendChild(t);});
+    host.insertBefore(svg,host.firstChild);
+    // A legend keyed on the same tone/style, so the encoding is stated once
+    // rather than inferred from four crowded end labels.
+    if(d.series.filter(s=>s.label).length>2){
+      const lg=document.createElement('div');lg.className='legend';
+      d.series.filter(s=>s.label).forEach(s=>{
+        const i=document.createElement('span');i.className='lg-item';
+        i.innerHTML=`<svg width="22" height="8" aria-hidden="true"><line x1="0" y1="4" x2="22" y2="4"
+          stroke="var(--${s.tone||'text-muted'})" stroke-width="${WT[s.weight||'normal']}"
+          stroke-dasharray="${DASH[s.style||'solid']}"/></svg>${s.label}`;
+        lg.appendChild(i);});
+      host.insertBefore(lg,svg.nextSibling);
+    }
+    const tp=tip(host);
+    let idx=-1;
+    const show=i=>{ if(i<0||i>=yrs.length)return; idx=i;
+      cur.setAttribute('x1',xs(yrs[i]));cur.setAttribute('x2',xs(yrs[i]));
+      const rows=d.series.filter(s=>s.label).map(s=>`${s.label}: <b>${fmt(s.values[i],d.dp)}</b>`).join('<br>');
+      tp.innerHTML=`<strong>${yrs[i]}</strong><br>${rows}`;tp.classList.add('on');
+      const r=svg.getBoundingClientRect(),hr=host.getBoundingClientRect();
+      tp.style.left=Math.min(hr.width-tp.offsetWidth-8,(xs(yrs[i])/W)*r.width+8)+'px';
+      tp.style.top='8px';
+      say(host,`${yrs[i]}. `+d.series.filter(s=>s.label).map(s=>`${s.label} ${fmt(s.values[i],d.dp)}`).join(', '));
+    };
+    const near=e=>{const r=svg.getBoundingClientRect();
+      const x=(e.clientX-r.left)/r.width*W;
+      let best=0,bd=1e9;yrs.forEach((y,i)=>{const dd=Math.abs(xs(y)-x);if(dd<bd){bd=dd;best=i;}});
+      show(best);};
+    svg.addEventListener('mousemove',near);
+    svg.addEventListener('mouseleave',()=>{tp.classList.remove('on');cur.setAttribute('x1',-9);cur.setAttribute('x2',-9);});
+    host.addEventListener('keydown',e=>{
+      if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();
+        show(Math.max(0,Math.min(yrs.length-1,(idx<0?yrs.length-1:idx)+(e.key==='ArrowRight'?1:-1))));}
+      if(e.key==='Home'){e.preventDefault();show(0);}
+      if(e.key==='End'){e.preventDefault();show(yrs.length-1);}
+      if(e.key==='Escape'){tp.classList.remove('on');cur.setAttribute('x1',-9);}
+    });
+  }
+
+  /* ---------------------------------------------- coefficient (new type) */
+  function coefficient(host,d){
+    const W=widthFor(host), rowH=W<480?34:30;
+    const padL=W<480?110:190, padR=W<480?54:96, padT=26, padB=30;
+    const H=padT+d.rows.length*rowH+padB, pw=W-padL-padR;
+    let lo=Infinity,hi=-Infinity;
+    d.rows.forEach(r=>{lo=Math.min(lo,r.lo,r.est);hi=Math.max(hi,r.hi,r.est);});
+    const span=(hi-lo)||1; lo-=span*0.08; hi+=span*0.08;
+    const xs=v=>padL+(v-lo)/(hi-lo)*pw;
+    const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,class:'chart',role:'img',
+      'aria-label':d.alt||d.caption||'coefficient plot'});
+    [lo,(lo+hi)/2,hi].forEach(v=>{const t=el('text',{x:xs(v),y:H-8,
+      'text-anchor':'middle',class:'axis-label'});t.textContent=fmt(v,2);svg.appendChild(t);});
+    if(lo<0&&hi>0)svg.appendChild(el('line',{x1:xs(0),x2:xs(0),y1:padT-6,y2:padT+d.rows.length*rowH,class:'zero-line'}));
+    const tp=tip(host); let idx=-1;
+    const marks=[];
+    d.rows.forEach((r,i)=>{
+      const y=padT+i*rowH+rowH/2;
+      const tone=r.tone||'text-muted';
+      svg.appendChild(el('line',{x1:xs(r.lo),x2:xs(r.hi),y1:y,y2:y,
+        stroke:`var(--${tone})`,'stroke-width':2,opacity:.55}));
+      const c=el('circle',{cx:xs(r.est),cy:y,r:W<480?4.5:5.5,fill:`var(--${tone})`});
+      svg.appendChild(c);marks.push({y:y,r:r});
+      const lbl=el('text',{x:padL-10,y:y+4,'text-anchor':'end',class:'axis-label',
+        style:r.strong?'font-weight:700':''});
+      lbl.textContent=r.label;svg.appendChild(lbl);
+      const vt=el('text',{x:W-padR+8,y:y+4,class:'axis-label',
+        style:`fill:var(--${tone});font-weight:600`});
+      vt.textContent=r.right||'';svg.appendChild(vt);
+    });
+    host.insertBefore(svg,host.firstChild);
+    const show=i=>{if(i<0||i>=d.rows.length)return;idx=i;const r=d.rows[i];
+      tp.innerHTML=`<strong>${r.label}</strong><br>${r.detail}`;tp.classList.add('on');
+      const rc=svg.getBoundingClientRect(),hr=host.getBoundingClientRect();
+      tp.style.left=Math.min(hr.width-tp.offsetWidth-8,24)+'px';
+      tp.style.top=Math.max(4,(marks[i].y/H)*rc.height-tp.offsetHeight-6)+'px';
+      say(host,`${r.label}. ${r.detail.replace(/<[^>]+>/g,' ')}`);};
+    svg.addEventListener('mousemove',e=>{const rc=svg.getBoundingClientRect();
+      const y=(e.clientY-rc.top)/rc.height*H;let best=0,bd=1e9;
+      marks.forEach((m,i)=>{const dd=Math.abs(m.y-y);if(dd<bd){bd=dd;best=i;}});show(best);});
+    svg.addEventListener('mouseleave',()=>tp.classList.remove('on'));
+    host.addEventListener('keydown',e=>{
+      if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();
+        show(Math.max(0,Math.min(d.rows.length-1,(idx<0?-1:idx)+(e.key==='ArrowDown'?1:-1))));}
+      if(e.key==='Escape')tp.classList.remove('on');});
+  }
+
+
+  /* -------------------------------------------------------- ladder (new) */
+  /* All countries on one measure, ranked, with Greece and the EU marked.
+     Answers "is Greece unusual, or at one end of a continuum?" -- which a
+     Greece-only time series cannot. */
+  function ladder(host,d){
+    const W=widthFor(host), n=d.rows.length;
+    const rowH=W<480?15:17, padL=W<480?42:54, padR=W<480?46:64, padT=18, padB=26;
+    const H=padT+n*rowH+padB, pw=W-padL-padR;
+    let lo=Math.min(0,...d.rows.map(r=>r.value)), hi=Math.max(...d.rows.map(r=>r.value));
+    hi+=(hi-lo)*0.06||1;
+    const xs=v=>padL+(v-lo)/(hi-lo)*pw;
+    const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,class:'chart',role:'img',
+      'aria-label':d.alt||'ranked comparison of all countries'});
+    [lo,(lo+hi)/2,hi].forEach(v=>{
+      svg.appendChild(el('line',{x1:xs(v),x2:xs(v),y1:padT-4,y2:padT+n*rowH,class:'gridline'}));
+      const t=el('text',{x:xs(v),y:H-8,'text-anchor':'middle',class:'axis-label'});
+      t.textContent=fmt(v,d.dp);svg.appendChild(t);});
+    if(d.reference!=null){
+      svg.appendChild(el('line',{x1:xs(d.reference),x2:xs(d.reference),
+        y1:padT-4,y2:padT+n*rowH,class:'zero-line','stroke-dasharray':'4 3'}));
+      const rt=el('text',{x:xs(d.reference),y:padT-7,'text-anchor':'middle',
+        class:'axis-label',style:'fill:var(--eu);font-weight:700'});
+      rt.textContent=d.referenceLabel||'EU median';svg.appendChild(rt);}
+    const marks=[];
+    d.rows.forEach((r,i)=>{
+      const y=padT+i*rowH+rowH/2, hl=!!r.highlight;
+      svg.appendChild(el('rect',{x:padL,y:y-rowH/2+1,width:Math.max(0,xs(r.value)-padL),
+        height:rowH-3,rx:1.5,fill:`var(--${hl?'gr':'text-muted'})`,opacity:hl?1:.32}));
+      const lb=el('text',{x:padL-6,y:y+3.5,'text-anchor':'end',class:'axis-label',
+        style:hl?'fill:var(--gr);font-weight:700':''});
+      lb.textContent=r.label;svg.appendChild(lb);
+      if(hl||i===0||i===n-1){const vt=el('text',{x:xs(r.value)+5,y:y+3.5,class:'axis-label',
+        style:hl?'fill:var(--gr);font-weight:700':''});
+        vt.textContent=fmt(r.value,d.dp);svg.appendChild(vt);}
+      marks.push({y:y,r:r,i:i});});
+    host.insertBefore(svg,host.firstChild);
+    const tp=tip(host);let idx=-1;
+    const show=i=>{if(i<0||i>=marks.length)return;idx=i;const r=marks[i].r;
+      tp.innerHTML=`<strong>${r.name||r.label}</strong><br>${fmt(r.value,d.dp)}${d.unit?' '+d.unit:''}`
+        +(r.detail?'<br>'+r.detail:'')+`<br><span style="opacity:.6">rank ${i+1} of ${marks.length}</span>`;
+      tp.classList.add('on');
+      const rc=svg.getBoundingClientRect(),hr=host.getBoundingClientRect();
+      tp.style.left=Math.min(hr.width-tp.offsetWidth-8,padL/W*rc.width+10)+'px';
+      tp.style.top=Math.max(2,Math.min(rc.height-tp.offsetHeight-4,
+        (marks[i].y/H)*rc.height-tp.offsetHeight/2))+'px';
+      say(host,`${r.name||r.label}, ${fmt(r.value,d.dp)}, rank ${i+1} of ${marks.length}`);};
+    svg.addEventListener('mousemove',e=>{const rc=svg.getBoundingClientRect();
+      const y=(e.clientY-rc.top)/rc.height*H;let b=0,bd=1e9;
+      marks.forEach((m,i)=>{const dd=Math.abs(m.y-y);if(dd<bd){bd=dd;b=i;}});show(b);});
+    svg.addEventListener('mouseleave',()=>tp.classList.remove('on'));
+    host.addEventListener('keydown',e=>{
+      if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();
+        show(Math.max(0,Math.min(marks.length-1,(idx<0?-1:idx)+(e.key==='ArrowDown'?1:-1))));}
+      if(e.key==='Home'){e.preventDefault();show(0);}
+      if(e.key==='End'){e.preventDefault();show(marks.length-1);}
+      if(e.key==='Escape')tp.classList.remove('on');});
+  }
+
+  const KINDS={panel:panel,coefficient:coefficient,ladder:ladder};
+
+
+  // VIEW SWITCHING. Some questions need more than one look -- the real
+  // threshold and the anchored comparison, or AROPE by component, age,
+  // household and shift-share. Views live in one figure so the reader does not
+  // lose the question while changing the picture.
+  function mountViews(host){
+    const payloads=[...host.querySelectorAll('script[type="application/json"]')];
+    if(payloads.length<2)return false;
+    const bar=document.createElement('div');bar.className='viewbar';
+    bar.setAttribute('role','tablist');
+    const draw=i=>{
+      const d=JSON.parse(payloads[i].textContent);
+      host.querySelectorAll('svg,.legend,.tip,.sr').forEach(n=>n.remove());
+      (KINDS[payloads[i].dataset.kind||host.dataset.chart]||panel)(host,d);
+      [...bar.children].forEach((b,j)=>{b.setAttribute('aria-selected',j===i?'true':'false');
+        b.tabIndex=j===i?0:-1;});
+      // Scope from the FIGURE, not the chart host: the fallback tables live in
+      // the <details> sibling, so querying the host matched nothing and every
+      // view's table stayed visible at once.
+      const fig=host.closest('figure')||document;
+      fig.querySelectorAll('table[data-view]').forEach(tb=>{
+        tb.hidden = tb.dataset.view !== String(i);});
+    };
+    payloads.forEach((pl,i)=>{
+      const b=document.createElement('button');b.type='button';b.className='viewbtn';
+      b.setAttribute('role','tab');b.textContent=pl.dataset.label||('View '+(i+1));
+      b.addEventListener('click',()=>draw(i));
+      b.addEventListener('keydown',e=>{
+        if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();
+          const j=(i+(e.key==='ArrowRight'?1:-1)+payloads.length)%payloads.length;
+          bar.children[j].focus();draw(j);}});
+      bar.appendChild(b);});
+    host.parentNode.insertBefore(bar,host);
+    draw(0);
+    return true;
+  }
+
+  function mount(){
+    document.querySelectorAll('[data-chart]').forEach(host=>{
+      if(host.dataset.drawn)return;
+      if(mountViews(host)){host.dataset.drawn='1';return;}
+      const payload=host.querySelector('script[type="application/json"]');
+      if(!payload)return;
+      const d=JSON.parse(payload.textContent);
+      const fn=KINDS[host.dataset.chart];
+      if(!fn)return;
+      host.querySelectorAll('svg').forEach(s=>s.remove());
+      fn(host,d);
+      host.dataset.drawn='1';
+    });
+  }
+  function redraw(){document.querySelectorAll('.viewbar').forEach(b=>b.remove());
+    document.querySelectorAll('[data-chart]').forEach(h=>h.dataset.drawn='');mount();}
+  document.addEventListener('DOMContentLoaded',mount);
+  if(document.readyState!=='loading')mount();
+  let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(redraw,180);});
+})();
+</script>
+</body></html>
