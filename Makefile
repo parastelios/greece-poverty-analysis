@@ -48,6 +48,7 @@ verify:
 	cd $(SCRIPTS) && $(PY) test_ea_rule.py
 	cd $(SCRIPTS) && $(PY) test_e_rule.py
 	cd $(SCRIPTS) && $(PY) test_registry.py
+	cd $(SCRIPTS) && $(PY) test_accumulate.py
 	cd $(SCRIPTS) && $(PY) test_validate_outputs.py
 	cd $(SCRIPTS) && $(PY) test_claim_containers.py
 	cd $(SCRIPTS) && $(PY) audit_reported_outputs.py
@@ -72,6 +73,7 @@ release-verify:
 	cd $(SCRIPTS) && $(PY) test_ea_rule.py
 	cd $(SCRIPTS) && $(PY) test_e_rule.py
 	cd $(SCRIPTS) && $(PY) test_registry.py
+	cd $(SCRIPTS) && $(PY) test_accumulate.py
 	cd $(SCRIPTS) && $(PY) test_validate_outputs.py
 	cd $(SCRIPTS) && $(PY) test_claim_containers.py
 	cd $(SCRIPTS) && $(PY) audit_reported_outputs.py

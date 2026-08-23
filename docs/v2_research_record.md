@@ -41,10 +41,10 @@ This notebook is the running log. `publication_strategy.md` was closed on
 <!-- AUTO:BEGIN document-control -->
 | Field | Value |
 |---|---|
-| Current stage | E4 |
-| Last completed stage | E3 |
+| Current stage | E5 |
+| Last completed stage | E4 |
 | Branch | `p6-rewrite` |
-| HEAD | `75b81f2` E3: proximate items absorb 71% of the gap, and validate the outcome |
+| HEAD | `8786867` E3 documentation fixes: absorption not explanation, mechanical not proximity |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-23 |
 | Frozen V1 reference | `v1-final` |
@@ -90,8 +90,8 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | E1 | Which current-level constructs are associated with hardship? | complete | `a747e7a` | — | [E1](#e1--current-level-constructs) |
 | E2 | Do sensitivity variants change the current-level conclusions? | complete | `a747e7a` | — | [E2](#e2--current-level-sensitivities) |
 | E3 | What do the diagnostic and contextual checks show? | complete | `a747e7a` | — | [E3](#e3--diagnostic-and-contextual-checks) |
-| E4 | Which accumulated constructs are associated with hardship? | **next** | `a747e7a` | — | [E4](#e4--accumulated-exposure) |
-| E5 | Do accumulated-measure sensitivities change those conclusions? | pending | `a747e7a` | — | [E5](#e5--accumulation-sensitivities) |
+| E4 | Which accumulated constructs are associated with hardship? | complete | `a747e7a` | — | [E4](#e4--accumulated-exposure) |
+| E5 | Do accumulated-measure sensitivities change those conclusions? | **next** | `a747e7a` | — | [E5](#e5--accumulation-sensitivities) |
 | E6 | Does the frozen combined model remain appropriate? | pending | `a747e7a` | — | [E6](#e6--frozen-combined-model) |
 | E7 | Do accumulated measures add information beyond current snapshots? | pending | `a747e7a` | — | [E7](#e7--current-versus-accumulated-comparison) |
 | FINAL | What survives into the final reports? | pending | — | — | [FINAL](#final--claim-freeze-and-publication) |
@@ -1923,19 +1923,194 @@ protocol exists to prevent.
 
 ### In plain words
 
-### Question
-### Eligible constructs
-### Transformations and baselines
-### Data and equal-sample rules
-### Minimum detectable effect
-### Results
-### Multiple-testing adjustment
-### Robustness and validation
-### Within-between decomposition
-### First-difference evidence
+C3 — loss against a country's own past — failed twice at current levels, which
+is what the construct map predicted, because it is a construct about
+accumulation. E4 gives it, and every other accumulated measure, the test it was
+built for.
+
+**Three accumulated measures are supported**: accumulated excess unemployment,
+housing deterioration since 2010, and the *duration* a country's real wages have
+spent below their 2008 level.
+
+**C3 splits, and the split is the point.** How *long* wages have been below
+their pre-crisis level is supported. How *far* below they fell — the area under
+the shortfall — is not. The pre-registration insisted these are separate
+quantities that may never be summed, and they behave differently.
+
+**Compounded inflation still finds nothing.** This was the one avenue E2's
+narrow ruling left open, and it closes: cumulative price growth since 2008 is
+the weakest result in the family.
+
+**And the decisive one: no accumulated result may be given dynamic wording.**
+Every single one is a between-country marker. Not one has a within-country
+component that is significant in the adverse direction, and first differences
+support nothing at all. Countries that absorbed more damage report more
+hardship. That is not the same as hardship rising inside a country as damage
+accumulated, and this stage cannot show the second.
+
+### Feasibility: 7 of 10, and the three failures matter
+
+The accumulations need source history back to 2008–2010, and the analysis panel
+starts in 2015. Which measures are constructible is therefore a **result**, not
+a preliminary.
+
+| Construct | Variable | Feasible | Reason |
+|---|---|:--:|---|
+| C2 | `cum_excess_unemployment` | ✓ | already built and frozen — reused, not reconstructed |
+| C3 | `real_wages_idx` | ✓ | 27 countries at 2008; area **and** duration |
+| C3 | `pct_below_peak` | ✓ | 27 countries at 2008 |
+| C3 | `arop_threshold_real` | ✓ | **mixed baseline** — see below |
+| C4 | `wadj_a01` | ✓ | 27 countries at 2008 |
+| C5 | `hicp` | ✓ | 27 countries at 2008 |
+| C6 | `housing_cost_overburden` | ✓ | 27 countries at 2010 |
+| **C1** | `aic_pps_pc` | ✗ | **source begins 2015; no 2008 baseline exists** |
+| C3 | `real_income_idx` | ✗ | 1 country at 2008; never a panel series before 2015 |
+| P1 | `severe_mat_soc_deprivation` | ✗ | source begins 2015; diagnostic only regardless |
+
+**C1's failure is the notable one.** Material resources is one of the three
+constructs E1 supported, and its accumulated form cannot be tested at all. The
+baseline was **not** moved to a later year to make it testable — choosing a
+baseline after seeing which choice yields data is the error the protocol exists
+to prevent.
+
+**Mixed baseline, disclosed.** `arop_threshold_real` uses 2008 for 26 countries
+and 2010 for Croatia, which has no 2008 observation. Croatia therefore
+accumulates over two fewer years, mechanically understating it. The
+pre-registration says "baseline 2008" and does not authorise a per-country
+fallback, so this is recorded rather than presented as uniform.
+
+Every built series passed a **no-future-information check**: rebuilt on data
+truncated at each year, the value at that year is unchanged. `accumulate.py`,
+27 tests.
+
+### BH family 2 — accumulated primaries
+
+| Con | Accumulated | Coef | p raw | p FDR | Boot p | Effect | n | Outcome | Gate |
+|---|---|---:|---:|---:|---:|---:|---:|---|---|
+| C2 | `acc_cum_excess_unemployment` | +0.4145 | 0.0000 | 0.0000 | **0.0025** | 0.78 | 270 | **supported** | — |
+| C6 | `acc_housing_excess` | +0.2540 | 0.0000 | 0.0000 | **0.0460** | 0.70 | 269 | **supported** | — |
+| C3 | `dur_real_wages_below` | +1.7202 | 0.0190 | 0.0253 | **0.0245** | 0.51 | 270 | **supported** | — |
+| C4 | `acc_wadj_excess` | +0.0135 | 0.0000 | 0.0000 | 0.0025 | 0.43 | 270 | inconclusive | `greece_residual` |
+| C3 | `acc_threshold_shortfall` | +0.1498 | 0.0000 | 0.0000 | 0.4140 | 0.62 | 270 | inconclusive | `bootstrap` |
+| C3 | `acc_pct_below_peak` | +0.1745 | 0.0000 | 0.0001 | 0.3145 | 0.62 | 270 | inconclusive | `bootstrap` |
+| C3 | `acc_real_wages_shortfall` | +0.0952 | 0.0324 | 0.0370 | 0.0740 | 0.52 | 270 | inconclusive | `bootstrap` |
+| C5 | `acc_hicp_compounded` | −0.1793 | 0.3666 | 0.3666 | — | 0.27 | 270 | inconclusive | `power` |
+
+`acc_wadj_excess` clears FDR *and* the bootstrap and still fails, on Greece's
+equal-sample residual — visible only because of the `failed_gate` field.
+
+### Current versus accumulated, on identical observations
+
+| Con | Current | Accumulated | Cur coef | Acc coef | Cur p | Acc p | n |
+|---|---|---|---:|---:|---:|---:|---:|
+| C2 | `ltu_rate` | `acc_cum_excess_unemployment` | +4.3402 | +0.4145 | 0.0000 | 0.0000 | 270 |
+| C3 | `real_wages_idx` | `acc_real_wages_shortfall` | −0.0924 | +0.0952 | 0.6130 | **0.0324** | 270 |
+| C3 | `pct_below_peak` | `acc_pct_below_peak` | +1.8675 | +0.1745 | 0.0000 | 0.0000 | 270 |
+| C3 | `arop_threshold_real` | `acc_threshold_shortfall` | −0.0556 | +0.1477 | 0.6531 | **0.0000** | 260 |
+| C4 | `wadj_a01` | `acc_wadj_excess` | +0.3110 | +0.0135 | 0.0000 | 0.0000 | 270 |
+| C5 | `hicp` | `acc_hicp_compounded` | −0.9925 | −0.1793 | 0.3213 | 0.3666 | 270 |
+| C6 | `housing_cost_overburden` | `acc_housing_excess` | +1.1385 | +0.2540 | 0.0082 | 0.0000 | 269 |
+
+Two C3 measures that were nowhere near significance at current levels —
+`real_wages_idx` (0.6130) and `arop_threshold_real` (0.6531) — become
+significant in accumulated form on the same rows. That is the construct map's
+prediction, confirmed on identical samples. It does not, on its own, make them
+supported: both fail a later gate.
+
+### Accumulated versus annual inflation
+
+| | Coef | p |
+|---|---:|---:|
+| annual `hicp` | −0.9925 | 0.3213 |
+| compounded `acc_hicp_compounded` | −0.1793 | 0.3666 |
+
+Identical sample, n = 270. **The avenue E2 left open closes.** E2 could only
+rule out annual food and housing inflation at 0.70 SD; compounded inflation
+since 2008 was untested and is now tested. It is the weakest result in family 2.
+
+Compounded inflation measures cumulative **price growth** — not affordability,
+not hardship. Affordability is C4's separate question.
+
+### Between/within and first differences
+
+![Every accumulated result is a between-country marker](figures/e4_between_within.svg)
+
+| Accumulated | Between | p | Within | p | FD coef | FD p | Dynamic? |
+|---|---:|---:|---:|---:|---:|---:|:--:|
+| `acc_cum_excess_unemployment` | +0.4306 | 0.0000 | −0.1115 | 0.5322 | −0.0432 | 0.7484 | **no** |
+| `acc_housing_excess` | +0.2777 | 0.0000 | −0.0390 | 0.5751 | −0.0130 | 0.8028 | **no** |
+| `dur_real_wages_below` | +2.1563 | 0.0194 | +0.2765 | 0.3251 | +0.1223 | 0.2362 | **no** |
+| `acc_pct_below_peak` | +0.1845 | 0.0001 | +0.0084 | 0.6844 | +0.0264 | 0.1876 | **no** |
+| `acc_threshold_shortfall` | +0.1641 | 0.0000 | +0.0043 | 0.7404 | +0.0001 | 0.9967 | **no** |
+| `acc_real_wages_shortfall` | +0.1085 | 0.0336 | −0.0423 | 0.1661 | −0.0442 | 0.1066 | **no** |
+| `acc_wadj_excess` | +0.0154 | 0.0000 | −0.0337 | 0.0000 | −0.0309 | 0.0000 | **no** |
+| `acc_hicp_compounded` | −0.1960 | 0.4723 | −0.1255 | 0.1215 | −0.0211 | 0.6628 | **no** |
+
+**Dynamic wording is permitted for none of them.**
+
+Every supported result is carried entirely by the between-country component. Not
+one within-country estimate is significant in the adverse direction, and first
+differences support nothing. `acc_wadj_excess` is the sharpest case: its within
+component *is* highly significant and points the **wrong way** (−0.0337,
+p < 0.0001), as do its first differences.
+
+This reproduces P5's finding across a whole family rather than one variable.
+
 ### Interpretation
-### Decision
+
+Countries that absorbed more accumulated damage report more hardship, and three
+such measures survive every pre-registered check. Greece sits at or near the
+worst of Europe on all three.
+
+What may be said: these are **between-country scarring markers**. What may not:
+that hardship rose within Greece as exposure accumulated. The data do not show
+it, and the first-difference requirement exists precisely to stop that sentence
+being written on the strength of a strong cross-country coefficient.
+
+### What this does not establish
+
+- No dynamic or within-country claim, for any measure in the family.
+- Nothing about C1's accumulated form, which could not be built.
+- The C3 area measures are not refuted — three of four fail on the bootstrap,
+  which is a power-limited outcome, not evidence of absence.
+- That duration matters *more* than depth. `dur_real_wages_below` survives and
+  `acc_real_wages_shortfall` does not, but the two were not formally compared.
+- Compounded inflation's null is `power`-gated, so it is inconclusive rather
+  than ruled out.
+
+### Notes from review
+
+**Two bugs, both caught before publication, both from construction rather than
+from the decision rule.**
+
+`acc_wadj_excess` first came back degenerate — standard deviation exactly 0.00,
+p = NaN, and an outcome of `contradicts_direction`. The cause:
+`panel_nominal_compensation_wage_level.csv` holds absolute compensation in euros
+(~32,000), not the EU27 = 100 index the price ratio needs. `wadj_a01` came out
+near 0.3 instead of near 120, so `max(0, x − 100)` was zero for every
+country-year. The appendix builder converts to an index in
+`wage_level_frame()`; the E4 build did not. Fixed, with an assertion that fails
+the build if the series is degenerate again.
+
+`res.var` returned `DataFrame.var` — the variance **method** — not the column,
+so a row-selection mask silently became a scalar. This is the same
+attribute-shadowing trap this project has already hit with `.between` and
+`.pct_change`, now on its third variable. Bracket access throughout.
+
+Neither bug was in the decision rule. Both were in the code preparing its
+inputs, which is exactly the pattern C-09 identified at E1 and which
+`registry.py` addressed only for one class of input.
+
+**Feasibility was audited before testing**, and the three infeasible
+accumulations are reported as a result rather than dropped. Moving C1's baseline
+forward to make it testable was available and was not done.
+
 ### Where the detail lives
+
+`scripts/71_e4_build_accumulations.py`, `scripts/72_e4_accumulated.py`,
+`scripts/accumulate.py`, `scripts/test_accumulate.py` ·
+`data/processed/e4_feasibility.csv`, `e4_accumulated_panel.csv`,
+`e4_results.csv`, `e4_current_vs_accumulated.csv`
 
 ---
 
@@ -2040,6 +2215,11 @@ protocol exists to prevent.
 | D-28 | 2026-08-23 | E3 | The 71% is ABSORPTION, never explanation | Overlap between two reports from one instrument is shared measurement, not shared cause | Writing "explains 71% of the gap" | `frozen` | D-25 | — |
 | D-29 | 2026-08-23 | E3 | A2 is same-instrument corroboration, not independent validation | All four items and the outcome come from EU-SILC, same households, same interview | Calling it validation; treating the items as independent evidence | `frozen` | D-25 | — |
 | D-30 | 2026-08-23 | E3 | Mechanical overlap separated from proximity as a distinct block | The transfer indicators' objection is algebraic, not conceptual distance | Filing both under `blocked_by_proximity` | `frozen` | — | — |
+| D-31 | 2026-08-23 | E4 | Three accumulated measures supported: C2 exposure, C6 housing deterioration, C3 wage duration | All six conditions hold; bootstrap 0.0025–0.0460 | Reporting the FDR-clearing set at face value | `frozen` | — | — |
+| D-32 | 2026-08-23 | E4 | NO dynamic wording for any accumulated result | Not one within component is significant in the adverse direction; first differences support nothing | Describing hardship as rising within Greece as exposure accumulated | `frozen` | D-04 | — |
+| D-33 | 2026-08-23 | E4 | C1's accumulated form recorded INFEASIBLE; baseline not moved | Source begins 2015; choosing a baseline after seeing which yields data is the error the protocol prevents | Rebasing C1 to 2015 to make it testable | `frozen` | — | — |
+| D-34 | 2026-08-23 | E4 | C3 area and duration reported separately, never summed or ranked | Duration survives, area does not; the two were not formally compared | Concluding duration matters more than depth | `frozen` | — | — |
+| D-35 | 2026-08-23 | E4 | `arop_threshold_real` accumulation disclosed as MIXED baseline | 2008 for 26 countries, 2010 for Croatia, which has no 2008 observation | Presenting it as uniformly 2008-based | `frozen` | — | — |
 
 Allowed statuses: `proposed`, `pre-registered`, `frozen`, `superseded`,
 `withdrawn`, `infeasible`.
@@ -2073,6 +2253,14 @@ Allowed statuses: `proposed`, `pre-registered`, `frozen`, `superseded`,
 | R-23 | E3 | hardship level | `saving_rate`, `debt_to_income`, `working_hours` | diagnostic, cond. on AROP + year | n=268–270 | −1.29, −0.07, +4.60 | 0.0018–0.0146, unadjusted | none applied | — | — | — | no pre-registered direction; per-variable ambiguity recorded; NO evidentiary status | `descriptive_only` | `e3_results.csv` |
 | R-24 | E3 | hardship level | `work_effort_squeeze` | diagnostic, cond. on AROP + year | n=270 | +0.1705 (se 0.0469) | 0.0003 | none applied | — | — | — | r=0.963 with `wadj_a01`; the same measurement, not corroboration | `descriptive_only` | `e3_results.csv` |
 | R-25 | E3 | hardship level | `arop_before_transfers`, `transfer_effect` | diagnostic, cond. on AROP + year | n=270 | +0.8800 both, identical | 0.3334 | none applied | — | — | — | `transfer_effect ≡ arop_before_transfers − arop` exactly; same regression twice | `blocked_by_mechanical_overlap` | `e3_results.csv` |
+| R-26 | E4 | hardship level | `acc_cum_excess_unemployment` (C2) | between-country, cond. on AROP + year | n=270 | +0.4145 | 0.0000 | 0.0000 | **0.0025** | sign-stable | 0.78 SD | accumulated exposure is a between-country scarring marker | `supported` | `e4_results.csv` |
+| R-27 | E4 | hardship level | `acc_housing_excess` (C6) | between-country, cond. on AROP + year | n=269 | +0.2540 | 0.0000 | 0.0000 | **0.0460** | sign-stable | 0.70 SD | housing deterioration SINCE 2010, not total burden | `supported` | `e4_results.csv` |
+| R-28 | E4 | hardship level | `dur_real_wages_below` (C3) | between-country, cond. on AROP + year | n=270 | +1.7202 | 0.0190 | 0.0253 | **0.0245** | sign-stable | 0.51 SD | DURATION below the 2008 wage level; a consecutive run, not a total | `supported` | `e4_results.csv` |
+| R-29 | E4 | hardship level | `acc_wadj_excess` (C4) | between-country, cond. on AROP + year | n=270 | +0.0135 | 0.0000 | 0.0000 | 0.0025 | — | fails Greece's equal-sample residual | clears FDR and bootstrap; within component significant in the WRONG direction | `inconclusive_under_available_power` | `e4_results.csv` |
+| R-30 | E4 | hardship level | C3 area measures (3) | between-country, cond. on AROP + year | n=260–270 | +0.095 to +0.175 | 0.0000–0.0324 | 0.0000–0.0370 | 0.074–0.414 | — | power-limited | area fails where duration survives; the two were NOT formally compared | `inconclusive_under_available_power` | `e4_results.csv` |
+| R-31 | E4 | hardship level | `acc_hicp_compounded` (C5) | between-country, cond. on AROP + year | n=270 | −0.1793 | 0.3666 | 0.3666 | — | — | below MDE | compounded price growth since 2008; the avenue E2 left open closes | `inconclusive_under_available_power` | `e4_results.csv` |
+| R-32 | E4 | hardship level | all 8 accumulated measures | within-country + first differences | n=270 | not one significant in the adverse direction | — | — | — | — | — | **NO dynamic wording permitted for any accumulated result** | `descriptive_only` | `e4_results.csv` |
+| R-33 | E4 | — | `aic_pps_pc` (C1), `real_income_idx` (C3), `severe_mat_soc_deprivation` (P1) | — | — | not constructible | — | — | — | — | — | no pre-2015 source history; baselines NOT moved to make them testable | `infeasible` | `e4_feasibility.csv` |
 
 Allowed statuses: `supported`, `unsupported_with_adequate_power`,
 `inconclusive_under_available_power`, `failed_incremental_criterion`,
@@ -2148,6 +2336,8 @@ Deviations must be disclosed in the stage that made them, not only here.
 | C-14 | 2026-08-23 | `e3_results.csv` stamped the saving-rate ambiguity note on `debt_to_income` and `working_hours` | Group-level note written once per CHECKS block, applied to every row in it | Per-variable `ambiguity` column; each states its own two directions | `70_e3_diagnostics.py`, `e3_results.csv` | — |
 | C-15 | 2026-08-23 | Transfer indicators classified `blocked_by_proximity` | Their objection is algebraic equivalence once AROP is controlled, not conceptual distance | Split into `blocked_by_mechanical_overlap`; `registry.block_reason()` with tests | `registry.py`, `e3_results.csv` | — |
 | C-16 | 2026-08-23 | E3 described the 71% as a "finding" and A2 as "validation" | Nothing in E3 is eligible to become a finding, and A2 is same-instrument corroboration | Reworded to diagnostic readings, absorption, and corroboration throughout | `v2_research_record.md` | — |
+| C-17 | 2026-08-23 | `acc_wadj_excess` built degenerate: sd 0.00, p NaN, reported as `contradicts_direction` | Wage-level source holds absolute euros (~32,000), not the EU27=100 index the price ratio needs; `wadj_a01` came out ~0.3 so excess over 100 was always zero | Index to EU27=100 as `wage_level_frame()` does; assertion added that fails the build on a degenerate series | `71_e4_build_accumulations.py` | — |
+| C-18 | 2026-08-23 | `res.var` returned `DataFrame.var`, the variance method, not the column | Attribute shadowing — the third occurrence in this project after `.between` and `.pct_change` | Bracket access throughout | `72_e4_accumulated.py` | — |
 
 ## Artifact Index
 
@@ -2193,4 +2383,8 @@ Deviations must be disclosed in the stage that made them, not only here.
 | E2 | `e2_results.csv` | Within-construct sensitivities and dispositions | present |
 | E3 | `e3_restatement.csv` | P1 absorbs 71% of Greece's baseline residual | present |
 | E3 | `e3_results.csv` | Contextual and legacy checks; no family, no FDR | present |
+| E4 | `e4_accumulated_panel.csv` | Panel with the built accumulations merged | present |
+| E4 | `e4_current_vs_accumulated.csv` | Head-to-head on identical observations | present |
+| E4 | `e4_feasibility.csv` | 7 of 10 accumulations constructible; C1 is not | present |
+| E4 | `e4_results.csv` | BH family 2; 3 supported, all between-country | present |
 <!-- AUTO:END artifact-index -->

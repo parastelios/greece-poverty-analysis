@@ -519,6 +519,45 @@ def fig_validation():
           "Subjective hardship tracks concrete affordability failure"))
 
 
+
+# --------------------------------------------------------------------------
+# 13. E4: every accumulated result is between-country
+# --------------------------------------------------------------------------
+def fig_e4_between_within():
+    d = pd.read_csv(PROC / "e4_results.csv").sort_values("between", ascending=False)
+    W, H = 680, 90 + len(d) * 30 + 56
+    x0, x1 = 250, 520
+    lo, hi = -0.35, 0.55
+    sx = lambda v: x0 + (max(min(v, hi), lo) - lo) / (hi - lo) * (x1 - x0)
+    b = [text(20, 26, "Every accumulated result is a between-country marker",
+              13, INK, weight="bold"),
+         text(20, 44, "Coefficient split into between and within components",
+              10.5, MUTE)]
+    for v in [-0.2, 0, 0.2, 0.4]:
+        b.append(line(sx(v), 62, sx(v), 62 + len(d) * 30, GRID))
+        b.append(text(sx(v), 62 + len(d) * 30 + 18, f"{v:+.1f}", 9.5, MUTE, "middle"))
+    b.append(line(sx(0), 56, sx(0), 62 + len(d) * 30 + 4, MUTE, 1.5))
+    y = 76
+    for r in d.itertuples():
+        sup = r.outcome == "supported"
+        b.append(text(x0 - 14, y + 4, r.var.replace("acc_", "").replace("dur_", ""),
+                      9.5, INK, "end", "bold" if sup else "normal"))
+        b.append(line(sx(r.within), y, sx(r.between), y, GRID, 1.5))
+        b.append(f'<circle cx="{sx(r.within):.1f}" cy="{y}" r="4.5" fill="{MUTE}"/>')
+        b.append(f'<circle cx="{sx(r.between):.1f}" cy="{y}" r="6" '
+                 f'fill="{GOOD if sup else EU}"/>')
+        b.append(text(x1 + 14, y + 4, "supported" if sup else "inconclusive",
+                      9, GOOD if sup else MUTE, "start", "bold" if sup else "normal"))
+        y += 30
+    b.append(f'<circle cx="29.5" cy="{H - 34}" r="6" fill="{GOOD}"/>')
+    b.append(text(41, H - 30, "between-country component", 9.5, MUTE))
+    b.append(f'<circle cx="29.5" cy="{H - 16}" r="4.5" fill="{MUTE}"/>')
+    b.append(text(41, H - 12, "within-country component - not one is significant "
+                  "in the adverse direction", 9.5, MUTE))
+    write("e4_between_within.svg", svg(W, H, "\n".join(b),
+          "Accumulated effects are between-country"))
+
+
 def check_overflow():
     """Fail if any label runs past its viewBox.
 
@@ -552,6 +591,7 @@ def check_overflow():
 print("figures ->", FIG.relative_to(ROOT))
 for f in (fig_ea_reversal, fig_ladders, fig_narrowing, fig_mde,
           fig_between_within, fig_sign_reversal, fig_coverage,
-          fig_paradox, fig_recovery, fig_e1, fig_restatement, fig_validation):
+          fig_paradox, fig_recovery, fig_e1, fig_restatement, fig_validation,
+          fig_e4_between_within):
     f()
 check_overflow()

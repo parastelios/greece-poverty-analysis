@@ -189,6 +189,10 @@ ARTIFACT_PURPOSE = {
     "e2_pooled_posthoc.csv": ("E2", "Post hoc pooled FDR, disclosed under PD-01"),
     "e3_results.csv": ("E3", "Contextual and legacy checks; no family, no FDR"),
     "e3_restatement.csv": ("E3", "P1 absorbs 71% of Greece's baseline residual"),
+    "e4_feasibility.csv": ("E4", "7 of 10 accumulations constructible; C1 is not"),
+    "e4_accumulated_panel.csv": ("E4", "Panel with the built accumulations merged"),
+    "e4_results.csv": ("E4", "BH family 2; 3 supported, all between-country"),
+    "e4_current_vs_accumulated.csv": ("E4", "Head-to-head on identical observations"),
     "ea_companion_residuals.csv": ("EA", "Companion residual ladder, 27 countries"),
 }
 

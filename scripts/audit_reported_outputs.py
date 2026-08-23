@@ -77,6 +77,21 @@ SCHEMA = {
     "e1_secondary.csv":              {"coef": "coefficient", "se": "se",
                                       "p_raw": "p_value", "p_fdr": "p_value",
                                       "n": "count"},
+    "e4_results.csv":                {"coef": "coefficient", "se": "se",
+                                      "p_raw": "p_value", "p_fdr": "p_value",
+                                      "boot_p": "p_value",
+                                      "std_effect": "coefficient",
+                                      "ci_abs_std_upper": "coefficient",
+                                      "between": "coefficient", "between_p": "p_value",
+                                      "within": "coefficient", "within_p": "p_value",
+                                      "fd_coef": "coefficient", "fd_p": "p_value",
+                                      "n": "count"},
+    "e4_current_vs_accumulated.csv": {"cur_coef": "coefficient",
+                                      "acc_coef": "coefficient",
+                                      "cur_p": "p_value", "acc_p": "p_value",
+                                      "cur_greece_resid": "residual",
+                                      "acc_greece_resid": "residual",
+                                      "n_common": "count"},
     "e3_restatement.csv":            {"greece_resid_baseline": "residual",
                                       "greece_resid_with_p1": "residual",
                                       "absorbed": "residual",
@@ -102,7 +117,9 @@ NULLABLE = {("p2_specifications.csv", "post_gap"),
             # Proximity-blocked members get no adjusted p and no bootstrap:
             # they are excluded from their family before testing.
             ("e2_results.csv", "p_fdr"),
-            ("e2_results.csv", "boot_p")}
+            ("e2_results.csv", "boot_p"),
+            # Bootstrap runs only where FDR was cleared, per the pre-registration.
+            ("e4_results.csv", "boot_p")}
 
 problems, checked = [], 0
 for fname, cols in SCHEMA.items():

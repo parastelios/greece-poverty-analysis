@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 386" width="680" height="386" role="img" aria-label="Accumulated effects are between-country" font-family="Helvetica,Arial,sans-serif">
+<rect width="680" height="386" fill="#ffffff"/>
+<text x="20.0" y="26.0" font-size="13" fill="#1f2933" text-anchor="start" font-weight="bold">Every accumulated result is a between-country marker</text>
+<text x="20.0" y="44.0" font-size="10.5" fill="#6b7280" text-anchor="start" font-weight="normal">Coefficient split into between and within components</text>
+<line x1="295.0" y1="62.0" x2="295.0" y2="302.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="295.0" y="320.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">-0.2</text>
+<line x1="355.0" y1="62.0" x2="355.0" y2="302.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="355.0" y="320.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">+0.0</text>
+<line x1="415.0" y1="62.0" x2="415.0" y2="302.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="415.0" y="320.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">+0.2</text>
+<line x1="475.0" y1="62.0" x2="475.0" y2="302.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="475.0" y="320.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">+0.4</text>
+<line x1="355.0" y1="56.0" x2="355.0" y2="306.0" stroke="#6b7280" stroke-width="1.5"/>
+<text x="236.0" y="80.0" font-size="9.5" fill="#1f2933" text-anchor="end" font-weight="bold">real_wages_below</text>
+<line x1="438.0" y1="76.0" x2="520.0" y2="76.0" stroke="#e5e7eb" stroke-width="1.5"/>
+<circle cx="438.0" cy="76" r="4.5" fill="#6b7280"/>
+<circle cx="520.0" cy="76" r="6" fill="#2f855a"/>
+<text x="534.0" y="80.0" font-size="9" fill="#2f855a" text-anchor="start" font-weight="bold">supported</text>
+<text x="236.0" y="110.0" font-size="9.5" fill="#1f2933" text-anchor="end" font-weight="bold">cum_excess_unemployment</text>
+<line x1="321.5" y1="106.0" x2="484.2" y2="106.0" stroke="#e5e7eb" stroke-width="1.5"/>
+<circle cx="321.5" cy="106" r="4.5" fill="#6b7280"/>
+<circle cx="484.2" cy="106" r="6" fill="#2f855a"/>
+<text x="534.0" y="110.0" font-size="9" fill="#2f855a" text-anchor="start" font-weight="bold">supported</text>
+<text x="236.0" y="140.0" font-size="9.5" fill="#1f2933" text-anchor="end" font-weight="bold">housing_excess</text>
+<line x1="343.3" y1="136.0" x2="438.3" y2="136.0" stroke="#e5e7eb" stroke-width="1.5"/>
+<circle cx="343.3" cy="136" r="4.5" fill="#6b7280"/>
+<circle cx="438.3" cy="136" r="6" fill="#2f855a"/>
+<text x="534.0" y="140.0" font-size="9" fill="#2f855a" text-anchor="start" font-weight="bold">supported</text>
+<text x="236.0" y="170.0" font-size="9.5" fill="#1f2933" text-anchor="end" font-weight="normal">pct_below_peak</text>
+<line x1="357.5" y1="166.0" x2="410.3" y2="166.0" stroke="#e5e7eb" stroke-width="1.5"/>
+<circle cx="357.5" cy="166" r="4.5" fill="#6b7280"/>
+<circle cx="410.3" cy="166" r="6" fill="#3d6fb4"/>
+<text x="534.0" y="170.0" font-size="9" fill="#6b7280" text-anchor="start" font-weight="normal">inconclusive</text>
+<text x="236.0" y="200.0" font-size="9.5" fill="#1f2933" text-anchor="end" font-weight="normal">threshold_shortfall</text>
+<line x1="356.3" y1="196.0" x2="404.2" y2="196.0" stroke="#e5e7eb" stroke-width="1.5"/>
+<circle cx="356.3" cy="196" r="4.5" fill="#6b7280"/>
+<circle cx="404.2" cy="196" r="6" fill="#3d6fb4"/>
+<text x="534.0" y="200.0" font-size="9" fill="#6b7280" text-anchor="start" font-weight="normal">inconclusive</text>
+<text x="236.0" y="230.0" font-size="9.5" fill="#1f2933" text-anchor="end" font-weight="normal">real_wages_shortfall</text>
+<line x1="342.3" y1="226.0" x2="387.5" y2="226.0" stroke="#e5e7eb" stroke-width="1.5"/>
+<circle cx="342.3" cy="226" r="4.5" fill="#6b7280"/>
+<circle cx="387.5" cy="226" r="6" fill="#3d6fb4"/>
+<text x="534.0" y="230.0" font-size="9" fill="#6b7280" text-anchor="start" font-weight="normal">inconclusive</text>
+<text x="236.0" y="260.0" font-size="9.5" fill="#1f2933" text-anchor="end" font-weight="normal">wadj_excess</text>
+<line x1="344.9" y1="256.0" x2="359.6" y2="256.0" stroke="#e5e7eb" stroke-width="1.5"/>
+<circle cx="344.9" cy="256" r="4.5" fill="#6b7280"/>
+<circle cx="359.6" cy="256" r="6" fill="#3d6fb4"/>
+<text x="534.0" y="260.0" font-size="9" fill="#6b7280" text-anchor="start" font-weight="normal">inconclusive</text>
+<text x="236.0" y="290.0" font-size="9.5" fill="#1f2933" text-anchor="end" font-weight="normal">hicp_compounded</text>
+<line x1="317.3" y1="286.0" x2="296.2" y2="286.0" stroke="#e5e7eb" stroke-width="1.5"/>
+<circle cx="317.3" cy="286" r="4.5" fill="#6b7280"/>
+<circle cx="296.2" cy="286" r="6" fill="#3d6fb4"/>
+<text x="534.0" y="290.0" font-size="9" fill="#6b7280" text-anchor="start" font-weight="normal">inconclusive</text>
+<circle cx="29.5" cy="352" r="6" fill="#2f855a"/>
+<text x="41.0" y="356.0" font-size="9.5" fill="#6b7280" text-anchor="start" font-weight="normal">between-country component</text>
+<circle cx="29.5" cy="370" r="4.5" fill="#6b7280"/>
+<text x="41.0" y="374.0" font-size="9.5" fill="#6b7280" text-anchor="start" font-weight="normal">within-country component - not one is significant in the adverse direction</text>
+</svg>
