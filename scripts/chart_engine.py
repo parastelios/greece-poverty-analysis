@@ -177,7 +177,7 @@ JS = r"""
     // Right padding is derived from the longest end label, not fixed: a fixed
     // 14% clipped "Greece: hardship" in the first prototype.
     const longest=Math.max(0,...d.series.filter(s=>s.label).map(s=>s.label.length));
-    const padL=46,padR=Math.min(W*0.34,Math.max(52,longest*6.2+14)),padT=12,padB=28;
+    const padL=(d.yLabel?66:46),padR=Math.min(W*0.34,Math.max(52,longest*6.2+14)),padT=12,padB=28;
     const pw=W-padL-padR, ph=H-padT-padB, yrs=d.years;
     const xs=y=>padL+(yrs.length<2?pw/2:(y-yrs[0])/(yrs[yrs.length-1]-yrs[0])*pw);
     let lo=Infinity,hi=-Infinity;
@@ -198,6 +198,37 @@ JS = r"""
     yrs.forEach((y,i)=>{if(i%step&&i!==yrs.length-1)return;
       const t=el('text',{x:xs(y),y:H-padB+16,'text-anchor':'middle',class:'axis-label'});
       t.textContent=y;svg.appendChild(t);});
+    // A series that crosses zero needs the zero drawn. Without it the turn from
+    // net exit to net return is invisible: the reader sees a falling line and
+    // cannot tell where it changes sign. The area between the series and zero
+    // is filled by sign, so the two regimes read at a glance.
+    if(lo<0&&hi>0){
+      const zy=ys(0), s0=d.series[0];
+      if(d.zeroBand&&s0){
+        const seg=(want)=>{
+          let dd='',open=false;
+          s0.values.forEach((v,i)=>{
+            const inSeg=v!=null&&((want==='pos'&&v>0)||(want==='neg'&&v<0));
+            if(inSeg&&!open){dd+=` M ${xs(yrs[i])},${zy} L ${xs(yrs[i])},${ys(v)}`;open=true;}
+            else if(inSeg){dd+=` L ${xs(yrs[i])},${ys(v)}`;}
+            else if(open){dd+=` L ${xs(yrs[i-1])},${zy} Z`;open=false;}
+          });
+          if(open)dd+=` L ${xs(yrs[yrs.length-1])},${zy} Z`;
+          return dd;
+        };
+        [['pos','gr'],['neg','series-3']].forEach(([w,tone])=>{
+          const dd=seg(w);
+          if(dd)svg.appendChild(el('path',{d:dd,fill:`var(--${tone})`,
+            opacity:0.16,stroke:'none'}));
+        });
+      }
+      svg.appendChild(el('line',{x1:padL,x2:W-padR,y1:zy,y2:zy,class:'zero-line'}));
+      const zt=el('text',{x:padL+4,y:zy-5,class:'axis-label',style:'font-weight:700'});
+      zt.textContent=d.zeroLabel||'0';svg.appendChild(zt);
+    }
+    if(d.yLabel){const yl=el('text',{x:16,y:padT+ph/2,class:'axis-label',
+      'text-anchor':'middle',transform:`rotate(-90 16 ${padT+ph/2})`});
+      yl.textContent=d.yLabel;svg.appendChild(yl);}
     const cur=el('line',{class:'cursor-line',y1:padT,y2:padT+ph,x1:-9,x2:-9});
     svg.appendChild(cur);
     const DASH={solid:'',dashed:'6 3',dotted:'2 3'};
@@ -259,7 +290,11 @@ JS = r"""
     const show=i=>{ if(i<0||i>=yrs.length)return; idx=i;
       cur.setAttribute('x1',xs(yrs[i]));cur.setAttribute('x2',xs(yrs[i]));
       const rows=d.series.filter(s=>s.label).map(s=>`${s.label}: <b>${fmt(s.values[i],d.dp)}</b>`).join('<br>');
-      tp.innerHTML=`<strong>${yrs[i]}</strong><br>${rows}`;tp.classList.add('on');
+      // Extra rows carry quantities the chart does not plot -- ranks hide the
+      // size of the differences, so the underlying values travel with them.
+      const extra=(d.extraRows&&d.extraRows[i])?`<br><span style="opacity:.65">
+        ${d.extraRows[i]}</span>`:'';
+      tp.innerHTML=`<strong>${yrs[i]}</strong><br>${rows}${extra}`;tp.classList.add('on');
       const r=svg.getBoundingClientRect(),hr=host.getBoundingClientRect();
       tp.style.left=Math.min(hr.width-tp.offsetWidth-8,(xs(yrs[i])/W)*r.width+8)+'px';
       tp.style.top='8px';
@@ -749,3 +784,28 @@ def figure(fid, caption, question, badge, host_kind, payload, fallback_html,
 <details class="fallback" id="{fid}-fb"><summary>Show the numbers{link}</summary>
 {fallback_html}</details>
 </figure>"""
+
+
+def build_stamp():
+    """Short commit and build time, so a stale preview is visible on its face."""
+    import subprocess
+    from datetime import datetime
+    from pathlib import Path as _P
+    root = _P(__file__).resolve().parents[1]
+    try:
+        sha = subprocess.run(["git", "rev-parse", "--short", "HEAD"], cwd=root,
+                             capture_output=True, text=True).stdout.strip()
+        dirty = bool(subprocess.run(["git", "status", "--porcelain"], cwd=root,
+                                    capture_output=True, text=True).stdout.strip())
+    except Exception:
+        sha, dirty = "unknown", False
+    when = datetime.now().strftime("%Y-%m-%d %H:%M")
+    return (f'<footer class="stamp">Built {when} from commit <code>{sha}</code>'
+            f'{" + uncommitted changes" if dirty else ""}. '
+            "If this does not match the current commit, the page is stale &mdash; "
+            "reopen the file rather than refreshing.</footer>")
+
+
+STAMP_CSS = """.stamp{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--border);
+font:.72rem/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--text-muted)}
+.stamp code{background:var(--surface-2);padding:.1em .35em;border-radius:3px}"""

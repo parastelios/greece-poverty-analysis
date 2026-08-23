@@ -42,32 +42,56 @@ def payload_tag(d, kind="", label=""):
 # ranked naively. Every series is oriented so 1 = WORST, and the axis is
 # inverted so worse is higher.
 yrs = [int(y) for y in cross.year] if "year" in cross else [int(y) for y in cross.time]
-f15 = ce.Series([str(y) for y in yrs], dp=0)
-SER15 = [("Reported hardship", "gr_subj_poverty_rank_worst", "gr", "strong"),
-         ("Financial expectations", "gr_fin_expectations_rank_worst", "series-5", "normal"),
-         ("Life satisfaction", "gr_life_sat_rank_worst", "series-3", "normal")]
-series15 = []
-for lbl, col, tone, w in SER15:
-    f15.add(lbl, [float(v) for v in cross[col]], tone=tone, weight=w)
+
+# Hardship and financial expectations are at rank 1 in EVERY available year, so
+# they draw as one line on top of another and the reader sees a series go
+# missing. They are combined into a single labelled series, with the fallback
+# table keeping them apart.
+same = all(a == 1 and b == 1 for a, b in
+           zip(cross.gr_subj_poverty_rank_worst, cross.gr_fin_expectations_rank_worst))
+assert same, "the two series are no longer identical; separate them again"
+
+f15 = ce.Series(["Hardship rank", "Expectations rank", "Life satisfaction rank",
+                 "Hardship %", "Expectations index", "Life satisfaction (0-10)"],
+                dp=1)
+for i, y in enumerate(yrs):
+    r = cross.iloc[i]
+    f15.add(str(y), [float(r.gr_subj_poverty_rank_worst),
+                     float(r.gr_fin_expectations_rank_worst),
+                     float(r.gr_life_sat_rank_worst),
+                     float(r.gr_subj_poverty_value),
+                     float(r.gr_fin_expectations_value),
+                     float(r.gr_life_sat_value)])
+
+# Ranks hide the size of the differences, so the values ride along in the tooltip.
+extra = [f"hardship {r.gr_subj_poverty_value:.1f}% &middot; expectations "
+         f"{r.gr_fin_expectations_value:.1f} &middot; life satisfaction "
+         f"{r.gr_life_sat_value:.1f}/10" for r in cross.itertuples()]
+
 FIGS = {"F15": dict(
     caption="Greece is worst in the EU on hardship and on financial "
-            "expectations every year, but not on life satisfaction",
+            "expectations in every available year, but not on life satisfaction",
     kind="panel",
     payload={"years": yrs, "dp": 0, "invertY": True,
-             "alt": "Greece's EU rank on three indicators; 1 is worst in every "
-                    "series and the axis is inverted so worse sits higher",
-             "series": [{"label": l, "tone": m["tone"], "style": "solid",
-                         "weight": m["weight"],
-                         "values": [int(v) for v in vs]}
-                        for l, vs, m in f15.rows]},
-    series=f15, first="Indicator",
+             "yLabel": "EU rank, 1 = worst",
+             "extraRows": extra,
+             "alt": "Greece's EU rank on three indicators, 1 is worst; hardship "
+                    "and financial expectations coincide at rank 1 throughout",
+             "series": [
+                 {"label": "Hardship and financial expectations: both rank 1",
+                  "tone": "gr", "style": "solid", "weight": "strong",
+                  "values": [int(v) for v in cross.gr_subj_poverty_rank_worst]},
+                 {"label": "Life satisfaction", "tone": "series-3",
+                  "style": "solid", "weight": "normal",
+                  "values": [int(v) for v in cross.gr_life_sat_rank_worst]}]},
+    series=f15, first="Year",
     extra_caveat=(
-        "READ THE DIRECTION CAREFULLY. Every series is ranked so that 1 is the "
-        "WORST position in the EU, including life satisfaction, where a naive "
-        "ranking would put the best country first. The vertical axis is "
-        "inverted accordingly: higher on the chart means worse. Greece sits at "
-        "1 on hardship and on financial expectations in every year shown, and "
-        "between 2nd and 6th on life satisfaction."))}
+        "Rank 1 is the EU's worst position. Greece ranks first on hardship and "
+        "financial expectations in every available year, but 2nd-6th on life "
+        "satisfaction. This weakens generic pessimism without excluding "
+        "financially specific reporting differences. The vertical axis shows "
+        "only the worst seven ranks, so movement within that band looks larger "
+        "than it is against all 27; 2019 and 2020 are not available."))}
 
 
 # ---- F16: the crisis as an exit route, and its reversal -------------------
@@ -88,15 +112,18 @@ v16a = {"years": myrs, "dp": 0,
 f16b = ce.Series([str(y) for y in myrs], dp=0, title="Net flow")
 f16b.add("Net outflow of nationals", [float(v) for v in gm.net_migration_nationals])
 v16b = {"years": myrs, "dp": 0,
-        "alt": "Net outflow of Greek nationals; positive is net exit, negative "
-               "is net return",
+        "zeroBand": True, "zeroLabel": "balance: equal numbers leaving and returning",
+        "yLabel": "Net outflow of nationals",
+        "alt": "Net outflow of Greek nationals; above the line is net exit, "
+               "below it is net return",
         "series": [{"label": "Net outflow", "tone": "gr", "style": "solid",
                     "weight": "strong",
-                    "values": [int(v) for v in gm.net_migration_nationals]}]}
+                    "values": [int(v) for v in gm.net_migration_nationals]}],
+        "extraRows": [("net EXIT" if v > 0 else "net RETURN") +
+                      f" of {abs(int(v)):,}" for v in gm.net_migration_nationals]}
 # CUMULATIVE 2008-2024, not the latest year. Ranking on 2024 alone put Greece
 # near the BOTTOM, because 2024 was a year of net return -- which repeats the
-# reversal the timeline already shows and hides the historical cost the figure
-# exists to convey.
+# reversal the timeline already shows and hides the historical cost.
 cum = pd.read_csv(PROC / "migration_cumulative_comparison.csv")
 cum = cum.sort_values("cum_net_pct_of_pop", ascending=False).reset_index(drop=True)
 f16c = ce.Series(["Cumulative net departures", "% of average population",
@@ -149,11 +176,7 @@ FIGS["F17"] = dict(
     payload={"rows": rows17, "dp": 1, "unit": "%", "labelAll": True,
              "alt": "Trust in central government, Greece against the OECD "
                     "average, 2023"},
-    series=f17, first="Entity",
-    # The provenance detail -- which summary figures were unverified, and what
-    # obtaining the OECD country table would allow -- belongs in methods and the
-    # research record, not on the face of the figure.
-    )
+    series=f17, first="Entity")
 
 
 def build(fid, spec):
@@ -317,6 +340,7 @@ border-bottom:1.5px solid var(--border);font-size:.72rem;
 text-transform:uppercase;letter-spacing:.04em;color:var(--text-secondary)}}
 .tw td{{padding:.55rem .8rem;border-bottom:1px solid var(--border);
 vertical-align:top}}
+{ce.STAMP_CSS}
 .proto-note{{border:1px dashed var(--border);border-radius:6px;padding:.9rem 1.1rem;
 margin-bottom:2rem;font:.82rem/1.5 ui-sans-serif,system-ui,sans-serif;
 color:var(--text-secondary)}}
@@ -359,6 +383,7 @@ whether closely related deprivation measures are admitted.</p>
 <p>Nothing in that table is new. Every row points at a result reached in an
 earlier stage, and this section introduces no estimate and no interpretation
 that was not already established and bounded where it was produced.</p>
+{ce.build_stamp()}
 <script>{ce.JS}</script>
 </body></html>
 """

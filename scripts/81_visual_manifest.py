@@ -208,8 +208,9 @@ M = [
                   "pinned at rank 1 read against the third immediately",
       fallback="year, hardship rank, financial expectations rank, life "
                "satisfaction rank",
-      caveat="Generic pessimism is INSUFFICIENT, not disproved. A "
-             "financial-domain-specific reporting difference cannot be excluded.",
+      # Kept short: the figure's own caveat carries the rank convention, the
+      # axis zoom and the missing years.
+      caveat="",
       status_label="descriptive corroboration"),
  dict(id="F16", stage=7, chart_type="panel",
       question="Did the crisis also become an exit route, and has that reversed?",
