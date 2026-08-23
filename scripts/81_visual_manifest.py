@@ -30,14 +30,15 @@ NEW = {"ladder", "coefficient", "dumbbell", "heatmap"}
 
 M = [
  dict(id="F1", stage=1, chart_type="panel",
-      question="How far apart are the three poverty measures for Greece, and "
-               "does the distance close over time?",
+      question="How far apart are reported hardship and official income "
+               "poverty for Greece, and does the distance close over time?",
       artifact="e0_extended_panel.csv",
-      series="subjective_poverty, arop, arope for Greece and the EU median",
-      interaction="hover reads all three values for the year; EU median shown "
-                  "as a reference band",
-      fallback="year x measure, Greece and EU median",
-      caveat="", status_label="descriptive"),
+      series="subjective_poverty and arop for Greece, with the EU median of each",
+      interaction="hover reads both values and the gap for the year",
+      fallback="year x subjective hardship, AROP, gap; Greece and EU median",
+      caveat="AROPE is deliberately absent here. It enters at Stage 2 as the "
+             "bridge, and showing it now would pre-empt that step.",
+      status_label="descriptive"),
  dict(id="F2", stage=1, chart_type="ladder",
       question="Is Greece unusual, or at one end of a continuum?",
       artifact="e_descriptive_ranks.csv",
@@ -46,12 +47,19 @@ M = [
       fallback="rank, country, value for all 27",
       caveat="", status_label="descriptive"),
  dict(id="F3", stage=2, chart_type="panel",
-      question="What happened to the line Greek poverty is measured against?",
-      artifact="e0_extended_panel.csv",
-      series="arop_threshold_real for Greece and the EU median, own 2008 = 100",
-      interaction="hover reads the index; 100 marked as the pre-crisis level",
-      fallback="year x Greece, EU median",
-      caveat="", status_label="descriptive"),
+      question="What happened to the line Greek poverty is measured against, "
+               "and what does a fixed line show instead?",
+      artifact="e0_extended_panel.csv, anchored_poverty.csv",
+      series="VIEW A: arop_threshold_real for Greece and the EU median, own "
+             "2008 = 100. VIEW B: Greek AROP against anchored poverty on a "
+             "fixed pre-crisis line",
+      interaction="switch between the two views; hover reads the index or both "
+                  "rates; 100 marked as the pre-crisis level in view A, and the "
+                  "two series diverge visibly in view B",
+      fallback="year x real threshold index; year x AROP, anchored poverty",
+      caveat="The anchored series is an approximation built in this project "
+             "and is labelled as such wherever it appears.",
+      status_label="descriptive"),
  dict(id="F4", stage=2, chart_type="panel",
       question="What does AROPE add to AROP, and is that addition growing?",
       artifact="e_descriptives.csv",
@@ -66,17 +74,22 @@ M = [
       question="What sits behind AROPE, and did every age group move the same way?",
       artifact="age_breakdown_arope.csv, age_breakdown_arop.csv, "
                "age_breakdown_deprivation.csv, age_breakdown_low_work_intensity.csv, "
+               "age_breakdown_household_arope.csv, "
                "age_breakdown_shiftshare_decomposition.csv",
-      series="the three AROPE components, switchable to the age breakdown and "
-             "the shift-share decomposition",
-      interaction="switch component/age/household; hover reads the rate for the "
-                  "group and year; the elderly series is labelled where it "
-                  "diverges from the rest",
-      fallback="component x year for Greece, and age group x year with the "
-               "shift-share split",
-      caveat="The components are a UNION and may not be summed. The age result "
-             "is a composition finding, not a claim that any group's "
-             "experience improved.",
+      series="VIEW A: the three AROPE components. VIEW B: AROPE by age group, "
+             "with the 65+ series emphasised. VIEW C: by household composition. "
+             "VIEW D: the shift-share split of within-group against "
+             "compositional contribution",
+      interaction="switch component/age/household/shift-share; hover reads the "
+                  "rate for the group and year, and in the shift-share view "
+                  "the two contributions separately",
+      fallback="component x year; age group x year; household type x year; and "
+               "the shift-share contributions",
+      caveat="These are changes in group-level rates, not evidence about the "
+             "same individuals over time. The 2024-2025 national increase was "
+             "driven primarily by within-group changes, especially "
+             "deterioration among people aged 65+, rather than population "
+             "ageing. AROPE components are a UNION and may not be summed.",
       status_label="descriptive"),
  dict(id="F5", stage=3, chart_type="heatmap",
       question="Do relationships between the candidate variables hold across "
@@ -98,12 +111,15 @@ M = [
                   "and diverging coloured separately",
       fallback="variable, gap 2015, gap 2024, shift, trend",
       caveat="", status_label="descriptive"),
- dict(id="F7", stage=3, chart_type="ladder",
+ dict(id="F7", stage=3, chart_type="scatter",
       question="Does reported difficulty move with concrete affordability "
                "failure, or float free of it?",
-      artifact="e3_results.csv",
-      series="within-country correlation per proximate item, Greece overlaid",
-      interaction="hover reads the within-country and Greece-only correlation",
+      artifact="e0_extended_panel.csv, e3_results.csv",
+      series="hardship against each same-instrument item, COUNTRY MEANS "
+             "REMOVED, switchable between the four items",
+      interaction="switch item; hover names the country-year and reads both "
+                  "demeaned values; Greek points highlighted; the fitted slope "
+                  "and its correlation shown per item",
       fallback="item, within-country r, Greece over time",
       caveat="Same-instrument corroboration, NOT independent validation: all "
              "items and the outcome come from EU-SILC.",
@@ -157,22 +173,27 @@ M = [
       caveat="This is THE central limitation: no within-country estimate is "
              "significant in the adverse direction and no first-difference "
              "test supports one.",
-      status_label="pre-planned confirmatory"),
- dict(id="F14", stage=6, chart_type="ladder",
+      status_label="pre-registered conditional robustness"),
+ dict(id="F14", stage=6, chart_type="dumbbell",
       question="Does the answer depend on which model is chosen?",
       artifact="p3_residuals.csv, ea_companion_residuals.csv",
-      series="country residual ladders for both specifications, side by side",
-      interaction="hover reads the country's residual in both; Greece "
-                  "highlighted in both",
+      series="one dumbbell per country joining its residual under the frozen "
+             "specification to its residual under the deprivation-free "
+             "companion, with a zero line",
+      interaction="hover reads both residuals and the distance between them; "
+                  "Greece emphasised, and its crossing of zero is the visual "
+                  "point of the figure",
       fallback="Greece's residual and rank in each specification",
       caveat="NEITHER specification is definitive. They may not be merged or "
              "averaged, and selection may not be made on residual size.",
       status_label="post-selection robustness"),
- dict(id="F15", stage=7, chart_type="scatter",
+ dict(id="F15", stage=7, chart_type="panel",
       question="Are Greeks simply gloomier about everything?",
       artifact="reporting_style_cross_indicator.csv",
-      series="hardship rank against life-satisfaction rank, by year",
-      interaction="hover reads all three indicator ranks for the year",
+      series="Greece's RANK TRAJECTORY on hardship, financial expectations and "
+             "life satisfaction, one line each, worst rank at the top",
+      interaction="hover reads all three ranks for the year; the two lines "
+                  "pinned at rank 1 read against the third immediately",
       fallback="year, hardship rank, financial expectations rank, life "
                "satisfaction rank",
       caveat="Generic pessimism is INSUFFICIENT, not disproved. A "
@@ -180,8 +201,23 @@ M = [
       status_label="descriptive corroboration"),
 ]
 
+# NARRATIVE OWNERSHIP. Every visual belongs to a claim or a context entry, and
+# sits either on the main reading path or behind an expandable. A figure owned
+# by nothing is a figure nobody has to justify.
+OWNER = {
+    1: ("V2-1.2", "main"), 2: ("V2-1.2", "main"), 3: ("V2-2.1", "main"),
+    4: ("V2-2.1", "main"), 5: ("V2-2.1", "expandable"),
+    6: ("V2-3.2", "expandable"), 7: ("V2-4.X", "main"), 8: ("V2-3.1", "main"),
+    9: ("V2-4.C2", "main"), 10: ("V2-4.C1", "expandable"),
+    11: ("V2-5.C2", "main"), 12: ("V2-5.C2", "main"), 13: ("V2-5.Y", "main"),
+    14: ("V2-6.1", "main"), 15: ("CTX-1", "main"),
+}
 for i, e in enumerate(M, start=1):
     e["id"] = f"F{i}"
+    owner, path = OWNER[i]
+    e["claim_id"] = owner if owner.startswith("V2") else ""
+    e["context_id"] = owner if owner.startswith("CTX") else ""
+    e["reading_path"] = path
 df = pd.DataFrame(M)
 df["engine_type_is_new"] = ~df.chart_type.isin(EXISTING)
 
@@ -196,6 +232,10 @@ for r in df.itertuples():
             problems.append(f"{r.id}: artifact {a} does not exist")
     if r.chart_type not in EXISTING | NEW:
         problems.append(f"{r.id}: unknown chart type {r.chart_type}")
+    if not (r.claim_id or r.context_id):
+        problems.append(f"{r.id}: no narrative owner")
+    if r.reading_path not in ("main", "expandable"):
+        problems.append(f"{r.id}: reading_path must be main or expandable")
 if problems:
     raise SystemExit("MANIFEST\n  " + "\n  ".join(problems))
 
@@ -223,6 +263,9 @@ print("  the evidence ladder is a TABLE, not a chart: it summarises status "
       "rather than showing a distribution")
 print(f"  new engine types {len(set(df[df.engine_type_is_new].chart_type))}   "
       "(kept deliberately few)")
+print(f"  main reading path {int((df.reading_path == 'main').sum())}   "
+      f"expandable {int((df.reading_path == 'expandable').sum())}")
+unowned = [c for c in claims_index if c not in set(df.claim_id)] if False else []
 print("  every figure: hover values, Greece and EU reference, evidence-status")
 print("  badge, table fallback, and a link to the appendix evidence")
 
