@@ -72,10 +72,12 @@ NO_SENSITIVITY = {
         "move the protocol exists to prevent, and the 2010 base is already "
         "forced by coverage.",
     "acc_hicp_compounded":
-        "Food and housing inflation were already excluded WITH ADEQUATE POWER "
-        "at E2 in their annual form. Compounding measures that could not "
-        "themselves be detected would not qualify anything, and the primary "
-        "cannot be promoted regardless.",
+        "No accumulated inflation sensitivity was PRE-DECLARED. Constructing "
+        "category-specific accumulated measures after the primary result was "
+        "known would reopen exploratory searching. (E2 excluded ANNUAL food and "
+        "housing inflation at one magnitude; it did not exclude every possible "
+        "accumulated category measure, and citing it as though it had would "
+        "overstate what that stage established.)",
 }
 
 

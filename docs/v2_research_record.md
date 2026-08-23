@@ -44,7 +44,7 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | E6 |
 | Last completed stage | E5 |
 | Branch | `p6-rewrite` |
-| HEAD | `ceaeda2` E4 corrections: uniform threshold baseline, softened claims, borderline flagged |
+| HEAD | `e402510` E5: C2 confirmed, wage duration qualified, nothing promoted |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-23 |
 | Frozen V1 reference | `v1-final` |
@@ -2166,18 +2166,24 @@ E4 found three supported accumulated measures. E5 asks whether those
 conclusions survive being measured a different way — and, crucially, does *not*
 go looking for replacements where a primary failed.
 
-**Accumulated unemployment is confirmed.** Its declared sensitivity — long-term
-rather than total unemployment — reproduces the result outright.
+**Accumulated unemployment is robust to an alternative construction.** The
+result survives replacing headline unemployment exposure with accumulated
+long-term-unemployment exposure. That is robustness, **not** independent
+confirmation: the two correlate at **r = 0.943**, so this is a closely related
+labour-market-history measure rather than a second source of evidence.
 
-**Wage duration is qualified, not confirmed, and this matters.** The primary is
-the *current* run of years below the fixed 2008 level. Three reasonable
-alternative constructions — own rolling peak instead of 2008, longest run ever
-instead of the current one, and both together — do **not** reproduce it. The
-finding is real under its declared construction and does not generalise across
-constructions of "how long wages have been down".
+**Wage duration's robust support is specific to one construction.** The primary
+is the *current* uninterrupted run of years below the fixed 2008 level. Three
+alternative constructions all point the **same way** (+1.14, +1.29, +0.82) but
+none meets the full support rule.
 
-**Nothing was promoted.** The C3 depth alternatives behave exactly like their
-primaries and cannot become findings whatever they had shown.
+That is a qualification, not a demonstration of non-generalisation. Two of the
+three are explicitly *inconclusive under available power*, and failure to reject
+is not evidence that their effects differ from the primary's — no formal
+comparison was made.
+
+**Nothing was promoted.** The C3 depth alternatives behave almost exactly like
+their primaries and cannot become findings whatever they had shown.
 
 **Housing has no sensitivity, and stays borderline.** The only alternative
 available would be a different baseline, and trying baselines until one performs
@@ -2200,7 +2206,7 @@ names no others.
 
 | Primary | E4 outcome | Sensitivity | Class | Coef | Boot p | Disposition |
 |---|---|---|---|---:|---:|---|
-| `acc_cum_excess_unemployment` | supported | `cum_excess_ltu` | **DECLARED** | +0.5127 | **0.0200** | **confirms** |
+| `acc_cum_excess_unemployment` | supported | `cum_excess_ltu` | **DECLARED** | +0.5127 | **0.0200** | robust (r = 0.943) |
 | `dur_real_wages_below` | supported | `wage_years_below_peak` | ALTERNATIVE | +1.1388 | — | qualifies |
 | `dur_real_wages_below` | supported | `wage_longest_streak_2008` | ALTERNATIVE | +1.2934 | — | qualifies |
 | `dur_real_wages_below` | supported | `wage_longest_streak_peak` | ALTERNATIVE | +0.8243 | — | qualifies |
@@ -2211,31 +2217,46 @@ names no others.
 
 **Sensitivities that would have been findings had the rule allowed it: 0.**
 
-### C2 — confirmed
+### C2 — robust to an alternative construction
 
-`cum_excess_ltu` reproduces accumulated unemployment at bootstrap p = 0.0200.
-Substituting long-term for total unemployment does not change the conclusion,
-which strengthens E4's strongest result. This is also the only sensitivity in
-the stage that was declared in advance.
+> The accumulated-unemployment result is robust to replacing headline
+> unemployment exposure with accumulated long-term-unemployment exposure.
 
-### C3 wage duration — qualified, and the qualification is substantive
+`cum_excess_ltu` reproduces the result at bootstrap p = 0.0200, and it is the
+only sensitivity in this stage declared in advance.
 
-The primary counts the **current** consecutive run of years with real wages
-below their fixed 2008 level. Three alternatives change one thing each:
+**This is robustness, not independent confirmation.** The two series correlate
+at **r = 0.943** on the estimation sample. A measure that close is a variant of
+the same labour-market history, so it tests whether the conclusion depends on
+one construction — not whether a second, separate line of evidence agrees. E4's
+strongest result is not made stronger by it; it is shown not to hinge on the
+particular unemployment measure chosen.
 
-| Alternative | What differs | Reproduces? |
-|---|---|---|
-| `wage_years_below_peak` | own rolling peak rather than fixed 2008 | no |
-| `wage_longest_streak_2008` | longest run ever, not the current run | no |
-| `wage_longest_streak_peak` | both changes together | no |
+### C3 wage duration — robust support is construction-specific
+
+The primary counts the **current** uninterrupted run of years with real wages
+below their fixed 2008 level. Three alternatives change one thing each, and all
+three point in the same direction:
+
+| Alternative | What differs | Coef | Raw p | Outcome |
+|---|---|---:|---:|---|
+| `wage_years_below_peak` | own rolling peak rather than fixed 2008 | +1.1388 | 0.0479 | inconclusive under available power |
+| `wage_longest_streak_2008` | longest run ever, not the current run | +1.2934 | 0.0848 | inconclusive under available power |
+| `wage_longest_streak_peak` | both changes together | +0.8243 | 0.3093 | unsupported with adequate power |
 
 None clears FDR within the construct, so none reaches the bootstrap.
 
-The E4 result stands — it was supported under its declared construction and
-nothing here removes that. But **it does not generalise**: "how long wages have
-been below where they were" supports the finding only when measured as the
-current run against a fixed pre-crisis level. That is a narrower claim than E4's
-summary implied, and it should travel with the finding.
+> Robust evidentiary support is specific to the current uninterrupted run below
+> the fixed 2008 wage level. Alternative duration constructions point in the
+> same direction but do not independently meet the support criteria.
+
+**This is not a finding of non-generalisation.** Two of the three are
+inconclusive under available power, and a failure to reject is not evidence that
+an alternative's effect differs from the primary's. The third
+(`wage_longest_streak_peak`) does clear the power bar and is *unsupported with
+adequate power* — but even there, no formal test compared it against the
+primary, so it establishes something about that construction, not a difference
+between constructions.
 
 ### C3 depth and inflation — no promotion possible
 
@@ -2243,10 +2264,16 @@ summary implied, and it should travel with the finding.
 behave almost identically to the primaries they vary. Both are barred from
 promotion by rule, and both would have failed anyway.
 
-Compounded inflation was given **no** sensitivity. Food and housing inflation
-were already excluded *with adequate power* at E2 in annual form; compounding
-measures that could not be detected in the first place would qualify nothing,
-and the primary cannot be promoted regardless.
+Compounded inflation was given **no** sensitivity, and the reason is a
+stopping rule rather than an inference:
+
+> No accumulated inflation sensitivity was pre-declared. Constructing
+> category-specific accumulated measures after the primary result was known
+> would reopen exploratory searching.
+
+E2 excluded *annual* food and housing inflation at the detectable magnitude. It
+did not exclude every possible accumulated category measure, and citing it as
+though it had would overstate what that stage established.
 
 ### Housing — no sensitivity, and still borderline
 
@@ -2389,9 +2416,9 @@ silently.
 | D-35 | 2026-08-23 | E4 | `arop_threshold_real` PRIMARY is the uniform 2008 baseline on 26 countries; mixed-baseline version is a sensitivity outside the family | The pre-registration fixes 2008 and does not authorise a per-country fallback | Running the mixed-baseline series as the primary | `frozen` | — | — |
 | D-36 | 2026-08-23 | E4 | `acc_housing_excess` flagged BORDERLINE, classified `supported` by the rule | p=0.0460, 91 of 1,999 exceedances, against 0.0025 for C2 | Reclassifying it; re-running with another seed for a friendlier p | `frozen` | — | — |
 | D-37 | 2026-08-23 | E4 | Robust C3 support limited to wage DURATION | The three depth measures clear FDR then fail the bootstrap at 0.074, 0.315, 0.607 | Reporting C3 as confirmed by accumulation | `frozen` | D-34 | — |
-| D-38 | 2026-08-23 | E5 | C2 confirmed by its declared sensitivity | `cum_excess_ltu` reproduces it at bootstrap 0.0200 | — | `frozen` | — | — |
-| D-39 | 2026-08-23 | E5 | Wage duration supported ONLY as the current run against a fixed 2008 base | Three alternative constructions fail to reproduce it | Reporting wage duration as a general "how long wages have been down" finding | `frozen` | D-37 | — |
-| D-40 | 2026-08-23 | E5 | No sensitivity run for housing or compounded inflation, with reasons recorded | Housing's only alternative is a rebasing exercise; inflation's annual forms were already excluded with adequate power | Running baselines until one performs better | `frozen` | — | — |
+| D-38 | 2026-08-23 | E5 | C2 recorded as ROBUST to an alternative construction, not independently confirmed | `cum_excess_ltu` correlates r = 0.943 with the primary; a variant of the same history, not a second source | Saying the result 'gets stronger' or is confirmed | `frozen` | — | — |
+| D-39 | 2026-08-23 | E5 | Robust support for wage duration is specific to the current run against a fixed 2008 base | Three alternatives point the same way but do not meet the support criteria; two are inconclusive under available power | Claiming the finding does not generalise — failure to reject is not evidence of difference | `frozen` | D-37 | — |
+| D-40 | 2026-08-23 | E5 | No sensitivity run for housing or compounded inflation | Housing's only alternative is a rebasing exercise; NO accumulated inflation sensitivity was pre-declared, and building category measures post-result would reopen searching | Running baselines until one performs better; citing E2 as though it had excluded accumulated category measures | `frozen` | — | — |
 | D-41 | 2026-08-23 | E5 | Sensitivities split into DECLARED (1) and post-hoc ALTERNATIVE (5) | The alternative set was chosen knowing which primaries failed; it can qualify, never discover | Presenting all six as equivalent robustness evidence | `frozen` | — | — |
 
 Allowed statuses: `proposed`, `pre-registered`, `frozen`, `superseded`,
@@ -2434,10 +2461,10 @@ Allowed statuses: `proposed`, `pre-registered`, `frozen`, `superseded`,
 | R-31 | E4 | hardship level | `acc_hicp_compounded` (C5) | between-country, cond. on AROP + year | n=270 | −0.1793 | 0.3666 | 0.3666 | — | — | below MDE | no supporting evidence; the design CANNOT EXCLUDE a relevant effect | `inconclusive_under_available_power` | `e4_results.csv` |
 | R-32 | E4 | hardship level | all accumulated measures | within-country + first differences | n=260–270 | none significant in the adverse direction | — | — | — | — | wide intervals; power concentrated between countries | evidence is PREDOMINANTLY between-country; no dynamic support, but absence is not proof of absence | `inconclusive_under_available_power` | `e4_results.csv` |
 | R-33 | E4 | — | `aic_pps_pc` (C1), `real_income_idx` (C3), `severe_mat_soc_deprivation` (P1) | — | — | not constructible | — | — | — | — | — | no pre-2015 source history; baselines NOT moved to make them testable | `infeasible` | `e4_feasibility.csv` |
-| R-34 | E5 | hardship level | `cum_excess_ltu` (C2, DECLARED) | within-construct, common sample | n=270 | +0.5127 | — | cleared | **0.0200** | — | — | long-term substituted for total unemployment reproduces C2 | `confirms_primary` | `e5_results.csv` |
-| R-35 | E5 | hardship level | 3 wage-duration alternatives (C3, post-hoc) | within-construct, common sample | n=270 | +0.82 to +1.29 | — | none cleared FDR | — | — | — | wage duration does NOT generalise across constructions; supported only as the current run against a fixed 2008 base | `qualifies_primary` | `e5_results.csv` |
+| R-34 | E5 | hardship level | `cum_excess_ltu` (C2, DECLARED) | within-construct, common sample | n=270 | +0.5127 | — | cleared | 0.0200 | — | r = 0.943 with the primary | ROBUST to an alternative construction; NOT independent confirmation | `confirms_primary` | `e5_results.csv` |
+| R-35 | E5 | hardship level | 3 wage-duration alternatives (C3, post-hoc) | within-construct, common sample | n=270 | +1.14 (p=0.048), +1.29 (p=0.085), +0.82 (p=0.309) | as shown | none cleared FDR | — | — | 2 inconclusive, 1 unsupported with adequate power | all point the same way; robust support is specific to the current run against a fixed 2008 base. NOT a finding of non-generalisation | `qualifies_primary` | `e5_results.csv` |
 | R-36 | E5 | hardship level | 2 C3 depth alternatives (post-hoc) | within-construct, common sample | n=270 | +0.098, +0.172 | — | — | 0.0870, 0.3170 | — | — | behave like their primaries; barred from promotion regardless | `cannot_promote` | `e5_results.csv` |
-| R-37 | E5 | — | `acc_housing_excess`, `acc_hicp_compounded` | — | — | no sensitivity run | — | — | — | — | — | housing: only alternative is a rebasing exercise; inflation: annual forms already excluded with adequate power at E2 | `descriptive_only` | `e5_results.csv` |
+| R-37 | E5 | — | `acc_housing_excess`, `acc_hicp_compounded` | — | — | no sensitivity run | — | — | — | — | — | housing: only alternative is a rebasing exercise; inflation: none pre-declared, and building category measures post-result would reopen searching | `descriptive_only` | `e5_results.csv` |
 
 Allowed statuses: `supported`, `unsupported_with_adequate_power`,
 `inconclusive_under_available_power`, `failed_incremental_criterion`,
@@ -2519,6 +2546,9 @@ Deviations must be disclosed in the stage that made them, not only here.
 | C-19 | 2026-08-23 | E4 promised a Croatia-dropped threshold sensitivity and did not run it; the mixed-baseline series was the primary | The pre-registration fixes baseline 2008 and does not authorise a per-country fallback | Primary rebuilt on 26 countries with a uniform 2008 baseline; mixed version reported as a sensitivity outside BH family 2 | `71_e4_build_accumulations.py`, `72_e4_accumulated.py` | — |
 | C-20 | 2026-08-23 | E4 said every accumulated result is "entirely between-country" and that C3's prediction was "confirmed" | Non-significant within estimates with wide intervals do not prove zero; robust C3 support is limited to wage duration | Softened to "predominantly between-country, no dynamic support"; C3 narrowed to duration only | `v2_research_record.md` | — |
 | C-21 | 2026-08-23 | E4 said compounded inflation "closes" the avenue E2 left open | Its failure is power-gated, so the design cannot exclude a relevant effect | Reworded to "no supporting evidence; cannot exclude" | `v2_research_record.md` | — |
+| C-22 | 2026-08-23 | E5 described C2's sensitivity as confirmation and said the result "gets stronger" | `cum_excess_ltu` correlates r = 0.943 with the primary — a variant of the same measure, not independent evidence | Reworded to robustness to an alternative construction | `v2_research_record.md` | — |
+| C-23 | 2026-08-23 | E5 said wage duration "does not generalise" | Three non-significant alternatives all point the same way; two are inconclusive under available power, and failure to reject is not evidence of difference | Reworded: robust support is construction-specific; no claim about generalisation | `v2_research_record.md` | — |
+| C-24 | 2026-08-23 | E5 justified skipping inflation sensitivities by citing E2's exclusion | E2 excluded ANNUAL food and housing inflation at one magnitude, not every accumulated category measure | Replaced with the correct stopping rule: none pre-declared, and post-result construction would reopen searching | `v2_research_record.md` | — |
 
 ## Artifact Index
 
