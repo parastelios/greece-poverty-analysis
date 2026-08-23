@@ -41,10 +41,10 @@ This notebook is the running log. `publication_strategy.md` was closed on
 <!-- AUTO:BEGIN document-control -->
 | Field | Value |
 |---|---|
-| Current stage | E6 |
-| Last completed stage | E5 |
+| Current stage | E7 |
+| Last completed stage | E6 |
 | Branch | `p6-rewrite` |
-| HEAD | `e402510` E5: C2 confirmed, wage duration qualified, nothing promoted |
+| HEAD | `38231a2` E5 corrections: robustness not confirmation, no non-generalisation claim |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-23 |
 | Frozen V1 reference | `v1-final` |
@@ -92,8 +92,8 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | E3 | What do the diagnostic and contextual checks show? | complete | `a747e7a` | — | [E3](#e3--diagnostic-and-contextual-checks) |
 | E4 | Which accumulated constructs are associated with hardship? | complete | `a747e7a` | — | [E4](#e4--accumulated-exposure) |
 | E5 | Do accumulated-measure sensitivities change those conclusions? | complete | `a747e7a` | — | [E5](#e5--accumulation-sensitivities) |
-| E6 | Does the frozen combined model remain appropriate? | **next** | `a747e7a` | — | [E6](#e6--frozen-combined-model) |
-| E7 | Do accumulated measures add information beyond current snapshots? | pending | `a747e7a` | — | [E7](#e7--current-versus-accumulated-comparison) |
+| E6 | Does the frozen combined model remain appropriate? | complete | `a747e7a` | — | [E6](#e6--frozen-combined-model) |
+| E7 | Do accumulated measures add information beyond current snapshots? | **next** | `a747e7a` | — | [E7](#e7--current-versus-accumulated-comparison) |
 | FINAL | What survives into the final reports? | pending | — | — | [FINAL](#final--claim-freeze-and-publication) |
 <!-- AUTO:END stage-index -->
 
@@ -2325,15 +2325,126 @@ silently.
 
 ## E6 — Frozen combined model
 
+> **Nothing is fitted in this stage.** The pre-registration fixes the combined
+> model as the frozen P3 specification and does not reopen it. The fifteen
+> pairwise family combinations are **not** tested. Frozen P3's values are read
+> from `p5f_frozen_result.json`, not recomputed.
+
 ### In plain words
 
-### Purpose
-### Frozen specification
-### Relationship to E1–E5
-### Results carried forward
+E6 does not build a best model. It puts two specifications side by side and
+reports that they disagree — because the disagreement is the finding.
+
+**Frozen P3** is the pre-committed historical result. It includes severe
+material and social deprivation, an EU-SILC item drawn from the same instrument
+as the outcome, so it **cannot be described as purely objective or fully
+distant from the outcome**.
+
+**The EA companion** removes exactly that predictor and nothing else. The
+residual changes materially. It is a **stricter diagnostic**, not a replacement
+chosen because its result is preferable.
+
+Neither is the definitive model. They are not merged, averaged, or ranked by
+which residual looks better.
+
+> **Conclusions about how much of Greece's gap is absorbed depend materially on
+> whether same-instrument deprivation is admitted.**
+
+### The two specifications
+
+| | Frozen P3 | EA companion |
+|---|---:|---:|
+| Predictors | 6 | 5 |
+| Same-instrument predictor | **yes (P1)** | no |
+| Greece residual | **+6.93** | **−9.39** |
+| Greece rank | 3 / 27 | 25 / 27 |
+| R² | 0.907 | 0.821 |
+| n | 269 | 269 (identical rows) |
+
+![Greece's residual reverses when deprivation is removed](figures/ea_reversal.svg)
+
+Frozen P3 *under*-predicts Greek hardship by 6.93 points; the companion
+*over*-predicts it by 9.39. Greece moves from third-most under-predicted to
+third-most **over**-predicted — the same distance from the middle, on the
+opposite side.
+
+### What E1–E5 say about each frozen-P3 predictor
+
+| Predictor | Con | Kind | E-stage verdict |
+|---|---|---|---|
+| `ltu_rate` | C2 | current | **supported** (E1) |
+| `aic_pps_pc_k` | C1 | current | **supported** (E1, as `aic_pps_pc`) |
+| `wage_years_below_2008` | C3 | accumulated duration | **supported** (E4, as `dur_real_wages_below`) |
+| `cum_excess_unemployment` | C2 | accumulated | **supported** (E4, as `acc_cum_excess_unemployment`) |
+| `housing_cost_overburden` | C6 | current | inconclusive (E1) |
+| `severe_mat_soc_deprivation` | P1 | current | **blocked by proximity** (E1) |
+
+Four supported, one inconclusive, one blocked.
+
+Two things this cross-walk must not be read as saying.
+
+**It is not independent corroboration.** Every E test used the same panel, the
+same outcome and the same 27 countries. It shows the frozen specification is
+*consistent* with the pre-registered framework — not that it was replicated.
+
+**The housing row is a different variable.** Frozen P3 contains housing at its
+**current** level, which E1 found inconclusive. It is the **accumulated**
+housing measure that E4 supported, and that measure is not in P3.
+
+One incidental identity worth recording: `wage_years_below_2008` and E4's
+`dur_real_wages_below` are the **same series**, identical to floating point. The
+C3 duration measure E4 supported was already inside the frozen specification.
+
 ### Prohibited reinterpretations
-### Decision
+
+1. Calling frozen P3 **"objective-only"**. It retains a same-instrument EU-SILC
+   item.
+2. Calling the EA companion a **replacement** or a corrected model. EA returned
+   Outcome C: the frozen result *depends* materially on that predictor.
+3. **Merging** the two into one preferred estimate, or averaging their residuals.
+4. Choosing between them **on residual size**. EA's anti-selection rule forbids
+   it, and both are reported under every outcome.
+5. Describing accumulated exposure **dynamically**. P5 and E4 both find the
+   evidence predominantly between-country with no first-difference support.
+6. Treating E1–E5 as **replication** of P3.
+7. Reopening the **fifteen pairwise family combinations**.
+
+### What is not reopened
+
+The fifteen pairwise combinations of the six constructs are not tested.
+Searching combinations after seeing which constructs succeeded would be exactly
+the exploratory screening this design was built to replace.
+
+Nothing in E6 alters `p5f-frozen`.
+
+### What this does not establish
+
+- That either specification is correct. The stage reports a dependency, not a
+  preferred estimate.
+- That deprivation "should" be excluded. EA's Outcome C says the result depends
+  on it, which is a statement about fragility, not about which model is right.
+- That the companion's over-prediction is more informative than P3's
+  under-prediction. Both are single specifications on one panel.
+- Anything about the combinations that were not tested.
+
+### Notes from review
+
+The communication problem in this stage is the P1 tension, and the temptation is
+to resolve it — to pick the specification that reads better and relegate the
+other to a footnote. Both readings are available: frozen P3 is pre-committed and
+therefore privileged, or the companion is proximity-clean and therefore
+stricter.
+
+Resolving it either way would discard the actual result. The two specifications
+differ by one predictor, run on identical rows, and produce residuals of
+opposite sign. That dependency is what E6 has to report, and it is more
+informative than either number alone.
+
 ### Where the detail lives
+
+`scripts/74_e6_combined.py` ·
+`data/processed/e6_results.csv`, `e6_crosswalk.csv` ·
+frozen values from `p5f_frozen_result.json`, companion from `ea_results.csv`
 
 ---
 
@@ -2420,6 +2531,10 @@ silently.
 | D-39 | 2026-08-23 | E5 | Robust support for wage duration is specific to the current run against a fixed 2008 base | Three alternatives point the same way but do not meet the support criteria; two are inconclusive under available power | Claiming the finding does not generalise — failure to reject is not evidence of difference | `frozen` | D-37 | — |
 | D-40 | 2026-08-23 | E5 | No sensitivity run for housing or compounded inflation | Housing's only alternative is a rebasing exercise; NO accumulated inflation sensitivity was pre-declared, and building category measures post-result would reopen searching | Running baselines until one performs better; citing E2 as though it had excluded accumulated category measures | `frozen` | — | — |
 | D-41 | 2026-08-23 | E5 | Sensitivities split into DECLARED (1) and post-hoc ALTERNATIVE (5) | The alternative set was chosen knowing which primaries failed; it can qualify, never discover | Presenting all six as equivalent robustness evidence | `frozen` | — | — |
+| D-42 | 2026-08-23 | E6 | Frozen P3 and the EA companion reported side by side; neither named definitive | They differ by one predictor on identical rows and produce residuals of OPPOSITE SIGN | Merging them, averaging residuals, or ranking by residual size | `frozen` | D-09 | — |
+| D-43 | 2026-08-23 | E6 | The dependency on same-instrument deprivation is itself the reported result | Resolving the tension either way would discard the finding | Picking the better-reading specification and footnoting the other | `frozen` | D-13 | — |
+| D-44 | 2026-08-23 | E6 | The E1–E5 cross-walk is consistency, not replication | Every E test used the same panel, outcome and 27 countries | Citing E-stage support as independent corroboration of P3 | `frozen` | — | — |
+| D-45 | 2026-08-23 | E6 | The fifteen pairwise family combinations remain closed | Searching combinations after seeing which constructs succeeded is the exploratory screening this design replaced | Testing them now that construct verdicts are known | `frozen` | D-07 | — |
 
 Allowed statuses: `proposed`, `pre-registered`, `frozen`, `superseded`,
 `withdrawn`, `infeasible`.
@@ -2465,6 +2580,8 @@ Allowed statuses: `proposed`, `pre-registered`, `frozen`, `superseded`,
 | R-35 | E5 | hardship level | 3 wage-duration alternatives (C3, post-hoc) | within-construct, common sample | n=270 | +1.14 (p=0.048), +1.29 (p=0.085), +0.82 (p=0.309) | as shown | none cleared FDR | — | — | 2 inconclusive, 1 unsupported with adequate power | all point the same way; robust support is specific to the current run against a fixed 2008 base. NOT a finding of non-generalisation | `qualifies_primary` | `e5_results.csv` |
 | R-36 | E5 | hardship level | 2 C3 depth alternatives (post-hoc) | within-construct, common sample | n=270 | +0.098, +0.172 | — | — | 0.0870, 0.3170 | — | — | behave like their primaries; barred from promotion regardless | `cannot_promote` | `e5_results.csv` |
 | R-37 | E5 | — | `acc_housing_excess`, `acc_hicp_compounded` | — | — | no sensitivity run | — | — | — | — | — | housing: only alternative is a rebasing exercise; inflation: none pre-declared, and building category measures post-result would reopen searching | `descriptive_only` | `e5_results.csv` |
+| R-38 | E6 | hardship level | frozen P3 vs EA companion | Greece residual, identical rows | n=269 | +6.93 (rank 3/27) vs −9.39 (rank 25/27); R² 0.907 vs 0.821 | — | — | — | — | — | **the disagreement IS the result**: absorption depends materially on whether same-instrument deprivation is admitted. Neither is definitive; not merged | `descriptive_only` | `e6_results.csv` |
+| R-39 | E6 | — | 6 frozen-P3 predictors vs E1–E5 verdicts | cross-walk | — | 4 supported, 1 inconclusive, 1 blocked | — | — | — | — | — | consistency with the pre-registered framework, NOT replication — same panel, outcome and countries | `descriptive_only` | `e6_crosswalk.csv` |
 
 Allowed statuses: `supported`, `unsupported_with_adequate_power`,
 `inconclusive_under_available_power`, `failed_incremental_criterion`,
@@ -2600,4 +2717,6 @@ Deviations must be disclosed in the stage that made them, not only here.
 | E4 | `e4_results.csv` | BH family 2; 3 supported, all between-country | present |
 | E4 | `e4_threshold_sensitivity.csv` | Mixed-baseline threshold, outside BH family 2 | present |
 | E5 | `e5_results.csv` | Accumulation sensitivities; 1 declared, 5 post-hoc | present |
+| E6 | `e6_crosswalk.csv` | Each P3 predictor against its E-stage verdict | present |
+| E6 | `e6_results.csv` | Frozen P3 and the EA companion, side by side | present |
 <!-- AUTO:END artifact-index -->

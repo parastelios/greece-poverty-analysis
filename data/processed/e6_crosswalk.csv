@@ -1,0 +1,7 @@
+p3_predictor,construct,kind,e_variable,e_stage,e_verdict
+severe_mat_soc_deprivation,P1,current,severe_mat_soc_deprivation,E1,blocked_by_proximity
+housing_cost_overburden,C6,current,housing_cost_overburden,E1,inconclusive_under_available_power
+ltu_rate,C2,current,ltu_rate,E1,supported
+aic_pps_pc_k,C1,current,aic_pps_pc,E1,supported
+wage_years_below_2008,C3,accumulated (duration),dur_real_wages_below,E4,supported
+cum_excess_unemployment,C2,accumulated,acc_cum_excess_unemployment,E4,supported
