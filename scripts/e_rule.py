@@ -142,3 +142,43 @@ def decide(
                  f"(largest admitted {admitted}); power is the binding "
                  "constraint, not evidence of absence")
     return "inconclusive_under_available_power", notes
+
+
+# ---------------------------------------------------------------------------
+# The sensitivity rule, from the pre-registration's multiplicity block:
+#
+#   "A sensitivity variant CANNOT become a discovery when its primary
+#    representative fails. Sensitivities qualify a supported primary; they
+#    never substitute for a failed one."
+#
+# This is the rule most likely to be broken by accident rather than intent. A
+# construct whose primary came back inconclusive, with a sensitivity that lights
+# up, is exactly the situation where "the measure was just noisy, the construct
+# is real" feels reasonable and is not.
+# ---------------------------------------------------------------------------
+
+SENSITIVITY_DISPOSITIONS = {
+    "confirms_primary": "primary supported, sensitivity agrees",
+    "qualifies_primary": "primary supported, sensitivity does not reproduce it",
+    "cannot_promote": "primary did not survive; this result may NOT become a finding",
+    "blocked_by_proximity": "sensitivity is itself proximity-blocked",
+}
+
+
+def sensitivity_disposition(primary_outcome, sensitivity_outcome):
+    """What a sensitivity result is allowed to mean, given its primary.
+
+    Note there is no path by which a sensitivity produces a finding on its own.
+    `cannot_promote` is returned whatever the sensitivity's own outcome was --
+    including `supported` -- because the primary is what carries the claim.
+    """
+    if primary_outcome not in OUTCOMES:
+        raise ValueError(f"unknown primary outcome {primary_outcome!r}")
+    if sensitivity_outcome not in OUTCOMES:
+        raise ValueError(f"unknown sensitivity outcome {sensitivity_outcome!r}")
+    if sensitivity_outcome == "blocked_by_proximity":
+        return "blocked_by_proximity"
+    if primary_outcome != "supported":
+        return "cannot_promote"
+    return ("confirms_primary" if sensitivity_outcome == "supported"
+            else "qualifies_primary")

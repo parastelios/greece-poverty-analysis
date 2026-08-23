@@ -41,10 +41,10 @@ This notebook is the running log. `publication_strategy.md` was closed on
 <!-- AUTO:BEGIN document-control -->
 | Field | Value |
 |---|---|
-| Current stage | E2 |
-| Last completed stage | E1 |
+| Current stage | E3 |
+| Last completed stage | E2 |
 | Branch | `p6-rewrite` |
-| HEAD | `a025ec2` Close publication_strategy as the pre-EA archive; run EDA descriptive stage |
+| HEAD | `54e9716` E1 result: three constructs supported, six inconclusive, one blocked |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-23 |
 | Frozen V1 reference | `v1-final` |
@@ -88,8 +88,8 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | EDA | What do the candidate variables actually look like? | complete | — | — | [EDA](#eda--descriptive-groundwork) |
 | EA | How much of the P3 result depends on a same-instrument predictor? | complete | `ea_preregistration.json` | — | [EA](#ea--deprivation-free-companion-audit) |
 | E1 | Which current-level constructs are associated with hardship? | complete | `a747e7a` | — | [E1](#e1--current-level-constructs) |
-| E2 | Do sensitivity variants change the current-level conclusions? | **next** | `a747e7a` | — | [E2](#e2--current-level-sensitivities) |
-| E3 | What do the diagnostic and contextual checks show? | pending | `a747e7a` | — | [E3](#e3--diagnostic-and-contextual-checks) |
+| E2 | Do sensitivity variants change the current-level conclusions? | complete | `a747e7a` | — | [E2](#e2--current-level-sensitivities) |
+| E3 | What do the diagnostic and contextual checks show? | **next** | `a747e7a` | — | [E3](#e3--diagnostic-and-contextual-checks) |
 | E4 | Which accumulated constructs are associated with hardship? | pending | `a747e7a` | — | [E4](#e4--accumulated-exposure) |
 | E5 | Do accumulated-measure sensitivities change those conclusions? | pending | `a747e7a` | — | [E5](#e5--accumulation-sensitivities) |
 | E6 | Does the frozen combined model remain appropriate? | pending | `a747e7a` | — | [E6](#e6--frozen-combined-model) |
@@ -1423,14 +1423,174 @@ decision function does not protect against wrong inputs.
 
 ### In plain words
 
-### Question
-### Pre-registered substitutions
-### Equal-sample comparisons
-### Results
-### Multiple-testing adjustment
-### Interpretation
-### Decision
+Each construct was measured one way at E1. E2 asks whether that choice mattered
+— swap in the other members of the same construct and see whether the answer
+holds.
+
+**For the two supported constructs, it mostly does.** Material resources
+survives however you measure it: GDP per head, real GDP, consumption, hourly
+compensation all point the same way, and two of the four reproduce the result
+outright. Labour-market exclusion is more interesting — **long-term**
+unemployment holds, but *general* unemployment does not. That is not a defect;
+it says the long-term measure is doing specific work that the headline
+unemployment rate cannot.
+
+**Nothing was promoted.** Three sensitivities belong to constructs whose primary
+failed, and by rule they cannot become findings no matter how they performed.
+In the event none of them performed well either, so the rule was not tested
+against temptation this time — but it was in force before anyone looked.
+
+**Inflation is now genuinely ruled out, not merely underpowered.** Food and
+housing inflation are the only results in the whole study to earn *unsupported
+with adequate power*: their intervals exclude effects of the size we could have
+detected. Everything else that failed, failed for lack of power.
+
+**And the uncomfortable finding.** The four proximate hardship items — arrears,
+inability to meet an unexpected expense, keeping the home warm, severe
+deprivation — are the strongest predictors in the entire study. Arrears alone
+has a larger standardised effect than any objective construct. We may not use
+any of them, because they come from the same survey instrument as the outcome
+and are closer to restating it than explaining it. That is worth stating
+plainly rather than leaving in a table.
+
+### Method
+
+Members of a construct are compared on the **intersection of that construct's
+complete cases**, with the primary refit there too, so a difference between two
+measures is a difference of measure and not of sample. FDR is applied **within**
+construct, since each construct asks its own question.
+
+The sensitivity rule is enforced by `e_rule.sensitivity_disposition()`, which
+has no code path returning a finding from a sensitivity alone.
+
+C4 has no testable sensitivity: `work_effort_squeeze` correlates 0.963 with
+`wadj_a01` in all three views and the construct map forbids the pairing. C6's
+declared sensitivity is a tenure drill-down, descriptive only.
+
+### C1 — Material resources · primary supported
+
+Common sample 270 rows, 27 countries.
+
+| Role | Variable | Coef | p FDR | Boot p | Outcome | Disposition |
+|---|---|---:|---:|---:|---|---|
+| primary | `aic_pps_pc` | −0.0013 | 0.0000 | **0.0070** | supported | — |
+| sensitivity | `hourly_comp` | −0.8501 | 0.0006 | **0.0015** | supported | **confirms** |
+| sensitivity | `real_gdp_pc` | −0.0003 | 0.0024 | **0.0360** | supported | **confirms** |
+| sensitivity | `consumption_pc` | −0.0009 | 0.0000 | 0.0025 | inconclusive | qualifies |
+| sensitivity | `gdp_pps_pc` | −0.0004 | 0.0109 | 0.0865 | inconclusive | qualifies |
+
+`consumption_pc` clears both FDR and the bootstrap and still fails, because
+Greece's equal-sample residual does not improve. `gdp_pps_pc` misses on the
+bootstrap alone, at 0.0865.
+
+### C2 — Labour-market exclusion · primary supported
+
+Common sample 270 rows, 27 countries.
+
+| Role | Variable | Coef | p FDR | Boot p | Outcome | Disposition |
+|---|---|---:|---:|---:|---|---|
+| primary | `ltu_rate` | +4.3402 | 0.0000 | **0.0100** | supported | — |
+| sensitivity | `employment_rate` | −1.5959 | 0.0102 | **0.0200** | supported | **confirms** |
+| sensitivity | `youth_unemployment` | +0.8751 | 0.0419 | 0.0775 | inconclusive | qualifies |
+| sensitivity | `unemployment_rate` | +2.1265 | 0.0419 | 0.1865 | inconclusive | qualifies |
+
+The headline unemployment rate does **not** reproduce the result (bootstrap
+p = 0.1865) while long-term unemployment does. C2's content is duration of
+exclusion, not exclusion as such.
+
+### C3 — Loss against own past · no primary supported
+
+Common sample 258 rows, 26 countries. The composite is a standardised average
+of the four primaries, each oriented so higher = worse before averaging.
+
+| Role | Variable | Coef | p FDR | Outcome | Disposition |
+|---|---|---:|---:|---|---|
+| primary | `pct_below_peak` | +1.9044 | 0.0001 | inconclusive (boot 0.4140) | — |
+| primary | `real_income_idx` | −0.2092 | 0.5480 | inconclusive | — |
+| primary | `real_wages_idx` | −0.1279 | 0.6126 | inconclusive | — |
+| primary | `arop_threshold_real` | −0.0645 | 0.6126 | inconclusive | — |
+| sensitivity | `c3_composite` | +7.2321 | 0.5454 | inconclusive | **cannot promote** |
+
+The composite does not clear on its own terms either, so the promotion rule was
+not load-bearing here. It was still in force before the result was seen.
+
+### C5 — Inflation exposure · primary failed
+
+| Role | Variable | Coef | p FDR | Outcome | Disposition |
+|---|---|---:|---:|---|---|
+| primary | `hicp` | −0.9925 | 0.4819 | inconclusive | — |
+| sensitivity | `hicp_housing` | −0.2803 | 0.4819 | **unsupported with adequate power** | cannot promote |
+| sensitivity | `hicp_food` | −0.2200 | 0.6994 | **unsupported with adequate power** | cannot promote |
+
+These two are the **only** results in the study whose intervals exclude an
+MDE-sized effect. For everything else that failed, power is the binding
+constraint; here it is not.
+
+### P1 — Proximate hardship · diagnostic only
+
+![The strongest predictors are the ones we may not use](figures/restatement.svg)
+
+| Variable | Coef | p raw | Effect (SD) |
+|---|---:|---:|---:|
+| `arrears` | +1.4549 | 0.0000 | **0.96** |
+| `unexpected_expenses` | +0.9825 | 0.0000 | **0.84** |
+| `warm` | +1.2335 | 0.0008 | **0.74** |
+| `severe_mat_soc_deprivation` | +1.4463 | 0.0036 | 0.72 |
+
+All four are blocked, all four are enormous. Arrears at 0.96 SD exceeds every
+objective construct in the study — C2 at 0.81 is the closest.
+
+This is the number the P1 construct exists to produce. It quantifies how much of
+the "explanation" available on this panel is the outcome restated in different
+words, and it is large. Any analysis that reached for these items without the
+proximity rule would report a much better-explained paradox and would have
+explained almost nothing.
+
+### Disposition summary
+
+| Disposition | n | Variables |
+|---|---:|---|
+| confirms primary | 3 | `real_gdp_pc`, `hourly_comp`, `employment_rate` |
+| qualifies primary | 4 | `gdp_pps_pc`, `consumption_pc`, `unemployment_rate`, `youth_unemployment` |
+| cannot promote | 3 | `c3_composite`, `hicp_food`, `hicp_housing` |
+| blocked by proximity | 3 | `arrears`, `unexpected_expenses`, `warm` |
+
+**Sensitivities that would have become findings had the rule allowed it: 0.**
+
+### What this does not establish
+
+- No sensitivity here creates a finding, by construction. C1 and C2 are
+  supported because their *primaries* were supported at E1.
+- C3's composite failing is not additional evidence against C3. It is one more
+  current-level test of a construct about accumulated loss.
+- The P1 magnitudes are **not** evidence that hardship is "really" material
+  deprivation. They are evidence that same-instrument items track the outcome,
+  which is what same-instrument means.
+- `unsupported with adequate power` applies to `hicp_food` and `hicp_housing`
+  only. It does not extend to their primary, `hicp`, which remains inconclusive.
+
+### Notes from review
+
+A guard was added before this stage ran, in response to E1's direction bug:
+`scripts/registry.py` validates every registry vocabulary at load time, with
+`test_registry.py` (17 tests) including one asserting that `"high"` — the exact
+value E1 compared against — now fails the load rather than silently
+reclassifying every variable.
+
+That is the narrow fix. The general lesson stands unaddressed: both E1 and EA
+had tested decision rules and untested translation layers feeding them.
+
+One bug in this stage, caught on the first run: when *every* member of a
+construct is proximity-blocked, as in P1, nothing is eligible for FDR and the
+adjusted-p column was never created, so the P1 block crashed on output. The
+columns are now initialised before use. It failed loudly, which is the right
+kind of failure.
+
 ### Where the detail lives
+
+`scripts/69_e2_sensitivities.py`, `scripts/e_rule.py`, `scripts/registry.py`,
+`scripts/test_registry.py` ·
+`data/processed/e2_results.csv`
 
 ---
 
@@ -1560,6 +1720,11 @@ decision function does not protect against wrong inputs.
 | D-16 | 2026-08-23 | E1 | `pct_below_peak` and `housing_cost_overburden` recorded inconclusive despite clearing FDR | Bootstrap p 0.40 and 0.55; the pre-registration requires bootstrap support | Reporting them as supported on FDR alone | `frozen` | — | — |
 | D-17 | 2026-08-23 | E1 | Two secondary-outcome results that clear FDR may not be promoted | Their primary did not survive; pre-registration forbids promotion | Promoting them as findings | `frozen` | — | — |
 | D-18 | 2026-08-23 | E1 | C3's current-level nulls are not evidence against C3 | C3 is about accumulated loss; a current snapshot is the wrong test | Recording C3 as refuted at E1 | `frozen` | — | — |
+| D-19 | 2026-08-23 | E2 | C1 and C2 conclusions do not depend on which member was chosen | 2 of 4 and 1 of 3 sensitivities reproduce under the bootstrap; none contradict | Treating a single measure as the construct | `frozen` | — | — |
+| D-20 | 2026-08-23 | E2 | C2 is duration of exclusion, not exclusion as such | `ltu_rate` holds (boot 0.0100) while `unemployment_rate` does not (0.1865) | Reading C2 as general unemployment | `frozen` | — | — |
+| D-21 | 2026-08-23 | E2 | Inflation sensitivities recorded as unsupported WITH adequate power | Their intervals exclude MDE-sized effects, unlike every other failure | Labelling them inconclusive like the rest | `frozen` | — | — |
+| D-22 | 2026-08-23 | E2 | P1 magnitudes reported as a restatement measure, never as explanation | Arrears at 0.96 SD exceeds every objective construct | Reporting the best-fitting predictors as findings | `frozen` | — | — |
+| D-23 | 2026-08-23 | E2 | Registry vocabularies validated at load time | E1's direction bug came from an untested translation layer, not the rule | Fixing only the one call site | `frozen` | C-09 | — |
 
 Allowed statuses: `proposed`, `pre-registered`, `frozen`, `superseded`,
 `withdrawn`, `infeasible`.
@@ -1572,6 +1737,11 @@ Allowed statuses: `proposed`, `pre-registered`, `frozen`, `superseded`,
 | R-02 | P3 | hardship level | `cum_excess_unemployment` | cross-country residual | n=269 | +6.93 (rank 3/27) | — | — | p=0.0005 primary | max 12.7% | above MDE | accumulated history narrows most of the gap | `supported` | `p3_objective_only.csv` |
 | R-03 | P5 | hardship level | `cum_excess_unemployment` | between-country | n=269 | +0.3323 | <0.0001 | — | worst p=0.0070 | Greece −0.8% | above MDE | between-country scarring marker | `supported` | `p5_audit.csv` |
 | R-04 | P5 | hardship level | `cum_excess_unemployment` | within-country | n=269 | −0.0755 | 0.692 | — | — | — | below MDE | no dynamic evidence | `inconclusive_under_available_power` | `p5_audit.csv` |
+| R-15 | E2 | hardship level | C1 sensitivities (4) | within-construct, common sample | n=270 | −0.0003 to −0.85 | — | 0.0006–0.0109 | 0.0015–0.0865 | — | 2 confirm, 2 qualify | measurement choice does not drive C1 | `confirms_primary` ×2 | `e2_results.csv` |
+| R-16 | E2 | hardship level | C2 sensitivities (3) | within-construct, common sample | n=270 | +0.88 to −1.60 | — | 0.0102–0.0419 | 0.0200–0.1865 | — | only `employment_rate` confirms | C2's content is duration of exclusion, not exclusion as such | `confirms_primary` ×1 | `e2_results.csv` |
+| R-17 | E2 | hardship level | `c3_composite` | within-construct, common sample | n=258 | +7.2321 | 0.2182 | 0.5454 | — | — | below MDE | composite fails on its own terms; promotion barred regardless | `cannot_promote` | `e2_results.csv` |
+| R-18 | E2 | hardship level | `hicp_food`, `hicp_housing` | within-construct, common sample | n=270 | −0.2200, −0.2803 | 0.70, 0.18 | 0.6994, 0.4819 | — | — | **intervals exclude an MDE-sized effect** | the only genuinely ruled-out results in the study | `unsupported_with_adequate_power` | `e2_results.csv` |
+| R-19 | E2 | hardship level | P1 items (4) | diagnostic only | n=268 | +0.98 to +1.45 | 0.0000–0.0036 | excluded | — | — | 0.72–0.96 SD, all above MDE | proximate items outweigh every objective construct; quantifies restatement | `blocked_by_proximity` | `e2_results.csv` |
 | R-07 | E1 | hardship level | `aic_pps_pc` (C1) | between-country, cond. on AROP + year | n=270 | −0.0013 (se 0.0003) | 0.0000 | 0.0000 | p=0.0055 | sign-stable | 0.59 SD, above MDE | material resources predict hardship beyond AROP | `supported` | `e1_results.csv` |
 | R-08 | E1 | hardship level | `ltu_rate` (C2) | between-country, cond. on AROP + year | n=270 | +4.3402 (se 0.7802) | 0.0000 | 0.0000 | p=0.0085 | sign-stable | 0.81 SD, above MDE | labour-market exclusion predicts hardship beyond AROP | `supported` | `e1_results.csv` |
 | R-09 | E1 | hardship level | `wadj_a01` (C4) | between-country, cond. on AROP + year | n=270 | +0.3110 (se 0.0696) | 0.0000 | 0.0000 | p=0.0005 | sign-stable | 0.69 SD, at MDE | wage-adjusted affordability predicts hardship beyond AROP | `supported` | `e1_results.csv` |
@@ -1670,5 +1840,6 @@ Current state of `docs/claim_matrix.csv`: **53 claims**.
 | EDA | `e_descriptive_recovery.csv` | Gap movement 2015-2024, trend classified | present |
 | E1 | `e1_results.csv` | Nine current primaries: 3 supported, 6 inconclusive | present |
 | E1 | `e1_secondary.csv` | Secondary outcome, BH family 3, promotion blocked | present |
+| E2 | `e2_results.csv` | Within-construct sensitivities and dispositions | present |
 | EA | `ea_companion_residuals.csv` | Companion residual ladder, 27 countries | present |
 <!-- AUTO:END artifact-index -->

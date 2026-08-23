@@ -443,6 +443,45 @@ def fig_e1():
           "Cluster-robust versus bootstrap p-values"))
 
 
+
+# --------------------------------------------------------------------------
+# 11. E2: the strongest predictors are the ones we may not use
+# --------------------------------------------------------------------------
+def fig_restatement():
+    e1 = pd.read_csv(PROC / "e1_results.csv")
+    e2 = pd.read_csv(PROC / "e2_results.csv")
+    sup = e1[e1.outcome == "supported"][["var", "std_effect"]].assign(kind="objective")
+    p1 = e2[e2.construct == "P1"][["var", "std_effect"]].assign(kind="proximate")
+    d = pd.concat([p1, sup]).sort_values("std_effect", ascending=False)
+    W, H = 660, 100 + len(d) * 26 + 40
+    x0, x1 = 250, 520
+    sx = lambda v: x0 + min(v, 1.1) / 1.1 * (x1 - x0)
+    b = [text(20, 26, "The strongest predictors are the ones we may not use",
+              13, INK, weight="bold"),
+         text(20, 44, "Standardised effect on hardship, per SD of the predictor",
+              10.5, MUTE)]
+    for v in [0, 0.25, 0.5, 0.75, 1.0]:
+        b.append(line(sx(v), 66, sx(v), 66 + len(d) * 26, GRID))
+        b.append(text(sx(v), 66 + len(d) * 26 + 18, f"{v:.2f}", 9.5, MUTE, "middle"))
+    b.append(line(sx(0.70), 60, sx(0.70), 66 + len(d) * 26 + 4, WARN, 1.5, "4,3"))
+    b.append(text(sx(0.70), 56, "MDE 0.70 SD", 9.5, WARN, "middle", "bold"))
+    y = 76
+    for r in d.itertuples():
+        c = GR if r.kind == "proximate" else GOOD
+        b.append(text(x0 - 14, y + 11, r.var, 9.5, INK, "end"))
+        b.append(rect(sx(0), y, sx(r.std_effect) - sx(0), 15, c))
+        b.append(text(sx(r.std_effect) + 8, y + 11, f"{r.std_effect:.2f}", 9.5,
+                      INK, "start", "bold"))
+        y += 26
+    b.append(rect(24, H - 30, 11, 11, GR))
+    b.append(text(41, H - 21, "proximate: same survey instrument as the outcome, "
+                  "blocked from any headline", 9.5, MUTE))
+    b.append(rect(24, H - 14, 11, 11, GOOD))
+    b.append(text(41, H - 5, "objective: supported at E1", 9.5, MUTE))
+    write("restatement.svg", svg(W, H, "\n".join(b),
+          "Proximate predictors outweigh every objective construct"))
+
+
 def check_overflow():
     """Fail if any label runs past its viewBox.
 
@@ -476,6 +515,6 @@ def check_overflow():
 print("figures ->", FIG.relative_to(ROOT))
 for f in (fig_ea_reversal, fig_ladders, fig_narrowing, fig_mde,
           fig_between_within, fig_sign_reversal, fig_coverage,
-          fig_paradox, fig_recovery, fig_e1):
+          fig_paradox, fig_recovery, fig_e1, fig_restatement):
     f()
 check_overflow()

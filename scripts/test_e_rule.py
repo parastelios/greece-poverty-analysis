@@ -110,6 +110,39 @@ seen = {out(), out(coefficient=-1.0), out(proximity_violation=True),
         out(fdr_rejected=False, ci_abs_std_upper=3.0)}
 check("all 5 outcomes reachable", seen == set(OUTCOMES), True)
 
+print("\nTHE SENSITIVITY RULE: a sensitivity never creates a finding")
+from e_rule import sensitivity_disposition as sd, SENSITIVITY_DISPOSITIONS
+check("supported primary + supported sensitivity",
+      sd("supported", "supported"), "confirms_primary")
+check("supported primary + inconclusive sensitivity",
+      sd("supported", "inconclusive_under_available_power"), "qualifies_primary")
+check("supported primary + contradicting sensitivity",
+      sd("supported", "contradicts_direction"), "qualifies_primary")
+
+# The case the rule exists for: primary failed, sensitivity looks great.
+for primary in ["inconclusive_under_available_power",
+                "unsupported_with_adequate_power", "contradicts_direction",
+                "blocked_by_proximity"]:
+    check(f"{primary[:28]:28} + SUPPORTED sensitivity -> cannot_promote",
+          sd(primary, "supported"), "cannot_promote")
+
+check("blocked sensitivity is blocked even under a supported primary",
+      sd("supported", "blocked_by_proximity"), "blocked_by_proximity")
+check("blocked sensitivity under a failed primary",
+      sd("inconclusive_under_available_power", "blocked_by_proximity"),
+      "blocked_by_proximity")
+check("every disposition reachable",
+      {sd("supported", "supported"), sd("supported", "contradicts_direction"),
+       sd("contradicts_direction", "supported"),
+       sd("supported", "blocked_by_proximity")} == set(SENSITIVITY_DISPOSITIONS),
+      True)
+for bad_in in [("nonsense", "supported"), ("supported", "nonsense")]:
+    try:
+        sd(*bad_in)
+        check(f"rejects {bad_in}", "no error", "ValueError")
+    except ValueError:
+        check(f"rejects {bad_in}", "ValueError", "ValueError")
+
 bad = [n for n, ok in F if not ok]
 print(f"\n{len(F) - len(bad)}/{len(F)} passed")
 if bad:

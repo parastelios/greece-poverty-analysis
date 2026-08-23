@@ -185,6 +185,7 @@ ARTIFACT_PURPOSE = {
     "e_descriptive_recovery.csv": ("EDA", "Gap movement 2015-2024, trend classified"),
     "e1_results.csv": ("E1", "Nine current primaries: 3 supported, 6 inconclusive"),
     "e1_secondary.csv": ("E1", "Secondary outcome, BH family 3, promotion blocked"),
+    "e2_results.csv": ("E2", "Within-construct sensitivities and dispositions"),
     "ea_companion_residuals.csv": ("EA", "Companion residual ladder, 27 countries"),
 }
 

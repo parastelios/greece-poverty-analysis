@@ -77,6 +77,12 @@ SCHEMA = {
     "e1_secondary.csv":              {"coef": "coefficient", "se": "se",
                                       "p_raw": "p_value", "p_fdr": "p_value",
                                       "n": "count"},
+    "e2_results.csv":                {"coef": "coefficient", "se": "se",
+                                      "p_raw": "p_value", "p_fdr": "p_value",
+                                      "boot_p": "p_value",
+                                      "std_effect": "coefficient",
+                                      "ci_abs_std_upper": "coefficient",
+                                      "n": "count"},
 }
 NULLABLE = {("p2_specifications.csv", "post_gap"),
             # P1 is excluded from BH family 1 by pre-registration, so it
@@ -84,7 +90,11 @@ NULLABLE = {("p2_specifications.csv", "post_gap"),
             # the bug -- it would mean a diagnostic-only construct had been
             # corrected alongside the eligible ones.
             ("e1_results.csv", "p_fdr"),
-            ("e1_secondary.csv", "p_fdr")}
+            ("e1_secondary.csv", "p_fdr"),
+            # Proximity-blocked members get no adjusted p and no bootstrap:
+            # they are excluded from their family before testing.
+            ("e2_results.csv", "p_fdr"),
+            ("e2_results.csv", "boot_p")}
 
 problems, checked = [], 0
 for fname, cols in SCHEMA.items():
