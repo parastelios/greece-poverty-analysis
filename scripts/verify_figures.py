@@ -20,6 +20,7 @@ ROOT = Path(__file__).resolve().parents[1]
 TARGETS = [p for p in [ROOT / "output" / "prototype.html",
                        ROOT / "output" / "batch1.html",
                        ROOT / "output" / "batch2.html",
+                       ROOT / "output" / "batch3.html",
                        ROOT / "output" / "report.html"] if p.exists()]
 
 F = []

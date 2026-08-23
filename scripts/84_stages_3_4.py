@@ -103,21 +103,32 @@ UNIT = {"aic_pps_pc": "PPS per head", "ltu_rate": "percentage points",
 d7 = rec[~rec.trend.str.startswith("not applicable")].copy()
 d7 = d7.sort_values("gap_shift_rel", ascending=False)
 TONE7 = {"converging": "div-pos", "flat": "div-zero", "diverging": "div-neg"}
-f7 = ce.Series(["Share of 2015 gap closed", "Gap 2015", "Gap 2024", "Units"],
+# Endpoints for BOTH sides. A gap can narrow because Greece improved or
+# because everyone else got worse, and the reader cannot tell which without
+# seeing the EU median move too. eu = gr - gap, by construction of the gap.
+f7 = ce.Series(["Share of 2015 gap closed", "Greece 2015", "Greece 2024",
+                "EU median 2015", "EU median 2024", "Gap 2015", "Gap 2024"],
                dp=2)
 rows7 = []
 for r in d7.itertuples():
     share = float(r.gap_shift_rel)
     unit = UNIT.get(r.variable, "")
-    f7.add(ce.name(r.variable), [share, float(r.gap_first), float(r.gap_last), None])
+    eu_first = float(r.gr_first) - float(r.gap_first)
+    eu_last = float(r.gr_last) - float(r.gap_last)
+    f7.add(ce.name(r.variable),
+           [share, float(r.gr_first), float(r.gr_last), eu_first, eu_last,
+            float(r.gap_first), float(r.gap_last)])
     closed = (f"{share:.0%} of the initial gap closed" if share > 0
               else f"gap widened by {abs(share):.0%} of its 2015 size")
-    rows7.append({"label": ce.name(r.variable), "value": round(share, 3),
-                  "tone": TONE7[r.trend], "highlight": False,
-                  "name": ce.name(r.variable),
-                  "detail": (f"<b>{closed}</b><br>"
-                             f"2015: {r.gap_first:+.1f} &rarr; 2024: {r.gap_last:+.1f}"
-                             f"<br><span style='opacity:.6'>{unit}</span>")})
+    rows7.append({
+        "label": ce.name(r.variable), "value": round(share, 3),
+        "tone": TONE7[r.trend], "highlight": False,
+        "name": ce.name(r.variable),
+        "detail": (f"<b>{closed}</b>"
+                   f"<br>Greece {r.gr_first:,.1f} &rarr; {r.gr_last:,.1f}"
+                   f"<br>EU median {eu_first:,.1f} &rarr; {eu_last:,.1f}"
+                   f"<br>gap {r.gap_first:+,.1f} &rarr; {r.gap_last:+,.1f}"
+                   f"<br><span style='opacity:.6'>{unit}</span>")})
 FIGS["F7"] = dict(
     caption="Some gaps narrowed, especially long-term unemployment; wage, "
             "resource and affordability gaps widened",
@@ -128,11 +139,15 @@ FIGS["F7"] = dict(
                     "means convergence, negative means divergence"},
     series=f7, first="Measure",
     extra_caveat=(
-        "The plotted quantity is the SHARE of each 2015 gap closed by 2024, "
-        "which is dimensionless. The underlying gaps are measured in "
-        "percentage points, index points and PPS per head and cannot share an "
-        "axis; their original values and units are in the tooltip and the "
-        "table below."))
+        "A NARROWING GAP DOES NOT MEAN GREECE IMPROVED. A gap can close because "
+        "Greece caught up, because the rest of the EU deteriorated, or because "
+        "everyone moved in the same direction at different speeds. This chart "
+        "measures RELATIVE CONVERGENCE, not national recovery, which is why "
+        "both endpoints for Greece and for the EU median are in the tooltip and "
+        "the table. \"71% of the gap closed\" and \"conditions improved by 71%\" "
+        "are entirely different claims. The plotted quantity is dimensionless "
+        "because the underlying gaps are measured in percentage points, index "
+        "points and PPS per head and cannot share an axis."))
 
 # ---- F8 scatter: same-instrument, country means removed -------------------
 ITEMS = ["arrears", "unexpected_expenses", "warm", "severe_mat_soc_deprivation"]
