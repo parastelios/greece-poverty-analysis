@@ -155,7 +155,7 @@ for plan in PLAN:
             cs = np.array([fit(r.formula, common[common.geo != g]).params[r["var"]]
                            for g in sorted(common.geo.unique())])
             loo = bool((np.sign(cs) == np.sign(cs[0])).all())
-        o, notes = decide(
+        o, notes, gate = decide(
             coefficient=r.coef, adverse=r.adverse,
             fdr_rejected=bool(r.fdr_rejected), bootstrap_p=bp,
             loo_sign_stable=loo, greece_residual_improves=bool(r.greece_improves),
@@ -164,6 +164,7 @@ for plan in PLAN:
         fd.at[i, "boot_p"] = np.nan if bp is None else bp
         fd.at[i, "loo_sign_stable"] = loo
         fd.at[i, "outcome"] = o
+        fd.at[i, "failed_gate"] = gate
         fd.at[i, "notes"] = " | ".join(notes)
 
     # E1's verdict is what the sensitivity rule keys on, not this run's.
@@ -175,19 +176,20 @@ for plan in PLAN:
     print(f"  E1 primary verdict: "
           f"{', '.join(f'{k}={v}' for k, v in e1_out.items())}")
     print(f"\n  {'role':11} {'variable':26} {'coef':>10} {'p_raw':>7} "
-          f"{'p_FDR':>7} {'boot':>7}  {'outcome':36} disposition")
+          f"{'p_FDR':>7} {'boot':>7}  {'outcome':36} {'failed gate':16} disposition")
     for r in fd.itertuples():
         disp = ("—" if r.role == "primary"
                 else sensitivity_disposition(prim_state, r.outcome))
         pf = "  --  " if r.p_fdr != r.p_fdr else f"{r.p_fdr:.4f}"
         bpx = "  --  " if r.boot_p != r.boot_p else f"{r.boot_p:.4f}"
         print(f"  {r.role:11} {r.var:26} {r.coef:+10.4f} {r.p_raw:7.4f} "
-              f"{pf:>7} {bpx:>7}  {r.outcome:36} {disp}")
+              f"{pf:>7} {bpx:>7}  {r.outcome:36} {r.failed_gate:16} {disp}")
         rows.append({**{k: getattr(r, k) for k in
                         ["construct", "var", "role", "adverse", "coef", "se",
-                         "p_raw", "p_fdr", "boot_p", "loo_sign_stable",
+                         "p_raw", "p_fdr", "fdr_rejected", "boot_p",
+                         "loo_sign_stable",
                          "std_effect", "ci_abs_std_upper", "greece_improves",
-                         "violation", "n", "outcome", "notes"]},
+                         "violation", "n", "outcome", "failed_gate", "notes"]},
                      "primary_state": prim_state, "disposition": disp})
 
 res = pd.DataFrame(rows)
@@ -202,6 +204,32 @@ print(f"\n  Sensitivities that would have been findings if the rule allowed it: 
       f"{len(promo)}")
 for r in promo.itertuples():
     print(f"    {r.construct} {r.var}: {r.outcome}, primary {r.primary_state}")
+
+# ---- POST HOC: pooled correction across all E2 sensitivities ------------
+# The frozen pre-registration declares three BH families -- current primaries,
+# accumulated primaries, secondary outcome -- and does NOT declare a
+# within-construct sensitivity family. The within-construct grouping used above
+# is therefore a post-registration choice, and it is the more permissive one.
+# The conservative alternative is shown here so the reader can see what the
+# choice bought. It is a robustness display and CANNOT change any status.
+print(f"\n{bar}\nPOST HOC: pooled correction across all E2 sensitivities\n{bar}")
+print("  NOT pre-registered. Shown because the within-construct grouping is not")
+print("  either. Cannot change any result's status.\n")
+sens = res[(res.role == "sensitivity") & (~res.violation)].copy()
+padj, prej = benjamini_hochberg(sens.p_raw.tolist())
+sens["p_fdr_pooled"], sens["pooled_rejected"] = padj, prej
+print(f"  {'variable':26} {'p_raw':>8} {'within-construct':>17} {'pooled':>9}  changes?")
+for r in sens.sort_values("p_raw").itertuples():
+    changed = "yes" if bool(r.pooled_rejected) != bool(r.fdr_rejected) else "no"
+    print(f"  {r.var:26} {r.p_raw:8.4f} {r.p_fdr:17.4f} {r.p_fdr_pooled:9.4f}  {changed}")
+flips = sens[sens.pooled_rejected != sens.fdr_rejected]["var"].tolist()
+print(f"\n  Sensitivities whose FDR verdict differs under pooling: "
+      f"{len(flips)}  {', '.join(flips) if flips else '-'}")
+print("  No status changes either way: none of these could have become findings,")
+print("  because their promotion is governed by the primary, not by FDR.")
+sens[["construct", "var", "p_raw", "p_fdr", "p_fdr_pooled",
+      "fdr_rejected", "pooled_rejected"]].to_csv(
+          OUT / "e2_pooled_posthoc.csv", index=False)
 
 res.to_csv(OUT / "e2_results.csv", index=False)
 print(f"\nWritten to {OUT}/e2_results.csv")

@@ -77,6 +77,8 @@ SCHEMA = {
     "e1_secondary.csv":              {"coef": "coefficient", "se": "se",
                                       "p_raw": "p_value", "p_fdr": "p_value",
                                       "n": "count"},
+    "e2_pooled_posthoc.csv":         {"p_raw": "p_value", "p_fdr": "p_value",
+                                      "p_fdr_pooled": "p_value"},
     "e2_results.csv":                {"coef": "coefficient", "se": "se",
                                       "p_raw": "p_value", "p_fdr": "p_value",
                                       "boot_p": "p_value",

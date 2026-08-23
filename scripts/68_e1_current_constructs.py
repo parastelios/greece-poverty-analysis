@@ -166,9 +166,9 @@ for i, r in res.iterrows():
     res.at[i, "loo_min"], res.at[i, "loo_max"] = cs.min(), cs.max()
 
 # ---- the pre-registered decision ----------------------------------------
-outcomes, notelists = [], []
+outcomes, notelists, gates = [], [], []
 for r in res.itertuples():
-    o, notes = decide(
+    o, notes, gate = decide(
         coefficient=r.coef, adverse=r.adverse,
         fdr_rejected=bool(r.fdr_rejected),
         bootstrap_p=None if np.isnan(r.boot_p) else float(r.boot_p),
@@ -179,7 +179,8 @@ for r in res.itertuples():
     )
     outcomes.append(o)
     notelists.append(" | ".join(notes))
-res["outcome"], res["notes"] = outcomes, notelists
+    gates.append(gate)
+res["outcome"], res["notes"], res["failed_gate"] = outcomes, notelists, gates
 
 print(f"  {'con':>4} {'variable':26} {'coef':>9} {'se':>7} {'p_raw':>7} "
       f"{'p_FDR':>7} {'dir':>4} {'SD':>5} {'n':>4}  outcome")
@@ -188,7 +189,7 @@ for r in res.sort_values(["construct", "var"]).itertuples():
     pf = "  --  " if np.isnan(r.p_fdr) else f"{r.p_fdr:.4f}"
     print(f"  {r.construct:>4} {r.var:26} {r.coef:+9.4f} {r.se:7.4f} "
           f"{r.p_raw:7.4f} {pf:>7} {d_ok:>5} {r.std_effect:5.2f} {r.n:4d}  "
-          f"{r.outcome}")
+          f"{r.outcome}{'' if not r.failed_gate else '  [' + r.failed_gate + ']'}")
 
 print(f"\n{bar}\nOUTCOME SUMMARY\n{bar}")
 for o in res.outcome.value_counts().index:

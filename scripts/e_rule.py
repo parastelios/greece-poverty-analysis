@@ -34,6 +34,22 @@ MDE_SD = 0.70          # published floor: 0.70 residual SD = 9.29 points
 FDR_ALPHA = 0.05
 BOOTSTRAP_ALPHA = 0.05
 
+# WHICH gate a result failed on. The pre-registered outcome deliberately
+# collapses several very different failures into one label -- a predictor that
+# clears FDR and the bootstrap and fails only on Greece's residual reads
+# identically to one that was never close. The outcome stays as pre-registered;
+# this field makes the actual reason machine-readable alongside it.
+FAILED_GATES = {
+    "direction": "coefficient points against the pre-registered direction",
+    "power": "does not clear FDR, and the interval still admits an MDE-sized effect",
+    "fdr": "does not clear FDR, and an MDE-sized effect is excluded",
+    "bootstrap": "clears FDR; wild-cluster bootstrap does not support it",
+    "loo_stability": "clears FDR and bootstrap; not leave-one-country-out sign-stable",
+    "greece_residual": "clears FDR and bootstrap; Greece's equal-sample residual does not improve",
+    "proximity": "disqualified by the proximity rule before its result was consulted",
+    "": "no gate failed",
+}
+
 OUTCOMES = {
     "supported": "all six pre-registered conditions hold",
     "contradicts_direction": "clears FDR with the sign opposite to pre-registration",
@@ -83,11 +99,14 @@ def decide(
     ci_abs_std_upper,
     mde_sd=MDE_SD,
 ):
-    """Return (outcome, notes).
+    """Return (outcome, notes, failed_gate).
 
     ci_abs_std_upper  the larger absolute standardized effect the confidence
                       interval admits, in residual-SD units. Used only to
                       separate the two null labels.
+    failed_gate       which gate actually failed, one of FAILED_GATES. The
+                      outcome alone does not distinguish "failed on Greece's
+                      residual" from "was never close".
     """
     if adverse not in ("higher_is_worse", "lower_is_worse"):
         raise ValueError(f"unknown adverse direction {adverse!r}")
@@ -100,7 +119,7 @@ def decide(
     # must never be reported as a null (which would imply it was eligible).
     if proximity_violation:
         notes.append("proximity or construction-overlap rule violated")
-        return "blocked_by_proximity", notes
+        return "blocked_by_proximity", notes, "proximity"
 
     correct_sign = direction_ok(coefficient, adverse)
     if not correct_sign:
@@ -110,38 +129,41 @@ def decide(
     if fdr_rejected and not correct_sign:
         notes.append("clears FDR with the wrong sign: recorded as a "
                      "contradiction, not filed as a null")
-        return "contradicts_direction", notes
+        return "contradicts_direction", notes, "direction"
 
     if fdr_rejected and correct_sign:
         if bootstrap_p is None:
             notes.append("bootstrap required for anything described as supported")
-            return "inconclusive_under_available_power", notes
+            return "inconclusive_under_available_power", notes, "bootstrap"
         if bootstrap_p > BOOTSTRAP_ALPHA:
             notes.append(f"wild-cluster bootstrap p={bootstrap_p:.4f} does not support")
+            gate = "bootstrap"
         elif not loo_sign_stable:
             notes.append("coefficient is not leave-one-country-out sign-stable")
+            gate = "loo_stability"
         elif not greece_residual_improves:
             notes.append("Greece's equal-sample absolute residual does not improve")
+            gate = "greece_residual"
         else:
             notes.append("all six conditions hold")
-            return "supported", notes
+            return "supported", notes, ""
         # cleared FDR but failed a robustness gate: not supported, and not a
         # null either -- report as inconclusive so the failure stays visible
         notes.append("cleared FDR but failed a robustness gate")
-        return "inconclusive_under_available_power", notes
+        return "inconclusive_under_available_power", notes, gate
 
     # Did not clear FDR.
     notes.append("does not survive FDR within its declared family")
     if ci_abs_std_upper is not None and ci_abs_std_upper < mde_sd:
         notes.append(f"interval excludes effects of {mde_sd} SD "
                      f"(largest admitted {ci_abs_std_upper:.2f} SD)")
-        return "unsupported_with_adequate_power", notes
+        return "unsupported_with_adequate_power", notes, "fdr"
     admitted = ("unknown" if ci_abs_std_upper is None
                 else f"{ci_abs_std_upper:.2f} SD")
     notes.append(f"interval still admits an effect of {mde_sd} SD "
                  f"(largest admitted {admitted}); power is the binding "
                  "constraint, not evidence of absence")
-    return "inconclusive_under_available_power", notes
+    return "inconclusive_under_available_power", notes, "power"
 
 
 # ---------------------------------------------------------------------------

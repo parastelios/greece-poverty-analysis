@@ -8,6 +8,14 @@ def check(name, got, want):
     F.append((name, ok))
     print(f"  [{'PASS' if ok else 'FAIL'}] {name:58} got {got} want {want}")
 
+def gate(**kw):
+    base = dict(coefficient=1.0, adverse="higher_is_worse", fdr_rejected=True,
+                bootstrap_p=0.01, loo_sign_stable=True,
+                greece_residual_improves=True, proximity_violation=False,
+                ci_abs_std_upper=0.9)
+    base.update(kw)
+    return decide(**base)[2]
+
 def out(**kw):
     base = dict(coefficient=1.0, adverse="higher_is_worse", fdr_rejected=True,
                 bootstrap_p=0.01, loo_sign_stable=True,
@@ -45,7 +53,7 @@ check("wrong sign without FDR is just a null",
 check("wrong sign + FDR beats every robustness gate",
       out(coefficient=-1.0, bootstrap_p=0.9, loo_sign_stable=False,
           greece_residual_improves=False), "contradicts_direction")
-_, notes = decide(coefficient=-1.0, adverse="higher_is_worse", fdr_rejected=True,
+_, notes, _ = decide(coefficient=-1.0, adverse="higher_is_worse", fdr_rejected=True,
                   bootstrap_p=0.01, loo_sign_stable=True,
                   greece_residual_improves=True, proximity_violation=False,
                   ci_abs_std_upper=0.9)
@@ -142,6 +150,35 @@ for bad_in in [("nonsense", "supported"), ("supported", "nonsense")]:
         check(f"rejects {bad_in}", "no error", "ValueError")
     except ValueError:
         check(f"rejects {bad_in}", "ValueError", "ValueError")
+
+print("\nFAILED GATE: the outcome alone does not say WHY")
+from e_rule import FAILED_GATES
+check("clean pass has no failed gate",  gate(), "")
+check("bootstrap gate",                 gate(bootstrap_p=0.06), "bootstrap")
+check("LOO gate",                       gate(loo_sign_stable=False), "loo_stability")
+check("Greece-residual gate",           gate(greece_residual_improves=False), "greece_residual")
+check("proximity gate",                 gate(proximity_violation=True), "proximity")
+check("direction gate",                 gate(coefficient=-1.0), "direction")
+check("power gate",                     gate(fdr_rejected=False, ci_abs_std_upper=3.0), "power")
+check("fdr gate when MDE excluded",     gate(fdr_rejected=False, ci_abs_std_upper=0.1), "fdr")
+check("missing bootstrap counts as the bootstrap gate",
+      gate(bootstrap_p=None), "bootstrap")
+check("every gate name is documented",
+      all(g in FAILED_GATES for g in
+          ["", "bootstrap", "loo_stability", "greece_residual", "proximity",
+           "direction", "fdr", "power"]), True)
+
+# The case that motivated the field: identical outcome, opposite situations.
+near = decide(coefficient=1.0, adverse="higher_is_worse", fdr_rejected=True,
+              bootstrap_p=0.002, loo_sign_stable=True,
+              greece_residual_improves=False, proximity_violation=False,
+              ci_abs_std_upper=0.9)
+far = decide(coefficient=1.0, adverse="higher_is_worse", fdr_rejected=False,
+             bootstrap_p=None, loo_sign_stable=False,
+             greece_residual_improves=False, proximity_violation=False,
+             ci_abs_std_upper=3.0)
+check("both are the same pre-registered outcome", near[0] == far[0], True)
+check("but the gates differ", (near[2], far[2]), ("greece_residual", "power"))
 
 bad = [n for n, ok in F if not ok]
 print(f"\n{len(F) - len(bad)}/{len(F)} passed")

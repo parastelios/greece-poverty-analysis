@@ -44,7 +44,7 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | E3 |
 | Last completed stage | E2 |
 | Branch | `p6-rewrite` |
-| HEAD | `846a138` E2: sensitivities confirm C1 and C2; nothing promoted; inflation ruled out |
+| HEAD | `78f7d1f` Sort the register tables by ID on every refresh |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-23 |
 | Frozen V1 reference | `v1-final` |
@@ -1421,44 +1421,102 @@ decision function does not protect against wrong inputs.
 
 ## E2 — Current-level sensitivities
 
+> **Protocol deviation, disclosed.** The within-construct FDR grouping used in
+> this stage is **not** pre-registered. `e_preregistration.json` declares three
+> BH families — current primaries, accumulated primaries, secondary outcome —
+> and no within-construct sensitivity family. See
+> [Protocol deviations](#protocol-deviations). E2 sensitivity FDR is a
+> post-registration choice and must not be described as pre-registered
+> inference.
+
 ### In plain words
 
 Each construct was measured one way at E1. E2 asks whether that choice mattered
 — swap in the other members of the same construct and see whether the answer
 holds.
 
-**For the two supported constructs, it mostly does.** Material resources
-survives however you measure it: GDP per head, real GDP, consumption, hourly
-compensation all point the same way, and two of the four reproduce the result
-outright. Labour-market exclusion is more interesting — **long-term**
-unemployment holds, but *general* unemployment does not. That is not a defect;
-it says the long-term measure is doing specific work that the headline
-unemployment rate cannot.
+**Material resources is robust to two of its four alternatives.** Hourly
+compensation and real GDP reproduce the result; consumption and GDP PPS point
+the same way but do not clear every Greece-specific gate.
+
+**Long-term unemployment is the most robust labour-market indicator**, while
+the headline unemployment rate is not. The pattern is *consistent with* duration
+mattering. It does not establish that duration rather than exclusion is the
+operative distinction — employment rate also confirms C2, and that is evidence
+for exclusion more generally.
 
 **Nothing was promoted.** Three sensitivities belong to constructs whose primary
-failed, and by rule they cannot become findings no matter how they performed.
-In the event none of them performed well either, so the rule was not tested
-against temptation this time — but it was in force before anyone looked.
+failed and cannot become findings by rule. None performed well either, so the
+rule was not tested against temptation this time.
 
-**Inflation is now genuinely ruled out, not merely underpowered.** Food and
-housing inflation are the only results in the whole study to earn *unsupported
-with adequate power*: their intervals exclude effects of the size we could have
-detected. Everything else that failed, failed for lack of power.
+**Two specific inflation effects are ruled out** — annual food and housing
+inflation, at the magnitude this design was declared able to detect. That is a
+narrow statement, and the section below says exactly what it does not cover.
 
-**And the uncomfortable finding.** The four proximate hardship items — arrears,
-inability to meet an unexpected expense, keeping the home warm, severe
-deprivation — are the strongest predictors in the entire study. Arrears alone
-has a larger standardised effect than any objective construct. We may not use
-any of them, because they come from the same survey instrument as the outcome
-and are closer to restating it than explaining it. That is worth stating
-plainly rather than leaving in a table.
+### The finding that reframes the study
+
+The four proximate hardship items — arrears, inability to meet an unexpected
+expense, inability to keep the home warm, severe material and social deprivation
+— are the strongest predictors in the entire study. Arrears alone (0.96 SD)
+exceeds every objective construct.
+
+They are blocked from any headline explanation, and that remains correct. But
+their *evidential* value is not zero, and reading them only as "too close to
+use" misses what they establish.
+
+**They are weak as causes and strong as validation.** If Greeks simply described
+their circumstances more negatively — culture, mood, generalised distrust — we
+would not expect that reporting style to align this tightly with unpaid bills,
+absent emergency resources, and homes that are not adequately heated. It does.
+
+> Greece's subjective-poverty result is **subjective in measurement, but not
+> merely subjective in substance**. It closely tracks concrete material
+> constraints: arrears, lack of emergency resources, and inadequate heating.
+
+The distinction to hold on to:
+
+| | Proximate items (P1) | Distant economic indicators |
+|---|---|---|
+| **As causal explanation** | limited — closely related symptoms | the appropriate tools |
+| **As validation evidence** | strong — the feeling comes with concrete affordability failures | not what they are for |
+
+Which gives the report a two-layer structure:
+
+1. **Is the reported hardship real?** Arrears, emergency-expense capacity,
+   heating and deprivation corroborate it strongly.
+2. **What economic conditions lie behind it?** Income, wages, long-term
+   unemployment, housing pressure, purchasing power and accumulated exposure
+   address that separate question.
+
+![The strongest predictors are the ones we may not use](figures/restatement.svg)
+
+| Variable | Coef | p raw | Effect (SD) |
+|---|---:|---:|---:|
+| `arrears` | +1.4549 | 0.0000 | **0.96** |
+| `unexpected_expenses` | +0.9825 | 0.0000 | **0.84** |
+| `warm` | +1.2335 | 0.0008 | **0.74** |
+| `severe_mat_soc_deprivation` | +1.4463 | 0.0036 | 0.72 |
+
+The accurate statement about what the proximity rule buys:
+
+> Without it, the model would achieve much stronger prediction partly by using
+> closely related self-reported hardship measures, making the apparent
+> explanation less independent than its fit suggests.
+
+Not that these variables explain nothing. Severe material and social deprivation
+is an official multidimensional EU indicator, not the outcome restated in
+different words — it is *conceptually close*, which is a different objection
+from *circular*.
 
 ### Method
 
 Members of a construct are compared on the **intersection of that construct's
 complete cases**, with the primary refit there too, so a difference between two
-measures is a difference of measure and not of sample. FDR is applied **within**
-construct, since each construct asks its own question.
+measures is a difference of measure and not of sample.
+
+FDR is applied within construct — a post-registration choice, disclosed above. A
+pooled correction across all ten sensitivities is shown as a post hoc robustness
+display below.
 
 The sensitivity rule is enforced by `e_rule.sensitivity_disposition()`, which
 has no code path returning a finding from a sensitivity alone.
@@ -1471,80 +1529,112 @@ declared sensitivity is a tenure drill-down, descriptive only.
 
 Common sample 270 rows, 27 countries.
 
-| Role | Variable | Coef | p FDR | Boot p | Outcome | Disposition |
-|---|---|---:|---:|---:|---|---|
-| primary | `aic_pps_pc` | −0.0013 | 0.0000 | **0.0070** | supported | — |
-| sensitivity | `hourly_comp` | −0.8501 | 0.0006 | **0.0015** | supported | **confirms** |
-| sensitivity | `real_gdp_pc` | −0.0003 | 0.0024 | **0.0360** | supported | **confirms** |
-| sensitivity | `consumption_pc` | −0.0009 | 0.0000 | 0.0025 | inconclusive | qualifies |
-| sensitivity | `gdp_pps_pc` | −0.0004 | 0.0109 | 0.0865 | inconclusive | qualifies |
+| Role | Variable | Coef | p FDR | Boot p | Outcome | Failed gate | Disposition |
+|---|---|---:|---:|---:|---|---|---|
+| primary | `aic_pps_pc` | −0.0013 | 0.0000 | **0.0070** | supported | — | — |
+| sensitivity | `hourly_comp` | −0.8501 | 0.0006 | **0.0015** | supported | — | **confirms** |
+| sensitivity | `real_gdp_pc` | −0.0003 | 0.0024 | **0.0360** | supported | — | **confirms** |
+| sensitivity | `consumption_pc` | −0.0009 | 0.0000 | 0.0025 | inconclusive | `greece_residual` | qualifies |
+| sensitivity | `gdp_pps_pc` | −0.0004 | 0.0109 | 0.0865 | inconclusive | `bootstrap` | qualifies |
 
-`consumption_pc` clears both FDR and the bootstrap and still fails, because
-Greece's equal-sample residual does not improve. `gdp_pps_pc` misses on the
-bootstrap alone, at 0.0865.
+C1 is robust to hourly compensation and real GDP. Consumption and GDP PPS point
+in the same direction but do not satisfy every Greece-specific robustness gate —
+`consumption_pc` clears FDR *and* the bootstrap and fails only on Greece's
+equal-sample residual, which the `failed_gate` column now makes visible.
 
 ### C2 — Labour-market exclusion · primary supported
 
 Common sample 270 rows, 27 countries.
 
-| Role | Variable | Coef | p FDR | Boot p | Outcome | Disposition |
-|---|---|---:|---:|---:|---|---|
-| primary | `ltu_rate` | +4.3402 | 0.0000 | **0.0100** | supported | — |
-| sensitivity | `employment_rate` | −1.5959 | 0.0102 | **0.0200** | supported | **confirms** |
-| sensitivity | `youth_unemployment` | +0.8751 | 0.0419 | 0.0775 | inconclusive | qualifies |
-| sensitivity | `unemployment_rate` | +2.1265 | 0.0419 | 0.1865 | inconclusive | qualifies |
+| Role | Variable | Coef | p FDR | Boot p | Outcome | Failed gate | Disposition |
+|---|---|---:|---:|---:|---|---|---|
+| primary | `ltu_rate` | +4.3402 | 0.0000 | **0.0100** | supported | — | — |
+| sensitivity | `employment_rate` | −1.5959 | 0.0102 | **0.0200** | supported | — | **confirms** |
+| sensitivity | `youth_unemployment` | +0.8751 | 0.0419 | 0.0775 | inconclusive | `bootstrap` | qualifies |
+| sensitivity | `unemployment_rate` | +2.1265 | 0.0419 | 0.1865 | inconclusive | `bootstrap` | qualifies |
 
-The headline unemployment rate does **not** reproduce the result (bootstrap
-p = 0.1865) while long-term unemployment does. C2's content is duration of
-exclusion, not exclusion as such.
+**Long-term unemployment is the most robust labour-market indicator.** The
+pattern is consistent with duration mattering, but does **not** establish that
+duration rather than exclusion itself is the operative distinction: this is a
+comparison of significance verdicts, not a formal test that the two effects
+differ, and `employment_rate` confirming C2 is evidence for exclusion more
+generally.
 
 ### C3 — Loss against own past · no primary supported
 
-Common sample 258 rows, 26 countries. The composite is a standardised average
-of the four primaries, each oriented so higher = worse before averaging.
+Common sample 258 rows, 26 countries. The composite is a standardised average of
+the four primaries, each oriented so higher = worse before averaging.
 
-| Role | Variable | Coef | p FDR | Outcome | Disposition |
-|---|---|---:|---:|---|---|
-| primary | `pct_below_peak` | +1.9044 | 0.0001 | inconclusive (boot 0.4140) | — |
-| primary | `real_income_idx` | −0.2092 | 0.5480 | inconclusive | — |
-| primary | `real_wages_idx` | −0.1279 | 0.6126 | inconclusive | — |
-| primary | `arop_threshold_real` | −0.0645 | 0.6126 | inconclusive | — |
-| sensitivity | `c3_composite` | +7.2321 | 0.5454 | inconclusive | **cannot promote** |
-
-The composite does not clear on its own terms either, so the promotion rule was
-not load-bearing here. It was still in force before the result was seen.
+| Role | Variable | Coef | p FDR | Outcome | Failed gate | Disposition |
+|---|---|---:|---:|---|---|---|
+| primary | `pct_below_peak` | +1.9044 | 0.0001 | inconclusive (boot 0.4140) | `bootstrap` | — |
+| primary | `real_income_idx` | −0.2092 | 0.5480 | inconclusive | `power` | — |
+| primary | `real_wages_idx` | −0.1279 | 0.6126 | inconclusive | `power` | — |
+| primary | `arop_threshold_real` | −0.0645 | 0.6126 | inconclusive | `power` | — |
+| sensitivity | `c3_composite` | +7.2321 | 0.5454 | inconclusive | `power` | **cannot promote** |
 
 ### C5 — Inflation exposure · primary failed
 
-| Role | Variable | Coef | p FDR | Outcome | Disposition |
-|---|---|---:|---:|---|---|
-| primary | `hicp` | −0.9925 | 0.4819 | inconclusive | — |
-| sensitivity | `hicp_housing` | −0.2803 | 0.4819 | **unsupported with adequate power** | cannot promote |
-| sensitivity | `hicp_food` | −0.2200 | 0.6994 | **unsupported with adequate power** | cannot promote |
+| Role | Variable | Coef | p FDR | Outcome | Failed gate | Disposition |
+|---|---|---:|---:|---|---|---|
+| primary | `hicp` | −0.9925 | 0.4819 | inconclusive | `power` | — |
+| sensitivity | `hicp_housing` | −0.2803 | 0.4819 | **unsupported with adequate power** | `fdr` | cannot promote |
+| sensitivity | `hicp_food` | −0.2200 | 0.6994 | **unsupported with adequate power** | `fdr` | cannot promote |
 
-These two are the **only** results in the study whose intervals exclude an
-MDE-sized effect. For everything else that failed, power is the binding
-constraint; here it is not.
+**What this rules out, precisely:** effects of *annual food inflation* and
+*annual housing and energy inflation*, at or above the pre-declared detectable
+magnitude of 0.70 residual SD.
+
+**What it does not rule out:**
+
+- smaller effects, below that magnitude;
+- **headline inflation** (`hicp`), which remains inconclusive;
+- **compounded inflation since 2008**, which is C5's accumulated representative
+  and has not been tested — that is E4;
+- **affordability** effects, which are C4's separate question and where
+  `wadj_a01` is supported.
+
+These are the only **Family E results so far** whose intervals exclude an
+MDE-sized effect. That is not a claim about the whole study: the legacy families
+A–D have not been audited against the same MDE criterion, and until they are, no
+statement of the form "the only results in the study" is supportable.
 
 ### P1 — Proximate hardship · diagnostic only
 
-![The strongest predictors are the ones we may not use](figures/restatement.svg)
+| Role | Variable | Coef | p raw | Effect (SD) | Outcome |
+|---|---|---:|---:|---:|---|
+| primary | `severe_mat_soc_deprivation` | +1.4463 | 0.0036 | 0.72 | blocked |
+| sensitivity | `arrears` | +1.4549 | 0.0000 | **0.96** | blocked |
+| sensitivity | `unexpected_expenses` | +0.9825 | 0.0000 | 0.84 | blocked |
+| sensitivity | `warm` | +1.2335 | 0.0008 | 0.74 | blocked |
 
-| Variable | Coef | p raw | Effect (SD) |
-|---|---:|---:|---:|
-| `arrears` | +1.4549 | 0.0000 | **0.96** |
-| `unexpected_expenses` | +0.9825 | 0.0000 | **0.84** |
-| `warm` | +1.2335 | 0.0008 | **0.74** |
-| `severe_mat_soc_deprivation` | +1.4463 | 0.0036 | 0.72 |
+All four blocked, all four large. See
+[the finding that reframes the study](#the-finding-that-reframes-the-study)
+above for what they do and do not establish.
 
-All four are blocked, all four are enormous. Arrears at 0.96 SD exceeds every
-objective construct in the study — C2 at 0.81 is the closest.
+### Post hoc: pooled correction
 
-This is the number the P1 construct exists to produce. It quantifies how much of
-the "explanation" available on this panel is the outcome restated in different
-words, and it is large. Any analysis that reached for these items without the
-proximity rule would report a much better-explained paradox and would have
-explained almost nothing.
+Shown because the within-construct grouping is itself post-registration, so the
+reader is entitled to see what the more permissive choice bought. **This display
+cannot change any status.**
+
+| Variable | p raw | Within-construct | Pooled | Verdict differs |
+|---|---:|---:|---:|---|
+| `consumption_pc` | 0.0000 | 0.0000 | 0.0000 | no |
+| `hourly_comp` | 0.0003 | 0.0006 | 0.0017 | no |
+| `real_gdp_pc` | 0.0019 | 0.0024 | 0.0063 | no |
+| `employment_rate` | 0.0051 | 0.0102 | 0.0127 | no |
+| `gdp_pps_pc` | 0.0109 | 0.0109 | 0.0218 | no |
+| `youth_unemployment` | 0.0407 | 0.0419 | 0.0598 | **yes** |
+| `unemployment_rate` | 0.0419 | 0.0419 | 0.0598 | **yes** |
+| `hicp_housing` | 0.1764 | 0.4819 | 0.2204 | no |
+| `c3_composite` | 0.2182 | 0.5454 | 0.2424 | no |
+| `hicp_food` | 0.6994 | 0.6994 | 0.6994 | no |
+
+Two verdicts differ: `unemployment_rate` and `youth_unemployment` would not
+clear FDR under pooling. Both already failed the bootstrap, so **no reported
+outcome depends on the grouping choice.** That is fortunate rather than
+principled, and does not retrospectively make the choice pre-registered.
 
 ### Disposition summary
 
@@ -1559,38 +1649,58 @@ explained almost nothing.
 
 ### What this does not establish
 
-- No sensitivity here creates a finding, by construction. C1 and C2 are
-  supported because their *primaries* were supported at E1.
-- C3's composite failing is not additional evidence against C3. It is one more
+- No sensitivity here creates a finding. C1 and C2 are supported because their
+  *primaries* were supported at E1.
+- That duration rather than exclusion is what C2 measures. That comparison was
+  not formally tested.
+- That inflation does not matter. Two specific annual rates are excluded at one
+  specific magnitude; see C5 above.
+- C3's composite failing is not additional evidence against C3 — it is one more
   current-level test of a construct about accumulated loss.
-- The P1 magnitudes are **not** evidence that hardship is "really" material
-  deprivation. They are evidence that same-instrument items track the outcome,
-  which is what same-instrument means.
-- `unsupported with adequate power` applies to `hicp_food` and `hicp_housing`
-  only. It does not extend to their primary, `hicp`, which remains inconclusive.
+- That proximate items "explain nothing". They predict strongly and offer
+  limited conceptual distance, which is a different claim.
 
 ### Notes from review
 
-A guard was added before this stage ran, in response to E1's direction bug:
-`scripts/registry.py` validates every registry vocabulary at load time, with
-`test_registry.py` (17 tests) including one asserting that `"high"` — the exact
-value E1 compared against — now fails the load rather than silently
-reclassifying every variable.
+**The FDR family was not pre-registered.** Review caught that the frozen
+pre-registration declares three BH families and none of them is a
+within-construct sensitivity family. The first write-up of this stage described
+the grouping as pre-registered inference. It is not, and it is the more
+permissive of the available choices. Recorded as PD-01, with the conservative
+pooled alternative displayed above.
 
-That is the narrow fix. The general lesson stands unaddressed: both E1 and EA
-had tested decision rules and untested translation layers feeding them.
+The promotion rule limits the damage — no E2 sensitivity could have become a
+finding whatever its FDR verdict — but that is a property of a *different*
+safeguard, and does not make this choice registered.
 
-One bug in this stage, caught on the first run: when *every* member of a
-construct is proximity-blocked, as in P1, nothing is eligible for FDR and the
-adjusted-p column was never created, so the P1 block crashed on output. The
-columns are now initialised before use. It failed loudly, which is the right
-kind of failure.
+**Failure labels were hiding their reasons.** `consumption_pc` was reported as
+`inconclusive_under_available_power` despite clearing FDR and the bootstrap and
+failing only Greece's residual gate — the same label carried by variables that
+were never close. A `failed_gate` field now records which gate actually bound:
+`direction`, `power`, `fdr`, `bootstrap`, `loo_stability`, `greece_residual`,
+`proximity`. The pre-registered outcome is unchanged; only the visibility is new.
+
+**Three overstatements corrected.** "C1 holds however measured" (two of four
+confirm, two qualify). "C2 is duration, not exclusion" (a comparison of
+verdicts, not a test of difference). "The only results in the entire study"
+(only Family E has been audited against the MDE criterion).
+
+A guard added before this stage ran: `scripts/registry.py` validates every
+registry vocabulary at load time, with a test asserting that `"high"` — the
+value E1 compared against — now fails the load. That is the narrow fix for
+[C-09](#corrections-and-supersessions); the general lesson, that tested rules
+were fed by untested translation, stands.
+
+One bug caught on the first run: when *every* member of a construct is
+proximity-blocked, as in P1, nothing is eligible for FDR and the adjusted-p
+column was never created, crashing the P1 block. Columns are now initialised
+before use. It failed loudly, which is the right kind of failure.
 
 ### Where the detail lives
 
 `scripts/69_e2_sensitivities.py`, `scripts/e_rule.py`, `scripts/registry.py`,
 `scripts/test_registry.py` ·
-`data/processed/e2_results.csv`
+`data/processed/e2_results.csv`, `e2_pooled_posthoc.csv`
 
 ---
 
@@ -1720,10 +1830,10 @@ kind of failure.
 | D-16 | 2026-08-23 | E1 | `pct_below_peak` and `housing_cost_overburden` recorded inconclusive despite clearing FDR | Bootstrap p 0.40 and 0.55; the pre-registration requires bootstrap support | Reporting them as supported on FDR alone | `frozen` | — | — |
 | D-17 | 2026-08-23 | E1 | Two secondary-outcome results that clear FDR may not be promoted | Their primary did not survive; pre-registration forbids promotion | Promoting them as findings | `frozen` | — | — |
 | D-18 | 2026-08-23 | E1 | C3's current-level nulls are not evidence against C3 | C3 is about accumulated loss; a current snapshot is the wrong test | Recording C3 as refuted at E1 | `frozen` | — | — |
-| D-19 | 2026-08-23 | E2 | C1 and C2 conclusions do not depend on which member was chosen | 2 of 4 and 1 of 3 sensitivities reproduce under the bootstrap; none contradict | Treating a single measure as the construct | `frozen` | — | — |
-| D-20 | 2026-08-23 | E2 | C2 is duration of exclusion, not exclusion as such | `ltu_rate` holds (boot 0.0100) while `unemployment_rate` does not (0.1865) | Reading C2 as general unemployment | `frozen` | — | — |
-| D-21 | 2026-08-23 | E2 | Inflation sensitivities recorded as unsupported WITH adequate power | Their intervals exclude MDE-sized effects, unlike every other failure | Labelling them inconclusive like the rest | `frozen` | — | — |
-| D-22 | 2026-08-23 | E2 | P1 magnitudes reported as a restatement measure, never as explanation | Arrears at 0.96 SD exceeds every objective construct | Reporting the best-fitting predictors as findings | `frozen` | — | — |
+| D-19 | 2026-08-23 | E2 | C1 robust to `hourly_comp` and `real_gdp_pc`; `consumption_pc` and `gdp_pps_pc` agree in direction but miss a gate | 2 of 4 reproduce under the bootstrap; none contradict | Claiming C1 holds however measured | `frozen` | — | — |
+| D-20 | 2026-08-23 | E2 | `ltu_rate` is the most robust labour-market indicator; duration-vs-exclusion left open | Comparison of significance verdicts, not a test that the effects differ; `employment_rate` also confirms | Claiming C2 is duration rather than exclusion | `frozen` | — | — |
+| D-21 | 2026-08-23 | E2 | Annual food and housing inflation unsupported with adequate power, at 0.70 SD | Their intervals exclude MDE-sized effects | Extending this to headline, compounded or affordability effects; claiming a study-wide first | `frozen` | — | — |
+| D-22 | 2026-08-23 | E2 | P1 items reported as VALIDATION evidence, headline-ineligible as explanation | Strong alignment with arrears, emergency expense and heating is hard to produce by reporting style alone | Reading them only as circular; or as causal explanations | `frozen` | — | — |
 | D-23 | 2026-08-23 | E2 | Registry vocabularies validated at load time | E1's direction bug came from an untested translation layer, not the rule | Fixing only the one call site | `frozen` | C-09 | — |
 
 Allowed statuses: `proposed`, `pre-registered`, `frozen`, `superseded`,
@@ -1748,10 +1858,10 @@ Allowed statuses: `proposed`, `pre-registered`, `frozen`, `superseded`,
 | R-13 | E1 | hardship level | `hicp` (C5) | between-country, cond. on AROP + year | n=270 | −0.9925 (se 1.0007) | 0.3213 | 0.4131 | — | — | interval admits 0.82 SD | wrong sign and far from significance | `inconclusive_under_available_power` | `e1_results.csv` |
 | R-14 | E1 | hardship level | `severe_mat_soc_deprivation` (P1) | — | n=270 | +1.4524 (se 0.4952) | 0.0034 | excluded from family | — | — | — | diagnostic only; blocked before its p-value was consulted | `blocked_by_proximity` | `e1_results.csv` |
 | R-15 | E2 | hardship level | C1 sensitivities (4) | within-construct, common sample | n=270 | −0.0003 to −0.85 | — | 0.0006–0.0109 | 0.0015–0.0865 | — | 2 confirm, 2 qualify | measurement choice does not drive C1 | `confirms_primary` ×2 | `e2_results.csv` |
-| R-16 | E2 | hardship level | C2 sensitivities (3) | within-construct, common sample | n=270 | +0.88 to −1.60 | — | 0.0102–0.0419 | 0.0200–0.1865 | — | only `employment_rate` confirms | C2's content is duration of exclusion, not exclusion as such | `confirms_primary` ×1 | `e2_results.csv` |
+| R-16 | E2 | hardship level | C2 sensitivities (3) | within-construct, common sample | n=270 | +0.88 to −1.60 | — | 0.0102–0.0419 | 0.0200–0.1865 | — | only `employment_rate` confirms | `ltu_rate` is the most robust labour indicator; duration-vs-exclusion not formally tested | `confirms_primary` ×1 | `e2_results.csv` |
 | R-17 | E2 | hardship level | `c3_composite` | within-construct, common sample | n=258 | +7.2321 | 0.2182 | 0.5454 | — | — | below MDE | composite fails on its own terms; promotion barred regardless | `cannot_promote` | `e2_results.csv` |
-| R-18 | E2 | hardship level | `hicp_food`, `hicp_housing` | within-construct, common sample | n=270 | −0.2200, −0.2803 | 0.70, 0.18 | 0.6994, 0.4819 | — | — | **intervals exclude an MDE-sized effect** | the only genuinely ruled-out results in the study | `unsupported_with_adequate_power` | `e2_results.csv` |
-| R-19 | E2 | hardship level | P1 items (4) | diagnostic only | n=268 | +0.98 to +1.45 | 0.0000–0.0036 | excluded | — | — | 0.72–0.96 SD, all above MDE | proximate items outweigh every objective construct; quantifies restatement | `blocked_by_proximity` | `e2_results.csv` |
+| R-18 | E2 | hardship level | `hicp_food`, `hicp_housing` | within-construct, common sample | n=270 | −0.2200, −0.2803 | 0.70, 0.18 | 0.6994, 0.4819 | — | — | intervals exclude a 0.70 SD effect | annual food and housing inflation excluded at the declared magnitude only; not headline, compounded or affordability effects | `unsupported_with_adequate_power` | `e2_results.csv` |
+| R-19 | E2 | hardship level | P1 items (4) | diagnostic only | n=268 | +0.98 to +1.45 | 0.0000–0.0036 | excluded | — | — | 0.72–0.96 SD, all above MDE | headline-ineligible as explanation; strong as VALIDATION that reported strain tracks concrete affordability failure | `blocked_by_proximity` | `e2_results.csv` |
 
 Allowed statuses: `supported`, `unsupported_with_adequate_power`,
 `inconclusive_under_available_power`, `failed_incremental_criterion`,
@@ -1786,6 +1896,24 @@ Current state of `docs/claim_matrix.csv`: **53 claims**.
 | future_research | 1 |
 <!-- AUTO:END claim-summary -->
 
+## Protocol deviations
+
+Choices made after a pre-registration was frozen, where the frozen document did
+not settle the question. Distinct from a **correction**, which fixes something
+that was wrong, and from a **decision**, which records a choice the protocol
+authorised.
+
+A deviation is not automatically illegitimate — a pre-registration cannot
+anticipate every analytical choice. What is illegitimate is *presenting one as
+pre-registered*, which is why they are listed separately and linked from the
+stage that made them.
+
+| ID | Date | Stage | Deviation | Why the pre-registration did not settle it | Direction of the choice | Mitigation | Status |
+|---|---|---|---|---|---|---|---|
+| PD-01 | 2026-08-23 | E2 | FDR applied **within construct** for sensitivity variants | `e_preregistration.json` declares three BH families — current primaries, accumulated primaries, secondary outcome — and no within-construct sensitivity family | **More permissive** than a pooled correction | Pooled correction reported as a post hoc display; only `unemployment_rate` and `youth_unemployment` differ, and both had already failed the bootstrap, so no reported outcome depends on it. The promotion rule independently barred every E2 sensitivity from becoming a finding | disclosed |
+
+Deviations must be disclosed in the stage that made them, not only here.
+
 ## Corrections and Supersessions
 
 | ID | Date | Original statement or decision | Problem | Correction | Affected artifacts | Commit |
@@ -1800,6 +1928,9 @@ Current state of `docs/claim_matrix.csv`: **53 claims**.
 | C-08 | 2026-08-22 | EA rule returned Outcome A on the live run | Compared absolute residuals across a sign flip (+2.46, inside band A) and gated rank one-tailed, so rank 3 → 25 read as improvement | Sign reversal returns C unless within 3.0 points of zero; tail position `min(rank, n−rank+1)`; 10 new regression tests | `ea_rule.py`, `test_ea_rule.py` | — |
 | C-09 | 2026-08-23 | E1 reported four constructs as contradicting their pre-registered direction | Script translated adverse direction from `"high"`/`"low"`, values the registry never holds, so every variable became `lower_is_worse` and every positive coefficient read as wrong | Pass the registry's own vocabulary through; raise on anything unrecognised | `68_e1_current_constructs.py` | — |
 | C-10 | 2026-08-23 | EDA ranks displayed Greece's worst-in-Europe real wages as rank 27/27 under a heading saying rank 1 is worst | Same direction bug, already shipped one stage earlier | Rank ascending for `lower_is_worse`; assert the column's values | `67_eda_descriptives.py` | — |
+| C-11 | 2026-08-23 | E2 write-up described within-construct sensitivity FDR as pre-registered | The frozen pre-registration declares no such family | Recorded as protocol deviation PD-01; pooled alternative shown post hoc | `v2_research_record.md` | — |
+| C-12 | 2026-08-23 | Failure labels collapsed unlike reasons: `consumption_pc` read the same as a variable that was never close | The pre-registered outcome deliberately merges gates | Added a machine-readable `failed_gate` field; outcome unchanged | `e_rule.py`, `e1_results.csv`, `e2_results.csv` | — |
+| C-13 | 2026-08-23 | Three E2 overstatements: "C1 holds however measured", "C2 is duration not exclusion", "only results in the entire study" | Claims outran what the tests establish | Narrowed each to what was actually shown | `v2_research_record.md` | — |
 
 ## Artifact Index
 
@@ -1841,5 +1972,6 @@ Current state of `docs/claim_matrix.csv`: **53 claims**.
 | EA | `ea_results.csv` | Outcome C: residual reverses +6.93 -> -9.39 | present |
 | E1 | `e1_results.csv` | Nine current primaries: 3 supported, 6 inconclusive | present |
 | E1 | `e1_secondary.csv` | Secondary outcome, BH family 3, promotion blocked | present |
+| E2 | `e2_pooled_posthoc.csv` | Post hoc pooled FDR, disclosed under PD-01 | present |
 | E2 | `e2_results.csv` | Within-construct sensitivities and dispositions | present |
 <!-- AUTO:END artifact-index -->
