@@ -41,10 +41,10 @@ This notebook is the running log. `publication_strategy.md` was closed on
 <!-- AUTO:BEGIN document-control -->
 | Field | Value |
 |---|---|
-| Current stage | FINAL |
-| Last completed stage | E7 |
+| Current stage | none — sequence complete |
+| Last completed stage | FINAL |
 | Branch | `p6-rewrite` |
-| HEAD | `41b1ea9` E7: accumulation adds beyond current conditions in three of eight pairs |
+| HEAD | `d93b099` E7 interpretation: inconclusive is not ruled out, and these are related checks |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-23 |
 | Frozen V1 reference | `v1-final` |
@@ -94,7 +94,7 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | E5 | Do accumulated-measure sensitivities change those conclusions? | complete | `a747e7a` | — | [E5](#e5--accumulation-sensitivities) |
 | E6 | Does the frozen combined model remain appropriate? | complete | `a747e7a` | — | [E6](#e6--frozen-combined-model) |
 | E7 | Do accumulated measures add information beyond current snapshots? | complete | `a747e7a` | — | [E7](#e7--current-versus-accumulated-comparison) |
-| FINAL | What survives into the final reports? | **next** | — | — | [FINAL](#final--claim-freeze-and-publication) |
+| FINAL | What survives into the final reports? | complete | — | — | [FINAL](#final--claim-freeze-and-publication) |
 <!-- AUTO:END stage-index -->
 
 ## Standard Stage Template
@@ -2672,18 +2672,220 @@ And the ceiling had to be moved from prose into code, which caught P2.
 
 ## Final — Claim freeze and publication
 
+> **FROZEN. Model searching is closed.** No new specification, construct,
+> sensitivity, combination or subgroup may be tested after this point. Anything
+> further is a new pre-registered project, not a continuation of this one.
+
 ### In plain words
 
-### Findings retained
-### Findings reworded
-### Findings superseded
-### Null and inconclusive findings
-### Failed or infeasible designs
-### Headline-eligible claims
-### Mandatory caveats
-### Report placement
+This stage discovers nothing. It fixes what may be published — the exact wording
+of every claim, where each one goes, which caveats travel with it — so the four
+documents are written against one source rather than against memory.
+
+**21 claims. 12 headline-eligible.
+3 retained as labelled legacy only.**
+
+The story that survived the whole sequence:
+
+> Relative income poverty understates crisis-era deterioration when read alone.
+> AROPE narrows the puzzle but does not close it. Concrete hardship corroborates
+> the subjective measure. And accumulated unemployment, wage non-recovery and
+> housing deterioration provide additional historical information beyond current
+> snapshots — **without establishing causality**.
+
+### The analytical sequence
+
+`P0 → P2 → P3 → P5 → P3a → E0 → PRE → EDA → EA → E1 → E2 → E3 → E4 → E5 → E6 → E7 → FINAL`
+
+Sixteen gated stages. Every one pre-registered before running and reviewed
+after.
+
+### Mandatory caveats on every historical-exposure result
+
+These four travel with **every** accumulated-exposure claim, in all four
+documents, without exception:
+
+1. **cross-country association**
+2. **no demonstrated within-Greece dynamic**
+3. **no causal claim**
+4. **current conditions not ruled out**
+
+A historical-exposure claim appearing anywhere without all four is a defect.
+
+### One finding, three technical levels
+
+Report, paper and narrative carry the **same substantive claims** at different
+technical levels. A claim present in one and absent from another is a defect,
+not an editorial choice. The appendix carries every number.
+
+The frozen record stores a narrative-level phrasing for each claim so the
+plain-language version cannot drift from the technical one.
+
+---
+
+### 1. The puzzle
+
+**V2-1.1** — The outcome is Eurostat's official subjective-hardship indicator, extended backwards before 2010 using a constructed series validated against it on 432 overlapping country-years.
+  - *pre-2010 provenance is ours, not Eurostat's*
+  - narrative level: "The measure is the official European one, carried further back in time."
+
+**V2-1.2** **[HEADLINE]** — Greek subjective hardship runs 52.6 points above relative income poverty on average, and Greece ranks first of 27 on hardship while ranking seventh on AROP.
+  - narrative level: "Greeks report far more difficulty than the official poverty rate suggests."
+
+### 2. AROPE narrows the gap
+
+**V2-2.1** **[HEADLINE]** — Switching to AROPE closes 9.8 of those 52.6 points (19%), leaving 42.8 unexplained, and its contribution shrinks from 11.0 points in 2015 to 7.3 in 2024.
+  - narrative level: "The EU's broader measure helps, but closes only about a fifth of the gap."
+
+### 3. The hardship is real
+
+**V2-3.1** **[HEADLINE]** — Reported difficulty co-moves with arrears, inability to meet an unexpected expense, inadequate heating and severe deprivation at within-country correlations of 0.63 to 0.80.
+  - *same-instrument corroboration, NOT independent validation*
+  - *all items and the outcome come from EU-SILC*
+  - *not uniform: arrears within Greece is 0.371*
+  - narrative level: "When a country's reported difficulty rises, its unpaid bills and cold homes rise with it."
+
+**V2-3.2** — Those same four items statistically absorb 71% of Greece's baseline residual (+46.92 to +13.74).
+  - *ABSORPTION, never explanation*
+  - *shared instrument is not shared cause*
+  - *diagnostic only; never a headline explanation*
+  - narrative level: "Measures this close to the question can make the puzzle vanish without explaining it."
+
+### 4. Current conditions
+
+**V2-4.C1** **[HEADLINE]** — Material resources (aic_pps_pc) predicts hardship beyond AROP and year effects (coef -0.0013, wild-cluster bootstrap p=0.0055).
+  - *cross-country association*
+  - *no causal claim*
+  - narrative level: "Countries differ in what a country has to spend, and that tracks reported hardship."
+
+**V2-4.C2** **[HEADLINE]** — Labour-market exclusion (ltu_rate) predicts hardship beyond AROP and year effects (coef +4.3402, wild-cluster bootstrap p=0.0085).
+  - *cross-country association*
+  - *no causal claim*
+  - narrative level: "Countries differ in how many are locked out of work for years, and that tracks reported hardship."
+
+**V2-4.C4** **[HEADLINE]** — Wage-adjusted affordability (wadj_a01) predicts hardship beyond AROP and year effects (coef +0.3110, wild-cluster bootstrap p=0.0005).
+  - *cross-country association*
+  - *no causal claim*
+  - narrative level: "Countries differ in what a local paycheck buys, and that tracks reported hardship."
+
+**V2-4.X** — Six of nine current-level constructs are inconclusive under available power, not unsupported; two cleared FDR and collapsed under the bootstrap (p=0.40 and 0.55).
+  - *inconclusive is not evidence of absence*
+  - narrative level: "Most candidates could not be tested sharply enough to say either way."
+
+### 5. Accumulated history
+
+**V2-5.C2** **[HEADLINE]** — Accumulated excess unemployment predicts hardship (bootstrap p=0.0025) and retains a cross-country association after its current-level counterpart is controlled (conditional bootstrap p=0.0025).
+  - *cross-country association*
+  - *no demonstrated within-Greece dynamic*
+  - *no causal claim*
+  - *current conditions not ruled out*
+  - narrative level: "Countries differ in how much unemployment a country has absorbed since the crisis, and that still tracks hardship once today's conditions are accounted for."
+
+**V2-5.C3** **[HEADLINE]** — Duration of real wages below their 2008 level predicts hardship (bootstrap p=0.0245) and retains a cross-country association after its current-level counterpart is controlled (conditional bootstrap p=0.0060).
+  - *cross-country association*
+  - *no demonstrated within-Greece dynamic*
+  - *no causal claim*
+  - *current conditions not ruled out*
+  - *supported only as the CURRENT uninterrupted run against a fixed 2008 base; alternative constructions point the same way but do not meet the criteria*
+  - narrative level: "Countries differ in how long wages have stayed below where they were, and that still tracks hardship once today's conditions are accounted for."
+
+**V2-5.C6** **[HEADLINE]** — Housing-cost deterioration since 2010 predicts hardship (bootstrap p=0.0460) and retains a cross-country association after its current-level counterpart is controlled (conditional bootstrap p=0.0015).
+  - *cross-country association*
+  - *no demonstrated within-Greece dynamic*
+  - *no causal claim*
+  - *current conditions not ruled out*
+  - *BORDERLINE: bootstrap p=0.0460, 91 of 1,999 exceedances*
+  - narrative level: "Countries differ in how much worse housing costs have got since 2010, and that still tracks hardship once today's conditions are accounted for."
+
+**V2-5.X** — For wage-adjusted affordability the pattern reverses: the current measure survives conditioning (bootstrap p=0.0035) while the accumulated one remains inconclusive.
+  - *the accumulated measure is inconclusive, NOT unsupported*
+  - narrative level: "For affordability it is today's prices against today's wages that tracks hardship."
+
+**V2-5.Y** **[HEADLINE]** — No accumulated measure permits dynamic wording. Across P5, E4 and E7 no within-country estimate is significant in the adverse direction and no first-difference test supports one.
+  - *three RELATED checks on one panel, not independent replications*
+  - *the dynamic tests were not multiplicity-corrected*
+  - narrative level: "We cannot say hardship rose inside Greece as the damage piled up. Only that countries carrying more damage report more hardship."
+
+**V2-5.Z** — Accumulated material resources (C1) could not be tested at all: the source series begins in 2015 and no 2008 baseline exists. The baseline was not moved to make it testable.
+  - *infeasible, not null*
+  - narrative level: "One promising measure simply had no history to accumulate."
+
+### 6. Model dependence
+
+**V2-6.1** **[HEADLINE]** — Greece's residual is +6.93 (rank 3/27) in the frozen P3 specification and -9.39 (rank 25/27) when the same-instrument deprivation predictor is removed, on identical rows. Neither specification is definitive.
+  - *NEITHER specification is definitive*
+  - *the two may not be merged or averaged*
+  - *selection between them may not be made on residual size*
+  - *conclusions about absorption depend materially on whether same-instrument deprivation is admitted*
+  - narrative level: "How big the unexplained gap looks depends on whether you allow one measure that is very close to the question itself."
+
+### 7. What this is not
+
+**V2-7.1** **[HEADLINE]** — Greece ranks first of 27 on subjective hardship and on financial expectations while ranking second to sixth on life satisfaction, so generic pessimism is insufficient as an explanation. A financial-domain-specific reporting difference cannot be excluded.
+  - *generic pessimism is INSUFFICIENT, not disproved*
+  - *a financial-domain-specific reporting difference CANNOT be excluded*
+  - narrative level: "Greeks are not simply gloomier about everything. But we cannot rule out that they answer money questions differently."
+
+### Legacy
+
+**L-1** — The synthetic-control comparative design failed four of six pre-registered gates and is not a usable comparison. Its divergence figure is machine-blocked from every output document.
+  - *donor weights collapse to Hungary 0.55 and Bulgaria 0.45*
+  - *the divergence figure is NON-REPORTABLE*
+  - narrative level: "One method we tried did not work, and we say so."
+
+**L-2** — Multi-domain breadth failed the incremental criterion: adding it to the frozen model worsened Greece's residual from 6.93 to 10.39 and reversed its sign conditionally. The reversal is left uninterpreted.
+  - *a result about the specification, not about power*
+  - *the sign reversal is deliberately left uninterpreted*
+  - narrative level: "Counting how many kinds of hardship a country has did not help."
+
+**L-3** — The accumulated wage-shortfall coefficient cleared every conditional gate but its prior stage did not support it, so the pre-registered ceiling caps it. It is reported and is not a finding.
+  - *capped by the E7 ceiling: E7 may only qualify or withdraw*
+  - narrative level: "One result looked good but arrived by a route we had closed in advance."
+
+**L-4** — Annual food and housing inflation are unsupported with adequate power at 0.70 SD; annual headline inflation is unsupported at its detectable conditional magnitude; compounded inflation since 2008 remains inconclusive.
+  - *the exclusions are narrow and magnitude-specific*
+  - *compounded inflation is INCONCLUSIVE, not ruled out*
+  - narrative level: "Inflation did not explain the gap, though we cannot rule out small effects."
+
+
+### The model-dependence result
+
+| | Frozen P3 | EA companion |
+|---|---:|---:|
+| Greece residual | **+6.93** | **−9.39** |
+| Rank | 3 / 27 | 25 / 27 |
+
+**Neither specification is definitive.** They may not be merged or averaged, and
+selection between them may not be made on residual size. How much of Greece's
+gap appears absorbed depends materially on whether same-instrument deprivation
+is admitted — and that dependence is itself the result.
+
+### The reporting-culture conclusion, stated narrowly
+
+**Established:** generic pessimism is *insufficient* as an explanation. Greece
+ranks first of 27 on subjective hardship and on financial expectations while
+ranking second to sixth on life satisfaction.
+
+**Not established:** a financial-domain-specific reporting difference **cannot
+be excluded**.
+
 ### Final verification
-### Freeze commit and tag
+
+`make verify` green across every gate: 8 test suites, output-schema validation
+over all reported quantities, and claim/document parity. The record's generated
+blocks refresh on every run, so the stage index, artifact index and claim counts
+cannot drift from the repository.
+
+### What happens next
+
+Prose only. The technical report, academic paper and narrative companion are
+rebuilt against `e_final_claims.csv`, and the appendix against every artifact in
+`data/processed`. No analysis accompanies that work.
+
+### Where the detail lives
+
+`scripts/78_final_claim_freeze.py` ·
+`data/processed/e_final_claims.csv`, `final_freeze.json`
 
 ---
 
@@ -2743,6 +2945,10 @@ And the ceiling had to be moved from prose into code, which caught P2.
 | D-48 | 2026-08-23 | E7 | `acc_real_wages_shortfall` CAPPED: cleared every gate but E4 did not support it | The pre-registered ceiling — E7 may only qualify or withdraw | Reporting it as supported | `frozen` | — | — |
 | D-49 | 2026-08-23 | E7 | No dynamic wording, conditionally either | No within term significant in the adverse direction; the two significant FD terms point the wrong way | Any sentence describing hardship rising within a country as exposure accumulated | `frozen` | D-32 | — |
 | D-50 | 2026-08-23 | E7 | Nulls at boundary-fragile MDEs may not support strong exclusion claims | Five of sixteen conditional MDEs sit within 2 MC SEs of the target | Reporting those nulls as adequate-power exclusions | `frozen` | — | — |
+| D-51 | 2026-08-23 | FINAL | Claim set frozen: 22 claims, 11 headline-eligible, 4 legacy-only | Canonical wording, placement and caveats fixed before any prose is written | Writing the documents against memory | `frozen` | — | — |
+| D-52 | 2026-08-23 | FINAL | Four caveats mandatory on EVERY historical-exposure claim in all four documents | Cross-country association; no within-Greece dynamic; no causal claim; current conditions not ruled out | Attaching them selectively, or only in the technical report | `frozen` | D-49 | — |
+| D-53 | 2026-08-23 | FINAL | Report, paper and narrative carry the same claims at different technical levels | A claim in one and absent from another is a defect, not editorial choice | Letting the narrative simplify a claim out of existence | `frozen` | — | — |
+| D-54 | 2026-08-23 | FINAL | MODEL SEARCHING CLOSED | Anything further is a new pre-registered project | Any post-freeze specification, construct, sensitivity, combination or subgroup | `frozen` | — | — |
 
 Allowed statuses: `proposed`, `pre-registered`, `frozen`, `superseded`,
 `withdrawn`, `infeasible`.
@@ -2949,4 +3155,6 @@ Deviations must be disclosed in the stage that made them, not only here.
 | E7 | `e7_preregistration.json` | FROZEN 8 pairs, BH family 4, conditional formulas | present |
 | E7 | `e7_results.csv` | 16 conditional coefficients, BH family 4 | present |
 | E7 | `e7_verdicts.csv` | Per-pair verdict across the six possible outcomes | present |
+| FINAL | `e_final_claims.csv` | The frozen claim set with placement and caveats | present |
+| FINAL | `final_freeze.json` | The eight locked items; model searching closed | present |
 <!-- AUTO:END artifact-index -->

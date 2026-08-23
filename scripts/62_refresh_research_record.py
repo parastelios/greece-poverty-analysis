@@ -203,6 +203,8 @@ ARTIFACT_PURPOSE = {
     "e7_results.csv": ("E7", "16 conditional coefficients, BH family 4"),
     "e7_verdicts.csv": ("E7", "Per-pair verdict across the six possible outcomes"),
     "e7_dynamic.csv": ("E7", "Conditional Mundlak and first differences"),
+    "e_final_claims.csv": ("FINAL", "The frozen claim set with placement and caveats"),
+    "final_freeze.json": ("FINAL", "The eight locked items; model searching closed"),
     "ea_companion_residuals.csv": ("EA", "Companion residual ladder, 27 countries"),
 }
 
@@ -286,7 +288,7 @@ def main() -> None:
     RECORD.write_text(text)
     print(f"refreshed {RECORD.relative_to(ROOT)}")
     print(f"  last completed stage: {last_done}")
-    print(f"  next stage: {current}")
+    print(f"  next stage: {current or 'none -- the analytical sequence is complete'}")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,25 @@
+{
+  "status": "FROZEN. No further model searching. Prose may now be written.",
+  "sequence": "P0 -> P2 -> P3 -> P5 -> P3a -> E0 -> PRE -> EDA -> EA -> E1 -> E2 -> E3 -> E4 -> E5 -> E6 -> E7 -> FINAL",
+  "claims_total": 21,
+  "headline_eligible": 12,
+  "legacy_only": 3,
+  "mandatory_caveats_on_historical_exposure": [
+    "cross-country association",
+    "no demonstrated within-Greece dynamic",
+    "no causal claim",
+    "current conditions not ruled out"
+  ],
+  "model_dependence": {
+    "frozen_p3_residual": 6.93,
+    "companion_residual": -9.392170463956958,
+    "definitive_model": null,
+    "rule": "Neither is definitive. Not merged, not averaged, not selected on residual size."
+  },
+  "reporting_culture": {
+    "established": "generic pessimism is insufficient",
+    "NOT established": "a financial-domain-specific reporting difference cannot be excluded"
+  },
+  "no_further_searching": "MODEL SEARCHING IS CLOSED. No new specification, construct, sensitivity, combination or subgroup may be tested after this freeze. Anything further is a new pre-registered project, not a continuation of this one.",
+  "same_information_all_documents": "Report, paper and narrative carry the SAME substantive claims at different technical levels. A claim present in one and absent from another is a defect, not an editorial choice. The appendix carries every number."
+}
