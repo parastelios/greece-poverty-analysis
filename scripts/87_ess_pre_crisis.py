@@ -17,10 +17,20 @@ but requires a registered account, so the file has to be downloaded by hand:
      (dweight, pspwght or anweight depending on round).
   3. Save as data/raw/ess_life_satisfaction.csv
 
-Greece participated in rounds 1 (2002/03), 2 (2004/05), 4 (2008/09),
-5 (2010/11), 10 (2020-22) and 11 (2023/24). That gives TWO genuinely pre-crisis
-observations and no continuous crisis trajectory, which bounds what this can
-show.
+Greek participation, and what each round is a reading of:
+
+    round  1  2002/03   pre-crisis
+    round  2  2004/05   pre-crisis
+    round  4  2008/09   crisis onset
+    round  5  2010/11   early crisis
+    round 10  2020-22   later period
+    round 11  2023/24   later period
+
+So there are TWO genuinely pre-crisis readings, and the crisis itself is caught
+at its onset and again early on. What is missing is the decade AFTER 2010/11:
+the gap runs 2010/11 -> 2020-22, which is where the depth of the adjustment and
+the recovery both fall. This is a before/onset/early-crisis picture with a
+long interruption, not a continuous trajectory, and that bounds what it can show.
 """
 import sys
 from pathlib import Path
@@ -35,13 +45,29 @@ SRC = RAW / "ess_life_satisfaction.csv"
 ROUND_YEARS = {1: "2002/03", 2: "2004/05", 3: "2006/07", 4: "2008/09",
                5: "2010/11", 6: "2012/13", 7: "2014/15", 8: "2016/17",
                9: "2018/19", 10: "2020-22", 11: "2023/24"}
-PRE_CRISIS = {1, 2, 4}          # round 4 fieldwork straddles the onset
-GREEK_ROUNDS = {1, 2, 4, 5, 10, 11}
+# Round 4 fieldwork straddles the onset, so it is NOT counted as pre-crisis.
+PERIOD = {1: "pre-crisis", 2: "pre-crisis", 4: "crisis onset",
+          5: "early crisis", 10: "later period", 11: "later period"}
+PRE_CRISIS = {1, 2}
+GREEK_ROUNDS = set(PERIOD)
+STATUS = PROC / "ess_extension_status.txt"
 
 if not SRC.exists():
+    # Exiting 0 keeps `make` moving, but the run must NOT be able to pass for a
+    # success. Every downstream consumer reads this marker, and the report
+    # prints it verbatim.
+    STATUS.write_text("[SKIPPED: authenticated source unavailable]\n"
+                      "stage: 7 (optional descriptive extension)\n"
+                      "reason: ESS microdata requires a registered account; "
+                      "no account is configured for this project\n"
+                      "expected input: data/raw/ess_life_satisfaction.csv\n"
+                      "blocks publication: no\n")
+    print("[SKIPPED: authenticated source unavailable]")
     print(f"ESS source not found: {SRC.relative_to(ROOT)}")
     print(__doc__.split("DATA IS NOT FETCHED HERE.")[1].strip())
-    raise SystemExit(0)     # not an error: the extension is simply not built yet
+    print("\nStatus written to data/processed/ess_extension_status.txt")
+    print("This extension is OPTIONAL and does not block the report.")
+    raise SystemExit(0)
 
 d = pd.read_csv(SRC)
 d.columns = [c.lower() for c in d.columns]
@@ -84,7 +110,7 @@ for rnd, grp in by.groupby("essround"):
     i = int(grp.index[grp.cntry == "GR"][0])
     rows.append({
         "essround": int(rnd), "fieldwork": ROUND_YEARS.get(int(rnd), "?"),
-        "pre_crisis": int(rnd) in PRE_CRISIS,
+        "period": PERIOD.get(int(rnd), "?"),
         "greece_mean": round(float(grp.loc[i, "mean"]), 3),
         "greece_n": int(grp.loc[i, "n"]),
         "european_median": round(med, 3),
@@ -117,13 +143,18 @@ bal = pd.DataFrame(brows)
 bar = "=" * 92
 print(bar); print("ESS: WAS GREECE ALREADY DISSATISFIED BEFORE THE CRISIS?"); print(bar)
 print("  Descriptive only. Never joined to the Eurostat series, never modelled.\n")
-print(f"  {'round':6} {'fieldwork':10} {'pre':4} {'Greece':>8} {'Eur med':>8} "
+print(f"  {'round':6} {'fieldwork':10} {'period':14} {'Greece':>8} {'Eur med':>8} "
       f"{'gap':>7} {'rank':>10} {'pct':>6}")
+prev = None
 for r in res.itertuples():
-    print(f"  {r.essround:<6} {r.fieldwork:10} {'yes' if r.pre_crisis else '':4} "
+    if prev is not None and r.essround - prev > 2:
+        print(f"  {'':6} {'':10} ---- gap: no Greek round between "
+              f"{ROUND_YEARS.get(prev)} and {r.fieldwork} ----")
+    print(f"  {r.essround:<6} {r.fieldwork:10} {r.period:14} "
           f"{r.greece_mean:8.2f} {r.european_median:8.2f} {r.gap_vs_median:+7.2f} "
           f"{str(r.rank_from_lowest) + '/' + str(r.n_countries):>10} "
           f"{r.percentile_from_lowest:5.0f}%")
+    prev = r.essround
 
 if len(bal):
     print(f"\n{bar}\nBALANCED PANEL: only countries present in every Greek round "
@@ -132,14 +163,16 @@ if len(bal):
         print(f"  {r.fieldwork:10} Greece {r.greece_mean:.2f}  median "
               f"{r.european_median:.2f}  rank {r.rank_from_lowest}/{r.n_countries}")
 
-pre = res[res.pre_crisis]
-post = res[~res.pre_crisis]
 print(f"\n{bar}\nREADING\n{bar}")
-if len(pre) and len(post):
-    print(f"  pre-crisis rounds:  Greece {pre.greece_mean.mean():.2f} against a "
-          f"European median of {pre.european_median.mean():.2f}")
-    print(f"  later rounds:       Greece {post.greece_mean.mean():.2f} against "
-          f"{post.european_median.mean():.2f}")
+for label in ["pre-crisis", "crisis onset", "early crisis", "later period"]:
+    sub = res[res.period == label]
+    if len(sub):
+        print(f"  {label:14} Greece {sub.greece_mean.mean():.2f} against a "
+              f"European median of {sub.european_median.mean():.2f} "
+              f"({len(sub)} round{'s' if len(sub) > 1 else ''})")
+print("  The decade AFTER 2010/11 is unobserved here: no Greek round falls")
+print("  between 2010/11 and 2020-22, so the adjustment's depth and the")
+print("  recovery are both outside this picture.")
 print("  A LEVEL and a RANK are different things: report both, and never read a")
 print("  changing rank as changing Greek satisfaction without showing the level.")
 print("  Low pre-crisis satisfaction would NOT establish reporting bias -- it")

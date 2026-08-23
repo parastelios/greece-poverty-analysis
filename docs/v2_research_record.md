@@ -44,7 +44,7 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `p6-rewrite` |
-| HEAD | `d6a1ff8` F15 refinements, a zero line for net flow, and a build stamp on every preview |
+| HEAD | `b5af938` Specify the ESS pre-crisis extension; leave it unbuilt pending data |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-23 |
 | Frozen V1 reference | `v1-final` |
@@ -3091,7 +3091,7 @@ Claim and context containers are added **during composition**, not retrofitted.
 | D-61 | 2026-08-23 | FINAL | Unanchored passages resolved by REWRITING, never by wrapping old prose | A container around old text satisfies the extractor and defeats the register | Retrofitting containers onto the existing documents | `frozen` | D-57 | — |
 | D-62 | 2026-08-23 | FINAL | V2-7.1 REWORDED after the freeze | Greece is second-worst on life satisfaction, not middling; the original wording was arithmetically true and substantively misleading | Leaving a frozen claim that four review rounds had passed over | `frozen` | 8.6 | — |
 | D-63 | 2026-08-23 | FINAL | The life-satisfaction series cannot support a pre-crisis comparison | Eurostat's wellbeing module begins in 2013, at the crisis trough; there is no baseline in this project | Reading the 2013 start as a pre-crisis level | `frozen` | — | — |
-| D-64 | 2026-08-23 | FINAL | An ESS pre-crisis extension is specified and coded, but is NOT built, because ESS microdata sits behind a free registration that this project has no account for | The question D-63 rules out for Eurostat (was Greece already an outlier before 2008?) is answerable in principle from ESS rounds 1, 2 and 4, so the analysis is written and tested against a synthetic file and waits on the real one; `scripts/87_ess_pre_crisis.py` exits cleanly with download instructions when the source is absent | Reporting any ESS number, or treating the absent extension as a finished result; splicing ESS onto the Eurostat series if it is later obtained | `frozen` | — | — |
+| D-64 | 2026-08-23 | FINAL | The ESS pre-crisis extension is OPTIONAL, is coded but NOT built, and is stamped `[SKIPPED: authenticated source unavailable]` | ESS microdata sits behind a free registration this project has no account for. It does not block publication: V2-7.1 was narrowed on Eurostat evidence alone. Greek rounds are 1 (2002/03) and 2 (2004/05) pre-crisis, 4 (2008/09) crisis onset, 5 (2010/11) early crisis, then 10 (2020-22) and 11 (2023/24); the unobserved decade runs AFTER 2010/11, covering the depth of the adjustment and the recovery. `scripts/87_ess_pre_crisis.py` writes a SKIPPED status marker so an empty run can never read as a successful one | Letting the clean exit pass for a completed extension; reporting any ESS number; splicing ESS onto the Eurostat series if it is later obtained; reopening the model analysis or softening the report's conclusion when it arrives | `frozen` | — | — |
 
 Allowed statuses: `proposed`, `pre-registered`, `frozen`, `superseded`,
 `withdrawn`, `infeasible`.
