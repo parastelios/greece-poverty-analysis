@@ -29,18 +29,27 @@ med = panel.groupby("time")[["subjective_poverty", "arop"]].median()
 # ONE canonical structure. The chart payload and the table are both derived
 # from it, so they cannot disagree about a value.
 f1 = ce.Series([str(int(y)) for y in yrs], dp=1)
-SER = [("Greece: reported hardship", gr.subjective_poverty, "gr", "line-gr"),
-       ("Greece: income poverty", gr.arop, "gr", "line-faint"),
-       ("EU: reported hardship", med.subjective_poverty, "eu", "line-eu"),
-       ("EU: income poverty", med.arop, "eu", "line-faint")]
-for lbl, src, tone, cls in SER:
-    f1.add(lbl, [float(src.get(y)) for y in yrs], tone=tone, cls=cls)
+# COLOUR ENCODES THE MEASURE, DASH ENCODES THE COUNTRY.
+#
+# The earlier version used colour for the country, which meant Greece's two
+# lines were both blue and the EU's both orange -- so colour never identified a
+# series on its own and the reader had to decode the dash as well. This figure
+# compares two MEASURES, so colour carries the thing the title is about, and
+# the blue/orange divergence for Greece IS the paradox the chart exists to show.
+SER = [("Greece: reported hardship", gr.subjective_poverty, "gr", "solid", "strong"),
+       ("Greece: income poverty", gr.arop, "eu", "solid", "strong"),
+       ("EU median: reported hardship", med.subjective_poverty, "gr", "dashed", "light"),
+       ("EU median: income poverty", med.arop, "eu", "dashed", "light")]
+for lbl, src, tone, style, weight in SER:
+    f1.add(lbl, [float(src.get(y)) for y in yrs],
+           tone=tone, style=style, weight=weight)
 
 f1_payload = {
     "years": [int(y) for y in yrs], "dp": f1.dp,
     "alt": "Greek reported hardship against income poverty, 2015 to 2024, "
            "with EU medians",
-    "series": [{"label": lbl, "tone": meta["tone"], "cls": meta["cls"],
+    "series": [{"label": lbl, "tone": meta["tone"], "style": meta["style"],
+                "weight": meta["weight"],
                 "values": [round(v, f1.dp) for v in vals]}
                for lbl, vals, meta in f1.rows],
 }

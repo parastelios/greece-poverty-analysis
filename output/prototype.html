@@ -215,6 +215,12 @@ font:.76rem/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--text-primary);
 box-shadow:0 3px 12px rgba(0,0,0,.14);max-width:15rem;z-index:5;opacity:0;
 transition:opacity .1s}
 .tip.on{opacity:1}
+.legend{display:flex;flex-wrap:wrap;gap:.35rem 1rem;padding:.3rem 0 .1rem;
+max-width:100%;
+font:.76rem/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--text-secondary)}
+.lg-item{display:inline-flex;align-items:center;gap:.4rem;white-space:nowrap;
+flex:0 1 auto;min-width:0}
+@media(max-width:34rem){.legend{gap:.3rem .7rem;font-size:.72rem}}
 .tip b{color:var(--gr)}
 .fig-caveat{margin:0;padding:.7rem 1.1rem;border-top:1px solid var(--border);
 background:var(--accent-soft,rgba(192,57,43,.05));
@@ -265,11 +271,11 @@ same thing, and the divergence is not a rounding artefact.</p>
 <div class="fig-meta"><span class="badge">descriptive</span>
 <span class="fig-q">How far apart are reported hardship and official income poverty for Greece, and does the distance close over time?</span></div>
 <div class="chart-live" data-chart="panel" tabindex="0"
-     data-checksum="c29076b5bbfe93d1" aria-describedby="F1-fb">
-<script type="application/json">{"years": [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024], "dp": 1, "alt": "Greek reported hardship against income poverty, 2015 to 2024, with EU medians", "series": [{"label": "Greece: reported hardship", "tone": "gr", "cls": "line-gr", "values": [77.7, 76.8, 77.2, 74.1, 71.0, 69.8, 71.0, 68.4, 67.0, 66.7]}, {"label": "Greece: income poverty", "tone": "gr", "cls": "line-faint", "values": [21.4, 21.2, 20.2, 18.5, 17.9, 17.7, 19.6, 18.8, 18.9, 19.6]}, {"label": "EU: reported hardship", "tone": "eu", "cls": "line-eu", "values": [28.9, 25.9, 22.6, 20.5, 18.5, 16.8, 15.4, 17.9, 16.6, 17.1]}, {"label": "EU: income poverty", "tone": "eu", "cls": "line-faint", "values": [16.3, 16.5, 15.9, 16.4, 15.4, 16.1, 15.7, 15.6, 15.4, 15.5]}]}</script>
+     data-checksum="ce62f167b7411dd2" aria-describedby="F1-fb">
+<script type="application/json">{"years": [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024], "dp": 1, "alt": "Greek reported hardship against income poverty, 2015 to 2024, with EU medians", "series": [{"label": "Greece: reported hardship", "tone": "gr", "style": "solid", "weight": "strong", "values": [77.7, 76.8, 77.2, 74.1, 71.0, 69.8, 71.0, 68.4, 67.0, 66.7]}, {"label": "Greece: income poverty", "tone": "eu", "style": "solid", "weight": "strong", "values": [21.4, 21.2, 20.2, 18.5, 17.9, 17.7, 19.6, 18.8, 18.9, 19.6]}, {"label": "EU median: reported hardship", "tone": "gr", "style": "dashed", "weight": "light", "values": [28.9, 25.9, 22.6, 20.5, 18.5, 16.8, 15.4, 17.9, 16.6, 17.1]}, {"label": "EU median: income poverty", "tone": "eu", "style": "dashed", "weight": "light", "values": [16.3, 16.5, 15.9, 16.4, 15.4, 16.1, 15.7, 15.6, 15.4, 15.5]}]}</script>
 </div><p class="fig-caveat"><strong>Read with this.</strong> AROPE is deliberately absent here. It enters at Stage 2 as the bridge, and showing it now would pre-empt that step.</p>
 <details class="fallback" id="F1-fb"><summary>Show the numbers <a href="statistical_appendix.html">Full evidence in the appendix</a>.</summary>
-<table data-checksum="c29076b5bbfe93d1"><thead><tr><th>Series</th><th class="num">2015</th><th class="num">2016</th><th class="num">2017</th><th class="num">2018</th><th class="num">2019</th><th class="num">2020</th><th class="num">2021</th><th class="num">2022</th><th class="num">2023</th><th class="num">2024</th></tr></thead><tbody><tr><td>Greece: reported hardship</td><td class="num">77.7</td><td class="num">76.8</td><td class="num">77.2</td><td class="num">74.1</td><td class="num">71.0</td><td class="num">69.8</td><td class="num">71.0</td><td class="num">68.4</td><td class="num">67.0</td><td class="num">66.7</td></tr><tr><td>Greece: income poverty</td><td class="num">21.4</td><td class="num">21.2</td><td class="num">20.2</td><td class="num">18.5</td><td class="num">17.9</td><td class="num">17.7</td><td class="num">19.6</td><td class="num">18.8</td><td class="num">18.9</td><td class="num">19.6</td></tr><tr><td>EU: reported hardship</td><td class="num">28.9</td><td class="num">25.9</td><td class="num">22.6</td><td class="num">20.5</td><td class="num">18.5</td><td class="num">16.8</td><td class="num">15.4</td><td class="num">17.9</td><td class="num">16.6</td><td class="num">17.1</td></tr><tr><td>EU: income poverty</td><td class="num">16.3</td><td class="num">16.5</td><td class="num">15.9</td><td class="num">16.4</td><td class="num">15.4</td><td class="num">16.1</td><td class="num">15.7</td><td class="num">15.6</td><td class="num">15.4</td><td class="num">15.5</td></tr></tbody></table></details>
+<table data-checksum="ce62f167b7411dd2"><thead><tr><th>Series</th><th class="num">2015</th><th class="num">2016</th><th class="num">2017</th><th class="num">2018</th><th class="num">2019</th><th class="num">2020</th><th class="num">2021</th><th class="num">2022</th><th class="num">2023</th><th class="num">2024</th></tr></thead><tbody><tr><td>Greece: reported hardship</td><td class="num">77.7</td><td class="num">76.8</td><td class="num">77.2</td><td class="num">74.1</td><td class="num">71.0</td><td class="num">69.8</td><td class="num">71.0</td><td class="num">68.4</td><td class="num">67.0</td><td class="num">66.7</td></tr><tr><td>Greece: income poverty</td><td class="num">21.4</td><td class="num">21.2</td><td class="num">20.2</td><td class="num">18.5</td><td class="num">17.9</td><td class="num">17.7</td><td class="num">19.6</td><td class="num">18.8</td><td class="num">18.9</td><td class="num">19.6</td></tr><tr><td>EU median: reported hardship</td><td class="num">28.9</td><td class="num">25.9</td><td class="num">22.6</td><td class="num">20.5</td><td class="num">18.5</td><td class="num">16.8</td><td class="num">15.4</td><td class="num">17.9</td><td class="num">16.6</td><td class="num">17.1</td></tr><tr><td>EU median: income poverty</td><td class="num">16.3</td><td class="num">16.5</td><td class="num">15.9</td><td class="num">16.4</td><td class="num">15.4</td><td class="num">16.1</td><td class="num">15.7</td><td class="num">15.6</td><td class="num">15.4</td><td class="num">15.5</td></tr></tbody></table></details>
 </figure>
 
 <h2>Stage 4 &mdash; Current conditions</h2>
@@ -341,13 +347,28 @@ to 0.40 and 0.55 under the bootstrap, which is what decides.</p>
       t.textContent=y;svg.appendChild(t);});
     const cur=el('line',{class:'cursor-line',y1:padT,y2:padT+ph,x1:-9,x2:-9});
     svg.appendChild(cur);
+    const DASH={solid:'',dashed:'6 3',dotted:'2 3'};
+    const WT={strong:2.8,normal:1.8,light:1.4};
     const ends=[];
     d.series.forEach(s=>{let p='',pen=false;
       s.values.forEach((v,i)=>{if(v==null){pen=false;return;}
         p+=(pen?' L ':' M ')+xs(yrs[i])+','+ys(v);pen=true;});
-      if(p)svg.appendChild(el('path',{d:p,class:s.cls||'line-faint'}));
+      // Line and label take their colour from the SAME tone. Previously the
+      // stroke came from a CSS class and the label from the tone, so both
+      // "income poverty" series drew as identical grey while their labels were
+      // blue and orange -- unreadable, and the reader could not tell which line
+      // was which.
+      if(p)svg.appendChild(el('path',{d:p,fill:'none',
+        stroke:`var(--${s.tone||'text-muted'})`,
+        'stroke-width':WT[s.weight||'normal'],
+        'stroke-dasharray':DASH[s.style||'solid'],
+        opacity:s.weight==='light'?0.75:1}));
       const li=(()=>{for(let i=s.values.length-1;i>=0;i--)if(s.values[i]!=null)return i;return -1;})();
-      if(li>=0&&s.label)ends.push({y:ys(s.values[li]),x:xs(yrs[li])+6,s:s});
+      // With a legend present, end-labelling every series just crowds the right
+      // margin. Only the emphasised series get an end label; the legend carries
+      // the rest.
+      const labelled=d.series.filter(x=>x.label).length<=2||s.weight!=='light';
+      if(li>=0&&s.label&&labelled)ends.push({y:ys(s.values[li]),x:xs(yrs[li])+6,s:s});
     });
     // End labels collide when series converge -- three of them stacked on one
     // pixel row in the first prototype. Sort by y and push apart by a minimum
@@ -368,6 +389,18 @@ to 0.40 and 0.55 under the bootstrap, which is what decides.</p>
         style:`fill:var(--${e.s.tone||'text-muted'});font-weight:700`});
       t.textContent=e.s.label;svg.appendChild(t);});
     host.insertBefore(svg,host.firstChild);
+    // A legend keyed on the same tone/style, so the encoding is stated once
+    // rather than inferred from four crowded end labels.
+    if(d.series.filter(s=>s.label).length>2){
+      const lg=document.createElement('div');lg.className='legend';
+      d.series.filter(s=>s.label).forEach(s=>{
+        const i=document.createElement('span');i.className='lg-item';
+        i.innerHTML=`<svg width="22" height="8" aria-hidden="true"><line x1="0" y1="4" x2="22" y2="4"
+          stroke="var(--${s.tone||'text-muted'})" stroke-width="${WT[s.weight||'normal']}"
+          stroke-dasharray="${DASH[s.style||'solid']}"/></svg>${s.label}`;
+        lg.appendChild(i);});
+      host.insertBefore(lg,svg.nextSibling);
+    }
     const tp=tip(host);
     let idx=-1;
     const show=i=>{ if(i<0||i>=yrs.length)return; idx=i;

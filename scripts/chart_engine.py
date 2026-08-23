@@ -106,6 +106,12 @@ font:.76rem/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--text-primary);
 box-shadow:0 3px 12px rgba(0,0,0,.14);max-width:15rem;z-index:5;opacity:0;
 transition:opacity .1s}
 .tip.on{opacity:1}
+.legend{display:flex;flex-wrap:wrap;gap:.35rem 1rem;padding:.3rem 0 .1rem;
+max-width:100%;
+font:.76rem/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--text-secondary)}
+.lg-item{display:inline-flex;align-items:center;gap:.4rem;white-space:nowrap;
+flex:0 1 auto;min-width:0}
+@media(max-width:34rem){.legend{gap:.3rem .7rem;font-size:.72rem}}
 .tip b{color:var(--gr)}
 .fig-caveat{margin:0;padding:.7rem 1.1rem;border-top:1px solid var(--border);
 background:var(--accent-soft,rgba(192,57,43,.05));
@@ -179,13 +185,28 @@ JS = r"""
       t.textContent=y;svg.appendChild(t);});
     const cur=el('line',{class:'cursor-line',y1:padT,y2:padT+ph,x1:-9,x2:-9});
     svg.appendChild(cur);
+    const DASH={solid:'',dashed:'6 3',dotted:'2 3'};
+    const WT={strong:2.8,normal:1.8,light:1.4};
     const ends=[];
     d.series.forEach(s=>{let p='',pen=false;
       s.values.forEach((v,i)=>{if(v==null){pen=false;return;}
         p+=(pen?' L ':' M ')+xs(yrs[i])+','+ys(v);pen=true;});
-      if(p)svg.appendChild(el('path',{d:p,class:s.cls||'line-faint'}));
+      // Line and label take their colour from the SAME tone. Previously the
+      // stroke came from a CSS class and the label from the tone, so both
+      // "income poverty" series drew as identical grey while their labels were
+      // blue and orange -- unreadable, and the reader could not tell which line
+      // was which.
+      if(p)svg.appendChild(el('path',{d:p,fill:'none',
+        stroke:`var(--${s.tone||'text-muted'})`,
+        'stroke-width':WT[s.weight||'normal'],
+        'stroke-dasharray':DASH[s.style||'solid'],
+        opacity:s.weight==='light'?0.75:1}));
       const li=(()=>{for(let i=s.values.length-1;i>=0;i--)if(s.values[i]!=null)return i;return -1;})();
-      if(li>=0&&s.label)ends.push({y:ys(s.values[li]),x:xs(yrs[li])+6,s:s});
+      // With a legend present, end-labelling every series just crowds the right
+      // margin. Only the emphasised series get an end label; the legend carries
+      // the rest.
+      const labelled=d.series.filter(x=>x.label).length<=2||s.weight!=='light';
+      if(li>=0&&s.label&&labelled)ends.push({y:ys(s.values[li]),x:xs(yrs[li])+6,s:s});
     });
     // End labels collide when series converge -- three of them stacked on one
     // pixel row in the first prototype. Sort by y and push apart by a minimum
@@ -206,6 +227,18 @@ JS = r"""
         style:`fill:var(--${e.s.tone||'text-muted'});font-weight:700`});
       t.textContent=e.s.label;svg.appendChild(t);});
     host.insertBefore(svg,host.firstChild);
+    // A legend keyed on the same tone/style, so the encoding is stated once
+    // rather than inferred from four crowded end labels.
+    if(d.series.filter(s=>s.label).length>2){
+      const lg=document.createElement('div');lg.className='legend';
+      d.series.filter(s=>s.label).forEach(s=>{
+        const i=document.createElement('span');i.className='lg-item';
+        i.innerHTML=`<svg width="22" height="8" aria-hidden="true"><line x1="0" y1="4" x2="22" y2="4"
+          stroke="var(--${s.tone||'text-muted'})" stroke-width="${WT[s.weight||'normal']}"
+          stroke-dasharray="${DASH[s.style||'solid']}"/></svg>${s.label}`;
+        lg.appendChild(i);});
+      host.insertBefore(lg,svg.nextSibling);
+    }
     const tp=tip(host);
     let idx=-1;
     const show=i=>{ if(i<0||i>=yrs.length)return; idx=i;
