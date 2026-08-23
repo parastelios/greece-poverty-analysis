@@ -70,6 +70,57 @@ g_arop, g_arope = desc.gap_vs_arop.mean(), desc.gap_vs_arope.mean()
 latest = rank[rank.time == rank.time.max()]
 
 
+
+# ---------------------------------------------------------------------------
+# RESULTS TABLES, generated from the artifacts. The previous version of this
+# report carried fourteen tables and the first eight-stage draft carried none,
+# which is why it read as a skeleton: the claims were present and the evidence
+# behind them was not.
+# ---------------------------------------------------------------------------
+def table(df, cols, headers, caption, right=(), fmt=None, cls=""):
+    fmt = fmt or {}
+    ths = "".join(
+        f'<th{" class=num" if c in right else ""}>{h}</th>'
+        for c, h in zip(cols, headers))
+    rows = []
+    for r in df.itertuples():
+        tds = []
+        for c in cols:
+            v = getattr(r, c, "")
+            if c in fmt:
+                try:
+                    v = fmt[c](v)
+                except Exception:
+                    v = "&mdash;"
+            elif isinstance(v, float):
+                v = "&mdash;" if v != v else f"{v:.4f}"
+            tds.append(f'<td{" class=num" if c in right else ""}>{v}</td>')
+        rows.append("<tr>" + "".join(tds) + "</tr>")
+    return (f'<div class="tw"><table class="{cls}"><caption>{caption}</caption>'
+            f"<thead><tr>{ths}</tr></thead><tbody>{''.join(rows)}</tbody>"
+            f"</table></div>")
+
+
+def p_(v):
+    if v != v:
+        return "&mdash;"
+    return "&lt;0.0001" if v < 0.0001 else f"{v:.4f}"
+
+
+def sig(v):
+    return "&mdash;" if v != v else f"{v:+.4f}"
+
+
+def outcome_label(o):
+    return {"supported": "<strong>supported</strong>",
+            "inconclusive_under_available_power": "inconclusive",
+            "unsupported_with_adequate_power": "unsupported <em>(adequate power)</em>",
+            "blocked_by_proximity": "blocked (proximity)",
+            "contradicts_direction": "<strong>contradicts direction</strong>",
+            "capped_by_ceiling_cannot_create_support": "capped by ceiling",
+            "uninterpretable_collinear": "uninterpretable (collinear)"}.get(o, o)
+
+
 def claim_box(cid, extra=""):
     """A claim container: canonical wording plus every mandatory caveat.
 
@@ -130,6 +181,21 @@ font-weight:600;color:var(--series-eu,#3d6fb4)}
 .ctx .permitted,.ctx .limitation,.ctx .cite{font-size:.85rem;margin:.5rem 0 0}
 .ctx .limitation{color:var(--text-secondary,#4a5568)}
 .ctx .cite{color:var(--text-muted,#7b8794);word-break:break-word}
+.tw{overflow-x:auto;margin:1.4rem 0;border:1px solid var(--border,#e3e0d8);
+border-radius:6px;background:var(--surface-1,#fff)}
+.tw table{border-collapse:collapse;width:100%;
+font:.82rem/1.45 ui-sans-serif,system-ui,sans-serif;
+font-variant-numeric:tabular-nums}
+.tw caption{caption-side:top;text-align:left;padding:.8rem 1rem .4rem;
+font-size:.8rem;color:var(--text-muted,#7b8794)}
+.tw th{text-align:left;padding:.55rem .8rem;
+border-bottom:1.5px solid var(--border,#e3e0d8);
+font-weight:650;color:var(--text-secondary,#4a5568);font-size:.72rem;
+letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+.tw td{padding:.5rem .8rem;border-bottom:1px solid var(--border,#e3e0d8);
+vertical-align:top}
+.tw td.num,.tw th.num{text-align:right;white-space:nowrap}
+.tw tbody tr:last-child td{border-bottom:0}
 .masthead{margin-bottom:2.5rem}
 .masthead .sub{font-size:1.05rem;color:var(--text-secondary,#4a5568);
 max-width:46rem}
@@ -197,7 +263,37 @@ part of Greek hardship that neither measure captures is not shrinking with
 them.</p>
 <p>That is the motivation for everything after this section: if two official
 poverty measures both leave a large residue, the question becomes which
-observable conditions account for it.</p>""")
+observable conditions account for it.</p>
+<h3>Why AROP behaves differently: the ruler moved</h3>
+<p>Relative income poverty counts people below 60% of the <em>current</em>
+national median. When national income collapses, the threshold falls with it,
+and a household can stay above a shrinking line while becoming materially worse
+off. That is not a defect of AROP &mdash; it measures relative position, and it
+does so correctly &mdash; but it means AROP cannot register a fall that affects
+everyone at once.</p>
+<p>The Greek threshold in real terms is the clearest evidence. Greece sits at
+""" + f"{latest[latest.variable=='arop_threshold_real'].gr_value.iloc[0]:.1f}"
+    + """ against an EU median of """
+    + f"{latest[latest.variable=='arop_threshold_real'].eu_median.iloc[0]:.1f}"
+    + """ on an index where each country's own 2008 level is 100. The line
+against which Greek poverty is measured is roughly a fifth below where it stood
+before the crisis, while the EU median line sits above its own.</p>
+""" + table(rec[rec.variable.isin([
+        "arop", "arope", "subjective_poverty", "arop_threshold_real",
+        "real_wages_idx", "gap_subj_arop"])],
+    ["variable", "gr_first", "gr_last", "gap_first", "gap_last", "trend"],
+    ["Measure", "Greece 2015", "Greece 2024", "Gap 2015", "Gap 2024", "Trend"],
+    "Table 1. Greece against the EU median, 2015&ndash;2024. Movement is "
+    "classified against the size of the 2015 gap; under 10% counts as flat.",
+    right=("gr_first", "gr_last", "gap_first", "gap_last"),
+    fmt={"gr_first": lambda v: f"{v:.1f}", "gr_last": lambda v: f"{v:.1f}",
+         "gap_first": lambda v: f"{v:+.1f}", "gap_last": lambda v: f"{v:+.1f}"})
++ """
+<p>A fixed yardstick tells a different story from a moving one. Published work
+using EU-SILC microdata finds that anchoring the poverty line to its pre-crisis
+level in real terms puts Greek poverty near 48% at the 2013 peak, against the
+low-twenties the floating line reports for the same years. This report does not
+re-estimate that; it is cited in Stage 7 as literature-grounded context.</p>""")
 
 conv = rec[rec.trend == "converging"].variable.tolist()
 div = rec[rec.trend == "diverging"].variable.tolist()
@@ -217,6 +313,14 @@ they come from the same survey as the outcome, that is <em>absorption</em>, not
 explanation, and they are excluded from every headline model in this report. The
 number is reported because it measures how much apparent success is available to
 an analysis that ignores the distinction.</p>
+""" + table(e3[e3.stat == "within_country_r"],
+    ["var", "value", "greece_timeseries_r"],
+    ["Item", "Within-country r", "Greece over time"],
+    "Table 2. Correlation with reported hardship after removing each country's "
+    "own mean. Within Greece, three of the four align strongly; arrears does not.",
+    right=("value", "greece_timeseries_r"),
+    fmt={"value": lambda v: f"{v:.3f}", "greece_timeseries_r": lambda v: f"{v:.3f}"})
++ """
 <h3>What the candidate variables look like</h3>
 <p>Before modelling, the descriptive picture. Two recoveries ran in opposite
 directions between 2015 and 2024. Long-term unemployment closed 71% of its gap
@@ -239,6 +343,17 @@ S4 = stage(4, "Current conditions", "Which present-day conditions predict hardsh
     "years, and what a local paycheck buys.",
     claim_box("V2-4.C1") + claim_box("V2-4.C2") + claim_box("V2-4.C4")
     + claim_box("V2-4.X") + """
+""" + table(e1.reset_index().sort_values("p_raw"),
+    ["var", "construct", "coef", "se", "p_fdr", "boot_p", "std_effect", "n", "outcome"],
+    ["Variable", "Con", "Coef", "SE", "p FDR", "Bootstrap p", "Effect (SD)", "n", "Outcome"],
+    "Table 3. All nine current-level constructs plus the proximity-blocked "
+    "diagnostic, tested one at a time against AROP and year effects. The "
+    "bootstrap column is what decides: two results clear FDR and collapse under it.",
+    right=("coef", "se", "p_fdr", "boot_p", "std_effect", "n"),
+    fmt={"coef": sig, "se": lambda v: f"{v:.4f}", "p_fdr": p_, "boot_p": p_,
+         "std_effect": lambda v: f"{v:.2f}", "n": lambda v: f"{int(v)}",
+         "outcome": outcome_label})
++ """
 <h3>Does the answer depend on which variable was chosen?</h3>
 <p>Mostly not. Lower national resources remain related to greater hardship under
 several measures. Long-term unemployment performs more consistently than
@@ -263,6 +378,24 @@ S5 = stage(5, "Accumulated history", "Does prolonged exposure matter beyond toda
     "housing deterioration since 2010 is supported but less securely.",
     claim_box("V2-5.C2") + claim_box("V2-5.C3") + claim_box("V2-5.C6")
     + claim_box("V2-5.X") + claim_box("V2-5.Z") + """
+""" + table(pd.read_csv(PROC / "e4_feasibility.csv"),
+    ["variable", "construct", "baseline", "countries_at_baseline", "feasible", "reason"],
+    ["Measure", "Con", "Baseline", "Countries", "Feasible", "Why"],
+    "Table 4. Which accumulations could be built at all. Three of ten could "
+    "not, and the baselines were NOT moved to make them testable.",
+    right=("countries_at_baseline",),
+    fmt={"feasible": lambda v: "yes" if v else "<strong>no</strong>",
+         "countries_at_baseline": lambda v: "&mdash;" if v != v else f"{int(v)}"})
++ table(e4.reset_index().sort_values("p_raw"),
+    ["var", "construct", "coef", "p_fdr", "boot_p", "std_effect", "n", "outcome"],
+    ["Accumulated measure", "Con", "Coef", "p FDR", "Bootstrap p", "Effect (SD)", "n", "Outcome"],
+    "Table 5. BH family 2. Three survive every pre-registered condition; "
+    "housing does so borderline, at 91 exceedances of 1,999.",
+    right=("coef", "p_fdr", "boot_p", "std_effect", "n"),
+    fmt={"coef": sig, "p_fdr": p_, "boot_p": p_,
+         "std_effect": lambda v: f"{v:.2f}", "n": lambda v: f"{int(v)}",
+         "outcome": outcome_label})
++ """
 <h3>Do the accumulated results survive alternative definitions?</h3>
 <p>Accumulated unemployment remains robust when built from long-term rather than
 headline unemployment &mdash; though the two correlate at 0.943, so that is
@@ -272,6 +405,26 @@ point the same way, but only the declared measure &mdash; the current
 uninterrupted run below a fixed 2008 base &mdash; passes every test. Housing
 remains supported but borderline. Failed accumulated measures were not rescued
 by trying alternatives.</p>
+""" + table(pd.read_csv(PROC / "e5_results.csv").dropna(subset=["sensitivity"]),
+    ["primary", "sensitivity", "sens_class", "coef", "boot_p", "disposition"],
+    ["Primary", "Alternative", "Class", "Coef", "Bootstrap p", "Disposition"],
+    "Table 6. Alternative constructions. Only one was declared in advance; the "
+    "other five were identified afterwards and can qualify a conclusion, never "
+    "create one.",
+    right=("coef", "boot_p"), fmt={"coef": sig, "boot_p": p_})
++ table(e7, ["pair", "focal", "controlling_for", "coef_joint", "p_fdr",
+             "boot_p", "focal_vif", "conditional_mde_sd", "reportable_outcome"],
+    ["Pair", "Focal", "Controlling for", "Coef", "p FDR", "Bootstrap p",
+     "Focal VIF", "MDE (SD)", "Outcome"],
+    "Table 7. The sixteen conditional coefficients, BH family 4. Each is tested "
+    "with its counterpart in the same model, on identical rows, against its own "
+    "pair-specific detectable effect.",
+    right=("coef_joint", "p_fdr", "boot_p", "focal_vif", "conditional_mde_sd"),
+    fmt={"coef_joint": sig, "p_fdr": p_, "boot_p": p_,
+         "focal_vif": lambda v: f"{v:.2f}",
+         "conditional_mde_sd": lambda v: "&mdash;" if v != v else f"{v:.2f}",
+         "reportable_outcome": outcome_label})
++ """
 <h3>The limitation that governs all of it</h3>
 """ + claim_box("V2-5.Y") + """
 <p>These findings distinguish countries with different histories. They do not
@@ -280,6 +433,18 @@ accumulated. Three related checks &mdash; the within/between decomposition, the
 accumulated-family tests, and the conditional joint models &mdash; reach the
 same conclusion on the same panel. The analysis identifies historical markers,
 not proven causes.</p>"""
+    + table(pd.read_csv(PROC / "e7_dynamic.csv"),
+        ["pair", "acc_between", "acc_between_p", "acc_within", "acc_within_p",
+         "fd_acc", "fd_acc_p", "dynamic_permitted"],
+        ["Pair", "Between", "p", "Within", "p", "First diff.", "p", "Dynamic?"],
+        "Table 8. Conditional between/within decomposition and first "
+        "differences, with the current measure controlled. Not one within term "
+        "is significant in the adverse direction.",
+        right=("acc_between", "acc_between_p", "acc_within", "acc_within_p",
+               "fd_acc", "fd_acc_p"),
+        fmt={"acc_between": sig, "acc_within": sig, "fd_acc": sig,
+             "acc_between_p": p_, "acc_within_p": p_, "fd_acc_p": p_,
+             "dynamic_permitted": lambda v: "<strong>no</strong>" if not v else "yes"})
     + figure("e4_between_within.svg",
         "Every accumulated result is carried by its between-country component."))
 
@@ -359,6 +524,49 @@ the precise share of Greece's gap accounted for depends on whether closely
 related deprivation measures are included.</p>
 <h3>What did not work, retained and labelled</h3>
 {claim_box("L-1")}{claim_box("L-2")}{claim_box("L-3")}{claim_box("L-4")}
+<h3>Methods, robustness and limitations</h3>
+<p>The outcome is the official Eurostat subjective-hardship indicator, extended
+backwards before 2010 using a constructed series validated against it on 432
+overlapping country-years. The window is 2015&ndash;2024 across the EU27, and
+every model conditions on relative income poverty and year effects &mdash; so a
+construct must explain hardship <em>beyond</em> what official poverty and common
+shocks already account for.</p>
+<p>Inference is country-clustered throughout, and nothing is called supported on
+a cluster-robust p-value alone. With 27 clusters and predictors varying mostly
+between countries, conventional standard errors are too confident: at Stage 4
+two constructs cleared multiple-testing correction below p = 0.01 and collapsed
+to 0.40 and 0.55 under a null-imposed wild cluster bootstrap. The bootstrap
+decides.</p>
+<p>Multiplicity is corrected within declared families, and a failure is only
+called <em>unsupported</em> where the design could have detected an effect worth
+detecting. That threshold was computed by simulation and published before any
+result: 0.70 residual standard deviations, about 9.3 points, for the family
+tests. The conditional tests at Stage 5 each carry their own threshold, because
+power there depends on how much independent variation survives once the
+counterpart is controlled.</p>
+""" + table(pd.read_csv(PROC / "e7_conditional_mde.csv"),
+    ["pair", "focal", "partial_corr", "marginal_mde_sd", "conditional_mde_sd",
+     "inflation", "boundary_fragile"],
+    ["Pair", "Focal", "Partial r", "Marginal MDE", "Conditional MDE",
+     "Inflation", "Fragile?"],
+    "Table 9. Detectable effects for the conditional tests, published before the "
+    "models were fitted. Five sit close enough to the 80% boundary that a rerun "
+    "could move them a step; their nulls cannot support strong exclusion claims.",
+    right=("partial_corr", "marginal_mde_sd", "conditional_mde_sd", "inflation"),
+    fmt={"partial_corr": lambda v: f"{v:+.3f}",
+         "marginal_mde_sd": lambda v: f"{v:.2f}",
+         "conditional_mde_sd": lambda v: f"{v:.2f}",
+         "inflation": lambda v: f"{v:.2f}&times;",
+         "boundary_fragile": lambda v: "<strong>yes</strong>" if v else "no"}) + """
+<p>Three limitations govern every result above. The evidence is
+<strong>predominantly between-country</strong>: it distinguishes countries with
+different histories rather than showing hardship rose inside Greece as damage
+accumulated. Nothing here is causal. And how much of Greece's gap appears
+accounted for depends materially on whether closely related deprivation measures
+are admitted, which Stage 6 shows directly.</p>
+<p>What was fixed in advance, and when, is recorded stage by stage in the
+research record: sixteen gated stages, each committed with no results present
+before it ran.</p>
 <h3>Where the evidence lives</h3>
 <p>Every number in this report is reproduced from a frozen artifact in
 <code>data/processed</code>. The full analytical record &mdash; sixteen gated
