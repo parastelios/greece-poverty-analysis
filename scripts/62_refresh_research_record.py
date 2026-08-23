@@ -207,6 +207,7 @@ ARTIFACT_PURPOSE = {
     "final_freeze.json": ("FINAL", "The eight locked items; model searching closed"),
     "context_register.csv": ("FINAL", "Stage 7 context: 6 entries, none headline-eligible"),
     "context_anchor.json": ("FINAL", "The context anchor, statuses and placement"),
+    "report_visual_manifest.csv": ("FINAL", "15 figures specified before any was built"),
     "ea_companion_residuals.csv": ("EA", "Companion residual ladder, 27 countries"),
 }
 
