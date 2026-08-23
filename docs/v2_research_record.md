@@ -44,7 +44,7 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | E7 |
 | Last completed stage | E6 |
 | Branch | `p6-rewrite` |
-| HEAD | `38231a2` E5 corrections: robustness not confirmation, no non-generalisation claim |
+| HEAD | `398ed80` E6: two specifications reported side by side; the disagreement is the result |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-23 |
 | Frozen V1 reference | `v1-final` |
@@ -2344,6 +2344,11 @@ distant from the outcome**.
 residual changes materially. It is a **stricter diagnostic**, not a replacement
 chosen because its result is preferable.
 
+Neither specification is independent of EU-SILC. Both retain AROP, which comes
+from the same survey. What EA removes is the *additional* P1 hardship predictor
+beyond AROP — that is the proximity distinction, and it is narrower than
+"same-instrument or not".
+
 Neither is the definitive model. They are not merged, averaged, or ranked by
 which residual looks better.
 
@@ -2355,7 +2360,7 @@ which residual looks better.
 | | Frozen P3 | EA companion |
 |---|---:|---:|
 | Predictors | 6 | 5 |
-| Same-instrument predictor | **yes (P1)** | no |
+| Additional P1 same-instrument predictor beyond AROP | **yes** | no |
 | Greece residual | **+6.93** | **−9.39** |
 | Greece rank | 3 / 27 | 25 / 27 |
 | R² | 0.907 | 0.821 |
@@ -2387,6 +2392,14 @@ Two things this cross-walk must not be read as saying.
 same outcome and the same 27 countries. It shows the frozen specification is
 *consistent* with the pre-registered framework — not that it was replicated.
 
+**It does not establish four independent contributions.** E1–E4 tested these
+variables mostly one at a time against AROP and year effects. Those were not
+tests of each coefficient's contribution *inside* the six-variable P3 model.
+
+> The cross-walk records which predictors received support in separate construct
+> tests. It does not show that all four contribute independently when entered
+> together in P3.
+
 **The housing row is a different variable.** Frozen P3 contains housing at its
 **current** level, which E1 found inconclusive. It is the **accumulated**
 housing measure that E4 supported, and that measure is not in P3.
@@ -2406,7 +2419,8 @@ C3 duration measure E4 supported was already inside the frozen specification.
    it, and both are reported under every outcome.
 5. Describing accumulated exposure **dynamically**. P5 and E4 both find the
    evidence predominantly between-country with no first-difference support.
-6. Treating E1–E5 as **replication** of P3.
+6. Treating E1–E5 as **replication** of P3, or as evidence that its predictors
+   contribute independently when entered jointly.
 7. Reopening the **fifteen pairwise family combinations**.
 
 ### What is not reopened
@@ -2421,6 +2435,10 @@ Nothing in E6 alters `p5f-frozen`.
 
 - That either specification is correct. The stage reports a dependency, not a
   preferred estimate.
+- That the EA companion is independent of EU-SILC. Both specifications retain
+  AROP; EA removes the additional P1 predictor beyond it.
+- That P3's supported predictors contribute independently in the joint model.
+  They were tested separately, not conditionally on each other.
 - That deprivation "should" be excluded. EA's Outcome C says the result depends
   on it, which is a statement about fragility, not about which model is right.
 - That the companion's over-prediction is more informative than P3's
@@ -2533,7 +2551,7 @@ frozen values from `p5f_frozen_result.json`, companion from `ea_results.csv`
 | D-41 | 2026-08-23 | E5 | Sensitivities split into DECLARED (1) and post-hoc ALTERNATIVE (5) | The alternative set was chosen knowing which primaries failed; it can qualify, never discover | Presenting all six as equivalent robustness evidence | `frozen` | — | — |
 | D-42 | 2026-08-23 | E6 | Frozen P3 and the EA companion reported side by side; neither named definitive | They differ by one predictor on identical rows and produce residuals of OPPOSITE SIGN | Merging them, averaging residuals, or ranking by residual size | `frozen` | D-09 | — |
 | D-43 | 2026-08-23 | E6 | The dependency on same-instrument deprivation is itself the reported result | Resolving the tension either way would discard the finding | Picking the better-reading specification and footnoting the other | `frozen` | D-13 | — |
-| D-44 | 2026-08-23 | E6 | The E1–E5 cross-walk is consistency, not replication | Every E test used the same panel, outcome and 27 countries | Citing E-stage support as independent corroboration of P3 | `frozen` | — | — |
+| D-44 | 2026-08-23 | E6 | The E1–E5 cross-walk is consistency, not replication, and not evidence of independent joint contribution | Same panel/outcome/countries; and the E tests were separate, not conditional on each other inside P3 | Citing E-stage support as independent corroboration, or as showing four independent contributions | `frozen` | — | — |
 | D-45 | 2026-08-23 | E6 | The fifteen pairwise family combinations remain closed | Searching combinations after seeing which constructs succeeded is the exploratory screening this design replaced | Testing them now that construct verdicts are known | `frozen` | D-07 | — |
 
 Allowed statuses: `proposed`, `pre-registered`, `frozen`, `superseded`,
@@ -2581,7 +2599,7 @@ Allowed statuses: `proposed`, `pre-registered`, `frozen`, `superseded`,
 | R-36 | E5 | hardship level | 2 C3 depth alternatives (post-hoc) | within-construct, common sample | n=270 | +0.098, +0.172 | — | — | 0.0870, 0.3170 | — | — | behave like their primaries; barred from promotion regardless | `cannot_promote` | `e5_results.csv` |
 | R-37 | E5 | — | `acc_housing_excess`, `acc_hicp_compounded` | — | — | no sensitivity run | — | — | — | — | — | housing: only alternative is a rebasing exercise; inflation: none pre-declared, and building category measures post-result would reopen searching | `descriptive_only` | `e5_results.csv` |
 | R-38 | E6 | hardship level | frozen P3 vs EA companion | Greece residual, identical rows | n=269 | +6.93 (rank 3/27) vs −9.39 (rank 25/27); R² 0.907 vs 0.821 | — | — | — | — | — | **the disagreement IS the result**: absorption depends materially on whether same-instrument deprivation is admitted. Neither is definitive; not merged | `descriptive_only` | `e6_results.csv` |
-| R-39 | E6 | — | 6 frozen-P3 predictors vs E1–E5 verdicts | cross-walk | — | 4 supported, 1 inconclusive, 1 blocked | — | — | — | — | — | consistency with the pre-registered framework, NOT replication — same panel, outcome and countries | `descriptive_only` | `e6_crosswalk.csv` |
+| R-39 | E6 | — | 6 frozen-P3 predictors vs E1–E5 verdicts | cross-walk | — | 4 supported, 1 inconclusive, 1 blocked | — | — | — | — | — | consistency with the framework, NOT replication (same data) and NOT evidence of independent joint contribution (tested separately) | `descriptive_only` | `e6_crosswalk.csv` |
 
 Allowed statuses: `supported`, `unsupported_with_adequate_power`,
 `inconclusive_under_available_power`, `failed_incremental_criterion`,
@@ -2666,6 +2684,8 @@ Deviations must be disclosed in the stage that made them, not only here.
 | C-22 | 2026-08-23 | E5 described C2's sensitivity as confirmation and said the result "gets stronger" | `cum_excess_ltu` correlates r = 0.943 with the primary — a variant of the same measure, not independent evidence | Reworded to robustness to an alternative construction | `v2_research_record.md` | — |
 | C-23 | 2026-08-23 | E5 said wage duration "does not generalise" | Three non-significant alternatives all point the same way; two are inconclusive under available power, and failure to reject is not evidence of difference | Reworded: robust support is construction-specific; no claim about generalisation | `v2_research_record.md` | — |
 | C-24 | 2026-08-23 | E5 justified skipping inflation sensitivities by citing E2's exclusion | E2 excluded ANNUAL food and housing inflation at one magnitude, not every accumulated category measure | Replaced with the correct stopping rule: none pre-declared, and post-result construction would reopen searching | `v2_research_record.md` | — |
+| C-25 | 2026-08-23 | E6 table said the EA companion has no same-instrument predictor | Both specifications retain AROP, itself an EU-SILC measure; EA removes the ADDITIONAL P1 predictor beyond it | Row relabelled "Additional P1 same-instrument predictor beyond AROP" | `v2_research_record.md` | — |
+| C-26 | 2026-08-23 | E6 cross-walk implied four independent P3 contributions | E1–E4 tested those variables separately against AROP and year effects, not conditionally inside the six-variable model | Caveat added; prohibited-reinterpretation 6 extended | `v2_research_record.md` | — |
 
 ## Artifact Index
 

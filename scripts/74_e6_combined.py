@@ -59,7 +59,8 @@ print(f"{bar}\nTWO SPECIFICATIONS, REPORTED SIDE BY SIDE\n{bar}\n")
 p3 = frozen["p3"]
 print(f"  {'':34} {'Frozen P3':>14} {'EA companion':>14}")
 print(f"  {'predictors':34} {6:>14} {5:>14}")
-print(f"  {'same-instrument predictor':34} {'YES (P1)':>14} {'no':>14}")
+print(f"  {'additional P1 predictor beyond AROP':34} {'YES':>14} {'no':>14}")
+print("  (both specifications retain AROP, itself an EU-SILC measure)")
 print(f"  {'Greece residual':34} {p3['greece_oos_residual']:>+14.2f} "
       f"{ea.companion_residual:>+14.2f}")
 print(f"  {'Greece rank':34} {str(p3['rank']):>14} "
@@ -126,8 +127,9 @@ PROHIBITED = [
     "it, and both are reported under every outcome.",
     "Describing accumulated exposure dynamically. P5 and E4 both find the "
     "evidence predominantly between-country, with no first-difference support.",
-    "Treating E1-E5 as replication of P3. Same panel, same outcome, same "
-    "countries.",
+    "Treating E1-E5 as replication of P3 (same panel, outcome and countries), "
+    "or as evidence that its predictors contribute independently when entered "
+    "jointly -- they were tested separately, not conditionally on each other.",
     "Reopening the fifteen pairwise family combinations. The pre-registration "
     "fixes the combined model and does not reopen it.",
 ]
