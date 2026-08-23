@@ -200,6 +200,9 @@ ARTIFACT_PURPOSE = {
     "e7_preregistration.json": ("E7", "FROZEN 8 pairs, BH family 4, conditional formulas"),
     "e7_conditional_mde.csv": ("E7", "Pair-specific conditional MDEs, published pre-fit"),
     "e7_mde_curves.csv": ("E7", "Power curves, conditional and marginal designs"),
+    "e7_results.csv": ("E7", "16 conditional coefficients, BH family 4"),
+    "e7_verdicts.csv": ("E7", "Per-pair verdict across the six possible outcomes"),
+    "e7_dynamic.csv": ("E7", "Conditional Mundlak and first differences"),
     "ea_companion_residuals.csv": ("EA", "Companion residual ladder, 27 countries"),
 }
 

@@ -86,6 +86,24 @@ SCHEMA = {
                                       "within": "coefficient", "within_p": "p_value",
                                       "fd_coef": "coefficient", "fd_p": "p_value",
                                       "n": "count"},
+    "e7_results.csv":                {"coef_joint": "coefficient", "se_joint": "se",
+                                      "p_raw": "p_value", "p_fdr": "p_value",
+                                      "boot_p": "p_value",
+                                      "ci_lo": "coefficient", "ci_hi": "coefficient",
+                                      "focal_vif": "coefficient",
+                                      "partial_corr": "correlation",
+                                      "std_effect": "coefficient",
+                                      "ci_abs_std_upper": "coefficient",
+                                      "conditional_mde_sd": "coefficient",
+                                      "greece_without": "residual",
+                                      "greece_joint": "residual",
+                                      "n": "count", "countries": "count"},
+    "e7_dynamic.csv":                {"acc_between": "coefficient",
+                                      "acc_between_p": "p_value",
+                                      "acc_within": "coefficient",
+                                      "acc_within_p": "p_value",
+                                      "fd_acc": "coefficient", "fd_acc_p": "p_value",
+                                      "fd_n": "count"},
     "e7_conditional_mde.csv":        {"partial_corr": "correlation",
                                       "residual_sd": "se", "between_sd": "se",
                                       "within_sd": "se",
@@ -155,7 +173,10 @@ NULLABLE = {("p2_specifications.csv", "post_gap"),
             # None when the first grid point already cleared the target, so
             # there is no preceding point to report.
             ("e7_conditional_mde.csv", "power_before_mde"),
-            ("e7_conditional_mde.csv", "mc_se_before_mde")}
+            ("e7_conditional_mde.csv", "mc_se_before_mde"),
+            # bootstrap runs only where FDR cleared; p_fdr is absent for
+            # coefficients excluded by the collinearity gate
+            ("e7_results.csv", "boot_p"), ("e7_results.csv", "p_fdr")}
 
 problems, checked = [], 0
 for fname, cols in SCHEMA.items():
