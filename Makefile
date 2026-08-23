@@ -52,6 +52,7 @@ verify:
 	cd $(SCRIPTS) && $(PY) test_validate_outputs.py
 	cd $(SCRIPTS) && $(PY) test_claim_containers.py
 	cd $(SCRIPTS) && $(PY) test_context_anchors.py
+	cd $(SCRIPTS) && $(PY) verify_figures.py
 	cd $(SCRIPTS) && $(PY) audit_reported_outputs.py
 	cd $(SCRIPTS) && $(PY) verify_build.py
 	cd $(SCRIPTS) && $(PY) 78_final_claim_freeze.py > /dev/null
@@ -80,6 +81,7 @@ release-verify:
 	cd $(SCRIPTS) && $(PY) test_validate_outputs.py
 	cd $(SCRIPTS) && $(PY) test_claim_containers.py
 	cd $(SCRIPTS) && $(PY) test_context_anchors.py
+	cd $(SCRIPTS) && $(PY) verify_figures.py
 	cd $(SCRIPTS) && $(PY) audit_reported_outputs.py
 	cd $(SCRIPTS) && $(PY) verify_build.py
 	cd $(SCRIPTS) && $(PY) audit_parity.py --release

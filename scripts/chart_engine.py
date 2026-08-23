@@ -22,6 +22,62 @@ The remaining manifest types are added the same way, one function each.
 import html
 import json
 
+# ---------------------------------------------------------------------------
+# READER-FACING NAMES. Code names belong in tooltips and the appendix, never in
+# a title, axis or row label. One map, shared by every figure, so a variable
+# cannot appear as `wadj_a01` in one chart and by name in another.
+# ---------------------------------------------------------------------------
+DISPLAY = {
+    "subjective_poverty": "Reported hardship",
+    "arop": "Income poverty (AROP)",
+    "arope": "AROPE",
+    "arop_threshold_real": "Real poverty threshold",
+    "aic_pps_pc": "Material resources",
+    "aic_pps_pc_k": "Material resources",
+    "gdp_pps_pc": "GDP per head",
+    "real_gdp_pc": "Real GDP per head",
+    "consumption_pc": "Consumption per head",
+    "hourly_comp": "Hourly compensation",
+    "ltu_rate": "Long-term unemployment",
+    "unemployment_rate": "Unemployment",
+    "youth_unemployment": "Youth unemployment",
+    "employment_rate": "Employment rate",
+    "real_wages_idx": "Real wages",
+    "real_income_idx": "Real household income",
+    "pct_below_peak": "Share below own GDP peak",
+    "wadj_a01": "Wage-adjusted affordability",
+    "work_effort_squeeze": "Work-effort squeeze",
+    "hicp": "Inflation",
+    "hicp_food": "Food inflation",
+    "hicp_housing": "Housing inflation",
+    "housing_cost_overburden": "Housing-cost overburden",
+    "severe_mat_soc_deprivation": "Material deprivation",
+    "arrears": "Arrears on bills",
+    "unexpected_expenses": "Cannot meet an unexpected expense",
+    "warm": "Cannot keep the home warm",
+    "net_migration": "Net migration",
+    "s80s20": "Income inequality (S80/S20)",
+    "saving_rate": "Household saving rate",
+    "debt_to_income": "Household debt to income",
+    "working_hours": "Weekly working hours",
+    "acc_cum_excess_unemployment": "Accumulated unemployment",
+    "cum_excess_unemployment": "Accumulated unemployment",
+    "cum_excess_ltu": "Accumulated long-term unemployment",
+    "dur_real_wages_below": "Years wages below 2008",
+    "wage_years_below_2008": "Years wages below 2008",
+    "acc_real_wages_shortfall": "Cumulative wage shortfall",
+    "acc_pct_below_peak": "Cumulative GDP shortfall",
+    "acc_threshold_shortfall": "Cumulative threshold shortfall",
+    "acc_wadj_excess": "Accumulated affordability pressure",
+    "acc_hicp_compounded": "Compounded inflation since 2008",
+    "acc_housing_excess": "Housing deterioration since 2010",
+}
+
+
+def name(code):
+    """Reader-facing name, falling back to the code if none is registered."""
+    return DISPLAY.get(code, code)
+
 # --------------------------------------------------------------------------- CSS
 CSS = """
 .figure{margin:1.8rem 0;border:1px solid var(--border);border-radius:8px;

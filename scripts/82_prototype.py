@@ -31,13 +31,13 @@ f1_payload = {
     "alt": "Greek subjective hardship against relative income poverty, "
            "2015 to 2024, with EU medians",
     "series": [
-        {"label": "Greece: hardship", "tone": "gr", "cls": "line-gr",
+        {"label": "Greece: " + ce.name("subjective_poverty").lower(), "tone": "gr", "cls": "line-gr",
          "values": [round(float(gr.subjective_poverty.get(y)), 1) for y in yrs]},
-        {"label": "Greece: AROP", "tone": "gr", "cls": "line-faint",
+        {"label": "Greece: income poverty", "tone": "gr", "cls": "line-faint",
          "values": [round(float(gr.arop.get(y)), 1) for y in yrs]},
-        {"label": "EU: hardship", "tone": "eu", "cls": "line-eu",
+        {"label": "EU: reported hardship", "tone": "eu", "cls": "line-eu",
          "values": [round(float(med.subjective_poverty.get(y)), 1) for y in yrs]},
-        {"label": "EU: AROP", "tone": "eu", "cls": "line-faint",
+        {"label": "EU: income poverty", "tone": "eu", "cls": "line-faint",
          "values": [round(float(med.arop.get(y)), 1) for y in yrs]},
     ],
 }
@@ -53,8 +53,8 @@ f1_fb = ("<table><caption class='sr'>Greek hardship and AROP by year</caption>"
          "<th class=num>EU hardship</th><th class=num>EU AROP</th></tr></thead>"
          f"<tbody>{rows}</tbody></table>")
 
-F1 = ce.figure("F1", "Reported hardship and official income poverty diverge, "
-               "and the distance does not close",
+F1 = ce.figure("F1", "Reported hardship and income poverty remain far apart, "
+               "despite some narrowing",
                m1.question, m1.status_label, "panel", f1_payload, f1_fb,
                caveat=m1.caveat, appendix_link="statistical_appendix.html")
 
@@ -83,13 +83,14 @@ for r in d9.itertuples():
     est = float(r.coef) * scale * flip
     a, b = float(r.ci_lo) * scale * flip, float(r.ci_hi) * scale * flip
     f9_rows.append({
-        "label": r.var, "est": round(est, 3),
+        "label": ce.name(r.var), "est": round(est, 3),
         "lo": round(min(a, b), 3), "hi": round(max(a, b), 3),
         "tone": TONE.get(r.outcome, "text-muted"),
         "strong": r.outcome == "supported",
         "right": SHORT.get(r.outcome, ""),
-        "detail": (f"{est:+.2f} SD in the adverse direction "
-                   f"[{min(a, b):+.2f}, {max(a, b):+.2f}]<br>"
+        "detail": (f"<span style='opacity:.6'>{r.var}</span><br>"
+                   f"{est:+.2f} SD in the adverse direction<br>"
+                   f"cluster-robust 95% CI [{min(a, b):+.2f}, {max(a, b):+.2f}]<br>"
                    f"cluster-robust p {r.p_raw:.4f} &rarr; FDR "
                    f"{'&mdash;' if r.p_fdr != r.p_fdr else f'{r.p_fdr:.4f}'}<br>"
                    f"bootstrap p <b>{boot}</b>{gate}"),
@@ -98,7 +99,7 @@ f9_payload = {"rows": f9_rows,
               "alt": "Standardised effect per construct with the interval, "
                      "coloured by pre-registered outcome"}
 rows9 = "".join(
-    f"<tr><td>{r.var}</td><td class=num>{r.std_effect:.2f}</td>"
+    f"<tr><td>{ce.name(r.var)}</td><td class=num>{r.std_effect:.2f}</td>"
     f"<td class=num>{r.p_raw:.4f}</td>"
     f"<td class=num>{'—' if r.p_fdr != r.p_fdr else f'{r.p_fdr:.4f}'}</td>"
     f"<td class=num>{'—' if r.boot_p != r.boot_p else f'{r.boot_p:.4f}'}</td>"
@@ -108,9 +109,14 @@ f9_fb = ("<table><thead><tr><th>Construct</th><th class=num>Effect (SD)</th>"
          "<th class=num>Bootstrap p</th><th>Outcome</th></tr></thead>"
          f"<tbody>{rows9}</tbody></table>")
 
-F9 = ce.figure("F9", "Two constructs clear correction and collapse under the "
-               "bootstrap", m9.question, m9.status_label, "coefficient",
-               f9_payload, f9_fb, caveat=m9.caveat,
+F9 = ce.figure("F9", "Three current-condition constructs survive the full "
+               "testing sequence", m9.question, m9.status_label, "coefficient",
+               f9_payload, f9_fb,
+               caveat="Bars are CLUSTER-ROBUST 95% confidence intervals. They "
+                      "are not bootstrap intervals: the wild cluster bootstrap "
+                      "determines the final support status, and two constructs "
+                      "whose intervals exclude zero here still fail it. "
+                      + m9.caveat,
                appendix_link="statistical_appendix.html")
 
 # ------------------------------------------------------------------- shell
@@ -145,8 +151,6 @@ averages 52.6 points, and Greece ranks first of 27 on reported hardship while
 ranking seventh on at-risk-of-poverty. The two measures are not describing the
 same thing, and the divergence is not a rounding artefact.</p>
 {F1}
-<p>AROPE is deliberately absent from that figure. It enters at Stage 2 as the
-bridge, and showing it here would pre-empt the step.</p>
 
 <h2>Stage 4 &mdash; Current conditions</h2>
 <p>Each construct was tested one at a time against relative income poverty and
