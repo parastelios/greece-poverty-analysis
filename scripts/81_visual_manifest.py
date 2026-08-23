@@ -201,6 +201,32 @@ M = [
       caveat="Generic pessimism is INSUFFICIENT, not disproved. A "
              "financial-domain-specific reporting difference cannot be excluded.",
       status_label="descriptive corroboration"),
+ dict(id="F16", stage=7, chart_type="panel",
+      question="Did the crisis also become an exit route, and has that reversed?",
+      artifact="migration_nationals_panel.csv",
+      series="departures and returns of Greek nationals 2008-2024, switchable "
+             "to the net flow around a zero line and to an EU comparison",
+      interaction="hover reads departures, returns and the net flow for the "
+                  "year; the zero line marks the turn from net exit to net return",
+      fallback="year x departures, returns, net flow, rate per 1,000",
+      caveat="CONTEXTUAL CONSEQUENCE AND POSSIBLE CONTRIBUTOR, not an "
+             "independently supported predictor. Net migration was tested "
+             "directly at the diagnostic stage and returned nothing "
+             "(p = 0.4006), which speaks to aggregate prediction and to "
+             "neither causal direction.",
+      status_label="contextual consequence"),
+ dict(id="F17", stage=7, chart_type="ladder",
+      question="How does Greek institutional trust compare with the OECD?",
+      artifact="oecd_trust_2023.csv",
+      series="Greece against the OECD average, central government, 2023",
+      interaction="hover reads the share and the survey window",
+      fallback="entity, share reporting high or moderately high trust",
+      caveat="A 2023 SNAPSHOT, not a trend. Older Greek trust figures come "
+             "from different sources, definitions and survey schedules, and "
+             "joining them into one line would manufacture a series that does "
+             "not exist. Contextual evidence: not modelled, and no variable in "
+             "any model above measures trust.",
+      status_label="contextual evidence"),
 ]
 
 # NARRATIVE OWNERSHIP. Every visual belongs to a claim or a context entry, and
@@ -212,7 +238,8 @@ OWNER = {
     6: ("V2-3.2", "expandable"), 7: ("V2-4.X", "main"), 8: ("V2-3.1", "main"),
     9: ("V2-4.C2", "main"), 10: ("V2-4.C1", "expandable"),
     11: ("V2-5.C2", "main"), 12: ("V2-5.C2", "main"), 13: ("V2-5.Y", "main"),
-    14: ("V2-6.1", "main"), 15: ("CTX-1", "main"),
+    14: ("V2-6.1", "main"), 15: ("CTX-4", "main"), 16: ("CTX-2", "expandable"),
+    17: ("CTX-1", "main"),
 }
 for i, e in enumerate(M, start=1):
     e["id"] = f"F{i}"
@@ -258,8 +285,12 @@ for s in sorted(df.stage.unique()):
     print()
 
 print(bar); print("BUDGET"); print(bar)
-print(f"  figures          {len(df)}   (target 12-15)")
-if not 12 <= len(df) <= 15:
+# Raised from 15 to 17 for the two contextual figures. Contextual status should
+# restrict INTERPRETATION, not prevent visualisation, and forcing migration and
+# trust into an existing chart would have made one figure carry two unrelated
+# topics.
+print(f"  figures          {len(df)}   (target 12-17)")
+if not 12 <= len(df) <= 17:
     raise SystemExit(f"manifest is outside the agreed budget: {len(df)} figures")
 print("  the evidence ladder is a TABLE, not a chart: it summarises status "
       "rather than showing a distribution")

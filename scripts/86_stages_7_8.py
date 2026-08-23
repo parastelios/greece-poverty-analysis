@@ -19,6 +19,14 @@ man = pd.read_csv(PROC / "report_visual_manifest.csv").set_index("id")
 ctx = pd.read_csv(PROC / "context_register.csv").set_index("id")
 claims = pd.read_csv(PROC / "e_final_claims.csv").set_index("id")
 cross = pd.read_csv(PROC / "reporting_style_cross_indicator.csv")
+NAMES = {"EL": "Greece", "BG": "Bulgaria", "RO": "Romania", "HU": "Hungary",
+         "LU": "Luxembourg", "CY": "Cyprus", "LV": "Latvia", "LT": "Lithuania",
+         "EE": "Estonia", "ES": "Spain", "PT": "Portugal", "IT": "Italy",
+         "FR": "France", "DE": "Germany", "NL": "Netherlands", "BE": "Belgium",
+         "AT": "Austria", "IE": "Ireland", "FI": "Finland", "SE": "Sweden",
+         "DK": "Denmark", "PL": "Poland", "CZ": "Czechia", "SK": "Slovakia",
+         "SI": "Slovenia", "HR": "Croatia", "MT": "Malta"}
+
 
 
 def payload_tag(d, kind="", label=""):
@@ -62,10 +70,97 @@ FIGS = {"F15": dict(
         "between 2nd and 6th on life satisfaction."))}
 
 
+# ---- F16: the crisis as an exit route, and its reversal -------------------
+mig = pd.read_csv(PROC / "migration_nationals_panel.csv")
+gm = mig[mig.geo == "EL"].sort_values("time")
+myrs = [int(y) for y in gm.time]
+f16 = ce.Series([str(y) for y in myrs], dp=0, title="Departures and returns")
+f16.add("Departures", [float(v) for v in gm.emigration_nationals])
+f16.add("Returns", [float(v) for v in gm.immigration_nationals])
+v16a = {"years": myrs, "dp": 0,
+        "alt": "Greek nationals leaving and returning, 2008 to 2024",
+        "series": [{"label": "Departures", "tone": "gr", "style": "solid",
+                    "weight": "strong",
+                    "values": [int(v) for v in gm.emigration_nationals]},
+                   {"label": "Returns", "tone": "series-3", "style": "solid",
+                    "weight": "normal",
+                    "values": [int(v) for v in gm.immigration_nationals]}]}
+f16b = ce.Series([str(y) for y in myrs], dp=0, title="Net flow")
+f16b.add("Net outflow of nationals", [float(v) for v in gm.net_migration_nationals])
+v16b = {"years": myrs, "dp": 0,
+        "alt": "Net outflow of Greek nationals; positive is net exit, negative "
+               "is net return",
+        "series": [{"label": "Net outflow", "tone": "gr", "style": "solid",
+                    "weight": "strong",
+                    "values": [int(v) for v in gm.net_migration_nationals]}]}
+latest_m = mig[mig.time == mig.time.max()].dropna(subset=["net_migration_rate_per1000"])
+latest_m = latest_m.sort_values("net_migration_rate_per1000", ascending=False)
+f16c = ce.Series(["Net outflow per 1,000"], dp=2, title="EU comparison")
+rows16c = []
+for i, r in enumerate(latest_m.itertuples(), start=1):
+    nm = NAMES.get(r.geo, r.geo)
+    f16c.add(nm, [float(r.net_migration_rate_per1000)])
+    rows16c.append({"label": nm, "name": nm,
+                    "value": round(float(r.net_migration_rate_per1000), 2),
+                    "highlight": r.geo == "EL",
+                    "detail": f"rank {i} of {len(latest_m)}<br>"
+                              "<span style='opacity:.6'>net outflow of nationals "
+                              "per 1,000 residents</span>"})
+v16c = {"rows": rows16c, "dp": 2, "reference": 0.0, "referenceLabel": "balance",
+        "alt": "Net outflow of nationals per 1,000 residents, latest year"}
+FIGS["F16"] = dict(
+    caption="The crisis also became an exit route &mdash; and since 2023 that "
+            "has reversed",
+    kind="panel",
+    views=[("Departures and returns", v16a), ("Net flow", v16b),
+           ("EU comparison", v16c, "ladder")],
+    view_series=[f16, f16b, f16c], first="Series",
+    extra_caveat=("Net outflow peaked at 44,502 in 2012. By 2023 the flow had "
+                  "turned: more Greek nationals returned than left, and in 2024 "
+                  "the net return was 19,852."))
+
+# ---- F17: the trust snapshot ---------------------------------------------
+tr = pd.read_csv(PROC / "oecd_trust_2023.csv")
+f17 = ce.Series(["Share reporting high or moderately high trust (%)"], dp=1)
+rows17 = []
+for r in tr.itertuples():
+    f17.add(r.entity, [float(r.share_high_or_moderate_trust)])
+    rows17.append({"label": r.entity, "name": r.entity,
+                   "value": float(r.share_high_or_moderate_trust),
+                   "highlight": bool(r.highlight),
+                   "detail": "trust in central government, 2023<br>"
+                             "<span style='opacity:.6'>OECD Trust Survey, "
+                             "fieldwork October-November 2023</span>"})
+FIGS["F17"] = dict(
+    caption="Institutional trust in Greece is below the OECD average",
+    kind="ladder",
+    payload={"rows": rows17, "dp": 1, "unit": "%", "labelAll": True,
+             "alt": "Trust in central government, Greece against the OECD "
+                    "average, 2023"},
+    series=f17, first="Entity",
+    extra_caveat=("This is a TWO-POINT SNAPSHOT, and deliberately so. The "
+                  "project holds only the figures read from the OECD country "
+                  "note; the per-institution breakdown circulating in summaries "
+                  "was not verified against the source and is not plotted. "
+                  "Obtaining the underlying OECD country table would allow the "
+                  "full distribution with Greece placed in it."))
+
+
 def build(fid, spec):
     m = man.loc[fid]
-    payload_html = payload_tag(spec["payload"])
-    body = spec["series"].fallback_table(spec.get("first", ""))
+    views = spec.get("views")
+    if views:
+        tags, tables = [], []
+        for i, v in enumerate(views):
+            tags.append(payload_tag(v[1], v[2] if len(v) > 2 else spec["kind"], v[0]))
+            s = spec["view_series"][i]
+            s.title = v[0]
+            tables.append(s.fallback_table(spec.get("first", ""), view=i))
+        payload_html, body = "".join(tags), "".join(tables)
+        spec = dict(spec, series=spec["view_series"][0])
+    else:
+        payload_html = payload_tag(spec["payload"])
+        body = spec["series"].fallback_table(spec.get("first", ""))
     cav = m.caveat
     if spec.get("extra_caveat"):
         cav = ("" if cav != cav else str(cav) + " ") + spec["extra_caveat"]
@@ -119,7 +214,11 @@ ROWS = [
     ("Unsupported", "Annual food and housing inflation at 0.70 SD; annual "
      "headline inflation at its conditional magnitude", "E2 and E7"),
     ("Blocked", "Arrears, unexpected expenses, heating and material deprivation "
-     "as explanations", "same survey instrument as the outcome"),
+     "as EXPLANATIONS", "same survey instrument as the outcome"),
+    ("Descriptive", "Those same four items track reported hardship strongly "
+     "within the same survey, at within-country correlations of 0.63 to 0.80, "
+     "and absorb 71% of the baseline residual",
+     "corroboration of material grounding, not explanation"),
     ("Blocked", "The transfer-policy comparators",
      "algebraic functions of income poverty"),
     ("Failed or superseded", "The synthetic-control comparative design; "
@@ -146,32 +245,37 @@ print(f"batch 4: {len(FIGS)} figure, {len(ctx)} context entries, "
 # ---- the page -------------------------------------------------------------
 BASE = re.search(r"<style.*?</style>", (OUT / "report.html").read_text(), re.S).group(0)
 F15 = build("F15", FIGS["F15"])
+F16 = build("F16", FIGS["F16"])
+F17 = build("F17", FIGS["F17"])
 
 # Connected discussion, not six equal cards: each entry is introduced by prose
 # that says why it appears here and how it relates to the one before.
+# Order: the figure that TESTS reporting style is followed immediately by the
+# entry that interprets it. Previously reporting style was introduced, cut
+# across by four other topics, and then introduced again.
 DISC = {
- "CTX-2": "<p>Start with the one that would change the reading most if it were "
-          "true. Two households in identical circumstances may describe their "
-          "security differently depending on whether they expect institutions "
-          "to help. Greek trust in central government sits well below the OECD "
-          "average, which makes the idea plausible &mdash; and no variable in "
-          "any model above measures it.</p>",
+ "CTX-1": "<p>That is the one contextual topic this project tested, and the "
+          "figure above is the test. It weakens the reading-style alternative "
+          "without eliminating it, which is the right place to begin "
+          "everything that follows.</p>",
+ "CTX-2": "<p>If reporting style is not the whole answer, the next candidate is "
+          "the one that would change the reading most if it were true. Two "
+          "households in identical circumstances may describe their security "
+          "differently depending on whether they expect institutions to help. "
+          "Greek trust in central government sits below the OECD average, and "
+          "no variable in any model above measures it.</p>",
  "CTX-3": "<p>Trust does not arise from nothing, which leads to the period "
-          "itself. The accumulated exposure measured in Stage 5 was produced by "
+          "itself. The historical exposure measured in Stage 5 was produced by "
           "something: a decade of fiscal consolidation whose distributional "
           "effects are documented in work using EU-SILC microdata.</p>",
  "CTX-5": "<p>One channel within that period is worth naming because it is "
           "specific and testable, just not here. Consolidation leaned heavily "
           "on indirect taxation, and published incidence work finds the burden "
           "became markedly more regressive.</p>",
- "CTX-4": "<p>The same decade saw large-scale emigration, which sits awkwardly "
-          "in any account because it runs in both directions at once.</p>",
- "CTX-1": "<p>Against all of that sits the alternative reading: that none of it "
-          "is needed, because Greeks simply report more darkly. Stage 7's one "
-          "tested result speaks to this directly, and the figure above is that "
-          "test.</p>",
- "CTX-6": "<p>Which leaves what a reader should take away for measurement "
-          "rather than for policy.</p>",
+ "CTX-4": "<p>The same decade had another outlet, and it runs in both "
+          "directions at once.</p>",
+ "CTX-6": "<p>Which leaves what a reader should take from all of this for "
+          "measurement rather than for policy.</p>",
 }
 
 PAGE = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
@@ -218,22 +322,24 @@ accumulated history. It does not identify which institutions or policies
 produced that history, and the honest thing is to say so and then say what is
 plausible anyway &mdash; labelled as what it is.</p>
 {F15}
-<p>So the reading style alternative is weakened but not eliminated, which is the
-right place to begin the rest of the discussion.</p>
+{DISC['CTX-1']}{ctx_block('CTX-1', '')}
 {DISC['CTX-2']}{ctx_block('CTX-2', '')}
+{F17}
 {DISC['CTX-3']}{ctx_block('CTX-3', '')}
 {DISC['CTX-5']}{ctx_block('CTX-5', '')}
 {DISC['CTX-4']}{ctx_block('CTX-4', '')}
-{DISC['CTX-1']}{ctx_block('CTX-1', '')}
+{F16}
 {DISC['CTX-6']}{ctx_block('CTX-6', '')}
 
 <h2>Stage 8 &mdash; Conclusion</h2>
-<p>Greece's unusually high reported hardship is not simply pessimism. It aligns
-with concrete deprivation, and with a long history of unemployment, wage
-non-recovery and housing deterioration.</p>
+<p>Greece's hardship gap cannot be explained by generic pessimism alone,
+although a financial-domain-specific reporting difference cannot be excluded. It
+aligns with concrete affordability failures, and with a long history of
+unemployment, wage non-recovery and housing deterioration.</p>
 <p>Relative income poverty understates crisis-era deterioration when read alone.
-AROPE narrows the puzzle and does not close it. Concrete hardship indicators
-corroborate that the subjective measure is materially grounded. And accumulated
+AROPE narrows the puzzle and does not close it. Concrete affordability failures
+move closely with reported hardship within the same EU-SILC survey, which
+corroborates the measure but does not independently validate it. And accumulated
 unemployment, wage non-recovery and housing deterioration provide additional
 conditional cross-country information beyond current snapshots.</p>
 <p>The evidence remains <strong>cross-country rather than causal</strong>, and

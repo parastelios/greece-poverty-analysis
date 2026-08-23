@@ -206,6 +206,28 @@ for path in TARGETS:
     check("no banned between/within overstatement in prose",
           not hits, "; ".join(sorted(set(hits))))
 
+    # 2e. THE FIGURE MUST BE THE ONE THE MANIFEST DESCRIBES.
+    #
+    #     Inserting two entries ahead of an existing one shifted every id during
+    #     renumbering, so the migration figure was built carrying the trust
+    #     figure's badge, question and caveat. Nothing caught it: the chart drew,
+    #     the checksum matched, the fallback was present. Comparing the rendered
+    #     chart type against the manifest's would have.
+    if manp.exists():
+        mism_kind = []
+        for b in blocks:
+            fid = re.search(r'id="([^"]+)"', b).group(1)
+            if fid not in man.index:
+                continue
+            host = re.search(r'data-chart="([^"]*)"', b)
+            payload_kinds = set(re.findall(r'data-kind="([^"]*)"', b))
+            got = payload_kinds or ({host.group(1)} if host else set())
+            want = str(man.loc[fid].chart_type)
+            if want not in got:
+                mism_kind.append(f"{fid}: renders {sorted(got)}, manifest says {want}")
+        check("each figure's chart type matches its manifest entry",
+              not mism_kind, "; ".join(mism_kind))
+
     # 3. NO FIXED DOM TARGETS. The old library bound to hardcoded ids and
     #    aborted silently when the structure moved.
     js = "".join(re.findall(r"<script>(.*?)</script>", raw, re.S))
