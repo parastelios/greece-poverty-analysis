@@ -53,6 +53,8 @@ ENTRIES = [
         "relates_to_claim": "V2-7.1",
         "evidence": "reporting_style_cross_indicator.csv",
         "detect": "generic pessimism|reporting style|reporting culture",
+        "source": "reporting_style_cross_indicator.csv, this project",
+        "source_status": "verified", "review_date": "2026-08-23",
     },
     {
         "id": "CTX-2", "topic": "Institutional trust",
@@ -63,6 +65,14 @@ ENTRIES = [
                      "implying it was tested and found to matter.",
         "relates_to_claim": "", "evidence": "external literature",
         "detect": "institutional trust|trust in institutions|trust in the state",
+        # FLAGGED: no verified citation is held. Naming what is required is
+        # honest; inventing a reference is not, and this project has already
+        # been bitten by unverifiable citations.
+        "source": "REQUIRED: a trust series with Greek coverage over the "
+                  "window -- Eurobarometer institutional-trust items or the "
+                  "OECD Trust Survey -- cited to the primary release, not to "
+                  "a secondary summary",
+        "source_status": "REQUIRED-PENDING", "review_date": "2026-08-23",
     },
     {
         "id": "CTX-3", "topic": "Crisis and adjustment policies",
@@ -73,6 +83,10 @@ ENTRIES = [
                      "specific programme or measure.",
         "relates_to_claim": "", "evidence": "external literature",
         "detect": "adjustment programme|adjustment program|austerity|bailout|memorandum",
+        "source": "REQUIRED: the adjustment-programme literature already "
+                  "verified in publication_strategy.md, incl. Andriopoulou, "
+                  "Kanavitsa & Tsakloglou (LSE GreeSE 149, 2020)",
+        "source_status": "REQUIRED-PENDING", "review_date": "2026-08-23",
     },
     {
         "id": "CTX-4", "topic": "Migration",
@@ -84,6 +98,9 @@ ENTRIES = [
                      "construction.",
         "relates_to_claim": "", "evidence": "e3_results.csv (null), external literature",
         "detect": "net migration|emigration|brain drain",
+        "source": "e3_results.csv for the null; REQUIRED for the contextual "
+                  "reading: a Greek emigration source covering 2008 onward",
+        "source_status": "REQUIRED-PENDING", "review_date": "2026-08-23",
     },
     {
         "id": "CTX-5", "topic": "Tax burden and unequal treatment",
@@ -94,6 +111,12 @@ ENTRIES = [
                      "tax-incidence data and none may be added post-freeze.",
         "relates_to_claim": "", "evidence": "none in this project",
         "detect": "tax burden|tax incidence|tax system|taxation",
+        # FLAGGED: the weakest-sourced entry. It is a future hypothesis and
+        # must not appear at all until a citation exists.
+        "source": "REQUIRED: tax-incidence microdata or a published Greek "
+                  "incidence study. NONE is held by this project, and the "
+                  "entry may not be written up without one",
+        "source_status": "REQUIRED-PENDING", "review_date": "2026-08-23",
     },
     {
         "id": "CTX-6", "topic": "Policy implications",
@@ -106,6 +129,8 @@ ENTRIES = [
                      "result.",
         "relates_to_claim": "", "evidence": "authors' reading of V2-1.2, V2-2.1, V2-5.*",
         "detect": "policy implication|dashboard should|we recommend|should combine",
+        "source": "not applicable -- authors' interpretation of V2-1.2, V2-2.1 and V2-5.*",
+        "source_status": "not applicable", "review_date": "2026-08-23",
     },
 ]
 
@@ -128,6 +153,11 @@ if df.detect.isna().any() or (df.detect == "").any():
     raise SystemExit("every context entry needs explicit detection phrases: a "
                      "key derived from the topic collapses to generic words "
                      "like 'crisis' or 'policy' and matches everything")
+for col in ("source", "source_status", "review_date"):
+    if df[col].isna().any() or (df[col].astype(str).str.strip() == "").any():
+        raise SystemExit(f"every context entry needs {col}")
+if set(df.source_status) - {"verified", "REQUIRED-PENDING", "not applicable"}:
+    raise SystemExit(f"unknown source_status: {sorted(set(df.source_status))}")
 bad = set(df.status) - set(STATUSES)
 if bad:
     raise SystemExit(f"unknown context status: {sorted(bad)}")
@@ -161,6 +191,14 @@ for c, v in PLACEMENT.items():
 
 print(f"\n{bar}\nGUARDS PASSED\n{bar}")
 print(f"  {len(df)} entries, 0 headline-eligible, 0 able to support a claim")
+pend = df[df.source_status == "REQUIRED-PENDING"]
+print(f"  sources: {int((df.source_status == 'verified').sum())} verified, "
+      f"{len(pend)} REQUIRED-PENDING, "
+      f"{int((df.source_status == 'not applicable').sum())} not applicable")
+for r in pend.itertuples():
+    print(f"    PENDING  {r.id}  {r.topic}")
+print("  A REQUIRED-PENDING entry may NOT be written up until its citation")
+print("  exists and is verified against the primary release.")
 print(f"  status vocabularies are disjoint from the claim register's")
 print(f"  the {len(linked)} cross-reference(s) resolve to real frozen claims")
 print("  the analytical freeze is untouched: no claim added, removed or reworded")

@@ -44,7 +44,7 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `p6-rewrite` |
-| HEAD | `ce62c3c` FINAL: freeze the claim set and close model searching |
+| HEAD | `6059489` Stage 7: a parity-checked context register, separate from the claim freeze |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-23 |
 | Frozen V1 reference | `v1-final` |
@@ -2945,21 +2945,54 @@ as consequence, never as driver.
 | Narrative | one readable chapter connecting the findings to lived institutional context |
 | Appendix | sources, exact indicators, coverage limitations and null tests |
 
-An entry appearing in any document **without its evidence-status label** is a
-defect, and this is now machine-checked. Each entry declares explicit detection
-phrases, and `audit_parity.py` fails the release build if a document discusses a
-context topic without carrying its status.
+### Anchored, not keyword-policed
 
-Against the *current*, pre-rewrite documents the check reports **8 pending
-items** — institutional trust in the report and narrative, adjustment policies
-in the paper, migration in all three, and taxation in the paper and narrative.
-Every one is a real instance of the defect the register exists to prevent, and
-they form the checklist the rewrite has to clear.
+Each context discussion sits in its own `data-context-id="CTX-x"` container,
+mirroring the `data-claim-id` system, and the container must carry **together**:
 
-> The first version of this check derived its keywords from the topic names and
-> collapsed to "crisis", "policy" and "migration" — words that match almost
-> every sentence in a paper about the Greek crisis. Phrases are now declared
-> explicitly in the register, and the build refuses an entry without them.
+| Part | What it is |
+|---|---|
+| `status` | the evidence-status label |
+| `permitted` | the permitted interpretation |
+| `limitation` | the limitation or forbidden interpretation |
+| `citation` | the supporting source, where one applies |
+
+Keyword detection could be satisfied by four unrelated sentences in four places,
+and could miss a paraphrase entirely. Container auditing fixes both: matching is
+by **distinctive-word overlap**, so the prose may paraphrase freely but cannot
+drift into an unrelated sentence. `audit_parity.py` distinguishes *unanchored*
+(topic discussed, no container) from *incomplete* (container present, parts
+missing), and blocks the release build on either.
+
+`scripts/test_context_anchors.py`, 14 tests, including one proving a paraphrase
+passes while unrelated prose in the same container fails.
+
+> Building this surfaced a pre-existing bug in the shared extractor: it cut at
+> the *end* of the matching close tag, leaving a `</p` fragment in the extracted
+> text that the tag-stripping regex could not remove. Fixed for claims and
+> context alike; both suites pass.
+
+### Sources and review dates
+
+Every entry records a source, a source status and a review date.
+
+| Entry | Source status |
+|---|---|
+| CTX-1 Financial expectations | **verified** — this project's own artifact |
+| CTX-2 Institutional trust | **REQUIRED-PENDING** |
+| CTX-3 Crisis and adjustment policies | **REQUIRED-PENDING** |
+| CTX-4 Migration | **REQUIRED-PENDING** (the E3 null is held; the contextual reading is not) |
+| CTX-5 Tax burden | **REQUIRED-PENDING** |
+| CTX-6 Policy implications | not applicable — authors' interpretation |
+
+**A `REQUIRED-PENDING` entry may not be written up until its citation exists and
+is verified against the primary release.** Four of six are pending, and the two
+you flagged — trust and taxation — are among them. The register names what each
+one requires rather than carrying an invented reference; this project has
+already been bitten by citations that could not be verified.
+
+Taxation is the weakest: the register records that no tax-incidence data is held
+and that the entry may not be written at all without a citation.
 
 ### Where the detail lives
 
@@ -3031,6 +3064,9 @@ they form the checklist the rewrite has to clear.
 | D-54 | 2026-08-23 | FINAL | MODEL SEARCHING CLOSED | Anything further is a new pre-registered project | Any post-freeze specification, construct, sensitivity, combination or subgroup | `frozen` | — | — |
 | D-55 | 2026-08-23 | FINAL | Stage 7 becomes a discussion grounded in literature, in a SEPARATE context register | Trust, policy, migration and taxation are needed for the story and must not become an informal second model | Adding them freely during prose writing; listing them beside the frozen claims | `frozen` | — | — |
 | D-56 | 2026-08-23 | FINAL | Context statuses are disjoint from claim statuses, and no context entry may support a claim | Two vocabularies that overlap would be read as one list of findings | A shared status vocabulary | `frozen` | — | — |
+| D-57 | 2026-08-23 | FINAL | Context discussions anchored in `data-context-id` containers, mirroring `data-claim-id` | Keyword detection can be satisfied by four unrelated sentences in four places, and can miss a paraphrase | Policing the discussion by keyword | `frozen` | — | — |
+| D-58 | 2026-08-23 | FINAL | Every context entry records a source, source status and review date | Four of six have no verified citation, including the two most exposed: trust and taxation | Writing the entries up before their citations exist | `frozen` | — | — |
+| D-59 | 2026-08-23 | FINAL | A `REQUIRED-PENDING` entry may not be written up at all | Naming what a source must be is honest; supplying an invented reference is not | Citing a plausible-looking reference to unblock the prose | `frozen` | — | — |
 
 Allowed statuses: `proposed`, `pre-registered`, `frozen`, `superseded`,
 `withdrawn`, `infeasible`.
@@ -3178,6 +3214,7 @@ Deviations must be disclosed in the stage that made them, not only here.
 | C-28 | 2026-08-23 | E7 said accumulation carries information "the present-day measure does not", and called P6 "current only" | Every failed current counterpart is inconclusive, not unsupported with adequate power | Reworded to "additional information after the current measure is controlled"; contributions explicitly not ruled out | `v2_research_record.md` | — |
 | C-29 | 2026-08-23 | E7 said the data "can separate current from accumulated in every pair" | VIFs below the gate mean nothing was auto-classified uninterpretable, not that estimation is precise | Reworded; the 7.76 VIF on `hicp` noted as inside the gate but not small | `v2_research_record.md` | — |
 | C-30 | 2026-08-23 | E7 called itself a "third independent route" after P5 and E4, and its FD results "significant" | All three use the same panel and related specifications; the eight dynamic tests were not multiplicity-corrected | "Third related analytical check"; FD results called nominally significant | `v2_research_record.md` | — |
+| C-31 | 2026-08-23 | The shared anchor extractor cut at the END of the matching close tag | Left a `</p` fragment in the extracted text that the tag-stripping regex cannot remove, having no `>` | Cut at the close tag's start; affects claims and context alike | `claim_anchors.py` | — |
 
 ## Artifact Index
 

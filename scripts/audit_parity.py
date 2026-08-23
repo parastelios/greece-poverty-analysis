@@ -138,28 +138,45 @@ for _, r in m.iterrows():
 # reports rather than fails while every count is zero, and starts biting the
 # moment a context topic is mentioned.
 # ---------------------------------------------------------------------------
-def check_context_parity(doc_text):
+def check_context_parity(raw_docs):
+    """Audit data-context-id containers, not document-wide keywords.
+
+    The keyword version could be satisfied by four unrelated sentences in four
+    places, and could miss a paraphrase entirely. Each context discussion is now
+    anchored in its own container, and the container must carry -- together --
+    the status label, the permitted interpretation, the limitation, and the
+    citation where one applies.
+
+    Two failures are distinguished. A topic discussed with NO container at all
+    is unanchored. A container present but incomplete names what is missing.
+    """
     import pandas as pd
     from pathlib import Path as _P
+    from claim_anchors import context_containers, context_completeness
     reg = _P(__file__).resolve().parents[1] / "data" / "processed" / "context_register.csv"
     if not reg.exists():
-        return []
+        return [], []
     ctx = pd.read_csv(reg)
-    problems = []
+    unanchored, incomplete = [], []
     for r in ctx.itertuples():
-        # EXPLICIT phrases, declared in the register. Deriving a key from the
-        # topic produced "crisis", "policy" and "migration", which match almost
-        # any sentence in a paper about the Greek crisis.
+        entry = {"status": r.status, "permitted": r.permitted,
+                 "forbidden": r.forbidden,
+                 "source": "" if str(r.source_status) == "not applicable" else r.source}
         phrases = [s.strip() for s in str(r.detect).lower().split("|") if s.strip()]
-        for doc, text in doc_text.items():
-            low = text.lower()
-            if not any(ph in low for ph in phrases):
+        for doc, raw in raw_docs.items():
+            found = context_containers(raw, r.id)
+            if not found:
+                if any(ph in raw.lower() for ph in phrases):
+                    unanchored.append(
+                        f"{doc}: discusses '{r.topic}' with no "
+                        f'data-context-id="{r.id}" container')
                 continue
-            if str(r.status).lower() not in low:
-                problems.append(
-                    f"{doc}: mentions context topic '{r.topic}' but never "
-                    f"carries its status label '{r.status}'")
-    return problems
+            for c in found:
+                miss = context_completeness(c, entry)
+                if miss:
+                    incomplete.append(
+                        f"{doc}: {r.id} container is missing {', '.join(miss)}")
+    return unanchored, incomplete
 
 
 FORBIDDEN = {
@@ -296,16 +313,18 @@ else:
     print("PARITY OK: every claim required in a document was found in it.")
 
 import os as _os
-_ctx = check_context_parity({k: _strip(open(v).read())
-                             for k, v in DOCS.items() if _os.path.exists(v)})
-if _ctx:
-    print("\nCONTEXT PARITY PROBLEMS:")
-    for _s in _ctx:
-        print("  " + _s)
+_un, _inc = check_context_parity({k: _strip(open(v).read())
+                                  for k, v in DOCS.items() if _os.path.exists(v)})
+if _un or _inc:
+    print("\nCONTEXT PARITY:")
+    for _s in _un:
+        print("  UNANCHORED  " + _s)
+    for _s in _inc:
+        print("  INCOMPLETE  " + _s)
     if RELEASE:
-        raise SystemExit("release blocked: a context topic appears without its status label")
+        raise SystemExit("release blocked: context discussion is unanchored or incomplete")
 else:
-    print("\nCONTEXT PARITY OK: no context topic appears without its status label.")
+    print("\nCONTEXT PARITY OK: every context discussion is anchored and complete.")
 
 print(f"\nMODE: {'RELEASE (strict)' if RELEASE else 'development'}")
 print(f"{'=' * 70}")
