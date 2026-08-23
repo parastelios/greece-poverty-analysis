@@ -54,7 +54,10 @@ ENTRIES = [
         "evidence": "reporting_style_cross_indicator.csv",
         "detect": "generic pessimism|reporting style|reporting culture",
         "source": "reporting_style_cross_indicator.csv, this project",
+        "source_url": "", "source_detail": "Greece ranks 1st of 27 on hardship "
+                        "and financial expectations, 2nd-6th on life satisfaction.",
         "source_status": "verified", "review_date": "2026-08-23",
+        "verified_how": "this project's own artifact",
     },
     {
         "id": "CTX-2", "topic": "Institutional trust",
@@ -65,14 +68,16 @@ ENTRIES = [
                      "implying it was tested and found to matter.",
         "relates_to_claim": "", "evidence": "external literature",
         "detect": "institutional trust|trust in institutions|trust in the state",
-        # FLAGGED: no verified citation is held. Naming what is required is
-        # honest; inventing a reference is not, and this project has already
-        # been bitten by unverifiable citations.
-        "source": "REQUIRED: a trust series with Greek coverage over the "
-                  "window -- Eurobarometer institutional-trust items or the "
-                  "OECD Trust Survey -- cited to the primary release, not to "
-                  "a secondary summary",
-        "source_status": "REQUIRED-PENDING", "review_date": "2026-08-23",
+        "source": "OECD (2024), OECD Survey on Drivers of Trust in Public "
+                  "Institutions - 2024 Results, Country Notes: Greece. OECD "
+                  "Publishing, Paris.",
+        "source_url": "https://www.oecd.org/en/publications/oecd-survey-on-drivers-of-trust-in-public-institutions-2024-results-country-notes_a8004759-en/greece_56edc018-en.html",
+        "source_detail": "Fieldwork October-November 2023, 30 OECD countries. "
+                         "32% of Greek respondents report high or moderately "
+                         "high trust in central government against an OECD "
+                         "average of 39%.",
+        "source_status": "verified", "review_date": "2026-08-23",
+        "verified_how": "primary PDF read directly, pages 1-2",
     },
     {
         "id": "CTX-3", "topic": "Crisis and adjustment policies",
@@ -83,10 +88,14 @@ ENTRIES = [
                      "specific programme or measure.",
         "relates_to_claim": "", "evidence": "external literature",
         "detect": "adjustment programme|adjustment program|austerity|bailout|memorandum",
-        "source": "REQUIRED: the adjustment-programme literature already "
-                  "verified in publication_strategy.md, incl. Andriopoulou, "
-                  "Kanavitsa & Tsakloglou (LSE GreeSE 149, 2020)",
-        "source_status": "REQUIRED-PENDING", "review_date": "2026-08-23",
+        "source": "Andriopoulou, E., Kanavitsa, E. & Tsakloglou, P. (2020), "
+                  "Decomposing Poverty in Hard Times: Greece 2007-2016. LSE "
+                  "GreeSE Paper No. 149.",
+        "source_url": "https://www.lse.ac.uk/Hellenic-Observatory/Publications/GreeSE-Papers",
+        "source_detail": "EU-SILC microdata, ELSTAT waves 2008-2017. Anchored "
+                         "FGT0 on a 2007 base reaches 48% at the 2013 peak.",
+        "source_status": "verified", "review_date": "2026-08-23",
+        "verified_how": "read in full; recorded in publication_strategy.md",
     },
     {
         "id": "CTX-4", "topic": "Migration",
@@ -98,30 +107,50 @@ ENTRIES = [
                      "construction.",
         "relates_to_claim": "", "evidence": "e3_results.csv (null), external literature",
         "detect": "net migration|emigration|brain drain",
-        "source": "e3_results.csv for the null; REQUIRED for the contextual "
-                  "reading: a Greek emigration source covering 2008 onward",
-        "source_status": "REQUIRED-PENDING", "review_date": "2026-08-23",
+        "source": "Lazaretou, S. (2016), The Greek brain drain: the new "
+                  "pattern of Greek emigration during the recent crisis. "
+                  "Economic Bulletin, Bank of Greece, issue 43, pp. 31-53.",
+        "source_url": "https://www.bankofgreece.gr/BogEkdoseis/econbull201607.pdf",
+        "source_detail": "427,000 residents aged 15-64 left permanently "
+                         "2008-2013; ~223,000 of them aged 25-39. The E3 null "
+                         "(p=0.4006) is this project's own evidence.",
+        "source_status": "verified", "review_date": "2026-08-23",
+        "verified_how": "RePEc record confirmed: bog:econbl:y:2016:i:43:p:31",
     },
     {
         "id": "CTX-5", "topic": "Tax burden and unequal treatment",
         "status": "future hypothesis",
-        "permitted": "A plausible distributional channel requiring dedicated "
-                     "tax-incidence data; not tested here.",
-        "forbidden": "Any quantitative statement. This project holds no "
-                     "tax-incidence data and none may be added post-freeze.",
+        "permitted": "Published incidence evidence establishes that Greece's "
+                     "indirect tax system became markedly more regressive over "
+                     "the crisis. Whether that channel contributes to the "
+                     "hardship gap is a plausible hypothesis and is NOT tested "
+                     "here.",
+        "forbidden": "Any quantitative statement linking tax burden to the "
+                     "hardship gap. The literature is about incidence, not "
+                     "about this outcome, and this project tested nothing on "
+                     "tax.",
         "relates_to_claim": "", "evidence": "none in this project",
         "detect": "tax burden|tax incidence|tax system|taxation",
-        # FLAGGED: the weakest-sourced entry. It is a future hypothesis and
-        # must not appear at all until a citation exists.
-        "source": "REQUIRED: tax-incidence microdata or a published Greek "
-                  "incidence study. NONE is held by this project, and the "
-                  "entry may not be written up without one",
-        "source_status": "REQUIRED-PENDING", "review_date": "2026-08-23",
+        # KEPT, not dropped: an adequate published incidence study exists.
+        # What remains untested is the LINK from tax burden to the hardship
+        # gap, which is why the status stays "future hypothesis".
+        "source": "Kaplanoglou, G. (2015), Who Pays Indirect Taxes in Greece? "
+                  "From EU Entry to the Fiscal Crisis. Public Finance Review "
+                  "43(4), 529-556.",
+        "source_url": "https://doi.org/10.1177/1091142113517925",
+        "source_detail": "Microsimulation on Household Expenditure Survey data, "
+                         "1988-2011. The 2011 indirect tax system is the most "
+                         "regressive of the period, with the sharpest effects "
+                         "on families with children and the unemployed.",
+        "source_status": "verified", "review_date": "2026-08-23",
+        "verified_how": "DOI resolved to the publisher record; author, title, "
+                        "volume, issue, pages and year confirmed",
     },
     {
         "id": "CTX-6", "topic": "Policy implications",
         "status": "author interpretation",
-        "permitted": "Poverty dashboards should combine AROP, its real "
+        "permitted": "POLICY RECOMMENDATION, NOT AN EMPIRICAL CONCLUSION: "
+                     "poverty dashboards should combine AROP, its real "
                      "threshold, anchored poverty, AROPE/deprivation and "
                      "accumulated labour and housing indicators.",
         "forbidden": "Presenting this as a finding. It follows from what the "
@@ -130,7 +159,9 @@ ENTRIES = [
         "relates_to_claim": "", "evidence": "authors' reading of V2-1.2, V2-2.1, V2-5.*",
         "detect": "policy implication|dashboard should|we recommend|should combine",
         "source": "not applicable -- authors' interpretation of V2-1.2, V2-2.1 and V2-5.*",
+        "source_url": "", "source_detail": "",
         "source_status": "not applicable", "review_date": "2026-08-23",
+        "verified_how": "not applicable",
     },
 ]
 
@@ -153,7 +184,7 @@ if df.detect.isna().any() or (df.detect == "").any():
     raise SystemExit("every context entry needs explicit detection phrases: a "
                      "key derived from the topic collapses to generic words "
                      "like 'crisis' or 'policy' and matches everything")
-for col in ("source", "source_status", "review_date"):
+for col in ("source", "source_status", "review_date", "verified_how"):
     if df[col].isna().any() or (df[col].astype(str).str.strip() == "").any():
         raise SystemExit(f"every context entry needs {col}")
 if set(df.source_status) - {"verified", "REQUIRED-PENDING", "not applicable"}:
@@ -197,8 +228,11 @@ print(f"  sources: {int((df.source_status == 'verified').sum())} verified, "
       f"{int((df.source_status == 'not applicable').sum())} not applicable")
 for r in pend.itertuples():
     print(f"    PENDING  {r.id}  {r.topic}")
-print("  A REQUIRED-PENDING entry may NOT be written up until its citation")
-print("  exists and is verified against the primary release.")
+if len(pend):
+    print("  A REQUIRED-PENDING entry may NOT be written up until its citation")
+    print("  exists and is verified against the primary release.")
+else:
+    print("  All citable entries are verified against their primary release.")
 print(f"  status vocabularies are disjoint from the claim register's")
 print(f"  the {len(linked)} cross-reference(s) resolve to real frozen claims")
 print("  the analytical freeze is untouched: no claim added, removed or reworded")

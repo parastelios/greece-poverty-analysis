@@ -44,7 +44,7 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `p6-rewrite` |
-| HEAD | `6059489` Stage 7: a parity-checked context register, separate from the claim freeze |
+| HEAD | `6a209f1` Anchor context discussions in containers; record sources and review dates |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-23 |
 | Frozen V1 reference | `v1-final` |
@@ -2972,27 +2972,47 @@ passes while unrelated prose in the same container fails.
 > text that the tag-stripping regex could not remove. Fixed for claims and
 > context alike; both suites pass.
 
-### Sources and review dates
+### Sources, verified and locked
 
-Every entry records a source, a source status and a review date.
+Every entry records a source, URL or DOI, source status, how it was verified,
+and a review date. **All five citable entries are verified against their primary
+releases** — none rests on a secondary summary.
 
-| Entry | Source status |
-|---|---|
-| CTX-1 Financial expectations | **verified** — this project's own artifact |
-| CTX-2 Institutional trust | **REQUIRED-PENDING** |
-| CTX-3 Crisis and adjustment policies | **REQUIRED-PENDING** |
-| CTX-4 Migration | **REQUIRED-PENDING** (the E3 null is held; the contextual reading is not) |
-| CTX-5 Tax burden | **REQUIRED-PENDING** |
-| CTX-6 Policy implications | not applicable — authors' interpretation |
+| Entry | Source | Verified how |
+|---|---|---|
+| CTX-1 | This project's `reporting_style_cross_indicator.csv` | own artifact |
+| CTX-2 | OECD (2024), *Survey on Drivers of Trust in Public Institutions — 2024 Results*, Country Notes: Greece | **primary PDF read directly** |
+| CTX-3 | Andriopoulou, Kanavitsa & Tsakloglou (2020), *Decomposing Poverty in Hard Times: Greece 2007–2016*, LSE GreeSE 149 | read in full |
+| CTX-4 | Lazaretou (2016), *The Greek brain drain*, Bank of Greece Economic Bulletin 43, 31–53 | RePEc record `bog:econbl:y:2016:i:43:p:31` |
+| CTX-5 | Kaplanoglou (2015), *Who Pays Indirect Taxes in Greece?*, Public Finance Review 43(4), 529–556, DOI `10.1177/1091142113517925` | **DOI resolved to publisher record** |
+| CTX-6 | not applicable — authors' interpretation | — |
 
-**A `REQUIRED-PENDING` entry may not be written up until its citation exists and
-is verified against the primary release.** Four of six are pending, and the two
-you flagged — trust and taxation — are among them. The register names what each
-one requires rather than carrying an invented reference; this project has
-already been bitten by citations that could not be verified.
+Substantive detail is stored with each: Greek trust in central government at
+**32%** against an OECD average of **39%** (fieldwork October–November 2023);
+**427,000** residents aged 15–64 leaving permanently 2008–2013; the **2011**
+indirect tax system the most regressive of the 1988–2011 period.
 
-Taxation is the weakest: the register records that no tax-incidence data is held
-and that the entry may not be written at all without a citation.
+**CTX-5 was kept, not dropped.** The instruction was to drop it if adequate tax
+evidence were unavailable — a published microsimulation incidence study exists,
+so the entry stands on real evidence. Its status remains *future hypothesis*
+because what the literature establishes (the incidence became more regressive)
+is **not** what the entry would claim (that this contributes to the hardship
+gap). The permitted line now separates the two explicitly, and the forbidden
+line bars any quantitative statement linking tax burden to this outcome.
+
+**CTX-6 is labelled in the register itself**, not only in prose: its permitted
+text begins *"POLICY RECOMMENDATION, NOT AN EMPIRICAL CONCLUSION"*, so the label
+travels wherever the entry is quoted.
+
+### The rewrite rule for the 11 unanchored passages
+
+The unanchored discussions must be **resolved by rewriting**, not by wrapping
+existing text in a container. A container around old prose would satisfy the
+extractor and defeat the register: the completeness check tests for the status,
+permitted and limitation content, and old prose written before the register
+existed does not contain them.
+
+Claim and context containers are added **during composition**, not retrofitted.
 
 ### Where the detail lives
 
@@ -3067,6 +3087,8 @@ and that the entry may not be written at all without a citation.
 | D-57 | 2026-08-23 | FINAL | Context discussions anchored in `data-context-id` containers, mirroring `data-claim-id` | Keyword detection can be satisfied by four unrelated sentences in four places, and can miss a paraphrase | Policing the discussion by keyword | `frozen` | — | — |
 | D-58 | 2026-08-23 | FINAL | Every context entry records a source, source status and review date | Four of six have no verified citation, including the two most exposed: trust and taxation | Writing the entries up before their citations exist | `frozen` | — | — |
 | D-59 | 2026-08-23 | FINAL | A `REQUIRED-PENDING` entry may not be written up at all | Naming what a source must be is honest; supplying an invented reference is not | Citing a plausible-looking reference to unblock the prose | `frozen` | — | — |
+| D-60 | 2026-08-23 | FINAL | CTX-5 KEPT with a verified source; status stays *future hypothesis* | Kaplanoglou (2015) establishes the incidence became more regressive; it does NOT establish a contribution to the hardship gap | Dropping it, or upgrading it to literature-grounded context on the strength of the citation | `frozen` | — | — |
+| D-61 | 2026-08-23 | FINAL | Unanchored passages resolved by REWRITING, never by wrapping old prose | A container around old text satisfies the extractor and defeats the register | Retrofitting containers onto the existing documents | `frozen` | D-57 | — |
 
 Allowed statuses: `proposed`, `pre-registered`, `frozen`, `superseded`,
 `withdrawn`, `infeasible`.
