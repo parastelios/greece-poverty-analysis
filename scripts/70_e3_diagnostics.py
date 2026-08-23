@@ -14,8 +14,8 @@ they are diagnostic quantities, not tests. Where a variable has no
 pre-registered direction, no directional claim is made at all.
 
 Sections:
-  A  proximate diagnostic (P1): how much apparent explanation is restatement,
-     and separately, what the same items validate
+  A  proximate diagnostic (P1): how much of the residual same-instrument items
+     absorb, and separately, what they corroborate
   B  inequality retest (s80s20) -- a RETEST of the known null at claim 8.1
   C  migration context
   D  ambiguous-direction context: saving, debt, hours -- descriptive only
@@ -31,7 +31,7 @@ import pandas as pd
 import statsmodels.formula.api as smf
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from registry import load as load_registry, BLOCKING_PROXIMITY
+from registry import load as load_registry, block_reason
 
 OUT = Path(__file__).resolve().parents[1] / "data" / "processed"
 GR = "EL"
@@ -70,19 +70,19 @@ r_base = greece_residual(BASE, d)
 f_all = f"{BASE} + " + " + ".join(P1_ITEMS)
 r_p1 = greece_residual(f_all, d)
 m_base, m_all = fit(BASE, d), fit(f_all, d)
-print(f"\n  A1. HOW MUCH APPARENT EXPLANATION IS RESTATEMENT")
+print(f"\n  A1. HOW MUCH OF THE RESIDUAL SAME-INSTRUMENT ITEMS ABSORB")
 print(f"      n = {len(d)}, {d.geo.nunique()} countries")
 print(f"      Greece residual, baseline                 : {r_base:+7.2f}")
 print(f"      Greece residual, all four P1 items added  : {r_p1:+7.2f}")
-print(f"      absorbed by same-instrument items         : {r_base - r_p1:+7.2f} "
+print(f"      statistically absorbed by same-instrument : {r_base - r_p1:+7.2f} "
       f"({(r_base - r_p1) / r_base:.0%} of the baseline residual)")
 print(f"      R2 {m_base.rsquared:.3f} -> {m_all.rsquared:.3f}")
-print("      This is the quantity P1 exists to produce. It is NOT an explanation.")
+print("      ABSORBED, not explained: shared instrument, not shared cause.")
 
 # The validation question is a different one, and needs a different statistic:
 # does reported difficulty move WITH concrete affordability failure, or is it a
 # reporting style that floats free of them?
-print(f"\n  A2. VALIDATION: does reported difficulty track concrete failure?")
+print(f"\n  A2. CORROBORATION: does reported difficulty co-move with reported restriction?")
 print(f"      Within-country correlation (country means removed), and Greece alone.\n")
 print(f"      {'item':26} {'within-country r':>17} {'Greece over time r':>20} {'GR mean':>9}")
 dem = panel.copy()
@@ -98,11 +98,24 @@ for v in P1_ITEMS:
     rows.append({"section": "A2 validation", "var": v, "stat": "within_country_r",
                  "value": r_within, "greece_timeseries_r": r_gr,
                  "eligible_for_finding": False})
-print("\n      A reporting style unmoored from circumstance would not track these.")
+print("\n      Same-instrument corroboration, NOT independent validation:")
+print("      shared survey method and financially specific reporting behaviour")
+print("      could strengthen these relationships on their own.")
 
 # ---------------------------------------------------------------------------
 # B-F. contextual and legacy, one at a time
 # ---------------------------------------------------------------------------
+# The ambiguity is DIFFERENT for each of these, and a group-level note stamped
+# on every row said "high saving may be prudence or demand collapse" against
+# debt and hours too. Each variable states its own.
+AMBIGUITY = {
+    "saving_rate": "high saving may be prudence or collapsed demand",
+    "debt_to_income": "high debt may be burden; low debt may be deleveraging "
+                      "or exclusion from credit",
+    "working_hours": "long hours may be strain; short hours may be "
+                     "underemployment",
+}
+
 CHECKS = [
     ("B. INEQUALITY RETEST", ["s80s20"],
      "RETEST of the known null at claim 8.1. Never a fresh candidate."),
@@ -110,8 +123,8 @@ CHECKS = [
      "Causal position ambiguous: both a response to and a contributor to "
      "labour-market damage."),
     ("D. AMBIGUOUS-DIRECTION CONTEXT", ["saving_rate", "debt_to_income", "working_hours"],
-     "NO pre-registered direction. High saving may be prudence or demand "
-     "collapse. Reported descriptively; no directional claim is made."),
+     "NO pre-registered direction. Reported descriptively, unadjusted, "
+     "carrying no evidentiary status. See the per-variable ambiguity below."),
     ("E. WORK-EFFORT SQUEEZE RETEST", ["work_effort_squeeze"],
      "r = 0.963 with wadj_a01 in all three views. Run ALONE here; it may never "
      "enter a specification with C4's primary, and its result cannot be read "
@@ -133,21 +146,31 @@ for title, vs, note in CHECKS:
         prox = reg.loc[v, "proximity_class"]
         dd = panel.dropna(subset=[v, "subjective_poverty", "arop"])
         m = fit(f"{BASE} + {v}", dd)
-        blocked = prox in BLOCKING_PROXIMITY
-        if blocked:
-            status = "BLOCKED (mechanical with AROP)"
+        block = block_reason(reg, v)
+        if block == "blocked_by_mechanical_overlap":
+            status = "BLOCKED: algebraic function of AROP, already in the baseline"
+        elif block == "blocked_by_proximity":
+            status = "BLOCKED: same survey instrument as the outcome"
         elif adv == "ambiguous":
-            status = "descriptive only, no directional claim"
+            status = "descriptive, unadjusted, no evidentiary status"
         else:
             status = "diagnostic, not FDR-corrected, cannot become a finding"
         print(f"  {v:24} {adv:16} {m.params[v]:+10.4f} {m.bse[v]:8.4f} "
               f"{m.pvalues[v]:8.4f} {len(dd):5d}  {status}")
+        if v in AMBIGUITY:
+            print(f"  {'':24} ambiguity: {AMBIGUITY[v]}")
         rows.append({"section": title.split(".")[0], "var": v,
                      "stat": "coef_on_baseline", "value": float(m.params[v]),
                      "se": float(m.bse[v]), "p_raw": float(m.pvalues[v]),
                      "adverse_direction": adv, "proximity_class": prox,
-                     "n": len(dd), "blocked": blocked,
-                     "eligible_for_finding": False, "note": note})
+                     "n": len(dd), "blocked": block is not None,
+                     "block_reason": block or "",
+                     "ambiguity": AMBIGUITY.get(v, ""),
+                     "eligible_for_finding": False,
+                     "inferential_status": ("none: descriptive, unadjusted"
+                                            if adv == "ambiguous"
+                                            else "diagnostic only"),
+                     "note": note})
 
 print(f"\n{bar}\nSUMMARY\n{bar}")
 print(f"  Checks run: {sum(len(v) for _, v, _ in CHECKS)} contextual/legacy "

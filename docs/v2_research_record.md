@@ -44,7 +44,7 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | E4 |
 | Last completed stage | E3 |
 | Branch | `p6-rewrite` |
-| HEAD | `5406986` Disclose PD-01, add failed_gate, narrow four E2 overstatements |
+| HEAD | `75b81f2` E3: proximate items absorb 71% of the gap, and validate the outcome |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-23 |
 | Frozen V1 reference | `v1-final` |
@@ -1720,22 +1720,30 @@ close to the outcome to explain it, measures whose direction we cannot state in
 advance, an old null being re-checked, and two variables that are arithmetic
 restatements of something already in the model.
 
-**Two findings matter, and they point in opposite directions.**
+**Two diagnostic readings, pointing in opposite directions.** Neither is
+eligible to become a formal finding under this stage's declared design.
 
-The proximate items absorb **71% of Greece's unexplained gap** — the residual
-falls from 46.9 to 13.7 when all four are added, and R² goes from 0.25 to 0.87.
-That is the scale of what the proximity rule refuses. Any analysis that used
-them would look dramatically more successful.
+Same-instrument hardship indicators **statistically absorb 71% of the baseline
+residual** — it falls from 46.9 to 13.7 when all four are added, and R² goes from
+0.25 to 0.87. They do not *explain* 71% of the gap. Absorption through a shared
+instrument is not shared cause. That is the scale of what the proximity rule
+refuses, and any analysis that used them would look dramatically more successful
+without being more informative.
 
-And the same items **validate the outcome**. Once each country's own average is
-removed, reported difficulty moves with arrears, emergency-expense capacity,
-heating and deprivation at correlations of **0.63 to 0.80**. That is not what a
-reporting style unmoored from circumstance looks like.
+And the same items **corroborate** the outcome. Once each country's own average
+is removed, reported difficulty co-moves with arrears, emergency-expense
+capacity, heating and deprivation at **0.63 to 0.80**.
 
-Both statements are true about the same four variables, which is precisely the
-point: **they are weak as causes and strong as validation.**
+> The subjective-hardship measure co-moves strongly with reported material
+> restrictions. This supports its material grounding, while the shared survey
+> instrument prevents treating those indicators as independent explanations of
+> hardship.
 
-### A1 — How much apparent explanation is restatement
+Both readings are true of the same four variables: **weak as causes, strong as
+corroboration** — and corroboration of a specific, limited kind, since the
+alignment is between two reports collected by one instrument.
+
+### A1 — How much of the residual same-instrument items absorb
 
 n = 268, 27 countries.
 
@@ -1743,16 +1751,17 @@ n = 268, 27 countries.
 |---|---:|---:|
 | Baseline (`arop` + year) | **+46.92** | 0.253 |
 | All four P1 items added | **+13.74** | 0.870 |
-| **Absorbed by same-instrument items** | **33.18 points — 71%** | |
+| **Statistically absorbed by same-instrument items** | **33.18 points — 71%** | |
 
-This is the quantity P1 exists to produce. It is **not** an explanation. It
+This is the quantity P1 exists to produce. **Absorbed, not explained.** It
 measures how much of the paradox can be made to disappear using measures drawn
-from the same survey instrument as the outcome.
+from the same survey instrument as the outcome — a statement about shared
+measurement, not about shared cause.
 
 For comparison, the whole objective apparatus of P3 — six predictors including
 accumulated unemployment — narrowed Greece's residual from 27.05 to 6.93.
 
-### A2 — Validation: does reported difficulty track concrete failure?
+### A2 — Corroboration: does reported difficulty co-move with reported restriction?
 
 ![Reported difficulty moves with concrete affordability failure](figures/validation.svg)
 
@@ -1771,13 +1780,21 @@ generalised distrust — that reporting style would not need to move with unpaid
 bills, absent emergency resources, and homes that cannot be heated. It does,
 across all 27 countries and within Greece.
 
-> Greece's subjective-poverty result is **subjective in measurement, but not
+> Greece's subjective-hardship measure is **subjective in measurement, but not
 > merely subjective in substance.**
 
-One honest qualification: within Greece specifically, three of the four align
-strongly (0.87–0.94) but **arrears does not** (0.371). The within-country
-correlation across all 27 countries is what carries this, not the Greek series
-alone.
+**This is same-instrument corroboration, not independent validation.** All four
+items and the outcome come from EU-SILC, asked of the same households in the
+same interview. A shared survey method, and a general tendency to report
+financial matters consistently, could strengthen these correlations on their
+own. Independent validation would require a source outside the instrument —
+administrative arrears data, metered energy consumption — which this panel does
+not contain.
+
+Two further qualifications. Within Greece specifically, three of the four align
+strongly (0.87–0.94) but **arrears does not** (0.371), so the corroboration is
+not uniform. And the cross-country within-estimate is what carries this reading,
+not the Greek series alone.
 
 ### B — Inequality retest
 
@@ -1812,11 +1829,22 @@ evaluate an `ambiguous` variable.
 | `saving_rate` | −1.2891 | 0.5276 | 0.0146 | 268 |
 | `debt_to_income` | −0.0727 | 0.0295 | 0.0137 | 268 |
 
-All three have small uncorrected p-values. That is exactly why the
-ambiguous-direction rule exists: with no direction fixed in advance, either sign
-would have been narratable after the fact, and a small p-value on a two-sided
-test carries no evidential weight when both tails were available for
-interpretation.
+These p-values are **descriptive, unadjusted, and carry no evidentiary
+status.** They are printed only because omitting them would be worse.
+
+Each variable's ambiguity is its own, and the record now stores it per variable
+rather than as a group note:
+
+| Variable | Why the direction cannot be fixed in advance |
+|---|---|
+| `saving_rate` | high saving may be prudence or collapsed demand |
+| `debt_to_income` | high debt may be burden; low debt may be deleveraging or exclusion from credit |
+| `working_hours` | long hours may be strain; short hours may be underemployment |
+
+That is exactly why the ambiguous-direction rule exists: with no direction fixed
+in advance, either sign would have been narratable after the fact, and a
+two-sided p-value carries no evidential weight when both tails were available
+for interpretation.
 
 ### E — Work-effort squeeze retest
 
@@ -1836,24 +1864,34 @@ primary, arriving by a different route, not corroboration from a second source.
 | `arop_before_transfers` | +0.8800 | 0.9098 | 0.3334 | 270 |
 | `transfer_effect` | +0.8800 | 0.9098 | 0.3334 | 270 |
 
-**Both blocked**, and the identical numbers demonstrate why. `transfer_effect`
-equals `arop_before_transfers − arop` exactly, to floating-point precision
-(verified: max absolute difference 3.6 × 10⁻¹⁵, correlation 1.000000). Since
-`arop` is already in the baseline, adding either variable spans the same column
-space, so the two regressions are the same regression.
+**Blocked by mechanical overlap — not by proximity.** The two are different
+disqualifications and the record now keeps them apart:
 
-This is what `mechanical_with_arop` means in the registry, made visible.
+| Block | Objection | Applies to |
+|---|---|---|
+| `blocked_by_proximity` | conceptual distance: measures the outcome's subject matter through the outcome's instrument | P1 items |
+| `blocked_by_mechanical_overlap` | arithmetic: an algebraic function of a variable already in the baseline | transfer indicators |
+
+The identical numbers demonstrate the second. `transfer_effect` equals
+`arop_before_transfers − arop` exactly, to floating-point precision (verified:
+max absolute difference 3.6 × 10⁻¹⁵, correlation 1.000000). Since `arop` is
+already in the baseline, adding either variable spans the same column space, so
+the two regressions are the same regression.
+
+`registry.block_reason()` now returns the two separately, with tests.
 
 ### What this does not establish
 
 - Nothing here can become a finding. E3 declares no family and applies no
   correction, by design.
-- The 71% absorption is **not** evidence that hardship "really is" material
-  deprivation. It measures overlap between two instruments, which is what
-  same-instrument means.
-- The validation correlations do not establish that reported hardship is
-  *accurate*, only that it moves with concrete affordability failures rather
-  than floating free of them.
+- The 71% is **absorption, not explanation**. It measures overlap between two
+  reports from one instrument, which is what same-instrument means.
+- The corroboration correlations do not establish that reported hardship is
+  *accurate*, nor that it is independently validated. They establish co-movement
+  between two reports collected together. An outside source would be needed for
+  independent validation, and this panel has none.
+- Nothing in E3 is eligible to become a formal finding. Both A1 and A2 are
+  diagnostic readings.
 - `work_effort_squeeze`'s small p-value adds nothing to C4. It is the same
   measurement.
 - The `s80s20` retest does not revive the inequality hypothesis, and was never
@@ -1999,6 +2037,9 @@ protocol exists to prevent.
 | D-25 | 2026-08-23 | E3 | P1 absorption (71%) reported as a restatement measure AND as validation evidence | Both are true of the same four variables; they are weak as causes, strong as validation | Reporting only the circularity, or promoting them to explanation | `frozen` | D-22 | — |
 | D-26 | 2026-08-23 | E3 | Ambiguous-direction variables reported with no directional claim despite p < 0.02 | Both signs were narratable in advance; a two-sided p carries no weight when either tail was interpretable | Reading the observed signs as findings | `frozen` | — | — |
 | D-27 | 2026-08-23 | E3 | `work_effort_squeeze` cannot corroborate C4 | r = 0.963 in all three views; it is the same measurement by another route | Citing it as independent support for C4 | `frozen` | — | — |
+| D-28 | 2026-08-23 | E3 | The 71% is ABSORPTION, never explanation | Overlap between two reports from one instrument is shared measurement, not shared cause | Writing "explains 71% of the gap" | `frozen` | D-25 | — |
+| D-29 | 2026-08-23 | E3 | A2 is same-instrument corroboration, not independent validation | All four items and the outcome come from EU-SILC, same households, same interview | Calling it validation; treating the items as independent evidence | `frozen` | D-25 | — |
+| D-30 | 2026-08-23 | E3 | Mechanical overlap separated from proximity as a distinct block | The transfer indicators' objection is algebraic, not conceptual distance | Filing both under `blocked_by_proximity` | `frozen` | — | — |
 
 Allowed statuses: `proposed`, `pre-registered`, `frozen`, `superseded`,
 `withdrawn`, `infeasible`.
@@ -2026,12 +2067,12 @@ Allowed statuses: `proposed`, `pre-registered`, `frozen`, `superseded`,
 | R-17 | E2 | hardship level | `c3_composite` | within-construct, common sample | n=258 | +7.2321 | 0.2182 | 0.5454 | — | — | below MDE | composite fails on its own terms; promotion barred regardless | `cannot_promote` | `e2_results.csv` |
 | R-18 | E2 | hardship level | `hicp_food`, `hicp_housing` | within-construct, common sample | n=270 | −0.2200, −0.2803 | 0.70, 0.18 | 0.6994, 0.4819 | — | — | intervals exclude a 0.70 SD effect | annual food and housing inflation excluded at the declared magnitude only; not headline, compounded or affordability effects | `unsupported_with_adequate_power` | `e2_results.csv` |
 | R-19 | E2 | hardship level | P1 items (4) | diagnostic only | n=268 | +0.98 to +1.45 | 0.0000–0.0036 | excluded | — | — | 0.72–0.96 SD, all above MDE | headline-ineligible as explanation; strong as VALIDATION that reported strain tracks concrete affordability failure | `blocked_by_proximity` | `e2_results.csv` |
-| R-20 | E3 | hardship level | P1 items, all four together | Greece residual absorption | n=268 | residual 46.92 → 13.74; R² 0.253 → 0.870 | — | none applied | — | — | — | 71% of the gap is absorbable by same-instrument items; NOT an explanation | `descriptive_only` | `e3_restatement.csv` |
-| R-21 | E3 | hardship level | P1 items | within-country correlation, country means removed | n=268 | r = 0.626–0.797 | — | none applied | — | — | — | reported difficulty tracks concrete affordability failure; validation, not explanation | `descriptive_only` | `e3_results.csv` |
+| R-20 | E3 | hardship level | P1 items, all four together | Greece residual absorption | n=268 | residual 46.92 → 13.74; R² 0.253 → 0.870 | — | none applied | — | — | — | same-instrument items statistically ABSORB 71% of the baseline residual; absorption is not explanation | `descriptive_only` | `e3_restatement.csv` |
+| R-21 | E3 | hardship level | P1 items | within-country correlation, country means removed | n=268 | r = 0.626–0.797 | — | none applied | — | — | — | SAME-INSTRUMENT corroboration of material grounding; not independent validation, not explanation | `descriptive_only` | `e3_results.csv` |
 | R-22 | E3 | hardship level | `s80s20` | diagnostic, cond. on AROP + year | n=270 | +6.4679 (se 3.8136) | 0.0899 | none applied | — | — | — | retest of the known null at claim 8.1; null stands | `descriptive_only` | `e3_results.csv` |
-| R-23 | E3 | hardship level | `saving_rate`, `debt_to_income`, `working_hours` | diagnostic, cond. on AROP + year | n=268–270 | −1.29, −0.07, +4.60 | 0.0018–0.0146 | none applied | — | — | — | no pre-registered direction; small p-values carry no evidential weight | `descriptive_only` | `e3_results.csv` |
+| R-23 | E3 | hardship level | `saving_rate`, `debt_to_income`, `working_hours` | diagnostic, cond. on AROP + year | n=268–270 | −1.29, −0.07, +4.60 | 0.0018–0.0146, unadjusted | none applied | — | — | — | no pre-registered direction; per-variable ambiguity recorded; NO evidentiary status | `descriptive_only` | `e3_results.csv` |
 | R-24 | E3 | hardship level | `work_effort_squeeze` | diagnostic, cond. on AROP + year | n=270 | +0.1705 (se 0.0469) | 0.0003 | none applied | — | — | — | r=0.963 with `wadj_a01`; the same measurement, not corroboration | `descriptive_only` | `e3_results.csv` |
-| R-25 | E3 | hardship level | `arop_before_transfers`, `transfer_effect` | diagnostic, cond. on AROP + year | n=270 | +0.8800 both, identical | 0.3334 | none applied | — | — | — | `transfer_effect ≡ arop_before_transfers − arop` exactly; same regression twice | `blocked_by_proximity` | `e3_results.csv` |
+| R-25 | E3 | hardship level | `arop_before_transfers`, `transfer_effect` | diagnostic, cond. on AROP + year | n=270 | +0.8800 both, identical | 0.3334 | none applied | — | — | — | `transfer_effect ≡ arop_before_transfers − arop` exactly; same regression twice | `blocked_by_mechanical_overlap` | `e3_results.csv` |
 
 Allowed statuses: `supported`, `unsupported_with_adequate_power`,
 `inconclusive_under_available_power`, `failed_incremental_criterion`,
@@ -2040,6 +2081,9 @@ Allowed statuses: `supported`, `unsupported_with_adequate_power`,
 `outcome_C` is EA's pre-registered verdict label, not a generic status.
 `blocked_by_proximity` means a construct was disqualified by rule before its
 result was consulted — it is not a null and must never be reported as one.
+`blocked_by_mechanical_overlap` is the *separate* disqualification for a
+predictor that is an algebraic function of something already in the baseline;
+its objection is arithmetic, not conceptual distance.
 
 `unsupported_with_adequate_power` requires a published MDE showing the test
 could have detected an effect of the relevant size. Without one, use
@@ -2101,6 +2145,9 @@ Deviations must be disclosed in the stage that made them, not only here.
 | C-11 | 2026-08-23 | E2 write-up described within-construct sensitivity FDR as pre-registered | The frozen pre-registration declares no such family | Recorded as protocol deviation PD-01; pooled alternative shown post hoc | `v2_research_record.md` | — |
 | C-12 | 2026-08-23 | Failure labels collapsed unlike reasons: `consumption_pc` read the same as a variable that was never close | The pre-registered outcome deliberately merges gates | Added a machine-readable `failed_gate` field; outcome unchanged | `e_rule.py`, `e1_results.csv`, `e2_results.csv` | — |
 | C-13 | 2026-08-23 | Three E2 overstatements: "C1 holds however measured", "C2 is duration not exclusion", "only results in the entire study" | Claims outran what the tests establish | Narrowed each to what was actually shown | `v2_research_record.md` | — |
+| C-14 | 2026-08-23 | `e3_results.csv` stamped the saving-rate ambiguity note on `debt_to_income` and `working_hours` | Group-level note written once per CHECKS block, applied to every row in it | Per-variable `ambiguity` column; each states its own two directions | `70_e3_diagnostics.py`, `e3_results.csv` | — |
+| C-15 | 2026-08-23 | Transfer indicators classified `blocked_by_proximity` | Their objection is algebraic equivalence once AROP is controlled, not conceptual distance | Split into `blocked_by_mechanical_overlap`; `registry.block_reason()` with tests | `registry.py`, `e3_results.csv` | — |
+| C-16 | 2026-08-23 | E3 described the 71% as a "finding" and A2 as "validation" | Nothing in E3 is eligible to become a finding, and A2 is same-instrument corroboration | Reworded to diagnostic readings, absorption, and corroboration throughout | `v2_research_record.md` | — |
 
 ## Artifact Index
 

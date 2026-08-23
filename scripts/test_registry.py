@@ -77,6 +77,23 @@ try:
 except ValueError:
     check("rejects an unknown value at point of use", "ValueError", "ValueError")
 
+print("\nthe two blocks are DIFFERENT disqualifications")
+from registry import block_reason, SAME_INSTRUMENT, MECHANICAL_OVERLAP
+check("deprivation is same-instrument",
+      block_reason(reg, "severe_mat_soc_deprivation"), "blocked_by_proximity")
+check("arrears is same-instrument",
+      block_reason(reg, "arrears"), "blocked_by_proximity")
+check("transfer_effect is MECHANICAL, not proximity",
+      block_reason(reg, "transfer_effect"), "blocked_by_mechanical_overlap")
+check("arop_before_transfers is MECHANICAL",
+      block_reason(reg, "arop_before_transfers"), "blocked_by_mechanical_overlap")
+check("ltu_rate is neither", block_reason(reg, "ltu_rate"), None)
+check("the two sets are disjoint",
+      SAME_INSTRUMENT & MECHANICAL_OVERLAP, set())
+check("both still block a headline",
+      all(blocks_headline(reg, v) for v in
+          ["arrears", "transfer_effect", "arop_before_transfers"]), True)
+
 bad_names = [n for n, ok in F if not ok]
 print(f"\n{len(F) - len(bad_names)}/{len(F)} passed")
 if bad_names:

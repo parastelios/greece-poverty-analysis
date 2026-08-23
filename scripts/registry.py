@@ -27,8 +27,32 @@ CONSTRUCTION = {"direct_excess", "fixed_base_shortfall", "duration_below_base",
 VOCABULARIES = {"adverse_direction": ADVERSE, "proximity_class": PROXIMITY,
                 "role": ROLES, "construction": CONSTRUCTION}
 
-# Any predictor in these classes is disqualified from a headline claim.
-BLOCKING_PROXIMITY = {"proximate_same_instrument", "mechanical_with_arop"}
+# Two DIFFERENT disqualifications, often conflated because both end in "blocked".
+#
+#   proximate_same_instrument  measures the outcome's own subject matter through
+#                              the outcome's own survey instrument. The objection
+#                              is conceptual distance.
+#   mechanical_with_arop       is an algebraic function of a variable already in
+#                              the baseline. The objection is arithmetic: with
+#                              AROP controlled, the regression is literally the
+#                              same regression.
+#
+# transfer_effect == arop_before_transfers - arop exactly, so with arop in the
+# baseline both span the same column space. Calling that "proximity" describes
+# the wrong problem.
+SAME_INSTRUMENT = {"proximate_same_instrument"}
+MECHANICAL_OVERLAP = {"mechanical_with_arop"}
+BLOCKING_PROXIMITY = SAME_INSTRUMENT | MECHANICAL_OVERLAP
+
+BLOCK_REASON = {
+    "proximate_same_instrument": "blocked_by_proximity",
+    "mechanical_with_arop": "blocked_by_mechanical_overlap",
+}
+
+
+def block_reason(reg, name):
+    """Which kind of block applies, or None. The two are not interchangeable."""
+    return BLOCK_REASON.get(reg.loc[name, "proximity_class"])
 
 
 def load():
