@@ -245,11 +245,13 @@ M = [
              "ESS rounds, with Greece's rank among those 12",
       interaction="switch between level and rank; hover reads both values",
       fallback="ESS round, Greek mean, median of the same 12, gap, rank",
+      # Kept short on the face of the figure; the reading caveat about the
+      # break and the level-versus-rank distinction is added at build time.
       caveat="European Social Survey, not Eurostat, and never joined to it. "
              "Means are approximate reconstructions from publicly displayed "
-             "weighted percentages, with no confidence intervals and no test. "
-             "The 12 countries are held fixed because the full ESS set varies "
-             "from 22 to 30. No Greek round falls between 2010/11 and 2020-22.",
+             "weighted percentages: no confidence intervals, no tests. The 12 "
+             "countries are held fixed because the full ESS set varies from 22 "
+             "to 30, so all-country ranks are not comparable between rounds.",
       status_label="descriptive corroboration"),
 ]
 

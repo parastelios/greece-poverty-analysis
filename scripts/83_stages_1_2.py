@@ -57,6 +57,7 @@ FIGS["F1"] = dict(
             "some narrowing",
     kind="panel", series=f1,
     payload={"years": [int(y) for y in yrs], "dp": 1,
+             "yLabel": "% of households",
              "alt": "Greek reported hardship against income poverty, 2015 to 2024",
              "series": [{"label": l, "tone": m["tone"], "style": m["style"],
                          "weight": m["weight"], "values": [round(v, 1) for v in vs]}
@@ -81,7 +82,7 @@ FIGS["F2"] = dict(
     caption="In 2024 Greece stands far above the rest of the EU on reported "
             "hardship",
     kind="ladder", series=f2,
-    payload={"rows": rows2, "dp": 1, "unit": "%",
+    payload={"rows": rows2, "xLabel": "% of households reporting difficulty", "dp": 1, "unit": "%",
              "reference": round(float(allc.subjective_poverty.median()), 1),
              "referenceLabel": "EU median",
              "alt": "All 27 EU countries ranked on reported hardship"},
@@ -95,6 +96,7 @@ f3.add("EU median: real poverty threshold",
        [float(med.arop_threshold_real.get(y)) for y in yrs],
        tone="eu", style="dashed", weight="normal")
 v3a = {"years": [int(y) for y in yrs], "dp": 1,
+       "yLabel": "Index, 2008 = 100",
        "alt": "Real poverty threshold indexed to each country's own 2008 level",
        "series": [{"label": l, "tone": m["tone"], "style": m["style"],
                    "weight": m["weight"], "values": [round(v, 1) for v in vs]}
@@ -109,7 +111,7 @@ f3b.add("Greece: fixed 2008 threshold", [float(v) for v in anch.anchored_poverty
         tone="gr", style="solid", weight="strong")
 f3b.add("Greece: current-year threshold", [float(v) for v in anch.actual_arop_rate],
         tone="series-3", style="solid", weight="normal")
-v3b = {"years": ay, "dp": 1,
+v3b = {"years": ay, "dp": 1, "yLabel": "% of people",
        "alt": "Greek anchored poverty against the floating income-poverty rate",
        "series": [{"label": l, "tone": m["tone"], "style": m["style"],
                    "weight": m["weight"], "values": [round(v, 1) for v in vs]}
@@ -130,15 +132,49 @@ f4.add("Gap against income poverty", [float(v) for v in desc.gap_vs_arop],
        tone="gr", style="solid", weight="strong")
 f4.add("Gap against AROPE", [float(v) for v in desc.gap_vs_arope],
        tone="series-3", style="solid", weight="strong")
+# The headline of this stage is AROPE's CONTRIBUTION and its decline, which two
+# gap lines only imply: the reader has to subtract by eye, year by year. The
+# difference is therefore drawn directly, as its own series and its own view.
+contrib = [float(a) - float(b)
+           for a, b in zip(desc.gap_vs_arop, desc.gap_vs_arope)]
+f4.add("Points closed by AROPE", contrib, tone="series-5", style="dashed",
+       weight="normal")
+
+f4c = ce.Series([str(int(y)) for y in desc.time], dp=1)
+f4c.add("Points closed by AROPE", contrib)
+f4c.add("Gap still open after AROPE", [float(v) for v in desc.gap_vs_arope])
+
+v4a = {"years": [int(y) for y in desc.time], "dp": 1,
+       "yLabel": "Gap, percentage points",
+       "alt": "Greek hardship gap against AROP and against AROPE, with the "
+              "points AROPE closes drawn directly",
+       "series": [{"label": l, "tone": m["tone"], "style": m["style"],
+                   "weight": m["weight"], "values": [round(v, 1) for v in vs]}
+                  for l, vs, m in f4.rows]}
+
+v4b = {"years": [int(y) for y in desc.time], "dp": 1,
+       "yLabel": "Percentage points",
+       "alt": "The points AROPE closes, falling from 11.0 in 2015 to 7.3 in "
+              "2024, against the gap that remains open",
+       "series": [
+           {"label": "Points closed by AROPE", "tone": "series-5",
+            "style": "solid", "weight": "strong",
+            "values": [round(v, 1) for v in contrib]},
+           {"label": "Gap still open after AROPE", "tone": "gr",
+            "style": "solid", "weight": "normal",
+            "values": [round(float(v), 1) for v in desc.gap_vs_arope]}]}
+
 FIGS["F4"] = dict(
     caption="AROPE narrows the puzzle by about a fifth, and its contribution "
             "is shrinking",
-    kind="panel", series=f4,
-    payload={"years": [int(y) for y in desc.time], "dp": 1,
-             "alt": "Greek hardship gap against AROP and against AROPE",
-             "series": [{"label": l, "tone": m["tone"], "style": m["style"],
-                         "weight": m["weight"], "values": [round(v, 1) for v in vs]}
-                        for l, vs, m in f4.rows]},
+    kind="panel", series=f4, payload=v4a,
+    views=[("Both gaps", v4a), ("What AROPE actually closes", v4b)],
+    view_series=[f4, f4c],
+    extra_caveat=(
+        "The second view plots the DIFFERENCE between the two gaps directly - "
+        "the points AROPE closes - because that is the quantity the stage's "
+        "conclusion rests on, and reading it off two lines means subtracting "
+        "by eye. It falls from 11.0 points in 2015 to 7.3 in 2024."),
     first="Series")
 
 # ---- F5 four views -------------------------------------------------------
@@ -158,8 +194,10 @@ assert len(cy) >= 2, "components view needs at least two years"
 f5 = ce.Series([str(int(y)) for y in cy], dp=1)
 for (lbl, s), tone, style in zip(comp.items(), ["gr", "series-3"], ["solid", "solid"]):
     f5.add(lbl, [float(s.get(y)) for y in cy], tone=tone, style=style, weight="normal")
-v5a = {"years": [int(y) for y in cy], "dp": 1,
-       "alt": "The three AROPE components for Greece",
+v5a = {"years": [int(y) for y in cy], "dp": 1, "yLabel": "% of people",
+       "alt": "Two of the three AROPE components for Greece: income poverty "
+              "and material deprivation. Low work intensity has no national "
+              "total in this source and is not shown",
        "series": [{"label": l, "tone": m["tone"], "style": m["style"],
                    "weight": m["weight"], "values": [round(v, 1) for v in vs]}
                   for l, vs, m in f5.rows]}
@@ -182,7 +220,7 @@ for g, tone, w in [("TOTAL", "text-muted", "light"), ("Y_LT18", "series-4", "nor
         continue
     f5b.add(AGEL[g], [float(s.get(y)) if y in s.index else None for y in ay2],
             tone=tone, style="solid", weight=w)
-v5b = {"years": [int(y) for y in ay2], "dp": 1,
+v5b = {"years": [int(y) for y in ay2], "dp": 1, "yLabel": "% of age group",
        "alt": "Greek AROPE by age group, with 65 and over emphasised",
        "series": [{"label": l, "tone": m["tone"], "style": m["style"],
                    "weight": m["weight"],
@@ -195,17 +233,22 @@ for r in ss.itertuples():
     f5c.add(AGEL.get(r.age, r.age),
             [float(r.within_group_contribution_pp), float(r.composition_contribution_pp)])
     rows5c.append({"label": AGEL.get(r.age, r.age),
-                   "est": round(float(r.within_group_contribution_pp), 3),
-                   "lo": min(0.0, round(float(r.within_group_contribution_pp), 3)),
-                   "hi": max(0.0, round(float(r.within_group_contribution_pp), 3)),
+                   "a": round(float(r.composition_contribution_pp), 3),
+                   "b": round(float(r.within_group_contribution_pp), 3),
                    "tone": "gr" if r.within_group_contribution_pp > 0.2 else "text-muted",
                    "strong": r.within_group_contribution_pp > 0.2,
-                   "right": f"{r.composition_contribution_pp:+.3f} comp.",
+                   "right": (f"{r.within_group_contribution_pp:+.3f} within, "
+                             f"{r.composition_contribution_pp:+.3f} comp."),
                    "detail": (f"within-group <b>{r.within_group_contribution_pp:+.3f} pp</b>"
                               f"<br>composition {r.composition_contribution_pp:+.3f} pp"
                               f"<br>rate {r.arope_rate_2024:.1f} &rarr; {r.arope_rate_2025:.1f}")})
-v5c = {"rows": rows5c, "alt": "Shift-share: within-group against compositional "
-       "contribution to the 2024-2025 change"}
+v5c = {"rows": rows5c, "dp": 3, "legendA": "composition",
+       "legendB": "within-group", "zeroLabel": "no contribution",
+       "xLabel": "Contribution to the 2024-2025 change (percentage points)",
+       "alt": "Within-group against compositional contribution to the "
+              "2024-2025 change, in percentage points. These are exact "
+              "decomposition terms, not estimates: they carry no uncertainty "
+              "interval"}
 hh = pd.read_csv(PROC / "age_breakdown_household_arope.csv")
 hh = hh[hh.geo == "EL"]
 HHL = {"TOTAL": "All households", "A1_GE65": "One adult aged 65+",
@@ -219,7 +262,7 @@ for g, tone, w in [("TOTAL", "text-muted", "light"),
         continue
     f5d.add(HHL[g], [float(s.get(y)) if y in s.index else None for y in hy],
             tone=tone, style="solid", weight=w)
-v5d = {"years": [int(y) for y in hy], "dp": 1,
+v5d = {"years": [int(y) for y in hy], "dp": 1, "yLabel": "% of households",
        "alt": "Greek AROPE by household profile, older-person households marked",
        "series": [{"label": l, "tone": m["tone"], "style": m["style"],
                    "weight": m["weight"],
@@ -235,7 +278,7 @@ FIGS["F5"] = dict(
     views=[("Income-poverty and deprivation components", v5a),
            ("AROPE by age", v5b),
            ("Household profiles", v5d),
-           ("What drove the 2025 increase?", v5c, "coefficient")],
+           ("What drove the 2025 increase?", v5c, "dumbbell")],
     view_series=[f5, f5b, f5d, f5c],
     # Naming the first view "AROPE components" while showing two of three would
     # let a reader take it for a complete decomposition. The absence is stated
@@ -244,7 +287,11 @@ FIGS["F5"] = dict(
         "Very low work intensity is part of AROPE, but the project does not "
         "hold a comparable national-total series for this view; its available "
         "age coverage uses a different population base. And aggregate component "
-        "rates cannot reconstruct the AROPE union in any case."),
+        "rates cannot reconstruct the AROPE union in any case. In the last "
+        "view the two bars are EXACT decomposition terms, not estimates: they "
+        "carry no uncertainty and no interval is drawn. Within-group means the "
+        "rate changed inside an age group; composition means the size of the "
+        "group changed."),
     first="Series")
 
 

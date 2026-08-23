@@ -206,9 +206,10 @@ def t_summary():
          "deterioration add cross-country information beyond their "
          "current-level counterparts",
          "Stage 5, conditional bootstrap 0.0015&ndash;0.0060"],
-        ['<span class="verdict ok">Supported</span>',
+        ['<span class="verdict mid">Descriptive corroboration</span>',
          "Reported hardship co-moves with concrete affordability failure "
-         "within countries",
+         "within countries &mdash; all items from the same EU-SILC interview, "
+         "so this is corroboration, not independent validation",
          "Stage 3, within-country r = 0.63&ndash;0.80"],
         ['<span class="verdict no">Inconclusive</span>',
          "Six of nine current-level constructs, and the accumulated "
@@ -218,10 +219,12 @@ def t_summary():
          "Annual food and housing inflation at 0.70 SD; annual headline "
          "inflation at its detectable conditional magnitude",
          "Stage 4, magnitude-specific"],
-        ['<span class="verdict no">Not supported</span>',
+        ['<span class="verdict no">No supporting evidence;<br>within effect '
+         'inconclusive</span>',
          "Any dynamic reading of the accumulated measures within Greece",
-         "Stage 5, no within estimate significant in the adverse direction"],
-        ['<span class="verdict no">Model-dependent</span>',
+         "Stage 5, no within estimate significant in the adverse direction, "
+         "and the within tests cannot establish or rule one out"],
+        ['<span class="verdict no">Model-dependent<br>diagnostic</span>',
          "The absorption of Greece's residual by deprivation items",
          "Stage 6, reverses from rank 3 to rank 25"],
         ['<span class="verdict no">Infeasible</span>',
@@ -328,8 +331,11 @@ reported as prominently as the findings.</p>
 <div class="howto">
 <h2>How to read this document</h2>
 <p>Every numbered claim in this report is drawn from a <strong>frozen claim
-set</strong>, committed to version control before the final analysis was run
-and unchanged since. Claims appear in their canonical wording, in bordered
+set</strong>, committed to version control before any of this report was
+composed. The freeze followed the last analytical stage rather than preceding
+it, and one claim &mdash; V2-7.1, on life satisfaction &mdash; was narrowed
+after review when its original wording was found to overstate Greece's
+position. Every change to the set is recorded in the research record. Claims appear in their canonical wording, in bordered
 blocks marked with an identifier such as <span class="inline-cid">V2-4.C2</span>,
 together with the caveats that were frozen alongside them. The caveats are not
 decoration: several of them exist because an earlier draft of this report
@@ -421,18 +427,24 @@ appears.</p>
 {claim('V2-1.1')}
 
 {methods("How the pre-2010 series was constructed and checked", '''
-<p>The Eurostat indicator <em>ilc_mdes09</em> reports the share of households
-declaring difficulty or great difficulty making ends meet, and is available on
-a consistent basis from 2010. To extend it backwards we used the corresponding
-item from the earlier EU-SILC release series, which asks the same question of
-the same population but was published under a different aggregation.</p>
+<p>From 2010 onward the outcome is Eurostat's official indicator
+<em>ilc_sbjp01</em>, used directly and not recomputed. It reports the share of
+households declaring difficulty or great difficulty making ends meet. Before
+2010 Eurostat does not publish it, so the earlier years are derived from the
+official components in <em>ilc_mdes09</em>, aggregated by the same rule that
+Eurostat's own series follows.</p>
 
-<p>The two were compared on <strong>432 overlapping country-years</strong>
-&mdash; every country and year where both exist. The constructed series
-reproduces the official one closely enough that the extension does not change
-any conclusion in this report: the correlation across overlapping observations
-is high, and no country's rank position changes materially where both are
-available.</p>
+<p>That aggregation rule was validated on <strong>432 overlapping
+country-years</strong> &mdash; every country and year where both exist. Of
+those, 318 agree exactly and 114 differ by a single rounding step; none differs
+by more than 0.1 percentage points, and the cross-country rank correlation is
+1.00 in every year.</p>
+
+<p>Two things this does <em>not</em> establish, and neither is claimed. It does
+not mean Eurostat published <em>ilc_sbjp01</em> before 2010; it did not. And it
+validates the <strong>aggregation rule only</strong> &mdash; whether the earlier
+national survey vintages are comparable across breaks is a separate question
+that this overlap cannot answer.</p>
 
 <p>Two disciplines were imposed. First, the constructed values are used only
 for the descriptive picture in Stages 1 and 2; <strong>every inferential test
@@ -592,9 +604,13 @@ result.</p>
 
 <p>We use <strong>2008</strong>, the last year before the Greek downturn, and
 we fixed that choice before running the comparison. It was not selected by
-looking at which anchor produced the largest divergence. The same anchor is
-used for every country, so the comparison is not tilted toward Greece by
-construction.</p>
+looking at which anchor produced the largest divergence.</p>
+
+<p class="caution"><strong>This series is Greece-only.</strong> It compares
+Greece against its own 2008 standard of living, and it contains no other
+country. It therefore supports no cross-country statement whatever: it cannot
+show that Greece's threshold fell further than anyone else's, only that it fell
+relative to where Greece itself started.</p>
 
 <p>Incomes throughout are equivalised using the OECD-modified scale, which
 weights the first adult at 1.0, additional adults at 0.5 and children under 14
@@ -639,21 +655,29 @@ failure, or does it float free of material circumstances?</p>
 <p>This is the stage where the report could have ended. If Greek households
 report hardship without any corresponding material difficulty, then the puzzle
 is about how Greeks answer questions, not about Greek poverty, and the
-remaining stages would be measuring an artefact. So this has to be settled
-before anything else is tested.</p>
+remaining stages would be measuring an artefact. So it has to be addressed
+before anything else is tested &mdash; though, as this stage shows, the
+available evidence narrows the question rather than closing it.</p>
 
-<p>The check is whether reported difficulty moves with things that are not
-opinions: falling behind on bills, being unable to meet an unexpected expense,
-being unable to heat the home adequately, and severe material deprivation.
-These are concrete failures. A household either paid the electricity bill or it
-did not.</p>
+<p>The check is whether reported difficulty moves with items that name concrete
+events rather than feelings: falling behind on bills, being unable to meet an
+unexpected expense, being unable to heat the home adequately, and severe
+material deprivation.</p>
+
+<p>These are more specific than a general assessment of making ends meet, but
+they are not independent of it. Every one is <em>self-reported by the same
+household in the same EU-SILC interview</em>. A household inclined to answer the
+whole battery downbeat would move all of them together, so this test can show
+that reported hardship is coherent with concrete circumstances &mdash; it cannot
+show that it is validated from outside the instrument. That limitation runs
+through this entire stage.</p>
 
 {fig('F8')}
 
 <p>Reported difficulty and concrete affordability failure move together, and
 they do so within countries as well as across them &mdash; which is the harder
 test, because it cannot be satisfied by rich countries simply differing from
-poor ones.</p>
+poor ones. It remains corroboration from inside a single instrument.</p>
 
 {claim('V2-3.1')}
 
@@ -1356,8 +1380,13 @@ them as though they were findings would be worse. They are recorded here in a
 separate register, with an explicitly different vocabulary, and each entry
 states what it permits and what it forbids.</p>
 
-<p>Nothing in this section was tested by this project. None of it supports a
-claim, and none of it may be read as strengthening the conclusion.</p>
+<p>The boundary is not that none of it was examined &mdash; migration was tested
+diagnostically on this panel, and the cross-domain comparison and the ESS
+extension are both descriptive analyses carried out here. The boundary is that
+<strong>none of it may support a headline claim</strong>. These entries carry
+their own status vocabulary, deliberately disjoint from the evidence statuses
+used in Stages 1 to 6, so that a contextual statement can never be promoted
+into a finding.</p>
 
 {t_context()}
 
@@ -1502,10 +1531,11 @@ counterparts are controlled.</p>
 <li><strong>No causal claim is made anywhere.</strong> Every supported result is
 a cross-country association in a panel of twenty-seven countries. Nothing in
 this design identifies a causal effect.</li>
-<li><strong>No dynamic claim about Greece over time is supported.</strong> The
-accumulated measures differentiate countries; they have not been shown to
-describe a process unfolding within Greece. The within-country tests are
-imprecise, which is not the same as showing no effect.</li>
+<li><strong>There is no supporting dynamic evidence, and the within-country
+effect is inconclusive.</strong> The accumulated measures differentiate
+countries; no within-country estimate supports a process unfolding within
+Greece, and the within tests are too imprecise to establish or rule one out.
+Those are two different statements and neither is "no effect".</li>
 <li><strong>Most untested constructs are unresolved, not excluded.</strong> Six
 of nine current-level constructs are inconclusive under available power. Only a
 small number are excluded, and only at specific magnitudes.</li>
@@ -1515,8 +1545,10 @@ depending on whether a same-instrument predictor is admitted. Neither
 specification is definitive.</li>
 <li><strong>A broader negative reporting tendency is not ruled out.</strong> The
 domain pattern suggests specificity; Greece is nonetheless close to worst in
-Europe on general life satisfaction, and no pre-crisis baseline exists in this
-data.</li>
+Europe on general life satisfaction. The EU-SILC series carries no pre-crisis
+observation. The separate ESS extension does reach back before 2008, and shows
+a Greek deficit that pre-dates the crisis &mdash; which makes a longstanding
+pattern more plausible, not less.</li>
 <li><strong>Most of the gap remains unexplained.</strong> Of the 52.6-point
 average distance, the measurement account addresses a minority. The rest is
 not attributed here.</li>
@@ -1550,10 +1582,12 @@ results into genuine findings or genuine nulls; most of the six unresolved
 constructs are unresolved for want of power, not because the data speak against
 them. Household-level rather than country-level analysis would permit the
 within-country tests that this design cannot support, and would allow the
-dynamic question in Stage 5 to be asked properly. And a pre-crisis wellbeing
-baseline &mdash; the gap marked SKIPPED in Stage 7 &mdash; would establish
-whether Greece's position on life satisfaction is a crisis product or predates
-it.</p>
+dynamic question in Stage 5 to be asked properly. And respondent-level ESS
+access would put the pre-crisis wellbeing comparison on a firmer footing than
+the extension in Stage 7 can manage: that extension already indicates a Greek
+deficit predating the crisis, but it rests on approximate means reconstructed
+from published distributions, with no standard errors and no way to test
+anything.</p>
 
 {methods("How each sentence of this conclusion maps to a frozen claim", '''
 <p>The conclusion above introduces no new results. Each of its statements
@@ -1890,6 +1924,7 @@ details.methods>summary:focus-visible{outline:2px solid var(--series-gr);
 .verdict{font-weight:700;white-space:nowrap}
 .verdict.ok{color:var(--div-pos)}
 .verdict.no{color:var(--text-secondary)}
+.verdict.mid{color:var(--series-3)}
 .ctx-status{font-size:.82rem;color:var(--text-secondary)}
 .tnote{font:.82rem/1.5 ui-sans-serif,system-ui,sans-serif;
   color:var(--text-secondary);margin:.5rem 0 0;max-width:44rem}

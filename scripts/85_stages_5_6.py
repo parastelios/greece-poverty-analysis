@@ -78,6 +78,12 @@ FIGS["F11"] = dict(
                   "non-recovery is a count of consecutive years."))
 
 # ---- F12: the conditional coefficients ------------------------------------
+# STANDARDISED, not raw. The eight pairs are measured in percentage-point-years,
+# years, index points and percentages, so a raw coefficient axis would invite a
+# comparison that is not valid -- 2.09 for wage duration is not "larger" than
+# 0.29 for accumulated unemployment, it is a different unit. Each row is scaled
+# by its own effect size, which puts every pair on one interpretable axis: SDs
+# of the outcome per SD of the predictor.
 TONE = {"supported": "series-3",
         "inconclusive_under_available_power": "text-muted",
         "unsupported_with_adequate_power": "warn",
@@ -91,80 +97,140 @@ SHORT = {"supported": "adds information",
 d12 = e7.copy()
 d12["is_acc"] = d12.focal.str.startswith(("acc_", "dur_"))
 d12 = d12.sort_values(["pair", "is_acc"], ascending=[True, False])
-f12 = ce.Series(["Coefficient", "p FDR", "Bootstrap p", "Focal VIF",
-                 "Conditional MDE (SD)"], dp=4)
+f12 = ce.Series(["Standardised effect (SD)", "Raw coefficient", "p FDR",
+                 "Bootstrap p", "Conditional MDE (SD)"], dp=4)
 rows12 = []
 for r in d12.itertuples():
     lbl = f"{ce.name(r.focal)} | {ce.name(r.controlling_for)}"
-    f12.add(lbl, [float(r.coef_joint),
+    # The CI travels through the same scale factor as the point estimate, so
+    # the interval stays an interval on the standardised axis.
+    scale = float(r.std_effect) / abs(float(r.coef_joint)) if r.coef_joint else 0.0
+    sgn = 1.0 if r.coef_joint >= 0 else -1.0
+    est_s, lo_s, hi_s = (sgn * float(r.std_effect),
+                         float(r.ci_lo) * scale, float(r.ci_hi) * scale)
+    f12.add(lbl, [est_s, float(r.coef_joint),
                   None if r.p_fdr != r.p_fdr else float(r.p_fdr),
                   None if r.boot_p != r.boot_p else float(r.boot_p),
-                  float(r.focal_vif),
                   None if r.conditional_mde_sd != r.conditional_mde_sd
                   else float(r.conditional_mde_sd)])
     boot = "not run" if r.boot_p != r.boot_p else f"{r.boot_p:.4f}"
+    mde_txt = ("&mdash;" if r.conditional_mde_sd != r.conditional_mde_sd
+               else f"{r.conditional_mde_sd:.2f} SD")
     rows12.append({
-        "label": lbl, "est": round(float(r.coef_joint), 4),
-        "lo": round(float(r.ci_lo), 4), "hi": round(float(r.ci_hi), 4),
+        "label": lbl, "est": round(est_s, 4),
+        "lo": round(min(lo_s, hi_s), 4), "hi": round(max(lo_s, hi_s), 4),
         "tone": TONE.get(r.reportable_outcome, "text-muted"),
         "strong": r.reportable_outcome == "supported",
         "right": SHORT.get(r.reportable_outcome, ""),
         "detail": (f"<span style='opacity:.6'>{r.focal} | {r.controlling_for}</span>"
-                   f"<br>{r.coef_joint:+.4f} with its counterpart controlled"
-                   f"<br>cluster-robust 95% CI [{r.ci_lo:+.4f}, {r.ci_hi:+.4f}]"
+                   f"<br><b>{est_s:+.3f} SD</b> of hardship per SD of the predictor"
+                   f"<br>raw coefficient {r.coef_joint:+.4f} "
+                   f"(this measure's own units)"
+                   f"<br>standardised 95% CI [{min(lo_s, hi_s):+.3f}, "
+                   f"{max(lo_s, hi_s):+.3f}]"
                    f"<br>bootstrap p <b>{boot}</b>"
                    f"<br>focal VIF {r.focal_vif:.2f}"
-                   f"<br>this pair's detectable effect: "
-                   f"{'—' if r.conditional_mde_sd != r.conditional_mde_sd else f'{r.conditional_mde_sd:.2f} SD'}")})
+                   f"<br>this pair's detectable effect: {mde_txt}")})
 FIGS["F12"] = dict(
     caption="Accumulated history provides additional conditional cross-country "
             "information in three of eight pairs",
     kind="coefficient",
-    payload={"rows": rows12, "alt": "The sixteen conditional coefficients, each "
-             "tested with its counterpart in the same model"},
+    payload={"rows": rows12, "dp": 3,
+             "xLabel": "Standardised effect: SD of hardship per SD of predictor",
+             "alt": "The sixteen conditional coefficients as standardised "
+                    "effects, each tested with its counterpart in the same model"},
     series=f12, first="Test",
-    extra_caveat=("Each coefficient is tested against ITS OWN pair-specific "
-                  "detectable effect, not a single study-wide threshold: "
-                  "conditional power depends on how much independent variation "
-                  "survives once the counterpart is controlled. Bars are "
-                  "cluster-robust intervals; the bootstrap decides support."))
+    extra_caveat=("The axis is STANDARDISED: SDs of hardship per SD of the "
+                  "predictor. The eight measures are in different units - "
+                  "percentage-point-years, years, index points, percentages - "
+                  "so raw coefficients could not share an axis, and the raw "
+                  "value is given in the table and the tooltip instead. Each "
+                  "coefficient is tested against ITS OWN pair-specific "
+                  "detectable effect, not a study-wide threshold: conditional "
+                  "power depends on how much independent variation survives "
+                  "once the counterpart is controlled. Bars are cluster-robust "
+                  "intervals; the bootstrap decides support."))
 
 # ---- F13: between against within, the limitation --------------------------
-f13 = ce.Series(["Between", "Between p", "Within", "Within p",
-                 "First difference", "First difference p"], dp=4)
-rows13 = []
+# ALSO STANDARDISED, and each component by its OWN spread. The between
+# coefficient multiplies country means and the within coefficient multiplies
+# deviations from them; those have different SDs, by factors from 0.8 to 5.7
+# across these pairs. Scaling both by one pooled SD would preserve exactly the
+# distortion that standardising is meant to remove.
+scales = pd.read_csv(PROC / "e7_between_within_scales.csv").set_index("pair")
+f13 = ce.Series(["Between (SD)", "Within (SD)", "Between p", "Within p",
+                 "First difference (raw)", "First difference p"], dp=4)
+rows13, rows13b = [], []
 PAIRNAME = {r.pair: ce.name(r.focal) for r in e7.itertuples()
             if str(r.focal).startswith(("acc_", "dur_"))}
 for r in dyn.itertuples():
     nm = PAIRNAME.get(r.pair, r.pair)
-    f13.add(nm, [float(r.acc_between), float(r.acc_between_p),
-                 float(r.acc_within), float(r.acc_within_p),
+    sc = scales.loc[r.pair]
+    b_std = float(r.acc_between) * float(sc.sd_between) / float(sc.resid_sd)
+    w_std = float(r.acc_within) * float(sc.sd_within) / float(sc.resid_sd)
+    f13.add(nm, [b_std, w_std, float(r.acc_between_p), float(r.acc_within_p),
                  float(r.fd_acc), float(r.fd_acc_p)])
     rows13.append({
-        "label": nm, "a": round(float(r.acc_within), 4),
-        "b": round(float(r.acc_between), 4),
+        "label": nm, "a": round(w_std, 4), "b": round(b_std, 4),
         "tone": "series-3" if r.acc_between_p < 0.05 else "text-muted",
         "strong": bool(r.acc_between_p < 0.05),
         "right": "no dynamic support",
-        "detail": (f"between <b>{r.acc_between:+.4f}</b> (p {r.acc_between_p:.4f})"
-                   f"<br>within {r.acc_within:+.4f} (p {r.acc_within_p:.4f})"
+        "detail": (f"between <b>{b_std:+.3f} SD</b> (p {r.acc_between_p:.4f})"
+                   f"<br>within {w_std:+.3f} SD (p {r.acc_within_p:.4f})"
+                   f"<br>raw: between {r.acc_between:+.4f}, "
+                   f"within {r.acc_within:+.4f}"
                    f"<br>first difference {r.fd_acc:+.4f} (p {r.fd_acc_p:.4f})")})
+    # First differences, shown rather than buried in a tooltip. The adverse
+    # direction for an accumulated measure is POSITIVE, so a significant
+    # negative difference is not dynamic support -- it points the other way.
+    if r.fd_acc_p < 0.05:
+        status = ("significant, but in the OPPOSITE direction"
+                  if r.fd_acc < 0 else "significant in the adverse direction")
+        tone = "warn" if r.fd_acc < 0 else "series-3"
+    else:
+        status, tone = "not distinguishable from zero", "text-muted"
+    rows13b.append({
+        "label": nm, "est": round(float(r.fd_acc), 4),
+        "lo": round(float(r.fd_acc), 4), "hi": round(float(r.fd_acc), 4),
+        "tone": tone, "strong": False, "right": status,
+        "detail": (f"year-on-year change model<br><b>{r.fd_acc:+.4f}</b> "
+                   f"(p {r.fd_acc_p:.4f}), n={int(r.fd_n)}"
+                   f"<br>adverse direction here is POSITIVE")})
+f13b = ce.Series(["First difference", "p", "n"], dp=4)
+for r in dyn.itertuples():
+    f13b.add(PAIRNAME.get(r.pair, r.pair),
+             [float(r.fd_acc), float(r.fd_acc_p), float(r.fd_n)])
 FIGS["F13"] = dict(
     caption="The supported historical associations are predominantly between "
             "countries; the within-country estimates provide no supporting "
             "dynamic evidence",
     kind="dumbbell",
-    payload={"rows": rows13, "dp": 3, "legendA": "within countries",
+    views=[("Between vs within",
+            {"rows": rows13, "dp": 3, "legendA": "within countries",
              "legendB": "between countries", "zeroLabel": "no effect",
-             "alt": "Between-country against within-country estimates for every "
-                    "accumulated measure"},
-    series=f13, first="Accumulated measure",
+             "xLabel": "Standardised effect (SD of hardship)",
+             "alt": "Standardised between-country against within-country "
+                    "estimates for every accumulated measure"},
+            "dumbbell"),
+           ("Year-on-year changes",
+            {"rows": rows13b, "dp": 3,
+             "xLabel": "First-difference coefficient (each measure's own units)",
+             "alt": "First-difference coefficients, none of which supports a "
+                    "dynamic reading in the adverse direction"},
+            "coefficient")],
+    view_series=[f13, f13b], first="Accumulated measure",
     # Wording matches the canonical elements the build now requires, so the
     # guard and the text cannot drift apart.
-    extra_caveat=("This does NOT establish that no within-country relationship "
-                  "exists: the within estimates are too imprecise to establish "
-                  "or rule out such a relationship. The frozen result records "
-                  "them as inconclusive, not absent."))
+    extra_caveat=("The first view is STANDARDISED, and each component by its "
+                  "own spread: between-country and within-country variation "
+                  "differ in size by factors of 0.8 to 5.7 here, so one shared "
+                  "SD would distort the comparison it is meant to fix. The "
+                  "second view shows first differences in each measure's own "
+                  "units, which is why those bars carry no shared scale and are "
+                  "read one row at a time. This does NOT establish that no "
+                  "within-country relationship exists: the within estimates are "
+                  "too imprecise to establish or rule out such a relationship. "
+                  "The frozen result records them as inconclusive, not absent."))
 
 # ---- F14: model dependence -----------------------------------------------
 a = p3r.set_index("geo").resid
@@ -187,7 +253,7 @@ FIGS["F14"] = dict(
     caption="Removing the same-instrument deprivation measure moves Greece "
             "from under-predicted to over-predicted",
     kind="dumbbell",
-    payload={"rows": rows14, "dp": 2, "legendA": "frozen specification",
+    payload={"rows": rows14, "xLabel": "Residual, pp: positive = MORE hardship than predicted, negative = less", "dp": 2, "legendA": "frozen specification",
              "legendB": "deprivation-free companion", "zeroLabel": "predicted exactly",
              "alt": "Country residuals under both specifications, on identical rows"},
     series=f14, first="Country")

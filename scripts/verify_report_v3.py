@@ -15,7 +15,10 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from claim_anchors import claim_containers, context_containers, context_completeness
 
-raw = (ROOT / "output" / "report.html").read_text()
+# The report is the eight-stage document assembled by 88_assemble_report.py.
+# This gate previously validated output/report.html, the superseded v3 build,
+# so the shipping report had no acceptance gate at all.
+raw = (ROOT / "output" / "v2_report.html").read_text()
 claims = pd.read_csv(ROOT / "data" / "processed" / "e_final_claims.csv").set_index("id")
 ctx = pd.read_csv(ROOT / "data" / "processed" / "context_register.csv").set_index("id")
 
@@ -26,7 +29,7 @@ def check(name, ok, detail=""):
 
 print("=" * 78); print("REPORT V3 ACCEPTANCE"); print("=" * 78)
 
-stages = re.findall(r'<section id="stage-(\d)"', raw)
+stages = re.findall(r'<section id="s(\d)" class="stage"', raw)
 check("1. eight stages, in order", stages == [str(i) for i in range(1, 9)], str(stages))
 
 unplaced = [c for c in claims.index if not claim_containers(raw, c)]
@@ -75,12 +78,19 @@ bleed = [cid for cid in ctx.index
                 sum((claim_containers(raw, k) for k in claims.index), []))]
 check("8. no context entry nested inside a claim", not bleed, str(bleed))
 
-check("9. no script survives", "<script" not in raw,
-      "the old script targets a structure that no longer exists")
+scripts_found = re.findall(r"<script([^>]*)>", raw)
+stray = [s for s in scripts_found
+         if 'type="application/json"' not in s and s.strip() != ""]
+remote = re.findall(r'<script[^>]*\ssrc=', raw)
+inline_handlers = re.findall(r'\son(?:click|load|error|mouseover)\s*=', raw)
+check("9. only the chart engine and its JSON payloads are scripted",
+      not stray and not remote and not inline_handlers,
+      f"stray={stray} remote={remote} handlers={inline_handlers}")
 
-used = set(re.findall(r"var\(--([\w-]+)", raw))
+bare = set(re.findall(r"var\(--([\w-]+)\s*\)", raw))
 defined = set(re.findall(r"--([\w-]+)\s*:", raw))
-check("10. no undefined CSS variables", not (used - defined), str(sorted(used - defined)))
+check("10. no undefined CSS variables without a fallback",
+      not (bare - defined), str(sorted(bare - defined)))
 
 FIG_MIN, FLOOR = 620, 7.0
 small = []

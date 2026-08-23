@@ -144,6 +144,25 @@ for path in TARGETS:
     check("every view contains at least two x-values and one finite number",
           not empty, "; ".join(empty))
 
+    # A reader should never have to consult a caption or hover a tooltip to
+    # learn whether an axis is percent, percentage points, PPS per head, index
+    # points, people or years. Correlation matrices are exempt: a correlation
+    # is dimensionless, and its axes are variable names rather than a scale.
+    unlabelled = []
+    for b in blocks:
+        fid = re.search(r'id="([^"]+)"', b).group(1)
+        for attrs, body in re.findall(
+                r'<script type="application/json"([^>]*)>(.*?)</script>', b, re.S):
+            d = json.loads(body.replace("<\\/", "</"))
+            if not d or "cols" in d or d.get("cells"):
+                continue
+            lbl = (re.search(r'data-label="([^"]*)"', attrs) or [None, fid])[1] \
+                if "data-label" in attrs else fid
+            if not (d.get("yLabel") or d.get("xLabel") or d.get("unit")):
+                unlabelled.append(f"{fid}/{lbl}")
+    check("every view states its units on an axis",
+          not unlabelled, "; ".join(unlabelled))
+
     # 2c. VIEW COUNT MATCHES THE MANIFEST, so scope cannot shrink silently.
     manp = ROOT / "data" / "processed" / "report_visual_manifest.csv"
     if manp.exists():

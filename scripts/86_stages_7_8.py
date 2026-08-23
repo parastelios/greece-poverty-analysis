@@ -108,7 +108,7 @@ myrs = [int(y) for y in gm.time]
 f16 = ce.Series([str(y) for y in myrs], dp=0, title="Departures and returns")
 f16.add("Departures", [float(v) for v in gm.emigration_nationals])
 f16.add("Returns", [float(v) for v in gm.immigration_nationals])
-v16a = {"years": myrs, "dp": 0,
+v16a = {"years": myrs, "dp": 0, "yLabel": "People",
         "alt": "Greek nationals leaving and returning, 2008 to 2024",
         "series": [{"label": "Departures", "tone": "gr", "style": "solid",
                     "weight": "strong",
@@ -147,7 +147,7 @@ for i, r in enumerate(cum.itertuples(), start=1):
                                f"departures<br>{r.cum_net_pct_of_pop:.2f}% of "
                                f"average population<br>rank {i} of {len(cum)}, "
                                f"{int(r.n_years)} years")})
-v16c = {"rows": rows16c, "dp": 2,
+v16c = {"rows": rows16c, "xLabel": "% of average population, cumulative 2008-2024", "dp": 2,
         "alt": "Cumulative net departures of nationals 2008-2024 as a share of "
                "average population, 25 countries with sufficient coverage"}
 FIGS["F16"] = dict(
@@ -180,7 +180,7 @@ for r in tr.itertuples():
 FIGS["F17"] = dict(
     caption="Institutional trust in Greece is below the OECD average",
     kind="ladder",
-    payload={"rows": rows17, "dp": 1, "unit": "%", "labelAll": True,
+    payload={"rows": rows17, "xLabel": "% reporting high or moderately high trust", "dp": 1, "unit": "%", "labelAll": True,
              "alt": "Trust in central government, Greece against the OECD "
                     "average, 2023"},
     series=f17, first="Entity")
@@ -198,7 +198,17 @@ elab = [str(x) for x in ess.fieldwork]
 # Numeric years, not evenly spaced categories: the x-scale is linear, so the
 # decade with no Greek round renders as real horizontal distance instead of
 # being collapsed into one more equal step.
-eyrs = [2003, 2005, 2009, 2011, 2021, 2024]
+# An empty slot at 2016 does two things: the renderer lifts the pen on a null,
+# so the line BREAKS instead of drawing a trajectory through a decade nobody
+# observed, and the break sits at the right place on a linear year axis.
+eyrs = [2003, 2005, 2009, 2011, 2016, 2021, 2024]
+GAP = 4                       # index of the unobserved slot
+
+
+def gapped(vals):
+    """Insert the unobserved slot so the drawn line breaks across it."""
+    v = list(vals)
+    return v[:GAP] + [None] + v[GAP:]
 
 f18a = ce.Series(elab, dp=2, title="Level")
 f18a.add("Greece", [float(v) for v in ess.greece_mean_approx])
@@ -213,23 +223,27 @@ f18b.add("Greece's rank, 1 = worst",
 v18a = {"years": eyrs, "dp": 2, "yLabel": "Life satisfaction, 0-10 (approx.)",
         "alt": "Greek life satisfaction against the median of the same twelve "
                "countries across six ESS rounds; Greece is below the median in "
-               "every round, falls to 5.64 in 2010/11 and recovers to 6.42",
+               "every round, falls to 5.64 in 2010/11 and recovers to 6.42; "
+               "the line is broken between 2010/11 and 2020-22, where no Greek "
+               "round was run",
         "series": [
             {"label": "Greece", "tone": "gr", "style": "solid",
              "weight": "strong",
-             "values": [float(v) for v in ess.greece_mean_approx]},
+             "values": gapped(float(v) for v in ess.greece_mean_approx)},
             {"label": "Median of the same 12 countries", "tone": "series-3",
              "style": "dashed", "weight": "normal",
-             "values": [float(v) for v in ess.balanced_12_median_approx]}]}
+             "values": gapped(float(v)
+                              for v in ess.balanced_12_median_approx)}]}
 
 v18b = {"years": eyrs, "dp": 0, "invertY": True,
         "yLabel": "Rank among the same 12, 1 = worst",
         "alt": "Greece's rank among the same twelve countries, worst first; "
-               "third or fourth before the crisis, worst from 2010/11 onward",
+               "third or fourth before the crisis, worst from 2010/11 onward; "
+               "the line is broken across the unobserved decade",
         "series": [
             {"label": "Greece's rank among the same 12", "tone": "gr",
              "style": "solid", "weight": "strong",
-             "values": [int(v) for v in ess.balanced_12_rank_worst]}]}
+             "values": gapped(int(v) for v in ess.balanced_12_rank_worst)}]}
 
 FIGS["F18"] = dict(
     caption="Greece was already below the median before the crisis, lost about "
@@ -238,17 +252,11 @@ FIGS["F18"] = dict(
     views=[("Level", v18a), ("Rank among the same 12", v18b)],
     view_series=[f18a, f18b], first="ESS round",
     extra_caveat=(
-        "EUROPEAN SOCIAL SURVEY, NOT EUROSTAT - a separate instrument, shown "
-        "separately, and never joined to the EU-SILC series used elsewhere in "
-        "this report. Means are APPROXIMATE, reconstructed from the weighted "
-        "percentages the ESS portal displays publicly; no confidence interval "
-        "exists for them and no test is run on them. The 12 countries are held "
-        "fixed across all six rounds, because the full ESS country set varies "
-        "from 22 to 30 and all-country ranks are not comparable between rounds. "
-        "No Greek round falls between 2010/11 and 2020-22, so the depth of the "
-        "adjustment and the recovery are both unobserved. Greek LEVEL recovered "
-        "to roughly its pre-crisis value while the gap to the median stayed "
-        "wider than before, so the rank must not be read as the level."))
+        "The line BREAKS between 2010/11 and 2020-22 because no Greek round "
+        "was run there: the depth of the adjustment and the recovery are both "
+        "unobserved, and nothing should be read across the gap. Greek LEVEL "
+        "recovered to roughly its pre-crisis value while the gap to the median "
+        "stayed wider than before, so the rank must not be read as the level."))
 
 
 def build(fid, spec):

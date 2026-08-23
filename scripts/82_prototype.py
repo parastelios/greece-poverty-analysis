@@ -46,6 +46,7 @@ for lbl, src, tone, style, weight in SER:
 
 f1_payload = {
     "years": [int(y) for y in yrs], "dp": f1.dp,
+    "yLabel": "% of households",
     "alt": "Greek reported hardship against income poverty, 2015 to 2024, "
            "with EU medians",
     "series": [{"label": lbl, "tone": meta["tone"], "style": meta["style"],
@@ -105,7 +106,7 @@ for r, row in zip(d9.itertuples(), f9_rows):
                           None if r.p_fdr != r.p_fdr else float(r.p_fdr),
                           None if r.boot_p != r.boot_p else float(r.boot_p)],
            outcome=r.outcome)
-f9_payload = {"rows": f9_rows,
+f9_payload = {"rows": f9_rows, "xLabel": "Standardised effect (SD of hardship)",
               "alt": "Standardised effect per construct with its cluster-robust "
                      "confidence interval, coloured by pre-registered outcome"}
 f9_fb = f9.fallback_table("Construct")

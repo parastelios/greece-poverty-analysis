@@ -59,16 +59,56 @@ for label, fname in [("Between countries", "e0_corr_between.csv"),
     flags = [[1 if (a, b) in MECH else 0 for b in keep] for a in keep]
     views6.append((label, {
         "flags": flags,
+        "triangular": True,
         "flagLabel": "partly mechanical",
         "flagExplain": "AROPE CONTAINS this measure, so the correlation is "
                        "partly mechanical and is not an independent relationship.",
         "cols": [ce.name(c) for c in keep],
+        # A correlation matrix is symmetric and its diagonal is always 1, so
+        # two thirds of the cells carry no information. Showing only the lower
+        # triangle leaves the reader looking at the comparisons that exist.
         "rows": [{"label": ce.name(r),
-                  "values": [round(float(sub.loc[r, c]), 3) for c in keep]}
-                 for r in keep],
+                  "values": [round(float(sub.loc[r, c]), 3) if i > j else None
+                             for j, c in enumerate(keep)]}
+                 for i, r in enumerate(keep)],
         "alt": f"Correlations {label.lower()}, outcomes and construct "
-               "representatives only",
+               "representatives only, lower triangle",
     }, "heatmap"))
+# The matrices show every pair; the result that MATTERS is what happens to the
+# hardship row when the scope changes from between countries to within them.
+# That comparison is buried in three separate grids, so it also gets its own
+# view, where a sign reversal is a pair of points on opposite sides of zero.
+mb = pd.read_csv(PROC / "e0_corr_between.csv", index_col=0)
+mw = pd.read_csv(PROC / "e0_corr_within.csv", index_col=0)
+# NOT `OUT`: that name is the output directory in this module.
+OUTCOME = "subjective_poverty"
+hk = [v for v in core if v != OUTCOME and v in mb.index and v in mw.index]
+hk.sort(key=lambda v: abs(float(mb.loc[OUTCOME, v]) - float(mw.loc[OUTCOME, v])),
+        reverse=True)
+f6h = ce.Series(["Between countries", "Within countries", "Change"], dp=3,
+                title="Hardship correlations")
+rows6h = []
+for v in hk:
+    b, w = float(mb.loc[OUTCOME, v]), float(mw.loc[OUTCOME, v])
+    f6h.add(ce.name(v), [b, w, w - b])
+    flip = (b > 0) != (w > 0) and min(abs(b), abs(w)) > 0.05
+    rows6h.append({
+        "label": ce.name(v), "a": round(w, 3), "b": round(b, 3),
+        "tone": "warn" if flip else "text-muted", "strong": flip,
+        "right": "sign reverses" if flip else "",
+        "detail": (f"between <b>{b:+.3f}</b><br>within <b>{w:+.3f}</b>"
+                   f"<br>change {w - b:+.3f}"
+                   + ("<br><b>the sign reverses between the two scopes</b>"
+                      if flip else ""))})
+v6h = {"rows": rows6h, "dp": 3, "legendA": "within countries",
+       "legendB": "between countries", "zeroLabel": "no correlation",
+       "xLabel": "Correlation with reported hardship",
+       "alt": "Each measure's correlation with reported hardship, between "
+              "countries against within countries, ordered by how much the "
+              "two differ; reversals are marked"}
+views6.append(("Hardship only: between vs within", v6h, "dumbbell"))
+series6.append(f6h)
+
 FIGS["F6"] = dict(
     caption="The same pair can point one way across countries and the other "
             "way within them",
@@ -133,7 +173,7 @@ FIGS["F7"] = dict(
     caption="Some gaps narrowed, especially long-term unemployment; wage, "
             "resource and affordability gaps widened",
     kind="ladder",
-    payload={"rows": rows7, "dp": 2, "unit": "of the 2015 gap",
+    payload={"rows": rows7, "xLabel": "Share of the 2015 Greece-EU gap closed by 2024 (1.0 = fully closed; above 1.0 = overshot and reversed)", "dp": 2, "unit": "of the 2015 gap",
              "labelAll": True, "reference": 0.0, "referenceLabel": "no change",
              "alt": "Share of each 2015 Greece-EU gap closed by 2024; positive "
                     "means convergence, negative means divergence"},
@@ -210,7 +250,7 @@ FIGS["F9"] = dict(
     caption="Three current-condition constructs survive the full testing "
             "sequence",
     kind="coefficient",
-    payload={"rows": rows9, "alt": "Standardised effect per construct with its "
+    payload={"rows": rows9, "xLabel": "Standardised effect (SD of hardship)", "alt": "Standardised effect per construct with its "
              "cluster-robust confidence interval"},
     series=f9, first="Construct",
     extra_caveat=("Bars are CLUSTER-ROBUST 95% confidence intervals, not "
@@ -223,14 +263,20 @@ yrs = sorted(panel.time.unique())
 gr = panel[panel.geo == "EL"].set_index("time")
 med = panel.groupby("time")[["ltu_rate", "aic_pps_pc", "wadj_a01"]].median()
 views10, series10 = [], []
+# Each tab shows a different quantity in a different unit, so the unit belongs
+# on the axis itself rather than in the caption the reader has already scrolled
+# past.
+UNIT10 = {"ltu_rate": "% of labour force",
+          "aic_pps_pc": "PPS per head",
+          "wadj_a01": "Index, EU27 = 100"}
 for v, dp in [("ltu_rate", 1), ("aic_pps_pc", 0), ("wadj_a01", 1)]:
     s = ce.Series([str(int(y)) for y in yrs], dp=dp, title=ce.name(v))
     s.add("Greece", [float(gr[v].get(y)) for y in yrs])
     s.add("EU median", [float(med[v].get(y)) for y in yrs])
     series10.append(s)
     views10.append((ce.name(v), {
-        "years": [int(y) for y in yrs], "dp": dp,
-        "alt": f"{ce.name(v)} for Greece against the EU median",
+        "years": [int(y) for y in yrs], "dp": dp, "yLabel": UNIT10[v],
+        "alt": f"{ce.name(v)} for Greece against the EU median, in {UNIT10[v]}",
         "series": [{"label": "Greece", "tone": "gr", "style": "solid",
                     "weight": "strong",
                     "values": [round(float(gr[v].get(y)), dp) for y in yrs]},

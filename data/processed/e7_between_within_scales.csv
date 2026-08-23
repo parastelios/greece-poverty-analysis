@@ -1,0 +1,9 @@
+pair,focal,sd_between,sd_within,resid_sd,n
+P1_ltu,acc_cum_excess_unemployment,24.460068,4.328537,13.273438,270
+P2_wage_area,acc_real_wages_shortfall,69.498724,21.947786,13.273438,270
+P3_wage_duration,dur_real_wages_below,3.472589,1.894534,13.273438,270
+P4_gdp,acc_pct_below_peak,45.114541,12.151371,13.273438,270
+P5_threshold,acc_threshold_shortfall,52.937005,16.313805,13.330008,260
+P6_wadj,acc_wadj_excess,414.201683,94.187824,13.273438,270
+P7_hicp,acc_hicp_compounded,12.600229,15.523926,13.273438,270
+P8_housing,acc_housing_excess,35.124461,10.237452,13.297931,269

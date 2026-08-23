@@ -44,7 +44,7 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `p6-rewrite` |
-| HEAD | `832c7e9` Assemble the eight-stage technical report |
+| HEAD | `79062a8` Correction pass: factual errors, invalid shared scales, release gate |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-23 |
 | Frozen V1 reference | `v1-final` |
@@ -3308,6 +3308,16 @@ Deviations must be disclosed in the stage that made them, not only here.
 | C-33 | 2026-08-23 | The worsening life-satisfaction rank was read as falling Greek satisfaction | Greek life satisfaction ROSE over the observed period, 6.2 to 6.9. Only the rank worsened, because other countries improved faster — the same relative-versus-absolute trap as F7's convergence caveat | Both facts now stated together wherever the rank appears | `v2_research_record.md`, F15 | — |
 | C-34 | 2026-08-23 | The visual manifest's OWNER map was rotated by one against the figure order: the reporting-style panel was credited to CTX-4 (migration), migration to CTX-2 (trust) and trust to CTX-1 (reporting style) | Positions assign figure ids, so three figures carried the wrong context owner in the manifest | Corrected to F15=CTX-1, F16=CTX-4, F17=CTX-2 |
 | C-35 | 2026-08-23 | CTX-7's detect pattern matched the bare phrase 'pre-crisis baseline', which the narrative uses about the social safety net | A broad pattern flagged an unrelated sentence as unanchored ESS discussion | Narrowed to ESS-specific terms |
+| C-36 | 2026-08-23 | The report described `ilc_mdes09` as the official post-2010 indicator; it is the reverse | Post-2010 uses official `ilc_sbjp01` directly, and `ilc_mdes09` supplies the validated pre-2010 extension, per `scripts/outcome.py` | Provenance rewritten, with the 318-exact/114-rounding overlap detail and the two things the validation does NOT establish |
+| C-37 | 2026-08-23 | The anchored-poverty methods panel claimed 'the same anchor is used for every country' | `anchored_poverty.csv` is Greece-only and has no geo column, so no cross-country comparison exists | Replaced with an explicit statement that the series supports no cross-country claim whatever |
+| C-38 | 2026-08-23 | The report claimed the claim set was frozen before the final analysis and unchanged since | FINAL followed E7, and V2-7.1 was narrowed after review | Restated as frozen before publication composition, naming the one subsequent narrowing |
+| C-39 | 2026-08-23 | Stage 3 presented same-interview EU-SILC items as things that 'are not opinions' and as settling the question | All four items are self-reported in the same interview as the outcome | Rewritten to say the stage narrows the question rather than closing it |
+| C-40 | 2026-08-23 | The context section said nothing in it was tested | Migration was tested diagnostically, and the cross-domain and ESS analyses are descriptive work done here | Boundary restated as: none of it may support a headline claim |
+| C-41 | 2026-08-23 | The summary table filed same-instrument correlations under Supported and flattened the dynamic result to 'not supported' | Their frozen status is descriptive corroboration, and the dynamic result is no supporting evidence with the within effect inconclusive | Both rows restated; a third verdict tone added |
+| C-42 | 2026-08-23 | F12 and F13 placed coefficients in different units on one axis | percentage-point-years, years, index points and percentages are not comparable by bar length | F12 standardised; F13 standardised with each component scaled by its OWN spread, since between and within SDs differ by factors of 0.8 to 5.7 (`89_between_within_scales.py`) |
+| C-43 | 2026-08-23 | F5's shift-share view encoded exact decomposition terms as lo/est/hi | The bars read as confidence intervals for quantities that carry no uncertainty, and the composition term was not drawn at all | Recast as paired bars; alt text corrected from three components to two |
+| C-44 | 2026-08-23 | F18 drew a continuous line across the unobserved decade and printed its caveat twice | Connecting 2010/11 to 2020-22 invents an unobserved trajectory | Null slot inserted at 2016 so the renderer breaks the line; manifest caveat shortened to remove the duplication |
+| C-45 | 2026-08-23 | The release gate validated `output/report.html`, the superseded v3 build | The shipping report had no acceptance gate at all | Gate repointed at `v2_report.html`; its stage selector, script rule and CSS-variable rule updated for an interactive eight-stage document |
 
 ## Artifact Index
 
@@ -3372,4 +3382,5 @@ Deviations must be disclosed in the stage that made them, not only here.
 | FINAL | `e_final_claims.csv` | The frozen claim set with placement and caveats | present |
 | FINAL | `final_freeze.json` | The eight locked items; model searching closed | present |
 | FINAL | `report_visual_manifest.csv` | 15 figures specified before any was built | present |
+| ? | `e7_between_within_scales.csv` | **undocumented — add to ARTIFACT_PURPOSE** | present |
 <!-- AUTO:END artifact-index -->
