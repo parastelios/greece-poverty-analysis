@@ -93,31 +93,43 @@ v16b = {"years": myrs, "dp": 0,
         "series": [{"label": "Net outflow", "tone": "gr", "style": "solid",
                     "weight": "strong",
                     "values": [int(v) for v in gm.net_migration_nationals]}]}
-latest_m = mig[mig.time == mig.time.max()].dropna(subset=["net_migration_rate_per1000"])
-latest_m = latest_m.sort_values("net_migration_rate_per1000", ascending=False)
-f16c = ce.Series(["Net outflow per 1,000"], dp=2, title="EU comparison")
+# CUMULATIVE 2008-2024, not the latest year. Ranking on 2024 alone put Greece
+# near the BOTTOM, because 2024 was a year of net return -- which repeats the
+# reversal the timeline already shows and hides the historical cost the figure
+# exists to convey.
+cum = pd.read_csv(PROC / "migration_cumulative_comparison.csv")
+cum = cum.sort_values("cum_net_pct_of_pop", ascending=False).reset_index(drop=True)
+f16c = ce.Series(["Cumulative net departures", "% of average population",
+                  "Years covered"], dp=2, title="EU comparison, cumulative")
 rows16c = []
-for i, r in enumerate(latest_m.itertuples(), start=1):
+for i, r in enumerate(cum.itertuples(), start=1):
     nm = NAMES.get(r.geo, r.geo)
-    f16c.add(nm, [float(r.net_migration_rate_per1000)])
+    f16c.add(nm, [float(r.total_net_migration), float(r.cum_net_pct_of_pop),
+                  float(r.n_years)])
     rows16c.append({"label": nm, "name": nm,
-                    "value": round(float(r.net_migration_rate_per1000), 2),
+                    "value": round(float(r.cum_net_pct_of_pop), 2),
                     "highlight": r.geo == "EL",
-                    "detail": f"rank {i} of {len(latest_m)}<br>"
-                              "<span style='opacity:.6'>net outflow of nationals "
-                              "per 1,000 residents</span>"})
-v16c = {"rows": rows16c, "dp": 2, "reference": 0.0, "referenceLabel": "balance",
-        "alt": "Net outflow of nationals per 1,000 residents, latest year"}
+                    "detail": (f"{int(r.total_net_migration):,} cumulative net "
+                               f"departures<br>{r.cum_net_pct_of_pop:.2f}% of "
+                               f"average population<br>rank {i} of {len(cum)}, "
+                               f"{int(r.n_years)} years")})
+v16c = {"rows": rows16c, "dp": 2,
+        "alt": "Cumulative net departures of nationals 2008-2024 as a share of "
+               "average population, 25 countries with sufficient coverage"}
 FIGS["F16"] = dict(
     caption="The crisis also became an exit route &mdash; and since 2023 that "
             "has reversed",
     kind="panel",
     views=[("Departures and returns", v16a), ("Net flow", v16b),
-           ("EU comparison", v16c, "ladder")],
+           ("EU comparison, cumulative", v16c, "ladder")],
     view_series=[f16, f16b, f16c], first="Series",
-    extra_caveat=("Net outflow peaked at 44,502 in 2012. By 2023 the flow had "
-                  "turned: more Greek nationals returned than left, and in 2024 "
-                  "the net return was 19,852."))
+    extra_caveat=("Net outflow peaked at 44,502 in 2012. Across 2008-2024 the "
+                  "cumulative net loss is 290,281 people, 2.69% of average "
+                  "population and the fifth highest of the 25 countries with "
+                  "sufficient coverage. By 2023 the flow had turned: more Greek "
+                  "nationals returned than left, and in 2024 the net return was "
+                  "19,852. The accumulated loss is now beginning to reverse; it "
+                  "has not been undone."))
 
 # ---- F17: the trust snapshot ---------------------------------------------
 tr = pd.read_csv(PROC / "oecd_trust_2023.csv")
@@ -138,12 +150,10 @@ FIGS["F17"] = dict(
              "alt": "Trust in central government, Greece against the OECD "
                     "average, 2023"},
     series=f17, first="Entity",
-    extra_caveat=("This is a TWO-POINT SNAPSHOT, and deliberately so. The "
-                  "project holds only the figures read from the OECD country "
-                  "note; the per-institution breakdown circulating in summaries "
-                  "was not verified against the source and is not plotted. "
-                  "Obtaining the underlying OECD country table would allow the "
-                  "full distribution with Greece placed in it."))
+    # The provenance detail -- which summary figures were unverified, and what
+    # obtaining the OECD country table would allow -- belongs in methods and the
+    # research record, not on the face of the figure.
+    )
 
 
 def build(fid, spec):
@@ -218,7 +228,7 @@ ROWS = [
     ("Descriptive", "Those same four items track reported hardship strongly "
      "within the same survey, at within-country correlations of 0.63 to 0.80, "
      "and absorb 71% of the baseline residual",
-     "corroboration of material grounding, not explanation"),
+     "same-instrument corroboration, not independent validation"),
     ("Blocked", "The transfer-policy comparators",
      "algebraic functions of income poverty"),
     ("Failed or superseded", "The synthetic-control comparative design; "

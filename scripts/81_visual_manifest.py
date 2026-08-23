@@ -231,11 +231,10 @@ M = [
       series="Greece against the OECD average, central government, 2023",
       interaction="hover reads the share and the survey window",
       fallback="entity, share reporting high or moderately high trust",
-      caveat="A 2023 SNAPSHOT, not a trend. Older Greek trust figures come "
-             "from different sources, definitions and survey schedules, and "
-             "joining them into one line would manufacture a series that does "
-             "not exist. Contextual evidence: not modelled, and no variable in "
-             "any model above measures trust.",
+      # Kept short on the face of the figure. The provenance detail -- which
+      # summary figures were never verified, and what obtaining the OECD
+      # country table would allow -- is in the research record.
+      caveat="A 2023 snapshot, not a trend; contextual and not modelled.",
       status_label="contextual evidence"),
 ]
 

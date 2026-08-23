@@ -3183,6 +3183,32 @@ Current state of `docs/claim_matrix.csv`: **53 claims**.
 | future_research | 1 |
 <!-- AUTO:END claim-summary -->
 
+## Figure provenance notes
+
+Detail that belongs in the record rather than on the face of a figure.
+
+**F17, institutional trust.** The figure plots two numbers only: Greece at 32%
+against an OECD average of 39% for trust in central government, both read
+directly from the primary OECD country-note PDF (fieldwork October–November
+2023, 30 countries). A per-institution breakdown circulates in secondary
+summaries — police 51%, courts 47%, parliament 32%, civil service 31%, news
+media 22%, political parties 17% — and **none of it was verified against the
+source**, so none of it is plotted or stored. Obtaining the underlying OECD
+country table would allow the full distribution with Greece placed in it;
+until then the figure stays at two points.
+
+Older Greek trust figures exist from other surveys, but they use different
+sources, definitions and schedules. Joining them into one line would manufacture
+a series that does not exist, which is why the figure is a snapshot rather than
+a trend.
+
+**F16, migration.** The EU comparison uses the **cumulative** 2008–2024 net
+outflow, not the latest year. Ranking on 2024 alone placed Greece near the
+bottom because 2024 was a year of net return — which repeats the reversal the
+timeline already shows and hides the historical cost the figure exists to
+convey. Cumulatively Greece has lost 290,281 people net, 2.69% of average
+population, the fifth highest of the 25 countries with sufficient coverage.
+
 ## Open transition state
 
 The rewrite is in progress and the repository is deliberately in a mixed state.
