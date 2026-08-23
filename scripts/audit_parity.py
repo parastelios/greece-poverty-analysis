@@ -24,7 +24,10 @@ from claim_anchors import claim_containers
 #                           incomplete V2 release
 RELEASE = "--release" in sys.argv
 
-DOCS = {"report": "../output/report.html",
+# The report is now the eight-stage document assembled by 88_assemble_report.py.
+# output/report.html is the superseded v3 build, kept only because the batch
+# pages still borrow its stylesheet.
+DOCS = {"report": "../output/v2_report.html",
         "paper": "../output/academic_paper_draft.html",
         "narrative": "../output/narrative_companion.html"}
 

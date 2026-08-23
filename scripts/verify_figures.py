@@ -22,6 +22,7 @@ TARGETS = [p for p in [ROOT / "output" / "prototype.html",
                        ROOT / "output" / "batch2.html",
                        ROOT / "output" / "batch3.html",
                        ROOT / "output" / "batch4.html",
+                       ROOT / "output" / "v2_report.html",
                        ROOT / "output" / "report.html"] if p.exists()]
 
 F = []

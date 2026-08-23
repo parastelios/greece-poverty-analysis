@@ -44,7 +44,7 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `p6-rewrite` |
-| HEAD | `b5af938` Specify the ESS pre-crisis extension; leave it unbuilt pending data |
+| HEAD | `e19c8a0` Correct ESS periodisation; stamp the extension SKIPPED |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-23 |
 | Frozen V1 reference | `v1-final` |
@@ -3092,6 +3092,9 @@ Claim and context containers are added **during composition**, not retrofitted.
 | D-62 | 2026-08-23 | FINAL | V2-7.1 REWORDED after the freeze | Greece is second-worst on life satisfaction, not middling; the original wording was arithmetically true and substantively misleading | Leaving a frozen claim that four review rounds had passed over | `frozen` | 8.6 | — |
 | D-63 | 2026-08-23 | FINAL | The life-satisfaction series cannot support a pre-crisis comparison | Eurostat's wellbeing module begins in 2013, at the crisis trough; there is no baseline in this project | Reading the 2013 start as a pre-crisis level | `frozen` | — | — |
 | D-64 | 2026-08-23 | FINAL | The ESS pre-crisis extension is OPTIONAL, is coded but NOT built, and is stamped `[SKIPPED: authenticated source unavailable]` | ESS microdata sits behind a free registration this project has no account for. It does not block publication: V2-7.1 was narrowed on Eurostat evidence alone. Greek rounds are 1 (2002/03) and 2 (2004/05) pre-crisis, 4 (2008/09) crisis onset, 5 (2010/11) early crisis, then 10 (2020-22) and 11 (2023/24); the unobserved decade runs AFTER 2010/11, covering the depth of the adjustment and the recovery. `scripts/87_ess_pre_crisis.py` writes a SKIPPED status marker so an empty run can never read as a successful one | Letting the clean exit pass for a completed extension; reporting any ESS number; splicing ESS onto the Eurostat series if it is later obtained; reopening the model analysis or softening the report's conclusion when it arrives | `frozen` | — | — |
+| D-65 | 2026-08-23 | FINAL | The technical report is assembled by `scripts/88_assemble_report.py` into `output/v2_report.html`, and figures are lifted VERBATIM from the batch pages rather than rebuilt | Each batch page already passed the figure checks, so reusing the built HTML carries every checksum, fallback table, badge and caveat across unchanged; rebuilding would create a second rendering path that could silently diverge from the verified one | Editing figure HTML during assembly; adding a figure that no batch page produced | `frozen` | — | — |
+| D-66 | 2026-08-23 | FINAL | Assembly fails closed on three conditions: any built figure not placed, any context entry not placed, and any claim marked `body` for the report that is absent | The first draft of the claim check tested the placement column for boolean values and matched nothing, so it passed vacuously while reporting `claims 0`; the check now raises if the required set is empty | Allowing a coverage check that can pass without asserting anything | `frozen` | — | — |
+| D-67 | 2026-08-23 | FINAL | `audit_parity.py` now audits `output/v2_report.html` as the report; `output/report.html` is the superseded v3 build, retained only because the batch pages borrow its stylesheet | The report was rebuilt around the eight-stage story and the frozen claim set, so auditing the old build measures a document that is no longer the report | Deleting report.html while the batch scripts still read it; retiring the legacy 53-claim matrix before the paper and narrative are rewritten against the frozen set | `frozen` | — | — |
 
 Allowed statuses: `proposed`, `pre-registered`, `frozen`, `superseded`,
 `withdrawn`, `infeasible`.
