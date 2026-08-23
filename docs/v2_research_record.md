@@ -44,7 +44,7 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | E7 |
 | Last completed stage | E6 |
 | Branch | `p6-rewrite` |
-| HEAD | `fe28fc5` Amend the E7 pre-registration: pairs, BH family 4, conditional MDEs, formulas |
+| HEAD | `2090582` Publish E7 conditional MDEs before fitting; no outcome results yet |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-23 |
 | Frozen V1 reference | `v1-final` |

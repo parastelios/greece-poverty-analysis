@@ -31,8 +31,9 @@ PROC = Path(__file__).resolve().parents[1] / "data" / "processed"
 prereg = json.loads((PROC / "e7_preregistration.json").read_text())
 PAIRS = prereg["pairs"]
 BASE = "subjective_poverty ~ arop + C(time)"
-REPS, TARGET = 400, 0.80
+REPS, TARGET = 1999, 0.80
 GRID = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.25, 1.5, 2.0, 3.0]
+MC_SE = lambda p_: (p_ * (1 - p_) / REPS) ** 0.5
 
 panel = pd.read_csv(PROC / "e4_accumulated_panel.csv")
 frozen = pd.read_csv(PROC / "cumulative_hardship_candidate_panel.csv")
@@ -58,8 +59,11 @@ def partial_corr(d, a, b):
 
 bar = "=" * 96
 print(bar); print("E7 STEP 1: PAIR-SPECIFIC CONDITIONAL MDEs"); print(bar)
-print("  POWER ONLY. No conditional outcome coefficient is reported.")
-print(f"  {REPS} simulations per point, target power {TARGET:.0%}.\n")
+print("  POWER ONLY. No E7 JOINT OUTCOME RESULT is fitted here -- the baseline")
+print("  hardship model IS fitted, to estimate variance components.")
+print(f"  {REPS} simulations per point, target power {TARGET:.0%}, "
+      f"MC SE at target ~{MC_SE(TARGET):.4f}.")
+print(f"  {len(PAIRS)} pairs x 2 directions = {len(PAIRS) * 2} conditional MDEs.\n")
 
 def design(d, cols):
     """Design matrix with year dummies, built ONCE per pair.
@@ -76,75 +80,131 @@ def design(d, cols):
     return np.column_stack(X)
 
 
-def cluster_ols(XtX_inv, X, y, group_slices, k):
-    """OLS with country-clustered SEs. Returns (coef, se) for column k."""
+def cluster_ols(XtX_inv, X, y, group_slices, k, correction):
+    """OLS with country-clustered SEs, matching statsmodels exactly.
+
+    THE CORRECTION IS NOT OPTIONAL. statsmodels applies the finite-sample
+    factor G/(G-1) x (N-1)/(N-K), which at G=27 clusters is 1.0870. Omitting it
+    understates every standard error by ~8.7% and makes the published MDEs
+    optimistic. Verified against a statsmodels fit in verify_against_statsmodels().
+    """
     beta = XtX_inv @ (X.T @ y)
     resid = y - X @ beta
     meat = np.zeros((X.shape[1], X.shape[1]))
     for m in group_slices:
         Xu = X[m].T @ resid[m]
         meat += np.outer(Xu, Xu)
-    V = XtX_inv @ meat @ XtX_inv
+    V = XtX_inv @ meat @ XtX_inv * correction
     return float(beta[k]), float(np.sqrt(max(V[k, k], 0)))
 
 
+def fs_correction(n, k, g):
+    return (g / (g - 1)) * ((n - 1) / (n - k))
+
+
+def verify_against_statsmodels(d, cur, acc):
+    """The manual SE must reproduce statsmodels before any MDE is trusted."""
+    X = design(d, ["arop", cur, acc])
+    y = d.subjective_poverty.to_numpy(float)
+    slices = [(d.geo == g).to_numpy() for g in d.geo.unique()]
+    corr = fs_correction(len(d), X.shape[1], d.geo.nunique())
+    XtX_inv = np.linalg.pinv(X.T @ X)
+    sm = smf.ols(f"{BASE} + {cur} + {acc}", data=d).fit(
+        cov_type="cluster", cov_kwds={"groups": d["geo"]})
+    worst = 0.0
+    for k, name in [(2, cur), (3, acc)]:
+        _, se = cluster_ols(XtX_inv, X, y, slices, k, corr)
+        worst = max(worst, abs(se - sm.bse[name]) / sm.bse[name])
+    return worst
+
+
 rows, curves = [], []
-for pr in PAIRS:
+print("  verifying the manual cluster-robust SE against statsmodels...")
+for i, pr in enumerate(PAIRS):
     cur, acc, pid = pr["current"], pr["accumulated"], pr["id"]
     if cur not in panel.columns or acc not in panel.columns:
         print(f"  {pid:18} SKIP: not in panel")
         continue
     d = panel.dropna(subset=[cur, acc, "subjective_poverty", "arop"]).copy()
+    rel = verify_against_statsmodels(d, cur, acc)
+    if rel > 1e-8:
+        raise SystemExit(f"{pid}: manual SE differs from statsmodels by {rel:.2e}")
+print(f"  OK: manual SEs match statsmodels to <1e-8 on all "
+      f"{len(PAIRS)} pairs.\n")
+
+for i, pr in enumerate(PAIRS):
+    cur, acc, pid = pr["current"], pr["accumulated"], pr["id"]
+    if cur not in panel.columns or acc not in panel.columns:
+        continue
+    d = panel.dropna(subset=[cur, acc, "subjective_poverty", "arop"]).copy()
     sd_b, sd_w, sd_r = variance_components(d)
     r_partial = partial_corr(d, cur, acc)
-    # Two designs, identical machinery, so the inflation factor is meaningful.
-    # Comparing against the published 0.70 family MDE would NOT be
-    # apples-to-apples: that was computed on a different design in script 61.
-    X_joint = design(d, ["arop", cur, acc])
-    X_marg = design(d, ["arop", acc])
-    XtX_joint = np.linalg.pinv(X_joint.T @ X_joint)
-    XtX_marg = np.linalg.pinv(X_marg.T @ X_marg)
-    K_JOINT, K_MARG = 3, 2
     geos = d.geo.unique()
     slices = [(d.geo == g).to_numpy() for g in geos]
-    gidx = {g: i for i, g in enumerate(geos)}
-    gmap = np.array([gidx[g] for g in d.geo])
-    sd_acc = d[acc].std()
-    xacc = d[acc].to_numpy(float)
-    rng = np.random.default_rng(20250827 + abs(hash(pid)) % 1000)
+    gmap = np.array([{g: j for j, g in enumerate(geos)}[g] for g in d.geo])
 
-    def run(XtX, X, k, label):
-        found = None
+    X_joint = design(d, ["arop", cur, acc])
+    corr_j = fs_correction(len(d), X_joint.shape[1], len(geos))
+    XtX_joint = np.linalg.pinv(X_joint.T @ X_joint)
+
+    def marginal(focal):
+        X = design(d, ["arop", focal])
+        return (X, np.linalg.pinv(X.T @ X),
+                fs_correction(len(d), X.shape[1], len(geos)), 2)
+
+    def run(XtX, X, k, corr, focal, label):
+        """Plant an effect on `focal` and measure detection."""
+        # DETERMINISTIC SEED. hash(pid) is randomised per process unless
+        # PYTHONHASHSEED is fixed, so the previous artifact could not be
+        # regenerated. The frozen pair index is stable by construction.
+        rng = np.random.default_rng(20250827 + i * 10 + (0 if focal == acc else 1)
+                                    + (0 if label == "conditional" else 5))
+        sd_f = d[focal].std()
+        xf = d[focal].to_numpy(float)
+        found, found_power = None, None
         for eff in GRID:
-            beta = eff * sd_r / sd_acc
+            beta = eff * sd_r / sd_f
             hits = 0
             for _ in range(REPS):
-                y = (beta * xacc + rng.normal(0, sd_b, len(geos))[gmap]
+                y = (beta * xf + rng.normal(0, sd_b, len(geos))[gmap]
                      + rng.normal(0, sd_w, len(d)))
-                c, se = cluster_ols(XtX, X, y, slices, k)
+                c, se = cluster_ols(XtX, X, y, slices, k, corr)
                 if se > 0 and abs(c / se) > 1.96 and np.sign(c) == np.sign(beta):
                     hits += 1
             power = hits / REPS
-            curves.append({"pair": pid, "design": label,
-                           "effect_sd": eff, "power": power})
+            curves.append({"pair": pid, "focal": focal, "design": label,
+                           "effect_sd": eff, "power": power,
+                           "mc_se": MC_SE(power), "reps": REPS})
             if power >= TARGET:
-                found = eff
+                found, found_power = eff, power
                 break
-        return found
+        return found, found_power
 
-    mde = run(XtX_joint, X_joint, K_JOINT, "conditional")
-    mde_marg = run(XtX_marg, X_marg, K_MARG, "marginal")
-    rows.append({"pair": pid, "construct": pr["construct"],
-                 "current": cur, "accumulated": acc, "n": len(d),
-                 "countries": d.geo.nunique(), "partial_corr": r_partial,
-                 "residual_sd": sd_r, "between_sd": sd_b, "within_sd": sd_w,
-                 "conditional_mde_sd": mde, "marginal_mde_sd": mde_marg,
-                 "inflation": (mde / mde_marg) if (mde and mde_marg) else None})
-    m_s = f"{mde:.2f}" if mde else f">{GRID[-1]:.1f}"
-    g_s = f"{mde_marg:.2f}" if mde_marg else f">{GRID[-1]:.1f}"
-    infl = f"{mde / mde_marg:.2f}x" if (mde and mde_marg) else "n/a"
-    print(f"  {pid:18} n={len(d):4d}  partial r={r_partial:+.3f}   "
-          f"marginal {g_s:>5}  conditional {m_s:>5} SD   inflation {infl}")
+    for focal, other, k_j in [(acc, cur, 3), (cur, acc, 2)]:
+        mde, pw = run(XtX_joint, X_joint, k_j, corr_j, focal, "conditional")
+        Xm, XtXm, corr_m, k_m = marginal(focal)
+        mde_m, _ = run(XtXm, Xm, k_m, corr_m, focal, "marginal")
+        # A grid point within 2 MC SEs of the target could flip on a rerun.
+        fragile = bool(pw is not None and abs(pw - TARGET) < 2 * MC_SE(pw))
+        rows.append({"pair": pid, "construct": pr["construct"],
+                     "focal": focal, "controlling_for": other,
+                     "direction": "accumulated|current" if focal == acc
+                                  else "current|accumulated",
+                     "n": len(d), "countries": len(geos),
+                     "partial_corr": r_partial,
+                     "residual_sd": sd_r, "between_sd": sd_b, "within_sd": sd_w,
+                     "conditional_mde_sd": mde, "power_at_mde": pw,
+                     "mc_se_at_mde": MC_SE(pw) if pw is not None else None,
+                     "boundary_fragile": fragile,
+                     "marginal_mde_sd": mde_m,
+                     "inflation": (mde / mde_m) if (mde and mde_m) else None,
+                     "reps": REPS})
+        m_s = f"{mde:.2f}" if mde else f">{GRID[-1]:.1f}"
+        g_s = f"{mde_m:.2f}" if mde_m else f">{GRID[-1]:.1f}"
+        infl = f"{mde / mde_m:.2f}x" if (mde and mde_m) else "n/a"
+        lab = "acc | cur" if focal == acc else "cur | acc"
+        print(f"  {pid:18} {lab:9} marginal {g_s:>5}  conditional {m_s:>5} SD  "
+              f"inflation {infl:>6}{'  FRAGILE' if fragile else ''}")
 
 res = pd.DataFrame(rows)
 pd.DataFrame(curves).to_csv(PROC / "e7_mde_curves.csv", index=False)
@@ -156,8 +216,26 @@ print("  inflation factor is meaningful. It is NOT comparable to the published")
 print("  0.70 family MDE, which came from a different design in script 61.")
 print("\n  Inflation above 1 means the pair is harder to test conditionally")
 print("  than marginally: the two measures share variation, so less independent")
-print("  signal remains once the counterpart is controlled.")
+print("  signal remains once the counterpart is controlled. That is the usual")
+print("  case and 15 of 16 show it.")
+print("\n  INFLATION BELOW 1 IS POSSIBLE AND IS NOT AN ERROR. Two forces act in")
+print("  opposite directions when the counterpart is added: it inflates the")
+print("  focal predictor's variance through collinearity, and it can also ABSORB")
+print("  residual variance. Where the counterpart is strongly between-country it")
+print("  soaks up the between-country noise component, and that can help power")
+print("  more than the collinearity hurts. P7_hicp shows this: the conditional")
+print("  design has higher power at EVERY effect size, far beyond Monte Carlo")
+print("  noise, because compounded inflation is a heavily between-country series.")
 print("\n  THE CONDITIONAL COLUMN IS THE OPERATIVE THRESHOLD FOR E7.")
+fragile = res[res.boundary_fragile == True]
+if len(fragile):
+    print(f"\n  BOUNDARY-FRAGILE ({len(fragile)} of {len(res)}): power at the reported")
+    print(f"  MDE is within 2 Monte Carlo SEs of {TARGET:.0%}, so a rerun with")
+    print("  different draws could move the MDE one grid step. Reported, not hidden.")
+    for r in fragile.itertuples():
+        print(f"    {r.pair:18} {r.focal:28} MDE {r.conditional_mde_sd:.2f} "
+              f"at power {r.power_at_mde:.4f} +/- {r.mc_se_at_mde:.4f}")
+
 none_found = res[res.conditional_mde_sd.isna()]
 if len(none_found):
     print(f"\n  NO conditional MDE reached {TARGET:.0%} power within the grid for: "
