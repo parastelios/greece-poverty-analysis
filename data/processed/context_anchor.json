@@ -1,0 +1,18 @@
+{
+  "anchor": "The statistical analysis identifies where Greece's hardship aligns with material conditions and accumulated history. It does not identify which institutions or policies produced that history. Crisis policy, taxation, trust and migration therefore belong in the interpretation as plausible context, not as estimated explanations.",
+  "statuses": {
+    "descriptive corroboration": "tested in this project; a frozen claim exists",
+    "contextual evidence": "evidence exists, but not identified here",
+    "literature-grounded context": "external literature; not estimated here",
+    "contextual consequence": "consistent with the findings; not an explanation of them",
+    "future hypothesis": "requires data this project does not have",
+    "author interpretation": "the authors' reading, not an empirical result"
+  },
+  "placement": {
+    "report": "full contextual discussion with evidence-status labels",
+    "paper": "concise competing-explanations and policy-implications section",
+    "narrative": "one readable chapter connecting the findings to lived institutional context",
+    "appendix": "sources, exact indicators, coverage limitations and null tests"
+  },
+  "rule": "A context entry may never be cited as support for an analytical claim, and may never appear without its evidence-status label."
+}

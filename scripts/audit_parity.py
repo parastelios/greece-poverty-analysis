@@ -128,6 +128,40 @@ for _, r in m.iterrows():
         if not found:
             problems.append((r.id, r.element, r.claim[:58], doc, need))
 
+# ---------------------------------------------------------------------------
+# CONTEXT PARITY. A context entry that appears in a document must appear WITH
+# its evidence-status label. The register exists so trust, crisis policy,
+# migration and taxation cannot be read as estimated explanations -- and an
+# unlabelled mention is exactly how that would happen.
+#
+# This check is inert until the documents are rewritten against the freeze. It
+# reports rather than fails while every count is zero, and starts biting the
+# moment a context topic is mentioned.
+# ---------------------------------------------------------------------------
+def check_context_parity(doc_text):
+    import pandas as pd
+    from pathlib import Path as _P
+    reg = _P(__file__).resolve().parents[1] / "data" / "processed" / "context_register.csv"
+    if not reg.exists():
+        return []
+    ctx = pd.read_csv(reg)
+    problems = []
+    for r in ctx.itertuples():
+        # EXPLICIT phrases, declared in the register. Deriving a key from the
+        # topic produced "crisis", "policy" and "migration", which match almost
+        # any sentence in a paper about the Greek crisis.
+        phrases = [s.strip() for s in str(r.detect).lower().split("|") if s.strip()]
+        for doc, text in doc_text.items():
+            low = text.lower()
+            if not any(ph in low for ph in phrases):
+                continue
+            if str(r.status).lower() not in low:
+                problems.append(
+                    f"{doc}: mentions context topic '{r.topic}' but never "
+                    f"carries its status label '{r.status}'")
+    return problems
+
+
 FORBIDDEN = {
     # P2's synthetic control failed its pre-registered gates: the synthetic unit
     # had half Greece's income and three times its deprivation. The estimated
@@ -260,6 +294,18 @@ if problems:
         print(f"{cid:5} {doc:10} {need:5} {el:20} {claim}")
 else:
     print("PARITY OK: every claim required in a document was found in it.")
+
+import os as _os
+_ctx = check_context_parity({k: _strip(open(v).read())
+                             for k, v in DOCS.items() if _os.path.exists(v)})
+if _ctx:
+    print("\nCONTEXT PARITY PROBLEMS:")
+    for _s in _ctx:
+        print("  " + _s)
+    if RELEASE:
+        raise SystemExit("release blocked: a context topic appears without its status label")
+else:
+    print("\nCONTEXT PARITY OK: no context topic appears without its status label.")
 
 print(f"\nMODE: {'RELEASE (strict)' if RELEASE else 'development'}")
 print(f"{'=' * 70}")

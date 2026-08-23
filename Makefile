@@ -53,6 +53,8 @@ verify:
 	cd $(SCRIPTS) && $(PY) test_claim_containers.py
 	cd $(SCRIPTS) && $(PY) audit_reported_outputs.py
 	cd $(SCRIPTS) && $(PY) verify_build.py
+	cd $(SCRIPTS) && $(PY) 78_final_claim_freeze.py > /dev/null
+	cd $(SCRIPTS) && $(PY) 79_context_register.py > /dev/null
 	cd $(SCRIPTS) && $(PY) audit_parity.py
 	cd $(SCRIPTS) && $(PY) 62_refresh_research_record.py
 	$(PY) $(SCRIPTS)/65_record_figures.py

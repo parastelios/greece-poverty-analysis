@@ -44,7 +44,7 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `p6-rewrite` |
-| HEAD | `d93b099` E7 interpretation: inconclusive is not ruled out, and these are related checks |
+| HEAD | `ce62c3c` FINAL: freeze the claim set and close model searching |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-23 |
 | Frozen V1 reference | `v1-final` |
@@ -2882,10 +2882,90 @@ Prose only. The technical report, academic paper and narrative companion are
 rebuilt against `e_final_claims.csv`, and the appendix against every artifact in
 `data/processed`. No analysis accompanies that work.
 
+### Stage 7 — the context register
+
+> The statistical analysis identifies where Greece's hardship aligns with material conditions and accumulated history. It does not identify which institutions or policies produced that history. Crisis policy, taxation, trust and migration therefore belong in the interpretation as plausible context, not as estimated explanations.
+
+Trust, crisis policy, migration and taxation are **necessary for the story and
+must not become an informal second model**. They live in a register that is
+structurally separate from the claim freeze:
+
+- a **different status vocabulary**, disjoint from the claim register's, so the
+  two can never be read as one list;
+- **no entry is headline-eligible**, and no entry may be cited as support for an
+  analytical claim;
+- every entry carries an explicit **Forbidden** line, not just a permitted one.
+
+The analytical freeze is untouched: no claim added, removed or reworded.
+
+**CTX-1 — Financial expectations and life satisfaction**  ·  *descriptive corroboration* · points at **V2-7.1**
+
+- **Permitted:** Generic pessimism is insufficient; financially specific reporting differences remain possible.
+- **Forbidden:** Concluding that reporting style plays no part, or that a financial-domain difference has been ruled out.
+
+**CTX-2 — Institutional trust**  ·  *contextual evidence*
+
+- **Permitted:** May affect how households interpret insecurity; available evidence does not identify an independent effect.
+- **Forbidden:** Presenting trust as an explanation of the residual, or implying it was tested and found to matter.
+
+**CTX-3 — Crisis and adjustment policies**  ·  *literature-grounded context*
+
+- **Permitted:** Help explain the historical setting; this project does not estimate their causal contribution.
+- **Forbidden:** Attributing any share of the accumulated exposure to a specific programme or measure.
+
+**CTX-4 — Migration**  ·  *contextual consequence*
+
+- **Permitted:** Consistent with prolonged scarring; not supported as an independent explanation of the gap.
+- **Forbidden:** Reading it as a driver. E3 tested it and found nothing (p=0.4006), and its causal position is ambiguous by construction.
+
+**CTX-5 — Tax burden and unequal treatment**  ·  *future hypothesis*
+
+- **Permitted:** A plausible distributional channel requiring dedicated tax-incidence data; not tested here.
+- **Forbidden:** Any quantitative statement. This project holds no tax-incidence data and none may be added post-freeze.
+
+**CTX-6 — Policy implications**  ·  *author interpretation*
+
+- **Permitted:** Poverty dashboards should combine AROP, its real threshold, anchored poverty, AROPE/deprivation and accumulated labour and housing indicators.
+- **Forbidden:** Presenting this as a finding. It follows from what the analysis showed AROP alone misses; it is not itself a result.
+
+CTX-1 is the only topic that is also a tested claim. It **points at** V2-7.1
+rather than restating it, so there is a single source and the two cannot drift.
+
+CTX-4 is worth reading carefully: migration was *tested* at E3 and returned
+nothing (p = 0.4006), and its causal position is ambiguous by construction —
+both a response to labour-market damage and a contributor to it. It appears here
+as consequence, never as driver.
+
+**Placement**
+
+| Document | Treatment |
+|---|---|
+| Technical report | full contextual discussion with evidence-status labels |
+| Academic paper | concise competing-explanations and policy-implications section |
+| Narrative | one readable chapter connecting the findings to lived institutional context |
+| Appendix | sources, exact indicators, coverage limitations and null tests |
+
+An entry appearing in any document **without its evidence-status label** is a
+defect, and this is now machine-checked. Each entry declares explicit detection
+phrases, and `audit_parity.py` fails the release build if a document discusses a
+context topic without carrying its status.
+
+Against the *current*, pre-rewrite documents the check reports **8 pending
+items** — institutional trust in the report and narrative, adjustment policies
+in the paper, migration in all three, and taxation in the paper and narrative.
+Every one is a real instance of the defect the register exists to prevent, and
+they form the checklist the rewrite has to clear.
+
+> The first version of this check derived its keywords from the topic names and
+> collapsed to "crisis", "policy" and "migration" — words that match almost
+> every sentence in a paper about the Greek crisis. Phrases are now declared
+> explicitly in the register, and the build refuses an entry without them.
+
 ### Where the detail lives
 
-`scripts/78_final_claim_freeze.py` ·
-`data/processed/e_final_claims.csv`, `final_freeze.json`
+`scripts/78_final_claim_freeze.py`, `scripts/79_context_register.py` ·
+`data/processed/e_final_claims.csv`, `final_freeze.json`,
+`context_register.csv`, `context_anchor.json`
 
 ---
 
@@ -2949,6 +3029,8 @@ rebuilt against `e_final_claims.csv`, and the appendix against every artifact in
 | D-52 | 2026-08-23 | FINAL | Four caveats mandatory on EVERY historical-exposure claim in all four documents | Cross-country association; no within-Greece dynamic; no causal claim; current conditions not ruled out | Attaching them selectively, or only in the technical report | `frozen` | D-49 | — |
 | D-53 | 2026-08-23 | FINAL | Report, paper and narrative carry the same claims at different technical levels | A claim in one and absent from another is a defect, not editorial choice | Letting the narrative simplify a claim out of existence | `frozen` | — | — |
 | D-54 | 2026-08-23 | FINAL | MODEL SEARCHING CLOSED | Anything further is a new pre-registered project | Any post-freeze specification, construct, sensitivity, combination or subgroup | `frozen` | — | — |
+| D-55 | 2026-08-23 | FINAL | Stage 7 becomes a discussion grounded in literature, in a SEPARATE context register | Trust, policy, migration and taxation are needed for the story and must not become an informal second model | Adding them freely during prose writing; listing them beside the frozen claims | `frozen` | — | — |
+| D-56 | 2026-08-23 | FINAL | Context statuses are disjoint from claim statuses, and no context entry may support a claim | Two vocabularies that overlap would be read as one list of findings | A shared status vocabulary | `frozen` | — | — |
 
 Allowed statuses: `proposed`, `pre-registered`, `frozen`, `superseded`,
 `withdrawn`, `infeasible`.
@@ -3155,6 +3237,8 @@ Deviations must be disclosed in the stage that made them, not only here.
 | E7 | `e7_preregistration.json` | FROZEN 8 pairs, BH family 4, conditional formulas | present |
 | E7 | `e7_results.csv` | 16 conditional coefficients, BH family 4 | present |
 | E7 | `e7_verdicts.csv` | Per-pair verdict across the six possible outcomes | present |
+| FINAL | `context_anchor.json` | The context anchor, statuses and placement | present |
+| FINAL | `context_register.csv` | Stage 7 context: 6 entries, none headline-eligible | present |
 | FINAL | `e_final_claims.csv` | The frozen claim set with placement and caveats | present |
 | FINAL | `final_freeze.json` | The eight locked items; model searching closed | present |
 <!-- AUTO:END artifact-index -->

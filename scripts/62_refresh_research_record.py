@@ -205,6 +205,8 @@ ARTIFACT_PURPOSE = {
     "e7_dynamic.csv": ("E7", "Conditional Mundlak and first differences"),
     "e_final_claims.csv": ("FINAL", "The frozen claim set with placement and caveats"),
     "final_freeze.json": ("FINAL", "The eight locked items; model searching closed"),
+    "context_register.csv": ("FINAL", "Stage 7 context: 6 entries, none headline-eligible"),
+    "context_anchor.json": ("FINAL", "The context anchor, statuses and placement"),
     "ea_companion_residuals.csv": ("EA", "Companion residual ladder, 27 countries"),
 }
 
