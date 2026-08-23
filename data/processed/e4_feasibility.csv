@@ -2,7 +2,7 @@ variable,construct,feasible,baseline,countries_at_baseline,accumulation_kind,rea
 cum_excess_unemployment,C2,True,2009,28,direct_excess,"ALREADY BUILT AND FROZEN -- reused, not reconstructed"
 real_wages_idx,C3,True,2008,27,fixed_base_shortfall + duration_below_base,"shortfall AREA and DURATION, reported separately"
 pct_below_peak,C3,True,2008,27,fixed_base_shortfall,area under the shortfall curve
-arop_threshold_real,C3,True,2008 (HR: 2010),26,fixed_base_shortfall,"MIXED BASELINE: 2008 for 26 countries, 2010 for Croatia (no 2008 observation). Croatia-dropped sensitivity required"
+arop_threshold_real,C3,True,2008,26,fixed_base_shortfall,"PRIMARY is the uniform 2008 baseline, Croatia excluded (it has no 2008 observation). The 27-country mixed-baseline version is reported as a sensitivity, not as the primary"
 real_income_idx,C3,False,2008,1,,source has 1 countries at 2008 and never reaches 27; not a panel series before 2015
 aic_pps_pc,C1,False,2008,0,,source begins 2015; no 2008 baseline exists. The baseline is NOT moved to make it testable
 wadj_a01,C4,True,2008,27,fixed_base_shortfall,persistent excess above the EU27 benchmark (=100)

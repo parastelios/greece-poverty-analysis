@@ -32,9 +32,9 @@
 <circle cx="410.3" cy="166" r="6" fill="#3d6fb4"/>
 <text x="534.0" y="170.0" font-size="9" fill="#6b7280" text-anchor="start" font-weight="normal">inconclusive</text>
 <text x="236.0" y="200.0" font-size="9.5" fill="#1f2933" text-anchor="end" font-weight="normal">threshold_shortfall</text>
-<line x1="356.3" y1="196.0" x2="404.2" y2="196.0" stroke="#e5e7eb" stroke-width="1.5"/>
-<circle cx="356.3" cy="196" r="4.5" fill="#6b7280"/>
-<circle cx="404.2" cy="196" r="6" fill="#3d6fb4"/>
+<line x1="355.1" y1="196.0" x2="403.7" y2="196.0" stroke="#e5e7eb" stroke-width="1.5"/>
+<circle cx="355.1" cy="196" r="4.5" fill="#6b7280"/>
+<circle cx="403.7" cy="196" r="6" fill="#3d6fb4"/>
 <text x="534.0" y="200.0" font-size="9" fill="#6b7280" text-anchor="start" font-weight="normal">inconclusive</text>
 <text x="236.0" y="230.0" font-size="9.5" fill="#1f2933" text-anchor="end" font-weight="normal">real_wages_shortfall</text>
 <line x1="342.3" y1="226.0" x2="387.5" y2="226.0" stroke="#e5e7eb" stroke-width="1.5"/>

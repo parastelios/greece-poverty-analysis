@@ -104,8 +104,21 @@ record("pct_below_peak", "C3", True, "area under the shortfall curve", 2008, n,
 # --- C3 arop_threshold_real ------------------------------------------------
 th = pd.read_csv(PROC / "cumulative_hardship_candidate_panel.csv")
 if "cum_threshold_shortfall" in th.columns:
-    built["acc_threshold_shortfall"] = th[["geo", "time", "cum_threshold_shortfall"]].rename(
+    thr = th[["geo", "time", "cum_threshold_shortfall"]]
+    # TWO SERIES, and the PRIMARY is the uniform one.
+    #
+    # The pre-registration fixes baseline 2008. Croatia has no 2008 threshold
+    # observation and the existing build falls back to its earliest year (2010),
+    # so Croatia accumulates over two fewer years than everyone else. A
+    # per-country fallback is not authorised, so the mixed-baseline series
+    # cannot be the primary test.
+    #
+    # Primary:     26 countries, ALL on a uniform 2008 baseline.
+    # Sensitivity: 27 countries, mixed baseline, reported alongside.
+    built["acc_threshold_shortfall"] = thr[thr.geo != "HR"].rename(
         columns={"cum_threshold_shortfall": "acc_threshold_shortfall"})
+    built["acc_threshold_shortfall_mixed"] = thr.rename(
+        columns={"cum_threshold_shortfall": "acc_threshold_shortfall_mixed"})
     # MIXED BASELINE, disclosed. Croatia has no 2008 threshold observation and
     # the existing build falls back to its earliest year (2010), so Croatia
     # accumulates over two fewer years than everyone else -- mechanically
@@ -113,9 +126,10 @@ if "cum_threshold_shortfall" in th.columns:
     # authorise a per-country fallback, so this is reported with a
     # Croatia-dropped sensitivity rather than presented as uniform.
     record("arop_threshold_real", "C3", True,
-           "MIXED BASELINE: 2008 for 26 countries, 2010 for Croatia (no 2008 "
-           "observation). Croatia-dropped sensitivity required",
-           "2008 (HR: 2010)", 26, "fixed_base_shortfall")
+           "PRIMARY is the uniform 2008 baseline, Croatia excluded (it has no "
+           "2008 observation). The 27-country mixed-baseline version is "
+           "reported as a sensitivity, not as the primary",
+           2008, 26, "fixed_base_shortfall")
 else:
     record("arop_threshold_real", "C3", False, "no deflated threshold series", 2008)
 

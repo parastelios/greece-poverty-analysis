@@ -86,6 +86,8 @@ SCHEMA = {
                                       "within": "coefficient", "within_p": "p_value",
                                       "fd_coef": "coefficient", "fd_p": "p_value",
                                       "n": "count"},
+    "e4_threshold_sensitivity.csv":  {"coef": "coefficient", "se": "se",
+                                      "p_raw": "p_value", "n": "count"},
     "e4_current_vs_accumulated.csv": {"cur_coef": "coefficient",
                                       "acc_coef": "coefficient",
                                       "cur_p": "p_value", "acc_p": "p_value",
@@ -119,7 +121,8 @@ NULLABLE = {("p2_specifications.csv", "post_gap"),
             ("e2_results.csv", "p_fdr"),
             ("e2_results.csv", "boot_p"),
             # Bootstrap runs only where FDR was cleared, per the pre-registration.
-            ("e4_results.csv", "boot_p")}
+            ("e4_results.csv", "boot_p"),
+            ("e4_results.csv", "boot_exceedances")}
 
 problems, checked = [], 0
 for fname, cols in SCHEMA.items():

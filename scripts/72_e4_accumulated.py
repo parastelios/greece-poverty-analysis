@@ -44,6 +44,11 @@ TESTS = [
 ]
 DURATIONS = [("C3", "dur_real_wages_below", "higher_is_worse")]
 
+# Outside BH family 2. The mixed-baseline threshold series cannot be the
+# primary (the pre-registration fixes 2008 and Croatia falls back to 2010), so
+# it is reported as a sensitivity and is NOT corrected with the family.
+SENSITIVITIES = [("C3", "acc_threshold_shortfall_mixed", "higher_is_worse")]
+
 
 def fit(f, d):
     return smf.ols(f, data=d).fit(cov_type="cluster", cov_kwds={"groups": d["geo"]})
@@ -69,7 +74,8 @@ def wild_bootstrap(f, d, var, seed, reps=1999):
         db["subjective_poverty"] = fitted + resid.values * d.geo.map(w).values
         mb = fit(f, db)
         ts.append(abs(mb.params[var] / mb.bse[var]))
-    return float((np.sum(np.array(ts) >= abs(t_obs)) + 1) / (reps + 1))
+    n_ex = int(np.sum(np.array(ts) >= abs(t_obs)))
+    return float((n_ex + 1) / (reps + 1)), n_ex
 
 
 def mundlak(d, var):
@@ -129,11 +135,18 @@ res["p_fdr"], res["fdr_rejected"] = adj, rej
 
 print(f"{bar}\n1 & 5. BH FAMILY 2: ACCUMULATED PRIMARIES\n{bar}")
 res["boot_p"], res["loo_sign_stable"] = np.nan, False
+res["boot_exceedances"], res["bootstrap_borderline"] = np.nan, False
 for i, r in res.iterrows():
     if not r.fdr_rejected:
         continue
     d = panel.dropna(subset=[r["var"], "subjective_poverty", "arop"])
-    res.at[i, "boot_p"] = wild_bootstrap(r.formula, d, r["var"], 20250825 + i)
+    bp, n_ex = wild_bootstrap(r.formula, d, r["var"], 20250825 + i)
+    res.at[i, "boot_p"] = bp
+    res.at[i, "boot_exceedances"] = n_ex
+    # A result at p=0.046 is not as secure as one at p=0.0025, though the
+    # pre-registered rule classes both as supported. Flagged, never reclassified,
+    # and NEVER re-run with another seed to obtain a friendlier number.
+    res.at[i, "bootstrap_borderline"] = bool(0.025 < bp <= 0.05)
     cs = np.array([fit(r.formula, d[d.geo != g]).params[r["var"]]
                    for g in sorted(d.geo.unique())])
     res.at[i, "loo_sign_stable"] = bool((np.sign(cs) == np.sign(cs[0])).all())
@@ -155,7 +168,32 @@ for r in res.sort_values("p_raw").itertuples():
     bp = "  --  " if np.isnan(r.boot_p) else f"{r.boot_p:.4f}"
     print(f"  {r.construct:>4} {r.var:30} {r.coef:+10.4f} {r.p_raw:7.4f} "
           f"{r.p_fdr:7.4f} {bp:>7} {r.std_effect:5.2f} {r.n:4d}  {r.outcome}"
-          f"{'' if not r.failed_gate else '  [' + r.failed_gate + ']'}")
+          f"{'' if not r.failed_gate else '  [' + r.failed_gate + ']'}"
+          f"{'  BORDERLINE' if r.bootstrap_borderline else ''}")
+
+# ---- mixed-baseline threshold SENSITIVITY, outside family 2 ---------------
+print(f"\n{bar}\nSENSITIVITY: mixed-baseline threshold, NOT in BH family 2\n{bar}")
+print("  The pre-registration fixes baseline 2008. Croatia has no 2008")
+print("  observation and falls back to 2010, so the 27-country series is not a")
+print("  uniform-baseline test and cannot carry the primary. Shown for comparison;")
+print("  NOT FDR-corrected with the family and cannot change any status.\n")
+sens_rows = []
+for cid, v, adv in SENSITIVITIES:
+    if v not in panel.columns:
+        continue
+    d = panel.dropna(subset=[v, "subjective_poverty", "arop"])
+    m = fit(f"{BASE} + {v}", d)
+    prim = res[res["var"] == "acc_threshold_shortfall"]
+    pc = float(prim.coef.iloc[0]) if len(prim) else float("nan")
+    pp = float(prim.p_raw.iloc[0]) if len(prim) else float("nan")
+    print(f"  {'primary (26 countries, uniform 2008)':44} coef {pc:+8.4f}  p {pp:.4f}")
+    print(f"  {'sensitivity (27, mixed baseline)':44} coef {m.params[v]:+8.4f}  "
+          f"p {m.pvalues[v]:.4f}  n={len(d)}")
+    sens_rows.append({"construct": cid, "var": v, "coef": m.params[v],
+                      "se": m.bse[v], "p_raw": m.pvalues[v], "n": len(d),
+                      "in_bh_family": False,
+                      "note": "mixed baseline: 2008 for 26 countries, 2010 for HR"})
+pd.DataFrame(sens_rows).to_csv(PROC / "e4_threshold_sensitivity.csv", index=False)
 
 # ---- 1. current vs accumulated, EQUAL SAMPLES -----------------------------
 print(f"\n{bar}\n1. CURRENT VERSUS ACCUMULATED, ON IDENTICAL OBSERVATIONS\n{bar}")

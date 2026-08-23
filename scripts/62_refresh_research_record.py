@@ -193,6 +193,7 @@ ARTIFACT_PURPOSE = {
     "e4_accumulated_panel.csv": ("E4", "Panel with the built accumulations merged"),
     "e4_results.csv": ("E4", "BH family 2; 3 supported, all between-country"),
     "e4_current_vs_accumulated.csv": ("E4", "Head-to-head on identical observations"),
+    "e4_threshold_sensitivity.csv": ("E4", "Mixed-baseline threshold, outside BH family 2"),
     "ea_companion_residuals.csv": ("EA", "Companion residual ladder, 27 countries"),
 }
 
