@@ -3,6 +3,66 @@
   "stage": "E7",
   "question": "Does accumulated exposure add information beyond current conditions, and vice versa?",
   "why_not_the_narrower_question": "The narrower question -- how current and accumulated representations perform in SEPARATE equal-sample models -- was already answered at E4. Answering it again would not address 'adds information beyond'.",
+  "pairs": [
+    {
+      "id": "P1_ltu",
+      "construct": "C2",
+      "current": "ltu_rate",
+      "accumulated": "acc_cum_excess_unemployment",
+      "sample": "27 countries"
+    },
+    {
+      "id": "P2_wage_area",
+      "construct": "C3",
+      "current": "real_wages_idx",
+      "accumulated": "acc_real_wages_shortfall",
+      "sample": "27 countries"
+    },
+    {
+      "id": "P3_wage_duration",
+      "construct": "C3",
+      "current": "real_wages_idx",
+      "accumulated": "dur_real_wages_below",
+      "sample": "27 countries",
+      "note": "the SUPPORTED E4 duration result; explicitly included"
+    },
+    {
+      "id": "P4_gdp",
+      "construct": "C3",
+      "current": "pct_below_peak",
+      "accumulated": "acc_pct_below_peak",
+      "sample": "27 countries"
+    },
+    {
+      "id": "P5_threshold",
+      "construct": "C3",
+      "current": "arop_threshold_real",
+      "accumulated": "acc_threshold_shortfall",
+      "sample": "26 countries, UNIFORM 2008 baseline (Croatia excluded)"
+    },
+    {
+      "id": "P6_wadj",
+      "construct": "C4",
+      "current": "wadj_a01",
+      "accumulated": "acc_wadj_excess",
+      "sample": "27 countries"
+    },
+    {
+      "id": "P7_hicp",
+      "construct": "C5",
+      "current": "hicp",
+      "accumulated": "acc_hicp_compounded",
+      "sample": "27 countries"
+    },
+    {
+      "id": "P8_housing",
+      "construct": "C6",
+      "current": "housing_cost_overburden",
+      "accumulated": "acc_housing_excess",
+      "sample": "27 countries"
+    }
+  ],
+  "pairs_note": "Eight pairs, frozen. C1 has no feasible accumulated form (E4 feasibility audit) and is therefore absent. No pair may be added or dropped after results are visible.",
   "models": [
     "1. current-only:      subjective_poverty ~ arop + C(time) + <current>",
     "2. accumulated-only:  subjective_poverty ~ arop + C(time) + <accumulated>",
@@ -23,9 +83,10 @@
   ],
   "multicollinearity_rule": {
     "thresholds": {
-      "max_vif": 10.0,
+      "focal_vif": 10.0,
       "abs_correlation": 0.9
     },
+    "vif_definition": "VIF of the TWO FOCAL PREDICTORS ONLY -- <current> and <accumulated> -- computed in the joint design. NOT the maximum over the year dummies, which are collinear by construction and would trip the rule on every pair.",
     "rule": "If the joint model's VIF exceeds 10 or the current/accumulated correlation exceeds 0.90 in absolute value, the conditional test is UNINTERPRETABLE and must be reported as such. It is NOT a null. The two measures cannot be separated on this data, and a non-significant coefficient under collinearity says nothing about whether the measure adds information.",
     "why_declared_now": "Current and accumulated forms of one construct can be almost the same series. Deciding after the fact whether a collinear result counts as a null would be the choice this rule removes."
   },
@@ -39,13 +100,19 @@
     ],
     "all_must_hold": true,
     "forbidden": "SUPERIORITY MAY NOT BE DECIDED BY COMPARING TWO P-VALUES from two separate models. That comparison is not a test of difference, and E5 already recorded the same error in another form (C-23).",
-    "failure_labels": "Reuse e_rule's labels. A failure below the published MDE is INCONCLUSIVE UNDER AVAILABLE POWER, not unsupported."
+    "failure_labels": "Labels come from e_rule, but the threshold does NOT. A PAIR-SPECIFIC CONDITIONAL MDE is computed for every pair BEFORE any outcome model is fitted, by the same simulation method as the published family MDE. A failed conditional test may be called UNSUPPORTED WITH ADEQUATE POWER only against its own pair's conditional MDE. Where no conditional MDE is available, every failure is INCONCLUSIVE and no adequate-power claim may be made."
   },
   "restrictions_retained": [
-    "Between/within decomposition for every accumulated measure.",
+    "Mundlak, CONDITIONAL: subjective_poverty ~ arop + C(time) + <current> + acc_between + acc_within, where acc_between is the country mean of <accumulated> and acc_within its deviation from that mean. The current measure is CONTROLLED, which is what makes it conditional.",
+    "First differences, CONDITIONAL: d_hardship ~ d_current + d_accumulated + d_arop + C(time). E4's separate-model first differences do NOT satisfy this requirement.",
     "FIRST DIFFERENCES required before any dynamic wording. E4 found none supported; nothing in E7 may relax that.",
     "Current and accumulated are DIFFERENT ESTIMANDS. A pair where the accumulated measure survives conditionally does not show that history matters more than standing."
   ],
-  "multiplicity": "The pairs are the pre-registered accumulated primaries and their current counterparts. This is a conditional re-examination of results already corrected within BH families 1 and 2, NOT a new discovery family, and NOTHING in E7 may create a finding that E1 or E4 did not already support. E7 can only qualify or withdraw.",
+  "multiplicity": {
+    "family": "BH FAMILY 4: all E7 conditional coefficients, both directions, across all eight pairs. One conservative family, corrected together.",
+    "size": 16,
+    "why_a_new_family": "The joint-model coefficients did not exist when BH families 1 and 2 were computed, and 'adds information beyond current conditions' is a new incremental claim rather than a restatement of E1 or E4.",
+    "ceiling": "E7 may still only QUALIFY or WITHDRAW. A conditional coefficient cannot create support for a construct that E1 and E4 did not already support -- the BH family governs what E7 may call conditionally supported among results that already stood."
+  },
   "frozen_protection": "Nothing in E7 may alter p5f-frozen, P3, P5, P3a, or any E1-E6 result."
 }
