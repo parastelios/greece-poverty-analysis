@@ -197,6 +197,9 @@ ARTIFACT_PURPOSE = {
     "e5_results.csv": ("E5", "Accumulation sensitivities; 1 declared, 5 post-hoc"),
     "e6_results.csv": ("E6", "Frozen P3 and the EA companion, side by side"),
     "e6_crosswalk.csv": ("E6", "Each P3 predictor against its E-stage verdict"),
+    "e7_preregistration.json": ("E7", "FROZEN 8 pairs, BH family 4, conditional formulas"),
+    "e7_conditional_mde.csv": ("E7", "Pair-specific conditional MDEs, published pre-fit"),
+    "e7_mde_curves.csv": ("E7", "Power curves, conditional and marginal designs"),
     "ea_companion_residuals.csv": ("EA", "Companion residual ladder, 27 countries"),
 }
 

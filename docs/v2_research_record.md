@@ -44,7 +44,7 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | E7 |
 | Last completed stage | E6 |
 | Branch | `p6-rewrite` |
-| HEAD | `398ed80` E6: two specifications reported side by side; the disagreement is the result |
+| HEAD | `fe28fc5` Amend the E7 pre-registration: pairs, BH family 4, conditional MDEs, formulas |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-23 |
 | Frozen V1 reference | `v1-final` |
@@ -2739,4 +2739,7 @@ Deviations must be disclosed in the stage that made them, not only here.
 | E5 | `e5_results.csv` | Accumulation sensitivities; 1 declared, 5 post-hoc | present |
 | E6 | `e6_crosswalk.csv` | Each P3 predictor against its E-stage verdict | present |
 | E6 | `e6_results.csv` | Frozen P3 and the EA companion, side by side | present |
+| E7 | `e7_conditional_mde.csv` | Pair-specific conditional MDEs, published pre-fit | present |
+| E7 | `e7_mde_curves.csv` | Power curves, conditional and marginal designs | present |
+| E7 | `e7_preregistration.json` | FROZEN 8 pairs, BH family 4, conditional formulas | present |
 <!-- AUTO:END artifact-index -->
