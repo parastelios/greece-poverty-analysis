@@ -4,6 +4,8 @@ Four failure modes, each of which this project has already produced at least
 once, and each of which becomes fifteen times more expensive once the full set
 is built.
 """
+import hashlib
+import html as htmlmod
 import json
 import re
 import sys
@@ -32,8 +34,9 @@ for path in TARGETS:
         continue
     print(f"\n{path.name}: {len(blocks)} figures")
 
-    # 1. READER-FACING LABELS. A code name in a title, caption or visible label
-    #    is a defect; it may appear only inside a tooltip payload's detail field.
+    # 1. READER-FACING PRIMARY LABELS. A code name in a title, caption, axis or
+    #    row label is a defect. Technical names are INTENTIONALLY kept in
+    #    tooltips, so the payload is excluded from this check by design.
     leaked = []
     for b in blocks:
         visible = re.sub(r'<script type="application/json">.*?</script>', "", b, flags=re.S)
@@ -41,24 +44,55 @@ for path in TARGETS:
         for code in ce.DISPLAY:
             if re.search(rf"\b{re.escape(code)}\b", visible):
                 leaked.append(f"{code} visible in a figure")
-    check("reader-facing labels: no code names in visible text",
+    check("no code names in primary labels (tooltips excluded by design)",
           not leaked, "; ".join(sorted(set(leaked))[:5]))
 
-    # 2. CHART/TABLE AGREEMENT. The fallback must carry the same number of
-    #    entries as the chart, or the two tell different stories.
-    mism = []
+    # 2. CHART/TABLE AGREEMENT AT VALUE LEVEL.
+    #
+    #    Row-count agreement was false confidence: a chart and its fallback can
+    #    carry the same number of rows with different numbers in them and pass.
+    #    Both are now derived from one canonical Series, and the checksum of the
+    #    exact labels and rounded values is written into both the chart host and
+    #    the table. If they were built separately, the two will not match.
+    mism, unchecked = [], []
     for b in blocks:
         fid = re.search(r'id="([^"]+)"', b).group(1)
-        pj = re.search(r'<script type="application/json">(.*?)</script>', b, re.S)
-        if not pj:
+        host = re.search(r'data-chart="[^"]*"[^>]*data-checksum="([^"]*)"', b)
+        tbl = re.search(r'<table data-checksum="([^"]+)">(.*?)</table>', b, re.S)
+        if not host or not host.group(1) or not tbl:
+            unchecked.append(fid)
             continue
-        d = json.loads(pj.group(1))
-        n_chart = len(d.get("rows", [])) or len(d.get("years", []))
-        n_rows = len(re.findall(r"<tr>", b.split("</summary>", 1)[-1])) - 0
-        n_body = len(re.findall(r"<tr><td", b))
-        if n_chart and n_body and n_chart != n_body:
-            mism.append(f"{fid}: chart {n_chart} vs table {n_body}")
-    check("chart and table fallback agree on row count", not mism, "; ".join(mism))
+        # RECOMPUTE from what is actually rendered. Comparing the two stored
+        # attributes proves nothing: the builder writes the same string into
+        # both, so a tampered or divergently-generated table still matches.
+        # A negative test caught this -- the first version passed on a table
+        # whose value had been altered.
+        cols = [re.sub(r"<[^>]+>", "", c).strip()
+                for c in re.findall(r"<th[^>]*>(.*?)</th>", tbl.group(2), re.S)][1:]
+        rows = []
+        for tr in re.findall(r"<tr>(.*?)</tr>", tbl.group(2), re.S):
+            cells = []
+            for c in re.findall(r"<td[^>]*>(.*?)</td>", tr, re.S):
+                v = htmlmod.unescape(re.sub(r"<[^>]+>", "", c)).strip()
+                # canonical() emits "" for a null; the table renders an em-dash
+                cells.append("" if v in ("\u2014", "-", "&mdash;") else v)
+            if cells:
+                rows.append(cells)
+        if not rows:
+            unchecked.append(fid)
+            continue
+        blob = json.dumps({"cols": cols, "rows": rows}, sort_keys=True)
+        recomputed = hashlib.sha256(blob.encode()).hexdigest()[:16]
+        if recomputed != tbl.group(1):
+            mism.append(f"{fid}: table content hashes {recomputed}, "
+                        f"attribute says {tbl.group(1)}")
+        elif host.group(1) != tbl.group(1):
+            mism.append(f"{fid}: chart {host.group(1)} vs table {tbl.group(1)}")
+    check("chart and table agree by RECOMPUTED value checksum",
+          not mism, "; ".join(mism))
+    check("every figure carries a checksum on both sides",
+          not unchecked,
+          "figures built without a canonical Series: " + ", ".join(unchecked))
 
     # 3. NO FIXED DOM TARGETS. The old library bound to hardcoded ids and
     #    aborted silently when the structure moved.

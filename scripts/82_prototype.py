@@ -26,37 +26,31 @@ m1 = man.loc["F1"]
 yrs = sorted(panel.time.unique())
 gr = panel[panel.geo == "EL"].set_index("time")
 med = panel.groupby("time")[["subjective_poverty", "arop"]].median()
+# ONE canonical structure. The chart payload and the table are both derived
+# from it, so they cannot disagree about a value.
+f1 = ce.Series([str(int(y)) for y in yrs], dp=1)
+SER = [("Greece: reported hardship", gr.subjective_poverty, "gr", "line-gr"),
+       ("Greece: income poverty", gr.arop, "gr", "line-faint"),
+       ("EU: reported hardship", med.subjective_poverty, "eu", "line-eu"),
+       ("EU: income poverty", med.arop, "eu", "line-faint")]
+for lbl, src, tone, cls in SER:
+    f1.add(lbl, [float(src.get(y)) for y in yrs], tone=tone, cls=cls)
+
 f1_payload = {
-    "years": [int(y) for y in yrs], "dp": 1,
-    "alt": "Greek subjective hardship against relative income poverty, "
-           "2015 to 2024, with EU medians",
-    "series": [
-        {"label": "Greece: " + ce.name("subjective_poverty").lower(), "tone": "gr", "cls": "line-gr",
-         "values": [round(float(gr.subjective_poverty.get(y)), 1) for y in yrs]},
-        {"label": "Greece: income poverty", "tone": "gr", "cls": "line-faint",
-         "values": [round(float(gr.arop.get(y)), 1) for y in yrs]},
-        {"label": "EU: reported hardship", "tone": "eu", "cls": "line-eu",
-         "values": [round(float(med.subjective_poverty.get(y)), 1) for y in yrs]},
-        {"label": "EU: income poverty", "tone": "eu", "cls": "line-faint",
-         "values": [round(float(med.arop.get(y)), 1) for y in yrs]},
-    ],
+    "years": [int(y) for y in yrs], "dp": f1.dp,
+    "alt": "Greek reported hardship against income poverty, 2015 to 2024, "
+           "with EU medians",
+    "series": [{"label": lbl, "tone": meta["tone"], "cls": meta["cls"],
+                "values": [round(v, f1.dp) for v in vals]}
+               for lbl, vals, meta in f1.rows],
 }
-rows = "".join(
-    f"<tr><td>{int(y)}</td><td class=num>{gr.subjective_poverty.get(y):.1f}</td>"
-    f"<td class=num>{gr.arop.get(y):.1f}</td>"
-    f"<td class=num>{gr.subjective_poverty.get(y) - gr.arop.get(y):.1f}</td>"
-    f"<td class=num>{med.subjective_poverty.get(y):.1f}</td>"
-    f"<td class=num>{med.arop.get(y):.1f}</td></tr>" for y in yrs)
-f1_fb = ("<table><caption class='sr'>Greek hardship and AROP by year</caption>"
-         "<thead><tr><th>Year</th><th class=num>GR hardship</th>"
-         "<th class=num>GR AROP</th><th class=num>Gap</th>"
-         "<th class=num>EU hardship</th><th class=num>EU AROP</th></tr></thead>"
-         f"<tbody>{rows}</tbody></table>")
+f1_fb = f1.fallback_table("Series")
 
 F1 = ce.figure("F1", "Reported hardship and income poverty remain far apart, "
                "despite some narrowing",
                m1.question, m1.status_label, "panel", f1_payload, f1_fb,
-               caveat=m1.caveat, appendix_link="statistical_appendix.html")
+               caveat=m1.caveat, appendix_link="statistical_appendix.html",
+               checksum=f1.checksum())
 
 # --------------------------------------------------- F9 (coefficient, NEW)
 m9 = man.loc["F9"]
@@ -95,23 +89,21 @@ for r in d9.itertuples():
                    f"{'&mdash;' if r.p_fdr != r.p_fdr else f'{r.p_fdr:.4f}'}<br>"
                    f"bootstrap p <b>{boot}</b>{gate}"),
     })
+f9 = ce.Series(["Effect (SD)", "CI low", "CI high", "p", "p FDR", "Bootstrap p"], dp=3)
+for r, row in zip(d9.itertuples(), f9_rows):
+    f9.add(row["label"], [row["est"], row["lo"], row["hi"],
+                          float(r.p_raw),
+                          None if r.p_fdr != r.p_fdr else float(r.p_fdr),
+                          None if r.boot_p != r.boot_p else float(r.boot_p)],
+           outcome=r.outcome)
 f9_payload = {"rows": f9_rows,
-              "alt": "Standardised effect per construct with the interval, "
-                     "coloured by pre-registered outcome"}
-rows9 = "".join(
-    f"<tr><td>{ce.name(r.var)}</td><td class=num>{r.std_effect:.2f}</td>"
-    f"<td class=num>{r.p_raw:.4f}</td>"
-    f"<td class=num>{'—' if r.p_fdr != r.p_fdr else f'{r.p_fdr:.4f}'}</td>"
-    f"<td class=num>{'—' if r.boot_p != r.boot_p else f'{r.boot_p:.4f}'}</td>"
-    f"<td>{SHORT.get(r.outcome, r.outcome)}</td></tr>" for r in d9.itertuples())
-f9_fb = ("<table><thead><tr><th>Construct</th><th class=num>Effect (SD)</th>"
-         "<th class=num>p</th><th class=num>p FDR</th>"
-         "<th class=num>Bootstrap p</th><th>Outcome</th></tr></thead>"
-         f"<tbody>{rows9}</tbody></table>")
+              "alt": "Standardised effect per construct with its cluster-robust "
+                     "confidence interval, coloured by pre-registered outcome"}
+f9_fb = f9.fallback_table("Construct")
 
 F9 = ce.figure("F9", "Three current-condition constructs survive the full "
                "testing sequence", m9.question, m9.status_label, "coefficient",
-               f9_payload, f9_fb,
+               f9_payload, f9_fb, checksum=f9.checksum(),
                caveat="Bars are CLUSTER-ROBUST 95% confidence intervals. They "
                       "are not bootstrap intervals: the wild cluster bootstrap "
                       "determines the final support status, and two constructs "

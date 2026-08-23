@@ -302,8 +302,67 @@ JS = r"""
 """
 
 
+
+# ---------------------------------------------------------------------------
+# ONE CANONICAL ROW STRUCTURE FEEDS BOTH THE CHART AND THE TABLE.
+#
+# Row-count agreement is false confidence: a chart and its fallback can carry
+# the same number of rows and different numbers in them and still pass. The
+# only way to be sure they agree is to stop generating them separately.
+#
+# A Series is built once. `chart_payload()` and `fallback_table()` both read it,
+# and `checksum()` hashes the exact labels and values so the build can prove the
+# two were derived from the same thing.
+# ---------------------------------------------------------------------------
+import hashlib
+
+
+class Series:
+    """Canonical data for one figure: labelled rows of (label, values)."""
+
+    def __init__(self, columns, dp=1):
+        self.columns = list(columns)     # header for the value columns
+        self.rows = []                   # (label, [values], meta dict)
+        self.dp = dp
+
+    def add(self, label, values, **meta):
+        if len(values) != len(self.columns):
+            raise ValueError(
+                f"{label}: {len(values)} values against {len(self.columns)} columns")
+        self.rows.append((label, list(values), meta))
+        return self
+
+    def canonical(self):
+        """The exact labels and rounded values both renderers will use."""
+        out = []
+        for label, vals, _ in self.rows:
+            out.append([str(label)] + [
+                "" if v is None or v != v else f"{float(v):.{self.dp}f}"
+                for v in vals])
+        return out
+
+    def checksum(self):
+        blob = json.dumps({"cols": self.columns, "rows": self.canonical()},
+                          sort_keys=True)
+        return hashlib.sha256(blob.encode()).hexdigest()[:16]
+
+    def fallback_table(self, first_header="", numeric=True):
+        head = "".join(f'<th class="num">{html.escape(c)}</th>'
+                       if numeric else f"<th>{html.escape(c)}</th>"
+                       for c in self.columns)
+        body = []
+        for row in self.canonical():
+            cells = "".join(f'<td class="num">{c or "&mdash;"}</td>'
+                            if numeric else f"<td>{c or '&mdash;'}</td>"
+                            for c in row[1:])
+            body.append(f"<tr><td>{html.escape(row[0])}</td>{cells}</tr>")
+        return (f'<table data-checksum="{self.checksum()}">'
+                f'<thead><tr><th>{html.escape(first_header)}</th>{head}</tr></thead>'
+                f"<tbody>{''.join(body)}</tbody></table>")
+
+
 def figure(fid, caption, question, badge, host_kind, payload, fallback_html,
-           caveat="", appendix_link=""):
+           caveat="", appendix_link="", checksum=""):
     """One figure: chart, badge, caveat, and an accessible table fallback.
 
     The fallback is always in the DOM, so screen readers and print both reach
@@ -313,13 +372,18 @@ def figure(fid, caption, question, badge, host_kind, payload, fallback_html,
            f'{html.escape(caveat)}</p>' if caveat else "")
     link = (f' <a href="{appendix_link}">Full evidence in the appendix</a>.'
             if appendix_link else "")
-    data = html.escape(json.dumps(payload), quote=False).replace("</", "<\\/")
+    # DO NOT html-escape the payload. Script-tag content is raw text, so
+    # entities survive JSON.parse as literal characters and the tooltip then
+    # displayed "<span style='opacity:.6'>real_wages_idx</span>" verbatim.
+    # Escaping "</" is the only thing needed, and it is what prevents the JSON
+    # from terminating the script element early.
+    data = json.dumps(payload).replace("</", "<\\/")
     return f"""<figure class="figure" id="{fid}">
 <figcaption>{caption}</figcaption>
 <div class="fig-meta"><span class="badge">{html.escape(badge)}</span>
 <span class="fig-q">{html.escape(question)}</span></div>
 <div class="chart-live" data-chart="{host_kind}" tabindex="0"
-     aria-describedby="{fid}-fb">
+     data-checksum="{checksum}" aria-describedby="{fid}-fb">
 <script type="application/json">{data}</script>
 </div>{cav}
 <details class="fallback" id="{fid}-fb"><summary>Show the numbers{link}</summary>
