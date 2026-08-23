@@ -213,18 +213,33 @@ claim("V2-6.1", "6. Model dependence",
                 "one measure that is very close to the question itself.")
 
 # --- Movement 7: what it is not (item 7) -----------------------------------
+# NARROWED. The frozen wording said Greece ranks "second to sixth" on life
+# satisfaction, which is arithmetically true and reads as MIDDLING. Greece is
+# second-WORST in the EU by 2024, behind only Bulgaria, and the trend runs 4th
+# lowest -> 3rd -> 2nd. The old claim rested on Greece being ordinary on general
+# wellbeing while extreme on financial measures; it is near the bottom on all
+# three, and what survives is only the strict ordering.
 claim("V2-7.1", "7. What this is not",
-      "Greece ranks first of 27 on subjective hardship and on financial "
-      "expectations while ranking second to sixth on life satisfaction, so "
-      "generic pessimism is insufficient as an explanation. A "
-      "financial-domain-specific reporting difference cannot be excluded.",
-      "retained", "reporting_style_cross_indicator.csv",
+      "Greece is consistently among Europe's worst countries on life "
+      "satisfaction and consistently worst on financial hardship and "
+      "expectations. The greater extremity of the financial indicators suggests "
+      "domain specificity, but does not rule out a broader negative reporting "
+      "tendency.",
+      "reworded", "reporting_style_cross_indicator.csv, "
+      "reporting_style_life_satisfaction.csv",
       "descriptive corroboration", True,
-      ["generic pessimism is INSUFFICIENT, not disproved",
-       "a financial-domain-specific reporting difference CANNOT be excluded"],
+      ["Greece is second-WORST on life satisfaction by 2024, not middling",
+       "a broader negative reporting tendency is NOT ruled out",
+       "Greek life satisfaction ROSE over the observed period, 6.2 to 6.9; "
+       "only its rank worsened, because other countries improved faster",
+       "the series begins in 2013, at the crisis trough, with no pre-crisis "
+       "baseline"],
       supersedes="8.6",
-      narrative="Greeks are not simply gloomier about everything. But we cannot "
-                "rule out that they answer money questions differently.")
+      narrative="Greeks report worst-in-Europe money troubles, and are close to "
+                "the bottom on general life satisfaction too. The money "
+                "measures are more extreme, which hints the problem is "
+                "specifically financial &mdash; but we cannot rule out a "
+                "broader tendency to answer darkly.")
 
 # --- Legacy: superseded and failed, retained and labelled (item 3) ---------
 claim("L-1", "Legacy",

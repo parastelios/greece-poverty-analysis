@@ -44,7 +44,7 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `p6-rewrite` |
-| HEAD | `6a209f1` Anchor context discussions in containers; record sources and review dates |
+| HEAD | `d6a1ff8` F15 refinements, a zero line for net flow, and a build stamp on every preview |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-23 |
 | Frozen V1 reference | `v1-final` |
@@ -3089,6 +3089,9 @@ Claim and context containers are added **during composition**, not retrofitted.
 | D-59 | 2026-08-23 | FINAL | A `REQUIRED-PENDING` entry may not be written up at all | Naming what a source must be is honest; supplying an invented reference is not | Citing a plausible-looking reference to unblock the prose | `frozen` | — | — |
 | D-60 | 2026-08-23 | FINAL | CTX-5 KEPT with a verified source; status stays *future hypothesis* | Kaplanoglou (2015) establishes the incidence became more regressive; it does NOT establish a contribution to the hardship gap | Dropping it, or upgrading it to literature-grounded context on the strength of the citation | `frozen` | — | — |
 | D-61 | 2026-08-23 | FINAL | Unanchored passages resolved by REWRITING, never by wrapping old prose | A container around old text satisfies the extractor and defeats the register | Retrofitting containers onto the existing documents | `frozen` | D-57 | — |
+| D-62 | 2026-08-23 | FINAL | V2-7.1 REWORDED after the freeze | Greece is second-worst on life satisfaction, not middling; the original wording was arithmetically true and substantively misleading | Leaving a frozen claim that four review rounds had passed over | `frozen` | 8.6 | — |
+| D-63 | 2026-08-23 | FINAL | The life-satisfaction series cannot support a pre-crisis comparison | Eurostat's wellbeing module begins in 2013, at the crisis trough; there is no baseline in this project | Reading the 2013 start as a pre-crisis level | `frozen` | — | — |
+| D-64 | 2026-08-23 | FINAL | An ESS pre-crisis extension is specified and coded, but is NOT built, because ESS microdata sits behind a free registration that this project has no account for | The question D-63 rules out for Eurostat (was Greece already an outlier before 2008?) is answerable in principle from ESS rounds 1, 2 and 4, so the analysis is written and tested against a synthetic file and waits on the real one; `scripts/87_ess_pre_crisis.py` exits cleanly with download instructions when the source is absent | Reporting any ESS number, or treating the absent extension as a finished result; splicing ESS onto the Eurostat series if it is later obtained | `frozen` | — | — |
 
 Allowed statuses: `proposed`, `pre-registered`, `frozen`, `superseded`,
 `withdrawn`, `infeasible`.
@@ -3295,6 +3298,8 @@ Deviations must be disclosed in the stage that made them, not only here.
 | C-29 | 2026-08-23 | E7 said the data "can separate current from accumulated in every pair" | VIFs below the gate mean nothing was auto-classified uninterpretable, not that estimation is precise | Reworded; the 7.76 VIF on `hicp` noted as inside the gate but not small | `v2_research_record.md` | — |
 | C-30 | 2026-08-23 | E7 called itself a "third independent route" after P5 and E4, and its FD results "significant" | All three use the same panel and related specifications; the eight dynamic tests were not multiplicity-corrected | "Third related analytical check"; FD results called nominally significant | `v2_research_record.md` | — |
 | C-31 | 2026-08-23 | The shared anchor extractor cut at the END of the matching close tag | Left a `</p` fragment in the extracted text that the tag-stripping regex cannot remove, having no `>` | Cut at the close tag's start; affects claims and context alike | `claim_anchors.py` | — |
+| C-32 | 2026-08-23 | V2-7.1 said Greece ranks "second to sixth" on life satisfaction, reading as middling | Greece is second-WORST in the EU by 2024 (6.7, behind only Bulgaria at 6.2), and the trend runs 4th lowest to 3rd to 2nd. The claim rested on Greece being ordinary on general wellbeing while extreme on financial measures; it is near the bottom on all three | Claim narrowed to the strict ordering; a broader negative reporting tendency is explicitly NOT ruled out. CTX-1 and F15 follow | `78_final_claim_freeze.py`, `79_context_register.py`, `86_stages_7_8.py` | — |
+| C-33 | 2026-08-23 | The worsening life-satisfaction rank was read as falling Greek satisfaction | Greek life satisfaction ROSE over the observed period, 6.2 to 6.9. Only the rank worsened, because other countries improved faster — the same relative-versus-absolute trap as F7's convergence caveat | Both facts now stated together wherever the rank appears | `v2_research_record.md`, F15 | — |
 
 ## Artifact Index
 
@@ -3358,4 +3363,5 @@ Deviations must be disclosed in the stage that made them, not only here.
 | FINAL | `context_register.csv` | Stage 7 context: 6 entries, none headline-eligible | present |
 | FINAL | `e_final_claims.csv` | The frozen claim set with placement and caveats | present |
 | FINAL | `final_freeze.json` | The eight locked items; model searching closed | present |
+| FINAL | `report_visual_manifest.csv` | 15 figures specified before any was built | present |
 <!-- AUTO:END artifact-index -->

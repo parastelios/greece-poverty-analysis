@@ -69,8 +69,11 @@ extra = [f"hardship {r.gr_subj_poverty_value:.1f}% &middot; expectations "
          f"{r.gr_life_sat_value:.1f}/10" for r in cross.itertuples()]
 
 FIGS = {"F15": dict(
+    # "but not on life satisfaction" implied Greece was ordinary there. It is
+    # second-WORST by 2024. What the figure shows is an ordering, not a contrast.
     caption="Greece is worst in the EU on hardship and on financial "
-            "expectations in every available year, but not on life satisfaction",
+            "expectations in every available year, and close to worst on life "
+            "satisfaction",
     kind="panel",
     payload={"years": yrs, "dp": 0, "invertY": True,
              "yLabel": "EU rank, 1 = worst",
@@ -87,9 +90,13 @@ FIGS = {"F15": dict(
     series=f15, first="Year",
     extra_caveat=(
         "Rank 1 is the EU's worst position. Greece ranks first on hardship and "
-        "financial expectations in every available year, but 2nd-6th on life "
-        "satisfaction. This weakens generic pessimism without excluding "
-        "financially specific reporting differences. The vertical axis shows "
+        "financial expectations in every available year, and 2nd-6th on life "
+        "satisfaction - second-WORST by 2024, behind only Bulgaria. The "
+        "greater extremity of the financial indicators suggests domain "
+        "specificity; it does not rule out a broader negative reporting "
+        "tendency. Note also that Greek life satisfaction ROSE over this period "
+        "(6.4 to 6.7); the rank worsened because other countries improved "
+        "faster. The vertical axis shows "
         "only the worst seven ranks, so movement within that band looks larger "
         "than it is against all 27; 2019 and 2020 are not available."))}
 

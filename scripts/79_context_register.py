@@ -44,10 +44,16 @@ ENTRIES = [
     {
         "id": "CTX-1", "topic": "Financial expectations and life satisfaction",
         "status": "descriptive corroboration",
-        "permitted": "Generic pessimism is insufficient; financially specific "
-                     "reporting differences remain possible.",
-        "forbidden": "Concluding that reporting style plays no part, or that a "
-                     "financial-domain difference has been ruled out.",
+        # Follows V2-7.1's narrowing: Greece is second-WORST on life
+        # satisfaction by 2024, not middling.
+        "permitted": "The financial indicators are more extreme than the "
+                     "general-wellbeing one, which suggests domain "
+                     "specificity. A broader negative reporting tendency is "
+                     "NOT ruled out.",
+        "forbidden": "Describing Greece as ordinary or middling on life "
+                     "satisfaction: it is second-worst in the EU by 2024. And "
+                     "reading a worsening RANK as falling satisfaction, when "
+                     "the Greek level rose over the period.",
         # The one context topic that IS a tested claim. It POINTS at the frozen
         # claim rather than restating it, so there is a single source.
         "relates_to_claim": "V2-7.1",
