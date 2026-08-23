@@ -31,8 +31,9 @@ for cid, c in cmap["constructs"].items():
 # Adverse direction, so a rank of 1 always means "worst in Europe".
 reg = pd.read_csv(PROC / "e0_variable_registry.csv").set_index("name")
 ADVERSE = reg["adverse_direction"].to_dict()
-ADVERSE.update({"subjective_poverty": "high", "arop": "high", "arope": "high",
-                "gap_subj_arop": "high", "gap_subj_arope": "high"})
+ADVERSE.update({v: "higher_is_worse" for v in OUTCOMES})
+assert set(ADVERSE.values()) <= {"higher_is_worse", "lower_is_worse", "ambiguous"}, \
+    f"unexpected adverse_direction values: {set(ADVERSE.values())}"
 
 bar = "=" * 74
 print(bar); print("EDA: DESCRIPTIVE GROUNDWORK (no models, no tests)"); print(bar)
@@ -79,7 +80,11 @@ for cid, cname, v in [("--", "outcome", o) for o in OUTCOMES] + PRIMARIES:
     if v not in panel.columns:
         print(f"  {v:26} NOT IN PANEL")
         continue
-    asc = ADVERSE.get(v, "high") == "low"     # 'low' is adverse -> rank ascending
+    # rank 1 must always mean WORST. For lower_is_worse variables that is the
+    # SMALLEST value, so the rank runs ascending. An earlier version compared
+    # against "low", a value this column never holds, so every variable ranked
+    # descending and Greece's worst-in-Europe real wages showed as rank 27.
+    asc = ADVERSE[v] == "lower_is_worse"
     for yr in sorted(panel.time.unique()):
         d = panel[(panel.time == yr)].dropna(subset=[v])
         if GR not in set(d.geo) or len(d) < 20:

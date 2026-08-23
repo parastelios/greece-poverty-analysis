@@ -403,6 +403,46 @@ def fig_recovery():
     write("recovery.svg", svg(W, H, "\n".join(b), "What converged and what diverged"))
 
 
+
+# --------------------------------------------------------------------------
+# 10. E1: what the wild bootstrap does to cluster-robust p-values
+# --------------------------------------------------------------------------
+def fig_e1():
+    d = pd.read_csv(PROC / "e1_results.csv")
+    d = d[d.boot_p.notna()].sort_values("boot_p")
+    W, H = 660, 300
+    x0, x1 = 250, 500
+    import math
+    lo, hi = -4.2, 0.1                       # log10 p
+    sx = lambda p: x0 + (max(math.log10(max(p, 1e-4)), lo) - lo) / (hi - lo) * (x1 - x0)
+    b = [text(20, 26, "Cluster-robust p-values do not survive the bootstrap",
+              13, INK, weight="bold"),
+         text(20, 44, "Every predictor here varies mostly BETWEEN countries, "
+              "and 27 clusters is few", 10.5, MUTE)]
+    for e in [-4, -3, -2, -1, 0]:
+        b.append(line(sx(10 ** e), 66, sx(10 ** e), 66 + len(d) * 40, GRID))
+        b.append(text(sx(10 ** e), 66 + len(d) * 40 + 18,
+                      f"1e{e}" if e < -1 else f"{10 ** e:g}", 9.5, MUTE, "middle"))
+    b.append(line(sx(0.05), 60, sx(0.05), 66 + len(d) * 40 + 4, WARN, 1.5, "4,3"))
+    b.append(text(sx(0.05), 56, "p = 0.05", 9.5, WARN, "middle", "bold"))
+    y = 84
+    for r in d.itertuples():
+        ok = r.outcome == "supported"
+        c = GOOD if ok else GR
+        b.append(text(x0 - 14, y + 4, r.var, 10, INK, "end", "bold" if ok else "normal"))
+        b.append(line(sx(r.p_raw), y, sx(r.boot_p), y, MUTE, 1.5, "3,3"))
+        b.append(f'<circle cx="{sx(r.p_raw):.1f}" cy="{y}" r="5" fill="{MUTE}"/>')
+        b.append(f'<circle cx="{sx(r.boot_p):.1f}" cy="{y}" r="6" fill="{c}"/>')
+        b.append(text(x1 + 14, y + 4,
+                      "supported" if ok else "not supported", 9.5, c, "start", "bold"))
+        b.append(text(x1 + 14, y + 17, f"boot p = {r.boot_p:.4f}", 9, MUTE))
+        y += 40
+    b.append(text(20, H - 14, "Grey = cluster-robust. Coloured = wild cluster "
+                  "bootstrap, null imposed. Log scale.", 10, MUTE))
+    write("e1_bootstrap.svg", svg(W, H, "\n".join(b),
+          "Cluster-robust versus bootstrap p-values"))
+
+
 def check_overflow():
     """Fail if any label runs past its viewBox.
 
@@ -436,6 +476,6 @@ def check_overflow():
 print("figures ->", FIG.relative_to(ROOT))
 for f in (fig_ea_reversal, fig_ladders, fig_narrowing, fig_mde,
           fig_between_within, fig_sign_reversal, fig_coverage,
-          fig_paradox, fig_recovery):
+          fig_paradox, fig_recovery, fig_e1):
     f()
 check_overflow()

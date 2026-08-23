@@ -65,8 +65,26 @@ SCHEMA = {
                                       "loo_coef_max": "coefficient",
                                       "max_vif": "coefficient",
                                       "n": "count"},
+    "e1_results.csv":                {"coef": "coefficient", "se": "se",
+                                      "p_raw": "p_value", "p_fdr": "p_value",
+                                      "ci_lo": "coefficient", "ci_hi": "coefficient",
+                                      "std_effect": "coefficient",
+                                      "ci_abs_std_upper": "coefficient",
+                                      "r2_base": "r2", "r2_full": "r2",
+                                      "greece_resid_base": "residual",
+                                      "greece_resid_full": "residual",
+                                      "n": "count", "countries": "count"},
+    "e1_secondary.csv":              {"coef": "coefficient", "se": "se",
+                                      "p_raw": "p_value", "p_fdr": "p_value",
+                                      "n": "count"},
 }
-NULLABLE = {("p2_specifications.csv", "post_gap")}
+NULLABLE = {("p2_specifications.csv", "post_gap"),
+            # P1 is excluded from BH family 1 by pre-registration, so it
+            # legitimately has no adjusted p-value. A number here would be
+            # the bug -- it would mean a diagnostic-only construct had been
+            # corrected alongside the eligible ones.
+            ("e1_results.csv", "p_fdr"),
+            ("e1_secondary.csv", "p_fdr")}
 
 problems, checked = [], 0
 for fname, cols in SCHEMA.items():

@@ -1,0 +1,11 @@
+construct,var,adverse,violation,coef,se,p_raw,n,p_fdr,fdr_rejected,primary_outcome,direction_ok,overrides_blocked
+C1,aic_pps_pc,lower_is_worse,False,-0.001343306287295466,0.0003423969563961493,8.736513885476588e-05,270,0.0001965715624232232,True,supported,True,False
+C2,ltu_rate,higher_is_worse,False,4.172479061815562,0.8405587128561858,6.907896606031754e-07,270,6.217106945428579e-06,True,supported,True,False
+C3,real_wages_idx,lower_is_worse,False,-0.06086579323453359,0.18676463370290314,0.7445032602496555,270,0.8158929061390993,False,inconclusive_under_available_power,True,False
+C3,real_income_idx,lower_is_worse,False,-0.20509738860621343,0.21699520333315692,0.3445720168068598,268,0.44302116446596257,False,inconclusive_under_available_power,True,False
+C3,arop_threshold_real,lower_is_worse,False,-0.026177883931469987,0.11243314888309301,0.8158929061390993,260,0.8158929061390993,False,inconclusive_under_available_power,True,False
+C3,pct_below_peak,higher_is_worse,False,1.9173388680997767,0.42317403852555124,5.874633059934868e-06,270,2.6435848769706906e-05,True,inconclusive_under_available_power,True,True
+C4,wadj_a01,higher_is_worse,False,0.29112544792149514,0.07321692685773101,7.002402010564441e-05,270,0.0001965715624232232,True,supported,True,False
+C5,hicp,higher_is_worse,False,-0.8591229093652567,0.898909201946875,0.3392039294429099,270,0.44302116446596257,False,inconclusive_under_available_power,False,False
+C6,housing_cost_overburden,higher_is_worse,False,1.1760880312783413,0.42469763850746756,0.005618790244148848,269,0.010113822439467925,True,inconclusive_under_available_power,True,True
+P1,severe_mat_soc_deprivation,higher_is_worse,True,1.218112836419169,0.47658786797978797,0.010591233537348749,270,,False,blocked_by_proximity,True,False

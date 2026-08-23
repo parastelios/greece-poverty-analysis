@@ -183,6 +183,8 @@ ARTIFACT_PURPOSE = {
     "e_descriptives.csv": ("EDA", "Greece hardship vs AROP vs AROPE by year"),
     "e_descriptive_ranks.csv": ("EDA", "Greece's rank per variable per year"),
     "e_descriptive_recovery.csv": ("EDA", "Gap movement 2015-2024, trend classified"),
+    "e1_results.csv": ("E1", "Nine current primaries: 3 supported, 6 inconclusive"),
+    "e1_secondary.csv": ("E1", "Secondary outcome, BH family 3, promotion blocked"),
     "ea_companion_residuals.csv": ("EA", "Companion residual ladder, 27 countries"),
 }
 

@@ -41,12 +41,12 @@ This notebook is the running log. `publication_strategy.md` was closed on
 <!-- AUTO:BEGIN document-control -->
 | Field | Value |
 |---|---|
-| Current stage | E1 |
-| Last completed stage | EA |
+| Current stage | E2 |
+| Last completed stage | E1 |
 | Branch | `p6-rewrite` |
-| HEAD | `7f1cfe9` Turn the research record into a readable notebook: figures, review notes, HTML |
+| HEAD | `a025ec2` Close publication_strategy as the pre-EA archive; run EDA descriptive stage |
 | Uncommitted changes | yes |
-| Last refreshed | 2026-08-22 |
+| Last refreshed | 2026-08-23 |
 | Frozen V1 reference | `v1-final` |
 | Frozen V2 analytical reference | `p5f-frozen` |
 <!-- AUTO:END document-control -->
@@ -87,8 +87,8 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | PRE | What exact tests and decision rules are fixed before analysis? | complete | `a747e7a` | `476e177` | [PRE](#pre--pre-registration-and-power) |
 | EDA | What do the candidate variables actually look like? | complete | — | — | [EDA](#eda--descriptive-groundwork) |
 | EA | How much of the P3 result depends on a same-instrument predictor? | complete | `ea_preregistration.json` | — | [EA](#ea--deprivation-free-companion-audit) |
-| E1 | Which current-level constructs are associated with hardship? | **next** | `a747e7a` | — | [E1](#e1--current-level-constructs) |
-| E2 | Do sensitivity variants change the current-level conclusions? | pending | `a747e7a` | — | [E2](#e2--current-level-sensitivities) |
+| E1 | Which current-level constructs are associated with hardship? | complete | `a747e7a` | — | [E1](#e1--current-level-constructs) |
+| E2 | Do sensitivity variants change the current-level conclusions? | **next** | `a747e7a` | — | [E2](#e2--current-level-sensitivities) |
 | E3 | What do the diagnostic and contextual checks show? | pending | `a747e7a` | — | [E3](#e3--diagnostic-and-contextual-checks) |
 | E4 | Which accumulated constructs are associated with hardship? | pending | `a747e7a` | — | [E4](#e4--accumulated-exposure) |
 | E5 | Do accumulated-measure sensitivities change those conclusions? | pending | `a747e7a` | — | [E5](#e5--accumulation-sensitivities) |
@@ -1269,16 +1269,153 @@ free of *same-instrument* predictors, which is a narrower claim.
 
 ### In plain words
 
-### Question
-### Pre-registered specification
-### Data and sample
-### Minimum detectable effect
+The first real test. Each of the six objective constructs was put, one at a
+time, against the same baseline — relative income poverty plus year effects —
+to ask whether it explains Greek hardship beyond what AROP already accounts
+for.
+
+**Three survived everything: material resources, labour-market exclusion, and
+wage-adjusted affordability.** Countries with less to spend, more long-term
+unemployment, and worse affordability relative to wages report more hardship,
+and those results held up under every check we had pre-committed to.
+
+**Six came back inconclusive** — and *inconclusive* is the honest word, not
+"nothing there". With this panel we can only reliably detect quite large
+effects, so a result that fails is usually a result we could not have found
+even if it were real.
+
+**Two of those six are more interesting than a plain null.** Share below peak
+and housing-cost overburden looked overwhelmingly significant on the standard
+test — and then collapsed under the bootstrap, to p = 0.40 and p = 0.55. That
+is not a technicality. With 27 countries and predictors that vary mostly
+*between* them rather than within, the standard test is far too confident. The
+bootstrap is the honest one, and it is the one we committed to in advance.
+
+Deprivation was tested and then set aside by rule, not by result. It is a
+same-instrument measure and can never be a headline explanation — the same
+issue EA had already found sitting inside frozen P3.
+
+### Specification
+
+```
+primary:    subjective_poverty ~ arop + C(time) + <construct>
+secondary:  (subjective_poverty - arop) ~ C(time) + <construct>
+```
+
+Family 1 holds **nine** tests: C3 contributes four individual primaries, since
+the frozen construct map gives it no composite. P1 is run but excluded from the
+family and blocked by the proximity gate.
+
+Decision rule: `scripts/e_rule.py`, 40 tests, written before this ran.
+
 ### Results
-### Robustness and validation
+
+| Con | Variable | Coef | SE | p raw | p FDR | Boot p | Dir | Effect (SD) | n | Outcome |
+|---|---|---:|---:|---:|---:|---:|:--:|---:|---:|---|
+| C1 | `aic_pps_pc` | −0.0013 | 0.0003 | 0.0000 | 0.0000 | **0.0055** | ok | 0.59 | 270 | **supported** |
+| C2 | `ltu_rate` | +4.3402 | 0.7802 | 0.0000 | 0.0000 | **0.0085** | ok | 0.81 | 270 | **supported** |
+| C4 | `wadj_a01` | +0.3110 | 0.0696 | 0.0000 | 0.0000 | **0.0005** | ok | 0.69 | 270 | **supported** |
+| C3 | `pct_below_peak` | +1.8675 | 0.4258 | 0.0000 | 0.0000 | 0.4005 | ok | 0.62 | 270 | inconclusive |
+| C6 | `housing_cost_overburden` | +1.1385 | 0.4305 | 0.0082 | 0.0147 | 0.5530 | ok | 0.54 | 269 | inconclusive |
+| C3 | `real_income_idx` | −0.2168 | 0.2088 | 0.2991 | 0.4131 | — | ok | 0.31 | 268 | inconclusive |
+| C5 | `hicp` | −0.9925 | 1.0007 | 0.3213 | 0.4131 | — | **wrong** | 0.27 | 270 | inconclusive |
+| C3 | `real_wages_idx` | −0.0924 | 0.1826 | 0.6130 | 0.6531 | — | ok | 0.17 | 270 | inconclusive |
+| C3 | `arop_threshold_real` | −0.0556 | 0.1237 | 0.6531 | 0.6531 | — | ok | 0.14 | 260 | inconclusive |
+| P1 | `severe_mat_soc_deprivation` | +1.4524 | 0.4952 | 0.0034 | — | — | ok | 0.72 | 270 | **blocked by proximity** |
+
+Every inconclusive result sits below the published MDE: the largest standardized
+effect any of their intervals admits is 0.74–0.91 SD, so none can be called
+*unsupported with adequate power*.
+
+### What the bootstrap does
+
+![Cluster-robust p-values do not survive the bootstrap](figures/e1_bootstrap.svg)
+
+| Variable | Cluster-robust p | Bootstrap p | Verdict |
+|---|---:|---:|---|
+| `wadj_a01` | 0.0000 | 0.0005 | holds |
+| `aic_pps_pc` | 0.0000 | 0.0055 | holds |
+| `ltu_rate` | 0.0000 | 0.0085 | holds |
+| `pct_below_peak` | 0.0000 | **0.4005** | collapses |
+| `housing_cost_overburden` | 0.0082 | **0.5530** | collapses |
+
+The correction is not uniform — it separates. Three survive at 0.0005–0.0085
+while two go to 0.40 and 0.55, which is what a small-cluster correction is
+supposed to do rather than deflating everything equally.
+
+This is also P5's finding arriving from a third direction. When a predictor's
+variation is overwhelmingly between countries, 27 clusters is a small sample no
+matter how many country-years sit underneath it.
+
+### Secondary outcome
+
+BH family 3, corrected separately. AROP is not re-added on the right-hand side:
+it is already inside the outcome by subtraction.
+
+Two results clear FDR with the correct sign on the secondary outcome while their
+primary did not survive: **`pct_below_peak`** and **`housing_cost_overburden`**.
+
+They are recorded and **may not be promoted**. The pre-registration is explicit
+that a secondary result may qualify or illustrate a primary finding and may
+never create one — and these two are exactly the case that rule was written for,
+since both are also the two whose primary collapsed under the bootstrap.
+
 ### Interpretation
+
+The three supported constructs are all measures of *current standing*: what a
+country has, how excluded its labour market is, and what wages buy. That is a
+coherent group, and it is the group with the strongest prior support.
+
+The four C3 measures — loss against one's own past — did **not** clear at
+current levels. That is not evidence against C3. It is what the construct map
+predicted would happen: C3 is about accumulated loss, and a current-level
+snapshot is the wrong test for it. E4 is where C3 gets its real test.
+
+C5 (inflation) came back with the wrong sign and nowhere near significance.
+
 ### What this does not establish
-### Decision
+
+- Nothing about accumulated measures. Every result here is a current-level
+  snapshot; the accumulated family is E4, a separate BH family.
+- No causal claim. These are between-country associations conditional on AROP
+  and year, on the same panel P5 showed to be dominated by between-country
+  variation.
+- The six inconclusive results are **not** evidence of absence. Their intervals
+  still admit effects at or above the MDE.
+- Deprivation's apparent significance is not a finding. It was blocked by rule
+  before its p-value was consulted, and reporting it as a near-miss would defeat
+  the purpose of the rule.
+
+### Notes from review
+
+**A bug that would have published four false contradictions.** The first run
+reported `ltu_rate`, `pct_below_peak`, `wadj_a01` and `housing_cost_overburden`
+as contradicting their pre-registered direction. They do not. The registry
+stores `higher_is_worse` / `lower_is_worse` directly, and the script translated
+from `"high"` / `"low"` — values that column has never held. Every variable
+silently became `lower_is_worse`, so every positive coefficient read as wrong.
+The variables that showed "ok" were right only by accident.
+
+It was caught because `ltu_rate` at +4.34 being called a contradiction is
+absurd on its face: more long-term unemployment predicting more hardship is the
+least surprising result in the study. A subtler variable would have gone
+through.
+
+The same bug was in the EDA rank code, where it had already shipped: Greece's
+worst-in-Europe real wages were displayed as rank 27/27 under a heading saying
+rank 1 is worst. Fixed in both, and the corrected ranks put Greece at **rank 1
+on ten of fifteen** variables rather than the mixture shown before.
+
+**The lesson is the same one EA taught.** Both the E rule and the EA rule were
+written and tested before any result existed, and both had 40+ passing tests.
+Neither test suite touched the *translation layer* feeding the rule. A tested
+decision function does not protect against wrong inputs.
+
 ### Where the detail lives
+
+`scripts/68_e1_current_constructs.py`, `scripts/e_rule.py`,
+`scripts/test_e_rule.py` ·
+`data/processed/e1_results.csv`, `e1_secondary.csv`
 
 ---
 
@@ -1419,6 +1556,10 @@ free of *same-instrument* predictors, which is a narrower claim.
 | D-12 | 2026-08-22 | EA | E1 and E4 use the neutral baseline `AROP + year effects`, not P3 | P3 carries a P1 predictor and must not seed the construct tests | Using P3 as the E-stage baseline | `frozen` | — | — |
 | D-13 | 2026-08-22 | EA | Outcome C: frozen P3 depends materially on a same-instrument deprivation measure | Greece's residual reverses, +6.93 → −9.39; R² 0.907 → 0.821 | Outcome A, which the defective rule returned | `frozen` | — | — |
 | D-14 | 2026-08-22 | EA | `ea_rule` corrected: sign reversal is not narrowing; extremeness is two-tailed | Function diverged from the pre-registered prose it implements | Publishing Outcome A; changing the pre-registered prose instead | `frozen` | — | — |
+| D-15 | 2026-08-23 | E1 | Three constructs supported: C1 material resources, C2 labour-market exclusion, C4 wage-adjusted affordability | All six pre-registered conditions hold; bootstrap p 0.0005–0.0085 | Reporting the cluster-robust p-values at face value | `frozen` | — | — |
+| D-16 | 2026-08-23 | E1 | `pct_below_peak` and `housing_cost_overburden` recorded inconclusive despite clearing FDR | Bootstrap p 0.40 and 0.55; the pre-registration requires bootstrap support | Reporting them as supported on FDR alone | `frozen` | — | — |
+| D-17 | 2026-08-23 | E1 | Two secondary-outcome results that clear FDR may not be promoted | Their primary did not survive; pre-registration forbids promotion | Promoting them as findings | `frozen` | — | — |
+| D-18 | 2026-08-23 | E1 | C3's current-level nulls are not evidence against C3 | C3 is about accumulated loss; a current snapshot is the wrong test | Recording C3 as refuted at E1 | `frozen` | — | — |
 
 Allowed statuses: `proposed`, `pre-registered`, `frozen`, `superseded`,
 `withdrawn`, `infeasible`.
@@ -1431,6 +1572,14 @@ Allowed statuses: `proposed`, `pre-registered`, `frozen`, `superseded`,
 | R-02 | P3 | hardship level | `cum_excess_unemployment` | cross-country residual | n=269 | +6.93 (rank 3/27) | — | — | p=0.0005 primary | max 12.7% | above MDE | accumulated history narrows most of the gap | `supported` | `p3_objective_only.csv` |
 | R-03 | P5 | hardship level | `cum_excess_unemployment` | between-country | n=269 | +0.3323 | <0.0001 | — | worst p=0.0070 | Greece −0.8% | above MDE | between-country scarring marker | `supported` | `p5_audit.csv` |
 | R-04 | P5 | hardship level | `cum_excess_unemployment` | within-country | n=269 | −0.0755 | 0.692 | — | — | — | below MDE | no dynamic evidence | `inconclusive_under_available_power` | `p5_audit.csv` |
+| R-07 | E1 | hardship level | `aic_pps_pc` (C1) | between-country, cond. on AROP + year | n=270 | −0.0013 (se 0.0003) | 0.0000 | 0.0000 | p=0.0055 | sign-stable | 0.59 SD, above MDE | material resources predict hardship beyond AROP | `supported` | `e1_results.csv` |
+| R-08 | E1 | hardship level | `ltu_rate` (C2) | between-country, cond. on AROP + year | n=270 | +4.3402 (se 0.7802) | 0.0000 | 0.0000 | p=0.0085 | sign-stable | 0.81 SD, above MDE | labour-market exclusion predicts hardship beyond AROP | `supported` | `e1_results.csv` |
+| R-09 | E1 | hardship level | `wadj_a01` (C4) | between-country, cond. on AROP + year | n=270 | +0.3110 (se 0.0696) | 0.0000 | 0.0000 | p=0.0005 | sign-stable | 0.69 SD, at MDE | wage-adjusted affordability predicts hardship beyond AROP | `supported` | `e1_results.csv` |
+| R-10 | E1 | hardship level | `pct_below_peak` (C3) | between-country, cond. on AROP + year | n=270 | +1.8675 (se 0.4258) | 0.0000 | 0.0000 | **p=0.4005** | sign-stable | 0.62 SD | clears FDR, collapses under the bootstrap | `inconclusive_under_available_power` | `e1_results.csv` |
+| R-11 | E1 | hardship level | `housing_cost_overburden` (C6) | between-country, cond. on AROP + year | n=269 | +1.1385 (se 0.4305) | 0.0082 | 0.0147 | **p=0.5530** | not sign-stable | 0.54 SD | clears FDR, collapses under the bootstrap | `inconclusive_under_available_power` | `e1_results.csv` |
+| R-12 | E1 | hardship level | `real_wages_idx`, `real_income_idx`, `arop_threshold_real` (C3) | between-country, cond. on AROP + year | n=260–270 | −0.09, −0.22, −0.06 | 0.30–0.65 | 0.41–0.65 | — | — | intervals admit 0.74–0.91 SD | current levels are the wrong test for accumulated loss; E4 is the real test | `inconclusive_under_available_power` | `e1_results.csv` |
+| R-13 | E1 | hardship level | `hicp` (C5) | between-country, cond. on AROP + year | n=270 | −0.9925 (se 1.0007) | 0.3213 | 0.4131 | — | — | interval admits 0.82 SD | wrong sign and far from significance | `inconclusive_under_available_power` | `e1_results.csv` |
+| R-14 | E1 | hardship level | `severe_mat_soc_deprivation` (P1) | — | n=270 | +1.4524 (se 0.4952) | 0.0034 | excluded from family | — | — | — | diagnostic only; blocked before its p-value was consulted | `blocked_by_proximity` | `e1_results.csv` |
 | R-06 | EA | hardship level | companion, `severe_mat_soc_deprivation` removed | cross-country residual | n=269, identical rows | residual −9.39 (rank 25/27); R² 0.821 | — | — | p=0.0285 for `cum_excess_unemployment` | sign-stable, +0.1655 to +0.2490 | no new MDE; comparison on identical observations | residual reverses sign; frozen P3 depends materially on a same-instrument measure | `outcome_C` | `ea_results.csv` |
 | R-05 | P3a | hardship level | accumulated breadth (Family D) | cross-country residual | n=269 | residual 10.39 (rank 1/27); coefficient −2.17 | — | — | — | — | no MDE computed for this family | failed the incremental criterion and reversed sign conditionally; reversal left uninterpreted | `failed_incremental_criterion` | `p3a_results.csv` |
 
@@ -1439,6 +1588,8 @@ Allowed statuses: `supported`, `unsupported_with_adequate_power`,
 `descriptive_only`, `infeasible`, `superseded`.
 
 `outcome_C` is EA's pre-registered verdict label, not a generic status.
+`blocked_by_proximity` means a construct was disqualified by rule before its
+result was consulted — it is not a null and must never be reported as one.
 
 `unsupported_with_adequate_power` requires a published MDE showing the test
 could have detected an effect of the relevant size. Without one, use
@@ -1475,6 +1626,8 @@ Current state of `docs/claim_matrix.csv`: **53 claims**.
 | C-04 | 2026-08-21 | Wild bootstrap returned p=0.82 against t=9.69 | Unrestricted residuals used instead of null-imposed | Refit under the null and resample those residuals | `54_p5_inference_audit.py` | — |
 | C-05 | 2026-08-22 | `real_wages_idx`, `real_income_idx`, `arop_threshold_real`, `pct_below_peak` marked accumulation-ineligible | The project had already built successful accumulations from all four, one an FDR survivor | Binary field replaced by a six-way construction taxonomy | `e0_variable_registry.csv` | `e791e01` |
 | C-06 | 2026-08-22 | E0 correlation views omitted `subjective_poverty` and AROPE entirely | Made the intended exploration impossible | Five comparator columns added to all three views | `e0_corr_*.csv` | `e791e01` |
+| C-09 | 2026-08-23 | E1 reported four constructs as contradicting their pre-registered direction | Script translated adverse direction from `"high"`/`"low"`, values the registry never holds, so every variable became `lower_is_worse` and every positive coefficient read as wrong | Pass the registry's own vocabulary through; raise on anything unrecognised | `68_e1_current_constructs.py` | — |
+| C-10 | 2026-08-23 | EDA ranks displayed Greece's worst-in-Europe real wages as rank 27/27 under a heading saying rank 1 is worst | Same direction bug, already shipped one stage earlier | Rank ascending for `lower_is_worse`; assert the column's values | `67_eda_descriptives.py` | — |
 | C-08 | 2026-08-22 | EA rule returned Outcome A on the live run | Compared absolute residuals across a sign flip (+2.46, inside band A) and gated rank one-tailed, so rank 3 → 25 read as improvement | Sign reversal returns C unless within 3.0 points of zero; tail position `min(rank, n−rank+1)`; 10 new regression tests | `ea_rule.py`, `test_ea_rule.py` | — |
 | C-07 | 2026-08-22 | MDE simulation reported power 1.00 at 0.66 points and 0.00 at 6.64 | Within-country residual permutation correlated noise with the regressor; detection ignored coefficient sign | Variance-component noise; sign-aware detection | `61_e_mde.py` | `476e177` |
 
@@ -1515,5 +1668,7 @@ Current state of `docs/claim_matrix.csv`: **53 claims**.
 | EDA | `e_descriptives.csv` | Greece hardship vs AROP vs AROPE by year | present |
 | EDA | `e_descriptive_ranks.csv` | Greece's rank per variable per year | present |
 | EDA | `e_descriptive_recovery.csv` | Gap movement 2015-2024, trend classified | present |
+| E1 | `e1_results.csv` | Nine current primaries: 3 supported, 6 inconclusive | present |
+| E1 | `e1_secondary.csv` | Secondary outcome, BH family 3, promotion blocked | present |
 | EA | `ea_companion_residuals.csv` | Companion residual ladder, 27 countries | present |
 <!-- AUTO:END artifact-index -->
