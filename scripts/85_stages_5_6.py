@@ -159,10 +159,12 @@ FIGS["F13"] = dict(
              "alt": "Between-country against within-country estimates for every "
                     "accumulated measure"},
     series=f13, first="Accumulated measure",
+    # Wording matches the canonical elements the build now requires, so the
+    # guard and the text cannot drift apart.
     extra_caveat=("This does NOT establish that no within-country relationship "
                   "exists: the within estimates are too imprecise to establish "
-                  "or rule one out. The frozen result records them as "
-                  "inconclusive, not absent."))
+                  "or rule out such a relationship. The frozen result records "
+                  "them as inconclusive, not absent."))
 
 # ---- F14: model dependence -----------------------------------------------
 a = p3r.set_index("geo").resid

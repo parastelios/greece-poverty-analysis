@@ -1,87 +1,194 @@
-"""Shared chart engine for the report and any other output that needs it.
-
-Extracted from the appendix renderer rather than rewritten, so the scales,
-country highlighting, EU reference and hover behaviour are the ones already
-validated across the full appendix. What is new here:
-
-  * NO FIXED DOM IDS. Charts mount on [data-chart] and read their payload from
-    an adjacent script tag. The previous report library bound to five hardcoded
-    ids and silently aborted when the structure changed.
-  * RESPONSIVE VIEWBOX. The appendix draws at a fixed 860 wide, which rendered
-    labels at about 4 effective pixels on a 375px screen. Width is chosen per
-    breakpoint and the chart redraws on resize.
-  * KEYBOARD. Every chart is focusable and arrow keys step through the data,
-    announcing values on an aria-live region. Hover alone excludes anyone not
-    using a mouse.
-  * PRINT. The interactive layer is hidden for print and the table fallback is
-    shown, so a PDF carries the evidence rather than an empty box.
-
-Two chart types are implemented here: `panel` (reused) and `coefficient` (new).
-The remaining manifest types are added the same way, one function each.
-"""
-import html
-import json
-
-# ---------------------------------------------------------------------------
-# READER-FACING NAMES. Code names belong in tooltips and the appendix, never in
-# a title, axis or row label. One map, shared by every figure, so a variable
-# cannot appear as `wadj_a01` in one chart and by name in another.
-# ---------------------------------------------------------------------------
-DISPLAY = {
-    "subjective_poverty": "Reported hardship",
-    "arop": "Income poverty (AROP)",
-    "arope": "AROPE",
-    "arop_threshold_real": "Real poverty threshold",
-    "aic_pps_pc": "Material resources",
-    "aic_pps_pc_k": "Material resources",
-    "gdp_pps_pc": "GDP per head",
-    "real_gdp_pc": "Real GDP per head",
-    "consumption_pc": "Consumption per head",
-    "hourly_comp": "Hourly compensation",
-    "ltu_rate": "Long-term unemployment",
-    "unemployment_rate": "Unemployment",
-    "youth_unemployment": "Youth unemployment",
-    "employment_rate": "Employment rate",
-    "real_wages_idx": "Real wages",
-    "real_income_idx": "Real household income",
-    "pct_below_peak": "Share below own GDP peak",
-    "wadj_a01": "Wage-adjusted affordability",
-    "work_effort_squeeze": "Work-effort squeeze",
-    "hicp": "Inflation",
-    "hicp_food": "Food inflation",
-    "hicp_housing": "Housing inflation",
-    "housing_cost_overburden": "Housing-cost overburden",
-    "severe_mat_soc_deprivation": "Material deprivation",
-    "arrears": "Arrears on bills",
-    "unexpected_expenses": "Cannot meet an unexpected expense",
-    "warm": "Cannot keep the home warm",
-    "net_migration": "Net migration",
-    "s80s20": "Income inequality (S80/S20)",
-    "saving_rate": "Household saving rate",
-    "debt_to_income": "Household debt to income",
-    "working_hours": "Weekly working hours",
-    "acc_cum_excess_unemployment": "Accumulated unemployment",
-    "cum_excess_unemployment": "Accumulated unemployment",
-    "cum_excess_ltu": "Accumulated long-term unemployment",
-    "dur_real_wages_below": "Years wages below 2008",
-    "wage_years_below_2008": "Years wages below 2008",
-    "acc_real_wages_shortfall": "Cumulative wage shortfall",
-    "acc_pct_below_peak": "Cumulative GDP shortfall",
-    "acc_threshold_shortfall": "Cumulative threshold shortfall",
-    "acc_wadj_excess": "Accumulated affordability pressure",
-    "acc_hicp_compounded": "Compounded inflation since 2008",
-    "acc_housing_excess": "Housing deterioration since 2010",
-    "gap_subj_arop": "Hardship gap against income poverty",
-    "gap_subj_arope": "Hardship gap against AROPE",
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Batch 4 &mdash; stages 7 and 8</title><style>
+:root {
+  color-scheme: light;
+  --page:           #f9f9f7;
+  --surface-1:      #fcfcfb;
+  --surface-2:      #f3f2ee;
+  --text-primary:   #0b0b0b;
+  --text-secondary: #52514e;
+  --text-muted:     #898781;
+  --gridline:       #e1e0d9;
+  --baseline:       #c3c2b7;
+  --border:         rgba(11,11,11,0.10);
+  --series-gr:      #2a78d6;
+  --series-gr-wash: rgba(42,120,214,0.10);
+  --series-eu:      #eb6834;
+  --series-eu-wash: rgba(235,104,52,0.10);
+  --series-3:       #1baf7a;
+  --series-4:       #eda100;
+  --series-5:       #4a3aa7;
+  --band-fill:      rgba(137,135,129,0.08);
+  --good:           #0ca30c;
+  --critical:       #d03b3b;
+}
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --page:           #0d0d0d;
+    --surface-1:      #1a1a19;
+    --surface-2:      #222221;
+    --text-primary:   #ffffff;
+    --text-secondary: #c3c2b7;
+    --text-muted:     #898781;
+    --gridline:       #2c2c2a;
+    --baseline:       #383835;
+    --border:         rgba(255,255,255,0.10);
+    --series-gr:      #3987e5;
+    --series-gr-wash: rgba(57,135,229,0.13);
+    --series-eu:      #d95926;
+    --series-eu-wash: rgba(217,89,38,0.14);
+    --series-3:       #199e70;
+    --series-4:       #c98500;
+    --series-5:       #9085e9;
+    --band-fill:      rgba(137,135,129,0.10);
+    --good:           #0ca30c;
+    --critical:       #e66767;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page:           #0d0d0d;
+  --surface-1:      #1a1a19;
+  --surface-2:      #222221;
+  --text-primary:   #ffffff;
+  --text-secondary: #c3c2b7;
+  --text-muted:     #898781;
+  --gridline:       #2c2c2a;
+  --baseline:       #383835;
+  --border:         rgba(255,255,255,0.10);
+  --series-gr:      #3987e5;
+  --series-gr-wash: rgba(57,135,229,0.13);
+  --series-eu:      #d95926;
+  --series-eu-wash: rgba(217,89,38,0.14);
+  --series-3:       #199e70;
+  --series-4:       #c98500;
+  --series-5:       #9085e9;
+  --band-fill:      rgba(137,135,129,0.10);
+  --good:           #0ca30c;
+  --critical:       #e66767;
 }
 
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--page); }
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: var(--text-primary);
+  background: var(--page);
+}
+.wrap { max-width: 860px; margin: 0 auto; padding: 56px 24px 90px; }
 
-def name(code):
-    """Reader-facing name, falling back to the code if none is registered."""
-    return DISPLAY.get(code, code)
+header.hero { margin-bottom: 32px; }
+.eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin: 0 0 12px; }
+h1 { font-size: 34px; line-height: 1.15; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 16px; text-wrap: balance; }
+.dek { font-size: 17px; line-height: 1.55; color: var(--text-secondary); max-width: 65ch; margin: 0 0 6px; }
+.meta { font-size: 12.5px; color: var(--text-muted); margin-top: 18px; }
 
-# --------------------------------------------------------------------------- CSS
-CSS = """
+.summary-box { background: var(--surface-1); border: 1px solid var(--border); border-radius: 14px; padding: 26px 28px; margin: 28px 0; }
+.summary-box .eyebrow { margin-bottom: 10px; }
+.summary-box p { font-size: 15px; line-height: 1.65; color: var(--text-primary); margin: 0 0 14px; max-width: 70ch; }
+.summary-box p:last-child { margin-bottom: 0; }
+.summary-box p.limits { font-size: 13px; color: var(--text-secondary); border-top: 1px solid var(--gridline); padding-top: 14px; margin-top: 4px; }
+
+.stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin: 32px 0 8px; }
+.stat-tile { background: var(--surface-1); padding: 16px 16px; }
+.stat-label { font-size: 11.5px; color: var(--text-muted); margin: 0 0 6px; }
+.stat-value { font-size: 24px; font-weight: 700; letter-spacing: -0.01em; }
+.stat-value.gr { color: var(--series-gr); }
+.stat-sub { font-size: 11.5px; color: var(--text-secondary); margin-top: 4px; }
+
+.part-header { margin: 64px 0 8px; padding-top: 28px; border-top: 3px solid var(--series-gr); }
+.part-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--series-gr); margin: 0 0 8px; }
+.part-header h2 { font-size: 26px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 12px; text-wrap: balance; }
+.part-header p { font-size: 15px; line-height: 1.65; color: var(--text-secondary); max-width: 68ch; }
+.part-header p b { color: var(--text-primary); }
+
+section { margin: 44px 0; }
+section h3.sec-title { font-size: 19px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 6px; text-wrap: balance; }
+section .lede { font-size: 14.5px; color: var(--text-secondary); line-height: 1.6; max-width: 68ch; margin: 0 0 22px; }
+section p { font-size: 14.5px; line-height: 1.65; color: var(--text-primary); max-width: 68ch; }
+section p.note { font-size: 12.5px; color: var(--text-muted); line-height: 1.55; max-width: 68ch; }
+section p.method-aside { font-size: 12.5px; color: var(--text-muted); line-height: 1.55; max-width: 68ch; margin-top: 8px; }
+section p.method-aside b { color: var(--text-secondary); font-weight: 600; }
+section h4 { font-size: 13px; font-weight: 700; margin: 18px 0 8px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.03em; }
+.method-item { margin-bottom: 22px; }
+.method-item dt { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+.method-item dd { margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--text-secondary); max-width: 68ch; }
+.method-item dd + dd { margin-top: 6px; }
+.method-item code { font-size: 12px; background: var(--surface-2); padding: 1px 5px; border-radius: 4px; color: var(--text-primary); overflow-wrap:anywhere; word-break:break-word; }
+.q-label { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; color: var(--text-muted); background: var(--surface-2); border-radius: 5px; padding: 2px 7px; margin-bottom: 10px; margin-right: 6px; }
+.badge-approx { display: inline-block; font-size: 10.5px; font-weight: 600; letter-spacing: 0.02em; color: var(--series-4); background: color-mix(in srgb, var(--series-4) 15%, transparent); border-radius: 5px; padding: 2px 7px; margin-left: 6px; vertical-align: middle; }
+
+.card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 22px 22px 10px; }
+.chart-title { font-size: 14px; font-weight: 600; margin: 0 0 2px; }
+.chart-sub { font-size: 12px; color: var(--text-secondary); margin: 0 0 12px; }
+.legend { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-secondary); }
+.legend-swatch { width: 10px; height: 10px; border-radius: 2px; flex: none; }
+.chart-wrap { position: relative; }
+svg.chart { width: 100%; height: auto; display: block; overflow: visible; }
+.gridline { stroke: var(--gridline); stroke-width: 1; }
+.baseline { stroke: var(--baseline); stroke-width: 1; }
+.axis-label { fill: var(--text-muted); font-size: 10.5px; }
+.crisis-band { fill: var(--band-fill); }
+.crisis-line { stroke: var(--text-muted); stroke-width: 1; stroke-dasharray: 2 3; }
+.crisis-label { fill: var(--text-muted); font-size: 10px; }
+.direct-label { font-size: 11px; font-weight: 600; }
+.direct-label-sub { fill: var(--text-secondary); font-size: 9.5px; }
+.hit-target { fill: transparent; }
+.hover-dot { stroke: var(--surface-1); stroke-width: 2; opacity: 0; }
+.crosshair { stroke: var(--text-muted); stroke-width: 1; opacity: 0; }
+.tooltip { position: absolute; pointer-events: none; opacity: 0; transition: opacity .08s ease; background: var(--surface-1); border: 1px solid var(--border); border-radius: 8px; padding: 8px 11px; font-size: 12px; box-shadow: 0 4px 14px rgba(0,0,0,0.14); white-space: nowrap; transform: translate(-50%,-100%); z-index: 5; }
+.tooltip .t-year { color: var(--text-muted); font-size: 10.5px; margin-bottom: 3px; }
+.tooltip .t-row { display: flex; align-items: center; gap: 6px; font-weight: 600; }
+.tooltip .t-row + .t-row { margin-top: 2px; }
+.tooltip .dot { width: 7px; height: 7px; border-radius: 50%; flex: none; }
+.foot-note { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 12px 2px 2px; font-size: 10.5px; color: var(--text-muted); border-top: 1px solid var(--gridline); margin-top: 14px; }
+
+table.data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+table.data-table th, table.data-table td { text-align: right; padding: 7px 10px; border-bottom: 1px solid var(--gridline); font-variant-numeric: tabular-nums; }
+table.data-table th:first-child, table.data-table td:first-child { text-align: left; font-variant-numeric: normal; }
+table.data-table th { color: var(--text-muted); font-weight: 500; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.03em; }
+table.data-table td.sig { color: var(--text-muted); font-size: 11px; }
+table.data-table td.hl, table.data-table tr.hl td { color: var(--series-gr); font-weight: 600; }
+.table-scroll { overflow-x: auto; }
+.table-caption { font-size: 12px; color: var(--text-secondary); margin: 0 0 10px; }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.story-map { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin:18px 0 28px; max-width:68ch; }
+.story-map a { display:flex; flex-direction:column; gap:3px; padding:12px 14px; border:1px solid var(--border); border-radius:8px; color:var(--text-primary); text-decoration:none; background:var(--surface-1); }
+.story-map a:hover { border-color:var(--series-gr); }
+.story-map span { color:var(--text-muted); font-size:11.5px; }
+@media (max-width: 720px) {
+  .wrap { padding: 24px 14px 64px; }
+  .two-col, .story-map { grid-template-columns: 1fr; }
+  .stat-row { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .card, .answer-box { padding-left:14px; padding-right:14px; }
+  table.data-table { min-width:620px; }
+  .hero h1 { font-size:34px; }
+}
+
+.finding { background: var(--surface-2); border-radius: 10px; padding: 16px 18px; margin: 18px 0; font-size: 13.5px; line-height: 1.6; }
+.finding b { color: var(--text-primary); }
+.method-details { max-width:68ch; margin:10px 0 16px; border-top:1px solid var(--gridline); }
+.method-details summary { cursor:pointer; padding:9px 0; color:var(--text-secondary); font-size:12px; font-weight:600; }
+.method-details[open] summary { color:var(--series-gr); }
+.method-details .method-aside { margin:2px 0 12px; }
+
+.answer-box { background: var(--surface-1); border: 1px solid var(--border); border-left: 3px solid var(--series-gr); border-radius: 10px; padding: 24px 26px; margin-top: 12px; }
+.answer-box h4 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--series-gr); margin: 0 0 10px; }
+.answer-box p { font-size: 14.5px; }
+
+.toc { display: flex; flex-direction: column; gap: 4px; font-size: 13px; margin-top: 14px; }
+.toc .toc-part { font-weight: 700; color: var(--text-primary); margin-top: 10px; }
+.toc .toc-part:first-child { margin-top: 0; }
+.toc a { color: var(--text-secondary); text-decoration: none; border-bottom: 1px solid transparent; padding-left: 14px; display: inline-block; }
+.toc a:hover { color: var(--series-gr); border-bottom-color: var(--series-gr); }
+
+footer { margin-top: 70px; padding-top: 20px; border-top: 1px solid var(--gridline); font-size: 11.5px; color: var(--text-muted); line-height: 1.6; }
+</style>
+<style>
 .figure{margin:1.8rem 0;border:1px solid var(--border);border-radius:8px;
 background:var(--surface-1);overflow:hidden}
 .figure > figcaption{padding:.9rem 1.1rem .2rem;font:600 .95rem/1.35
@@ -146,10 +253,83 @@ text-align:left}
   .fallback[open],.fallback{display:block}
   .figure{break-inside:avoid;border-color:#999}
 }
-"""
 
-# --------------------------------------------------------------------------- JS
-JS = r"""
+:root{--gr:var(--series-gr);--eu:var(--series-eu);--ok:#2f855a;--warn:#b7791f}
+body{max-width:52rem;margin:0 auto;padding:2rem 1.2rem 5rem}
+h2{margin:2.8rem 0 .6rem}
+.ctx{border:1px solid var(--border);border-radius:6px;padding:1rem 1.2rem;
+margin:1.2rem 0;background:var(--surface-1)}
+.ctx-head{display:flex;gap:.7rem;align-items:baseline;margin-bottom:.3rem}
+.ctx-head .cid{font:600 .7rem/1 ui-monospace,Menlo,monospace;
+color:var(--text-muted);letter-spacing:.05em}
+.status{font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;
+font-weight:700;color:var(--series-5)}
+.ctx h4{margin:.2rem 0 .6rem;font-size:1rem}
+.ctx .permitted,.ctx .limitation,.ctx .cite{font-size:.85rem;margin:.5rem 0 0}
+.ctx .limitation{color:var(--text-secondary)}
+.ctx .cite{color:var(--text-muted);word-break:break-word}
+.tw{overflow-x:auto;margin:1.4rem 0;border:1px solid var(--border);
+border-radius:6px;background:var(--surface-1)}
+.tw table{border-collapse:collapse;width:100%;
+font:.84rem/1.45 ui-sans-serif,system-ui,sans-serif}
+.tw caption{caption-side:top;text-align:left;padding:.8rem 1rem .4rem;
+font-size:.8rem;color:var(--text-muted)}
+.tw th{text-align:left;padding:.55rem .8rem;
+border-bottom:1.5px solid var(--border);font-size:.72rem;
+text-transform:uppercase;letter-spacing:.04em;color:var(--text-secondary)}
+.tw td{padding:.55rem .8rem;border-bottom:1px solid var(--border);
+vertical-align:top}
+.proto-note{border:1px dashed var(--border);border-radius:6px;padding:.9rem 1.1rem;
+margin-bottom:2rem;font:.82rem/1.5 ui-sans-serif,system-ui,sans-serif;
+color:var(--text-secondary)}
+</style></head><body>
+<p class="proto-note"><strong>Batch 4.</strong> Stages 7 and 8, the last. The
+context entries form one discussion rather than six equal cards, and Stage 8
+synthesises only &mdash; no new estimate, no new interpretation.</p>
+
+<h2>Stage 7 &mdash; What else might matter</h2>
+<p>Everything so far has been about what can be measured on this panel. The
+analysis identifies where Greek hardship aligns with material conditions and
+accumulated history. It does not identify which institutions or policies
+produced that history, and the honest thing is to say so and then say what is
+plausible anyway &mdash; labelled as what it is.</p>
+<figure class="figure" id="F15">
+<figcaption>Greece is worst in the EU on hardship and on financial expectations every year, but not on life satisfaction</figcaption>
+<div class="fig-meta"><span class="badge">descriptive corroboration</span>
+<span class="fig-q">Are Greeks simply gloomier about everything?</span></div>
+<div class="chart-live" data-chart="panel" tabindex="0"
+     data-checksum="2a7bf771ba85aa69" aria-describedby="F15-fb">
+<script type="application/json">{"years": [2018, 2021, 2022, 2023, 2024], "dp": 0, "invertY": true, "alt": "Greece's EU rank on three indicators; 1 is worst in every series and the axis is inverted so worse sits higher", "series": [{"label": "Reported hardship", "tone": "gr", "style": "solid", "weight": "strong", "values": [1, 1, 1, 1, 1]}, {"label": "Financial expectations", "tone": "series-5", "style": "solid", "weight": "normal", "values": [1, 1, 1, 1, 1]}, {"label": "Life satisfaction", "tone": "series-3", "style": "solid", "weight": "normal", "values": [4, 6, 3, 3, 2]}]}</script>
+</div><p class="fig-caveat"><strong>Read with this.</strong> Generic pessimism is INSUFFICIENT, not disproved. A financial-domain-specific reporting difference cannot be excluded. READ THE DIRECTION CAREFULLY. Every series is ranked so that 1 is the WORST position in the EU, including life satisfaction, where a naive ranking would put the best country first. The vertical axis is inverted accordingly: higher on the chart means worse. Greece sits at 1 on hardship and on financial expectations in every year shown, and between 2nd and 6th on life satisfaction.</p>
+<details class="fallback" id="F15-fb"><summary>Show the numbers <a href="statistical_appendix.html">Full evidence in the appendix</a>.</summary>
+<table data-checksum="2a7bf771ba85aa69"><thead><tr><th>Indicator</th><th class="num">2018</th><th class="num">2021</th><th class="num">2022</th><th class="num">2023</th><th class="num">2024</th></tr></thead><tbody><tr><td>Reported hardship</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td></tr><tr><td>Financial expectations</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">1</td></tr><tr><td>Life satisfaction</td><td class="num">4</td><td class="num">6</td><td class="num">3</td><td class="num">3</td><td class="num">2</td></tr></tbody></table></details>
+</figure>
+<p>So the reading style alternative is weakened but not eliminated, which is the
+right place to begin the rest of the discussion.</p>
+<p>Start with the one that would change the reading most if it were true. Two households in identical circumstances may describe their security differently depending on whether they expect institutions to help. Greek trust in central government sits well below the OECD average, which makes the idea plausible &mdash; and no variable in any model above measures it.</p><div class="ctx" data-context-id="CTX-2"><div class="ctx-head"><span class="cid">CTX-2</span><span class="status">contextual evidence</span></div><h4>Institutional trust</h4><p class="permitted"><strong>What may be concluded.</strong> May affect how households interpret insecurity; available evidence does not identify an independent effect.</p><p class="limitation"><strong>Limitation.</strong> Presenting trust as an explanation of the residual, or implying it was tested and found to matter.</p><p class="cite"><strong>Source.</strong> OECD (2024), OECD Survey on Drivers of Trust in Public Institutions - 2024 Results, Country Notes: Greece. OECD Publishing, Paris. Fieldwork October-November 2023, 30 OECD countries. 32% of Greek respondents report high or moderately high trust in central government against an OECD average of 39%. <a href="https://www.oecd.org/en/publications/oecd-survey-on-drivers-of-trust-in-public-institutions-2024-results-country-notes_a8004759-en/greece_56edc018-en.html">source</a></p></div>
+<p>Trust does not arise from nothing, which leads to the period itself. The accumulated exposure measured in Stage 5 was produced by something: a decade of fiscal consolidation whose distributional effects are documented in work using EU-SILC microdata.</p><div class="ctx" data-context-id="CTX-3"><div class="ctx-head"><span class="cid">CTX-3</span><span class="status">literature-grounded context</span></div><h4>Crisis and adjustment policies</h4><p class="permitted"><strong>What may be concluded.</strong> Help explain the historical setting; this project does not estimate their causal contribution.</p><p class="limitation"><strong>Limitation.</strong> Attributing any share of the accumulated exposure to a specific programme or measure.</p><p class="cite"><strong>Source.</strong> Andriopoulou, E., Kanavitsa, E. & Tsakloglou, P. (2020), Decomposing Poverty in Hard Times: Greece 2007-2016. LSE GreeSE Paper No. 149. EU-SILC microdata, ELSTAT waves 2008-2017. Anchored FGT0 on a 2007 base reaches 48% at the 2013 peak. <a href="https://www.lse.ac.uk/Hellenic-Observatory/Publications/GreeSE-Papers">source</a></p></div>
+<p>One channel within that period is worth naming because it is specific and testable, just not here. Consolidation leaned heavily on indirect taxation, and published incidence work finds the burden became markedly more regressive.</p><div class="ctx" data-context-id="CTX-5"><div class="ctx-head"><span class="cid">CTX-5</span><span class="status">future hypothesis</span></div><h4>Tax burden and unequal treatment</h4><p class="permitted"><strong>What may be concluded.</strong> Published incidence evidence establishes that Greece's indirect tax system became markedly more regressive over the crisis. Whether that channel contributes to the hardship gap is a plausible hypothesis and is NOT tested here.</p><p class="limitation"><strong>Limitation.</strong> Any quantitative statement linking tax burden to the hardship gap. The literature is about incidence, not about this outcome, and this project tested nothing on tax.</p><p class="cite"><strong>Source.</strong> Kaplanoglou, G. (2015), Who Pays Indirect Taxes in Greece? From EU Entry to the Fiscal Crisis. Public Finance Review 43(4), 529-556. Microsimulation on Household Expenditure Survey data, 1988-2011. The 2011 indirect tax system is the most regressive of the period, with the sharpest effects on families with children and the unemployed. <a href="https://doi.org/10.1177/1091142113517925">source</a></p></div>
+<p>The same decade saw large-scale emigration, which sits awkwardly in any account because it runs in both directions at once.</p><div class="ctx" data-context-id="CTX-4"><div class="ctx-head"><span class="cid">CTX-4</span><span class="status">contextual consequence</span></div><h4>Migration</h4><p class="permitted"><strong>What may be concluded.</strong> A plausible consequence of prolonged labour-market damage and a possible contributor to it. It is UNSUPPORTED as an independent aggregate predictor here.</p><p class="limitation"><strong>Limitation.</strong> Reading it as a driver, or as ruled out. E3 tested it on this panel and found nothing (p=0.4006), which speaks to aggregate prediction and not to either causal direction.</p><p class="cite"><strong>Source.</strong> Lazaretou, S. (2016), The Greek brain drain: the new pattern of Greek emigration during the recent crisis. Economic Bulletin, Bank of Greece, issue 43, pp. 31-53. 427,000 residents aged 15-64 left permanently 2008-2013; ~223,000 of them aged 25-39. The E3 null (p=0.4006) is this project's own evidence. <a href="https://www.bankofgreece.gr/BogEkdoseis/econbull201607.pdf">source</a></p></div>
+<p>Against all of that sits the alternative reading: that none of it is needed, because Greeks simply report more darkly. Stage 7's one tested result speaks to this directly, and the figure above is that test.</p><div class="ctx" data-context-id="CTX-1"><div class="ctx-head"><span class="cid">CTX-1</span><span class="status">descriptive corroboration</span></div><h4>Financial expectations and life satisfaction</h4><p class="permitted"><strong>What may be concluded.</strong> Generic pessimism is insufficient; financially specific reporting differences remain possible.</p><p class="limitation"><strong>Limitation.</strong> Concluding that reporting style plays no part, or that a financial-domain difference has been ruled out.</p><p class="cite"><strong>Source.</strong> reporting_style_cross_indicator.csv, this project Greece ranks 1st of 27 on hardship and financial expectations, 2nd-6th on life satisfaction.</p></div>
+<p>Which leaves what a reader should take away for measurement rather than for policy.</p><div class="ctx" data-context-id="CTX-6"><div class="ctx-head"><span class="cid">CTX-6</span><span class="status">author interpretation</span></div><h4>Policy implications</h4><p class="permitted"><strong>What may be concluded.</strong> POLICY RECOMMENDATION, NOT AN EMPIRICAL CONCLUSION: poverty dashboards should combine AROP, its real threshold, anchored poverty, AROPE/deprivation and accumulated labour and housing indicators.</p><p class="limitation"><strong>Limitation.</strong> Presenting this as a finding. It follows from what the analysis showed AROP alone misses; it is not itself a result.</p></div>
+
+<h2>Stage 8 &mdash; Conclusion</h2>
+<p>Greece's unusually high reported hardship is not simply pessimism. It aligns
+with concrete deprivation, and with a long history of unemployment, wage
+non-recovery and housing deterioration.</p>
+<p>Relative income poverty understates crisis-era deterioration when read alone.
+AROPE narrows the puzzle and does not close it. Concrete hardship indicators
+corroborate that the subjective measure is materially grounded. And accumulated
+unemployment, wage non-recovery and housing deterioration provide additional
+conditional cross-country information beyond current snapshots.</p>
+<p>The evidence remains <strong>cross-country rather than causal</strong>, and
+the share of Greece's gap that appears accounted for depends materially on
+whether closely related deprivation measures are admitted.</p>
+<div class="tw"><table><caption>What the sequence establishes, by evidence status. Nothing in this table is new: every row points at a result reached earlier.</caption><thead><tr><th>Status</th><th>Finding</th><th>Basis</th></tr></thead><tbody><tr><td><strong>Supported</strong></td><td>Material resources, long-term unemployment and wage-adjusted affordability predict hardship beyond income poverty</td><td>E1, bootstrap 0.0005&ndash;0.0085</td></tr><tr><td><strong>Supported</strong></td><td>Accumulated unemployment, wage non-recovery and housing deterioration predict hardship, and add conditional cross-country information beyond their current-level counterparts</td><td>E4 and E7</td></tr><tr><td><strong>Inconclusive</strong></td><td>Six current-level constructs, the C3 depth measures, and compounded inflation</td><td>below the detectable effect for their tests</td></tr><tr><td><strong>Inconclusive</strong></td><td>Whether any within-country dynamic exists</td><td>estimates too imprecise to establish or rule out</td></tr><tr><td><strong>Unsupported</strong></td><td>Annual food and housing inflation at 0.70 SD; annual headline inflation at its conditional magnitude</td><td>E2 and E7</td></tr><tr><td><strong>Blocked</strong></td><td>Arrears, unexpected expenses, heating and material deprivation as explanations</td><td>same survey instrument as the outcome</td></tr><tr><td><strong>Blocked</strong></td><td>The transfer-policy comparators</td><td>algebraic functions of income poverty</td></tr><tr><td><strong>Failed or superseded</strong></td><td>The synthetic-control comparative design; multi-domain breadth; the accumulated wage-shortfall coefficient</td><td>failed gates, failed the incremental criterion, capped by rule</td></tr><tr><td><strong>Contextual</strong></td><td>Institutional trust, crisis policy, migration, taxation</td><td>literature-grounded, not estimated here</td></tr></tbody></table></div>
+<p>Nothing in that table is new. Every row points at a result reached in an
+earlier stage, and this section introduces no estimate and no interpretation
+that was not already established and bounded where it was produced.</p>
+<script>
 (function(){
   const NS='http://www.w3.org/2000/svg';
   const el=(t,a)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;};
@@ -652,100 +832,5 @@ JS = r"""
   if(document.readyState!=='loading')mount();
   let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(redraw,180);});
 })();
-"""
-
-
-
-# ---------------------------------------------------------------------------
-# ONE CANONICAL ROW STRUCTURE FEEDS BOTH THE CHART AND THE TABLE.
-#
-# Row-count agreement is false confidence: a chart and its fallback can carry
-# the same number of rows and different numbers in them and still pass. The
-# only way to be sure they agree is to stop generating them separately.
-#
-# A Series is built once. `chart_payload()` and `fallback_table()` both read it,
-# and `checksum()` hashes the exact labels and values so the build can prove the
-# two were derived from the same thing.
-# ---------------------------------------------------------------------------
-import hashlib
-
-
-class Series:
-    """Canonical data for one figure: labelled rows of (label, values)."""
-
-    def __init__(self, columns, dp=1, title=""):
-        self.columns = list(columns)     # header for the value columns
-        self.rows = []                   # (label, [values], meta dict)
-        self.dp = dp
-        self.title = title
-
-    def add(self, label, values, **meta):
-        if len(values) != len(self.columns):
-            raise ValueError(
-                f"{label}: {len(values)} values against {len(self.columns)} columns")
-        self.rows.append((label, list(values), meta))
-        return self
-
-    def canonical(self):
-        """The exact labels and rounded values both renderers will use."""
-        out = []
-        for label, vals, _ in self.rows:
-            out.append([str(label)] + [
-                "" if v is None or v != v else f"{float(v):.{self.dp}f}"
-                for v in vals])
-        return out
-
-    def checksum(self):
-        blob = json.dumps({"cols": self.columns, "rows": self.canonical()},
-                          sort_keys=True)
-        return hashlib.sha256(blob.encode()).hexdigest()[:16]
-
-    def fallback_table(self, first_header="", numeric=True, view=None):
-        head = "".join(f'<th class="num">{html.escape(c)}</th>'
-                       if numeric else f"<th>{html.escape(c)}</th>"
-                       for c in self.columns)
-        body = []
-        for row in self.canonical():
-            cells = "".join(f'<td class="num">{c or "&mdash;"}</td>'
-                            if numeric else f"<td>{c or '&mdash;'}</td>"
-                            for c in row[1:])
-            body.append(f"<tr><td>{html.escape(row[0])}</td>{cells}</tr>")
-        v = f' data-view="{view}"' if view is not None else ""
-        cap = (f"<caption>{html.escape(str(self.title))}</caption>"
-               if getattr(self, "title", "") else "")
-        return (f'<table data-checksum="{self.checksum()}"{v}>{cap}'
-                f'<thead><tr><th>{html.escape(first_header)}</th>{head}</tr></thead>'
-                f"<tbody>{''.join(body)}</tbody></table>")
-
-
-def figure(fid, caption, question, badge, host_kind, payload, fallback_html,
-           caveat="", appendix_link="", checksum=""):
-    """One figure: chart, badge, caveat, and an accessible table fallback.
-
-    The fallback is always in the DOM, so screen readers and print both reach
-    the numbers whether or not the chart draws.
-    """
-    # pandas reads an empty manifest cell as NaN, a float, which html.escape
-    # cannot take. Coerce before testing truthiness.
-    caveat = "" if caveat is None or caveat != caveat else str(caveat).strip()
-    cav = (f'<p class="fig-caveat"><strong>Read with this.</strong> '
-           f'{html.escape(caveat)}</p>' if caveat else "")
-    link = (f' <a href="{appendix_link}">Full evidence in the appendix</a>.'
-            if appendix_link else "")
-    # DO NOT html-escape the payload. Script-tag content is raw text, so
-    # entities survive JSON.parse as literal characters and the tooltip then
-    # displayed "<span style='opacity:.6'>real_wages_idx</span>" verbatim.
-    # Escaping "</" is the only thing needed, and it is what prevents the JSON
-    # from terminating the script element early.
-    data = json.dumps(payload).replace("</", "<\\/")
-    return f"""<figure class="figure" id="{fid}">
-<figcaption>{caption}</figcaption>
-<div class="fig-meta"><span class="badge">{html.escape(badge)}</span>
-<span class="fig-q">{html.escape(question)}</span></div>
-<div class="chart-live" data-chart="{host_kind}" tabindex="0"
-     data-checksum="{checksum}" aria-describedby="{fid}-fb">
-<script type="application/json">{data}</script>
-</div>{cav}
-<details class="fallback" id="{fid}-fb"><summary>Show the numbers{link}</summary>
-{fallback_html}</details>
-</figure>"""
+</script>
+</body></html>

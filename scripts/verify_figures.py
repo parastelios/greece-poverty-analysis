@@ -21,6 +21,7 @@ TARGETS = [p for p in [ROOT / "output" / "prototype.html",
                        ROOT / "output" / "batch1.html",
                        ROOT / "output" / "batch2.html",
                        ROOT / "output" / "batch3.html",
+                       ROOT / "output" / "batch4.html",
                        ROOT / "output" / "report.html"] if p.exists()]
 
 F = []
@@ -156,6 +157,54 @@ for path in TARGETS:
             if want > 1 and got != want:
                 wrong.append(f"{fid}: {got} views, manifest promises {want}")
         check("view count matches the manifest", not wrong, "; ".join(wrong))
+
+    # 2d. THE BETWEEN/WITHIN CLAIM, GUARDED SPECIFICALLY.
+    #
+    #     This overstatement has slipped through three times -- P5, E4's first
+    #     write-up, and F13 -- because "carried between countries, not within"
+    #     reads as a summary of the numbers rather than a claim beyond them.
+    #
+    #     The guard is claim-specific, not a language regex. A broad pattern
+    #     would flag sentences that correctly DENY the overstatement, which this
+    #     project's forbidden-phrase sweeps have done repeatedly.
+    REQUIRED_IN = {
+        "F13": ["predominantly between countries",
+                "no supporting dynamic evidence",
+                "inconclusive",
+                "too imprecise to establish or rule out"],
+    }
+    missing_req = []
+    for b in blocks:
+        fid = re.search(r'id="([^"]+)"', b).group(1)
+        if fid not in REQUIRED_IN:
+            continue
+        text = " ".join(re.sub(r"<[^>]+>", " ", b).lower().split())
+        for phrase in REQUIRED_IN[fid]:
+            if phrase not in text:
+                missing_req.append(f"{fid} must contain '{phrase}'")
+    check("the between/within figure carries all four canonical elements",
+          not missing_req, "; ".join(missing_req))
+
+    # The exact overstatements, banned from captions and ordinary prose. The
+    # tooltip payload is excluded, as elsewhere.
+    BANNED = ["entirely between countries",
+              "carried between countries, not within",
+              "no within-country effect",
+              "does not work within countries"]
+    NEGATORS = ("not ", "never ", "cannot ", "does not ", "do not ", "no claim",
+                "would be wrong", "must not", "may not", "rather than")
+    prose = re.sub(r'<script type="application/json"[^>]*>.*?</script>', "",
+                   raw, flags=re.S)
+    prose = " ".join(re.sub(r"<[^>]+>", " ", prose).lower().split())
+    hits = []
+    for phrase in BANNED:
+        for m in re.finditer(re.escape(phrase), prose):
+            window = prose[max(0, m.start() - 70):m.start()]
+            # A sentence that denies the overstatement is not the overstatement.
+            if not any(n in window for n in NEGATORS):
+                hits.append(phrase)
+    check("no banned between/within overstatement in prose",
+          not hits, "; ".join(sorted(set(hits))))
 
     # 3. NO FIXED DOM TARGETS. The old library bound to hardcoded ids and
     #    aborted silently when the structure moved.

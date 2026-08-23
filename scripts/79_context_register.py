@@ -100,11 +100,16 @@ ENTRIES = [
     {
         "id": "CTX-4", "topic": "Migration",
         "status": "contextual consequence",
-        "permitted": "Consistent with prolonged scarring; not supported as an "
-                     "independent explanation of the gap.",
-        "forbidden": "Reading it as a driver. E3 tested it and found nothing "
-                     "(p=0.4006), and its causal position is ambiguous by "
-                     "construction.",
+        # BIDIRECTIONAL. Migration is both a plausible consequence of prolonged
+        # labour-market damage and a possible contributor to it. What the
+        # project can say is only that it is unsupported as an independent
+        # aggregate predictor on this panel.
+        "permitted": "A plausible consequence of prolonged labour-market damage "
+                     "and a possible contributor to it. It is UNSUPPORTED as an "
+                     "independent aggregate predictor here.",
+        "forbidden": "Reading it as a driver, or as ruled out. E3 tested it on "
+                     "this panel and found nothing (p=0.4006), which speaks to "
+                     "aggregate prediction and not to either causal direction.",
         "relates_to_claim": "", "evidence": "e3_results.csv (null), external literature",
         "detect": "net migration|emigration|brain drain",
         "source": "Lazaretou, S. (2016), The Greek brain drain: the new "
