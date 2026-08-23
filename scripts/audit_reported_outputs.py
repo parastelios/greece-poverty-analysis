@@ -94,6 +94,8 @@ SCHEMA = {
                                       "inflation": "coefficient",
                                       "power_at_mde": "share",
                                       "mc_se_at_mde": "se",
+                                      "power_before_mde": "share",
+                                      "mc_se_before_mde": "se",
                                       "reps": "count",
                                       "n": "count", "countries": "count"},
     "e7_mde_curves.csv":             {"effect_sd": "coefficient", "power": "share",
@@ -149,7 +151,11 @@ NULLABLE = {("p2_specifications.csv", "post_gap"),
             ("e5_results.csv", "coef"), ("e5_results.csv", "se"),
             ("e5_results.csv", "p_raw"), ("e5_results.csv", "p_fdr"),
             ("e5_results.csv", "boot_p"), ("e5_results.csv", "n"),
-            ("e5_results.csv", "primary_boot_p")}
+            ("e5_results.csv", "primary_boot_p"),
+            # None when the first grid point already cleared the target, so
+            # there is no preceding point to report.
+            ("e7_conditional_mde.csv", "power_before_mde"),
+            ("e7_conditional_mde.csv", "mc_se_before_mde")}
 
 problems, checked = [], 0
 for fname, cols in SCHEMA.items():

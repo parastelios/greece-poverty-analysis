@@ -153,7 +153,14 @@ for i, pr in enumerate(PAIRS):
                 fs_correction(len(d), X.shape[1], len(geos)), 2)
 
     def run(XtX, X, k, corr, focal, label):
-        """Plant an effect on `focal` and measure detection."""
+        """Plant an effect on `focal` and measure detection.
+
+        Returns (mde, power_at_mde, power_before, mc_se_before). The PRECEDING
+        grid point matters as much as the selected one: an MDE can move in
+        either direction on a rerun -- the selected point can fall below the
+        target, or the point before it can rise above. Checking only the
+        selected point misses the second case entirely.
+        """
         # DETERMINISTIC SEED. hash(pid) is randomised per process unless
         # PYTHONHASHSEED is fixed, so the previous artifact could not be
         # regenerated. The frozen pair index is stable by construction.
@@ -162,6 +169,7 @@ for i, pr in enumerate(PAIRS):
         sd_f = d[focal].std()
         xf = d[focal].to_numpy(float)
         found, found_power = None, None
+        prev_power, prev_se = None, None
         for eff in GRID:
             beta = eff * sd_r / sd_f
             hits = 0
@@ -178,14 +186,20 @@ for i, pr in enumerate(PAIRS):
             if power >= TARGET:
                 found, found_power = eff, power
                 break
-        return found, found_power
+            prev_power, prev_se = power, MC_SE(power)
+        return found, found_power, prev_power, prev_se
 
     for focal, other, k_j in [(acc, cur, 3), (cur, acc, 2)]:
-        mde, pw = run(XtX_joint, X_joint, k_j, corr_j, focal, "conditional")
+        mde, pw, pw_prev, se_prev = run(
+            XtX_joint, X_joint, k_j, corr_j, focal, "conditional")
         Xm, XtXm, corr_m, k_m = marginal(focal)
-        mde_m, _ = run(XtXm, Xm, k_m, corr_m, focal, "marginal")
-        # A grid point within 2 MC SEs of the target could flip on a rerun.
-        fragile = bool(pw is not None and abs(pw - TARGET) < 2 * MC_SE(pw))
+        mde_m, _, _, _ = run(XtXm, Xm, k_m, corr_m, focal, "marginal")
+        # TWO-SIDED. Either the selected point can drop below the target on a
+        # rerun, or the point before it can rise above -- both move the MDE.
+        fragile_at = bool(pw is not None and abs(pw - TARGET) < 2 * MC_SE(pw))
+        fragile_before = bool(pw_prev is not None
+                              and abs(pw_prev - TARGET) < 2 * se_prev)
+        fragile = fragile_at or fragile_before
         rows.append({"pair": pid, "construct": pr["construct"],
                      "focal": focal, "controlling_for": other,
                      "direction": "accumulated|current" if focal == acc
@@ -195,7 +209,11 @@ for i, pr in enumerate(PAIRS):
                      "residual_sd": sd_r, "between_sd": sd_b, "within_sd": sd_w,
                      "conditional_mde_sd": mde, "power_at_mde": pw,
                      "mc_se_at_mde": MC_SE(pw) if pw is not None else None,
+                     "power_before_mde": pw_prev,
+                     "mc_se_before_mde": se_prev,
                      "boundary_fragile": fragile,
+                     "fragile_at_selected": fragile_at,
+                     "fragile_at_preceding": fragile_before,
                      "marginal_mde_sd": mde_m,
                      "inflation": (mde / mde_m) if (mde and mde_m) else None,
                      "reps": REPS})
@@ -216,25 +234,31 @@ print("  inflation factor is meaningful. It is NOT comparable to the published")
 print("  0.70 family MDE, which came from a different design in script 61.")
 print("\n  Inflation above 1 means the pair is harder to test conditionally")
 print("  than marginally: the two measures share variation, so less independent")
-print("  signal remains once the counterpart is controlled. That is the usual")
-print("  case and 15 of 16 show it.")
-print("\n  INFLATION BELOW 1 IS POSSIBLE AND IS NOT AN ERROR. Two forces act in")
-print("  opposite directions when the counterpart is added: it inflates the")
-print("  focal predictor's variance through collinearity, and it can also ABSORB")
-print("  residual variance. Where the counterpart is strongly between-country it")
-print("  soaks up the between-country noise component, and that can help power")
-print("  more than the collinearity hurts. P7_hicp shows this: the conditional")
-print("  design has higher power at EVERY effect size, far beyond Monte Carlo")
-print("  noise, because compounded inflation is a heavily between-country series.")
+n_at_or_above = int((res.inflation >= 0.9999).sum())
+print(f"  signal remains once the counterpart is controlled. {n_at_or_above} of "
+      f"{int(res.inflation.notna().sum())} conditional MDEs are AT OR ABOVE")
+print("  their same-machinery marginal MDE (four are exactly equal).")
+print("\n  ONE RATIO IS BELOW 1, AND IT IS NOT GIVEN A SUBSTANTIVE READING.")
+print("  In the P7 current-inflation direction, adding accumulated inflation")
+print("  improves simulated precision despite predictor correlation. This is")
+print("  reported as a DESIGN-SPECIFIC POWER RESULT of this finite-cluster")
+print("  simulation and design matrix -- NOT as evidence that accumulated")
+print("  inflation genuinely explains between-country variation in hardship.")
 print("\n  THE CONDITIONAL COLUMN IS THE OPERATIVE THRESHOLD FOR E7.")
 fragile = res[res.boundary_fragile == True]
 if len(fragile):
-    print(f"\n  BOUNDARY-FRAGILE ({len(fragile)} of {len(res)}): power at the reported")
-    print(f"  MDE is within 2 Monte Carlo SEs of {TARGET:.0%}, so a rerun with")
-    print("  different draws could move the MDE one grid step. Reported, not hidden.")
+    print(f"\n  BOUNDARY-FRAGILE ({len(fragile)} of {len(res)}): the selected grid")
+    print(f"  point OR the one before it sits within 2 Monte Carlo SEs of")
+    print(f"  {TARGET:.0%}, so a rerun with different draws could move the MDE one")
+    print("  step in either direction. Reported, not hidden.")
     for r in fragile.itertuples():
-        print(f"    {r.pair:18} {r.focal:28} MDE {r.conditional_mde_sd:.2f} "
-              f"at power {r.power_at_mde:.4f} +/- {r.mc_se_at_mde:.4f}")
+        which = []
+        if r.fragile_at_selected:
+            which.append(f"selected {r.power_at_mde:.4f}+/-{r.mc_se_at_mde:.4f}")
+        if r.fragile_at_preceding:
+            which.append(f"preceding {r.power_before_mde:.4f}+/-{r.mc_se_before_mde:.4f}")
+        print(f"    {r.pair:18} {r.focal:28} MDE {r.conditional_mde_sd:.2f}  "
+              f"{'; '.join(which)}")
 
 none_found = res[res.conditional_mde_sd.isna()]
 if len(none_found):
