@@ -53,7 +53,15 @@ for label, fname in [("Between countries", "e0_corr_between.csv"),
     for r in keep:
         s.add(ce.name(r), [float(sub.loc[r, c]) for c in keep])
     series6.append(s)
+    MECH = {("arope", "arop"), ("arop", "arope"),
+            ("arope", "severe_mat_soc_deprivation"),
+            ("severe_mat_soc_deprivation", "arope")}
+    flags = [[1 if (a, b) in MECH else 0 for b in keep] for a in keep]
     views6.append((label, {
+        "flags": flags,
+        "flagLabel": "partly mechanical",
+        "flagExplain": "AROPE CONTAINS this measure, so the correlation is "
+                       "partly mechanical and is not an independent relationship.",
         "cols": [ce.name(c) for c in keep],
         "rows": [{"label": ce.name(r),
                   "values": [round(float(sub.loc[r, c]), 3) for c in keep]}
@@ -66,34 +74,65 @@ FIGS["F6"] = dict(
             "way within them",
     kind="heatmap", views=views6, view_series=series6, first="Measure",
     extra_caveat=(
-        f"This view carries the outcomes and the {len(reps)} frozen construct "
-        "representatives only. The full 31-variable matrix is in the "
-        "statistical appendix: at that size it contains everything and shows "
-        "almost nothing."))
+        "AROPE contains AROP and material deprivation, so those correlations "
+        "are partly mechanical and must not be interpreted as independent "
+        "relationships; the affected cells are outlined. This view carries the "
+        f"outcomes and the {len(reps)} frozen construct representatives only. "
+        "The full 31-variable matrix is in the statistical appendix: at that "
+        "size it contains everything and shows almost nothing."))
 
-# ---- F7 dumbbell: converged, flat, diverged -------------------------------
+# ---- F7 diverging: share of the 2015 gap closed --------------------------
+#
+# NOT a dumbbell on a shared axis. The 2015 gaps run from -2,819 PPS for
+# material resources to +48.8 percentage points for hardship: percentage
+# points, index points and PPS currency cannot share one axis, and the
+# smaller-unit series become visually meaningless next to the larger. The
+# plotted quantity is therefore DIMENSIONLESS -- the share of each 2015 gap
+# closed by 2024 -- with the original values and their units kept in the
+# tooltip and the fallback table.
+UNIT = {"aic_pps_pc": "PPS per head", "ltu_rate": "percentage points",
+        "real_wages_idx": "index points, 2008 = 100",
+        "real_income_idx": "index points, 2008 = 100",
+        "arop_threshold_real": "index points, 2008 = 100",
+        "pct_below_peak": "percentage points", "wadj_a01": "index points, EU = 100",
+        "housing_cost_overburden": "percentage points",
+        "severe_mat_soc_deprivation": "percentage points",
+        "subjective_poverty": "percentage points", "arop": "percentage points",
+        "arope": "percentage points", "gap_subj_arop": "percentage points",
+        "gap_subj_arope": "percentage points"}
 d7 = rec[~rec.trend.str.startswith("not applicable")].copy()
-order = {"converging": 0, "flat": 1, "diverging": 2}
-d7 = d7.assign(o=d7.trend.map(order)).sort_values(["o", "gap_shift_rel"],
-                                                  ascending=[True, False])
-TONE7 = {"converging": "series-3", "flat": "text-muted", "diverging": "gr"}
-f7 = ce.Series(["Gap 2015", "Gap 2024", "Shift (share of 2015 gap)"], dp=2)
+d7 = d7.sort_values("gap_shift_rel", ascending=False)
+TONE7 = {"converging": "div-pos", "flat": "div-zero", "diverging": "div-neg"}
+f7 = ce.Series(["Share of 2015 gap closed", "Gap 2015", "Gap 2024", "Units"],
+               dp=2)
 rows7 = []
 for r in d7.itertuples():
-    f7.add(ce.name(r.variable), [float(r.gap_first), float(r.gap_last),
-                                 float(r.gap_shift_rel)])
-    rows7.append({"label": ce.name(r.variable), "a": round(float(r.gap_first), 2),
-                  "b": round(float(r.gap_last), 2), "tone": TONE7[r.trend],
-                  "strong": r.trend != "flat", "right": r.trend,
-                  "detail": f"shift {r.gap_shift_rel:+.0%} of the 2015 gap"})
+    share = float(r.gap_shift_rel)
+    unit = UNIT.get(r.variable, "")
+    f7.add(ce.name(r.variable), [share, float(r.gap_first), float(r.gap_last), None])
+    closed = (f"{share:.0%} of the initial gap closed" if share > 0
+              else f"gap widened by {abs(share):.0%} of its 2015 size")
+    rows7.append({"label": ce.name(r.variable), "value": round(share, 3),
+                  "tone": TONE7[r.trend], "highlight": False,
+                  "name": ce.name(r.variable),
+                  "detail": (f"<b>{closed}</b><br>"
+                             f"2015: {r.gap_first:+.1f} &rarr; 2024: {r.gap_last:+.1f}"
+                             f"<br><span style='opacity:.6'>{unit}</span>")})
 FIGS["F7"] = dict(
-    caption="The labour market converged toward Europe; wages and resources "
-            "moved further away",
-    kind="dumbbell",
-    payload={"rows": rows7, "dp": 1, "legendA": "gap in 2015",
-             "legendB": "gap in 2024", "zeroLabel": "EU median",
-             "alt": "Greece's distance from the EU median in 2015 and 2024"},
-    series=f7, first="Measure")
+    caption="Some gaps narrowed, especially long-term unemployment; wage, "
+            "resource and affordability gaps widened",
+    kind="ladder",
+    payload={"rows": rows7, "dp": 2, "unit": "of the 2015 gap",
+             "labelAll": True, "reference": 0.0, "referenceLabel": "no change",
+             "alt": "Share of each 2015 Greece-EU gap closed by 2024; positive "
+                    "means convergence, negative means divergence"},
+    series=f7, first="Measure",
+    extra_caveat=(
+        "The plotted quantity is the SHARE of each 2015 gap closed by 2024, "
+        "which is dimensionless. The underlying gaps are measured in "
+        "percentage points, index points and PPS per head and cannot share an "
+        "axis; their original values and units are in the tooltip and the "
+        "table below."))
 
 # ---- F8 scatter: same-instrument, country means removed -------------------
 ITEMS = ["arrears", "unexpected_expenses", "warm", "severe_mat_soc_deprivation"]

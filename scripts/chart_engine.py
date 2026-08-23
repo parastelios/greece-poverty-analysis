@@ -71,6 +71,8 @@ DISPLAY = {
     "acc_wadj_excess": "Accumulated affordability pressure",
     "acc_hicp_compounded": "Compounded inflation since 2008",
     "acc_housing_excess": "Housing deterioration since 2010",
+    "gap_subj_arop": "Hardship gap against income poverty",
+    "gap_subj_arope": "Hardship gap against AROPE",
 }
 
 
@@ -93,6 +95,9 @@ background:var(--accent-soft,rgba(61,111,180,.12));color:var(--eu)}
 .chart-live{padding:.2rem 1.1rem 1rem;position:relative}
 .chart-live:focus-visible{outline:2px solid var(--eu);outline-offset:2px}
 .chart{width:100%;height:auto;display:block;touch-action:pan-y}
+/* Correlation sign is a value scale, not a Greece/EU comparison, so it may
+   not borrow those two hues. Magenta/teal is colour-blind safe. */
+:root{--div-neg:#a83a7d;--div-pos:#1c8f8f;--div-zero:#8a8a8a}
 .gridline{stroke:var(--border);stroke-width:1}
 .axis-label{fill:var(--text-muted);font:11px ui-sans-serif,system-ui,sans-serif}
 .line-faint{fill:none;stroke:var(--text-muted);stroke-width:1;opacity:.28}
@@ -326,10 +331,16 @@ JS = r"""
      Greece-only time series cannot. */
   function ladder(host,d){
     const W=widthFor(host), n=d.rows.length;
-    const rowH=W<480?15:17, padL=W<480?42:54, padR=W<480?46:64, padT=18, padB=26;
+    // Left padding derives from the longest label. A fixed 54 clipped
+    // "Long-term unemployment" and "Housing-cost overburden" -- the same bug
+    // the panel's right margin had.
+    const maxLab=Math.max(0,...d.rows.map(r=>String(r.label).length));
+    const rowH=W<480?15:17;
+    const padL=Math.min(W*0.42,Math.max(W<480?42:54,maxLab*5.9+12));
+    const padR=W<480?46:64, padT=18, padB=26;
     const H=padT+n*rowH+padB, pw=W-padL-padR;
-    let lo=Math.min(0,...d.rows.map(r=>r.value)), hi=Math.max(...d.rows.map(r=>r.value));
-    hi+=(hi-lo)*0.06||1;
+    let lo=Math.min(0,...d.rows.map(r=>r.value)), hi=Math.max(0,...d.rows.map(r=>r.value));
+    const sp=(hi-lo)||1; hi+=sp*0.06; if(lo<0)lo-=sp*0.06;
     const xs=v=>padL+(v-lo)/(hi-lo)*pw;
     const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,class:'chart',role:'img',
       'aria-label':d.alt||'ranked comparison of all countries'});
@@ -346,12 +357,19 @@ JS = r"""
     const marks=[];
     d.rows.forEach((r,i)=>{
       const y=padT+i*rowH+rowH/2, hl=!!r.highlight;
-      svg.appendChild(el('rect',{x:padL,y:y-rowH/2+1,width:Math.max(0,xs(r.value)-padL),
-        height:rowH-3,rx:1.5,fill:`var(--${hl?'gr':'text-muted'})`,opacity:hl?1:.32}));
+      // Bars grow from zero when the scale spans it, so a negative value reads
+      // as a bar to the left rather than a short bar from the axis.
+      const base=(lo<0)?xs(0):padL;
+      const x0=Math.min(base,xs(r.value)), x1=Math.max(base,xs(r.value));
+      svg.appendChild(el('rect',{x:x0,y:y-rowH/2+1,width:Math.max(1,x1-x0),
+        height:rowH-3,rx:1.5,
+        fill:`var(--${hl?'gr':(r.tone||'text-muted')})`,opacity:hl?1:.55}));
       const lb=el('text',{x:padL-6,y:y+3.5,'text-anchor':'end',class:'axis-label',
         style:hl?'fill:var(--gr);font-weight:700':''});
       lb.textContent=r.label;svg.appendChild(lb);
-      if(hl||i===0||i===n-1){const vt=el('text',{x:xs(r.value)+5,y:y+3.5,class:'axis-label',
+      if(hl||i===0||i===n-1||d.labelAll){const vt=el('text',{
+        x:xs(r.value)+(r.value<0?-5:5),y:y+3.5,class:'axis-label',
+        'text-anchor':r.value<0?'end':'start',
         style:hl?'fill:var(--gr);font-weight:700':''});
         vt.textContent=fmt(r.value,d.dp);svg.appendChild(vt);}
       marks.push({y:y,r:r,i:i});});
@@ -464,28 +482,34 @@ JS = r"""
       r.values.forEach((v,j)=>{
         const x=labW+j*cell;
         const mag=v==null?0:Math.min(1,Math.abs(v));
-        const tone=v==null?'border':(v<0?'eu':'gr');
+        const tone=v==null?'div-zero':(v<0?'div-neg':'div-pos');
         const rect=el('rect',{x:x+1,y:y+1,width:cell-2,height:cell-2,rx:2,
           fill:`var(--${tone})`,opacity:v==null?0.12:0.12+mag*0.8});
         svg.appendChild(rect);
-        if(d.flags&&d.flags[i]&&d.flags[i][j])
-          svg.appendChild(el('circle',{cx:x+cell-5,cy:y+5,r:2.4,fill:'var(--warn)'}));
+        // A mechanical pair is outlined, not dotted: the reader needs to see
+        // WHICH cells cannot be read as independent relationships.
+        if(d.flags&&d.flags[i]&&d.flags[i][j]){
+          svg.appendChild(el('rect',{x:x+1,y:y+1,width:cell-2,height:cell-2,rx:2,
+            fill:'none',stroke:'var(--text-primary)','stroke-width':1.6,
+            'stroke-dasharray':'2.5 2'}));}
         marks.push({x:x,y:y,i:i,j:j,v:v});});});
     host.insertBefore(svg,host.firstChild);
     const lg=document.createElement('div');lg.className='legend';
     lg.innerHTML=`<span class="lg-item"><svg width="34" height="10" aria-hidden="true">
-      <rect width="16" height="10" fill="var(--eu)" opacity=".8"/>
-      <rect x="18" width="16" height="10" fill="var(--gr)" opacity=".8"/></svg>
+      <rect width="11" height="10" fill="var(--div-neg)" opacity=".85"/>
+      <rect x="11" width="11" height="10" fill="var(--div-zero)" opacity=".3"/>
+      <rect x="22" width="11" height="10" fill="var(--div-pos)" opacity=".85"/></svg>
       negative &rarr; positive</span>`
-      +(d.flagLabel?`<span class="lg-item"><svg width="10" height="10" aria-hidden="true">
-      <circle cx="5" cy="5" r="2.6" fill="var(--warn)"/></svg>${d.flagLabel}</span>`:'');
+      +(d.flagLabel?`<span class="lg-item"><svg width="12" height="12" aria-hidden="true">
+      <rect x="1" y="1" width="10" height="10" fill="none" stroke="var(--text-primary)"
+      stroke-width="1.6" stroke-dasharray="2.5 2"/></svg>${d.flagLabel}</span>`:'');
     host.insertBefore(lg,svg.nextSibling);
     const tp=tip(host);let idx=-1;
     const show=k=>{if(k<0||k>=marks.length)return;idx=k;const m=marks[k];
       const flag=d.flags&&d.flags[m.i]&&d.flags[m.i][m.j];
       tp.innerHTML=`<strong>${d.rows[m.i].label}</strong><br>vs ${d.cols[m.j]}`
         +`<br>r = <b>${m.v==null?'&mdash;':m.v.toFixed(3)}</b>`
-        +(flag?`<br><span style="color:var(--warn)">${d.flagLabel}</span>`:'');
+        +(flag?`<br><span style="color:var(--text-primary)">${d.flagExplain||d.flagLabel}</span>`:'');
       tp.classList.add('on');
       const rc=svg.getBoundingClientRect(),hr=host.getBoundingClientRect();
       tp.style.left=Math.min(hr.width-tp.offsetWidth-8,

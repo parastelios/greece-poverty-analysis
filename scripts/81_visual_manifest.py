@@ -99,9 +99,11 @@ M = [
       interaction="switch between pooled, between and within; hover reads the "
                   "pair and coefficient; sign reversals marked",
       fallback="the flagged pairs only, with all three views",
+      # The gap outcomes are NOT in this matrix, so a caveat about them
+      # described data the reader could not see. What IS shown includes AROPE
+      # alongside its own components.
       caveat="Correlations identify duplication and sign reversals. They do "
-             "NOT select variables, and correlations with the gap outcomes are "
-             "partly arithmetic.",
+             "NOT select variables.",
       status_label="descriptive"),
  dict(id="F6", stage=3, chart_type="dumbbell",
       question="Which measures converged toward the EU and which diverged?",

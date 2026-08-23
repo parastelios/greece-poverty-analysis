@@ -202,6 +202,9 @@ background:var(--accent-soft,rgba(61,111,180,.12));color:var(--eu)}
 .chart-live{padding:.2rem 1.1rem 1rem;position:relative}
 .chart-live:focus-visible{outline:2px solid var(--eu);outline-offset:2px}
 .chart{width:100%;height:auto;display:block;touch-action:pan-y}
+/* Correlation sign is a value scale, not a Greece/EU comparison, so it may
+   not borrow those two hues. Magenta/teal is colour-blind safe. */
+:root{--div-neg:#a83a7d;--div-pos:#1c8f8f;--div-zero:#8a8a8a}
 .gridline{stroke:var(--border);stroke-width:1}
 .axis-label{fill:var(--text-muted);font:11px ui-sans-serif,system-ui,sans-serif}
 .line-faint{fill:none;stroke:var(--text-muted);stroke-width:1;opacity:.28}
@@ -533,10 +536,16 @@ correctly &mdash; but it cannot register a fall that affects everyone at once.</
      Greece-only time series cannot. */
   function ladder(host,d){
     const W=widthFor(host), n=d.rows.length;
-    const rowH=W<480?15:17, padL=W<480?42:54, padR=W<480?46:64, padT=18, padB=26;
+    // Left padding derives from the longest label. A fixed 54 clipped
+    // "Long-term unemployment" and "Housing-cost overburden" -- the same bug
+    // the panel's right margin had.
+    const maxLab=Math.max(0,...d.rows.map(r=>String(r.label).length));
+    const rowH=W<480?15:17;
+    const padL=Math.min(W*0.42,Math.max(W<480?42:54,maxLab*5.9+12));
+    const padR=W<480?46:64, padT=18, padB=26;
     const H=padT+n*rowH+padB, pw=W-padL-padR;
-    let lo=Math.min(0,...d.rows.map(r=>r.value)), hi=Math.max(...d.rows.map(r=>r.value));
-    hi+=(hi-lo)*0.06||1;
+    let lo=Math.min(0,...d.rows.map(r=>r.value)), hi=Math.max(0,...d.rows.map(r=>r.value));
+    const sp=(hi-lo)||1; hi+=sp*0.06; if(lo<0)lo-=sp*0.06;
     const xs=v=>padL+(v-lo)/(hi-lo)*pw;
     const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,class:'chart',role:'img',
       'aria-label':d.alt||'ranked comparison of all countries'});
@@ -553,12 +562,19 @@ correctly &mdash; but it cannot register a fall that affects everyone at once.</
     const marks=[];
     d.rows.forEach((r,i)=>{
       const y=padT+i*rowH+rowH/2, hl=!!r.highlight;
-      svg.appendChild(el('rect',{x:padL,y:y-rowH/2+1,width:Math.max(0,xs(r.value)-padL),
-        height:rowH-3,rx:1.5,fill:`var(--${hl?'gr':'text-muted'})`,opacity:hl?1:.32}));
+      // Bars grow from zero when the scale spans it, so a negative value reads
+      // as a bar to the left rather than a short bar from the axis.
+      const base=(lo<0)?xs(0):padL;
+      const x0=Math.min(base,xs(r.value)), x1=Math.max(base,xs(r.value));
+      svg.appendChild(el('rect',{x:x0,y:y-rowH/2+1,width:Math.max(1,x1-x0),
+        height:rowH-3,rx:1.5,
+        fill:`var(--${hl?'gr':(r.tone||'text-muted')})`,opacity:hl?1:.55}));
       const lb=el('text',{x:padL-6,y:y+3.5,'text-anchor':'end',class:'axis-label',
         style:hl?'fill:var(--gr);font-weight:700':''});
       lb.textContent=r.label;svg.appendChild(lb);
-      if(hl||i===0||i===n-1){const vt=el('text',{x:xs(r.value)+5,y:y+3.5,class:'axis-label',
+      if(hl||i===0||i===n-1||d.labelAll){const vt=el('text',{
+        x:xs(r.value)+(r.value<0?-5:5),y:y+3.5,class:'axis-label',
+        'text-anchor':r.value<0?'end':'start',
         style:hl?'fill:var(--gr);font-weight:700':''});
         vt.textContent=fmt(r.value,d.dp);svg.appendChild(vt);}
       marks.push({y:y,r:r,i:i});});
@@ -585,7 +601,201 @@ correctly &mdash; but it cannot register a fall that affects everyone at once.</
       if(e.key==='Escape')tp.classList.remove('on');});
   }
 
-  const KINDS={panel:panel,coefficient:coefficient,ladder:ladder};
+
+  /* ------------------------------------------------------ dumbbell (new) */
+  /* Two states joined per row. Reads a change -- a gap in 2015 against 2024,
+     or a between estimate against a within one -- as a single object rather
+     than two bars the reader has to subtract. */
+  function dumbbell(host,d){
+    const W=widthFor(host), rowH=W<480?26:24;
+    const padL=W<480?104:180, padR=W<480?52:92, padT=26, padB=32;
+    const H=padT+d.rows.length*rowH+padB, pw=W-padL-padR;
+    let lo=Infinity,hi=-Infinity;
+    d.rows.forEach(r=>{lo=Math.min(lo,r.a,r.b);hi=Math.max(hi,r.a,r.b);});
+    const sp=(hi-lo)||1; lo-=sp*0.08; hi+=sp*0.08;
+    const xs=v=>padL+(v-lo)/(hi-lo)*pw;
+    const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,class:'chart',role:'img',
+      'aria-label':d.alt||'paired comparison'});
+    [lo,(lo+hi)/2,hi].forEach(v=>{
+      svg.appendChild(el('line',{x1:xs(v),x2:xs(v),y1:padT-6,y2:padT+d.rows.length*rowH,class:'gridline'}));
+      const t=el('text',{x:xs(v),y:H-10,'text-anchor':'middle',class:'axis-label'});
+      t.textContent=fmt(v,d.dp);svg.appendChild(t);});
+    if(lo<0&&hi>0){svg.appendChild(el('line',{x1:xs(0),x2:xs(0),y1:padT-6,
+      y2:padT+d.rows.length*rowH,class:'zero-line'}));
+      const zt=el('text',{x:xs(0),y:padT-10,'text-anchor':'middle',class:'axis-label',
+        style:'font-weight:700'});zt.textContent=d.zeroLabel||'0';svg.appendChild(zt);}
+    const marks=[];
+    d.rows.forEach((r,i)=>{
+      const y=padT+i*rowH+rowH/2, tone=r.tone||'text-muted';
+      svg.appendChild(el('line',{x1:xs(r.a),x2:xs(r.b),y1:y,y2:y,
+        stroke:`var(--${tone})`,'stroke-width':2.5,opacity:.45}));
+      svg.appendChild(el('circle',{cx:xs(r.a),cy:y,r:4,fill:'var(--text-muted)'}));
+      svg.appendChild(el('circle',{cx:xs(r.b),cy:y,r:5.5,fill:`var(--${tone})`}));
+      const lb=el('text',{x:padL-10,y:y+4,'text-anchor':'end',class:'axis-label',
+        style:r.strong?'font-weight:700':''});
+      lb.textContent=r.label;svg.appendChild(lb);
+      if(r.right){const rt=el('text',{x:W-padR+8,y:y+4,class:'axis-label',
+        style:`fill:var(--${tone});font-weight:600`});rt.textContent=r.right;svg.appendChild(rt);}
+      marks.push({y:y,r:r});});
+    host.insertBefore(svg,host.firstChild);
+    if(d.legendA||d.legendB){
+      const lg=document.createElement('div');lg.className='legend';
+      lg.innerHTML=`<span class="lg-item"><svg width="12" height="12" aria-hidden="true">
+        <circle cx="6" cy="6" r="4" fill="var(--text-muted)"/></svg>${d.legendA||'start'}</span>
+        <span class="lg-item"><svg width="12" height="12" aria-hidden="true">
+        <circle cx="6" cy="6" r="5" fill="var(--gr)"/></svg>${d.legendB||'end'}</span>`;
+      host.insertBefore(lg,svg.nextSibling);}
+    const tp=tip(host);let idx=-1;
+    const show=i=>{if(i<0||i>=marks.length)return;idx=i;const r=marks[i].r;
+      tp.innerHTML=`<strong>${r.label}</strong><br>${d.legendA||'start'}: ${fmt(r.a,d.dp)}`
+        +`<br>${d.legendB||'end'}: <b>${fmt(r.b,d.dp)}</b>`+(r.detail?'<br>'+r.detail:'');
+      tp.classList.add('on');
+      const rc=svg.getBoundingClientRect(),hr=host.getBoundingClientRect();
+      tp.style.left=Math.min(hr.width-tp.offsetWidth-8,20)+'px';
+      tp.style.top=Math.max(2,Math.min(rc.height-tp.offsetHeight-4,
+        (marks[i].y/H)*rc.height-tp.offsetHeight-6))+'px';
+      say(host,`${r.label}, ${fmt(r.a,d.dp)} to ${fmt(r.b,d.dp)}`);};
+    svg.addEventListener('mousemove',e=>{const rc=svg.getBoundingClientRect();
+      const y=(e.clientY-rc.top)/rc.height*H;let b=0,bd=1e9;
+      marks.forEach((m,i)=>{const dd=Math.abs(m.y-y);if(dd<bd){bd=dd;b=i;}});show(b);});
+    svg.addEventListener('mouseleave',()=>tp.classList.remove('on'));
+    host.addEventListener('keydown',e=>{
+      if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();
+        show(Math.max(0,Math.min(marks.length-1,(idx<0?-1:idx)+(e.key==='ArrowDown'?1:-1))));}
+      if(e.key==='Escape')tp.classList.remove('on');});
+  }
+
+  /* ------------------------------------------------------- heatmap (new) */
+  /* A correlation matrix. Deliberately small by default: a 31x31 grid contains
+     everything and communicates almost nothing, so the main view carries the
+     outcomes and the frozen construct representatives only. */
+  function heatmap(host,d){
+    const W=widthFor(host);
+    const labW=W<480?96:150, cell=Math.max(16,Math.min(34,(W-labW-16)/d.cols.length));
+    const top=Math.min(120,labW*0.8);
+    const H=top+d.rows.length*cell+10;
+    const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,class:'chart',role:'img',
+      'aria-label':d.alt||'correlation matrix'});
+    d.cols.forEach((c,j)=>{const x=labW+j*cell+cell/2;
+      const t=el('text',{x:x,y:top-6,class:'axis-label','text-anchor':'start',
+        transform:`rotate(-55 ${x} ${top-6})`});t.textContent=c;svg.appendChild(t);});
+    const marks=[];
+    d.rows.forEach((r,i)=>{
+      const y=top+i*cell;
+      const lb=el('text',{x:labW-8,y:y+cell/2+3.5,'text-anchor':'end',class:'axis-label'});
+      lb.textContent=r.label;svg.appendChild(lb);
+      r.values.forEach((v,j)=>{
+        const x=labW+j*cell;
+        const mag=v==null?0:Math.min(1,Math.abs(v));
+        const tone=v==null?'div-zero':(v<0?'div-neg':'div-pos');
+        const rect=el('rect',{x:x+1,y:y+1,width:cell-2,height:cell-2,rx:2,
+          fill:`var(--${tone})`,opacity:v==null?0.12:0.12+mag*0.8});
+        svg.appendChild(rect);
+        // A mechanical pair is outlined, not dotted: the reader needs to see
+        // WHICH cells cannot be read as independent relationships.
+        if(d.flags&&d.flags[i]&&d.flags[i][j]){
+          svg.appendChild(el('rect',{x:x+1,y:y+1,width:cell-2,height:cell-2,rx:2,
+            fill:'none',stroke:'var(--text-primary)','stroke-width':1.6,
+            'stroke-dasharray':'2.5 2'}));}
+        marks.push({x:x,y:y,i:i,j:j,v:v});});});
+    host.insertBefore(svg,host.firstChild);
+    const lg=document.createElement('div');lg.className='legend';
+    lg.innerHTML=`<span class="lg-item"><svg width="34" height="10" aria-hidden="true">
+      <rect width="11" height="10" fill="var(--div-neg)" opacity=".85"/>
+      <rect x="11" width="11" height="10" fill="var(--div-zero)" opacity=".3"/>
+      <rect x="22" width="11" height="10" fill="var(--div-pos)" opacity=".85"/></svg>
+      negative &rarr; positive</span>`
+      +(d.flagLabel?`<span class="lg-item"><svg width="12" height="12" aria-hidden="true">
+      <rect x="1" y="1" width="10" height="10" fill="none" stroke="var(--text-primary)"
+      stroke-width="1.6" stroke-dasharray="2.5 2"/></svg>${d.flagLabel}</span>`:'');
+    host.insertBefore(lg,svg.nextSibling);
+    const tp=tip(host);let idx=-1;
+    const show=k=>{if(k<0||k>=marks.length)return;idx=k;const m=marks[k];
+      const flag=d.flags&&d.flags[m.i]&&d.flags[m.i][m.j];
+      tp.innerHTML=`<strong>${d.rows[m.i].label}</strong><br>vs ${d.cols[m.j]}`
+        +`<br>r = <b>${m.v==null?'&mdash;':m.v.toFixed(3)}</b>`
+        +(flag?`<br><span style="color:var(--text-primary)">${d.flagExplain||d.flagLabel}</span>`:'');
+      tp.classList.add('on');
+      const rc=svg.getBoundingClientRect(),hr=host.getBoundingClientRect();
+      tp.style.left=Math.min(hr.width-tp.offsetWidth-8,
+        Math.max(4,(m.x/W)*rc.width-tp.offsetWidth/2))+'px';
+      tp.style.top=Math.max(2,(m.y/H)*rc.height-tp.offsetHeight-4)+'px';
+      say(host,`${d.rows[m.i].label} versus ${d.cols[m.j]}, r ${m.v==null?'missing':m.v.toFixed(3)}`);};
+    svg.addEventListener('mousemove',e=>{const rc=svg.getBoundingClientRect();
+      const x=(e.clientX-rc.left)/rc.width*W, y=(e.clientY-rc.top)/rc.height*H;
+      let b=-1,bd=1e9;marks.forEach((m,k)=>{
+        const dd=Math.abs(m.x+cell/2-x)+Math.abs(m.y+cell/2-y);if(dd<bd){bd=dd;b=k;}});
+      if(b>=0)show(b);});
+    svg.addEventListener('mouseleave',()=>tp.classList.remove('on'));
+    host.addEventListener('keydown',e=>{
+      const step={ArrowRight:1,ArrowLeft:-1,ArrowDown:d.cols.length,ArrowUp:-d.cols.length}[e.key];
+      if(step){e.preventDefault();show(Math.max(0,Math.min(marks.length-1,(idx<0?0:idx)+step)));}
+      if(e.key==='Escape')tp.classList.remove('on');});
+  }
+
+
+  /* ------------------------------------------------------------- scatter */
+  /* Country-years as points. Used with country means removed, so the cloud
+     shows co-movement WITHIN countries rather than differences between them. */
+  function scatter(host,d){
+    const W=widthFor(host), H=Math.round(W*0.62);
+    const padL=56,padR=18,padT=16,padB=46;
+    const pw=W-padL-padR, ph=H-padT-padB;
+    const xs_=d.points.map(p=>p.x), ys_=d.points.map(p=>p.y);
+    const xlo=Math.min(...xs_),xhi=Math.max(...xs_),ylo=Math.min(...ys_),yhi=Math.max(...ys_);
+    const px=(xhi-xlo)*0.06||1, py=(yhi-ylo)*0.06||1;
+    const xs=v=>padL+(v-(xlo-px))/((xhi+px)-(xlo-px))*pw;
+    const ys=v=>padT+ph-(v-(ylo-py))/((yhi+py)-(ylo-py))*ph;
+    const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,class:'chart',role:'img',
+      'aria-label':d.alt||'scatter'});
+    for(let i=0;i<=4;i++){const v=(ylo-py)+((yhi+py)-(ylo-py))*i/4,y=ys(v);
+      svg.appendChild(el('line',{x1:padL,x2:W-padR,y1:y,y2:y,class:'gridline'}));
+      const t=el('text',{x:padL-6,y:y+3.5,'text-anchor':'end',class:'axis-label'});
+      t.textContent=fmt(v,d.dp);svg.appendChild(t);}
+    for(let i=0;i<=4;i++){const v=(xlo-px)+((xhi+px)-(xlo-px))*i/4;
+      const t=el('text',{x:xs(v),y:H-padB+16,'text-anchor':'middle',class:'axis-label'});
+      t.textContent=fmt(v,d.dp);svg.appendChild(t);}
+    if(xlo<0&&xhi>0)svg.appendChild(el('line',{x1:xs(0),x2:xs(0),y1:padT,y2:padT+ph,class:'zero-line'}));
+    if(ylo<0&&yhi>0)svg.appendChild(el('line',{x1:padL,x2:W-padR,y1:ys(0),y2:ys(0),class:'zero-line'}));
+    // least-squares line, drawn because the figure is about co-movement
+    const n=d.points.length,mx=xs_.reduce((a,b)=>a+b,0)/n,my=ys_.reduce((a,b)=>a+b,0)/n;
+    let sxy=0,sxx=0;d.points.forEach(p=>{sxy+=(p.x-mx)*(p.y-my);sxx+=(p.x-mx)**2;});
+    if(sxx>0){const b1=sxy/sxx,b0=my-b1*mx;
+      svg.appendChild(el('line',{x1:xs(xlo-px),y1:ys(b0+b1*(xlo-px)),
+        x2:xs(xhi+px),y2:ys(b0+b1*(xhi+px)),stroke:'var(--text-secondary)',
+        'stroke-width':1.6,'stroke-dasharray':'5 3',opacity:.8}));}
+    const marks=[];
+    d.points.forEach(p=>{const c=el('circle',{cx:xs(p.x),cy:ys(p.y),
+      r:p.highlight?4.5:2.8,fill:`var(--${p.highlight?'gr':'text-muted'})`,
+      opacity:p.highlight?1:.45});svg.appendChild(c);marks.push({x:xs(p.x),y:ys(p.y),p:p});});
+    const xt=el('text',{x:padL+pw/2,y:H-10,'text-anchor':'middle',class:'axis-label'});
+    xt.textContent=d.xLabel||'';svg.appendChild(xt);
+    const yt=el('text',{x:14,y:padT+ph/2,class:'axis-label','text-anchor':'middle',
+      transform:`rotate(-90 14 ${padT+ph/2})`});yt.textContent=d.yLabel||'';svg.appendChild(yt);
+    if(d.r!=null){const rt=el('text',{x:W-padR-4,y:padT+12,'text-anchor':'end',
+      class:'axis-label',style:'font-weight:700'});rt.textContent='r = '+d.r;svg.appendChild(rt);}
+    host.insertBefore(svg,host.firstChild);
+    const tp=tip(host);let idx=-1;
+    const show=i=>{if(i<0||i>=marks.length)return;idx=i;const p=marks[i].p;
+      tp.innerHTML=`<strong>${p.label}</strong><br>${fmt(p.x,d.dp)} , ${fmt(p.y,d.dp)}`;
+      tp.classList.add('on');
+      const rc=svg.getBoundingClientRect(),hr=host.getBoundingClientRect();
+      tp.style.left=Math.min(hr.width-tp.offsetWidth-8,
+        Math.max(4,(marks[i].x/W)*rc.width-tp.offsetWidth/2))+'px';
+      tp.style.top=Math.max(2,(marks[i].y/H)*rc.height-tp.offsetHeight-8)+'px';
+      say(host,`${p.label}, ${fmt(p.x,d.dp)} and ${fmt(p.y,d.dp)}`);};
+    svg.addEventListener('mousemove',e=>{const rc=svg.getBoundingClientRect();
+      const x=(e.clientX-rc.left)/rc.width*W,y=(e.clientY-rc.top)/rc.height*H;
+      let b=-1,bd=1e9;marks.forEach((m,i)=>{const dd=(m.x-x)**2+(m.y-y)**2;
+        if(dd<bd){bd=dd;b=i;}});if(b>=0&&bd<900)show(b);else tp.classList.remove('on');});
+    svg.addEventListener('mouseleave',()=>tp.classList.remove('on'));
+    host.addEventListener('keydown',e=>{
+      if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();
+        show(Math.max(0,Math.min(marks.length-1,(idx<0?-1:idx)+(e.key==='ArrowRight'?1:-1))));}
+      if(e.key==='Escape')tp.classList.remove('on');});
+  }
+
+  const KINDS={panel:panel,coefficient:coefficient,ladder:ladder,dumbbell:dumbbell,heatmap:heatmap,scatter:scatter};
 
 
   // VIEW SWITCHING. Some questions need more than one look -- the real
