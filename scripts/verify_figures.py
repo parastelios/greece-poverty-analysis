@@ -19,6 +19,7 @@ import chart_engine as ce
 ROOT = Path(__file__).resolve().parents[1]
 TARGETS = [p for p in [ROOT / "output" / "prototype.html",
                        ROOT / "output" / "batch1.html",
+                       ROOT / "output" / "batch2.html",
                        ROOT / "output" / "report.html"] if p.exists()]
 
 F = []
@@ -40,8 +41,15 @@ for path in TARGETS:
     #    tooltips, so the payload is excluded from this check by design.
     leaked = []
     for b in blocks:
-        visible = re.sub(r'<script type="application/json">.*?</script>', "", b, flags=re.S)
+        visible = re.sub(r'<script type="application/json"[^>]*>.*?</script>', "",
+                         b, flags=re.S)
         visible = re.sub(r"<[^>]+>", " ", visible)
+        # Remove the legitimate display names FIRST. Several contain their own
+        # code as a substring -- "Cannot keep the home warm" contains `warm`,
+        # "Arrears on bills" contains `arrears` -- and the first version of this
+        # check reported both as leaks.
+        for disp in sorted(ce.DISPLAY.values(), key=len, reverse=True):
+            visible = visible.replace(disp, " ").replace(disp.lower(), " ")
         for code in ce.DISPLAY:
             if re.search(rf"\b{re.escape(code)}\b", visible):
                 leaked.append(f"{code} visible in a figure")
@@ -113,16 +121,19 @@ for path in TARGETS:
             lbl = (re.search(r'data-label="([^"]*)"', attrs) or [None, fid])[1] \
                 if 'data-label' in attrs else fid
             d = json.loads(body.replace("<\\/", "</"))
-            xs = len(d.get("years", [])) or len(d.get("rows", []))
+            xs = (len(d.get("years", [])) or len(d.get("rows", []))
+                  or len(d.get("points", [])))
             # Each chart type names its numbers differently: series carry
             # "values", coefficient rows carry "est", ladder rows carry
             # "value". Missing one gave a false positive on the ladder.
             vals = [v for s in d.get("series", []) for v in s.get("values", [])
                     if v is not None]
             for r in d.get("rows", []):
-                for k in ("est", "value"):
+                for k in ("est", "value", "a", "b"):
                     if r.get(k) is not None:
                         vals.append(r[k])
+                vals.extend([v for v in r.get("values", []) if v is not None])
+            vals.extend([pt["y"] for pt in d.get("points", []) if pt.get("y") is not None])
             if xs < 2 and not d.get("rows"):
                 empty.append(f"{fid}/{lbl}: {xs} x-values")
             elif not vals:

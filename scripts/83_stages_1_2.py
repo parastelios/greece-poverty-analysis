@@ -232,10 +232,19 @@ FIGS["F5"] = dict(
     payload=v5a,
     # 3. Reader-facing tab labels. "Floating poverty" and "shift-share" are
     # methods vocabulary and do not belong in navigation.
-    views=[("AROPE components", v5a), ("AROPE by age", v5b),
+    views=[("Income-poverty and deprivation components", v5a),
+           ("AROPE by age", v5b),
            ("Household profiles", v5d),
            ("What drove the 2025 increase?", v5c, "coefficient")],
     view_series=[f5, f5b, f5d, f5c],
+    # Naming the first view "AROPE components" while showing two of three would
+    # let a reader take it for a complete decomposition. The absence is stated
+    # rather than implied.
+    extra_caveat=(
+        "Very low work intensity is part of AROPE, but the project does not "
+        "hold a comparable national-total series for this view; its available "
+        "age coverage uses a different population base. And aggregate component "
+        "rates cannot reconstruct the AROPE union in any case."),
     first="Series")
 
 
@@ -259,8 +268,11 @@ def build(fid, spec):
         payload_html = payload_tag(spec["payload"])
         body = spec["series"].fallback_table(spec.get("first", ""))
         stamp = spec["series"].checksum()
+    cav = m.caveat
+    if spec.get("extra_caveat"):
+        cav = ("" if cav != cav else str(cav) + " ") + spec["extra_caveat"]
     shell = ce.figure(fid, spec["caption"], m.question, m.status_label,
-                      spec["kind"], {}, body, caveat=m.caveat,
+                      spec["kind"], {}, body, caveat=cav,
                       appendix_link="statistical_appendix.html", checksum=stamp)
     return shell.replace(payload_tag({}), payload_html)
 

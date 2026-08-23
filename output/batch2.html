@@ -1,0 +1,832 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Batch 2 &mdash; stages 3 and 4</title><style>
+:root {
+  color-scheme: light;
+  --page:           #f9f9f7;
+  --surface-1:      #fcfcfb;
+  --surface-2:      #f3f2ee;
+  --text-primary:   #0b0b0b;
+  --text-secondary: #52514e;
+  --text-muted:     #898781;
+  --gridline:       #e1e0d9;
+  --baseline:       #c3c2b7;
+  --border:         rgba(11,11,11,0.10);
+  --series-gr:      #2a78d6;
+  --series-gr-wash: rgba(42,120,214,0.10);
+  --series-eu:      #eb6834;
+  --series-eu-wash: rgba(235,104,52,0.10);
+  --series-3:       #1baf7a;
+  --series-4:       #eda100;
+  --series-5:       #4a3aa7;
+  --band-fill:      rgba(137,135,129,0.08);
+  --good:           #0ca30c;
+  --critical:       #d03b3b;
+}
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --page:           #0d0d0d;
+    --surface-1:      #1a1a19;
+    --surface-2:      #222221;
+    --text-primary:   #ffffff;
+    --text-secondary: #c3c2b7;
+    --text-muted:     #898781;
+    --gridline:       #2c2c2a;
+    --baseline:       #383835;
+    --border:         rgba(255,255,255,0.10);
+    --series-gr:      #3987e5;
+    --series-gr-wash: rgba(57,135,229,0.13);
+    --series-eu:      #d95926;
+    --series-eu-wash: rgba(217,89,38,0.14);
+    --series-3:       #199e70;
+    --series-4:       #c98500;
+    --series-5:       #9085e9;
+    --band-fill:      rgba(137,135,129,0.10);
+    --good:           #0ca30c;
+    --critical:       #e66767;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page:           #0d0d0d;
+  --surface-1:      #1a1a19;
+  --surface-2:      #222221;
+  --text-primary:   #ffffff;
+  --text-secondary: #c3c2b7;
+  --text-muted:     #898781;
+  --gridline:       #2c2c2a;
+  --baseline:       #383835;
+  --border:         rgba(255,255,255,0.10);
+  --series-gr:      #3987e5;
+  --series-gr-wash: rgba(57,135,229,0.13);
+  --series-eu:      #d95926;
+  --series-eu-wash: rgba(217,89,38,0.14);
+  --series-3:       #199e70;
+  --series-4:       #c98500;
+  --series-5:       #9085e9;
+  --band-fill:      rgba(137,135,129,0.10);
+  --good:           #0ca30c;
+  --critical:       #e66767;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--page); }
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: var(--text-primary);
+  background: var(--page);
+}
+.wrap { max-width: 860px; margin: 0 auto; padding: 56px 24px 90px; }
+
+header.hero { margin-bottom: 32px; }
+.eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin: 0 0 12px; }
+h1 { font-size: 34px; line-height: 1.15; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 16px; text-wrap: balance; }
+.dek { font-size: 17px; line-height: 1.55; color: var(--text-secondary); max-width: 65ch; margin: 0 0 6px; }
+.meta { font-size: 12.5px; color: var(--text-muted); margin-top: 18px; }
+
+.summary-box { background: var(--surface-1); border: 1px solid var(--border); border-radius: 14px; padding: 26px 28px; margin: 28px 0; }
+.summary-box .eyebrow { margin-bottom: 10px; }
+.summary-box p { font-size: 15px; line-height: 1.65; color: var(--text-primary); margin: 0 0 14px; max-width: 70ch; }
+.summary-box p:last-child { margin-bottom: 0; }
+.summary-box p.limits { font-size: 13px; color: var(--text-secondary); border-top: 1px solid var(--gridline); padding-top: 14px; margin-top: 4px; }
+
+.stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin: 32px 0 8px; }
+.stat-tile { background: var(--surface-1); padding: 16px 16px; }
+.stat-label { font-size: 11.5px; color: var(--text-muted); margin: 0 0 6px; }
+.stat-value { font-size: 24px; font-weight: 700; letter-spacing: -0.01em; }
+.stat-value.gr { color: var(--series-gr); }
+.stat-sub { font-size: 11.5px; color: var(--text-secondary); margin-top: 4px; }
+
+.part-header { margin: 64px 0 8px; padding-top: 28px; border-top: 3px solid var(--series-gr); }
+.part-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--series-gr); margin: 0 0 8px; }
+.part-header h2 { font-size: 26px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 12px; text-wrap: balance; }
+.part-header p { font-size: 15px; line-height: 1.65; color: var(--text-secondary); max-width: 68ch; }
+.part-header p b { color: var(--text-primary); }
+
+section { margin: 44px 0; }
+section h3.sec-title { font-size: 19px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 6px; text-wrap: balance; }
+section .lede { font-size: 14.5px; color: var(--text-secondary); line-height: 1.6; max-width: 68ch; margin: 0 0 22px; }
+section p { font-size: 14.5px; line-height: 1.65; color: var(--text-primary); max-width: 68ch; }
+section p.note { font-size: 12.5px; color: var(--text-muted); line-height: 1.55; max-width: 68ch; }
+section p.method-aside { font-size: 12.5px; color: var(--text-muted); line-height: 1.55; max-width: 68ch; margin-top: 8px; }
+section p.method-aside b { color: var(--text-secondary); font-weight: 600; }
+section h4 { font-size: 13px; font-weight: 700; margin: 18px 0 8px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.03em; }
+.method-item { margin-bottom: 22px; }
+.method-item dt { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+.method-item dd { margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--text-secondary); max-width: 68ch; }
+.method-item dd + dd { margin-top: 6px; }
+.method-item code { font-size: 12px; background: var(--surface-2); padding: 1px 5px; border-radius: 4px; color: var(--text-primary); overflow-wrap:anywhere; word-break:break-word; }
+.q-label { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; color: var(--text-muted); background: var(--surface-2); border-radius: 5px; padding: 2px 7px; margin-bottom: 10px; margin-right: 6px; }
+.badge-approx { display: inline-block; font-size: 10.5px; font-weight: 600; letter-spacing: 0.02em; color: var(--series-4); background: color-mix(in srgb, var(--series-4) 15%, transparent); border-radius: 5px; padding: 2px 7px; margin-left: 6px; vertical-align: middle; }
+
+.card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 22px 22px 10px; }
+.chart-title { font-size: 14px; font-weight: 600; margin: 0 0 2px; }
+.chart-sub { font-size: 12px; color: var(--text-secondary); margin: 0 0 12px; }
+.legend { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-secondary); }
+.legend-swatch { width: 10px; height: 10px; border-radius: 2px; flex: none; }
+.chart-wrap { position: relative; }
+svg.chart { width: 100%; height: auto; display: block; overflow: visible; }
+.gridline { stroke: var(--gridline); stroke-width: 1; }
+.baseline { stroke: var(--baseline); stroke-width: 1; }
+.axis-label { fill: var(--text-muted); font-size: 10.5px; }
+.crisis-band { fill: var(--band-fill); }
+.crisis-line { stroke: var(--text-muted); stroke-width: 1; stroke-dasharray: 2 3; }
+.crisis-label { fill: var(--text-muted); font-size: 10px; }
+.direct-label { font-size: 11px; font-weight: 600; }
+.direct-label-sub { fill: var(--text-secondary); font-size: 9.5px; }
+.hit-target { fill: transparent; }
+.hover-dot { stroke: var(--surface-1); stroke-width: 2; opacity: 0; }
+.crosshair { stroke: var(--text-muted); stroke-width: 1; opacity: 0; }
+.tooltip { position: absolute; pointer-events: none; opacity: 0; transition: opacity .08s ease; background: var(--surface-1); border: 1px solid var(--border); border-radius: 8px; padding: 8px 11px; font-size: 12px; box-shadow: 0 4px 14px rgba(0,0,0,0.14); white-space: nowrap; transform: translate(-50%,-100%); z-index: 5; }
+.tooltip .t-year { color: var(--text-muted); font-size: 10.5px; margin-bottom: 3px; }
+.tooltip .t-row { display: flex; align-items: center; gap: 6px; font-weight: 600; }
+.tooltip .t-row + .t-row { margin-top: 2px; }
+.tooltip .dot { width: 7px; height: 7px; border-radius: 50%; flex: none; }
+.foot-note { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 12px 2px 2px; font-size: 10.5px; color: var(--text-muted); border-top: 1px solid var(--gridline); margin-top: 14px; }
+
+table.data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+table.data-table th, table.data-table td { text-align: right; padding: 7px 10px; border-bottom: 1px solid var(--gridline); font-variant-numeric: tabular-nums; }
+table.data-table th:first-child, table.data-table td:first-child { text-align: left; font-variant-numeric: normal; }
+table.data-table th { color: var(--text-muted); font-weight: 500; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.03em; }
+table.data-table td.sig { color: var(--text-muted); font-size: 11px; }
+table.data-table td.hl, table.data-table tr.hl td { color: var(--series-gr); font-weight: 600; }
+.table-scroll { overflow-x: auto; }
+.table-caption { font-size: 12px; color: var(--text-secondary); margin: 0 0 10px; }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.story-map { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin:18px 0 28px; max-width:68ch; }
+.story-map a { display:flex; flex-direction:column; gap:3px; padding:12px 14px; border:1px solid var(--border); border-radius:8px; color:var(--text-primary); text-decoration:none; background:var(--surface-1); }
+.story-map a:hover { border-color:var(--series-gr); }
+.story-map span { color:var(--text-muted); font-size:11.5px; }
+@media (max-width: 720px) {
+  .wrap { padding: 24px 14px 64px; }
+  .two-col, .story-map { grid-template-columns: 1fr; }
+  .stat-row { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .card, .answer-box { padding-left:14px; padding-right:14px; }
+  table.data-table { min-width:620px; }
+  .hero h1 { font-size:34px; }
+}
+
+.finding { background: var(--surface-2); border-radius: 10px; padding: 16px 18px; margin: 18px 0; font-size: 13.5px; line-height: 1.6; }
+.finding b { color: var(--text-primary); }
+.method-details { max-width:68ch; margin:10px 0 16px; border-top:1px solid var(--gridline); }
+.method-details summary { cursor:pointer; padding:9px 0; color:var(--text-secondary); font-size:12px; font-weight:600; }
+.method-details[open] summary { color:var(--series-gr); }
+.method-details .method-aside { margin:2px 0 12px; }
+
+.answer-box { background: var(--surface-1); border: 1px solid var(--border); border-left: 3px solid var(--series-gr); border-radius: 10px; padding: 24px 26px; margin-top: 12px; }
+.answer-box h4 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--series-gr); margin: 0 0 10px; }
+.answer-box p { font-size: 14.5px; }
+
+.toc { display: flex; flex-direction: column; gap: 4px; font-size: 13px; margin-top: 14px; }
+.toc .toc-part { font-weight: 700; color: var(--text-primary); margin-top: 10px; }
+.toc .toc-part:first-child { margin-top: 0; }
+.toc a { color: var(--text-secondary); text-decoration: none; border-bottom: 1px solid transparent; padding-left: 14px; display: inline-block; }
+.toc a:hover { color: var(--series-gr); border-bottom-color: var(--series-gr); }
+
+footer { margin-top: 70px; padding-top: 20px; border-top: 1px solid var(--gridline); font-size: 11.5px; color: var(--text-muted); line-height: 1.6; }
+</style>
+<style>
+.figure{margin:1.8rem 0;border:1px solid var(--border);border-radius:8px;
+background:var(--surface-1);overflow:hidden}
+.figure > figcaption{padding:.9rem 1.1rem .2rem;font:600 .95rem/1.35
+ui-sans-serif,system-ui,sans-serif;color:var(--text-primary)}
+.fig-meta{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;
+padding:0 1.1rem .7rem}
+.badge{font:600 .66rem/1 ui-sans-serif,system-ui,sans-serif;text-transform:uppercase;
+letter-spacing:.06em;padding:.3rem .5rem;border-radius:3px;
+background:var(--accent-soft,rgba(61,111,180,.12));color:var(--eu)}
+.fig-q{font:.82rem/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--text-secondary)}
+.chart-live{padding:.2rem 1.1rem 1rem;position:relative}
+.chart-live:focus-visible{outline:2px solid var(--eu);outline-offset:2px}
+.chart{width:100%;height:auto;display:block;touch-action:pan-y}
+.gridline{stroke:var(--border);stroke-width:1}
+.axis-label{fill:var(--text-muted);font:11px ui-sans-serif,system-ui,sans-serif}
+.line-faint{fill:none;stroke:var(--text-muted);stroke-width:1;opacity:.28}
+.line-eu{fill:none;stroke:var(--eu);stroke-width:2.2;stroke-dasharray:5 3}
+.line-gr{fill:none;stroke:var(--gr);stroke-width:2.8}
+.zero-line{stroke:var(--text-muted);stroke-width:1.4}
+.cursor-line{stroke:var(--text-secondary);stroke-width:1;stroke-dasharray:3 3}
+.tip{position:absolute;pointer-events:none;background:var(--surface-2);
+border:1px solid var(--border);border-radius:5px;padding:.45rem .6rem;
+font:.76rem/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--text-primary);
+box-shadow:0 3px 12px rgba(0,0,0,.14);max-width:15rem;z-index:5;opacity:0;
+transition:opacity .1s}
+.tip.on{opacity:1}
+.legend{display:flex;flex-wrap:wrap;gap:.35rem 1rem;padding:.3rem 0 .1rem;
+max-width:100%;
+font:.76rem/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--text-secondary)}
+.viewbar{display:flex;flex-wrap:wrap;gap:.3rem;padding:0 1.1rem .6rem}
+.viewbtn{font:600 .74rem/1 ui-sans-serif,system-ui,sans-serif;padding:.35rem .6rem;
+border:1px solid var(--border);background:transparent;color:var(--text-secondary);
+border-radius:4px;cursor:pointer}
+.viewbtn[aria-selected="true"]{background:var(--gr);border-color:var(--gr);color:#fff}
+.viewbtn:hover{color:var(--gr)}
+.viewbtn[aria-selected="true"]:hover{color:#fff}
+.lg-item{display:inline-flex;align-items:center;gap:.4rem;white-space:nowrap;
+flex:0 1 auto;min-width:0}
+@media(max-width:34rem){.legend{gap:.3rem .7rem;font-size:.72rem}}
+.tip b{color:var(--gr)}
+.fig-caveat{margin:0;padding:.7rem 1.1rem;border-top:1px solid var(--border);
+background:var(--accent-soft,rgba(192,57,43,.05));
+font:.78rem/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--text-secondary)}
+.fig-caveat strong{color:var(--gr)}
+.fallback{border-top:1px solid var(--border)}
+.fallback > summary{padding:.6rem 1.1rem;cursor:pointer;
+font:.78rem/1 ui-sans-serif,system-ui,sans-serif;color:var(--text-secondary)}
+.fallback > summary:hover{color:var(--gr)}
+.fallback table{border-collapse:collapse;width:100%;
+font:.78rem/1.4 ui-sans-serif,system-ui,sans-serif;font-variant-numeric:tabular-nums}
+.fallback th,.fallback td{padding:.4rem .8rem;border-bottom:1px solid var(--border);
+text-align:left}
+.fallback td.num,.fallback th.num{text-align:right}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media print{
+  .chart-live{display:none}
+  .fallback{border-top:0}
+  .fallback > summary{display:none}
+  .fallback[open],.fallback{display:block}
+  .figure{break-inside:avoid;border-color:#999}
+}
+
+:root{--gr:var(--series-gr);--eu:var(--series-eu);--ok:#2f855a;--warn:#b7791f}
+body{max-width:52rem;margin:0 auto;padding:2rem 1.2rem 5rem}
+h2{margin:2.8rem 0 .6rem}
+.signpost{border-left:3px solid var(--series-3);padding:.7rem 1rem;
+background:var(--surface-2);border-radius:0 5px 5px 0;margin:1.6rem 0}
+.proto-note{border:1px dashed var(--border);border-radius:6px;padding:.9rem 1.1rem;
+margin-bottom:2rem;font:.82rem/1.5 ui-sans-serif,system-ui,sans-serif;
+color:var(--text-secondary)}
+</style></head><body>
+<p class="proto-note"><strong>Batch 2.</strong> Stages 3 and 4, adding the last
+two new chart types &mdash; dumbbell and heatmap &mdash; plus the scatter, which
+was in the appendix engine but had not been carried across.</p>
+
+<h2>Stage 3 &mdash; Is the reported hardship real?</h2>
+<p>Before asking what explains the gap, it is worth asking whether the thing
+being explained is real. If Greeks simply describe their circumstances more
+darkly, there is no economic puzzle to solve.</p>
+<figure class="figure" id="F8">
+<figcaption>When a country's reported difficulty moves, its concrete affordability failures move with it</figcaption>
+<div class="fig-meta"><span class="badge">descriptive corroboration</span>
+<span class="fig-q">Does reported difficulty move with concrete affordability failure, or float free of it?</span></div>
+<div class="chart-live" data-chart="scatter" tabindex="0"
+     data-checksum="6830210017ccdfa0" aria-describedby="F8-fb">
+<script type="application/json" data-kind="scatter" data-label="Arrears on bills">{"points": [{"x": 0.68, "y": 1.62, "label": "AT 2015", "highlight": false}, {"x": 0.78, "y": 1.02, "label": "AT 2016", "highlight": false}, {"x": 0.18, "y": -0.28, "label": "AT 2017", "highlight": false}, {"x": -0.82, "y": -0.48, "label": "AT 2018", "highlight": false}, {"x": -1.42, "y": -1.08, "label": "AT 2019", "highlight": false}, {"x": -0.42, "y": -2.38, "label": "AT 2020", "highlight": false}, {"x": -0.92, "y": -1.68, "label": "AT 2021", "highlight": false}, {"x": -1.02, "y": 0.12, "label": "AT 2022", "highlight": false}, {"x": 1.18, "y": 1.82, "label": "AT 2023", "highlight": false}, {"x": 1.78, "y": 1.32, "label": "AT 2024", "highlight": false}, {"x": 1.44, "y": 2.22, "label": "BE 2015", "highlight": false}, {"x": 1.54, "y": 3.22, "label": "BE 2016", "highlight": false}, {"x": -0.06, "y": 2.62, "label": "BE 2017", "highlight": false}, {"x": 0.64, "y": 0.82, "label": "BE 2018", "highlight": false}, {"x": 0.14, "y": 0.82, "label": "BE 2019", "highlight": false}, {"x": 0.14, "y": -1.48, "label": "BE 2020", "highlight": false}, {"x": -1.36, "y": -2.68, "label": "BE 2021", "highlight": false}, {"x": -1.26, "y": -1.58, "label": "BE 2022", "highlight": false}, {"x": -0.76, "y": -2.78, "label": "BE 2023", "highlight": false}, {"x": -0.46, "y": -1.18, "label": "BE 2024", "highlight": false}, {"x": 7.23, "y": 15.82, "label": "BG 2015", "highlight": false}, {"x": 7.83, "y": 13.52, "label": "BG 2016", "highlight": false}, {"x": 6.93, "y": 10.22, "label": "BG 2017", "highlight": false}, {"x": 5.53, "y": 7.72, "label": "BG 2018", "highlight": false}, {"x": 2.93, "y": 1.92, "label": "BG 2019", "highlight": false}, {"x": -2.77, "y": -4.48, "label": "BG 2020", "highlight": false}, {"x": -5.97, "y": -11.08, "label": "BG 2021", "highlight": false}, {"x": -6.47, "y": -7.88, "label": "BG 2022", "highlight": false}, {"x": -7.57, "y": -14.98, "label": "BG 2023", "highlight": false}, {"x": -7.67, "y": -10.78, "label": "BG 2024", "highlight": false}, {"x": 12.12, "y": 21.57, "label": "CY 2015", "highlight": false}, {"x": 7.12, "y": 22.57, "label": "CY 2016", "highlight": false}, {"x": 5.32, "y": 6.37, "label": "CY 2017", "highlight": false}, {"x": 2.12, "y": 9.17, "label": "CY 2018", "highlight": false}, {"x": -2.28, "y": -0.93, "label": "CY 2019", "highlight": false}, {"x": -4.08, "y": -10.53, "label": "CY 2020", "highlight": false}, {"x": -2.18, "y": -11.13, "label": "CY 2021", "highlight": false}, {"x": -5.58, "y": -7.63, "label": "CY 2022", "highlight": false}, {"x": -5.58, "y": -13.03, "label": "CY 2023", "highlight": false}, {"x": -6.98, "y": -16.43, "label": "CY 2024", "highlight": false}, {"x": 1.27, "y": 10.15, "label": "CZ 2015", "highlight": false}, {"x": 1.17, "y": 6.75, "label": "CZ 2016", "highlight": false}, {"x": -0.03, "y": 5.55, "label": "CZ 2017", "highlight": false}, {"x": -0.23, "y": -0.25, "label": "CZ 2018", "highlight": false}, {"x": -0.43, "y": -3.35, "label": "CZ 2019", "highlight": false}, {"x": -0.23, "y": -4.35, "label": "CZ 2020", "highlight": false}, {"x": -0.83, "y": -5.05, "label": "CZ 2021", "highlight": false}, {"x": -0.53, "y": -4.15, "label": "CZ 2022", "highlight": false}, {"x": -0.33, "y": -3.05, "label": "CZ 2023", "highlight": false}, {"x": 0.17, "y": -2.25, "label": "CZ 2024", "highlight": false}, {"x": -0.23, "y": 0.65, "label": "DE 2015", "highlight": false}, {"x": -1.23, "y": -0.05, "label": "DE 2016", "highlight": false}, {"x": -1.03, "y": -0.85, "label": "DE 2017", "highlight": false}, {"x": -0.83, "y": -1.05, "label": "DE 2018", "highlight": false}, {"x": -1.73, "y": -1.85, "label": "DE 2019", "highlight": false}, {"x": -0.23, "y": -1.25, "label": "DE 2020", "highlight": false}, {"x": 0.17, "y": -0.25, "label": "DE 2021", "highlight": false}, {"x": 0.47, "y": 1.55, "label": "DE 2022", "highlight": false}, {"x": 2.87, "y": 2.75, "label": "DE 2023", "highlight": false}, {"x": 1.77, "y": 0.35, "label": "DE 2024", "highlight": false}, {"x": -0.65, "y": 0.26, "label": "DK 2015", "highlight": false}, {"x": -1.15, "y": -0.14, "label": "DK 2016", "highlight": false}, {"x": -0.95, "y": -0.74, "label": "DK 2017", "highlight": false}, {"x": 1.75, "y": -0.84, "label": "DK 2018", "highlight": false}, {"x": 0.35, "y": -0.74, "label": "DK 2019", "highlight": false}, {"x": 0.75, "y": -1.64, "label": "DK 2020", "highlight": false}, {"x": -0.65, "y": -2.04, "label": "DK 2021", "highlight": false}, {"x": -0.25, "y": 0.16, "label": "DK 2022", "highlight": false}, {"x": 0.85, "y": 3.06, "label": "DK 2023", "highlight": false}, {"x": -0.05, "y": 2.66, "label": "DK 2024", "highlight": false}, {"x": 2.09, "y": 4.31, "label": "EE 2015", "highlight": false}, {"x": 1.69, "y": 3.51, "label": "EE 2016", "highlight": false}, {"x": 0.09, "y": 2.41, "label": "EE 2017", "highlight": false}, {"x": 0.79, "y": 2.01, "label": "EE 2018", "highlight": false}, {"x": 1.29, "y": -0.69, "label": "EE 2019", "highlight": false}, {"x": -1.51, "y": -2.79, "label": "EE 2020", "highlight": false}, {"x": -1.51, "y": -4.09, "label": "EE 2021", "highlight": false}, {"x": -1.41, "y": -2.39, "label": "EE 2022", "highlight": false}, {"x": -1.41, "y": -0.29, "label": "EE 2023", "highlight": false}, {"x": -0.11, "y": -1.99, "label": "EE 2024", "highlight": false}, {"x": 5.76, "y": 5.73, "label": "EL 2015", "highlight": true}, {"x": 4.36, "y": 4.83, "label": "EL 2016", "highlight": true}, {"x": 1.36, "y": 5.23, "label": "EL 2017", "highlight": true}, {"x": -0.54, "y": 2.13, "label": "EL 2018", "highlight": true}, {"x": -2.14, "y": -0.97, "label": "EL 2019", "highlight": true}, {"x": -6.64, "y": -2.17, "label": "EL 2020", "highlight": true}, {"x": -7.14, "y": -0.97, "label": "EL 2021", "highlight": true}, {"x": 1.96, "y": -3.57, "label": "EL 2022", "highlight": true}, {"x": 3.76, "y": -4.97, "label": "EL 2023", "highlight": true}, {"x": -0.74, "y": -5.27, "label": "EL 2024", "highlight": true}, {"x": -0.09, "y": 9.6, "label": "ES 2015", "highlight": false}, {"x": -1.19, "y": 10.0, "label": "ES 2016", "highlight": false}, {"x": -2.49, "y": -0.5, "label": "ES 2017", "highlight": false}, {"x": -2.39, "y": 1.5, "label": "ES 2018", "highlight": false}, {"x": -3.69, "y": -3.6, "label": "ES 2019", "highlight": false}, {"x": 1.71, "y": -2.8, "label": "ES 2020", "highlight": false}, {"x": 2.51, "y": -4.0, "label": "ES 2021", "highlight": false}, {"x": 1.41, "y": -3.5, "label": "ES 2022", "highlight": false}, {"x": 1.81, "y": -3.0, "label": "ES 2023", "highlight": false}, {"x": 2.41, "y": -3.7, "label": "ES 2024", "highlight": false}, {"x": 0.32, "y": 0.17, "label": "FI 2015", "highlight": false}, {"x": 0.92, "y": 0.07, "label": "FI 2016", "highlight": false}, {"x": 0.82, "y": -0.13, "label": "FI 2017", "highlight": false}, {"x": 0.72, "y": -0.73, "label": "FI 2018", "highlight": false}, {"x": 0.52, "y": -0.43, "label": "FI 2019", "highlight": false}, {"x": 0.02, "y": -0.03, "label": "FI 2020", "highlight": false}, {"x": -1.78, "y": -0.93, "label": "FI 2021", "highlight": false}, {"x": -2.28, "y": -0.73, "label": "FI 2022", "highlight": false}, {"x": -0.48, "y": 0.67, "label": "FI 2023", "highlight": false}, {"x": 1.22, "y": 2.07, "label": "FI 2024", "highlight": false}, {"x": -0.53, "y": 0.6, "label": "FR 2015", "highlight": false}, {"x": -0.63, "y": -0.1, "label": "FR 2016", "highlight": false}, {"x": -0.33, "y": -1.2, "label": "FR 2017", "highlight": false}, {"x": -0.33, "y": -1.0, "label": "FR 2018", "highlight": false}, {"x": -1.03, "y": -2.5, "label": "FR 2019", "highlight": false}, {"x": -0.33, "y": -0.8, "label": "FR 2020", "highlight": false}, {"x": 0.67, "y": -2.7, "label": "FR 2021", "highlight": false}, {"x": 0.77, "y": 2.4, "label": "FR 2022", "highlight": false}, {"x": 0.57, "y": 2.8, "label": "FR 2023", "highlight": false}, {"x": 1.17, "y": 2.5, "label": "FR 2024", "highlight": false}, {"x": 11.79, "y": 18.69, "label": "HR 2015", "highlight": false}, {"x": 8.29, "y": 15.69, "label": "HR 2016", "highlight": false}, {"x": 3.79, "y": 8.19, "label": "HR 2017", "highlight": false}, {"x": 0.49, "y": 6.99, "label": "HR 2018", "highlight": false}, {"x": -2.41, "y": -0.21, "label": "HR 2019", "highlight": false}, {"x": -3.91, "y": -2.21, "label": "HR 2020", "highlight": false}, {"x": -1.51, "y": -8.41, "label": "HR 2021", "highlight": false}, {"x": -2.41, "y": -9.11, "label": "HR 2022", "highlight": false}, {"x": -5.41, "y": -13.71, "label": "HR 2023", "highlight": false}, {"x": -8.71, "y": -15.91, "label": "HR 2024", "highlight": false}, {"x": 8.36, "y": 15.45, "label": "HU 2015", "highlight": false}, {"x": 5.66, "y": 11.65, "label": "HU 2016", "highlight": false}, {"x": 2.36, "y": 10.05, "label": "HU 2017", "highlight": false}, {"x": -0.54, "y": 3.55, "label": "HU 2018", "highlight": false}, {"x": -2.44, "y": -3.45, "label": "HU 2019", "highlight": false}, {"x": -1.84, "y": -3.75, "label": "HU 2020", "highlight": false}, {"x": -1.94, "y": -4.45, "label": "HU 2021", "highlight": false}, {"x": -3.04, "y": -9.15, "label": "HU 2022", "highlight": false}, {"x": -2.54, "y": -8.55, "label": "HU 2023", "highlight": false}, {"x": -4.04, "y": -11.35, "label": "HU 2024", "highlight": false}, {"x": 5.47, "y": 11.22, "label": "IE 2015", "highlight": false}, {"x": 1.97, "y": 6.82, "label": "IE 2016", "highlight": false}, {"x": -0.43, "y": 3.02, "label": "IE 2017", "highlight": false}, {"x": -2.23, "y": 0.32, "label": "IE 2018", "highlight": false}, {"x": -1.63, "y": -2.08, "label": "IE 2019", "highlight": false}, {"x": 1.17, "y": -3.78, "label": "IE 2020", "highlight": false}, {"x": 0.27, "y": -5.18, "label": "IE 2021", "highlight": false}, {"x": -0.53, "y": -2.68, "label": "IE 2022", "highlight": false}, {"x": -2.83, "y": -3.98, "label": "IE 2023", "highlight": false}, {"x": -1.23, "y": -3.68, "label": "IE 2024", "highlight": false}, {"x": 7.44, "y": 11.87, "label": "IT 2015", "highlight": false}, {"x": 3.24, "y": 7.27, "label": "IT 2016", "highlight": false}, {"x": -1.36, "y": 2.07, "label": "IT 2017", "highlight": false}, {"x": -1.46, "y": 4.27, "label": "IT 2018", "highlight": false}, {"x": -1.56, "y": -3.13, "label": "IT 2019", "highlight": false}, {"x": -0.66, "y": -2.23, "label": "IT 2020", "highlight": false}, {"x": 0.24, "y": -1.73, "label": "IT 2021", "highlight": false}, {"x": -1.26, "y": -3.73, "label": "IT 2022", "highlight": false}, {"x": -2.46, "y": -7.33, "label": "IT 2023", "highlight": false}, {"x": -2.16, "y": -7.33, "label": "IT 2024", "highlight": false}, {"x": 1.85, "y": 9.45, "label": "LT 2015", "highlight": false}, {"x": 2.75, "y": 10.15, "label": "LT 2016", "highlight": false}, {"x": 0.75, "y": 8.75, "label": "LT 2017", "highlight": false}, {"x": 2.35, "y": 3.95, "label": "LT 2018", "highlight": false}, {"x": 0.25, "y": -0.45, "label": "LT 2019", "highlight": false}, {"x": -0.85, "y": -4.35, "label": "LT 2020", "highlight": false}, {"x": -1.35, "y": -6.55, "label": "LT 2021", "highlight": false}, {"x": -1.95, "y": -6.85, "label": "LT 2022", "highlight": false}, {"x": -0.85, "y": -6.05, "label": "LT 2023", "highlight": false}, {"x": -2.95, "y": -8.05, "label": "LT 2024", "highlight": false}, {"x": -1.14, "y": 2.38, "label": "LU 2015", "highlight": false}, {"x": 0.26, "y": 2.38, "label": "LU 2016", "highlight": false}, {"x": -3.34, "y": 2.57, "label": "LU 2017", "highlight": false}, {"x": -1.44, "y": 2.38, "label": "LU 2020", "highlight": false}, {"x": 0.26, "y": -0.03, "label": "LU 2021", "highlight": false}, {"x": 0.86, "y": -4.23, "label": "LU 2022", "highlight": false}, {"x": 2.36, "y": -3.93, "label": "LU 2023", "highlight": false}, {"x": 2.16, "y": -1.53, "label": "LU 2024", "highlight": false}, {"x": 7.02, "y": 13.19, "label": "LV 2015", "highlight": false}, {"x": 3.92, "y": 9.79, "label": "LV 2016", "highlight": false}, {"x": 3.02, "y": 10.99, "label": "LV 2017", "highlight": false}, {"x": 2.82, "y": 2.59, "label": "LV 2018", "highlight": false}, {"x": -1.08, "y": -4.51, "label": "LV 2019", "highlight": false}, {"x": -1.28, "y": -5.31, "label": "LV 2020", "highlight": false}, {"x": -3.78, "y": -9.41, "label": "LV 2021", "highlight": false}, {"x": -4.08, "y": -5.61, "label": "LV 2022", "highlight": false}, {"x": -3.08, "y": -5.51, "label": "LV 2023", "highlight": false}, {"x": -3.48, "y": -6.21, "label": "LV 2024", "highlight": false}, {"x": 3.28, "y": 4.59, "label": "MT 2015", "highlight": false}, {"x": 2.78, "y": 2.89, "label": "MT 2016", "highlight": false}, {"x": -1.12, "y": -0.91, "label": "MT 2017", "highlight": false}, {"x": 0.48, "y": -2.91, "label": "MT 2018", "highlight": false}, {"x": 0.18, "y": -4.71, "label": "MT 2019", "highlight": false}, {"x": -0.62, "y": -1.61, "label": "MT 2020", "highlight": false}, {"x": 0.18, "y": -1.61, "label": "MT 2021", "highlight": false}, {"x": -1.52, "y": 4.39, "label": "MT 2022", "highlight": false}, {"x": -1.92, "y": -0.41, "label": "MT 2023", "highlight": false}, {"x": -1.72, "y": 0.29, "label": "MT 2024", "highlight": false}, {"x": 1.87, "y": 3.73, "label": "NL 2015", "highlight": false}, {"x": 1.17, "y": 3.43, "label": "NL 2016", "highlight": false}, {"x": 0.77, "y": 2.33, "label": "NL 2017", "highlight": false}, {"x": -0.03, "y": 0.83, "label": "NL 2018", "highlight": false}, {"x": 0.17, "y": 0.93, "label": "NL 2019", "highlight": false}, {"x": -0.63, "y": -1.67, "label": "NL 2020", "highlight": false}, {"x": -1.23, "y": -3.57, "label": "NL 2021", "highlight": false}, {"x": -0.93, "y": -2.27, "label": "NL 2022", "highlight": false}, {"x": -1.23, "y": -1.87, "label": "NL 2023", "highlight": false}, {"x": 0.07, "y": -1.87, "label": "NL 2024", "highlight": false}, {"x": 3.48, "y": 11.19, "label": "PL 2015", "highlight": false}, {"x": 3.48, "y": 6.59, "label": "PL 2016", "highlight": false}, {"x": 2.78, "y": 3.89, "label": "PL 2017", "highlight": false}, {"x": 0.18, "y": 0.39, "label": "PL 2018", "highlight": false}, {"x": -0.12, "y": -2.51, "label": "PL 2019", "highlight": false}, {"x": -2.02, "y": -2.31, "label": "PL 2020", "highlight": false}, {"x": -0.52, "y": -4.51, "label": "PL 2021", "highlight": false}, {"x": -1.52, "y": -2.91, "label": "PL 2022", "highlight": false}, {"x": -2.42, "y": -3.11, "label": "PL 2023", "highlight": false}, {"x": -3.32, "y": -6.71, "label": "PL 2024", "highlight": false}, {"x": 3.32, "y": 12.8, "label": "PT 2015", "highlight": false}, {"x": 2.42, "y": 9.1, "label": "PT 2016", "highlight": false}, {"x": 0.82, "y": 6.0, "label": "PT 2017", "highlight": false}, {"x": -0.28, "y": 1.6, "label": "PT 2018", "highlight": false}, {"x": -1.08, "y": -1.8, "label": "PT 2019", "highlight": false}, {"x": -1.48, "y": -6.9, "label": "PT 2020", "highlight": false}, {"x": -0.08, "y": -6.7, "label": "PT 2021", "highlight": false}, {"x": -0.78, "y": -4.3, "label": "PT 2022", "highlight": false}, {"x": -1.68, "y": -4.0, "label": "PT 2023", "highlight": false}, {"x": -1.18, "y": -5.8, "label": "PT 2024", "highlight": false}, {"x": 3.52, "y": 11.85, "label": "RO 2015", "highlight": false}, {"x": 3.62, "y": 10.35, "label": "RO 2016", "highlight": false}, {"x": 1.22, "y": 3.65, "label": "RO 2017", "highlight": false}, {"x": 0.42, "y": 2.25, "label": "RO 2018", "highlight": false}, {"x": -0.68, "y": -1.75, "label": "RO 2019", "highlight": false}, {"x": -1.28, "y": 2.15, "label": "RO 2020", "highlight": false}, {"x": -6.68, "y": -4.75, "label": "RO 2021", "highlight": false}, {"x": 2.32, "y": -7.75, "label": "RO 2022", "highlight": false}, {"x": -1.68, "y": -6.05, "label": "RO 2023", "highlight": false}, {"x": -0.78, "y": -9.95, "label": "RO 2024", "highlight": false}, {"x": 0.37, "y": -0.75, "label": "SE 2015", "highlight": false}, {"x": -0.23, "y": -0.25, "label": "SE 2016", "highlight": false}, {"x": -0.53, "y": -0.85, "label": "SE 2017", "highlight": false}, {"x": -0.93, "y": 0.15, "label": "SE 2018", "highlight": false}, {"x": -0.83, "y": -0.25, "label": "SE 2019", "highlight": false}, {"x": -0.73, "y": -0.45, "label": "SE 2020", "highlight": false}, {"x": -0.43, "y": -0.45, "label": "SE 2021", "highlight": false}, {"x": 0.57, "y": -0.65, "label": "SE 2022", "highlight": false}, {"x": 1.07, "y": 1.45, "label": "SE 2023", "highlight": false}, {"x": 1.67, "y": 2.05, "label": "SE 2024", "highlight": false}, {"x": 7.29, "y": 10.11, "label": "SI 2015", "highlight": false}, {"x": 5.49, "y": 7.31, "label": "SI 2016", "highlight": false}, {"x": 3.29, "y": 4.01, "label": "SI 2017", "highlight": false}, {"x": 1.69, "y": 1.91, "label": "SI 2018", "highlight": false}, {"x": 0.29, "y": -1.19, "label": "SI 2019", "highlight": false}, {"x": -1.61, "y": -1.59, "label": "SI 2020", "highlight": false}, {"x": -2.91, "y": -7.09, "label": "SI 2021", "highlight": false}, {"x": -4.51, "y": -4.39, "label": "SI 2022", "highlight": false}, {"x": -4.61, "y": -4.09, "label": "SI 2023", "highlight": false}, {"x": -4.41, "y": -4.99, "label": "SI 2024", "highlight": false}, {"x": -0.6, "y": 4.28, "label": "SK 2015", "highlight": false}, {"x": -0.6, "y": 1.18, "label": "SK 2016", "highlight": false}, {"x": -0.7, "y": -2.22, "label": "SK 2017", "highlight": false}, {"x": 1.8, "y": -3.02, "label": "SK 2018", "highlight": false}, {"x": 2.1, "y": -0.12, "label": "SK 2019", "highlight": false}, {"x": -1.4, "y": 0.28, "label": "SK 2020", "highlight": false}, {"x": -1.8, "y": -1.82, "label": "SK 2021", "highlight": false}, {"x": 0.2, "y": -0.72, "label": "SK 2022", "highlight": false}, {"x": 0.7, "y": 1.88, "label": "SK 2023", "highlight": false}, {"x": 0.3, "y": 0.28, "label": "SK 2024", "highlight": false}], "r": 0.797, "dp": 2, "xLabel": "Arrears on bills, deviation from country mean", "yLabel": "Reported hardship, deviation from country mean", "alt": "Reported hardship against arrears on bills, country means removed"}</script><script type="application/json" data-kind="scatter" data-label="Cannot meet an unexpected expense">{"points": [{"x": 2.27, "y": 1.62, "label": "AT 2015", "highlight": false}, {"x": 2.27, "y": 1.02, "label": "AT 2016", "highlight": false}, {"x": 0.27, "y": -0.28, "label": "AT 2017", "highlight": false}, {"x": -0.23, "y": -0.48, "label": "AT 2018", "highlight": false}, {"x": -1.83, "y": -1.08, "label": "AT 2019", "highlight": false}, {"x": -2.73, "y": -2.38, "label": "AT 2020", "highlight": false}, {"x": -1.73, "y": -1.68, "label": "AT 2021", "highlight": false}, {"x": -1.33, "y": 0.12, "label": "AT 2022", "highlight": false}, {"x": 2.47, "y": 1.82, "label": "AT 2023", "highlight": false}, {"x": 0.57, "y": 1.32, "label": "AT 2024", "highlight": false}, {"x": 1.86, "y": 2.22, "label": "BE 2015", "highlight": false}, {"x": 2.16, "y": 3.22, "label": "BE 2016", "highlight": false}, {"x": 1.66, "y": 2.62, "label": "BE 2017", "highlight": false}, {"x": 0.66, "y": 0.82, "label": "BE 2018", "highlight": false}, {"x": 1.46, "y": 0.82, "label": "BE 2019", "highlight": false}, {"x": -0.64, "y": -1.48, "label": "BE 2020", "highlight": false}, {"x": -1.54, "y": -2.68, "label": "BE 2021", "highlight": false}, {"x": -1.14, "y": -1.58, "label": "BE 2022", "highlight": false}, {"x": -2.24, "y": -2.78, "label": "BE 2023", "highlight": false}, {"x": -2.24, "y": -1.18, "label": "BE 2024", "highlight": false}, {"x": 9.0, "y": 15.82, "label": "BG 2015", "highlight": false}, {"x": 9.8, "y": 13.52, "label": "BG 2016", "highlight": false}, {"x": 8.8, "y": 10.22, "label": "BG 2017", "highlight": false}, {"x": -12.3, "y": 7.72, "label": "BG 2018", "highlight": false}, {"x": -7.9, "y": 1.92, "label": "BG 2019", "highlight": false}, {"x": -0.9, "y": -4.48, "label": "BG 2020", "highlight": false}, {"x": -8.0, "y": -11.08, "label": "BG 2021", "highlight": false}, {"x": -2.0, "y": -7.88, "label": "BG 2022", "highlight": false}, {"x": 2.3, "y": -14.98, "label": "BG 2023", "highlight": false}, {"x": 1.2, "y": -10.78, "label": "BG 2024", "highlight": false}, {"x": 14.32, "y": 21.57, "label": "CY 2015", "highlight": false}, {"x": 10.42, "y": 22.57, "label": "CY 2016", "highlight": false}, {"x": 3.92, "y": 6.37, "label": "CY 2017", "highlight": false}, {"x": 3.32, "y": 9.17, "label": "CY 2018", "highlight": false}, {"x": 0.52, "y": -0.93, "label": "CY 2019", "highlight": false}, {"x": -2.48, "y": -10.53, "label": "CY 2020", "highlight": false}, {"x": -4.08, "y": -11.13, "label": "CY 2021", "highlight": false}, {"x": -5.88, "y": -7.63, "label": "CY 2022", "highlight": false}, {"x": -8.68, "y": -13.03, "label": "CY 2023", "highlight": false}, {"x": -11.38, "y": -16.43, "label": "CY 2024", "highlight": false}, {"x": 12.42, "y": 10.15, "label": "CZ 2015", "highlight": false}, {"x": 8.52, "y": 6.75, "label": "CZ 2016", "highlight": false}, {"x": 4.52, "y": 5.55, "label": "CZ 2017", "highlight": false}, {"x": 0.12, "y": -0.25, "label": "CZ 2018", "highlight": false}, {"x": -1.78, "y": -3.35, "label": "CZ 2019", "highlight": false}, {"x": -3.98, "y": -4.35, "label": "CZ 2020", "highlight": false}, {"x": -5.48, "y": -5.05, "label": "CZ 2021", "highlight": false}, {"x": -6.08, "y": -4.15, "label": "CZ 2022", "highlight": false}, {"x": -3.88, "y": -3.05, "label": "CZ 2023", "highlight": false}, {"x": -4.38, "y": -2.25, "label": "CZ 2024", "highlight": false}, {"x": -1.08, "y": 0.65, "label": "DE 2015", "highlight": false}, {"x": -1.48, "y": -0.05, "label": "DE 2016", "highlight": false}, {"x": -2.18, "y": -0.85, "label": "DE 2017", "highlight": false}, {"x": -3.38, "y": -1.05, "label": "DE 2018", "highlight": false}, {"x": -5.48, "y": -1.85, "label": "DE 2019", "highlight": false}, {"x": 6.12, "y": -1.25, "label": "DE 2020", "highlight": false}, {"x": 0.82, "y": -0.25, "label": "DE 2021", "highlight": false}, {"x": 2.42, "y": 1.55, "label": "DE 2022", "highlight": false}, {"x": 3.52, "y": 2.75, "label": "DE 2023", "highlight": false}, {"x": 0.72, "y": 0.35, "label": "DE 2024", "highlight": false}, {"x": 3.42, "y": 0.26, "label": "DK 2015", "highlight": false}, {"x": 1.42, "y": -0.14, "label": "DK 2016", "highlight": false}, {"x": 2.02, "y": -0.74, "label": "DK 2017", "highlight": false}, {"x": 2.12, "y": -0.84, "label": "DK 2018", "highlight": false}, {"x": -0.18, "y": -0.74, "label": "DK 2019", "highlight": false}, {"x": -0.38, "y": -1.64, "label": "DK 2020", "highlight": false}, {"x": -3.58, "y": -2.04, "label": "DK 2021", "highlight": false}, {"x": -2.88, "y": 0.16, "label": "DK 2022", "highlight": false}, {"x": 0.02, "y": 3.06, "label": "DK 2023", "highlight": false}, {"x": -1.98, "y": 2.66, "label": "DK 2024", "highlight": false}, {"x": 4.24, "y": 4.31, "label": "EE 2015", "highlight": false}, {"x": -0.86, "y": 3.51, "label": "EE 2016", "highlight": false}, {"x": 3.84, "y": 2.41, "label": "EE 2017", "highlight": false}, {"x": 2.24, "y": 2.01, "label": "EE 2018", "highlight": false}, {"x": -1.06, "y": -0.69, "label": "EE 2019", "highlight": false}, {"x": -1.96, "y": -2.79, "label": "EE 2020", "highlight": false}, {"x": -5.36, "y": -4.09, "label": "EE 2021", "highlight": false}, {"x": -1.26, "y": -2.39, "label": "EE 2022", "highlight": false}, {"x": -2.06, "y": -0.29, "label": "EE 2023", "highlight": false}, {"x": 2.24, "y": -1.99, "label": "EE 2024", "highlight": false}, {"x": 4.73, "y": 5.73, "label": "EL 2015", "highlight": true}, {"x": 4.93, "y": 4.83, "label": "EL 2016", "highlight": true}, {"x": 4.03, "y": 5.23, "label": "EL 2017", "highlight": true}, {"x": 1.73, "y": 2.13, "label": "EL 2018", "highlight": true}, {"x": -0.87, "y": -0.97, "label": "EL 2019", "highlight": true}, {"x": 2.03, "y": -2.17, "label": "EL 2020", "highlight": true}, {"x": -2.37, "y": -0.97, "label": "EL 2021", "highlight": true}, {"x": -5.07, "y": -3.57, "label": "EL 2022", "highlight": true}, {"x": -4.37, "y": -4.97, "label": "EL 2023", "highlight": true}, {"x": -4.77, "y": -5.27, "label": "EL 2024", "highlight": true}, {"x": 3.56, "y": 9.6, "label": "ES 2015", "highlight": false}, {"x": 2.46, "y": 10.0, "label": "ES 2016", "highlight": false}, {"x": 0.36, "y": -0.5, "label": "ES 2017", "highlight": false}, {"x": -0.34, "y": 1.5, "label": "ES 2018", "highlight": false}, {"x": -2.34, "y": -3.6, "label": "ES 2019", "highlight": false}, {"x": -0.84, "y": -2.8, "label": "ES 2020", "highlight": false}, {"x": -2.74, "y": -4.0, "label": "ES 2021", "highlight": false}, {"x": -0.74, "y": -3.5, "label": "ES 2022", "highlight": false}, {"x": 0.96, "y": -3.0, "label": "ES 2023", "highlight": false}, {"x": -0.34, "y": -3.7, "label": "ES 2024", "highlight": false}, {"x": 1.87, "y": 0.17, "label": "FI 2015", "highlight": false}, {"x": 2.87, "y": 0.07, "label": "FI 2016", "highlight": false}, {"x": 1.97, "y": -0.13, "label": "FI 2017", "highlight": false}, {"x": 0.67, "y": -0.73, "label": "FI 2018", "highlight": false}, {"x": -0.13, "y": -0.43, "label": "FI 2019", "highlight": false}, {"x": -1.13, "y": -0.03, "label": "FI 2020", "highlight": false}, {"x": -3.03, "y": -0.93, "label": "FI 2021", "highlight": false}, {"x": -3.33, "y": -0.73, "label": "FI 2022", "highlight": false}, {"x": -0.53, "y": 0.67, "label": "FI 2023", "highlight": false}, {"x": 0.77, "y": 2.07, "label": "FI 2024", "highlight": false}, {"x": 2.35, "y": 0.6, "label": "FR 2015", "highlight": false}, {"x": 1.35, "y": -0.1, "label": "FR 2016", "highlight": false}, {"x": -0.85, "y": -1.2, "label": "FR 2017", "highlight": false}, {"x": 0.95, "y": -1.0, "label": "FR 2018", "highlight": false}, {"x": 0.15, "y": -2.5, "label": "FR 2019", "highlight": false}, {"x": 0.05, "y": -0.8, "label": "FR 2020", "highlight": false}, {"x": -2.85, "y": -2.7, "label": "FR 2021", "highlight": false}, {"x": 0.95, "y": 2.4, "label": "FR 2022", "highlight": false}, {"x": -1.05, "y": 2.8, "label": "FR 2023", "highlight": false}, {"x": -1.05, "y": 2.5, "label": "FR 2024", "highlight": false}, {"x": 10.32, "y": 18.69, "label": "HR 2015", "highlight": false}, {"x": 8.22, "y": 15.69, "label": "HR 2016", "highlight": false}, {"x": 6.72, "y": 8.19, "label": "HR 2017", "highlight": false}, {"x": 3.42, "y": 6.99, "label": "HR 2018", "highlight": false}, {"x": 2.22, "y": -0.21, "label": "HR 2019", "highlight": false}, {"x": -0.58, "y": -2.21, "label": "HR 2020", "highlight": false}, {"x": -2.98, "y": -8.41, "label": "HR 2021", "highlight": false}, {"x": -4.68, "y": -9.11, "label": "HR 2022", "highlight": false}, {"x": -8.08, "y": -13.71, "label": "HR 2023", "highlight": false}, {"x": -14.58, "y": -15.91, "label": "HR 2024", "highlight": false}, {"x": 33.75, "y": 15.45, "label": "HU 2015", "highlight": false}, {"x": 12.35, "y": 11.65, "label": "HU 2016", "highlight": false}, {"x": -6.95, "y": 10.05, "label": "HU 2017", "highlight": false}, {"x": -5.15, "y": 3.55, "label": "HU 2018", "highlight": false}, {"x": -5.55, "y": -3.45, "label": "HU 2019", "highlight": false}, {"x": -3.15, "y": -3.75, "label": "HU 2020", "highlight": false}, {"x": -3.55, "y": -4.45, "label": "HU 2021", "highlight": false}, {"x": -4.75, "y": -9.15, "label": "HU 2022", "highlight": false}, {"x": -7.15, "y": -8.55, "label": "HU 2023", "highlight": false}, {"x": -9.85, "y": -11.35, "label": "HU 2024", "highlight": false}, {"x": 12.91, "y": 11.22, "label": "IE 2015", "highlight": false}, {"x": 7.91, "y": 6.82, "label": "IE 2016", "highlight": false}, {"x": 4.31, "y": 3.02, "label": "IE 2017", "highlight": false}, {"x": 0.01, "y": 0.32, "label": "IE 2018", "highlight": false}, {"x": -0.19, "y": -2.08, "label": "IE 2019", "highlight": false}, {"x": -3.89, "y": -3.78, "label": "IE 2020", "highlight": false}, {"x": -8.19, "y": -5.18, "label": "IE 2021", "highlight": false}, {"x": -4.19, "y": -2.68, "label": "IE 2022", "highlight": false}, {"x": -2.99, "y": -3.98, "label": "IE 2023", "highlight": false}, {"x": -5.69, "y": -3.68, "label": "IE 2024", "highlight": false}, {"x": 5.49, "y": 11.87, "label": "IT 2015", "highlight": false}, {"x": 5.99, "y": 7.27, "label": "IT 2016", "highlight": false}, {"x": 3.89, "y": 2.07, "label": "IT 2017", "highlight": false}, {"x": 0.69, "y": 4.27, "label": "IT 2018", "highlight": false}, {"x": -0.61, "y": -3.13, "label": "IT 2019", "highlight": false}, {"x": -2.11, "y": -2.23, "label": "IT 2020", "highlight": false}, {"x": -1.71, "y": -1.73, "label": "IT 2021", "highlight": false}, {"x": -1.51, "y": -3.73, "label": "IT 2022", "highlight": false}, {"x": -5.61, "y": -7.33, "label": "IT 2023", "highlight": false}, {"x": -4.51, "y": -7.33, "label": "IT 2024", "highlight": false}, {"x": 8.01, "y": 9.45, "label": "LT 2015", "highlight": false}, {"x": 8.01, "y": 10.15, "label": "LT 2016", "highlight": false}, {"x": 5.41, "y": 8.75, "label": "LT 2017", "highlight": false}, {"x": 3.61, "y": 3.95, "label": "LT 2018", "highlight": false}, {"x": 1.61, "y": -0.45, "label": "LT 2019", "highlight": false}, {"x": -3.39, "y": -4.35, "label": "LT 2020", "highlight": false}, {"x": -8.79, "y": -6.55, "label": "LT 2021", "highlight": false}, {"x": -5.89, "y": -6.85, "label": "LT 2022", "highlight": false}, {"x": -4.69, "y": -6.05, "label": "LT 2023", "highlight": false}, {"x": -3.89, "y": -8.05, "label": "LT 2024", "highlight": false}, {"x": 1.91, "y": 2.05, "label": "LU 2015", "highlight": false}, {"x": 0.81, "y": 2.05, "label": "LU 2016", "highlight": false}, {"x": -0.69, "y": 2.25, "label": "LU 2017", "highlight": false}, {"x": -1.39, "y": 2.45, "label": "LU 2018", "highlight": false}, {"x": -4.39, "y": 0.15, "label": "LU 2019", "highlight": false}, {"x": 1.41, "y": 2.05, "label": "LU 2020", "highlight": false}, {"x": 0.21, "y": -0.35, "label": "LU 2021", "highlight": false}, {"x": -2.29, "y": -4.55, "label": "LU 2022", "highlight": false}, {"x": 3.01, "y": -4.25, "label": "LU 2023", "highlight": false}, {"x": 1.41, "y": -1.85, "label": "LU 2024", "highlight": false}, {"x": 9.71, "y": 13.19, "label": "LV 2015", "highlight": false}, {"x": 9.31, "y": 9.79, "label": "LV 2016", "highlight": false}, {"x": 9.21, "y": 10.99, "label": "LV 2017", "highlight": false}, {"x": 4.61, "y": 2.59, "label": "LV 2018", "highlight": false}, {"x": -0.89, "y": -4.51, "label": "LV 2019", "highlight": false}, {"x": -5.09, "y": -5.31, "label": "LV 2020", "highlight": false}, {"x": -8.99, "y": -9.41, "label": "LV 2021", "highlight": false}, {"x": -6.59, "y": -5.61, "label": "LV 2022", "highlight": false}, {"x": -5.89, "y": -5.51, "label": "LV 2023", "highlight": false}, {"x": -5.39, "y": -6.21, "label": "LV 2024", "highlight": false}, {"x": 4.56, "y": 4.59, "label": "MT 2015", "highlight": false}, {"x": 3.96, "y": 2.89, "label": "MT 2016", "highlight": false}, {"x": -1.24, "y": -0.91, "label": "MT 2017", "highlight": false}, {"x": -2.94, "y": -2.91, "label": "MT 2018", "highlight": false}, {"x": -1.74, "y": -4.71, "label": "MT 2019", "highlight": false}, {"x": -0.54, "y": -1.61, "label": "MT 2020", "highlight": false}, {"x": -1.14, "y": -1.61, "label": "MT 2021", "highlight": false}, {"x": -1.44, "y": 4.39, "label": "MT 2022", "highlight": false}, {"x": -0.94, "y": -0.41, "label": "MT 2023", "highlight": false}, {"x": 1.46, "y": 0.29, "label": "MT 2024", "highlight": false}, {"x": 3.79, "y": 3.73, "label": "NL 2015", "highlight": false}, {"x": 3.39, "y": 3.43, "label": "NL 2016", "highlight": false}, {"x": 1.59, "y": 2.33, "label": "NL 2017", "highlight": false}, {"x": 2.39, "y": 0.83, "label": "NL 2018", "highlight": false}, {"x": 2.79, "y": 0.93, "label": "NL 2019", "highlight": false}, {"x": -0.01, "y": -1.67, "label": "NL 2020", "highlight": false}, {"x": -4.01, "y": -3.57, "label": "NL 2021", "highlight": false}, {"x": -4.51, "y": -2.27, "label": "NL 2022", "highlight": false}, {"x": -3.21, "y": -1.87, "label": "NL 2023", "highlight": false}, {"x": -2.21, "y": -1.87, "label": "NL 2024", "highlight": false}, {"x": 12.12, "y": 11.19, "label": "PL 2015", "highlight": false}, {"x": 7.72, "y": 6.59, "label": "PL 2016", "highlight": false}, {"x": 4.62, "y": 3.89, "label": "PL 2017", "highlight": false}, {"x": 1.52, "y": 0.39, "label": "PL 2018", "highlight": false}, {"x": -0.88, "y": -2.51, "label": "PL 2019", "highlight": false}, {"x": -4.48, "y": -2.31, "label": "PL 2020", "highlight": false}, {"x": -5.68, "y": -4.51, "label": "PL 2021", "highlight": false}, {"x": -3.08, "y": -2.91, "label": "PL 2022", "highlight": false}, {"x": -4.48, "y": -3.11, "label": "PL 2023", "highlight": false}, {"x": -7.38, "y": -6.71, "label": "PL 2024", "highlight": false}, {"x": 7.23, "y": 12.8, "label": "PT 2015", "highlight": false}, {"x": 4.83, "y": 9.1, "label": "PT 2016", "highlight": false}, {"x": 3.43, "y": 6.0, "label": "PT 2017", "highlight": false}, {"x": 1.23, "y": 1.6, "label": "PT 2018", "highlight": false}, {"x": -0.47, "y": -1.8, "label": "PT 2019", "highlight": false}, {"x": -2.67, "y": -6.9, "label": "PT 2020", "highlight": false}, {"x": -2.27, "y": -6.7, "label": "PT 2021", "highlight": false}, {"x": -3.57, "y": -4.3, "label": "PT 2022", "highlight": false}, {"x": -2.97, "y": -4.0, "label": "PT 2023", "highlight": false}, {"x": -4.77, "y": -5.8, "label": "PT 2024", "highlight": false}, {"x": 3.65, "y": 11.85, "label": "RO 2015", "highlight": false}, {"x": 6.75, "y": 10.35, "label": "RO 2016", "highlight": false}, {"x": 4.75, "y": 3.65, "label": "RO 2017", "highlight": false}, {"x": -1.85, "y": 2.25, "label": "RO 2018", "highlight": false}, {"x": -3.45, "y": -1.75, "label": "RO 2019", "highlight": false}, {"x": -0.45, "y": 2.15, "label": "RO 2020", "highlight": false}, {"x": -0.45, "y": -4.75, "label": "RO 2021", "highlight": false}, {"x": 0.15, "y": -7.75, "label": "RO 2022", "highlight": false}, {"x": -1.35, "y": -6.05, "label": "RO 2023", "highlight": false}, {"x": -7.75, "y": -9.95, "label": "RO 2024", "highlight": false}, {"x": -0.64, "y": -0.75, "label": "SE 2015", "highlight": false}, {"x": 0.26, "y": -0.25, "label": "SE 2016", "highlight": false}, {"x": -0.74, "y": -0.85, "label": "SE 2017", "highlight": false}, {"x": -0.24, "y": 0.15, "label": "SE 2018", "highlight": false}, {"x": 0.06, "y": -0.25, "label": "SE 2019", "highlight": false}, {"x": -0.64, "y": -0.45, "label": "SE 2020", "highlight": false}, {"x": -2.04, "y": -0.45, "label": "SE 2021", "highlight": false}, {"x": 0.76, "y": -0.65, "label": "SE 2022", "highlight": false}, {"x": 1.36, "y": 1.45, "label": "SE 2023", "highlight": false}, {"x": 1.86, "y": 2.05, "label": "SE 2024", "highlight": false}, {"x": 11.65, "y": 10.11, "label": "SI 2015", "highlight": false}, {"x": 10.45, "y": 7.31, "label": "SI 2016", "highlight": false}, {"x": 5.85, "y": 4.01, "label": "SI 2017", "highlight": false}, {"x": 1.85, "y": 1.91, "label": "SI 2018", "highlight": false}, {"x": 1.75, "y": -1.19, "label": "SI 2019", "highlight": false}, {"x": -1.65, "y": -1.59, "label": "SI 2020", "highlight": false}, {"x": -6.65, "y": -7.09, "label": "SI 2021", "highlight": false}, {"x": -6.65, "y": -4.39, "label": "SI 2022", "highlight": false}, {"x": -8.55, "y": -4.09, "label": "SI 2023", "highlight": false}, {"x": -8.05, "y": -4.99, "label": "SI 2024", "highlight": false}, {"x": 5.87, "y": 4.28, "label": "SK 2015", "highlight": false}, {"x": 7.07, "y": 1.18, "label": "SK 2016", "highlight": false}, {"x": 3.77, "y": -2.22, "label": "SK 2017", "highlight": false}, {"x": 0.67, "y": -3.02, "label": "SK 2018", "highlight": false}, {"x": -0.83, "y": -0.12, "label": "SK 2019", "highlight": false}, {"x": -4.73, "y": 0.28, "label": "SK 2020", "highlight": false}, {"x": -3.83, "y": -1.82, "label": "SK 2021", "highlight": false}, {"x": -3.83, "y": -0.72, "label": "SK 2022", "highlight": false}, {"x": -1.53, "y": 1.88, "label": "SK 2023", "highlight": false}, {"x": -2.63, "y": 0.28, "label": "SK 2024", "highlight": false}], "r": 0.78, "dp": 2, "xLabel": "Cannot meet an unexpected expense, deviation from country mean", "yLabel": "Reported hardship, deviation from country mean", "alt": "Reported hardship against cannot meet an unexpected expense, country means removed"}</script><script type="application/json" data-kind="scatter" data-label="Cannot keep the home warm">{"points": [{"x": 0.11, "y": 1.62, "label": "AT 2015", "highlight": false}, {"x": 0.21, "y": 1.02, "label": "AT 2016", "highlight": false}, {"x": -0.09, "y": -0.28, "label": "AT 2017", "highlight": false}, {"x": -0.89, "y": -0.48, "label": "AT 2018", "highlight": false}, {"x": -0.69, "y": -1.08, "label": "AT 2019", "highlight": false}, {"x": -0.99, "y": -2.38, "label": "AT 2020", "highlight": false}, {"x": -0.79, "y": -1.68, "label": "AT 2021", "highlight": false}, {"x": 0.21, "y": 0.12, "label": "AT 2022", "highlight": false}, {"x": 1.41, "y": 1.82, "label": "AT 2023", "highlight": false}, {"x": 1.51, "y": 1.32, "label": "AT 2024", "highlight": false}, {"x": 0.36, "y": 2.22, "label": "BE 2015", "highlight": false}, {"x": -0.04, "y": 3.22, "label": "BE 2016", "highlight": false}, {"x": 0.96, "y": 2.62, "label": "BE 2017", "highlight": false}, {"x": 0.36, "y": 0.82, "label": "BE 2018", "highlight": false}, {"x": -0.94, "y": 0.82, "label": "BE 2019", "highlight": false}, {"x": -0.64, "y": -1.48, "label": "BE 2020", "highlight": false}, {"x": -1.34, "y": -2.68, "label": "BE 2021", "highlight": false}, {"x": 0.16, "y": -1.58, "label": "BE 2022", "highlight": false}, {"x": 1.16, "y": -2.78, "label": "BE 2023", "highlight": false}, {"x": -0.04, "y": -1.18, "label": "BE 2024", "highlight": false}, {"x": 9.99, "y": 15.82, "label": "BG 2015", "highlight": false}, {"x": 9.99, "y": 13.52, "label": "BG 2016", "highlight": false}, {"x": 7.29, "y": 10.22, "label": "BG 2017", "highlight": false}, {"x": 4.49, "y": 7.72, "label": "BG 2018", "highlight": false}, {"x": 0.89, "y": 1.92, "label": "BG 2019", "highlight": false}, {"x": -1.71, "y": -4.48, "label": "BG 2020", "highlight": false}, {"x": -5.51, "y": -11.08, "label": "BG 2021", "highlight": false}, {"x": -6.71, "y": -7.88, "label": "BG 2022", "highlight": false}, {"x": -8.51, "y": -14.98, "label": "BG 2023", "highlight": false}, {"x": -10.21, "y": -10.78, "label": "BG 2024", "highlight": false}, {"x": 7.41, "y": 21.57, "label": "CY 2015", "highlight": false}, {"x": 3.41, "y": 22.57, "label": "CY 2016", "highlight": false}, {"x": 2.01, "y": 6.37, "label": "CY 2017", "highlight": false}, {"x": 1.01, "y": 9.17, "label": "CY 2018", "highlight": false}, {"x": -0.29, "y": -0.93, "label": "CY 2019", "highlight": false}, {"x": 0.11, "y": -10.53, "label": "CY 2020", "highlight": false}, {"x": -1.69, "y": -11.13, "label": "CY 2021", "highlight": false}, {"x": -1.89, "y": -7.63, "label": "CY 2022", "highlight": false}, {"x": -3.79, "y": -13.03, "label": "CY 2023", "highlight": false}, {"x": -6.29, "y": -16.43, "label": "CY 2024", "highlight": false}, {"x": 1.43, "y": 10.15, "label": "CZ 2015", "highlight": false}, {"x": 0.23, "y": 6.75, "label": "CZ 2016", "highlight": false}, {"x": -0.47, "y": 5.55, "label": "CZ 2017", "highlight": false}, {"x": -0.87, "y": -0.25, "label": "CZ 2018", "highlight": false}, {"x": -0.77, "y": -3.35, "label": "CZ 2019", "highlight": false}, {"x": -1.37, "y": -4.35, "label": "CZ 2020", "highlight": false}, {"x": -1.37, "y": -5.05, "label": "CZ 2021", "highlight": false}, {"x": -0.67, "y": -4.15, "label": "CZ 2022", "highlight": false}, {"x": 2.53, "y": -3.05, "label": "CZ 2023", "highlight": false}, {"x": 1.33, "y": -2.25, "label": "CZ 2024", "highlight": false}, {"x": -0.68, "y": 0.65, "label": "DE 2015", "highlight": false}, {"x": -1.08, "y": -0.05, "label": "DE 2016", "highlight": false}, {"x": -1.48, "y": -0.85, "label": "DE 2017", "highlight": false}, {"x": -2.08, "y": -1.05, "label": "DE 2018", "highlight": false}, {"x": -2.28, "y": -1.85, "label": "DE 2019", "highlight": false}, {"x": 2.22, "y": -1.25, "label": "DE 2020", "highlight": false}, {"x": -1.48, "y": -0.25, "label": "DE 2021", "highlight": false}, {"x": 1.92, "y": 1.55, "label": "DE 2022", "highlight": false}, {"x": 3.42, "y": 2.75, "label": "DE 2023", "highlight": false}, {"x": 1.52, "y": 0.35, "label": "DE 2024", "highlight": false}, {"x": -0.1, "y": 0.26, "label": "DK 2015", "highlight": false}, {"x": -1.0, "y": -0.14, "label": "DK 2016", "highlight": false}, {"x": -1.0, "y": -0.74, "label": "DK 2017", "highlight": false}, {"x": -0.7, "y": -0.84, "label": "DK 2018", "highlight": false}, {"x": -0.9, "y": -0.74, "label": "DK 2019", "highlight": false}, {"x": -0.7, "y": -1.64, "label": "DK 2020", "highlight": false}, {"x": -0.9, "y": -2.04, "label": "DK 2021", "highlight": false}, {"x": 1.4, "y": 0.16, "label": "DK 2022", "highlight": false}, {"x": 3.2, "y": 3.06, "label": "DK 2023", "highlight": false}, {"x": 0.7, "y": 2.66, "label": "DK 2024", "highlight": false}, {"x": -0.82, "y": 4.31, "label": "EE 2015", "highlight": false}, {"x": -0.12, "y": 3.51, "label": "EE 2016", "highlight": false}, {"x": 0.08, "y": 2.41, "label": "EE 2017", "highlight": false}, {"x": -0.52, "y": 2.01, "label": "EE 2018", "highlight": false}, {"x": -0.32, "y": -0.69, "label": "EE 2019", "highlight": false}, {"x": -0.12, "y": -2.79, "label": "EE 2020", "highlight": false}, {"x": -0.82, "y": -4.09, "label": "EE 2021", "highlight": false}, {"x": 0.58, "y": -2.39, "label": "EE 2022", "highlight": false}, {"x": 1.28, "y": -0.29, "label": "EE 2023", "highlight": false}, {"x": 0.78, "y": -1.99, "label": "EE 2024", "highlight": false}, {"x": 7.59, "y": 5.73, "label": "EL 2015", "highlight": true}, {"x": 7.49, "y": 4.83, "label": "EL 2016", "highlight": true}, {"x": 4.09, "y": 5.23, "label": "EL 2017", "highlight": true}, {"x": 1.09, "y": 2.13, "label": "EL 2018", "highlight": true}, {"x": -3.71, "y": -0.97, "label": "EL 2019", "highlight": true}, {"x": -4.51, "y": -2.17, "label": "EL 2020", "highlight": true}, {"x": -4.11, "y": -0.97, "label": "EL 2021", "highlight": true}, {"x": -2.91, "y": -3.57, "label": "EL 2022", "highlight": true}, {"x": -2.41, "y": -4.97, "label": "EL 2023", "highlight": true}, {"x": -2.61, "y": -5.27, "label": "EL 2024", "highlight": true}, {"x": -1.98, "y": 9.6, "label": "ES 2015", "highlight": false}, {"x": -2.48, "y": 10.0, "label": "ES 2016", "highlight": false}, {"x": -4.58, "y": -0.5, "label": "ES 2017", "highlight": false}, {"x": -3.48, "y": 1.5, "label": "ES 2018", "highlight": false}, {"x": -5.08, "y": -3.6, "label": "ES 2019", "highlight": false}, {"x": -1.68, "y": -2.8, "label": "ES 2020", "highlight": false}, {"x": 1.62, "y": -4.0, "label": "ES 2021", "highlight": false}, {"x": 4.52, "y": -3.5, "label": "ES 2022", "highlight": false}, {"x": 8.22, "y": -3.0, "label": "ES 2023", "highlight": false}, {"x": 4.92, "y": -3.7, "label": "ES 2024", "highlight": false}, {"x": -0.17, "y": 0.17, "label": "FI 2015", "highlight": false}, {"x": -0.17, "y": 0.07, "label": "FI 2016", "highlight": false}, {"x": 0.13, "y": -0.13, "label": "FI 2017", "highlight": false}, {"x": -0.17, "y": -0.73, "label": "FI 2018", "highlight": false}, {"x": -0.07, "y": -0.43, "label": "FI 2019", "highlight": false}, {"x": -0.07, "y": -0.03, "label": "FI 2020", "highlight": false}, {"x": -0.57, "y": -0.93, "label": "FI 2021", "highlight": false}, {"x": -0.47, "y": -0.73, "label": "FI 2022", "highlight": false}, {"x": 0.73, "y": 0.67, "label": "FI 2023", "highlight": false}, {"x": 0.83, "y": 2.07, "label": "FI 2024", "highlight": false}, {"x": -1.89, "y": 0.6, "label": "FR 2015", "highlight": false}, {"x": -2.39, "y": -0.1, "label": "FR 2016", "highlight": false}, {"x": -2.49, "y": -1.2, "label": "FR 2017", "highlight": false}, {"x": -2.39, "y": -1.0, "label": "FR 2018", "highlight": false}, {"x": -1.19, "y": -2.5, "label": "FR 2019", "highlight": false}, {"x": -0.69, "y": -0.8, "label": "FR 2020", "highlight": false}, {"x": -1.39, "y": -2.7, "label": "FR 2021", "highlight": false}, {"x": 3.31, "y": 2.4, "label": "FR 2022", "highlight": false}, {"x": 4.71, "y": 2.8, "label": "FR 2023", "highlight": false}, {"x": 4.41, "y": 2.5, "label": "FR 2024", "highlight": false}, {"x": 2.89, "y": 18.69, "label": "HR 2015", "highlight": false}, {"x": 2.29, "y": 15.69, "label": "HR 2016", "highlight": false}, {"x": 0.39, "y": 8.19, "label": "HR 2017", "highlight": false}, {"x": 0.69, "y": 6.99, "label": "HR 2018", "highlight": false}, {"x": -0.41, "y": -0.21, "label": "HR 2019", "highlight": false}, {"x": -1.31, "y": -2.21, "label": "HR 2020", "highlight": false}, {"x": -1.31, "y": -8.41, "label": "HR 2021", "highlight": false}, {"x": -0.01, "y": -9.11, "label": "HR 2022", "highlight": false}, {"x": -0.81, "y": -13.71, "label": "HR 2023", "highlight": false}, {"x": -2.41, "y": -15.91, "label": "HR 2024", "highlight": false}, {"x": 3.17, "y": 15.45, "label": "HU 2015", "highlight": false}, {"x": 2.77, "y": 11.65, "label": "HU 2016", "highlight": false}, {"x": 0.37, "y": 10.05, "label": "HU 2017", "highlight": false}, {"x": -0.33, "y": 3.55, "label": "HU 2018", "highlight": false}, {"x": -1.03, "y": -3.45, "label": "HU 2019", "highlight": false}, {"x": -2.33, "y": -3.75, "label": "HU 2020", "highlight": false}, {"x": -1.03, "y": -4.45, "label": "HU 2021", "highlight": false}, {"x": -1.83, "y": -9.15, "label": "HU 2022", "highlight": false}, {"x": 0.67, "y": -8.55, "label": "HU 2023", "highlight": false}, {"x": -0.43, "y": -11.35, "label": "HU 2024", "highlight": false}, {"x": 3.53, "y": 11.22, "label": "IE 2015", "highlight": false}, {"x": 0.43, "y": 6.82, "label": "IE 2016", "highlight": false}, {"x": -1.07, "y": 3.02, "label": "IE 2017", "highlight": false}, {"x": -1.07, "y": 0.32, "label": "IE 2018", "highlight": false}, {"x": -0.37, "y": -2.08, "label": "IE 2019", "highlight": false}, {"x": -1.87, "y": -3.78, "label": "IE 2020", "highlight": false}, {"x": -2.07, "y": -5.18, "label": "IE 2021", "highlight": false}, {"x": 1.33, "y": -2.68, "label": "IE 2022", "highlight": false}, {"x": 1.73, "y": -3.98, "label": "IE 2023", "highlight": false}, {"x": -0.57, "y": -3.68, "label": "IE 2024", "highlight": false}, {"x": 5.32, "y": 11.87, "label": "IT 2015", "highlight": false}, {"x": 4.42, "y": 7.27, "label": "IT 2016", "highlight": false}, {"x": 3.52, "y": 2.07, "label": "IT 2017", "highlight": false}, {"x": 2.42, "y": 4.27, "label": "IT 2018", "highlight": false}, {"x": -0.58, "y": -3.13, "label": "IT 2019", "highlight": false}, {"x": -3.38, "y": -2.23, "label": "IT 2020", "highlight": false}, {"x": -3.58, "y": -1.73, "label": "IT 2021", "highlight": false}, {"x": -2.88, "y": -3.73, "label": "IT 2022", "highlight": false}, {"x": -2.18, "y": -7.33, "label": "IT 2023", "highlight": false}, {"x": -3.08, "y": -7.33, "label": "IT 2024", "highlight": false}, {"x": 6.6, "y": 9.45, "label": "LT 2015", "highlight": false}, {"x": 4.8, "y": 10.15, "label": "LT 2016", "highlight": false}, {"x": 4.4, "y": 8.75, "label": "LT 2017", "highlight": false}, {"x": 3.4, "y": 3.95, "label": "LT 2018", "highlight": false}, {"x": 2.2, "y": -0.45, "label": "LT 2019", "highlight": false}, {"x": -1.4, "y": -4.35, "label": "LT 2020", "highlight": false}, {"x": -2.0, "y": -6.55, "label": "LT 2021", "highlight": false}, {"x": -7.0, "y": -6.85, "label": "LT 2022", "highlight": false}, {"x": -4.5, "y": -6.05, "label": "LT 2023", "highlight": false}, {"x": -6.5, "y": -8.05, "label": "LT 2024", "highlight": false}, {"x": -1.39, "y": 2.05, "label": "LU 2015", "highlight": false}, {"x": -0.59, "y": 2.05, "label": "LU 2016", "highlight": false}, {"x": -0.39, "y": 2.25, "label": "LU 2017", "highlight": false}, {"x": -0.19, "y": 2.45, "label": "LU 2018", "highlight": false}, {"x": 0.11, "y": 0.15, "label": "LU 2019", "highlight": false}, {"x": 1.31, "y": 2.05, "label": "LU 2020", "highlight": false}, {"x": 0.21, "y": -0.35, "label": "LU 2021", "highlight": false}, {"x": -0.19, "y": -4.55, "label": "LU 2022", "highlight": false}, {"x": -0.19, "y": -4.25, "label": "LU 2023", "highlight": false}, {"x": 1.31, "y": -1.85, "label": "LU 2024", "highlight": false}, {"x": 6.52, "y": 13.19, "label": "LV 2015", "highlight": false}, {"x": 2.62, "y": 9.79, "label": "LV 2016", "highlight": false}, {"x": 1.72, "y": 10.99, "label": "LV 2017", "highlight": false}, {"x": -0.48, "y": 2.59, "label": "LV 2018", "highlight": false}, {"x": 0.02, "y": -4.51, "label": "LV 2019", "highlight": false}, {"x": -1.98, "y": -5.31, "label": "LV 2020", "highlight": false}, {"x": -3.08, "y": -9.41, "label": "LV 2021", "highlight": false}, {"x": -0.88, "y": -5.61, "label": "LV 2022", "highlight": false}, {"x": -1.38, "y": -5.51, "label": "LV 2023", "highlight": false}, {"x": -3.08, "y": -6.21, "label": "LV 2024", "highlight": false}, {"x": 6.14, "y": 4.59, "label": "MT 2015", "highlight": false}, {"x": -1.36, "y": 2.89, "label": "MT 2016", "highlight": false}, {"x": -1.66, "y": -0.91, "label": "MT 2017", "highlight": false}, {"x": -0.36, "y": -2.91, "label": "MT 2018", "highlight": false}, {"x": -0.16, "y": -4.71, "label": "MT 2019", "highlight": false}, {"x": -0.76, "y": -1.61, "label": "MT 2020", "highlight": false}, {"x": -0.16, "y": -1.61, "label": "MT 2021", "highlight": false}, {"x": -0.36, "y": 4.39, "label": "MT 2022", "highlight": false}, {"x": -1.16, "y": -0.41, "label": "MT 2023", "highlight": false}, {"x": -0.16, "y": 0.29, "label": "MT 2024", "highlight": false}, {"x": -0.84, "y": 3.73, "label": "NL 2015", "highlight": false}, {"x": -1.14, "y": 3.43, "label": "NL 2016", "highlight": false}, {"x": -1.34, "y": 2.33, "label": "NL 2017", "highlight": false}, {"x": -1.54, "y": 0.83, "label": "NL 2018", "highlight": false}, {"x": -0.74, "y": 0.93, "label": "NL 2019", "highlight": false}, {"x": -1.34, "y": -1.67, "label": "NL 2020", "highlight": false}, {"x": -1.34, "y": -3.57, "label": "NL 2021", "highlight": false}, {"x": 1.56, "y": -2.27, "label": "NL 2022", "highlight": false}, {"x": 3.36, "y": -1.87, "label": "NL 2023", "highlight": false}, {"x": 3.36, "y": -1.87, "label": "NL 2024", "highlight": false}, {"x": 2.58, "y": 11.19, "label": "PL 2015", "highlight": false}, {"x": 2.18, "y": 6.59, "label": "PL 2016", "highlight": false}, {"x": 1.08, "y": 3.89, "label": "PL 2017", "highlight": false}, {"x": 0.18, "y": 0.39, "label": "PL 2018", "highlight": false}, {"x": -0.72, "y": -2.51, "label": "PL 2019", "highlight": false}, {"x": -1.72, "y": -2.31, "label": "PL 2020", "highlight": false}, {"x": -1.72, "y": -4.51, "label": "PL 2021", "highlight": false}, {"x": -0.02, "y": -2.91, "label": "PL 2022", "highlight": false}, {"x": -0.22, "y": -3.11, "label": "PL 2023", "highlight": false}, {"x": -1.62, "y": -6.71, "label": "PL 2024", "highlight": false}, {"x": 4.51, "y": 12.8, "label": "PT 2015", "highlight": false}, {"x": 3.21, "y": 9.1, "label": "PT 2016", "highlight": false}, {"x": 1.11, "y": 6.0, "label": "PT 2017", "highlight": false}, {"x": 0.11, "y": 1.6, "label": "PT 2018", "highlight": false}, {"x": -0.39, "y": -1.8, "label": "PT 2019", "highlight": false}, {"x": -1.79, "y": -6.9, "label": "PT 2020", "highlight": false}, {"x": -2.89, "y": -6.7, "label": "PT 2021", "highlight": false}, {"x": -1.79, "y": -4.3, "label": "PT 2022", "highlight": false}, {"x": 1.51, "y": -4.0, "label": "PT 2023", "highlight": false}, {"x": -3.59, "y": -5.8, "label": "PT 2024", "highlight": false}, {"x": 1.53, "y": 11.85, "label": "RO 2015", "highlight": false}, {"x": 2.23, "y": 10.35, "label": "RO 2016", "highlight": false}, {"x": -0.27, "y": 3.65, "label": "RO 2017", "highlight": false}, {"x": -1.97, "y": 2.25, "label": "RO 2018", "highlight": false}, {"x": -2.27, "y": -1.75, "label": "RO 2019", "highlight": false}, {"x": -1.57, "y": 2.15, "label": "RO 2020", "highlight": false}, {"x": -1.47, "y": -4.75, "label": "RO 2021", "highlight": false}, {"x": 3.63, "y": -7.75, "label": "RO 2022", "highlight": false}, {"x": 0.93, "y": -6.05, "label": "RO 2023", "highlight": false}, {"x": -0.77, "y": -9.95, "label": "RO 2024", "highlight": false}, {"x": -1.58, "y": -0.75, "label": "SE 2015", "highlight": false}, {"x": -0.18, "y": -0.25, "label": "SE 2016", "highlight": false}, {"x": -0.68, "y": -0.85, "label": "SE 2017", "highlight": false}, {"x": -0.48, "y": 0.15, "label": "SE 2018", "highlight": false}, {"x": -0.88, "y": -0.25, "label": "SE 2019", "highlight": false}, {"x": -0.08, "y": -0.45, "label": "SE 2020", "highlight": false}, {"x": -1.08, "y": -0.45, "label": "SE 2021", "highlight": false}, {"x": 0.52, "y": -0.65, "label": "SE 2022", "highlight": false}, {"x": 3.12, "y": 1.45, "label": "SE 2023", "highlight": false}, {"x": 1.32, "y": 2.05, "label": "SE 2024", "highlight": false}, {"x": 2.21, "y": 10.11, "label": "SI 2015", "highlight": false}, {"x": 1.41, "y": 7.31, "label": "SI 2016", "highlight": false}, {"x": 0.51, "y": 4.01, "label": "SI 2017", "highlight": false}, {"x": -0.09, "y": 1.91, "label": "SI 2018", "highlight": false}, {"x": -1.09, "y": -1.19, "label": "SI 2019", "highlight": false}, {"x": -0.59, "y": -1.59, "label": "SI 2020", "highlight": false}, {"x": -1.69, "y": -7.09, "label": "SI 2021", "highlight": false}, {"x": -0.79, "y": -4.39, "label": "SI 2022", "highlight": false}, {"x": 0.21, "y": -4.09, "label": "SI 2023", "highlight": false}, {"x": -0.09, "y": -4.99, "label": "SI 2024", "highlight": false}, {"x": -0.48, "y": 4.28, "label": "SK 2015", "highlight": false}, {"x": -1.18, "y": 1.18, "label": "SK 2016", "highlight": false}, {"x": -1.98, "y": -2.22, "label": "SK 2017", "highlight": false}, {"x": -1.48, "y": -3.02, "label": "SK 2018", "highlight": false}, {"x": 1.52, "y": -0.12, "label": "SK 2019", "highlight": false}, {"x": -0.58, "y": 0.28, "label": "SK 2020", "highlight": false}, {"x": -0.48, "y": -1.82, "label": "SK 2021", "highlight": false}, {"x": 0.82, "y": -0.72, "label": "SK 2022", "highlight": false}, {"x": 1.82, "y": 1.88, "label": "SK 2023", "highlight": false}, {"x": 2.02, "y": 0.28, "label": "SK 2024", "highlight": false}], "r": 0.626, "dp": 2, "xLabel": "Cannot keep the home warm, deviation from country mean", "yLabel": "Reported hardship, deviation from country mean", "alt": "Reported hardship against cannot keep the home warm, country means removed"}</script><script type="application/json" data-kind="scatter" data-label="Material deprivation">{"points": [{"x": -0.06, "y": 1.62, "label": "AT 2015", "highlight": false}, {"x": 0.34, "y": 1.02, "label": "AT 2016", "highlight": false}, {"x": 0.44, "y": -0.28, "label": "AT 2017", "highlight": false}, {"x": -0.16, "y": -0.48, "label": "AT 2018", "highlight": false}, {"x": -0.26, "y": -1.08, "label": "AT 2019", "highlight": false}, {"x": 0.04, "y": -2.38, "label": "AT 2020", "highlight": false}, {"x": -1.16, "y": -1.68, "label": "AT 2021", "highlight": false}, {"x": -0.66, "y": 0.12, "label": "AT 2022", "highlight": false}, {"x": 0.74, "y": 1.82, "label": "AT 2023", "highlight": false}, {"x": 0.74, "y": 1.32, "label": "AT 2024", "highlight": false}, {"x": 0.56, "y": 2.22, "label": "BE 2015", "highlight": false}, {"x": 1.76, "y": 3.22, "label": "BE 2016", "highlight": false}, {"x": 0.56, "y": 2.62, "label": "BE 2017", "highlight": false}, {"x": -0.14, "y": 0.82, "label": "BE 2018", "highlight": false}, {"x": -0.44, "y": 0.82, "label": "BE 2019", "highlight": false}, {"x": 0.06, "y": -1.48, "label": "BE 2020", "highlight": false}, {"x": -0.44, "y": -2.68, "label": "BE 2021", "highlight": false}, {"x": -0.94, "y": -1.58, "label": "BE 2022", "highlight": false}, {"x": -0.54, "y": -2.78, "label": "BE 2023", "highlight": false}, {"x": -0.44, "y": -1.18, "label": "BE 2024", "highlight": false}, {"x": 12.88, "y": 15.82, "label": "BG 2015", "highlight": false}, {"x": 9.58, "y": 13.52, "label": "BG 2016", "highlight": false}, {"x": 6.08, "y": 10.22, "label": "BG 2017", "highlight": false}, {"x": -1.62, "y": 7.72, "label": "BG 2018", "highlight": false}, {"x": -1.82, "y": 1.92, "label": "BG 2019", "highlight": false}, {"x": -1.82, "y": -4.48, "label": "BG 2020", "highlight": false}, {"x": -4.82, "y": -11.08, "label": "BG 2021", "highlight": false}, {"x": -5.22, "y": -7.88, "label": "BG 2022", "highlight": false}, {"x": -5.92, "y": -14.98, "label": "BG 2023", "highlight": false}, {"x": -7.32, "y": -10.78, "label": "BG 2024", "highlight": false}, {"x": 3.82, "y": 21.57, "label": "CY 2015", "highlight": false}, {"x": 2.52, "y": 22.57, "label": "CY 2016", "highlight": false}, {"x": 2.02, "y": 6.37, "label": "CY 2017", "highlight": false}, {"x": -0.28, "y": 9.17, "label": "CY 2018", "highlight": false}, {"x": -0.98, "y": -0.93, "label": "CY 2019", "highlight": false}, {"x": -0.78, "y": -10.53, "label": "CY 2020", "highlight": false}, {"x": -1.68, "y": -11.13, "label": "CY 2021", "highlight": false}, {"x": -1.38, "y": -7.63, "label": "CY 2022", "highlight": false}, {"x": -1.68, "y": -13.03, "label": "CY 2023", "highlight": false}, {"x": -1.58, "y": -16.43, "label": "CY 2024", "highlight": false}, {"x": 1.8, "y": 10.15, "label": "CZ 2015", "highlight": false}, {"x": 0.8, "y": 6.75, "label": "CZ 2016", "highlight": false}, {"x": 0.7, "y": 5.55, "label": "CZ 2017", "highlight": false}, {"x": -0.3, "y": -0.25, "label": "CZ 2018", "highlight": false}, {"x": -0.6, "y": -3.35, "label": "CZ 2019", "highlight": false}, {"x": -0.8, "y": -4.35, "label": "CZ 2020", "highlight": false}, {"x": -0.9, "y": -5.05, "label": "CZ 2021", "highlight": false}, {"x": -0.6, "y": -4.15, "label": "CZ 2022", "highlight": false}, {"x": 0.0, "y": -3.05, "label": "CZ 2023", "highlight": false}, {"x": -0.1, "y": -2.25, "label": "CZ 2024", "highlight": false}, {"x": 0.85, "y": 0.65, "label": "DE 2015", "highlight": false}, {"x": -0.15, "y": -0.05, "label": "DE 2016", "highlight": false}, {"x": -1.15, "y": -0.85, "label": "DE 2017", "highlight": false}, {"x": -1.45, "y": -1.05, "label": "DE 2018", "highlight": false}, {"x": -1.85, "y": -1.85, "label": "DE 2019", "highlight": false}, {"x": -0.45, "y": -1.25, "label": "DE 2020", "highlight": false}, {"x": -0.55, "y": -0.25, "label": "DE 2021", "highlight": false}, {"x": 1.35, "y": 1.55, "label": "DE 2022", "highlight": false}, {"x": 2.05, "y": 2.75, "label": "DE 2023", "highlight": false}, {"x": 1.35, "y": 0.35, "label": "DE 2024", "highlight": false}, {"x": -0.34, "y": 0.26, "label": "DK 2015", "highlight": false}, {"x": -0.94, "y": -0.14, "label": "DK 2016", "highlight": false}, {"x": 0.06, "y": -0.74, "label": "DK 2017", "highlight": false}, {"x": -0.04, "y": -0.84, "label": "DK 2018", "highlight": false}, {"x": 0.26, "y": -0.74, "label": "DK 2019", "highlight": false}, {"x": -0.04, "y": -1.64, "label": "DK 2020", "highlight": false}, {"x": -0.44, "y": -2.04, "label": "DK 2021", "highlight": false}, {"x": -0.34, "y": 0.16, "label": "DK 2022", "highlight": false}, {"x": 1.36, "y": 3.06, "label": "DK 2023", "highlight": false}, {"x": 0.46, "y": 2.66, "label": "DK 2024", "highlight": false}, {"x": 0.65, "y": 4.31, "label": "EE 2015", "highlight": false}, {"x": -0.65, "y": 3.51, "label": "EE 2016", "highlight": false}, {"x": 1.15, "y": 2.41, "label": "EE 2017", "highlight": false}, {"x": 0.25, "y": 2.01, "label": "EE 2018", "highlight": false}, {"x": -0.25, "y": -0.69, "label": "EE 2019", "highlight": false}, {"x": -0.55, "y": -2.79, "label": "EE 2020", "highlight": false}, {"x": -0.95, "y": -4.09, "label": "EE 2021", "highlight": false}, {"x": 0.45, "y": -2.39, "label": "EE 2022", "highlight": false}, {"x": -0.35, "y": -0.29, "label": "EE 2023", "highlight": false}, {"x": 0.25, "y": -1.99, "label": "EE 2024", "highlight": false}, {"x": 1.96, "y": 5.73, "label": "EL 2015", "highlight": true}, {"x": 2.76, "y": 4.83, "label": "EL 2016", "highlight": true}, {"x": 2.66, "y": 5.23, "label": "EL 2017", "highlight": true}, {"x": 0.46, "y": 2.13, "label": "EL 2018", "highlight": true}, {"x": 0.16, "y": -0.97, "label": "EL 2019", "highlight": true}, {"x": -0.74, "y": -2.17, "label": "EL 2020", "highlight": true}, {"x": -1.74, "y": -0.97, "label": "EL 2021", "highlight": true}, {"x": -1.74, "y": -3.57, "label": "EL 2022", "highlight": true}, {"x": -2.14, "y": -4.97, "label": "EL 2023", "highlight": true}, {"x": -1.64, "y": -5.27, "label": "EL 2024", "highlight": true}, {"x": -0.84, "y": 9.6, "label": "ES 2015", "highlight": false}, {"x": 0.26, "y": 10.0, "label": "ES 2016", "highlight": false}, {"x": 0.06, "y": -0.5, "label": "ES 2017", "highlight": false}, {"x": 0.46, "y": 1.5, "label": "ES 2018", "highlight": false}, {"x": -0.54, "y": -3.6, "label": "ES 2019", "highlight": false}, {"x": 0.26, "y": -2.8, "label": "ES 2020", "highlight": false}, {"x": 0.06, "y": -4.0, "label": "ES 2021", "highlight": false}, {"x": -0.54, "y": -3.5, "label": "ES 2022", "highlight": false}, {"x": 0.76, "y": -3.0, "label": "ES 2023", "highlight": false}, {"x": 0.06, "y": -3.7, "label": "ES 2024", "highlight": false}, {"x": -0.94, "y": 0.17, "label": "FI 2015", "highlight": false}, {"x": -0.74, "y": 0.07, "label": "FI 2016", "highlight": false}, {"x": -0.14, "y": -0.13, "label": "FI 2017", "highlight": false}, {"x": 0.26, "y": -0.73, "label": "FI 2018", "highlight": false}, {"x": -0.04, "y": -0.43, "label": "FI 2019", "highlight": false}, {"x": -0.14, "y": -0.03, "label": "FI 2020", "highlight": false}, {"x": -0.84, "y": -0.93, "label": "FI 2021", "highlight": false}, {"x": -0.04, "y": -0.73, "label": "FI 2022", "highlight": false}, {"x": 0.86, "y": 0.67, "label": "FI 2023", "highlight": false}, {"x": 1.76, "y": 2.07, "label": "FI 2024", "highlight": false}, {"x": 0.21, "y": 0.6, "label": "FR 2015", "highlight": false}, {"x": 0.11, "y": -0.1, "label": "FR 2016", "highlight": false}, {"x": -0.29, "y": -1.2, "label": "FR 2017", "highlight": false}, {"x": 0.11, "y": -1.0, "label": "FR 2018", "highlight": false}, {"x": 0.71, "y": -2.5, "label": "FR 2019", "highlight": false}, {"x": -0.19, "y": -0.8, "label": "FR 2020", "highlight": false}, {"x": -1.09, "y": -2.7, "label": "FR 2021", "highlight": false}, {"x": 0.41, "y": 2.4, "label": "FR 2022", "highlight": false}, {"x": 0.01, "y": 2.8, "label": "FR 2023", "highlight": false}, {"x": 0.01, "y": 2.5, "label": "FR 2024", "highlight": false}, {"x": 3.38, "y": 18.69, "label": "HR 2015", "highlight": false}, {"x": 2.28, "y": 15.69, "label": "HR 2016", "highlight": false}, {"x": 2.08, "y": 8.19, "label": "HR 2017", "highlight": false}, {"x": 1.08, "y": 6.99, "label": "HR 2018", "highlight": false}, {"x": -0.42, "y": -0.21, "label": "HR 2019", "highlight": false}, {"x": -0.62, "y": -2.21, "label": "HR 2020", "highlight": false}, {"x": -1.52, "y": -8.41, "label": "HR 2021", "highlight": false}, {"x": -1.02, "y": -9.11, "label": "HR 2022", "highlight": false}, {"x": -2.22, "y": -13.71, "label": "HR 2023", "highlight": false}, {"x": -3.02, "y": -15.91, "label": "HR 2024", "highlight": false}, {"x": 10.76, "y": 15.45, "label": "HU 2015", "highlight": false}, {"x": 7.26, "y": 11.65, "label": "HU 2016", "highlight": false}, {"x": 2.76, "y": 10.05, "label": "HU 2017", "highlight": false}, {"x": -1.44, "y": 3.55, "label": "HU 2018", "highlight": false}, {"x": -2.54, "y": -3.45, "label": "HU 2019", "highlight": false}, {"x": -2.64, "y": -3.75, "label": "HU 2020", "highlight": false}, {"x": -2.84, "y": -4.45, "label": "HU 2021", "highlight": false}, {"x": -4.24, "y": -9.15, "label": "HU 2022", "highlight": false}, {"x": -3.04, "y": -8.55, "label": "HU 2023", "highlight": false}, {"x": -4.04, "y": -11.35, "label": "HU 2024", "highlight": false}, {"x": 3.04, "y": 11.22, "label": "IE 2015", "highlight": false}, {"x": 1.64, "y": 6.82, "label": "IE 2016", "highlight": false}, {"x": 0.54, "y": 3.02, "label": "IE 2017", "highlight": false}, {"x": -0.26, "y": 0.32, "label": "IE 2018", "highlight": false}, {"x": 0.14, "y": -2.08, "label": "IE 2019", "highlight": false}, {"x": -0.26, "y": -3.78, "label": "IE 2020", "highlight": false}, {"x": -1.56, "y": -5.18, "label": "IE 2021", "highlight": false}, {"x": -1.06, "y": -2.68, "label": "IE 2022", "highlight": false}, {"x": -0.36, "y": -3.98, "label": "IE 2023", "highlight": false}, {"x": -1.86, "y": -3.68, "label": "IE 2024", "highlight": false}, {"x": 5.34, "y": 11.87, "label": "IT 2015", "highlight": false}, {"x": 3.34, "y": 7.27, "label": "IT 2016", "highlight": false}, {"x": -0.16, "y": 2.07, "label": "IT 2017", "highlight": false}, {"x": -0.26, "y": 4.27, "label": "IT 2018", "highlight": false}, {"x": -0.36, "y": -3.13, "label": "IT 2019", "highlight": false}, {"x": -0.56, "y": -2.23, "label": "IT 2020", "highlight": false}, {"x": -0.86, "y": -1.73, "label": "IT 2021", "highlight": false}, {"x": -2.26, "y": -3.73, "label": "IT 2022", "highlight": false}, {"x": -2.06, "y": -7.33, "label": "IT 2023", "highlight": false}, {"x": -2.16, "y": -7.33, "label": "IT 2024", "highlight": false}, {"x": 4.72, "y": 9.45, "label": "LT 2015", "highlight": false}, {"x": 5.52, "y": 10.15, "label": "LT 2016", "highlight": false}, {"x": 4.52, "y": 8.75, "label": "LT 2017", "highlight": false}, {"x": 2.12, "y": 3.95, "label": "LT 2018", "highlight": false}, {"x": -0.18, "y": -0.45, "label": "LT 2019", "highlight": false}, {"x": -1.78, "y": -4.35, "label": "LT 2020", "highlight": false}, {"x": -3.48, "y": -6.55, "label": "LT 2021", "highlight": false}, {"x": -3.88, "y": -6.85, "label": "LT 2022", "highlight": false}, {"x": -3.78, "y": -6.05, "label": "LT 2023", "highlight": false}, {"x": -3.78, "y": -8.05, "label": "LT 2024", "highlight": false}, {"x": 0.47, "y": 2.05, "label": "LU 2015", "highlight": false}, {"x": -0.03, "y": 2.05, "label": "LU 2016", "highlight": false}, {"x": -0.13, "y": 2.25, "label": "LU 2017", "highlight": false}, {"x": -0.43, "y": 2.45, "label": "LU 2018", "highlight": false}, {"x": -0.63, "y": 0.15, "label": "LU 2019", "highlight": false}, {"x": -0.33, "y": 2.05, "label": "LU 2020", "highlight": false}, {"x": 0.37, "y": -0.35, "label": "LU 2021", "highlight": false}, {"x": -0.03, "y": -4.55, "label": "LU 2022", "highlight": false}, {"x": 0.47, "y": -4.25, "label": "LU 2023", "highlight": false}, {"x": 0.27, "y": -1.85, "label": "LU 2024", "highlight": false}, {"x": 6.36, "y": 13.19, "label": "LV 2015", "highlight": false}, {"x": 3.56, "y": 9.79, "label": "LV 2016", "highlight": false}, {"x": 3.86, "y": 10.99, "label": "LV 2017", "highlight": false}, {"x": 1.36, "y": 2.59, "label": "LV 2018", "highlight": false}, {"x": -1.54, "y": -4.51, "label": "LV 2019", "highlight": false}, {"x": -2.04, "y": -5.31, "label": "LV 2020", "highlight": false}, {"x": -3.74, "y": -9.41, "label": "LV 2021", "highlight": false}, {"x": -1.24, "y": -5.61, "label": "LV 2022", "highlight": false}, {"x": -2.84, "y": -5.51, "label": "LV 2023", "highlight": false}, {"x": -3.74, "y": -6.21, "label": "LV 2024", "highlight": false}, {"x": 3.08, "y": 4.59, "label": "MT 2015", "highlight": false}, {"x": 0.08, "y": 2.89, "label": "MT 2016", "highlight": false}, {"x": -0.82, "y": -0.91, "label": "MT 2017", "highlight": false}, {"x": -0.42, "y": -2.91, "label": "MT 2018", "highlight": false}, {"x": -0.12, "y": -4.71, "label": "MT 2019", "highlight": false}, {"x": -0.02, "y": -1.61, "label": "MT 2020", "highlight": false}, {"x": 0.28, "y": -1.61, "label": "MT 2021", "highlight": false}, {"x": -0.22, "y": 4.39, "label": "MT 2022", "highlight": false}, {"x": -1.02, "y": -0.41, "label": "MT 2023", "highlight": false}, {"x": -0.82, "y": 0.29, "label": "MT 2024", "highlight": false}, {"x": 0.56, "y": 3.73, "label": "NL 2015", "highlight": false}, {"x": -0.04, "y": 3.43, "label": "NL 2016", "highlight": false}, {"x": -0.04, "y": 2.33, "label": "NL 2017", "highlight": false}, {"x": -0.04, "y": 0.83, "label": "NL 2018", "highlight": false}, {"x": 0.16, "y": 0.93, "label": "NL 2019", "highlight": false}, {"x": -0.44, "y": -1.67, "label": "NL 2020", "highlight": false}, {"x": -0.54, "y": -3.57, "label": "NL 2021", "highlight": false}, {"x": -0.14, "y": -2.27, "label": "NL 2022", "highlight": false}, {"x": 0.06, "y": -1.87, "label": "NL 2023", "highlight": false}, {"x": 0.46, "y": -1.87, "label": "NL 2024", "highlight": false}, {"x": 3.79, "y": 11.19, "label": "PL 2015", "highlight": false}, {"x": 1.39, "y": 6.59, "label": "PL 2016", "highlight": false}, {"x": 1.29, "y": 3.89, "label": "PL 2017", "highlight": false}, {"x": 0.49, "y": 0.39, "label": "PL 2018", "highlight": false}, {"x": -0.51, "y": -2.51, "label": "PL 2019", "highlight": false}, {"x": -1.41, "y": -2.31, "label": "PL 2020", "highlight": false}, {"x": -1.11, "y": -4.51, "label": "PL 2021", "highlight": false}, {"x": -1.21, "y": -2.91, "label": "PL 2022", "highlight": false}, {"x": -1.01, "y": -3.11, "label": "PL 2023", "highlight": false}, {"x": -1.71, "y": -6.71, "label": "PL 2024", "highlight": false}, {"x": 4.29, "y": 12.8, "label": "PT 2015", "highlight": false}, {"x": 2.49, "y": 9.1, "label": "PT 2016", "highlight": false}, {"x": 1.39, "y": 6.0, "label": "PT 2017", "highlight": false}, {"x": -0.01, "y": 1.6, "label": "PT 2018", "highlight": false}, {"x": -1.01, "y": -1.8, "label": "PT 2019", "highlight": false}, {"x": -1.21, "y": -6.9, "label": "PT 2020", "highlight": false}, {"x": -0.61, "y": -6.7, "label": "PT 2021", "highlight": false}, {"x": -1.31, "y": -4.3, "label": "PT 2022", "highlight": false}, {"x": -1.71, "y": -4.0, "label": "PT 2023", "highlight": false}, {"x": -2.31, "y": -5.8, "label": "PT 2024", "highlight": false}, {"x": 7.52, "y": 11.85, "label": "RO 2015", "highlight": false}, {"x": 9.42, "y": 10.35, "label": "RO 2016", "highlight": false}, {"x": 5.92, "y": 3.65, "label": "RO 2017", "highlight": false}, {"x": 1.82, "y": 2.25, "label": "RO 2018", "highlight": false}, {"x": -1.98, "y": -1.75, "label": "RO 2019", "highlight": false}, {"x": -1.18, "y": 2.15, "label": "RO 2020", "highlight": false}, {"x": -3.38, "y": -4.75, "label": "RO 2021", "highlight": false}, {"x": -2.18, "y": -7.75, "label": "RO 2022", "highlight": false}, {"x": -6.68, "y": -6.05, "label": "RO 2023", "highlight": false}, {"x": -9.28, "y": -9.95, "label": "RO 2024", "highlight": false}, {"x": -0.59, "y": -0.75, "label": "SE 2015", "highlight": false}, {"x": -0.99, "y": -0.25, "label": "SE 2016", "highlight": false}, {"x": -0.69, "y": -0.85, "label": "SE 2017", "highlight": false}, {"x": -0.29, "y": 0.15, "label": "SE 2018", "highlight": false}, {"x": -0.19, "y": -0.25, "label": "SE 2019", "highlight": false}, {"x": 0.31, "y": -0.45, "label": "SE 2020", "highlight": false}, {"x": -0.29, "y": -0.45, "label": "SE 2021", "highlight": false}, {"x": 0.61, "y": -0.65, "label": "SE 2022", "highlight": false}, {"x": 0.81, "y": 1.45, "label": "SE 2023", "highlight": false}, {"x": 1.31, "y": 2.05, "label": "SE 2024", "highlight": false}, {"x": 1.96, "y": 10.11, "label": "SI 2015", "highlight": false}, {"x": 1.26, "y": 7.31, "label": "SI 2016", "highlight": false}, {"x": 1.66, "y": 4.01, "label": "SI 2017", "highlight": false}, {"x": 0.36, "y": 1.91, "label": "SI 2018", "highlight": false}, {"x": -0.64, "y": -1.19, "label": "SI 2019", "highlight": false}, {"x": -0.24, "y": -1.59, "label": "SI 2020", "highlight": false}, {"x": -1.04, "y": -7.09, "label": "SI 2021", "highlight": false}, {"x": -1.44, "y": -4.39, "label": "SI 2022", "highlight": false}, {"x": -0.84, "y": -4.09, "label": "SI 2023", "highlight": false}, {"x": -1.04, "y": -4.99, "label": "SI 2024", "highlight": false}, {"x": 1.93, "y": 4.28, "label": "SK 2015", "highlight": false}, {"x": 1.13, "y": 1.18, "label": "SK 2016", "highlight": false}, {"x": -0.17, "y": -2.22, "label": "SK 2017", "highlight": false}, {"x": -1.07, "y": -3.02, "label": "SK 2018", "highlight": false}, {"x": -0.57, "y": -0.12, "label": "SK 2019", "highlight": false}, {"x": -1.97, "y": 0.28, "label": "SK 2020", "highlight": false}, {"x": -0.77, "y": -1.82, "label": "SK 2021", "highlight": false}, {"x": -0.17, "y": -0.72, "label": "SK 2022", "highlight": false}, {"x": 0.53, "y": 1.88, "label": "SK 2023", "highlight": false}, {"x": 1.13, "y": 0.28, "label": "SK 2024", "highlight": false}], "r": 0.786, "dp": 2, "xLabel": "Material deprivation, deviation from country mean", "yLabel": "Reported hardship, deviation from country mean", "alt": "Reported hardship against material deprivation, country means removed"}</script>
+</div><p class="fig-caveat"><strong>Read with this.</strong> Same-instrument corroboration, NOT independent validation: all items and the outcome come from EU-SILC.</p>
+<details class="fallback" id="F8-fb"><summary>Show the numbers <a href="statistical_appendix.html">Full evidence in the appendix</a>.</summary>
+<table data-checksum="6830210017ccdfa0" data-view="0"><caption>Arrears on bills</caption><thead><tr><th>Item</th><th class="num">Within-country r</th><th class="num">Country-years</th></tr></thead><tbody><tr><td>Arrears on bills</td><td class="num">0.797</td><td class="num">268.000</td></tr></tbody></table><table data-checksum="fd0aa2ad6cca8184" data-view="1"><caption>Cannot meet an unexpected expense</caption><thead><tr><th>Item</th><th class="num">Within-country r</th><th class="num">Country-years</th></tr></thead><tbody><tr><td>Cannot meet an unexpected expense</td><td class="num">0.780</td><td class="num">270.000</td></tr></tbody></table><table data-checksum="a6a3e9048b800603" data-view="2"><caption>Cannot keep the home warm</caption><thead><tr><th>Item</th><th class="num">Within-country r</th><th class="num">Country-years</th></tr></thead><tbody><tr><td>Cannot keep the home warm</td><td class="num">0.626</td><td class="num">270.000</td></tr></tbody></table><table data-checksum="6efdbcd2aab0c604" data-view="3"><caption>Material deprivation</caption><thead><tr><th>Item</th><th class="num">Within-country r</th><th class="num">Country-years</th></tr></thead><tbody><tr><td>Material deprivation</td><td class="num">0.786</td><td class="num">270.000</td></tr></tbody></table></details>
+</figure>
+<p>Once each country's own average is removed, reported difficulty co-moves with
+unpaid bills, an inability to meet an unexpected expense, inadequate heating and
+material deprivation. A reporting style unmoored from circumstance would not
+need to track them.</p>
+<p class="signpost"><strong>Corroboration, not proof.</strong> All four items and
+the outcome come from the same survey, asked of the same households in the same
+interview. That makes them evidence of material grounding and disqualifies them
+as independent explanations &mdash; which is why they appear nowhere in the
+models that follow.</p>
+<p>So the hardship is materially grounded. The next question is which
+conditions differ between countries, and the descriptive picture already
+constrains the answer.</p>
+<figure class="figure" id="F7">
+<figcaption>The labour market converged toward Europe; wages and resources moved further away</figcaption>
+<div class="fig-meta"><span class="badge">descriptive</span>
+<span class="fig-q">Which measures converged toward the EU and which diverged?</span></div>
+<div class="chart-live" data-chart="dumbbell" tabindex="0"
+     data-checksum="ee89912942c07f85" aria-describedby="F7-fb">
+<script type="application/json">{"rows": [{"label": "Long-term unemployment", "a": 12.8, "b": 3.7, "tone": "series-3", "strong": true, "right": "converging", "detail": "shift +71% of the 2015 gap"}, {"label": "Share below own GDP peak", "a": 24.84, "b": 11.2, "tone": "series-3", "strong": true, "right": "converging", "detail": "shift +55% of the 2015 gap"}, {"label": "Housing-cost overburden", "a": 36.8, "b": 22.2, "tone": "series-3", "strong": true, "right": "converging", "detail": "shift +40% of the 2015 gap"}, {"label": "AROPE", "a": 9.9, "b": 7.3, "tone": "series-3", "strong": true, "right": "converging", "detail": "shift +26% of the 2015 gap"}, {"label": "Income poverty (AROP)", "a": 5.1, "b": 4.1, "tone": "series-3", "strong": true, "right": "converging", "detail": "shift +20% of the 2015 gap"}, {"label": "Real poverty threshold", "a": -41.31, "b": -40.34, "tone": "text-muted", "strong": false, "right": "flat", "detail": "shift +2% of the 2015 gap"}, {"label": "Material deprivation", "a": 9.8, "b": 9.7, "tone": "text-muted", "strong": false, "right": "flat", "detail": "shift +1% of the 2015 gap"}, {"label": "Reported hardship", "a": 48.8, "b": 49.6, "tone": "text-muted", "strong": false, "right": "flat", "detail": "shift -2% of the 2015 gap"}, {"label": "Real household income", "a": -34.46, "b": -36.46, "tone": "text-muted", "strong": false, "right": "flat", "detail": "shift -6% of the 2015 gap"}, {"label": "gap_subj_arop", "a": 43.2, "b": 45.9, "tone": "text-muted", "strong": false, "right": "flat", "detail": "shift -6% of the 2015 gap"}, {"label": "gap_subj_arope", "a": 38.9, "b": 42.1, "tone": "text-muted", "strong": false, "right": "flat", "detail": "shift -8% of the 2015 gap"}, {"label": "Real wages", "a": -24.52, "b": -43.67, "tone": "gr", "strong": true, "right": "diverging", "detail": "shift -78% of the 2015 gap"}, {"label": "Material resources", "a": -1460.7, "b": -2819.2, "tone": "gr", "strong": true, "right": "diverging", "detail": "shift -93% of the 2015 gap"}, {"label": "Wage-adjusted affordability", "a": 14.67, "b": 52.12, "tone": "gr", "strong": true, "right": "diverging", "detail": "shift -255% of the 2015 gap"}], "dp": 1, "legendA": "gap in 2015", "legendB": "gap in 2024", "zeroLabel": "EU median", "alt": "Greece's distance from the EU median in 2015 and 2024"}</script>
+</div>
+<details class="fallback" id="F7-fb"><summary>Show the numbers <a href="statistical_appendix.html">Full evidence in the appendix</a>.</summary>
+<table data-checksum="ee89912942c07f85"><thead><tr><th>Measure</th><th class="num">Gap 2015</th><th class="num">Gap 2024</th><th class="num">Shift (share of 2015 gap)</th></tr></thead><tbody><tr><td>Long-term unemployment</td><td class="num">12.80</td><td class="num">3.70</td><td class="num">0.71</td></tr><tr><td>Share below own GDP peak</td><td class="num">24.84</td><td class="num">11.20</td><td class="num">0.55</td></tr><tr><td>Housing-cost overburden</td><td class="num">36.80</td><td class="num">22.20</td><td class="num">0.40</td></tr><tr><td>AROPE</td><td class="num">9.90</td><td class="num">7.30</td><td class="num">0.26</td></tr><tr><td>Income poverty (AROP)</td><td class="num">5.10</td><td class="num">4.10</td><td class="num">0.20</td></tr><tr><td>Real poverty threshold</td><td class="num">-41.31</td><td class="num">-40.34</td><td class="num">0.02</td></tr><tr><td>Material deprivation</td><td class="num">9.80</td><td class="num">9.70</td><td class="num">0.01</td></tr><tr><td>Reported hardship</td><td class="num">48.80</td><td class="num">49.60</td><td class="num">-0.02</td></tr><tr><td>Real household income</td><td class="num">-34.46</td><td class="num">-36.46</td><td class="num">-0.06</td></tr><tr><td>gap_subj_arop</td><td class="num">43.20</td><td class="num">45.90</td><td class="num">-0.06</td></tr><tr><td>gap_subj_arope</td><td class="num">38.90</td><td class="num">42.10</td><td class="num">-0.08</td></tr><tr><td>Real wages</td><td class="num">-24.52</td><td class="num">-43.67</td><td class="num">-0.78</td></tr><tr><td>Material resources</td><td class="num">-1460.70</td><td class="num">-2819.20</td><td class="num">-0.93</td></tr><tr><td>Wage-adjusted affordability</td><td class="num">14.67</td><td class="num">52.12</td><td class="num">-2.55</td></tr></tbody></table></details>
+</figure>
+<p>Two recoveries ran in opposite directions. The labour market genuinely closed
+its distance from Europe; wages and material resources moved further away. The
+hardship gap itself did neither &mdash; it is flat.</p>
+<figure class="figure" id="F6">
+<figcaption>The same pair can point one way across countries and the other way within them</figcaption>
+<div class="fig-meta"><span class="badge">descriptive</span>
+<span class="fig-q">Do relationships between the candidate variables hold across countries and within them, or do they change?</span></div>
+<div class="chart-live" data-chart="heatmap" tabindex="0"
+     data-checksum="d848e562e5293829" aria-describedby="F6-fb">
+<script type="application/json" data-kind="heatmap" data-label="Between countries">{"cols": ["Reported hardship", "Income poverty (AROP)", "AROPE", "Material resources", "Long-term unemployment", "Real wages", "Real household income", "Real poverty threshold", "Share below own GDP peak", "Wage-adjusted affordability", "Inflation", "Housing-cost overburden", "Material deprivation"], "rows": [{"label": "Reported hardship", "values": [1.0, 0.446, 0.617, -0.587, 0.788, 0.005, -0.197, 0.095, 0.645, 0.709, -0.047, 0.573, 0.679]}, {"label": "Income poverty (AROP)", "values": [0.446, 1.0, 0.882, -0.368, 0.393, 0.279, 0.104, 0.396, 0.153, 0.45, 0.151, 0.178, 0.587]}, {"label": "AROPE", "values": [0.617, 0.882, 1.0, -0.423, 0.441, 0.276, 0.153, 0.442, 0.219, 0.538, 0.145, 0.364, 0.879]}, {"label": "Material resources", "values": [-0.587, -0.368, -0.423, 1.0, -0.285, -0.259, -0.398, -0.496, -0.017, -0.887, -0.507, -0.035, -0.536]}, {"label": "Long-term unemployment", "values": [0.788, 0.393, 0.441, -0.285, 1.0, -0.228, -0.572, -0.364, 0.797, 0.335, -0.323, 0.611, 0.358]}, {"label": "Real wages", "values": [0.005, 0.279, 0.276, -0.259, -0.228, 1.0, 0.475, 0.521, -0.416, 0.286, 0.175, -0.127, 0.315]}, {"label": "Real household income", "values": [-0.197, 0.104, 0.153, -0.398, -0.572, 0.475, 1.0, 0.744, -0.639, 0.399, 0.648, -0.349, 0.294]}, {"label": "Real poverty threshold", "values": [0.095, 0.396, 0.442, -0.496, -0.364, 0.521, 0.744, 1.0, -0.452, 0.531, 0.545, -0.295, 0.5]}, {"label": "Share below own GDP peak", "values": [0.645, 0.153, 0.219, -0.017, 0.797, -0.416, -0.639, -0.452, 1.0, 0.177, -0.379, 0.765, 0.165]}, {"label": "Wage-adjusted affordability", "values": [0.709, 0.45, 0.538, -0.887, 0.335, 0.286, 0.399, 0.531, 0.177, 1.0, 0.48, 0.218, 0.644]}, {"label": "Inflation", "values": [-0.047, 0.151, 0.145, -0.507, -0.323, 0.175, 0.648, 0.545, -0.379, 0.48, 1.0, -0.172, 0.263]}, {"label": "Housing-cost overburden", "values": [0.573, 0.178, 0.364, -0.035, 0.611, -0.127, -0.349, -0.295, 0.765, 0.218, -0.172, 1.0, 0.41]}, {"label": "Material deprivation", "values": [0.679, 0.587, 0.879, -0.536, 0.358, 0.315, 0.294, 0.5, 0.165, 0.644, 0.263, 0.41, 1.0]}], "alt": "Correlations between countries, outcomes and construct representatives only"}</script><script type="application/json" data-kind="heatmap" data-label="Within countries">{"cols": ["Reported hardship", "Income poverty (AROP)", "AROPE", "Material resources", "Long-term unemployment", "Real wages", "Real household income", "Real poverty threshold", "Share below own GDP peak", "Wage-adjusted affordability", "Inflation", "Housing-cost overburden", "Material deprivation"], "rows": [{"label": "Reported hardship", "values": [1.0, 0.427, 0.772, -0.593, 0.689, -0.654, -0.755, -0.699, 0.231, 0.525, -0.439, 0.491, 0.786]}, {"label": "Income poverty (AROP)", "values": [0.427, 1.0, 0.668, -0.304, 0.361, -0.314, -0.374, -0.491, 0.091, 0.277, -0.15, 0.386, 0.423]}, {"label": "AROPE", "values": [0.772, 0.668, 1.0, -0.497, 0.586, -0.625, -0.738, -0.778, 0.175, 0.573, -0.365, 0.577, 0.912]}, {"label": "Material resources", "values": [-0.593, -0.304, -0.497, 1.0, -0.565, 0.488, 0.724, 0.54, -0.217, -0.397, 0.602, -0.3, -0.478]}, {"label": "Long-term unemployment", "values": [0.689, 0.361, 0.586, -0.565, 1.0, -0.385, -0.56, -0.391, 0.362, 0.143, -0.377, 0.602, 0.51]}, {"label": "Real wages", "values": [-0.654, -0.314, -0.625, 0.488, -0.385, 1.0, 0.715, 0.761, 0.007, -0.818, 0.273, -0.415, -0.734]}, {"label": "Real household income", "values": [-0.755, -0.374, -0.738, 0.724, -0.56, 0.715, 1.0, 0.813, -0.132, -0.626, 0.512, -0.413, -0.763]}, {"label": "Real poverty threshold", "values": [-0.699, -0.491, -0.778, 0.54, -0.391, 0.761, 0.813, 1.0, -0.009, -0.771, 0.33, -0.519, -0.787]}, {"label": "Share below own GDP peak", "values": [0.231, 0.091, 0.175, -0.217, 0.362, 0.007, -0.132, -0.009, 1.0, -0.085, -0.22, 0.211, 0.134]}, {"label": "Wage-adjusted affordability", "values": [0.525, 0.277, 0.573, -0.397, 0.143, -0.818, -0.626, -0.771, -0.085, 1.0, -0.285, 0.292, 0.678]}, {"label": "Inflation", "values": [-0.439, -0.15, -0.365, 0.602, -0.377, 0.273, 0.512, 0.33, -0.22, -0.285, 1.0, -0.252, -0.392]}, {"label": "Housing-cost overburden", "values": [0.491, 0.386, 0.577, -0.3, 0.602, -0.415, -0.413, -0.519, 0.211, 0.292, -0.252, 1.0, 0.53]}, {"label": "Material deprivation", "values": [0.786, 0.423, 0.912, -0.478, 0.51, -0.734, -0.763, -0.787, 0.134, 0.678, -0.392, 0.53, 1.0]}], "alt": "Correlations within countries, outcomes and construct representatives only"}</script><script type="application/json" data-kind="heatmap" data-label="All country-years">{"cols": ["Reported hardship", "Income poverty (AROP)", "AROPE", "Material resources", "Long-term unemployment", "Real wages", "Real household income", "Real poverty threshold", "Share below own GDP peak", "Wage-adjusted affordability", "Inflation", "Housing-cost overburden", "Material deprivation"], "rows": [{"label": "Reported hardship", "values": [1.0, 0.439, 0.636, -0.585, 0.758, -0.093, -0.312, -0.053, 0.553, 0.684, -0.176, 0.561, 0.694]}, {"label": "Income poverty (AROP)", "values": [0.439, 1.0, 0.859, -0.35, 0.37, 0.22, 0.029, 0.272, 0.138, 0.438, 0.006, 0.193, 0.567]}, {"label": "AROPE", "values": [0.636, 0.859, 1.0, -0.431, 0.458, 0.157, -0.015, 0.228, 0.207, 0.54, -0.081, 0.387, 0.883]}, {"label": "Material resources", "values": [-0.585, -0.35, -0.431, 1.0, -0.354, -0.123, -0.127, -0.254, -0.066, -0.805, 0.145, -0.073, -0.522]}, {"label": "Long-term unemployment", "values": [0.758, 0.37, 0.458, -0.354, 1.0, -0.257, -0.569, -0.371, 0.676, 0.295, -0.268, 0.592, 0.382]}, {"label": "Real wages", "values": [-0.093, 0.22, 0.157, -0.123, -0.257, 1.0, 0.525, 0.563, -0.326, 0.172, 0.147, -0.162, 0.164]}, {"label": "Real household income", "values": [-0.312, 0.029, -0.015, -0.127, -0.569, 0.525, 1.0, 0.758, -0.502, 0.243, 0.404, -0.353, 0.081]}, {"label": "Real poverty threshold", "values": [-0.053, 0.272, 0.228, -0.254, -0.371, 0.563, 0.758, 1.0, -0.337, 0.341, 0.293, -0.326, 0.257]}, {"label": "Share below own GDP peak", "values": [0.553, 0.138, 0.207, -0.066, 0.676, -0.326, -0.502, -0.337, 1.0, 0.133, -0.202, 0.653, 0.156]}, {"label": "Wage-adjusted affordability", "values": [0.684, 0.438, 0.54, -0.805, 0.295, 0.172, 0.243, 0.341, 0.133, 1.0, 0.058, 0.223, 0.643]}, {"label": "Inflation", "values": [-0.176, 0.006, -0.081, 0.145, -0.268, 0.147, 0.404, 0.293, -0.202, 0.058, 1.0, -0.122, -0.071]}, {"label": "Housing-cost overburden", "values": [0.561, 0.193, 0.387, -0.073, 0.592, -0.162, -0.353, -0.326, 0.653, 0.223, -0.122, 1.0, 0.423]}, {"label": "Material deprivation", "values": [0.694, 0.567, 0.883, -0.522, 0.382, 0.164, 0.081, 0.257, 0.156, 0.643, -0.071, 0.423, 1.0]}], "alt": "Correlations all country-years, outcomes and construct representatives only"}</script>
+</div><p class="fig-caveat"><strong>Read with this.</strong> Correlations identify duplication and sign reversals. They do NOT select variables, and correlations with the gap outcomes are partly arithmetic. This view carries the outcomes and the 10 frozen construct representatives only. The full 31-variable matrix is in the statistical appendix: at that size it contains everything and shows almost nothing.</p>
+<details class="fallback" id="F6-fb"><summary>Show the numbers <a href="statistical_appendix.html">Full evidence in the appendix</a>.</summary>
+<table data-checksum="d848e562e5293829" data-view="0"><caption>Between countries</caption><thead><tr><th>Measure</th><th class="num">Reported hardship</th><th class="num">Income poverty (AROP)</th><th class="num">AROPE</th><th class="num">Material resources</th><th class="num">Long-term unemployment</th><th class="num">Real wages</th><th class="num">Real household income</th><th class="num">Real poverty threshold</th><th class="num">Share below own GDP peak</th><th class="num">Wage-adjusted affordability</th><th class="num">Inflation</th><th class="num">Housing-cost overburden</th><th class="num">Material deprivation</th></tr></thead><tbody><tr><td>Reported hardship</td><td class="num">1.000</td><td class="num">0.446</td><td class="num">0.617</td><td class="num">-0.587</td><td class="num">0.788</td><td class="num">0.005</td><td class="num">-0.197</td><td class="num">0.095</td><td class="num">0.645</td><td class="num">0.709</td><td class="num">-0.047</td><td class="num">0.573</td><td class="num">0.679</td></tr><tr><td>Income poverty (AROP)</td><td class="num">0.446</td><td class="num">1.000</td><td class="num">0.882</td><td class="num">-0.368</td><td class="num">0.393</td><td class="num">0.279</td><td class="num">0.104</td><td class="num">0.396</td><td class="num">0.153</td><td class="num">0.450</td><td class="num">0.151</td><td class="num">0.178</td><td class="num">0.587</td></tr><tr><td>AROPE</td><td class="num">0.617</td><td class="num">0.882</td><td class="num">1.000</td><td class="num">-0.423</td><td class="num">0.441</td><td class="num">0.276</td><td class="num">0.153</td><td class="num">0.442</td><td class="num">0.219</td><td class="num">0.538</td><td class="num">0.145</td><td class="num">0.364</td><td class="num">0.879</td></tr><tr><td>Material resources</td><td class="num">-0.587</td><td class="num">-0.368</td><td class="num">-0.423</td><td class="num">1.000</td><td class="num">-0.285</td><td class="num">-0.259</td><td class="num">-0.398</td><td class="num">-0.496</td><td class="num">-0.017</td><td class="num">-0.887</td><td class="num">-0.507</td><td class="num">-0.035</td><td class="num">-0.536</td></tr><tr><td>Long-term unemployment</td><td class="num">0.788</td><td class="num">0.393</td><td class="num">0.441</td><td class="num">-0.285</td><td class="num">1.000</td><td class="num">-0.228</td><td class="num">-0.572</td><td class="num">-0.364</td><td class="num">0.797</td><td class="num">0.335</td><td class="num">-0.323</td><td class="num">0.611</td><td class="num">0.358</td></tr><tr><td>Real wages</td><td class="num">0.005</td><td class="num">0.279</td><td class="num">0.276</td><td class="num">-0.259</td><td class="num">-0.228</td><td class="num">1.000</td><td class="num">0.475</td><td class="num">0.521</td><td class="num">-0.416</td><td class="num">0.286</td><td class="num">0.175</td><td class="num">-0.127</td><td class="num">0.315</td></tr><tr><td>Real household income</td><td class="num">-0.197</td><td class="num">0.104</td><td class="num">0.153</td><td class="num">-0.398</td><td class="num">-0.572</td><td class="num">0.475</td><td class="num">1.000</td><td class="num">0.744</td><td class="num">-0.639</td><td class="num">0.399</td><td class="num">0.648</td><td class="num">-0.349</td><td class="num">0.294</td></tr><tr><td>Real poverty threshold</td><td class="num">0.095</td><td class="num">0.396</td><td class="num">0.442</td><td class="num">-0.496</td><td class="num">-0.364</td><td class="num">0.521</td><td class="num">0.744</td><td class="num">1.000</td><td class="num">-0.452</td><td class="num">0.531</td><td class="num">0.545</td><td class="num">-0.295</td><td class="num">0.500</td></tr><tr><td>Share below own GDP peak</td><td class="num">0.645</td><td class="num">0.153</td><td class="num">0.219</td><td class="num">-0.017</td><td class="num">0.797</td><td class="num">-0.416</td><td class="num">-0.639</td><td class="num">-0.452</td><td class="num">1.000</td><td class="num">0.177</td><td class="num">-0.379</td><td class="num">0.765</td><td class="num">0.165</td></tr><tr><td>Wage-adjusted affordability</td><td class="num">0.709</td><td class="num">0.450</td><td class="num">0.538</td><td class="num">-0.887</td><td class="num">0.335</td><td class="num">0.286</td><td class="num">0.399</td><td class="num">0.531</td><td class="num">0.177</td><td class="num">1.000</td><td class="num">0.480</td><td class="num">0.218</td><td class="num">0.644</td></tr><tr><td>Inflation</td><td class="num">-0.047</td><td class="num">0.151</td><td class="num">0.145</td><td class="num">-0.507</td><td class="num">-0.323</td><td class="num">0.175</td><td class="num">0.648</td><td class="num">0.545</td><td class="num">-0.379</td><td class="num">0.480</td><td class="num">1.000</td><td class="num">-0.172</td><td class="num">0.263</td></tr><tr><td>Housing-cost overburden</td><td class="num">0.573</td><td class="num">0.178</td><td class="num">0.364</td><td class="num">-0.035</td><td class="num">0.611</td><td class="num">-0.127</td><td class="num">-0.349</td><td class="num">-0.295</td><td class="num">0.765</td><td class="num">0.218</td><td class="num">-0.172</td><td class="num">1.000</td><td class="num">0.410</td></tr><tr><td>Material deprivation</td><td class="num">0.679</td><td class="num">0.587</td><td class="num">0.879</td><td class="num">-0.536</td><td class="num">0.358</td><td class="num">0.315</td><td class="num">0.294</td><td class="num">0.500</td><td class="num">0.165</td><td class="num">0.644</td><td class="num">0.263</td><td class="num">0.410</td><td class="num">1.000</td></tr></tbody></table><table data-checksum="89e10cddb2586d22" data-view="1"><caption>Within countries</caption><thead><tr><th>Measure</th><th class="num">Reported hardship</th><th class="num">Income poverty (AROP)</th><th class="num">AROPE</th><th class="num">Material resources</th><th class="num">Long-term unemployment</th><th class="num">Real wages</th><th class="num">Real household income</th><th class="num">Real poverty threshold</th><th class="num">Share below own GDP peak</th><th class="num">Wage-adjusted affordability</th><th class="num">Inflation</th><th class="num">Housing-cost overburden</th><th class="num">Material deprivation</th></tr></thead><tbody><tr><td>Reported hardship</td><td class="num">1.000</td><td class="num">0.427</td><td class="num">0.772</td><td class="num">-0.593</td><td class="num">0.689</td><td class="num">-0.654</td><td class="num">-0.755</td><td class="num">-0.699</td><td class="num">0.231</td><td class="num">0.525</td><td class="num">-0.439</td><td class="num">0.491</td><td class="num">0.786</td></tr><tr><td>Income poverty (AROP)</td><td class="num">0.427</td><td class="num">1.000</td><td class="num">0.668</td><td class="num">-0.304</td><td class="num">0.361</td><td class="num">-0.314</td><td class="num">-0.374</td><td class="num">-0.491</td><td class="num">0.091</td><td class="num">0.277</td><td class="num">-0.150</td><td class="num">0.386</td><td class="num">0.423</td></tr><tr><td>AROPE</td><td class="num">0.772</td><td class="num">0.668</td><td class="num">1.000</td><td class="num">-0.497</td><td class="num">0.586</td><td class="num">-0.625</td><td class="num">-0.738</td><td class="num">-0.778</td><td class="num">0.175</td><td class="num">0.573</td><td class="num">-0.365</td><td class="num">0.577</td><td class="num">0.912</td></tr><tr><td>Material resources</td><td class="num">-0.593</td><td class="num">-0.304</td><td class="num">-0.497</td><td class="num">1.000</td><td class="num">-0.565</td><td class="num">0.488</td><td class="num">0.724</td><td class="num">0.540</td><td class="num">-0.217</td><td class="num">-0.397</td><td class="num">0.602</td><td class="num">-0.300</td><td class="num">-0.478</td></tr><tr><td>Long-term unemployment</td><td class="num">0.689</td><td class="num">0.361</td><td class="num">0.586</td><td class="num">-0.565</td><td class="num">1.000</td><td class="num">-0.385</td><td class="num">-0.560</td><td class="num">-0.391</td><td class="num">0.362</td><td class="num">0.143</td><td class="num">-0.377</td><td class="num">0.602</td><td class="num">0.510</td></tr><tr><td>Real wages</td><td class="num">-0.654</td><td class="num">-0.314</td><td class="num">-0.625</td><td class="num">0.488</td><td class="num">-0.385</td><td class="num">1.000</td><td class="num">0.715</td><td class="num">0.761</td><td class="num">0.007</td><td class="num">-0.818</td><td class="num">0.273</td><td class="num">-0.415</td><td class="num">-0.734</td></tr><tr><td>Real household income</td><td class="num">-0.755</td><td class="num">-0.374</td><td class="num">-0.738</td><td class="num">0.724</td><td class="num">-0.560</td><td class="num">0.715</td><td class="num">1.000</td><td class="num">0.813</td><td class="num">-0.132</td><td class="num">-0.626</td><td class="num">0.512</td><td class="num">-0.413</td><td class="num">-0.763</td></tr><tr><td>Real poverty threshold</td><td class="num">-0.699</td><td class="num">-0.491</td><td class="num">-0.778</td><td class="num">0.540</td><td class="num">-0.391</td><td class="num">0.761</td><td class="num">0.813</td><td class="num">1.000</td><td class="num">-0.009</td><td class="num">-0.771</td><td class="num">0.330</td><td class="num">-0.519</td><td class="num">-0.787</td></tr><tr><td>Share below own GDP peak</td><td class="num">0.231</td><td class="num">0.091</td><td class="num">0.175</td><td class="num">-0.217</td><td class="num">0.362</td><td class="num">0.007</td><td class="num">-0.132</td><td class="num">-0.009</td><td class="num">1.000</td><td class="num">-0.085</td><td class="num">-0.220</td><td class="num">0.211</td><td class="num">0.134</td></tr><tr><td>Wage-adjusted affordability</td><td class="num">0.525</td><td class="num">0.277</td><td class="num">0.573</td><td class="num">-0.397</td><td class="num">0.143</td><td class="num">-0.818</td><td class="num">-0.626</td><td class="num">-0.771</td><td class="num">-0.085</td><td class="num">1.000</td><td class="num">-0.285</td><td class="num">0.292</td><td class="num">0.678</td></tr><tr><td>Inflation</td><td class="num">-0.439</td><td class="num">-0.150</td><td class="num">-0.365</td><td class="num">0.602</td><td class="num">-0.377</td><td class="num">0.273</td><td class="num">0.512</td><td class="num">0.330</td><td class="num">-0.220</td><td class="num">-0.285</td><td class="num">1.000</td><td class="num">-0.252</td><td class="num">-0.392</td></tr><tr><td>Housing-cost overburden</td><td class="num">0.491</td><td class="num">0.386</td><td class="num">0.577</td><td class="num">-0.300</td><td class="num">0.602</td><td class="num">-0.415</td><td class="num">-0.413</td><td class="num">-0.519</td><td class="num">0.211</td><td class="num">0.292</td><td class="num">-0.252</td><td class="num">1.000</td><td class="num">0.530</td></tr><tr><td>Material deprivation</td><td class="num">0.786</td><td class="num">0.423</td><td class="num">0.912</td><td class="num">-0.478</td><td class="num">0.510</td><td class="num">-0.734</td><td class="num">-0.763</td><td class="num">-0.787</td><td class="num">0.134</td><td class="num">0.678</td><td class="num">-0.392</td><td class="num">0.530</td><td class="num">1.000</td></tr></tbody></table><table data-checksum="e4f32edf76b472da" data-view="2"><caption>All country-years</caption><thead><tr><th>Measure</th><th class="num">Reported hardship</th><th class="num">Income poverty (AROP)</th><th class="num">AROPE</th><th class="num">Material resources</th><th class="num">Long-term unemployment</th><th class="num">Real wages</th><th class="num">Real household income</th><th class="num">Real poverty threshold</th><th class="num">Share below own GDP peak</th><th class="num">Wage-adjusted affordability</th><th class="num">Inflation</th><th class="num">Housing-cost overburden</th><th class="num">Material deprivation</th></tr></thead><tbody><tr><td>Reported hardship</td><td class="num">1.000</td><td class="num">0.439</td><td class="num">0.636</td><td class="num">-0.585</td><td class="num">0.758</td><td class="num">-0.093</td><td class="num">-0.312</td><td class="num">-0.053</td><td class="num">0.553</td><td class="num">0.684</td><td class="num">-0.176</td><td class="num">0.561</td><td class="num">0.694</td></tr><tr><td>Income poverty (AROP)</td><td class="num">0.439</td><td class="num">1.000</td><td class="num">0.859</td><td class="num">-0.350</td><td class="num">0.370</td><td class="num">0.220</td><td class="num">0.029</td><td class="num">0.272</td><td class="num">0.138</td><td class="num">0.438</td><td class="num">0.006</td><td class="num">0.193</td><td class="num">0.567</td></tr><tr><td>AROPE</td><td class="num">0.636</td><td class="num">0.859</td><td class="num">1.000</td><td class="num">-0.431</td><td class="num">0.458</td><td class="num">0.157</td><td class="num">-0.015</td><td class="num">0.228</td><td class="num">0.207</td><td class="num">0.540</td><td class="num">-0.081</td><td class="num">0.387</td><td class="num">0.883</td></tr><tr><td>Material resources</td><td class="num">-0.585</td><td class="num">-0.350</td><td class="num">-0.431</td><td class="num">1.000</td><td class="num">-0.354</td><td class="num">-0.123</td><td class="num">-0.127</td><td class="num">-0.254</td><td class="num">-0.066</td><td class="num">-0.805</td><td class="num">0.145</td><td class="num">-0.073</td><td class="num">-0.522</td></tr><tr><td>Long-term unemployment</td><td class="num">0.758</td><td class="num">0.370</td><td class="num">0.458</td><td class="num">-0.354</td><td class="num">1.000</td><td class="num">-0.257</td><td class="num">-0.569</td><td class="num">-0.371</td><td class="num">0.676</td><td class="num">0.295</td><td class="num">-0.268</td><td class="num">0.592</td><td class="num">0.382</td></tr><tr><td>Real wages</td><td class="num">-0.093</td><td class="num">0.220</td><td class="num">0.157</td><td class="num">-0.123</td><td class="num">-0.257</td><td class="num">1.000</td><td class="num">0.525</td><td class="num">0.563</td><td class="num">-0.326</td><td class="num">0.172</td><td class="num">0.147</td><td class="num">-0.162</td><td class="num">0.164</td></tr><tr><td>Real household income</td><td class="num">-0.312</td><td class="num">0.029</td><td class="num">-0.015</td><td class="num">-0.127</td><td class="num">-0.569</td><td class="num">0.525</td><td class="num">1.000</td><td class="num">0.758</td><td class="num">-0.502</td><td class="num">0.243</td><td class="num">0.404</td><td class="num">-0.353</td><td class="num">0.081</td></tr><tr><td>Real poverty threshold</td><td class="num">-0.053</td><td class="num">0.272</td><td class="num">0.228</td><td class="num">-0.254</td><td class="num">-0.371</td><td class="num">0.563</td><td class="num">0.758</td><td class="num">1.000</td><td class="num">-0.337</td><td class="num">0.341</td><td class="num">0.293</td><td class="num">-0.326</td><td class="num">0.257</td></tr><tr><td>Share below own GDP peak</td><td class="num">0.553</td><td class="num">0.138</td><td class="num">0.207</td><td class="num">-0.066</td><td class="num">0.676</td><td class="num">-0.326</td><td class="num">-0.502</td><td class="num">-0.337</td><td class="num">1.000</td><td class="num">0.133</td><td class="num">-0.202</td><td class="num">0.653</td><td class="num">0.156</td></tr><tr><td>Wage-adjusted affordability</td><td class="num">0.684</td><td class="num">0.438</td><td class="num">0.540</td><td class="num">-0.805</td><td class="num">0.295</td><td class="num">0.172</td><td class="num">0.243</td><td class="num">0.341</td><td class="num">0.133</td><td class="num">1.000</td><td class="num">0.058</td><td class="num">0.223</td><td class="num">0.643</td></tr><tr><td>Inflation</td><td class="num">-0.176</td><td class="num">0.006</td><td class="num">-0.081</td><td class="num">0.145</td><td class="num">-0.268</td><td class="num">0.147</td><td class="num">0.404</td><td class="num">0.293</td><td class="num">-0.202</td><td class="num">0.058</td><td class="num">1.000</td><td class="num">-0.122</td><td class="num">-0.071</td></tr><tr><td>Housing-cost overburden</td><td class="num">0.561</td><td class="num">0.193</td><td class="num">0.387</td><td class="num">-0.073</td><td class="num">0.592</td><td class="num">-0.162</td><td class="num">-0.353</td><td class="num">-0.326</td><td class="num">0.653</td><td class="num">0.223</td><td class="num">-0.122</td><td class="num">1.000</td><td class="num">0.423</td></tr><tr><td>Material deprivation</td><td class="num">0.694</td><td class="num">0.567</td><td class="num">0.883</td><td class="num">-0.522</td><td class="num">0.382</td><td class="num">0.164</td><td class="num">0.081</td><td class="num">0.257</td><td class="num">0.156</td><td class="num">0.643</td><td class="num">-0.071</td><td class="num">0.423</td><td class="num">1.000</td></tr></tbody></table></details>
+</figure>
+
+<h2>Stage 4 &mdash; Current conditions</h2>
+<p>Each construct is tested one at a time against relative income poverty and
+year effects, so it has to explain hardship beyond what official poverty and
+common shocks already account for.</p>
+<figure class="figure" id="F9">
+<figcaption>Three current-condition constructs survive the full testing sequence</figcaption>
+<div class="fig-meta"><span class="badge">pre-planned confirmatory</span>
+<span class="fig-q">Which current-level constructs survive every pre-registered condition, and which gate stopped the rest?</span></div>
+<div class="chart-live" data-chart="coefficient" tabindex="0"
+     data-checksum="307cc361ca35c2b9" aria-describedby="F9-fb">
+<script type="application/json">{"rows": [{"label": "Long-term unemployment", "est": 0.808, "lo": 0.523, "hi": 1.093, "tone": "series-3", "strong": true, "right": "supported", "detail": "<span style='opacity:.6'>ltu_rate<\/span><br>+0.81 SD in the adverse direction<br>cluster-robust 95% CI [+0.52, +1.09]<br>cluster-robust p 0.0000 &rarr; FDR 0.0000<br>bootstrap p <b>0.0085<\/b>"}, {"label": "Material deprivation", "est": 0.72, "lo": 0.239, "hi": 1.202, "tone": "gr", "strong": false, "right": "blocked", "detail": "<span style='opacity:.6'>severe_mat_soc_deprivation<\/span><br>+0.72 SD in the adverse direction<br>cluster-robust 95% CI [+0.24, +1.20]<br>cluster-robust p 0.0034 &rarr; FDR &mdash;<br>bootstrap p <b>not run<\/b>; failed on <b>proximity<\/b>"}, {"label": "Wage-adjusted affordability", "est": 0.687, "lo": 0.386, "hi": 0.988, "tone": "series-3", "strong": true, "right": "supported", "detail": "<span style='opacity:.6'>wadj_a01<\/span><br>+0.69 SD in the adverse direction<br>cluster-robust 95% CI [+0.39, +0.99]<br>cluster-robust p 0.0000 &rarr; FDR 0.0000<br>bootstrap p <b>0.0005<\/b>"}, {"label": "Share below own GDP peak", "est": 0.62, "lo": 0.343, "hi": 0.897, "tone": "text-muted", "strong": false, "right": "inconclusive", "detail": "<span style='opacity:.6'>pct_below_peak<\/span><br>+0.62 SD in the adverse direction<br>cluster-robust 95% CI [+0.34, +0.90]<br>cluster-robust p 0.0000 &rarr; FDR 0.0000<br>bootstrap p <b>0.4005<\/b>; failed on <b>bootstrap<\/b>"}, {"label": "Material resources", "est": 0.59, "lo": 0.33, "hi": 0.851, "tone": "series-3", "strong": true, "right": "supported", "detail": "<span style='opacity:.6'>aic_pps_pc<\/span><br>+0.59 SD in the adverse direction<br>cluster-robust 95% CI [+0.33, +0.85]<br>cluster-robust p 0.0000 &rarr; FDR 0.0000<br>bootstrap p <b>0.0055<\/b>"}, {"label": "Housing-cost overburden", "est": 0.545, "lo": 0.141, "hi": 0.949, "tone": "text-muted", "strong": false, "right": "inconclusive", "detail": "<span style='opacity:.6'>housing_cost_overburden<\/span><br>+0.54 SD in the adverse direction<br>cluster-robust 95% CI [+0.14, +0.95]<br>cluster-robust p 0.0082 &rarr; FDR 0.0147<br>bootstrap p <b>0.5530<\/b>; failed on <b>bootstrap<\/b>"}, {"label": "Real household income", "est": 0.315, "lo": -0.279, "hi": 0.908, "tone": "text-muted", "strong": false, "right": "inconclusive", "detail": "<span style='opacity:.6'>real_income_idx<\/span><br>+0.31 SD in the adverse direction<br>cluster-robust 95% CI [-0.28, +0.91]<br>cluster-robust p 0.2991 &rarr; FDR 0.4131<br>bootstrap p <b>not run<\/b>; failed on <b>power<\/b>"}, {"label": "Inflation", "est": -0.274, "lo": -0.817, "hi": 0.268, "tone": "text-muted", "strong": false, "right": "inconclusive", "detail": "<span style='opacity:.6'>hicp<\/span><br>-0.27 SD in the adverse direction<br>cluster-robust 95% CI [-0.82, +0.27]<br>cluster-robust p 0.3213 &rarr; FDR 0.4131<br>bootstrap p <b>not run<\/b>; failed on <b>power<\/b>"}, {"label": "Real wages", "est": 0.174, "lo": -0.501, "hi": 0.85, "tone": "text-muted", "strong": false, "right": "inconclusive", "detail": "<span style='opacity:.6'>real_wages_idx<\/span><br>+0.17 SD in the adverse direction<br>cluster-robust 95% CI [-0.50, +0.85]<br>cluster-robust p 0.6130 &rarr; FDR 0.6531<br>bootstrap p <b>not run<\/b>; failed on <b>power<\/b>"}, {"label": "Real poverty threshold", "est": 0.138, "lo": -0.464, "hi": 0.74, "tone": "text-muted", "strong": false, "right": "inconclusive", "detail": "<span style='opacity:.6'>arop_threshold_real<\/span><br>+0.14 SD in the adverse direction<br>cluster-robust 95% CI [-0.46, +0.74]<br>cluster-robust p 0.6531 &rarr; FDR 0.6531<br>bootstrap p <b>not run<\/b>; failed on <b>power<\/b>"}], "alt": "Standardised effect per construct with its cluster-robust confidence interval"}</script>
+</div><p class="fig-caveat"><strong>Read with this.</strong> Inconclusive is not evidence of absence. Bars are CLUSTER-ROBUST 95% confidence intervals, not bootstrap intervals: the wild cluster bootstrap determines the final support status, and two constructs whose intervals exclude zero here still fail it.</p>
+<details class="fallback" id="F9-fb"><summary>Show the numbers <a href="statistical_appendix.html">Full evidence in the appendix</a>.</summary>
+<table data-checksum="307cc361ca35c2b9"><thead><tr><th>Construct</th><th class="num">Effect (SD)</th><th class="num">CI low</th><th class="num">CI high</th><th class="num">p</th><th class="num">p FDR</th><th class="num">Bootstrap p</th></tr></thead><tbody><tr><td>Long-term unemployment</td><td class="num">0.808</td><td class="num">0.523</td><td class="num">1.093</td><td class="num">0.000</td><td class="num">0.000</td><td class="num">0.009</td></tr><tr><td>Material deprivation</td><td class="num">0.720</td><td class="num">0.239</td><td class="num">1.202</td><td class="num">0.003</td><td class="num">&mdash;</td><td class="num">&mdash;</td></tr><tr><td>Wage-adjusted affordability</td><td class="num">0.687</td><td class="num">0.386</td><td class="num">0.988</td><td class="num">0.000</td><td class="num">0.000</td><td class="num">0.001</td></tr><tr><td>Share below own GDP peak</td><td class="num">0.620</td><td class="num">0.343</td><td class="num">0.897</td><td class="num">0.000</td><td class="num">0.000</td><td class="num">0.401</td></tr><tr><td>Material resources</td><td class="num">0.590</td><td class="num">0.330</td><td class="num">0.851</td><td class="num">0.000</td><td class="num">0.000</td><td class="num">0.005</td></tr><tr><td>Housing-cost overburden</td><td class="num">0.545</td><td class="num">0.141</td><td class="num">0.949</td><td class="num">0.008</td><td class="num">0.015</td><td class="num">0.553</td></tr><tr><td>Real household income</td><td class="num">0.315</td><td class="num">-0.279</td><td class="num">0.908</td><td class="num">0.299</td><td class="num">0.413</td><td class="num">&mdash;</td></tr><tr><td>Inflation</td><td class="num">-0.274</td><td class="num">-0.817</td><td class="num">0.268</td><td class="num">0.321</td><td class="num">0.413</td><td class="num">&mdash;</td></tr><tr><td>Real wages</td><td class="num">0.174</td><td class="num">-0.501</td><td class="num">0.850</td><td class="num">0.613</td><td class="num">0.653</td><td class="num">&mdash;</td></tr><tr><td>Real poverty threshold</td><td class="num">0.138</td><td class="num">-0.464</td><td class="num">0.740</td><td class="num">0.653</td><td class="num">0.653</td><td class="num">&mdash;</td></tr></tbody></table></details>
+</figure>
+<p>Nothing is called supported on a cluster-robust p-value alone. With 27
+clusters and predictors that vary mostly between countries, those standard
+errors are too confident: two constructs clear multiple-testing correction and
+then collapse under the bootstrap, to 0.40 and 0.55.</p>
+<figure class="figure" id="F10">
+<figcaption>What the three supported constructs look like</figcaption>
+<div class="fig-meta"><span class="badge">pre-planned confirmatory</span>
+<span class="fig-q">What do the three supported constructs actually look like for Greece against the EU?</span></div>
+<div class="chart-live" data-chart="panel" tabindex="0"
+     data-checksum="4e92e4e68e9cd499" aria-describedby="F10-fb">
+<script type="application/json" data-kind="panel" data-label="Long-term unemployment">{"years": [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024], "dp": 1, "alt": "Long-term unemployment for Greece against the EU median", "series": [{"label": "Greece", "tone": "gr", "style": "solid", "weight": "strong", "values": [16.4, 15.4, 14.3, 12.5, 11.3, 10.5, 9.2, 7.7, 6.2, 5.4]}, {"label": "EU median", "tone": "eu", "style": "dashed", "weight": "normal", "values": [3.6, 3.1, 2.7, 2.1, 1.9, 1.8, 2.0, 1.9, 1.7, 1.7]}]}</script><script type="application/json" data-kind="panel" data-label="Material resources">{"years": [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024], "dp": 0, "alt": "Material resources for Greece against the EU median", "series": [{"label": "Greece", "tone": "gr", "style": "solid", "weight": "strong", "values": [14770.0, 14786.0, 15372.0, 15833.0, 16372.0, 15475.0, 16772.0, 19402.0, 20701.0, 21310.0]}, {"label": "EU median", "tone": "eu", "style": "dashed", "weight": "normal", "values": [16230.0, 16494.0, 17038.0, 18006.0, 18707.0, 17386.0, 19479.0, 21317.0, 23055.0, 24129.0]}]}</script><script type="application/json" data-kind="panel" data-label="Wage-adjusted affordability">{"years": [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024], "dp": 1, "alt": "Wage-adjusted affordability for Greece against the EU median", "series": [{"label": "Greece", "tone": "gr", "style": "solid", "weight": "strong", "values": [141.9, 148.6, 148.2, 156.8, 162.2, 163.3, 165.6, 171.2, 173.1, 173.1]}, {"label": "EU median", "tone": "eu", "style": "dashed", "weight": "normal", "values": [127.2, 124.7, 124.6, 119.8, 118.4, 117.7, 120.2, 120.7, 122.3, 121.0]}]}</script>
+</div>
+<details class="fallback" id="F10-fb"><summary>Show the numbers <a href="statistical_appendix.html">Full evidence in the appendix</a>.</summary>
+<table data-checksum="4e92e4e68e9cd499" data-view="0"><caption>Long-term unemployment</caption><thead><tr><th>Series</th><th class="num">2015</th><th class="num">2016</th><th class="num">2017</th><th class="num">2018</th><th class="num">2019</th><th class="num">2020</th><th class="num">2021</th><th class="num">2022</th><th class="num">2023</th><th class="num">2024</th></tr></thead><tbody><tr><td>Greece</td><td class="num">16.4</td><td class="num">15.4</td><td class="num">14.3</td><td class="num">12.5</td><td class="num">11.3</td><td class="num">10.5</td><td class="num">9.2</td><td class="num">7.7</td><td class="num">6.2</td><td class="num">5.4</td></tr><tr><td>EU median</td><td class="num">3.6</td><td class="num">3.1</td><td class="num">2.7</td><td class="num">2.1</td><td class="num">1.9</td><td class="num">1.8</td><td class="num">2.0</td><td class="num">1.9</td><td class="num">1.7</td><td class="num">1.7</td></tr></tbody></table><table data-checksum="ac9611b35fba2acb" data-view="1"><caption>Material resources</caption><thead><tr><th>Series</th><th class="num">2015</th><th class="num">2016</th><th class="num">2017</th><th class="num">2018</th><th class="num">2019</th><th class="num">2020</th><th class="num">2021</th><th class="num">2022</th><th class="num">2023</th><th class="num">2024</th></tr></thead><tbody><tr><td>Greece</td><td class="num">14770</td><td class="num">14786</td><td class="num">15372</td><td class="num">15833</td><td class="num">16372</td><td class="num">15475</td><td class="num">16772</td><td class="num">19402</td><td class="num">20701</td><td class="num">21310</td></tr><tr><td>EU median</td><td class="num">16230</td><td class="num">16494</td><td class="num">17038</td><td class="num">18006</td><td class="num">18707</td><td class="num">17386</td><td class="num">19479</td><td class="num">21317</td><td class="num">23055</td><td class="num">24129</td></tr></tbody></table><table data-checksum="0ae2384d83f829f0" data-view="2"><caption>Wage-adjusted affordability</caption><thead><tr><th>Series</th><th class="num">2015</th><th class="num">2016</th><th class="num">2017</th><th class="num">2018</th><th class="num">2019</th><th class="num">2020</th><th class="num">2021</th><th class="num">2022</th><th class="num">2023</th><th class="num">2024</th></tr></thead><tbody><tr><td>Greece</td><td class="num">141.9</td><td class="num">148.6</td><td class="num">148.2</td><td class="num">156.8</td><td class="num">162.2</td><td class="num">163.3</td><td class="num">165.6</td><td class="num">171.2</td><td class="num">173.1</td><td class="num">173.1</td></tr><tr><td>EU median</td><td class="num">127.2</td><td class="num">124.7</td><td class="num">124.6</td><td class="num">119.8</td><td class="num">118.4</td><td class="num">117.7</td><td class="num">120.2</td><td class="num">120.7</td><td class="num">122.3</td><td class="num">121.0</td></tr></tbody></table></details>
+</figure>
+<script>
+(function(){
+  const NS='http://www.w3.org/2000/svg';
+  const el=(t,a)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;};
+  const cssv=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const fmt=(v,d)=>v==null?'—':(Math.abs(v)>=1000?v.toLocaleString(undefined,{maximumFractionDigits:0}):v.toFixed(d==null?1:d));
+
+  // Width is chosen from the container, not hardcoded. A fixed 860 rendered
+  // labels at ~4 effective pixels on a phone.
+  function widthFor(host){ const w=host.clientWidth||640; return Math.max(320,Math.min(920,w)); }
+
+  function tip(host){
+    let t=host.querySelector('.tip');
+    if(!t){t=document.createElement('div');t.className='tip';host.appendChild(t);}
+    return t;
+  }
+  function say(host,msg){
+    let s=host.querySelector('.sr');
+    if(!s){s=document.createElement('div');s.className='sr';s.setAttribute('aria-live','polite');host.appendChild(s);}
+    s.textContent=msg;
+  }
+
+  /* ---------------------------------------------------------------- panel */
+  function panel(host,d){
+    const W=widthFor(host), H=Math.round(W*0.42);
+    // Right padding is derived from the longest end label, not fixed: a fixed
+    // 14% clipped "Greece: hardship" in the first prototype.
+    const longest=Math.max(0,...d.series.filter(s=>s.label).map(s=>s.label.length));
+    const padL=46,padR=Math.min(W*0.34,Math.max(52,longest*6.2+14)),padT=12,padB=28;
+    const pw=W-padL-padR, ph=H-padT-padB, yrs=d.years;
+    const xs=y=>padL+(yrs.length<2?pw/2:(y-yrs[0])/(yrs[yrs.length-1]-yrs[0])*pw);
+    let lo=Infinity,hi=-Infinity;
+    d.series.forEach(s=>s.values.forEach(v=>{if(v!=null){lo=Math.min(lo,v);hi=Math.max(hi,v);}}));
+    if(!isFinite(lo)){lo=0;hi=1;}
+    const pad=(hi-lo)*0.10||1; hi+=pad; lo=(lo<0)?lo-pad:Math.max(0,lo-pad);
+    const ys=v=>padT+ph-(v-lo)/(hi-lo)*ph;
+    const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,class:'chart',role:'img',
+      'aria-label':d.alt||d.caption||'chart'});
+    for(let i=0;i<=4;i++){const v=lo+(hi-lo)*i/4,y=ys(v);
+      svg.appendChild(el('line',{x1:padL,x2:W-padR,y1:y,y2:y,class:'gridline'}));
+      const t=el('text',{x:padL-6,y:y+3.5,'text-anchor':'end',class:'axis-label'});
+      t.textContent=fmt(v,d.dp);svg.appendChild(t);}
+    const step=Math.max(1,Math.ceil(yrs.length/(W<480?4:8)));
+    yrs.forEach((y,i)=>{if(i%step&&i!==yrs.length-1)return;
+      const t=el('text',{x:xs(y),y:H-padB+16,'text-anchor':'middle',class:'axis-label'});
+      t.textContent=y;svg.appendChild(t);});
+    const cur=el('line',{class:'cursor-line',y1:padT,y2:padT+ph,x1:-9,x2:-9});
+    svg.appendChild(cur);
+    const DASH={solid:'',dashed:'6 3',dotted:'2 3'};
+    const WT={strong:2.8,normal:1.8,light:1.4};
+    const ends=[];
+    d.series.forEach(s=>{let p='',pen=false;
+      s.values.forEach((v,i)=>{if(v==null){pen=false;return;}
+        p+=(pen?' L ':' M ')+xs(yrs[i])+','+ys(v);pen=true;});
+      // Line and label take their colour from the SAME tone. Previously the
+      // stroke came from a CSS class and the label from the tone, so both
+      // "income poverty" series drew as identical grey while their labels were
+      // blue and orange -- unreadable, and the reader could not tell which line
+      // was which.
+      if(p)svg.appendChild(el('path',{d:p,fill:'none',
+        stroke:`var(--${s.tone||'text-muted'})`,
+        'stroke-width':WT[s.weight||'normal'],
+        'stroke-dasharray':DASH[s.style||'solid'],
+        opacity:s.weight==='light'?0.75:1}));
+      const li=(()=>{for(let i=s.values.length-1;i>=0;i--)if(s.values[i]!=null)return i;return -1;})();
+      // With a legend present, end-labelling every series just crowds the right
+      // margin. Only the emphasised series get an end label; the legend carries
+      // the rest.
+      const labelled=d.series.filter(x=>x.label).length<=2||s.weight!=='light';
+      if(li>=0&&s.label&&labelled)ends.push({y:ys(s.values[li]),x:xs(yrs[li])+6,s:s});
+    });
+    // End labels collide when series converge -- three of them stacked on one
+    // pixel row in the first prototype. Sort by y and push apart by a minimum
+    // gap, keeping each label anchored to its own line by a short leader.
+    const GAP=W<480?12:13.5;
+    ends.sort((a,b)=>a.y-b.y);
+    for(let i=1;i<ends.length;i++)
+      if(ends[i].y-ends[i-1].y<GAP)ends[i].y=ends[i-1].y+GAP;
+    const overflow=ends.length?Math.max(0,ends[ends.length-1].y-(padT+ph)):0;
+    if(overflow)ends.forEach(e=>e.y-=overflow);
+    ends.forEach(e=>{
+      const yl=ys(e.s.values[(()=>{for(let i=e.s.values.length-1;i>=0;i--)
+        if(e.s.values[i]!=null)return i;return 0;})()]);
+      if(Math.abs(yl-e.y)>2)
+        svg.appendChild(el('line',{x1:e.x-3,x2:e.x+2,y1:yl,y2:e.y-3,
+          stroke:`var(--${e.s.tone||'text-muted'})`,'stroke-width':1,opacity:.5}));
+      const t=el('text',{x:e.x+4,y:e.y,class:'axis-label',
+        style:`fill:var(--${e.s.tone||'text-muted'});font-weight:700`});
+      t.textContent=e.s.label;svg.appendChild(t);});
+    host.insertBefore(svg,host.firstChild);
+    // A legend keyed on the same tone/style, so the encoding is stated once
+    // rather than inferred from four crowded end labels.
+    if(d.series.filter(s=>s.label).length>2){
+      const lg=document.createElement('div');lg.className='legend';
+      d.series.filter(s=>s.label).forEach(s=>{
+        const i=document.createElement('span');i.className='lg-item';
+        i.innerHTML=`<svg width="22" height="8" aria-hidden="true"><line x1="0" y1="4" x2="22" y2="4"
+          stroke="var(--${s.tone||'text-muted'})" stroke-width="${WT[s.weight||'normal']}"
+          stroke-dasharray="${DASH[s.style||'solid']}"/></svg>${s.label}`;
+        lg.appendChild(i);});
+      host.insertBefore(lg,svg.nextSibling);
+    }
+    const tp=tip(host);
+    let idx=-1;
+    const show=i=>{ if(i<0||i>=yrs.length)return; idx=i;
+      cur.setAttribute('x1',xs(yrs[i]));cur.setAttribute('x2',xs(yrs[i]));
+      const rows=d.series.filter(s=>s.label).map(s=>`${s.label}: <b>${fmt(s.values[i],d.dp)}</b>`).join('<br>');
+      tp.innerHTML=`<strong>${yrs[i]}</strong><br>${rows}`;tp.classList.add('on');
+      const r=svg.getBoundingClientRect(),hr=host.getBoundingClientRect();
+      tp.style.left=Math.min(hr.width-tp.offsetWidth-8,(xs(yrs[i])/W)*r.width+8)+'px';
+      tp.style.top='8px';
+      say(host,`${yrs[i]}. `+d.series.filter(s=>s.label).map(s=>`${s.label} ${fmt(s.values[i],d.dp)}`).join(', '));
+    };
+    const near=e=>{const r=svg.getBoundingClientRect();
+      const x=(e.clientX-r.left)/r.width*W;
+      let best=0,bd=1e9;yrs.forEach((y,i)=>{const dd=Math.abs(xs(y)-x);if(dd<bd){bd=dd;best=i;}});
+      show(best);};
+    svg.addEventListener('mousemove',near);
+    svg.addEventListener('mouseleave',()=>{tp.classList.remove('on');cur.setAttribute('x1',-9);cur.setAttribute('x2',-9);});
+    host.addEventListener('keydown',e=>{
+      if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();
+        show(Math.max(0,Math.min(yrs.length-1,(idx<0?yrs.length-1:idx)+(e.key==='ArrowRight'?1:-1))));}
+      if(e.key==='Home'){e.preventDefault();show(0);}
+      if(e.key==='End'){e.preventDefault();show(yrs.length-1);}
+      if(e.key==='Escape'){tp.classList.remove('on');cur.setAttribute('x1',-9);}
+    });
+  }
+
+  /* ---------------------------------------------- coefficient (new type) */
+  function coefficient(host,d){
+    const W=widthFor(host), rowH=W<480?34:30;
+    const padL=W<480?110:190, padR=W<480?54:96, padT=26, padB=30;
+    const H=padT+d.rows.length*rowH+padB, pw=W-padL-padR;
+    let lo=Infinity,hi=-Infinity;
+    d.rows.forEach(r=>{lo=Math.min(lo,r.lo,r.est);hi=Math.max(hi,r.hi,r.est);});
+    const span=(hi-lo)||1; lo-=span*0.08; hi+=span*0.08;
+    const xs=v=>padL+(v-lo)/(hi-lo)*pw;
+    const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,class:'chart',role:'img',
+      'aria-label':d.alt||d.caption||'coefficient plot'});
+    [lo,(lo+hi)/2,hi].forEach(v=>{const t=el('text',{x:xs(v),y:H-8,
+      'text-anchor':'middle',class:'axis-label'});t.textContent=fmt(v,2);svg.appendChild(t);});
+    if(lo<0&&hi>0)svg.appendChild(el('line',{x1:xs(0),x2:xs(0),y1:padT-6,y2:padT+d.rows.length*rowH,class:'zero-line'}));
+    const tp=tip(host); let idx=-1;
+    const marks=[];
+    d.rows.forEach((r,i)=>{
+      const y=padT+i*rowH+rowH/2;
+      const tone=r.tone||'text-muted';
+      svg.appendChild(el('line',{x1:xs(r.lo),x2:xs(r.hi),y1:y,y2:y,
+        stroke:`var(--${tone})`,'stroke-width':2,opacity:.55}));
+      const c=el('circle',{cx:xs(r.est),cy:y,r:W<480?4.5:5.5,fill:`var(--${tone})`});
+      svg.appendChild(c);marks.push({y:y,r:r});
+      const lbl=el('text',{x:padL-10,y:y+4,'text-anchor':'end',class:'axis-label',
+        style:r.strong?'font-weight:700':''});
+      lbl.textContent=r.label;svg.appendChild(lbl);
+      const vt=el('text',{x:W-padR+8,y:y+4,class:'axis-label',
+        style:`fill:var(--${tone});font-weight:600`});
+      vt.textContent=r.right||'';svg.appendChild(vt);
+    });
+    host.insertBefore(svg,host.firstChild);
+    const show=i=>{if(i<0||i>=d.rows.length)return;idx=i;const r=d.rows[i];
+      tp.innerHTML=`<strong>${r.label}</strong><br>${r.detail}`;tp.classList.add('on');
+      const rc=svg.getBoundingClientRect(),hr=host.getBoundingClientRect();
+      tp.style.left=Math.min(hr.width-tp.offsetWidth-8,24)+'px';
+      tp.style.top=Math.max(4,(marks[i].y/H)*rc.height-tp.offsetHeight-6)+'px';
+      say(host,`${r.label}. ${r.detail.replace(/<[^>]+>/g,' ')}`);};
+    svg.addEventListener('mousemove',e=>{const rc=svg.getBoundingClientRect();
+      const y=(e.clientY-rc.top)/rc.height*H;let best=0,bd=1e9;
+      marks.forEach((m,i)=>{const dd=Math.abs(m.y-y);if(dd<bd){bd=dd;best=i;}});show(best);});
+    svg.addEventListener('mouseleave',()=>tp.classList.remove('on'));
+    host.addEventListener('keydown',e=>{
+      if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();
+        show(Math.max(0,Math.min(d.rows.length-1,(idx<0?-1:idx)+(e.key==='ArrowDown'?1:-1))));}
+      if(e.key==='Escape')tp.classList.remove('on');});
+  }
+
+
+  /* -------------------------------------------------------- ladder (new) */
+  /* All countries on one measure, ranked, with Greece and the EU marked.
+     Answers "is Greece unusual, or at one end of a continuum?" -- which a
+     Greece-only time series cannot. */
+  function ladder(host,d){
+    const W=widthFor(host), n=d.rows.length;
+    const rowH=W<480?15:17, padL=W<480?42:54, padR=W<480?46:64, padT=18, padB=26;
+    const H=padT+n*rowH+padB, pw=W-padL-padR;
+    let lo=Math.min(0,...d.rows.map(r=>r.value)), hi=Math.max(...d.rows.map(r=>r.value));
+    hi+=(hi-lo)*0.06||1;
+    const xs=v=>padL+(v-lo)/(hi-lo)*pw;
+    const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,class:'chart',role:'img',
+      'aria-label':d.alt||'ranked comparison of all countries'});
+    [lo,(lo+hi)/2,hi].forEach(v=>{
+      svg.appendChild(el('line',{x1:xs(v),x2:xs(v),y1:padT-4,y2:padT+n*rowH,class:'gridline'}));
+      const t=el('text',{x:xs(v),y:H-8,'text-anchor':'middle',class:'axis-label'});
+      t.textContent=fmt(v,d.dp);svg.appendChild(t);});
+    if(d.reference!=null){
+      svg.appendChild(el('line',{x1:xs(d.reference),x2:xs(d.reference),
+        y1:padT-4,y2:padT+n*rowH,class:'zero-line','stroke-dasharray':'4 3'}));
+      const rt=el('text',{x:xs(d.reference),y:padT-7,'text-anchor':'middle',
+        class:'axis-label',style:'fill:var(--eu);font-weight:700'});
+      rt.textContent=d.referenceLabel||'EU median';svg.appendChild(rt);}
+    const marks=[];
+    d.rows.forEach((r,i)=>{
+      const y=padT+i*rowH+rowH/2, hl=!!r.highlight;
+      svg.appendChild(el('rect',{x:padL,y:y-rowH/2+1,width:Math.max(0,xs(r.value)-padL),
+        height:rowH-3,rx:1.5,fill:`var(--${hl?'gr':'text-muted'})`,opacity:hl?1:.32}));
+      const lb=el('text',{x:padL-6,y:y+3.5,'text-anchor':'end',class:'axis-label',
+        style:hl?'fill:var(--gr);font-weight:700':''});
+      lb.textContent=r.label;svg.appendChild(lb);
+      if(hl||i===0||i===n-1){const vt=el('text',{x:xs(r.value)+5,y:y+3.5,class:'axis-label',
+        style:hl?'fill:var(--gr);font-weight:700':''});
+        vt.textContent=fmt(r.value,d.dp);svg.appendChild(vt);}
+      marks.push({y:y,r:r,i:i});});
+    host.insertBefore(svg,host.firstChild);
+    const tp=tip(host);let idx=-1;
+    const show=i=>{if(i<0||i>=marks.length)return;idx=i;const r=marks[i].r;
+      tp.innerHTML=`<strong>${r.name||r.label}</strong><br>${fmt(r.value,d.dp)}${d.unit?' '+d.unit:''}`
+        +(r.detail?'<br>'+r.detail:'')+`<br><span style="opacity:.6">rank ${i+1} of ${marks.length}</span>`;
+      tp.classList.add('on');
+      const rc=svg.getBoundingClientRect(),hr=host.getBoundingClientRect();
+      tp.style.left=Math.min(hr.width-tp.offsetWidth-8,padL/W*rc.width+10)+'px';
+      tp.style.top=Math.max(2,Math.min(rc.height-tp.offsetHeight-4,
+        (marks[i].y/H)*rc.height-tp.offsetHeight/2))+'px';
+      say(host,`${r.name||r.label}, ${fmt(r.value,d.dp)}, rank ${i+1} of ${marks.length}`);};
+    svg.addEventListener('mousemove',e=>{const rc=svg.getBoundingClientRect();
+      const y=(e.clientY-rc.top)/rc.height*H;let b=0,bd=1e9;
+      marks.forEach((m,i)=>{const dd=Math.abs(m.y-y);if(dd<bd){bd=dd;b=i;}});show(b);});
+    svg.addEventListener('mouseleave',()=>tp.classList.remove('on'));
+    host.addEventListener('keydown',e=>{
+      if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();
+        show(Math.max(0,Math.min(marks.length-1,(idx<0?-1:idx)+(e.key==='ArrowDown'?1:-1))));}
+      if(e.key==='Home'){e.preventDefault();show(0);}
+      if(e.key==='End'){e.preventDefault();show(marks.length-1);}
+      if(e.key==='Escape')tp.classList.remove('on');});
+  }
+
+
+  /* ------------------------------------------------------ dumbbell (new) */
+  /* Two states joined per row. Reads a change -- a gap in 2015 against 2024,
+     or a between estimate against a within one -- as a single object rather
+     than two bars the reader has to subtract. */
+  function dumbbell(host,d){
+    const W=widthFor(host), rowH=W<480?26:24;
+    const padL=W<480?104:180, padR=W<480?52:92, padT=26, padB=32;
+    const H=padT+d.rows.length*rowH+padB, pw=W-padL-padR;
+    let lo=Infinity,hi=-Infinity;
+    d.rows.forEach(r=>{lo=Math.min(lo,r.a,r.b);hi=Math.max(hi,r.a,r.b);});
+    const sp=(hi-lo)||1; lo-=sp*0.08; hi+=sp*0.08;
+    const xs=v=>padL+(v-lo)/(hi-lo)*pw;
+    const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,class:'chart',role:'img',
+      'aria-label':d.alt||'paired comparison'});
+    [lo,(lo+hi)/2,hi].forEach(v=>{
+      svg.appendChild(el('line',{x1:xs(v),x2:xs(v),y1:padT-6,y2:padT+d.rows.length*rowH,class:'gridline'}));
+      const t=el('text',{x:xs(v),y:H-10,'text-anchor':'middle',class:'axis-label'});
+      t.textContent=fmt(v,d.dp);svg.appendChild(t);});
+    if(lo<0&&hi>0){svg.appendChild(el('line',{x1:xs(0),x2:xs(0),y1:padT-6,
+      y2:padT+d.rows.length*rowH,class:'zero-line'}));
+      const zt=el('text',{x:xs(0),y:padT-10,'text-anchor':'middle',class:'axis-label',
+        style:'font-weight:700'});zt.textContent=d.zeroLabel||'0';svg.appendChild(zt);}
+    const marks=[];
+    d.rows.forEach((r,i)=>{
+      const y=padT+i*rowH+rowH/2, tone=r.tone||'text-muted';
+      svg.appendChild(el('line',{x1:xs(r.a),x2:xs(r.b),y1:y,y2:y,
+        stroke:`var(--${tone})`,'stroke-width':2.5,opacity:.45}));
+      svg.appendChild(el('circle',{cx:xs(r.a),cy:y,r:4,fill:'var(--text-muted)'}));
+      svg.appendChild(el('circle',{cx:xs(r.b),cy:y,r:5.5,fill:`var(--${tone})`}));
+      const lb=el('text',{x:padL-10,y:y+4,'text-anchor':'end',class:'axis-label',
+        style:r.strong?'font-weight:700':''});
+      lb.textContent=r.label;svg.appendChild(lb);
+      if(r.right){const rt=el('text',{x:W-padR+8,y:y+4,class:'axis-label',
+        style:`fill:var(--${tone});font-weight:600`});rt.textContent=r.right;svg.appendChild(rt);}
+      marks.push({y:y,r:r});});
+    host.insertBefore(svg,host.firstChild);
+    if(d.legendA||d.legendB){
+      const lg=document.createElement('div');lg.className='legend';
+      lg.innerHTML=`<span class="lg-item"><svg width="12" height="12" aria-hidden="true">
+        <circle cx="6" cy="6" r="4" fill="var(--text-muted)"/></svg>${d.legendA||'start'}</span>
+        <span class="lg-item"><svg width="12" height="12" aria-hidden="true">
+        <circle cx="6" cy="6" r="5" fill="var(--gr)"/></svg>${d.legendB||'end'}</span>`;
+      host.insertBefore(lg,svg.nextSibling);}
+    const tp=tip(host);let idx=-1;
+    const show=i=>{if(i<0||i>=marks.length)return;idx=i;const r=marks[i].r;
+      tp.innerHTML=`<strong>${r.label}</strong><br>${d.legendA||'start'}: ${fmt(r.a,d.dp)}`
+        +`<br>${d.legendB||'end'}: <b>${fmt(r.b,d.dp)}</b>`+(r.detail?'<br>'+r.detail:'');
+      tp.classList.add('on');
+      const rc=svg.getBoundingClientRect(),hr=host.getBoundingClientRect();
+      tp.style.left=Math.min(hr.width-tp.offsetWidth-8,20)+'px';
+      tp.style.top=Math.max(2,Math.min(rc.height-tp.offsetHeight-4,
+        (marks[i].y/H)*rc.height-tp.offsetHeight-6))+'px';
+      say(host,`${r.label}, ${fmt(r.a,d.dp)} to ${fmt(r.b,d.dp)}`);};
+    svg.addEventListener('mousemove',e=>{const rc=svg.getBoundingClientRect();
+      const y=(e.clientY-rc.top)/rc.height*H;let b=0,bd=1e9;
+      marks.forEach((m,i)=>{const dd=Math.abs(m.y-y);if(dd<bd){bd=dd;b=i;}});show(b);});
+    svg.addEventListener('mouseleave',()=>tp.classList.remove('on'));
+    host.addEventListener('keydown',e=>{
+      if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();
+        show(Math.max(0,Math.min(marks.length-1,(idx<0?-1:idx)+(e.key==='ArrowDown'?1:-1))));}
+      if(e.key==='Escape')tp.classList.remove('on');});
+  }
+
+  /* ------------------------------------------------------- heatmap (new) */
+  /* A correlation matrix. Deliberately small by default: a 31x31 grid contains
+     everything and communicates almost nothing, so the main view carries the
+     outcomes and the frozen construct representatives only. */
+  function heatmap(host,d){
+    const W=widthFor(host);
+    const labW=W<480?96:150, cell=Math.max(16,Math.min(34,(W-labW-16)/d.cols.length));
+    const top=Math.min(120,labW*0.8);
+    const H=top+d.rows.length*cell+10;
+    const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,class:'chart',role:'img',
+      'aria-label':d.alt||'correlation matrix'});
+    d.cols.forEach((c,j)=>{const x=labW+j*cell+cell/2;
+      const t=el('text',{x:x,y:top-6,class:'axis-label','text-anchor':'start',
+        transform:`rotate(-55 ${x} ${top-6})`});t.textContent=c;svg.appendChild(t);});
+    const marks=[];
+    d.rows.forEach((r,i)=>{
+      const y=top+i*cell;
+      const lb=el('text',{x:labW-8,y:y+cell/2+3.5,'text-anchor':'end',class:'axis-label'});
+      lb.textContent=r.label;svg.appendChild(lb);
+      r.values.forEach((v,j)=>{
+        const x=labW+j*cell;
+        const mag=v==null?0:Math.min(1,Math.abs(v));
+        const tone=v==null?'border':(v<0?'eu':'gr');
+        const rect=el('rect',{x:x+1,y:y+1,width:cell-2,height:cell-2,rx:2,
+          fill:`var(--${tone})`,opacity:v==null?0.12:0.12+mag*0.8});
+        svg.appendChild(rect);
+        if(d.flags&&d.flags[i]&&d.flags[i][j])
+          svg.appendChild(el('circle',{cx:x+cell-5,cy:y+5,r:2.4,fill:'var(--warn)'}));
+        marks.push({x:x,y:y,i:i,j:j,v:v});});});
+    host.insertBefore(svg,host.firstChild);
+    const lg=document.createElement('div');lg.className='legend';
+    lg.innerHTML=`<span class="lg-item"><svg width="34" height="10" aria-hidden="true">
+      <rect width="16" height="10" fill="var(--eu)" opacity=".8"/>
+      <rect x="18" width="16" height="10" fill="var(--gr)" opacity=".8"/></svg>
+      negative &rarr; positive</span>`
+      +(d.flagLabel?`<span class="lg-item"><svg width="10" height="10" aria-hidden="true">
+      <circle cx="5" cy="5" r="2.6" fill="var(--warn)"/></svg>${d.flagLabel}</span>`:'');
+    host.insertBefore(lg,svg.nextSibling);
+    const tp=tip(host);let idx=-1;
+    const show=k=>{if(k<0||k>=marks.length)return;idx=k;const m=marks[k];
+      const flag=d.flags&&d.flags[m.i]&&d.flags[m.i][m.j];
+      tp.innerHTML=`<strong>${d.rows[m.i].label}</strong><br>vs ${d.cols[m.j]}`
+        +`<br>r = <b>${m.v==null?'&mdash;':m.v.toFixed(3)}</b>`
+        +(flag?`<br><span style="color:var(--warn)">${d.flagLabel}</span>`:'');
+      tp.classList.add('on');
+      const rc=svg.getBoundingClientRect(),hr=host.getBoundingClientRect();
+      tp.style.left=Math.min(hr.width-tp.offsetWidth-8,
+        Math.max(4,(m.x/W)*rc.width-tp.offsetWidth/2))+'px';
+      tp.style.top=Math.max(2,(m.y/H)*rc.height-tp.offsetHeight-4)+'px';
+      say(host,`${d.rows[m.i].label} versus ${d.cols[m.j]}, r ${m.v==null?'missing':m.v.toFixed(3)}`);};
+    svg.addEventListener('mousemove',e=>{const rc=svg.getBoundingClientRect();
+      const x=(e.clientX-rc.left)/rc.width*W, y=(e.clientY-rc.top)/rc.height*H;
+      let b=-1,bd=1e9;marks.forEach((m,k)=>{
+        const dd=Math.abs(m.x+cell/2-x)+Math.abs(m.y+cell/2-y);if(dd<bd){bd=dd;b=k;}});
+      if(b>=0)show(b);});
+    svg.addEventListener('mouseleave',()=>tp.classList.remove('on'));
+    host.addEventListener('keydown',e=>{
+      const step={ArrowRight:1,ArrowLeft:-1,ArrowDown:d.cols.length,ArrowUp:-d.cols.length}[e.key];
+      if(step){e.preventDefault();show(Math.max(0,Math.min(marks.length-1,(idx<0?0:idx)+step)));}
+      if(e.key==='Escape')tp.classList.remove('on');});
+  }
+
+
+  /* ------------------------------------------------------------- scatter */
+  /* Country-years as points. Used with country means removed, so the cloud
+     shows co-movement WITHIN countries rather than differences between them. */
+  function scatter(host,d){
+    const W=widthFor(host), H=Math.round(W*0.62);
+    const padL=56,padR=18,padT=16,padB=46;
+    const pw=W-padL-padR, ph=H-padT-padB;
+    const xs_=d.points.map(p=>p.x), ys_=d.points.map(p=>p.y);
+    const xlo=Math.min(...xs_),xhi=Math.max(...xs_),ylo=Math.min(...ys_),yhi=Math.max(...ys_);
+    const px=(xhi-xlo)*0.06||1, py=(yhi-ylo)*0.06||1;
+    const xs=v=>padL+(v-(xlo-px))/((xhi+px)-(xlo-px))*pw;
+    const ys=v=>padT+ph-(v-(ylo-py))/((yhi+py)-(ylo-py))*ph;
+    const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,class:'chart',role:'img',
+      'aria-label':d.alt||'scatter'});
+    for(let i=0;i<=4;i++){const v=(ylo-py)+((yhi+py)-(ylo-py))*i/4,y=ys(v);
+      svg.appendChild(el('line',{x1:padL,x2:W-padR,y1:y,y2:y,class:'gridline'}));
+      const t=el('text',{x:padL-6,y:y+3.5,'text-anchor':'end',class:'axis-label'});
+      t.textContent=fmt(v,d.dp);svg.appendChild(t);}
+    for(let i=0;i<=4;i++){const v=(xlo-px)+((xhi+px)-(xlo-px))*i/4;
+      const t=el('text',{x:xs(v),y:H-padB+16,'text-anchor':'middle',class:'axis-label'});
+      t.textContent=fmt(v,d.dp);svg.appendChild(t);}
+    if(xlo<0&&xhi>0)svg.appendChild(el('line',{x1:xs(0),x2:xs(0),y1:padT,y2:padT+ph,class:'zero-line'}));
+    if(ylo<0&&yhi>0)svg.appendChild(el('line',{x1:padL,x2:W-padR,y1:ys(0),y2:ys(0),class:'zero-line'}));
+    // least-squares line, drawn because the figure is about co-movement
+    const n=d.points.length,mx=xs_.reduce((a,b)=>a+b,0)/n,my=ys_.reduce((a,b)=>a+b,0)/n;
+    let sxy=0,sxx=0;d.points.forEach(p=>{sxy+=(p.x-mx)*(p.y-my);sxx+=(p.x-mx)**2;});
+    if(sxx>0){const b1=sxy/sxx,b0=my-b1*mx;
+      svg.appendChild(el('line',{x1:xs(xlo-px),y1:ys(b0+b1*(xlo-px)),
+        x2:xs(xhi+px),y2:ys(b0+b1*(xhi+px)),stroke:'var(--text-secondary)',
+        'stroke-width':1.6,'stroke-dasharray':'5 3',opacity:.8}));}
+    const marks=[];
+    d.points.forEach(p=>{const c=el('circle',{cx:xs(p.x),cy:ys(p.y),
+      r:p.highlight?4.5:2.8,fill:`var(--${p.highlight?'gr':'text-muted'})`,
+      opacity:p.highlight?1:.45});svg.appendChild(c);marks.push({x:xs(p.x),y:ys(p.y),p:p});});
+    const xt=el('text',{x:padL+pw/2,y:H-10,'text-anchor':'middle',class:'axis-label'});
+    xt.textContent=d.xLabel||'';svg.appendChild(xt);
+    const yt=el('text',{x:14,y:padT+ph/2,class:'axis-label','text-anchor':'middle',
+      transform:`rotate(-90 14 ${padT+ph/2})`});yt.textContent=d.yLabel||'';svg.appendChild(yt);
+    if(d.r!=null){const rt=el('text',{x:W-padR-4,y:padT+12,'text-anchor':'end',
+      class:'axis-label',style:'font-weight:700'});rt.textContent='r = '+d.r;svg.appendChild(rt);}
+    host.insertBefore(svg,host.firstChild);
+    const tp=tip(host);let idx=-1;
+    const show=i=>{if(i<0||i>=marks.length)return;idx=i;const p=marks[i].p;
+      tp.innerHTML=`<strong>${p.label}</strong><br>${fmt(p.x,d.dp)} , ${fmt(p.y,d.dp)}`;
+      tp.classList.add('on');
+      const rc=svg.getBoundingClientRect(),hr=host.getBoundingClientRect();
+      tp.style.left=Math.min(hr.width-tp.offsetWidth-8,
+        Math.max(4,(marks[i].x/W)*rc.width-tp.offsetWidth/2))+'px';
+      tp.style.top=Math.max(2,(marks[i].y/H)*rc.height-tp.offsetHeight-8)+'px';
+      say(host,`${p.label}, ${fmt(p.x,d.dp)} and ${fmt(p.y,d.dp)}`);};
+    svg.addEventListener('mousemove',e=>{const rc=svg.getBoundingClientRect();
+      const x=(e.clientX-rc.left)/rc.width*W,y=(e.clientY-rc.top)/rc.height*H;
+      let b=-1,bd=1e9;marks.forEach((m,i)=>{const dd=(m.x-x)**2+(m.y-y)**2;
+        if(dd<bd){bd=dd;b=i;}});if(b>=0&&bd<900)show(b);else tp.classList.remove('on');});
+    svg.addEventListener('mouseleave',()=>tp.classList.remove('on'));
+    host.addEventListener('keydown',e=>{
+      if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();
+        show(Math.max(0,Math.min(marks.length-1,(idx<0?-1:idx)+(e.key==='ArrowRight'?1:-1))));}
+      if(e.key==='Escape')tp.classList.remove('on');});
+  }
+
+  const KINDS={panel:panel,coefficient:coefficient,ladder:ladder,dumbbell:dumbbell,heatmap:heatmap,scatter:scatter};
+
+
+  // VIEW SWITCHING. Some questions need more than one look -- the real
+  // threshold and the anchored comparison, or AROPE by component, age,
+  // household and shift-share. Views live in one figure so the reader does not
+  // lose the question while changing the picture.
+  function mountViews(host){
+    const payloads=[...host.querySelectorAll('script[type="application/json"]')];
+    if(payloads.length<2)return false;
+    const bar=document.createElement('div');bar.className='viewbar';
+    bar.setAttribute('role','tablist');
+    const draw=i=>{
+      const d=JSON.parse(payloads[i].textContent);
+      host.querySelectorAll('svg,.legend,.tip,.sr').forEach(n=>n.remove());
+      (KINDS[payloads[i].dataset.kind||host.dataset.chart]||panel)(host,d);
+      [...bar.children].forEach((b,j)=>{b.setAttribute('aria-selected',j===i?'true':'false');
+        b.tabIndex=j===i?0:-1;});
+      // Scope from the FIGURE, not the chart host: the fallback tables live in
+      // the <details> sibling, so querying the host matched nothing and every
+      // view's table stayed visible at once.
+      const fig=host.closest('figure')||document;
+      fig.querySelectorAll('table[data-view]').forEach(tb=>{
+        tb.hidden = tb.dataset.view !== String(i);});
+    };
+    payloads.forEach((pl,i)=>{
+      const b=document.createElement('button');b.type='button';b.className='viewbtn';
+      b.setAttribute('role','tab');b.textContent=pl.dataset.label||('View '+(i+1));
+      b.addEventListener('click',()=>draw(i));
+      b.addEventListener('keydown',e=>{
+        if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();
+          const j=(i+(e.key==='ArrowRight'?1:-1)+payloads.length)%payloads.length;
+          bar.children[j].focus();draw(j);}});
+      bar.appendChild(b);});
+    host.parentNode.insertBefore(bar,host);
+    draw(0);
+    return true;
+  }
+
+  function mount(){
+    document.querySelectorAll('[data-chart]').forEach(host=>{
+      if(host.dataset.drawn)return;
+      if(mountViews(host)){host.dataset.drawn='1';return;}
+      const payload=host.querySelector('script[type="application/json"]');
+      if(!payload)return;
+      const d=JSON.parse(payload.textContent);
+      const fn=KINDS[host.dataset.chart];
+      if(!fn)return;
+      host.querySelectorAll('svg').forEach(s=>s.remove());
+      fn(host,d);
+      host.dataset.drawn='1';
+    });
+  }
+  function redraw(){document.querySelectorAll('.viewbar').forEach(b=>b.remove());
+    document.querySelectorAll('[data-chart]').forEach(h=>h.dataset.drawn='');mount();}
+  document.addEventListener('DOMContentLoaded',mount);
+  if(document.readyState!=='loading')mount();
+  let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(redraw,180);});
+})();
+</script>
+</body></html>
