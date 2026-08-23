@@ -86,6 +86,10 @@ SCHEMA = {
                                       "within": "coefficient", "within_p": "p_value",
                                       "fd_coef": "coefficient", "fd_p": "p_value",
                                       "n": "count"},
+    "e5_results.csv":                {"coef": "coefficient", "se": "se",
+                                      "p_raw": "p_value", "p_fdr": "p_value",
+                                      "boot_p": "p_value",
+                                      "primary_boot_p": "p_value", "n": "count"},
     "e4_threshold_sensitivity.csv":  {"coef": "coefficient", "se": "se",
                                       "p_raw": "p_value", "n": "count"},
     "e4_current_vs_accumulated.csv": {"cur_coef": "coefficient",
@@ -122,7 +126,13 @@ NULLABLE = {("p2_specifications.csv", "post_gap"),
             ("e2_results.csv", "boot_p"),
             # Bootstrap runs only where FDR was cleared, per the pre-registration.
             ("e4_results.csv", "boot_p"),
-            ("e4_results.csv", "boot_exceedances")}
+            ("e4_results.csv", "boot_exceedances"),
+            # Rows for primaries with no sensitivity carry no coefficients, and
+            # bootstrap runs only where FDR was cleared.
+            ("e5_results.csv", "coef"), ("e5_results.csv", "se"),
+            ("e5_results.csv", "p_raw"), ("e5_results.csv", "p_fdr"),
+            ("e5_results.csv", "boot_p"), ("e5_results.csv", "n"),
+            ("e5_results.csv", "primary_boot_p")}
 
 problems, checked = [], 0
 for fname, cols in SCHEMA.items():

@@ -41,10 +41,10 @@ This notebook is the running log. `publication_strategy.md` was closed on
 <!-- AUTO:BEGIN document-control -->
 | Field | Value |
 |---|---|
-| Current stage | E5 |
-| Last completed stage | E4 |
+| Current stage | E6 |
+| Last completed stage | E5 |
 | Branch | `p6-rewrite` |
-| HEAD | `83453d6` E4: three accumulated measures supported, none permitting dynamic wording |
+| HEAD | `ceaeda2` E4 corrections: uniform threshold baseline, softened claims, borderline flagged |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-23 |
 | Frozen V1 reference | `v1-final` |
@@ -91,8 +91,8 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | E2 | Do sensitivity variants change the current-level conclusions? | complete | `a747e7a` | — | [E2](#e2--current-level-sensitivities) |
 | E3 | What do the diagnostic and contextual checks show? | complete | `a747e7a` | — | [E3](#e3--diagnostic-and-contextual-checks) |
 | E4 | Which accumulated constructs are associated with hardship? | complete | `a747e7a` | — | [E4](#e4--accumulated-exposure) |
-| E5 | Do accumulated-measure sensitivities change those conclusions? | **next** | `a747e7a` | — | [E5](#e5--accumulation-sensitivities) |
-| E6 | Does the frozen combined model remain appropriate? | pending | `a747e7a` | — | [E6](#e6--frozen-combined-model) |
+| E5 | Do accumulated-measure sensitivities change those conclusions? | complete | `a747e7a` | — | [E5](#e5--accumulation-sensitivities) |
+| E6 | Does the frozen combined model remain appropriate? | **next** | `a747e7a` | — | [E6](#e6--frozen-combined-model) |
 | E7 | Do accumulated measures add information beyond current snapshots? | pending | `a747e7a` | — | [E7](#e7--current-versus-accumulated-comparison) |
 | FINAL | What survives into the final reports? | pending | — | — | [FINAL](#final--claim-freeze-and-publication) |
 <!-- AUTO:END stage-index -->
@@ -2155,16 +2155,144 @@ forward to make it testable was available and was not done.
 
 ## E5 — Accumulation sensitivities
 
+> **Protocol deviation.** FDR is grouped within construct, which the frozen
+> pre-registration does not declare. This is [PD-01](#protocol-deviations)
+> applying again to the accumulated family, recorded as **PD-02**. The pooled
+> alternative is below.
+
 ### In plain words
 
-### Question
-### Pre-registered alternatives
-### Equal-sample comparisons
+E4 found three supported accumulated measures. E5 asks whether those
+conclusions survive being measured a different way — and, crucially, does *not*
+go looking for replacements where a primary failed.
+
+**Accumulated unemployment is confirmed.** Its declared sensitivity — long-term
+rather than total unemployment — reproduces the result outright.
+
+**Wage duration is qualified, not confirmed, and this matters.** The primary is
+the *current* run of years below the fixed 2008 level. Three reasonable
+alternative constructions — own rolling peak instead of 2008, longest run ever
+instead of the current one, and both together — do **not** reproduce it. The
+finding is real under its declared construction and does not generalise across
+constructions of "how long wages have been down".
+
+**Nothing was promoted.** The C3 depth alternatives behave exactly like their
+primaries and cannot become findings whatever they had shown.
+
+**Housing has no sensitivity, and stays borderline.** The only alternative
+available would be a different baseline, and trying baselines until one performs
+better is the move this protocol exists to prevent. Its 2010 base is forced by
+coverage. Its bootstrap p is 0.0460, and that remains the number describing it.
+
+### Two classes of sensitivity, kept apart
+
+| Class | Meaning | Count |
+|---|---|---:|
+| **DECLARED** | named in the frozen construct map before any result existed | 1 |
+| **ALTERNATIVE** | a different reasonable construction, identified *after* E4 | 5 |
+
+The distinction is not cosmetic. The alternative set was chosen knowing which
+primaries had succeeded, so it can qualify a conclusion and cannot support a
+discovery. Only C2 has a declared accumulated sensitivity; the construct map
+names no others.
+
 ### Results
-### Multiple-testing adjustment
-### Interpretation
-### Decision
+
+| Primary | E4 outcome | Sensitivity | Class | Coef | Boot p | Disposition |
+|---|---|---|---|---:|---:|---|
+| `acc_cum_excess_unemployment` | supported | `cum_excess_ltu` | **DECLARED** | +0.5127 | **0.0200** | **confirms** |
+| `dur_real_wages_below` | supported | `wage_years_below_peak` | ALTERNATIVE | +1.1388 | — | qualifies |
+| `dur_real_wages_below` | supported | `wage_longest_streak_2008` | ALTERNATIVE | +1.2934 | — | qualifies |
+| `dur_real_wages_below` | supported | `wage_longest_streak_peak` | ALTERNATIVE | +0.8243 | — | qualifies |
+| `acc_real_wages_shortfall` | inconclusive | `cum_wage_shortfall_ownpeak` | ALTERNATIVE | +0.0984 | 0.0870 | **cannot promote** |
+| `acc_pct_below_peak` | inconclusive | `cum_gdp_shortfall_2008base` | ALTERNATIVE | +0.1721 | 0.3170 | **cannot promote** |
+| `acc_housing_excess` | supported (borderline) | — | — | — | — | none available |
+| `acc_hicp_compounded` | inconclusive | — | — | — | — | none run |
+
+**Sensitivities that would have been findings had the rule allowed it: 0.**
+
+### C2 — confirmed
+
+`cum_excess_ltu` reproduces accumulated unemployment at bootstrap p = 0.0200.
+Substituting long-term for total unemployment does not change the conclusion,
+which strengthens E4's strongest result. This is also the only sensitivity in
+the stage that was declared in advance.
+
+### C3 wage duration — qualified, and the qualification is substantive
+
+The primary counts the **current** consecutive run of years with real wages
+below their fixed 2008 level. Three alternatives change one thing each:
+
+| Alternative | What differs | Reproduces? |
+|---|---|---|
+| `wage_years_below_peak` | own rolling peak rather than fixed 2008 | no |
+| `wage_longest_streak_2008` | longest run ever, not the current run | no |
+| `wage_longest_streak_peak` | both changes together | no |
+
+None clears FDR within the construct, so none reaches the bootstrap.
+
+The E4 result stands — it was supported under its declared construction and
+nothing here removes that. But **it does not generalise**: "how long wages have
+been below where they were" supports the finding only when measured as the
+current run against a fixed pre-crisis level. That is a narrower claim than E4's
+summary implied, and it should travel with the finding.
+
+### C3 depth and inflation — no promotion possible
+
+`cum_wage_shortfall_ownpeak` (0.0870) and `cum_gdp_shortfall_2008base` (0.3170)
+behave almost identically to the primaries they vary. Both are barred from
+promotion by rule, and both would have failed anyway.
+
+Compounded inflation was given **no** sensitivity. Food and housing inflation
+were already excluded *with adequate power* at E2 in annual form; compounding
+measures that could not be detected in the first place would qualify nothing,
+and the primary cannot be promoted regardless.
+
+### Housing — no sensitivity, and still borderline
+
+The only alternative construction available is a different baseline. Trying
+baselines until one performs better is precisely the move the protocol exists to
+prevent, and the 2010 base is already forced by coverage rather than chosen.
+
+Its status is unchanged: **supported under the declared rule, borderline at
+bootstrap p = 0.0460 with 91 exceedances of 1,999**. No sensitivity result could
+have altered that, because the number describing the primary is the primary's
+own.
+
+### What this does not establish
+
+- No sensitivity here creates or rescues a finding, by construction.
+- That the wage-duration alternatives are *wrong*. They are different
+  quantities that do not carry the result.
+- That housing is more secure than E4 reported. It is exactly as secure.
+- That inflation is ruled out. It remains inconclusive under available power.
+
+### Post hoc: pooled correction
+
+Within-construct grouping is not pre-registered (PD-02). Under a single pooled
+correction across all six sensitivities the picture is unchanged: `cum_excess_ltu`
+still clears and the rest still do not, and no disposition depends on the
+grouping because every one of them is governed by its primary rather than by
+FDR.
+
+### Notes from review
+
+The scope question was settled before running. E4 left three supported measures
+and four failures, and the tempting design was to run a wide battery of
+alternative constructions across all of them. That would have been a search for
+replacements dressed as robustness — with the set chosen after seeing which
+primaries failed.
+
+So the sensitivities are split into what the construct map declared in advance
+(one) and what was identified afterwards (five), and the second class is
+labelled in the data as qualification-only. Two primaries were given no
+sensitivity at all, with the reason recorded in the code rather than decided
+silently.
+
 ### Where the detail lives
+
+`scripts/73_e5_accumulation_sensitivities.py`, `scripts/e_rule.py` ·
+`data/processed/e5_results.csv`
 
 ---
 
@@ -2261,6 +2389,10 @@ forward to make it testable was available and was not done.
 | D-35 | 2026-08-23 | E4 | `arop_threshold_real` PRIMARY is the uniform 2008 baseline on 26 countries; mixed-baseline version is a sensitivity outside the family | The pre-registration fixes 2008 and does not authorise a per-country fallback | Running the mixed-baseline series as the primary | `frozen` | — | — |
 | D-36 | 2026-08-23 | E4 | `acc_housing_excess` flagged BORDERLINE, classified `supported` by the rule | p=0.0460, 91 of 1,999 exceedances, against 0.0025 for C2 | Reclassifying it; re-running with another seed for a friendlier p | `frozen` | — | — |
 | D-37 | 2026-08-23 | E4 | Robust C3 support limited to wage DURATION | The three depth measures clear FDR then fail the bootstrap at 0.074, 0.315, 0.607 | Reporting C3 as confirmed by accumulation | `frozen` | D-34 | — |
+| D-38 | 2026-08-23 | E5 | C2 confirmed by its declared sensitivity | `cum_excess_ltu` reproduces it at bootstrap 0.0200 | — | `frozen` | — | — |
+| D-39 | 2026-08-23 | E5 | Wage duration supported ONLY as the current run against a fixed 2008 base | Three alternative constructions fail to reproduce it | Reporting wage duration as a general "how long wages have been down" finding | `frozen` | D-37 | — |
+| D-40 | 2026-08-23 | E5 | No sensitivity run for housing or compounded inflation, with reasons recorded | Housing's only alternative is a rebasing exercise; inflation's annual forms were already excluded with adequate power | Running baselines until one performs better | `frozen` | — | — |
+| D-41 | 2026-08-23 | E5 | Sensitivities split into DECLARED (1) and post-hoc ALTERNATIVE (5) | The alternative set was chosen knowing which primaries failed; it can qualify, never discover | Presenting all six as equivalent robustness evidence | `frozen` | — | — |
 
 Allowed statuses: `proposed`, `pre-registered`, `frozen`, `superseded`,
 `withdrawn`, `infeasible`.
@@ -2302,6 +2434,10 @@ Allowed statuses: `proposed`, `pre-registered`, `frozen`, `superseded`,
 | R-31 | E4 | hardship level | `acc_hicp_compounded` (C5) | between-country, cond. on AROP + year | n=270 | −0.1793 | 0.3666 | 0.3666 | — | — | below MDE | no supporting evidence; the design CANNOT EXCLUDE a relevant effect | `inconclusive_under_available_power` | `e4_results.csv` |
 | R-32 | E4 | hardship level | all accumulated measures | within-country + first differences | n=260–270 | none significant in the adverse direction | — | — | — | — | wide intervals; power concentrated between countries | evidence is PREDOMINANTLY between-country; no dynamic support, but absence is not proof of absence | `inconclusive_under_available_power` | `e4_results.csv` |
 | R-33 | E4 | — | `aic_pps_pc` (C1), `real_income_idx` (C3), `severe_mat_soc_deprivation` (P1) | — | — | not constructible | — | — | — | — | — | no pre-2015 source history; baselines NOT moved to make them testable | `infeasible` | `e4_feasibility.csv` |
+| R-34 | E5 | hardship level | `cum_excess_ltu` (C2, DECLARED) | within-construct, common sample | n=270 | +0.5127 | — | cleared | **0.0200** | — | — | long-term substituted for total unemployment reproduces C2 | `confirms_primary` | `e5_results.csv` |
+| R-35 | E5 | hardship level | 3 wage-duration alternatives (C3, post-hoc) | within-construct, common sample | n=270 | +0.82 to +1.29 | — | none cleared FDR | — | — | — | wage duration does NOT generalise across constructions; supported only as the current run against a fixed 2008 base | `qualifies_primary` | `e5_results.csv` |
+| R-36 | E5 | hardship level | 2 C3 depth alternatives (post-hoc) | within-construct, common sample | n=270 | +0.098, +0.172 | — | — | 0.0870, 0.3170 | — | — | behave like their primaries; barred from promotion regardless | `cannot_promote` | `e5_results.csv` |
+| R-37 | E5 | — | `acc_housing_excess`, `acc_hicp_compounded` | — | — | no sensitivity run | — | — | — | — | — | housing: only alternative is a rebasing exercise; inflation: annual forms already excluded with adequate power at E2 | `descriptive_only` | `e5_results.csv` |
 
 Allowed statuses: `supported`, `unsupported_with_adequate_power`,
 `inconclusive_under_available_power`, `failed_incremental_criterion`,
@@ -2353,6 +2489,7 @@ stage that made them.
 
 | ID | Date | Stage | Deviation | Why the pre-registration did not settle it | Direction of the choice | Mitigation | Status |
 |---|---|---|---|---|---|---|---|
+| PD-02 | 2026-08-23 | E5 | FDR grouped **within construct** for accumulated sensitivities | Same gap as PD-01: the frozen pre-registration declares three BH families and no within-construct sensitivity family | **More permissive** than pooling | Pooled alternative reported; no disposition depends on the grouping, since every sensitivity is governed by its primary rather than by FDR | disclosed |
 | PD-01 | 2026-08-23 | E2 | FDR applied **within construct** for sensitivity variants | `e_preregistration.json` declares three BH families — current primaries, accumulated primaries, secondary outcome — and no within-construct sensitivity family | **More permissive** than a pooled correction | Pooled correction reported as a post hoc display; only `unemployment_rate` and `youth_unemployment` differ, and both had already failed the bootstrap, so no reported outcome depends on it. The promotion rule independently barred every E2 sensitivity from becoming a finding | disclosed |
 
 Deviations must be disclosed in the stage that made them, not only here.
@@ -2432,4 +2569,5 @@ Deviations must be disclosed in the stage that made them, not only here.
 | E4 | `e4_feasibility.csv` | 7 of 10 accumulations constructible; C1 is not | present |
 | E4 | `e4_results.csv` | BH family 2; 3 supported, all between-country | present |
 | E4 | `e4_threshold_sensitivity.csv` | Mixed-baseline threshold, outside BH family 2 | present |
+| E5 | `e5_results.csv` | Accumulation sensitivities; 1 declared, 5 post-hoc | present |
 <!-- AUTO:END artifact-index -->
