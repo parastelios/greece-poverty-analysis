@@ -3183,6 +3183,38 @@ Current state of `docs/claim_matrix.csv`: **53 claims**.
 | future_research | 1 |
 <!-- AUTO:END claim-summary -->
 
+## Open transition state
+
+The rewrite is in progress and the repository is deliberately in a mixed state.
+Recorded here so a red number is not mistaken for a regression.
+
+| Item | State |
+|---|---|
+| Technical report | **rebuilt** against the 21 frozen claims and 6 context entries, 8 stages, 13/13 acceptance conditions |
+| Academic paper | not yet rewritten — still V1-era prose |
+| Narrative companion | not yet rewritten |
+| Statistical appendix | not yet rebuilt |
+| Claim/document parity | **126 of 158** pairs, down from 158 |
+| Context parity | report clean; **8 unanchored** in paper and narrative |
+
+**Why parity fell.** Two claim systems exist during the transition:
+`docs/claim_matrix.csv` holds the 53 V1-era claims that still govern the paper
+and narrative, and `data/processed/e_final_claims.csv` holds the 21 frozen V2
+claims the report is now written against. The report no longer contains the old
+claims, so 32 pairs read as missing.
+
+This resolves when the paper and narrative are rewritten against the frozen set
+and the old matrix is retired to legacy. **Release is blocked until then** —
+`audit_parity.py --release` fails on both counts.
+
+**What the report rewrite cost.** The previous report's interactive charts are
+gone. Its script was a charting library bound to five DOM ids that the
+eight-stage structure does not have; carrying it would have dereferenced null on
+load and silently aborted, which is a regression this project shipped once
+before. Figures now come from `65_record_figures.py`, generated from the frozen
+artifacts, so they cannot drift from the numbers they illustrate — at the cost
+of hover interactivity, which the statistical appendix retains.
+
 ## Protocol deviations
 
 Choices made after a pre-registration was frozen, where the frozen document did

@@ -68,7 +68,7 @@ verify:
 # it gates one deliverable, not the whole build -- but it IS enforced: it runs
 # inside release-verify, so an incomplete report cannot ship.
 verify-report-v2:
-	$(PY) $(SCRIPTS)/verify_report_v2.py
+	$(PY) $(SCRIPTS)/verify_report_v3.py
 
 release-verify:
 	cd $(SCRIPTS) && $(PY) test_branch_rule.py
@@ -83,7 +83,7 @@ release-verify:
 	cd $(SCRIPTS) && $(PY) audit_reported_outputs.py
 	cd $(SCRIPTS) && $(PY) verify_build.py
 	cd $(SCRIPTS) && $(PY) audit_parity.py --release
-	$(PY) $(SCRIPTS)/verify_report_v2.py
+	$(PY) $(SCRIPTS)/verify_report_v3.py
 	@echo "RELEASE VERIFICATION PASSED"
 
 fetch:
