@@ -223,9 +223,12 @@ for pid in res.pair.unique():
     elif ao == "supported" and co == "supported":
         v = "BOTH SURVIVE: they capture distinct information"
     elif ao == "supported":
-        v = "ACCUMULATION ADDS: historical exposure carries extra cross-country information"
+        v = ("ACCUMULATION ADDS: additional cross-country information after the "
+             "current measure is controlled; the current measure is inconclusive, "
+             "NOT ruled out")
     elif co == "supported":
-        v = "CURRENT ONLY: present conditions carry the association once history is controlled"
+        v = ("CURRENT SURVIVES CONDITIONING; the accumulated measure is "
+             "INCONCLUSIVE, not unsupported with adequate power")
     elif "capped_by_ceiling_cannot_create_support" in (ao, co):
         v = ("CAPPED: a conditional coefficient cleared every gate but its prior "
              "stage did not support it; E7 may not create the finding")
@@ -242,7 +245,10 @@ for pid in res.pair.unique():
 
 print(f"\n{bar}\nDYNAMIC EVIDENCE (conditional)\n{bar}")
 print("  Mundlak with the CURRENT measure controlled, and conditional first")
-print("  differences. E4's separate-model decomposition does NOT satisfy this.\n")
+print("  differences. E4's separate-model decomposition does NOT satisfy this.")
+print("  These eight tests are a RESTRICTION CHECK, not a discovery family, and")
+print("  are NOT multiplicity-corrected -- so any 'significant' below is")
+print("  NOMINALLY significant.\n")
 print(f"  {'pair':18} {'acc between':>12} {'p':>8} {'acc within':>11} {'p':>8} "
       f"{'FD acc':>9} {'p':>8}  dynamic?")
 dyn_rows = []

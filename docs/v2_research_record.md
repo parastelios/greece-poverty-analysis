@@ -44,7 +44,7 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | FINAL |
 | Last completed stage | E7 |
 | Branch | `p6-rewrite` |
-| HEAD | `2206620` E7 power: two-sided fragility check, and no substantive reading of P7 |
+| HEAD | `41b1ea9` E7: accumulation adds beyond current conditions in three of eight pairs |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-23 |
 | Frozen V1 reference | `v1-final` |
@@ -2481,12 +2481,18 @@ model, on the same rows.
 
 **Accumulation adds information in three of eight pairs**: accumulated
 unemployment, wage duration, and housing deterioration. Each survives with its
-current-level counterpart controlled. These are the same three measures E4
-supported, now shown to carry information the present-day measure does not.
+current-level counterpart controlled.
 
-**One pair runs the other way.** For wage-adjusted affordability, the *current*
-measure survives and the accumulated one does not. Present conditions carry that
-association once history is controlled.
+> Historical exposure carries **additional** cross-country information after the
+> present-day measure is controlled. The current measure does not independently
+> meet the support criteria, but its contribution is **not ruled out** — in all
+> three pairs it is *inconclusive*, not unsupported.
+
+**One pair runs the other way.** For wage-adjusted affordability:
+
+> The current measure remains supported after accumulated pressure is
+> controlled; the accumulated measure does not meet the support criteria and
+> remains **inconclusive** — not unsupported with adequate power.
 
 **Two pairs are unresolved** — GDP shortfall and the poverty threshold. Neither
 direction survives, and power is insufficient to say more.
@@ -2499,8 +2505,12 @@ every gate conditionally, but E4 had not supported it — and E7 is not allowed 
 create findings. Reported, not promoted.
 
 **The collinearity gate never triggered.** Focal VIFs run 1.53–7.76, all below
-10, and no partial correlation exceeds 0.90. The data *can* separate current
-from accumulated for all eight pairs.
+10, and no partial correlation exceeds 0.90.
+
+> No pair triggered the pre-declared collinearity gate, so none was
+> automatically classified as uninterpretable. Several conditional effects
+> nevertheless remain **imprecisely estimated** — the highest focal VIF, 7.76 on
+> `hicp`, sits well inside the gate but is not small.
 
 **And nothing here unlocks dynamic language.** Not one pair passes the
 conditional first-difference test.
@@ -2530,14 +2540,18 @@ conditional first-difference test.
 one of those thresholds must be described cautiously and **cannot** support a
 strong exclusion claim.
 
+Note that every `inconclusive` above means exactly that. Only one coefficient in
+the table — `hicp` conditional on compounded inflation — is *unsupported with
+adequate power*. Nothing else here is ruled out.
+
 ### Pair verdicts
 
 | Pair | Verdict |
 |---|---|
-| P1_ltu | **Accumulation adds** — historical exposure carries extra cross-country information |
+| P1_ltu | **Accumulation adds** — additional information after the current measure is controlled |
 | P3_wage_duration | **Accumulation adds** |
 | P8_housing | **Accumulation adds** |
-| P6_wadj | **Current only** — present conditions carry the association once history is controlled |
+| P6_wadj | **Current supported, accumulated inconclusive** — the accumulated measure is not ruled out |
 | P2_wage_area | **Capped** — cleared every gate, but its prior stage did not support it |
 | P4_gdp | Unresolved — neither survives, power insufficient |
 | P5_threshold | Unresolved — neither survives, power insufficient |
@@ -2578,28 +2592,43 @@ requirement.
 | P8_housing | +0.3514 | 0.0000 | −0.0855 | 0.2343 | −0.0090 | 0.8679 | **no** |
 
 **Dynamic wording is permitted for none of them**, conditionally as well as
-marginally. Every between-country term that matters is significant; not one
-within-country term is significant in the adverse direction; and the two
-first-difference coefficients that *are* significant (P2, P6) point the **wrong
-way**.
+marginally. Not one within-country term is significant in the adverse direction,
+and the two first-difference coefficients that *are* **nominally significant**
+(P2, P6) point the **wrong way**.
 
-This is now the third independent route to the same conclusion, after P5 and E4.
+"Nominally" because these eight dynamic tests were **not** multiplicity-corrected
+— they are a restriction check, not a discovery family. It does not change the
+conclusion: no adverse-direction dynamic result appears even before correction.
+
+This is the third **related analytical check** reaching the same conclusion,
+after P5 and E4 — not an independent one. All three use the same panel and
+related specifications.
 
 ### Interpretation
 
-> For accumulated unemployment, wage duration and housing deterioration,
-> historical exposure carries cross-country information that the present-day
-> measure does not. For wage-adjusted affordability the reverse holds. In no
-> case does the evidence support describing hardship as having risen within a
-> country as exposure accumulated.
+> Accumulated unemployment, wage duration and housing deterioration retain
+> cross-country associations after their current counterparts are controlled.
+> This establishes **additional historical information** — not causality, not
+> superiority over current conditions, and not a within-Greece dynamic process.
+
+For wage-adjusted affordability the pattern reverses: the current measure
+survives conditioning and the accumulated one is inconclusive.
+
+On inflation, narrowly: **annual headline inflation is unsupported at the
+detectable conditional magnitude; compounded inflation remains inconclusive.**
 
 Current and accumulated remain **different estimands**. A pair where the
 accumulated measure survives conditionally does not show that history matters
-*more* than standing — only that it is not redundant with it.
+*more* than standing — only that it is not redundant with it, and the two
+coefficients were never formally compared.
 
 ### What this does not establish
 
 - No dynamic or within-country claim, for any pair, conditionally or otherwise.
+- That any current measure carries no information. Every one that failed is
+  *inconclusive*; only `hicp` is unsupported with adequate power.
+- That every pair is precisely estimated. None triggered the collinearity gate,
+  which is not the same as being well separated.
 - That accumulation matters more than current conditions anywhere. The two
   coefficients were never formally compared, and E7 forbids deciding
   superiority by comparing p-values.
@@ -2709,8 +2738,8 @@ And the ceiling had to be moved from prose into code, which caught P2.
 | D-43 | 2026-08-23 | E6 | The dependency on same-instrument deprivation is itself the reported result | Resolving the tension either way would discard the finding | Picking the better-reading specification and footnoting the other | `frozen` | D-13 | — |
 | D-44 | 2026-08-23 | E6 | The E1–E5 cross-walk is consistency, not replication, and not evidence of independent joint contribution | Same panel/outcome/countries; and the E tests were separate, not conditional on each other inside P3 | Citing E-stage support as independent corroboration, or as showing four independent contributions | `frozen` | — | — |
 | D-45 | 2026-08-23 | E6 | The fifteen pairwise family combinations remain closed | Searching combinations after seeing which constructs succeeded is the exploratory screening this design replaced | Testing them now that construct verdicts are known | `frozen` | D-07 | — |
-| D-46 | 2026-08-23 | E7 | Accumulation adds information beyond current conditions for C2 exposure, C3 wage duration and C6 housing | All three survive with their current counterpart controlled, bootstrap 0.0015–0.0060 | Concluding accumulation matters MORE — the coefficients were never compared | `frozen` | — | — |
-| D-47 | 2026-08-23 | E7 | C4 runs the other way: the CURRENT measure survives, the accumulated does not | `wadj_a01` bootstrap 0.0035 conditional; `acc_wadj_excess` p_FDR 0.3610 | Treating accumulation as generally superior | `frozen` | — | — |
+| D-46 | 2026-08-23 | E7 | Accumulation carries ADDITIONAL information after the current measure is controlled, for C2, C3 duration and C6 | All three survive conditioning, bootstrap 0.0015–0.0060; their current counterparts are inconclusive, NOT ruled out | Concluding accumulation matters MORE, or that current measures carry nothing | `frozen` | — | — |
+| D-47 | 2026-08-23 | E7 | C4 reverses: the current measure survives conditioning, the accumulated one is INCONCLUSIVE | `wadj_a01` bootstrap 0.0035; `acc_wadj_excess` p_FDR 0.3610, not unsupported with adequate power | Calling it "current only", or treating accumulation as generally superior | `frozen` | — | — |
 | D-48 | 2026-08-23 | E7 | `acc_real_wages_shortfall` CAPPED: cleared every gate but E4 did not support it | The pre-registered ceiling — E7 may only qualify or withdraw | Reporting it as supported | `frozen` | — | — |
 | D-49 | 2026-08-23 | E7 | No dynamic wording, conditionally either | No within term significant in the adverse direction; the two significant FD terms point the wrong way | Any sentence describing hardship rising within a country as exposure accumulated | `frozen` | D-32 | — |
 | D-50 | 2026-08-23 | E7 | Nulls at boundary-fragile MDEs may not support strong exclusion claims | Five of sixteen conditional MDEs sit within 2 MC SEs of the target | Reporting those nulls as adequate-power exclusions | `frozen` | — | — |
@@ -2769,8 +2798,8 @@ Allowed statuses: `proposed`, `pre-registered`, `frozen`, `superseded`,
 | R-45 | E7 | hardship level | `arop_threshold_real` \| `acc_threshold_shortfall` | conditional, joint model | n=260 | +0.1215 | 0.0260 | 0.0260 | 0.0075 | — | — | clears FDR with the sign OPPOSITE to pre-registration | `contradicts_direction` | `e7_results.csv` |
 | R-46 | E7 | hardship level | `hicp` \| `acc_hicp_compounded` | conditional, joint model | n=270 | −0.1446 | 0.8130 | 0.8130 | — | — | interval excludes its 0.50 SD conditional MDE | genuine null against its own threshold | `unsupported_with_adequate_power` | `e7_results.csv` |
 | R-47 | E7 | hardship level | P4_gdp and P5_threshold, both directions | conditional, joint model | n=260–270 | — | — | — | 0.076–0.148 | — | below pair-specific MDEs | UNRESOLVED: neither survives, power insufficient | `inconclusive_under_available_power` | `e7_verdicts.csv` |
-| R-48 | E7 | hardship level | all 8 pairs | conditional Mundlak + conditional first differences | n=260–270 | no within term significant in the adverse direction; the 2 significant FD terms point the WRONG way | — | — | — | — | — | **NO dynamic wording permitted, conditionally either**. Third independent route to P5's conclusion | `inconclusive_under_available_power` | `e7_dynamic.csv` |
-| R-49 | E7 | — | collinearity gate | focal VIF and partial correlation | 8 pairs | VIF 1.53–7.76, all \|r\| < 0.90 | — | — | — | — | — | gate NEVER triggered: the data can separate current from accumulated in every pair | `descriptive_only` | `e7_results.csv` |
+| R-48 | E7 | hardship level | all 8 pairs | conditional Mundlak + conditional first differences | n=260–270 | no within term significant in the adverse direction; the 2 NOMINALLY significant FD terms point the WRONG way (8 tests, not multiplicity-corrected) | — | not corrected | — | — | — | **NO dynamic wording permitted, conditionally either**. Third RELATED check after P5 and E4, not independent — same panel | `inconclusive_under_available_power` | `e7_dynamic.csv` |
+| R-49 | E7 | — | collinearity gate | focal VIF and partial correlation | 8 pairs | VIF 1.53–7.76, all \|r\| < 0.90 | — | — | — | — | — | gate never triggered, so nothing was auto-classified uninterpretable; several effects remain IMPRECISELY estimated | `descriptive_only` | `e7_results.csv` |
 
 Allowed statuses: `supported`, `unsupported_with_adequate_power`,
 `inconclusive_under_available_power`, `failed_incremental_criterion`,
@@ -2858,6 +2887,9 @@ Deviations must be disclosed in the stage that made them, not only here.
 | C-25 | 2026-08-23 | E6 table said the EA companion has no same-instrument predictor | Both specifications retain AROP, itself an EU-SILC measure; EA removes the ADDITIONAL P1 predictor beyond it | Row relabelled "Additional P1 same-instrument predictor beyond AROP" | `v2_research_record.md` | — |
 | C-26 | 2026-08-23 | E6 cross-walk implied four independent P3 contributions | E1–E4 tested those variables separately against AROP and year effects, not conditionally inside the six-variable model | Caveat added; prohibited-reinterpretation 6 extended | `v2_research_record.md` | — |
 | C-27 | 2026-08-23 | E7's ceiling was stated in prose and did not bind: `acc_real_wages_shortfall` was reported supported although E4 had it inconclusive | A rule in a JSON field is not enforcement | Ceiling moved into code; `reportable_outcome` and `ceiling_applied` columns added | `77_e7_conditional.py` | — |
+| C-28 | 2026-08-23 | E7 said accumulation carries information "the present-day measure does not", and called P6 "current only" | Every failed current counterpart is inconclusive, not unsupported with adequate power | Reworded to "additional information after the current measure is controlled"; contributions explicitly not ruled out | `v2_research_record.md` | — |
+| C-29 | 2026-08-23 | E7 said the data "can separate current from accumulated in every pair" | VIFs below the gate mean nothing was auto-classified uninterpretable, not that estimation is precise | Reworded; the 7.76 VIF on `hicp` noted as inside the gate but not small | `v2_research_record.md` | — |
+| C-30 | 2026-08-23 | E7 called itself a "third independent route" after P5 and E4, and its FD results "significant" | All three use the same panel and related specifications; the eight dynamic tests were not multiplicity-corrected | "Third related analytical check"; FD results called nominally significant | `v2_research_record.md` | — |
 
 ## Artifact Index
 
