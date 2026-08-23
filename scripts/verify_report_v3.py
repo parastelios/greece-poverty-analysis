@@ -92,6 +92,97 @@ defined = set(re.findall(r"--([\w-]+)\s*:", raw))
 check("10. no undefined CSS variables without a fallback",
       not (bare - defined), str(sorted(bare - defined)))
 
+
+# 14. The summary tables are built in the report, not lifted from a checked
+# figure, so nothing else verifies them. A formatter bug printed five unrun
+# bootstrap tests in T1 and two in T2 as "<0.0001" -- the most significant
+# value the table can show -- and every existing check passed. This compares
+# the rendered cells against the artifacts they claim to summarise.
+import html as _html
+import math as _math
+
+
+def _cells(tid):
+    m = re.search(rf'<div class="evidence-table" id="{tid}">.*?</table>', raw, re.S)
+    if not m:
+        return None
+    body = re.search(r"<tbody>(.*?)</tbody>", m.group(0), re.S)
+    out = []
+    for tr in re.findall(r"<tr>(.*?)</tr>", body.group(1), re.S):
+        out.append([_html.unescape(re.sub(r"<[^>]+>", "", c)).strip()
+                    for c in re.findall(r"<td[^>]*>(.*?)</td>", tr, re.S)])
+    return out
+
+
+def _fmt(v):
+    if v is None or (isinstance(v, float) and not _math.isfinite(v)):
+        return "\u2014"
+    return f"{v:.4f}" if v >= 0.0001 else "<0.0001"
+
+
+bad = []
+e1 = pd.read_csv(ROOT / "data" / "processed" / "e1_results.csv")
+t1 = _cells("T1")
+if t1 is None:
+    bad.append("T1 not found")
+else:
+    src = e1.sort_values(["outcome", "construct"]).reset_index(drop=True)
+    if len(t1) != len(src):
+        bad.append(f"T1 has {len(t1)} rows, artifact has {len(src)}")
+    else:
+        for i, row in enumerate(t1):
+            r = src.iloc[i]
+            for col, val, j in [("p_fdr", r.p_fdr, 2), ("boot_p", r.boot_p, 3)]:
+                want = _fmt(None if pd.isna(val) else float(val))
+                if row[j] != want:
+                    bad.append(f"T1 r{i} {col}: shows '{row[j]}', artifact {want}")
+
+e7 = pd.read_csv(ROOT / "data" / "processed" / "e7_results.csv")
+t2 = _cells("T2")
+if t2 is None:
+    bad.append("T2 not found")
+else:
+    src2 = e7[e7.focal.str.startswith("acc_")].sort_values("pair").reset_index(drop=True)
+    if len(t2) != len(src2):
+        bad.append(f"T2 has {len(t2)} rows, artifact has {len(src2)}")
+    else:
+        for i, row in enumerate(t2):
+            want = _fmt(None if pd.isna(src2.iloc[i].boot_p)
+                        else float(src2.iloc[i].boot_p))
+            if row[3] != want:
+                bad.append(f"T2 r{i} boot_p: shows '{row[3]}', artifact {want}")
+
+# A missing test must never render as a number, in either direction.
+for tid, cs in [("T1", t1), ("T2", t2)]:
+    for i, row in enumerate(cs or []):
+        for c in row:
+            if c.strip() in ("nan", "NaN", "None", "inf", "-inf"):
+                bad.append(f"{tid} r{i}: raw '{c}' leaked into a cell")
+check("14. summary tables agree with their source artifacts", not bad,
+      "; ".join(bad[:6]))
+
+# 15. Sentences corrected in review, each of which had shipped once. These are
+# exact phrases rather than a broad pattern, so a sentence that correctly
+# DENIES the overstatement is not flagged.
+REGRESSED = [
+    ("nothing in the context register was tested",
+     "migration was tested diagnostically; the register bars headline claims, "
+     "it does not claim nothing was examined"),
+    ("tests eight candidate explanations",
+     "eight is the number of narrative stages, not of construct tests"),
+    ("greece is unremarkable",
+     "rank 7 of 27 is elevated but not exceptional"),
+    ("three things account for part of it",
+     "implies a decomposition that was never performed"),
+    ("most untested constructs",
+     "they were tested; they were not supported"),
+    ("the same anchor is used for every country",
+     "the anchored series is Greece-only"),
+]
+low = " ".join(re.sub(r"<[^>]+>", " ", raw).lower().split())
+back = [f"{ph!r} ({why})" for ph, why in REGRESSED if ph in low]
+check("15. no corrected sentence has regressed", not back, "; ".join(back))
+
 FIG_MIN, FLOOR = 620, 7.0
 small = []
 for m in re.finditer(r'<svg[^>]*viewBox="0 0 (\d+)[^"]*"(.*?)</svg>', raw, re.S):

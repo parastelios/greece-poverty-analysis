@@ -374,6 +374,7 @@ details.methods>summary:focus-visible{outline:2px solid var(--series-gr);
 .verdict.no{color:var(--text-secondary)}
 .verdict.mid{color:var(--series-3)}
 .ctx-status{font-size:.82rem;color:var(--text-secondary)}
+.vsub{display:block;font-size:.82em;color:var(--text-secondary)}
 .tnote{font:.82rem/1.5 ui-sans-serif,system-ui,sans-serif;
   color:var(--text-secondary);margin:.5rem 0 0;max-width:44rem}
 .backmatter{border-top:2px solid var(--text-primary);margin-top:5rem}
@@ -392,15 +393,15 @@ details.methods>summary:focus-visible{outline:2px solid var(--series-gr);
   <p class="kicker">Technical report</p>
   <h1>The Greek Poverty Paradox</h1>
   <p class="standfirst">Greeks report difficulty making ends meet at a rate far
-  above what their official poverty rate would predict. This report asks what
-  the gap is made of, tests eight candidate explanations against a
-  pre-registered protocol, and reports what survived &mdash; including the
-  substantial part that did not.</p>
+  above what their official poverty rate would predict. This report works
+  through the gap in eight stages, testing nine present-day constructs and
+  eight accumulated ones against a pre-registered protocol, and reports what
+  survived &mdash; including the substantial part that did not.</p>
 </header>
 
 <div class="lede">
-<p>On the European Union's official measure of relative income poverty, Greece
-is unremarkable. It ranks seventh of twenty-seven. On the European Union's
+<p>On the European Union's official measure of relative income poverty, Greek
+poverty is elevated but not exceptional. It ranks seventh of twenty-seven. On the European Union's
 official measure of subjective financial hardship &mdash; households reporting
 difficulty making ends meet &mdash; Greece ranks first, and has done so for
 years. The distance between the two runs to
@@ -455,10 +456,13 @@ decoration: several of them exist because an earlier draft of this report
 overstated the finding and was corrected.</p>
 
 <p>Contextual material &mdash; institutional trust, migration, the adjustment
-programmes, tax incidence &mdash; is kept in a separate <strong>context
-register</strong> with its own vocabulary, and is visually distinct from
-empirical findings. Nothing in the context register was tested by this project,
-and each entry states explicitly what it permits and forbids.</p>
+programmes, tax incidence, the pre-crisis wellbeing baseline &mdash; is kept in
+a separate <strong>context register</strong> with its own vocabulary, and is
+visually distinct from empirical findings. Some of it was examined here:
+migration was tested diagnostically, and the cross-domain and ESS comparisons
+are descriptive analyses carried out for this report. What the register enforces
+is that <strong>none of it may establish a headline analytical claim</strong>.
+Each entry states explicitly what it permits and forbids.</p>
 
 <p>Technical material sits behind expandable <em>methods</em> panels. The main
 reading path does not depend on opening them; they are there so that every
@@ -1074,7 +1078,7 @@ magnitude, not general.</p>
 
 <div class="claim" data-claim-id="L-4"><div class="claim-head"><span class="cid">L-4</span><span class="tier">pre-planned confirmatory</span></div><p class="canonical">Annual food and housing inflation are unsupported with adequate power at 0.70 SD; annual headline inflation is unsupported at its detectable conditional magnitude; compounded inflation since 2008 remains inconclusive.</p><ul class="caveats"><li>the exclusions are narrow and magnitude-specific | compounded inflation is INCONCLUSIVE, not ruled out</li></ul></div>
 
-<div class="evidence-table" id="T1"><p class="tcap"><span class="tid">T1</span> All nine current-level constructs, with the gate that stopped each one that did not clear.</p><div class="tscroll"><table><thead><tr><th>Construct</th><th>Coefficient</th><th>FDR p</th><th>Bootstrap p</th><th>Verdict</th><th>Stopped at</th></tr></thead><tbody><tr><td>Proximate material hardship</td><td>+1.4524</td><td>&lt;0.0001</td><td>&lt;0.0001</td><td><span class="verdict no">Blocked</span></td><td>proximity to outcome</td></tr><tr><td>Loss against own past</td><td>-0.0924</td><td>0.6531</td><td>&lt;0.0001</td><td><span class="verdict no">Inconclusive</span></td><td>insufficient power</td></tr><tr><td>Loss against own past</td><td>-0.2168</td><td>0.4131</td><td>&lt;0.0001</td><td><span class="verdict no">Inconclusive</span></td><td>insufficient power</td></tr><tr><td>Loss against own past</td><td>-0.0556</td><td>0.6531</td><td>&lt;0.0001</td><td><span class="verdict no">Inconclusive</span></td><td>insufficient power</td></tr><tr><td>Loss against own past</td><td>+1.8675</td><td>&lt;0.0001</td><td>0.4005</td><td><span class="verdict no">Inconclusive</span></td><td>wild cluster bootstrap</td></tr><tr><td>Inflation exposure</td><td>-0.9925</td><td>0.4131</td><td>&lt;0.0001</td><td><span class="verdict no">Inconclusive</span></td><td>insufficient power</td></tr><tr><td>Housing pressure</td><td>+1.1385</td><td>0.0147</td><td>0.5530</td><td><span class="verdict no">Inconclusive</span></td><td>wild cluster bootstrap</td></tr><tr><td>Material resources</td><td>-0.0013</td><td>&lt;0.0001</td><td>0.0055</td><td><span class="verdict ok">Supported</span></td><td>&mdash;</td></tr><tr><td>Labour-market exclusion</td><td>+4.3402</td><td>&lt;0.0001</td><td>0.0085</td><td><span class="verdict ok">Supported</span></td><td>&mdash;</td></tr><tr><td>Wage-adjusted affordability</td><td>+0.3110</td><td>&lt;0.0001</td><td>0.0005</td><td><span class="verdict ok">Supported</span></td><td>&mdash;</td></tr></tbody></table></div><p class="tnote">Coefficients are on each construct's own scale and are not comparable across rows. Verdicts are the output of the pre-registered decision function, not a reading of the p-values.</p></div>
+<div class="evidence-table" id="T1"><p class="tcap"><span class="tid">T1</span> All nine current-level constructs, with the gate that stopped each one that did not clear.</p><div class="tscroll"><table><thead><tr><th>Construct</th><th>Coefficient</th><th>FDR p</th><th>Bootstrap p</th><th>Verdict</th><th>Stopped at</th></tr></thead><tbody><tr><td>Proximate material hardship</td><td>+1.4524</td><td>&mdash;</td><td>&mdash;</td><td><span class="verdict no">Blocked</span></td><td>proximity to outcome</td></tr><tr><td>Loss against own past <span class="vsub">Real wages</span></td><td>-0.0924</td><td>0.6531</td><td>&mdash;</td><td><span class="verdict no">Inconclusive</span></td><td>insufficient power</td></tr><tr><td>Loss against own past <span class="vsub">Real household income</span></td><td>-0.2168</td><td>0.4131</td><td>&mdash;</td><td><span class="verdict no">Inconclusive</span></td><td>insufficient power</td></tr><tr><td>Loss against own past <span class="vsub">Real poverty threshold</span></td><td>-0.0556</td><td>0.6531</td><td>&mdash;</td><td><span class="verdict no">Inconclusive</span></td><td>insufficient power</td></tr><tr><td>Loss against own past <span class="vsub">Share below own GDP peak</span></td><td>+1.8675</td><td>&lt;0.0001</td><td>0.4005</td><td><span class="verdict no">Inconclusive</span></td><td>wild cluster bootstrap</td></tr><tr><td>Inflation exposure</td><td>-0.9925</td><td>0.4131</td><td>&mdash;</td><td><span class="verdict no">Inconclusive</span></td><td>insufficient power</td></tr><tr><td>Housing pressure</td><td>+1.1385</td><td>0.0147</td><td>0.5530</td><td><span class="verdict no">Inconclusive</span></td><td>wild cluster bootstrap</td></tr><tr><td>Material resources</td><td>-0.0013</td><td>&lt;0.0001</td><td>0.0055</td><td><span class="verdict ok">Supported</span></td><td>&mdash;</td></tr><tr><td>Labour-market exclusion</td><td>+4.3402</td><td>&lt;0.0001</td><td>0.0085</td><td><span class="verdict ok">Supported</span></td><td>&mdash;</td></tr><tr><td>Wage-adjusted affordability</td><td>+0.3110</td><td>&lt;0.0001</td><td>0.0005</td><td><span class="verdict ok">Supported</span></td><td>&mdash;</td></tr></tbody></table></div><p class="tnote">Coefficients are on each construct's own scale and are not comparable across rows. Verdicts are the output of the pre-registered decision function, not a reading of the p-values.</p></div>
 
 <p>Two constructs illustrate why the bootstrap gate was worth imposing. Both
 cleared multiplicity correction comfortably and then collapsed under the
@@ -1226,7 +1230,7 @@ run measured against a fixed 2008 base. Alternative constructions of the same
 idea point the same way but do not meet the pre-registered criteria, and they
 are not counted as corroboration.</p>
 
-<div class="evidence-table" id="T2"><p class="tcap"><span class="tid">T2</span> Each accumulated measure tested with its own current-level counterpart in the same model.</p><div class="tscroll"><table><thead><tr><th>Accumulated measure</th><th>Controlling for</th><th>Coefficient</th><th>Bootstrap p</th><th>Verdict</th><th>Ceiling applied</th></tr></thead><tbody><tr><td>Accumulated unemployment</td><td>Long-term unemployment</td><td>+0.2936</td><td>0.0025</td><td><span class="verdict ok">Supported</span></td><td>&mdash;</td></tr><tr><td>Cumulative wage shortfall</td><td>Real wages</td><td>+0.1094</td><td>0.0060</td><td><span class="verdict no">Capped by ceiling</span></td><td>yes</td></tr><tr><td>Cumulative GDP shortfall</td><td>Share below own GDP peak</td><td>+0.1057</td><td>0.1155</td><td><span class="verdict no">Inconclusive</span></td><td>&mdash;</td></tr><tr><td>Cumulative threshold shortfall</td><td>Real poverty threshold</td><td>+0.1848</td><td>0.0755</td><td><span class="verdict no">Inconclusive</span></td><td>&mdash;</td></tr><tr><td>Accumulated affordability pressure</td><td>Wage-adjusted affordability</td><td>-0.0124</td><td>&lt;0.0001</td><td><span class="verdict no">Inconclusive</span></td><td>&mdash;</td></tr><tr><td>Compounded inflation since 2008</td><td>Inflation</td><td>-0.1667</td><td>&lt;0.0001</td><td><span class="verdict no">Inconclusive</span></td><td>&mdash;</td></tr><tr><td>Housing deterioration since 2010</td><td>Housing-cost overburden</td><td>+0.2423</td><td>0.0015</td><td><span class="verdict ok">Supported</span></td><td>&mdash;</td></tr></tbody></table></div><p class="tnote">The ceiling column marks where Stage 5 was barred from creating support that Stage 4 had not established.</p></div>
+<div class="evidence-table" id="T2"><p class="tcap"><span class="tid">T2</span> Each accumulated measure tested with its own current-level counterpart in the same model.</p><div class="tscroll"><table><thead><tr><th>Accumulated measure</th><th>Controlling for</th><th>Coefficient</th><th>Bootstrap p</th><th>Verdict</th><th>Ceiling applied</th></tr></thead><tbody><tr><td>Accumulated unemployment</td><td>Long-term unemployment</td><td>+0.2936</td><td>0.0025</td><td><span class="verdict ok">Supported</span></td><td>&mdash;</td></tr><tr><td>Cumulative wage shortfall</td><td>Real wages</td><td>+0.1094</td><td>0.0060</td><td><span class="verdict no">Capped by ceiling</span></td><td>yes</td></tr><tr><td>Cumulative GDP shortfall</td><td>Share below own GDP peak</td><td>+0.1057</td><td>0.1155</td><td><span class="verdict no">Inconclusive</span></td><td>&mdash;</td></tr><tr><td>Cumulative threshold shortfall</td><td>Real poverty threshold</td><td>+0.1848</td><td>0.0755</td><td><span class="verdict no">Inconclusive</span></td><td>&mdash;</td></tr><tr><td>Accumulated affordability pressure</td><td>Wage-adjusted affordability</td><td>-0.0124</td><td>&mdash;</td><td><span class="verdict no">Inconclusive</span></td><td>&mdash;</td></tr><tr><td>Compounded inflation since 2008</td><td>Inflation</td><td>-0.1667</td><td>&mdash;</td><td><span class="verdict no">Inconclusive</span></td><td>&mdash;</td></tr><tr><td>Housing deterioration since 2010</td><td>Housing-cost overburden</td><td>+0.2423</td><td>0.0015</td><td><span class="verdict ok">Supported</span></td><td>&mdash;</td></tr></tbody></table></div><p class="tnote">The ceiling column marks where Stage 5 was barred from creating support that Stage 4 had not established.</p></div>
 
 <p>The pattern is not uniform across constructs, which is itself informative.</p>
 
@@ -1745,8 +1749,9 @@ the strength the evidence actually supports.</p>
 
 <p>Greek households report financial difficulty at a rate far above what the
 official relative-poverty rate predicts, and the distance is large, persistent
-and not a feature of a smooth European distribution. Three things account for
-part of it.</p>
+and not a feature of a smooth European distribution. Three bodies of evidence
+make part of it more intelligible. None of them decomposes the gap, and no
+share of it is attributed to any of them.</p>
 
 <p><strong>The official measures are narrower than the experience.</strong>
 The broader AROPE measure closes about a fifth of the distance and its
@@ -1781,9 +1786,10 @@ effect is inconclusive.</strong> The accumulated measures differentiate
 countries; no within-country estimate supports a process unfolding within
 Greece, and the within tests are too imprecise to establish or rule one out.
 Those are two different statements and neither is "no effect".</li>
-<li><strong>Most untested constructs are unresolved, not excluded.</strong> Six
-of nine current-level constructs are inconclusive under available power. Only a
-small number are excluded, and only at specific magnitudes.</li>
+<li><strong>Most non-supported tested constructs are unresolved, not
+excluded.</strong> Six of nine current-level constructs are inconclusive under
+available power. Only a small number are excluded, and only at specific
+magnitudes.</li>
 <li><strong>A central absorption result reverses under a defensible alternative
 model.</strong> Greece moves from third to twenty-fifth on unexplained hardship
 depending on whether a same-instrument predictor is admitted. Neither
@@ -2039,7 +2045,7 @@ which artifact, under which decision &mdash; is in the research record, which
 is generated alongside this report from the same registers.</p>
 </section>
 
-<footer class="stamp">Built 2026-08-23 20:11 from commit <code>856027d</code> + uncommitted changes. If this does not match the current commit, the page is stale &mdash; reopen the file rather than refreshing.</footer>
+<footer class="stamp">Built 2026-08-24 01:16 from commit <code>c6a5a9f</code> + uncommitted changes. If this does not match the current commit, the page is stale &mdash; reopen the file rather than refreshing.</footer>
 <script>
 (function(){
   const NS='http://www.w3.org/2000/svg';

@@ -44,9 +44,9 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `p6-rewrite` |
-| HEAD | `79062a8` Correction pass: factual errors, invalid shared scales, release gate |
+| HEAD | `c6a5a9f` Correction pass: factual errors, invalid shared scales, release gate |
 | Uncommitted changes | yes |
-| Last refreshed | 2026-08-23 |
+| Last refreshed | 2026-08-24 |
 | Frozen V1 reference | `v1-final` |
 | Frozen V2 analytical reference | `p5f-frozen` |
 <!-- AUTO:END document-control -->
@@ -3318,6 +3318,11 @@ Deviations must be disclosed in the stage that made them, not only here.
 | C-43 | 2026-08-23 | F5's shift-share view encoded exact decomposition terms as lo/est/hi | The bars read as confidence intervals for quantities that carry no uncertainty, and the composition term was not drawn at all | Recast as paired bars; alt text corrected from three components to two |
 | C-44 | 2026-08-23 | F18 drew a continuous line across the unobserved decade and printed its caveat twice | Connecting 2010/11 to 2020-22 invents an unobserved trajectory | Null slot inserted at 2016 so the renderer breaks the line; manifest caveat shortened to remove the duplication |
 | C-45 | 2026-08-23 | The release gate validated `output/report.html`, the superseded v3 build | The shipping report had no acceptance gate at all | Gate repointed at `v2_report.html`; its stage selector, script rule and CSS-variable rule updated for an interactive eight-stage document |
+| C-46 | 2026-08-23 | Seven missing bootstrap results printed as `p < 0.0001` in the report's summary tables | `_p()` converted NaN with `float()` without a finiteness check, and every comparison against NaN is False, so `v >= 0.0001` sent missing values down the `<0.0001` branch. Five rows in T1 and two in T2 were affected; the worst was a construct blocked by proximity that was never tested at all | NaN and infinity now return an em dash, verified by an edge-case test over NaN, None, inf, 0.0 and non-numeric input |
+| C-47 | 2026-08-23 | The summary tables T1 and T2 had no verification of any kind | They are built in the report rather than lifted from a checked figure, so the figure harness never saw them and a formatter bug passed every existing check | Release condition 14 compares every rendered cell against `e1_results.csv` and `e7_results.csv` and rejects raw NaN or inf in any cell; negative-tested by reintroducing the bug, which it catches and localises per cell |
+| C-48 | 2026-08-23 | Four sentences overstated or misdescribed the design: 'tests eight candidate explanations', 'Greece is unremarkable', 'three things account for part of it', 'most untested constructs' | Eight is the number of stages not of tests; rank 7 of 27 is elevated not unremarkable; 'account for' implies a decomposition never performed; the constructs were tested but not supported | All four rewritten, and release condition 15 guards the exact phrases against regression |
+| C-49 | 2026-08-23 | The context-register introduction still said nothing in it was tested | Migration was tested diagnostically, and the cross-domain and ESS comparisons are descriptive analyses carried out here | Boundary restated as: none of it may establish a headline analytical claim |
+| C-50 | 2026-08-23 | Four T1 rows printed the identical label 'Loss against own past' | Construct C3 covers four distinct measures, so the table read as duplicated and hid which measure each verdict belonged to | Colliding labels now carry the measure name beneath them |
 
 ## Artifact Index
 

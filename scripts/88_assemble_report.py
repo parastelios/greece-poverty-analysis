@@ -15,6 +15,7 @@ Reading path targets: 10,000-12,000 words in the main path, 4,000-6,000 behind
 the methods expandables.
 """
 import html
+import math
 import re
 from pathlib import Path
 
@@ -115,10 +116,22 @@ GATE_LABEL = {
 
 
 def _p(v):
-    """Format a p-value, never rounding a non-zero value down to zero."""
+    """Format a p-value, or an em dash where no test was run.
+
+    NaN must be caught BEFORE the comparison. float("nan") converts without
+    error and every comparison against it is False, so `v >= 0.0001` sent
+    missing values down the "<0.0001" branch -- printing an unrun test as the
+    most significant result the table can display. Five rows in T1 and two in
+    T2 have no bootstrap result, and one of them was never tested at all
+    because it is blocked by proximity to the outcome.
+    """
+    if v is None:
+        return "&mdash;"
     try:
         v = float(v)
     except (TypeError, ValueError):
+        return "&mdash;"
+    if not math.isfinite(v):
         return "&mdash;"
     return f"{v:.4f}" if v >= 0.0001 else "&lt;0.0001"
 
@@ -137,13 +150,21 @@ def table(tid, caption, headers, rows, note=""):
 def t_current():
     """Every current-level construct, its verdict and the gate that stopped it."""
     d = pd.read_csv(PROC / "e1_results.csv")
+    # Construct C3 covers four distinct measures. Printing its name alone gave
+    # four rows reading "Loss against own past", which looks like duplication
+    # and hides which measure each verdict belongs to.
+    dupes = set(d.name[d.name.duplicated(keep=False)])
     rows = []
     for r in d.sort_values(["outcome", "construct"]).itertuples():
         out = OUTCOME_LABEL.get(str(r.outcome), str(r.outcome))
         gate = ("&mdash;" if str(r.failed_gate) == "nan"
                 else GATE_LABEL.get(str(r.failed_gate), str(r.failed_gate)))
         cls = "ok" if str(r.outcome) == "supported" else "no"
-        rows.append([html.escape(str(r.name)),
+        label = html.escape(str(r.name))
+        if str(r.name) in dupes:
+            label += (f' <span class="vsub">{html.escape(ce.name(str(r.var)))}'
+                      f"</span>")
+        rows.append([label,
                      f"{r.coef:+.4f}", _p(r.p_fdr), _p(r.boot_p),
                      f'<span class="verdict {cls}">{out}</span>', gate])
     return table(
@@ -279,15 +300,15 @@ FRONT = f"""
   <p class="kicker">Technical report</p>
   <h1>The Greek Poverty Paradox</h1>
   <p class="standfirst">Greeks report difficulty making ends meet at a rate far
-  above what their official poverty rate would predict. This report asks what
-  the gap is made of, tests eight candidate explanations against a
-  pre-registered protocol, and reports what survived &mdash; including the
-  substantial part that did not.</p>
+  above what their official poverty rate would predict. This report works
+  through the gap in eight stages, testing nine present-day constructs and
+  eight accumulated ones against a pre-registered protocol, and reports what
+  survived &mdash; including the substantial part that did not.</p>
 </header>
 
 <div class="lede">
-<p>On the European Union's official measure of relative income poverty, Greece
-is unremarkable. It ranks seventh of twenty-seven. On the European Union's
+<p>On the European Union's official measure of relative income poverty, Greek
+poverty is elevated but not exceptional. It ranks seventh of twenty-seven. On the European Union's
 official measure of subjective financial hardship &mdash; households reporting
 difficulty making ends meet &mdash; Greece ranks first, and has done so for
 years. The distance between the two runs to
@@ -342,10 +363,13 @@ decoration: several of them exist because an earlier draft of this report
 overstated the finding and was corrected.</p>
 
 <p>Contextual material &mdash; institutional trust, migration, the adjustment
-programmes, tax incidence &mdash; is kept in a separate <strong>context
-register</strong> with its own vocabulary, and is visually distinct from
-empirical findings. Nothing in the context register was tested by this project,
-and each entry states explicitly what it permits and forbids.</p>
+programmes, tax incidence, the pre-crisis wellbeing baseline &mdash; is kept in
+a separate <strong>context register</strong> with its own vocabulary, and is
+visually distinct from empirical findings. Some of it was examined here:
+migration was tested diagnostically, and the cross-domain and ESS comparisons
+are descriptive analyses carried out for this report. What the register enforces
+is that <strong>none of it may establish a headline analytical claim</strong>.
+Each entry states explicitly what it permits and forbids.</p>
 
 <p>Technical material sits behind expandable <em>methods</em> panels. The main
 reading path does not depend on opening them; they are there so that every
@@ -1500,8 +1524,9 @@ S8 = f"""
 
 <p>Greek households report financial difficulty at a rate far above what the
 official relative-poverty rate predicts, and the distance is large, persistent
-and not a feature of a smooth European distribution. Three things account for
-part of it.</p>
+and not a feature of a smooth European distribution. Three bodies of evidence
+make part of it more intelligible. None of them decomposes the gap, and no
+share of it is attributed to any of them.</p>
 
 <p><strong>The official measures are narrower than the experience.</strong>
 The broader AROPE measure closes about a fifth of the distance and its
@@ -1536,9 +1561,10 @@ effect is inconclusive.</strong> The accumulated measures differentiate
 countries; no within-country estimate supports a process unfolding within
 Greece, and the within tests are too imprecise to establish or rule one out.
 Those are two different statements and neither is "no effect".</li>
-<li><strong>Most untested constructs are unresolved, not excluded.</strong> Six
-of nine current-level constructs are inconclusive under available power. Only a
-small number are excluded, and only at specific magnitudes.</li>
+<li><strong>Most non-supported tested constructs are unresolved, not
+excluded.</strong> Six of nine current-level constructs are inconclusive under
+available power. Only a small number are excluded, and only at specific
+magnitudes.</li>
 <li><strong>A central absorption result reverses under a defensible alternative
 model.</strong> Greece moves from third to twenty-fifth on unexplained hardship
 depending on whether a same-instrument predictor is admitted. Neither
@@ -1926,6 +1952,7 @@ details.methods>summary:focus-visible{outline:2px solid var(--series-gr);
 .verdict.no{color:var(--text-secondary)}
 .verdict.mid{color:var(--series-3)}
 .ctx-status{font-size:.82rem;color:var(--text-secondary)}
+.vsub{display:block;font-size:.82em;color:var(--text-secondary)}
 .tnote{font:.82rem/1.5 ui-sans-serif,system-ui,sans-serif;
   color:var(--text-secondary);margin:.5rem 0 0;max-width:44rem}
 .backmatter{border-top:2px solid var(--text-primary);margin-top:5rem}
