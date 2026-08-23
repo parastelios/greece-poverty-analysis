@@ -192,7 +192,10 @@ ARTIFACT_PURPOSE = {
 
 def artifact_index() -> str:
     rows = ["| Stage | Artifact | Purpose | Status |", "|---|---|---|---|"]
-    for name, (stage, purpose) in ARTIFACT_PURPOSE.items():
+    stage_order = {sid: i for i, (sid, *_) in enumerate(STAGES)}
+    ordered = sorted(ARTIFACT_PURPOSE.items(),
+                     key=lambda kv: (stage_order.get(kv[1][0], 99), kv[0]))
+    for name, (stage, purpose) in ordered:
         path = PROC / name
         rows.append(
             f"| {stage} | `{name}` | {purpose} | "
@@ -208,6 +211,41 @@ def artifact_index() -> str:
     for name in extra:
         rows.append(f"| ? | `{name}` | **undocumented — add to ARTIFACT_PURPOSE** | present |")
     return "\n".join(rows)
+
+
+def sort_register_rows(text: str) -> str:
+    """Sort the register tables by ID.
+
+    Rows get appended next to whatever anchor was convenient at the time, so
+    the Results register had drifted to R-01..R-04, R-15..R-19, R-07..R-14,
+    R-06, R-05. Harmless to a machine and actively confusing to the person this
+    notebook is written for. Sorting is mechanical and idempotent, so it runs
+    on every refresh rather than being fixed once by hand.
+    """
+    lines = text.split("\n")
+    out, i, moved = [], 0, 0
+    row = re.compile(r"^\| ([RDC])-(\d+) \|")
+    while i < len(lines):
+        m = row.match(lines[i])
+        if not m:
+            out.append(lines[i])
+            i += 1
+            continue
+        prefix = m.group(1)
+        block = []
+        while i < len(lines):
+            m2 = row.match(lines[i])
+            if not m2 or m2.group(1) != prefix:
+                break
+            block.append((int(m2.group(2)), lines[i]))
+            i += 1
+        ordered = [ln for _, ln in sorted(block, key=lambda x: x[0])]
+        if ordered != [ln for _, ln in block]:
+            moved += 1
+        out.extend(ordered)
+    if moved:
+        print(f"  reordered {moved} register table(s) by ID")
+    return "\n".join(out)
 
 
 def splice(text: str, key: str, body: str) -> str:
@@ -227,6 +265,7 @@ def main() -> None:
     text = splice(text, "stage-index", index)
     text = splice(text, "claim-summary", claim_summary())
     text = splice(text, "artifact-index", artifact_index())
+    text = sort_register_rows(text)
     RECORD.write_text(text)
     print(f"refreshed {RECORD.relative_to(ROOT)}")
     print(f"  last completed stage: {last_done}")

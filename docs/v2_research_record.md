@@ -44,7 +44,7 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | E3 |
 | Last completed stage | E2 |
 | Branch | `p6-rewrite` |
-| HEAD | `54e9716` E1 result: three constructs supported, six inconclusive, one blocked |
+| HEAD | `846a138` E2: sensitivities confirm C1 and C2; nothing promoted; inflation ruled out |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-23 |
 | Frozen V1 reference | `v1-final` |
@@ -1737,11 +1737,8 @@ Allowed statuses: `proposed`, `pre-registered`, `frozen`, `superseded`,
 | R-02 | P3 | hardship level | `cum_excess_unemployment` | cross-country residual | n=269 | +6.93 (rank 3/27) | — | — | p=0.0005 primary | max 12.7% | above MDE | accumulated history narrows most of the gap | `supported` | `p3_objective_only.csv` |
 | R-03 | P5 | hardship level | `cum_excess_unemployment` | between-country | n=269 | +0.3323 | <0.0001 | — | worst p=0.0070 | Greece −0.8% | above MDE | between-country scarring marker | `supported` | `p5_audit.csv` |
 | R-04 | P5 | hardship level | `cum_excess_unemployment` | within-country | n=269 | −0.0755 | 0.692 | — | — | — | below MDE | no dynamic evidence | `inconclusive_under_available_power` | `p5_audit.csv` |
-| R-15 | E2 | hardship level | C1 sensitivities (4) | within-construct, common sample | n=270 | −0.0003 to −0.85 | — | 0.0006–0.0109 | 0.0015–0.0865 | — | 2 confirm, 2 qualify | measurement choice does not drive C1 | `confirms_primary` ×2 | `e2_results.csv` |
-| R-16 | E2 | hardship level | C2 sensitivities (3) | within-construct, common sample | n=270 | +0.88 to −1.60 | — | 0.0102–0.0419 | 0.0200–0.1865 | — | only `employment_rate` confirms | C2's content is duration of exclusion, not exclusion as such | `confirms_primary` ×1 | `e2_results.csv` |
-| R-17 | E2 | hardship level | `c3_composite` | within-construct, common sample | n=258 | +7.2321 | 0.2182 | 0.5454 | — | — | below MDE | composite fails on its own terms; promotion barred regardless | `cannot_promote` | `e2_results.csv` |
-| R-18 | E2 | hardship level | `hicp_food`, `hicp_housing` | within-construct, common sample | n=270 | −0.2200, −0.2803 | 0.70, 0.18 | 0.6994, 0.4819 | — | — | **intervals exclude an MDE-sized effect** | the only genuinely ruled-out results in the study | `unsupported_with_adequate_power` | `e2_results.csv` |
-| R-19 | E2 | hardship level | P1 items (4) | diagnostic only | n=268 | +0.98 to +1.45 | 0.0000–0.0036 | excluded | — | — | 0.72–0.96 SD, all above MDE | proximate items outweigh every objective construct; quantifies restatement | `blocked_by_proximity` | `e2_results.csv` |
+| R-05 | P3a | hardship level | accumulated breadth (Family D) | cross-country residual | n=269 | residual 10.39 (rank 1/27); coefficient −2.17 | — | — | — | — | no MDE computed for this family | failed the incremental criterion and reversed sign conditionally; reversal left uninterpreted | `failed_incremental_criterion` | `p3a_results.csv` |
+| R-06 | EA | hardship level | companion, `severe_mat_soc_deprivation` removed | cross-country residual | n=269, identical rows | residual −9.39 (rank 25/27); R² 0.821 | — | — | p=0.0285 for `cum_excess_unemployment` | sign-stable, +0.1655 to +0.2490 | no new MDE; comparison on identical observations | residual reverses sign; frozen P3 depends materially on a same-instrument measure | `outcome_C` | `ea_results.csv` |
 | R-07 | E1 | hardship level | `aic_pps_pc` (C1) | between-country, cond. on AROP + year | n=270 | −0.0013 (se 0.0003) | 0.0000 | 0.0000 | p=0.0055 | sign-stable | 0.59 SD, above MDE | material resources predict hardship beyond AROP | `supported` | `e1_results.csv` |
 | R-08 | E1 | hardship level | `ltu_rate` (C2) | between-country, cond. on AROP + year | n=270 | +4.3402 (se 0.7802) | 0.0000 | 0.0000 | p=0.0085 | sign-stable | 0.81 SD, above MDE | labour-market exclusion predicts hardship beyond AROP | `supported` | `e1_results.csv` |
 | R-09 | E1 | hardship level | `wadj_a01` (C4) | between-country, cond. on AROP + year | n=270 | +0.3110 (se 0.0696) | 0.0000 | 0.0000 | p=0.0005 | sign-stable | 0.69 SD, at MDE | wage-adjusted affordability predicts hardship beyond AROP | `supported` | `e1_results.csv` |
@@ -1750,8 +1747,11 @@ Allowed statuses: `proposed`, `pre-registered`, `frozen`, `superseded`,
 | R-12 | E1 | hardship level | `real_wages_idx`, `real_income_idx`, `arop_threshold_real` (C3) | between-country, cond. on AROP + year | n=260–270 | −0.09, −0.22, −0.06 | 0.30–0.65 | 0.41–0.65 | — | — | intervals admit 0.74–0.91 SD | current levels are the wrong test for accumulated loss; E4 is the real test | `inconclusive_under_available_power` | `e1_results.csv` |
 | R-13 | E1 | hardship level | `hicp` (C5) | between-country, cond. on AROP + year | n=270 | −0.9925 (se 1.0007) | 0.3213 | 0.4131 | — | — | interval admits 0.82 SD | wrong sign and far from significance | `inconclusive_under_available_power` | `e1_results.csv` |
 | R-14 | E1 | hardship level | `severe_mat_soc_deprivation` (P1) | — | n=270 | +1.4524 (se 0.4952) | 0.0034 | excluded from family | — | — | — | diagnostic only; blocked before its p-value was consulted | `blocked_by_proximity` | `e1_results.csv` |
-| R-06 | EA | hardship level | companion, `severe_mat_soc_deprivation` removed | cross-country residual | n=269, identical rows | residual −9.39 (rank 25/27); R² 0.821 | — | — | p=0.0285 for `cum_excess_unemployment` | sign-stable, +0.1655 to +0.2490 | no new MDE; comparison on identical observations | residual reverses sign; frozen P3 depends materially on a same-instrument measure | `outcome_C` | `ea_results.csv` |
-| R-05 | P3a | hardship level | accumulated breadth (Family D) | cross-country residual | n=269 | residual 10.39 (rank 1/27); coefficient −2.17 | — | — | — | — | no MDE computed for this family | failed the incremental criterion and reversed sign conditionally; reversal left uninterpreted | `failed_incremental_criterion` | `p3a_results.csv` |
+| R-15 | E2 | hardship level | C1 sensitivities (4) | within-construct, common sample | n=270 | −0.0003 to −0.85 | — | 0.0006–0.0109 | 0.0015–0.0865 | — | 2 confirm, 2 qualify | measurement choice does not drive C1 | `confirms_primary` ×2 | `e2_results.csv` |
+| R-16 | E2 | hardship level | C2 sensitivities (3) | within-construct, common sample | n=270 | +0.88 to −1.60 | — | 0.0102–0.0419 | 0.0200–0.1865 | — | only `employment_rate` confirms | C2's content is duration of exclusion, not exclusion as such | `confirms_primary` ×1 | `e2_results.csv` |
+| R-17 | E2 | hardship level | `c3_composite` | within-construct, common sample | n=258 | +7.2321 | 0.2182 | 0.5454 | — | — | below MDE | composite fails on its own terms; promotion barred regardless | `cannot_promote` | `e2_results.csv` |
+| R-18 | E2 | hardship level | `hicp_food`, `hicp_housing` | within-construct, common sample | n=270 | −0.2200, −0.2803 | 0.70, 0.18 | 0.6994, 0.4819 | — | — | **intervals exclude an MDE-sized effect** | the only genuinely ruled-out results in the study | `unsupported_with_adequate_power` | `e2_results.csv` |
+| R-19 | E2 | hardship level | P1 items (4) | diagnostic only | n=268 | +0.98 to +1.45 | 0.0000–0.0036 | excluded | — | — | 0.72–0.96 SD, all above MDE | proximate items outweigh every objective construct; quantifies restatement | `blocked_by_proximity` | `e2_results.csv` |
 
 Allowed statuses: `supported`, `unsupported_with_adequate_power`,
 `inconclusive_under_available_power`, `failed_incremental_criterion`,
@@ -1796,10 +1796,10 @@ Current state of `docs/claim_matrix.csv`: **53 claims**.
 | C-04 | 2026-08-21 | Wild bootstrap returned p=0.82 against t=9.69 | Unrestricted residuals used instead of null-imposed | Refit under the null and resample those residuals | `54_p5_inference_audit.py` | — |
 | C-05 | 2026-08-22 | `real_wages_idx`, `real_income_idx`, `arop_threshold_real`, `pct_below_peak` marked accumulation-ineligible | The project had already built successful accumulations from all four, one an FDR survivor | Binary field replaced by a six-way construction taxonomy | `e0_variable_registry.csv` | `e791e01` |
 | C-06 | 2026-08-22 | E0 correlation views omitted `subjective_poverty` and AROPE entirely | Made the intended exploration impossible | Five comparator columns added to all three views | `e0_corr_*.csv` | `e791e01` |
+| C-07 | 2026-08-22 | MDE simulation reported power 1.00 at 0.66 points and 0.00 at 6.64 | Within-country residual permutation correlated noise with the regressor; detection ignored coefficient sign | Variance-component noise; sign-aware detection | `61_e_mde.py` | `476e177` |
+| C-08 | 2026-08-22 | EA rule returned Outcome A on the live run | Compared absolute residuals across a sign flip (+2.46, inside band A) and gated rank one-tailed, so rank 3 → 25 read as improvement | Sign reversal returns C unless within 3.0 points of zero; tail position `min(rank, n−rank+1)`; 10 new regression tests | `ea_rule.py`, `test_ea_rule.py` | — |
 | C-09 | 2026-08-23 | E1 reported four constructs as contradicting their pre-registered direction | Script translated adverse direction from `"high"`/`"low"`, values the registry never holds, so every variable became `lower_is_worse` and every positive coefficient read as wrong | Pass the registry's own vocabulary through; raise on anything unrecognised | `68_e1_current_constructs.py` | — |
 | C-10 | 2026-08-23 | EDA ranks displayed Greece's worst-in-Europe real wages as rank 27/27 under a heading saying rank 1 is worst | Same direction bug, already shipped one stage earlier | Rank ascending for `lower_is_worse`; assert the column's values | `67_eda_descriptives.py` | — |
-| C-08 | 2026-08-22 | EA rule returned Outcome A on the live run | Compared absolute residuals across a sign flip (+2.46, inside band A) and gated rank one-tailed, so rank 3 → 25 read as improvement | Sign reversal returns C unless within 3.0 points of zero; tail position `min(rank, n−rank+1)`; 10 new regression tests | `ea_rule.py`, `test_ea_rule.py` | — |
-| C-07 | 2026-08-22 | MDE simulation reported power 1.00 at 0.66 points and 0.00 at 6.64 | Within-country residual permutation correlated noise with the regressor; detection ignored coefficient sign | Variance-component noise; sign-aware detection | `61_e_mde.py` | `476e177` |
 
 ## Artifact Index
 
@@ -1808,38 +1808,38 @@ Current state of `docs/claim_matrix.csv`: **53 claims**.
 |---|---|---|---|
 | P0 | `p0_outcome_reconciliation.csv` | Official vs constructed series, country-year | present |
 | P0 | `p0_verdict.csv` | The four pre-declared tolerance checks | present |
-| P2 | `p2_specifications.csv` | Synthetic-control fit across three pre-periods | present |
 | P2 | `p2_donor_weights.csv` | Donor weights showing the two-country collapse | present |
 | P2 | `p2_placebo_distribution.csv` | Placebo inference distribution | present |
+| P2 | `p2_specifications.csv` | Synthetic-control fit across three pre-periods | present |
 | P3 | `p3_objective_only.csv` | Objective-only model, residuals by specification | present |
 | P3 | `p3_residuals.csv` | Per-country residuals and ranks | present |
-| P3a | `p3a_frozen_universe.json` | Family D universe, frozen before testing | present |
-| P3a | `p3a_results.csv` | Incremental test of accumulated breadth | present |
-| P3a | `p3a_individual_indicators.csv` | Per-indicator breadth components | present |
 | P5 | `p5_audit.csv` | Mundlak within/between decomposition | present |
 | P5 | `p5_bootstrap.csv` | Wild cluster bootstrap across weights and seeds | present |
 | P5 | `p5_influence.csv` | Leave-one-country-out stability | present |
 | P5 | `p5f_frozen_result.json` | FROZEN P3/P5/P3a values and eight wording rules | present |
-| E0 | `e0_extended_panel.csv` | 27 countries x 2015-2024 candidate panel | present |
-| E0 | `e0_variable_registry.csv` | 31 variables: units, roles, construction, proximity | present |
-| E0 | `e0_coverage.csv` | Reporter counts by variable and year | present |
-| E0 | `e0_corr_pooled.csv` | Pooled correlations incl. five outcome comparators | present |
-| E0 | `e0_corr_between.csv` | Between-country correlations | present |
-| E0 | `e0_corr_within.csv` | Within-country correlations | present |
-| E0 | `e0_nonindependence_flags.csv` | 35 flags across four overlap types | present |
-| E0 | `e0_redundancy.csv` | Primary-vs-sensitivity redundancy, all three views | present |
-| E0 | `e0_lineage.csv` | How each derived variable was constructed | present |
-| E0 | `e0_provenance.json` | Source series and vintage | present |
+| P3a | `p3a_frozen_universe.json` | Family D universe, frozen before testing | present |
+| P3a | `p3a_individual_indicators.csv` | Per-indicator breadth components | present |
+| P3a | `p3a_results.csv` | Incremental test of accumulated breadth | present |
 | E0 | `construct_map_frozen.json` | FROZEN six constructs plus one diagnostic | present |
-| PRE | `e_preregistration.json` | FROZEN outcomes, transformations, decision rule | present |
+| E0 | `e0_corr_between.csv` | Between-country correlations | present |
+| E0 | `e0_corr_pooled.csv` | Pooled correlations incl. five outcome comparators | present |
+| E0 | `e0_corr_within.csv` | Within-country correlations | present |
+| E0 | `e0_coverage.csv` | Reporter counts by variable and year | present |
+| E0 | `e0_extended_panel.csv` | 27 countries x 2015-2024 candidate panel | present |
+| E0 | `e0_lineage.csv` | How each derived variable was constructed | present |
+| E0 | `e0_nonindependence_flags.csv` | 35 flags across four overlap types | present |
+| E0 | `e0_provenance.json` | Source series and vintage | present |
+| E0 | `e0_redundancy.csv` | Primary-vs-sensitivity redundancy, all three views | present |
+| E0 | `e0_variable_registry.csv` | 31 variables: units, roles, construction, proximity | present |
 | PRE | `e_mde.csv` | Power curve; MDE 0.70 SD = 9.29 points at 80% | present |
-| EA | `ea_preregistration.json` | FROZEN deprivation-free companion spec and decision rule | present |
-| EA | `ea_results.csv` | Outcome C: residual reverses +6.93 -> -9.39 | present |
-| EDA | `e_descriptives.csv` | Greece hardship vs AROP vs AROPE by year | present |
+| PRE | `e_preregistration.json` | FROZEN outcomes, transformations, decision rule | present |
 | EDA | `e_descriptive_ranks.csv` | Greece's rank per variable per year | present |
 | EDA | `e_descriptive_recovery.csv` | Gap movement 2015-2024, trend classified | present |
+| EDA | `e_descriptives.csv` | Greece hardship vs AROP vs AROPE by year | present |
+| EA | `ea_companion_residuals.csv` | Companion residual ladder, 27 countries | present |
+| EA | `ea_preregistration.json` | FROZEN deprivation-free companion spec and decision rule | present |
+| EA | `ea_results.csv` | Outcome C: residual reverses +6.93 -> -9.39 | present |
 | E1 | `e1_results.csv` | Nine current primaries: 3 supported, 6 inconclusive | present |
 | E1 | `e1_secondary.csv` | Secondary outcome, BH family 3, promotion blocked | present |
 | E2 | `e2_results.csv` | Within-construct sensitivities and dispositions | present |
-| EA | `ea_companion_residuals.csv` | Companion residual ladder, 27 countries | present |
 <!-- AUTO:END artifact-index -->
