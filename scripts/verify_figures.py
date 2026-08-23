@@ -97,6 +97,54 @@ for path in TARGETS:
           not unchecked,
           "figures built without a canonical Series: " + ", ".join(unchecked))
 
+    # 2b. EVERY VIEW MUST CONTAIN DATA.
+    #
+    #     A figure whose default view is blank passed every structural check:
+    #     it had a badge, a caption, a fallback table with labels, and a
+    #     matching checksum -- and an empty chart. F5's components view shipped
+    #     that way because a source had no TOTAL row and the year intersection
+    #     collapsed to nothing.
+    empty = []
+    for b in blocks:
+        fid = re.search(r'id="([^"]+)"', b).group(1)
+        pls = re.findall(r'<script type="application/json"([^>]*)>(.*?)</script>',
+                         b, re.S)
+        for attrs, body in pls:
+            lbl = (re.search(r'data-label="([^"]*)"', attrs) or [None, fid])[1] \
+                if 'data-label' in attrs else fid
+            d = json.loads(body.replace("<\\/", "</"))
+            xs = len(d.get("years", [])) or len(d.get("rows", []))
+            # Each chart type names its numbers differently: series carry
+            # "values", coefficient rows carry "est", ladder rows carry
+            # "value". Missing one gave a false positive on the ladder.
+            vals = [v for s in d.get("series", []) for v in s.get("values", [])
+                    if v is not None]
+            for r in d.get("rows", []):
+                for k in ("est", "value"):
+                    if r.get(k) is not None:
+                        vals.append(r[k])
+            if xs < 2 and not d.get("rows"):
+                empty.append(f"{fid}/{lbl}: {xs} x-values")
+            elif not vals:
+                empty.append(f"{fid}/{lbl}: no finite values")
+    check("every view contains at least two x-values and one finite number",
+          not empty, "; ".join(empty))
+
+    # 2c. VIEW COUNT MATCHES THE MANIFEST, so scope cannot shrink silently.
+    manp = ROOT / "data" / "processed" / "report_visual_manifest.csv"
+    if manp.exists():
+        man = pd.read_csv(manp).set_index("id")
+        wrong = []
+        for b in blocks:
+            fid = re.search(r'id="([^"]+)"', b).group(1)
+            if fid not in man.index:
+                continue
+            got = len(re.findall(r'data-label="', b)) or 1
+            want = str(man.loc[fid].series).upper().count("VIEW ") or 1
+            if want > 1 and got != want:
+                wrong.append(f"{fid}: {got} views, manifest promises {want}")
+        check("view count matches the manifest", not wrong, "; ".join(wrong))
+
     # 3. NO FIXED DOM TARGETS. The old library bound to hardcoded ids and
     #    aborted silently when the structure moved.
     js = "".join(re.findall(r"<script>(.*?)</script>", raw, re.S))
