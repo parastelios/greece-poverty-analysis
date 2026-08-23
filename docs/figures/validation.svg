@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 292" width="660" height="292" role="img" aria-label="Subjective hardship tracks concrete affordability failure" font-family="Helvetica,Arial,sans-serif">
+<rect width="660" height="292" fill="#ffffff"/>
+<text x="20.0" y="26.0" font-size="13" fill="#1f2933" text-anchor="start" font-weight="bold">Reported difficulty moves with concrete affordability failure</text>
+<text x="20.0" y="44.0" font-size="10.5" fill="#6b7280" text-anchor="start" font-weight="normal">Correlation with subjective hardship, country means removed</text>
+<line x1="230.0" y1="66.0" x2="230.0" y2="202.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="230.0" y="220.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">0.00</text>
+<line x1="297.5" y1="66.0" x2="297.5" y2="202.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="297.5" y="220.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">0.25</text>
+<line x1="365.0" y1="66.0" x2="365.0" y2="202.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="365.0" y="220.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">0.50</text>
+<line x1="432.5" y1="66.0" x2="432.5" y2="202.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="432.5" y="220.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">0.75</text>
+<line x1="500.0" y1="66.0" x2="500.0" y2="202.0" stroke="#e5e7eb" stroke-width="1"/>
+<text x="500.0" y="220.0" font-size="9.5" fill="#6b7280" text-anchor="middle" font-weight="normal">1.00</text>
+<text x="216.0" y="88.0" font-size="9.5" fill="#1f2933" text-anchor="end" font-weight="normal">arrears</text>
+<rect x="230.0" y="78.0" width="215.1" height="13.0" fill="#3d6fb4" rx="2"/>
+<text x="453.1" y="88.0" font-size="9.5" fill="#1f2933" text-anchor="start" font-weight="bold">0.797</text>
+<circle cx="330.2" cy="100.0" r="4.5" fill="#c0392b"/>
+<text x="339.2" y="104.0" font-size="8.5" fill="#c0392b" text-anchor="start" font-weight="normal">0.371 Greece alone</text>
+<text x="216.0" y="122.0" font-size="9.5" fill="#1f2933" text-anchor="end" font-weight="normal">severe_mat_soc_deprivation</text>
+<rect x="230.0" y="112.0" width="212.2" height="13.0" fill="#3d6fb4" rx="2"/>
+<text x="450.2" y="122.0" font-size="9.5" fill="#1f2933" text-anchor="start" font-weight="bold">0.786</text>
+<circle cx="484.5" cy="134.0" r="4.5" fill="#c0392b"/>
+<text x="493.5" y="138.0" font-size="8.5" fill="#c0392b" text-anchor="start" font-weight="normal">0.942 Greece alone</text>
+<text x="216.0" y="156.0" font-size="9.5" fill="#1f2933" text-anchor="end" font-weight="normal">unexpected_expenses</text>
+<rect x="230.0" y="146.0" width="210.5" height="13.0" fill="#3d6fb4" rx="2"/>
+<text x="448.5" y="156.0" font-size="9.5" fill="#1f2933" text-anchor="start" font-weight="bold">0.780</text>
+<circle cx="478.1" cy="168.0" r="4.5" fill="#c0392b"/>
+<text x="487.1" y="172.0" font-size="8.5" fill="#c0392b" text-anchor="start" font-weight="normal">0.919 Greece alone</text>
+<text x="216.0" y="190.0" font-size="9.5" fill="#1f2933" text-anchor="end" font-weight="normal">warm</text>
+<rect x="230.0" y="180.0" width="169.2" height="13.0" fill="#3d6fb4" rx="2"/>
+<text x="407.2" y="190.0" font-size="9.5" fill="#1f2933" text-anchor="start" font-weight="bold">0.626</text>
+<circle cx="464.7" cy="202.0" r="4.5" fill="#c0392b"/>
+<text x="473.7" y="206.0" font-size="8.5" fill="#c0392b" text-anchor="start" font-weight="normal">0.869 Greece alone</text>
+<rect x="24.0" y="252.0" width="11.0" height="11.0" fill="#3d6fb4" rx="2"/>
+<text x="41.0" y="261.0" font-size="9.5" fill="#6b7280" text-anchor="start" font-weight="normal">within-country, all 27 (country means removed)</text>
+<circle cx="29.5" cy="272" r="4.5" fill="#c0392b"/>
+<text x="41.0" y="276.0" font-size="9.5" fill="#6b7280" text-anchor="start" font-weight="normal">Greece over time</text>
+</svg>

@@ -482,6 +482,43 @@ def fig_restatement():
           "Proximate predictors outweigh every objective construct"))
 
 
+
+# --------------------------------------------------------------------------
+# 12. E3: reported difficulty tracks concrete affordability failure
+# --------------------------------------------------------------------------
+def fig_validation():
+    d = pd.read_csv(PROC / "e3_results.csv")
+    d = d[d.stat == "within_country_r"].sort_values("value", ascending=False)
+    W, H = 660, 100 + len(d) * 34 + 56
+    x0, x1 = 230, 500
+    sx = lambda v: x0 + max(v, 0) / 1.0 * (x1 - x0)
+    b = [text(20, 26, "Reported difficulty moves with concrete affordability failure",
+              13, INK, weight="bold"),
+         text(20, 44, "Correlation with subjective hardship, country means removed",
+              10.5, MUTE)]
+    for v in [0, 0.25, 0.5, 0.75, 1.0]:
+        b.append(line(sx(v), 66, sx(v), 66 + len(d) * 34, GRID))
+        b.append(text(sx(v), 66 + len(d) * 34 + 18, f"{v:.2f}", 9.5, MUTE, "middle"))
+    y = 78
+    for r in d.itertuples():
+        b.append(text(x0 - 14, y + 10, r.var, 9.5, INK, "end"))
+        b.append(rect(sx(0), y, sx(r.value) - sx(0), 13, EU))
+        b.append(text(sx(r.value) + 8, y + 10, f"{r.value:.3f}", 9.5, INK,
+                      "start", "bold"))
+        gr_x = sx(r.greece_timeseries_r)
+        b.append(f'<circle cx="{gr_x:.1f}" cy="{y + 22:.1f}" r="4.5" fill="{GR}"/>')
+        b.append(text(gr_x + 9, y + 26, f"{r.greece_timeseries_r:.3f} Greece alone",
+                      8.5, GR))
+        y += 34
+    b.append(rect(24, H - 40, 11, 11, EU))
+    b.append(text(41, H - 31, "within-country, all 27 (country means removed)",
+                  9.5, MUTE))
+    b.append(f'<circle cx="29.5" cy="{H - 20}" r="4.5" fill="{GR}"/>')
+    b.append(text(41, H - 16, "Greece over time", 9.5, MUTE))
+    write("validation.svg", svg(W, H, "\n".join(b),
+          "Subjective hardship tracks concrete affordability failure"))
+
+
 def check_overflow():
     """Fail if any label runs past its viewBox.
 
@@ -515,6 +552,6 @@ def check_overflow():
 print("figures ->", FIG.relative_to(ROOT))
 for f in (fig_ea_reversal, fig_ladders, fig_narrowing, fig_mde,
           fig_between_within, fig_sign_reversal, fig_coverage,
-          fig_paradox, fig_recovery, fig_e1, fig_restatement):
+          fig_paradox, fig_recovery, fig_e1, fig_restatement, fig_validation):
     f()
 check_overflow()

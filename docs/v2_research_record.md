@@ -41,10 +41,10 @@ This notebook is the running log. `publication_strategy.md` was closed on
 <!-- AUTO:BEGIN document-control -->
 | Field | Value |
 |---|---|
-| Current stage | E3 |
-| Last completed stage | E2 |
+| Current stage | E4 |
+| Last completed stage | E3 |
 | Branch | `p6-rewrite` |
-| HEAD | `78f7d1f` Sort the register tables by ID on every refresh |
+| HEAD | `5406986` Disclose PD-01, add failed_gate, narrow four E2 overstatements |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-23 |
 | Frozen V1 reference | `v1-final` |
@@ -89,8 +89,8 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | EA | How much of the P3 result depends on a same-instrument predictor? | complete | `ea_preregistration.json` | — | [EA](#ea--deprivation-free-companion-audit) |
 | E1 | Which current-level constructs are associated with hardship? | complete | `a747e7a` | — | [E1](#e1--current-level-constructs) |
 | E2 | Do sensitivity variants change the current-level conclusions? | complete | `a747e7a` | — | [E2](#e2--current-level-sensitivities) |
-| E3 | What do the diagnostic and contextual checks show? | **next** | `a747e7a` | — | [E3](#e3--diagnostic-and-contextual-checks) |
-| E4 | Which accumulated constructs are associated with hardship? | pending | `a747e7a` | — | [E4](#e4--accumulated-exposure) |
+| E3 | What do the diagnostic and contextual checks show? | complete | `a747e7a` | — | [E3](#e3--diagnostic-and-contextual-checks) |
+| E4 | Which accumulated constructs are associated with hardship? | **next** | `a747e7a` | — | [E4](#e4--accumulated-exposure) |
 | E5 | Do accumulated-measure sensitivities change those conclusions? | pending | `a747e7a` | — | [E5](#e5--accumulation-sensitivities) |
 | E6 | Does the frozen combined model remain appropriate? | pending | `a747e7a` | — | [E6](#e6--frozen-combined-model) |
 | E7 | Do accumulated measures add information beyond current snapshots? | pending | `a747e7a` | — | [E7](#e7--current-versus-accumulated-comparison) |
@@ -1706,18 +1706,178 @@ before use. It failed loudly, which is the right kind of failure.
 
 ## E3 — Diagnostic and contextual checks
 
+> **E3 declares no FDR family, deliberately.** The frozen pre-registration names
+> three — current primaries, accumulated primaries, secondary outcome — and none
+> covers contextual or legacy variables. Inventing a fourth here would repeat
+> [PD-01](#protocol-deviations). So nothing in this stage is FDR-corrected and
+> **nothing here can become a finding**. Raw p-values are shown because
+> suppressing them would be worse, but they are diagnostic quantities, not tests.
+
 ### In plain words
 
-### Proximate material-hardship family
-### Inequality retest
-### Migration and demographic context
-### Saving and household balance-sheet context
-### Work-effort squeeze retest
-### Transfer-policy specification
-### Results
-### Interpretation limits
-### Decision
+This stage handles everything that is not a candidate explanation: measures too
+close to the outcome to explain it, measures whose direction we cannot state in
+advance, an old null being re-checked, and two variables that are arithmetic
+restatements of something already in the model.
+
+**Two findings matter, and they point in opposite directions.**
+
+The proximate items absorb **71% of Greece's unexplained gap** — the residual
+falls from 46.9 to 13.7 when all four are added, and R² goes from 0.25 to 0.87.
+That is the scale of what the proximity rule refuses. Any analysis that used
+them would look dramatically more successful.
+
+And the same items **validate the outcome**. Once each country's own average is
+removed, reported difficulty moves with arrears, emergency-expense capacity,
+heating and deprivation at correlations of **0.63 to 0.80**. That is not what a
+reporting style unmoored from circumstance looks like.
+
+Both statements are true about the same four variables, which is precisely the
+point: **they are weak as causes and strong as validation.**
+
+### A1 — How much apparent explanation is restatement
+
+n = 268, 27 countries.
+
+| | Greece residual | R² |
+|---|---:|---:|
+| Baseline (`arop` + year) | **+46.92** | 0.253 |
+| All four P1 items added | **+13.74** | 0.870 |
+| **Absorbed by same-instrument items** | **33.18 points — 71%** | |
+
+This is the quantity P1 exists to produce. It is **not** an explanation. It
+measures how much of the paradox can be made to disappear using measures drawn
+from the same survey instrument as the outcome.
+
+For comparison, the whole objective apparatus of P3 — six predictors including
+accumulated unemployment — narrowed Greece's residual from 27.05 to 6.93.
+
+### A2 — Validation: does reported difficulty track concrete failure?
+
+![Reported difficulty moves with concrete affordability failure](figures/validation.svg)
+
+Correlation with subjective hardship after removing each country's own mean, so
+this is co-movement *within* countries, not a comparison of national levels.
+
+| Item | Within-country r | Greece over time | Greek mean |
+|---|---:|---:|---:|
+| `arrears` | **0.797** | 0.371 | 43.5 |
+| `severe_mat_soc_deprivation` | **0.786** | 0.942 | 15.6 |
+| `unexpected_expenses` | **0.780** | 0.919 | 48.7 |
+| `warm` | **0.626** | 0.869 | 21.6 |
+
+If Greeks simply described their circumstances more negatively — culture, mood,
+generalised distrust — that reporting style would not need to move with unpaid
+bills, absent emergency resources, and homes that cannot be heated. It does,
+across all 27 countries and within Greece.
+
+> Greece's subjective-poverty result is **subjective in measurement, but not
+> merely subjective in substance.**
+
+One honest qualification: within Greece specifically, three of the four align
+strongly (0.87–0.94) but **arrears does not** (0.371). The within-country
+correlation across all 27 countries is what carries this, not the Greek series
+alone.
+
+### B — Inequality retest
+
+**A retest of the known null at claim 8.1, never a fresh candidate.**
+
+| Variable | Coef | SE | p raw | n |
+|---|---:|---:|---:|---:|
+| `s80s20` | +6.4679 | 3.8136 | 0.0899 | 270 |
+
+Not significant even uncorrected, and not eligible to become a finding in any
+case. The earlier null stands.
+
+### C — Migration context
+
+| Variable | Coef | SE | p raw | n |
+|---|---:|---:|---:|---:|
+| `net_migration` | +0.6492 | 0.7723 | 0.4006 | 269 |
+
+Causal position is ambiguous by construction: migration is both a response to
+labour-market damage and a contributor to it. Nothing here changes that.
+
+### D — Ambiguous-direction context
+
+**No pre-registered direction exists for these**, so no directional claim is
+made. High saving may be prudence or demand collapse; long hours may be
+opportunity or necessity. `e_rule` raises rather than guessing when asked to
+evaluate an `ambiguous` variable.
+
+| Variable | Coef | SE | p raw | n |
+|---|---:|---:|---:|---:|
+| `working_hours` | +4.5983 | 1.4726 | 0.0018 | 270 |
+| `saving_rate` | −1.2891 | 0.5276 | 0.0146 | 268 |
+| `debt_to_income` | −0.0727 | 0.0295 | 0.0137 | 268 |
+
+All three have small uncorrected p-values. That is exactly why the
+ambiguous-direction rule exists: with no direction fixed in advance, either sign
+would have been narratable after the fact, and a small p-value on a two-sided
+test carries no evidential weight when both tails were available for
+interpretation.
+
+### E — Work-effort squeeze retest
+
+| Variable | Coef | SE | p raw | n |
+|---|---:|---:|---:|---:|
+| `work_effort_squeeze` | +0.1705 | 0.0469 | 0.0003 | 270 |
+
+Run alone, because it correlates **0.963 with `wadj_a01`** in all three views and
+the construct map forbids the pairing. Its result therefore **cannot be read as
+independent of C4** — this is largely the same measurement as the supported C4
+primary, arriving by a different route, not corroboration from a second source.
+
+### F — Transfer-policy comparators
+
+| Variable | Coef | SE | p raw | n |
+|---|---:|---:|---:|---:|
+| `arop_before_transfers` | +0.8800 | 0.9098 | 0.3334 | 270 |
+| `transfer_effect` | +0.8800 | 0.9098 | 0.3334 | 270 |
+
+**Both blocked**, and the identical numbers demonstrate why. `transfer_effect`
+equals `arop_before_transfers − arop` exactly, to floating-point precision
+(verified: max absolute difference 3.6 × 10⁻¹⁵, correlation 1.000000). Since
+`arop` is already in the baseline, adding either variable spans the same column
+space, so the two regressions are the same regression.
+
+This is what `mechanical_with_arop` means in the registry, made visible.
+
+### What this does not establish
+
+- Nothing here can become a finding. E3 declares no family and applies no
+  correction, by design.
+- The 71% absorption is **not** evidence that hardship "really is" material
+  deprivation. It measures overlap between two instruments, which is what
+  same-instrument means.
+- The validation correlations do not establish that reported hardship is
+  *accurate*, only that it moves with concrete affordability failures rather
+  than floating free of them.
+- `work_effort_squeeze`'s small p-value adds nothing to C4. It is the same
+  measurement.
+- The `s80s20` retest does not revive the inequality hypothesis, and was never
+  capable of doing so at this stage.
+
+### Notes from review
+
+The FDR question was settled *before* running this stage rather than after,
+which is the direct consequence of PD-01. The contextual and legacy variables
+fit none of the three declared families, and the available choices were to
+invent a fourth or to declare none. Declaring none is the honest option: these
+were never candidate explanations, so correcting them as though they were
+competing hypotheses would misrepresent what the stage does.
+
+The ambiguous-direction group is the clearest illustration of why
+pre-registration matters at all. All three produce p-values below 0.02, and all
+three are uninterpretable — for each one, a coherent story exists in both
+directions, and choosing after seeing the sign is exactly the practice the
+protocol exists to prevent.
+
 ### Where the detail lives
+
+`scripts/70_e3_diagnostics.py` ·
+`data/processed/e3_results.csv`, `e3_restatement.csv`
 
 ---
 
@@ -1835,6 +1995,10 @@ before use. It failed loudly, which is the right kind of failure.
 | D-21 | 2026-08-23 | E2 | Annual food and housing inflation unsupported with adequate power, at 0.70 SD | Their intervals exclude MDE-sized effects | Extending this to headline, compounded or affordability effects; claiming a study-wide first | `frozen` | — | — |
 | D-22 | 2026-08-23 | E2 | P1 items reported as VALIDATION evidence, headline-ineligible as explanation | Strong alignment with arrears, emergency expense and heating is hard to produce by reporting style alone | Reading them only as circular; or as causal explanations | `frozen` | — | — |
 | D-23 | 2026-08-23 | E2 | Registry vocabularies validated at load time | E1's direction bug came from an untested translation layer, not the rule | Fixing only the one call site | `frozen` | C-09 | — |
+| D-24 | 2026-08-23 | E3 | E3 declares NO FDR family and applies no correction | Contextual/legacy variables fit none of the three declared families; these were never candidate explanations | Inventing a fourth family, repeating PD-01 | `frozen` | — | — |
+| D-25 | 2026-08-23 | E3 | P1 absorption (71%) reported as a restatement measure AND as validation evidence | Both are true of the same four variables; they are weak as causes, strong as validation | Reporting only the circularity, or promoting them to explanation | `frozen` | D-22 | — |
+| D-26 | 2026-08-23 | E3 | Ambiguous-direction variables reported with no directional claim despite p < 0.02 | Both signs were narratable in advance; a two-sided p carries no weight when either tail was interpretable | Reading the observed signs as findings | `frozen` | — | — |
+| D-27 | 2026-08-23 | E3 | `work_effort_squeeze` cannot corroborate C4 | r = 0.963 in all three views; it is the same measurement by another route | Citing it as independent support for C4 | `frozen` | — | — |
 
 Allowed statuses: `proposed`, `pre-registered`, `frozen`, `superseded`,
 `withdrawn`, `infeasible`.
@@ -1862,6 +2026,12 @@ Allowed statuses: `proposed`, `pre-registered`, `frozen`, `superseded`,
 | R-17 | E2 | hardship level | `c3_composite` | within-construct, common sample | n=258 | +7.2321 | 0.2182 | 0.5454 | — | — | below MDE | composite fails on its own terms; promotion barred regardless | `cannot_promote` | `e2_results.csv` |
 | R-18 | E2 | hardship level | `hicp_food`, `hicp_housing` | within-construct, common sample | n=270 | −0.2200, −0.2803 | 0.70, 0.18 | 0.6994, 0.4819 | — | — | intervals exclude a 0.70 SD effect | annual food and housing inflation excluded at the declared magnitude only; not headline, compounded or affordability effects | `unsupported_with_adequate_power` | `e2_results.csv` |
 | R-19 | E2 | hardship level | P1 items (4) | diagnostic only | n=268 | +0.98 to +1.45 | 0.0000–0.0036 | excluded | — | — | 0.72–0.96 SD, all above MDE | headline-ineligible as explanation; strong as VALIDATION that reported strain tracks concrete affordability failure | `blocked_by_proximity` | `e2_results.csv` |
+| R-20 | E3 | hardship level | P1 items, all four together | Greece residual absorption | n=268 | residual 46.92 → 13.74; R² 0.253 → 0.870 | — | none applied | — | — | — | 71% of the gap is absorbable by same-instrument items; NOT an explanation | `descriptive_only` | `e3_restatement.csv` |
+| R-21 | E3 | hardship level | P1 items | within-country correlation, country means removed | n=268 | r = 0.626–0.797 | — | none applied | — | — | — | reported difficulty tracks concrete affordability failure; validation, not explanation | `descriptive_only` | `e3_results.csv` |
+| R-22 | E3 | hardship level | `s80s20` | diagnostic, cond. on AROP + year | n=270 | +6.4679 (se 3.8136) | 0.0899 | none applied | — | — | — | retest of the known null at claim 8.1; null stands | `descriptive_only` | `e3_results.csv` |
+| R-23 | E3 | hardship level | `saving_rate`, `debt_to_income`, `working_hours` | diagnostic, cond. on AROP + year | n=268–270 | −1.29, −0.07, +4.60 | 0.0018–0.0146 | none applied | — | — | — | no pre-registered direction; small p-values carry no evidential weight | `descriptive_only` | `e3_results.csv` |
+| R-24 | E3 | hardship level | `work_effort_squeeze` | diagnostic, cond. on AROP + year | n=270 | +0.1705 (se 0.0469) | 0.0003 | none applied | — | — | — | r=0.963 with `wadj_a01`; the same measurement, not corroboration | `descriptive_only` | `e3_results.csv` |
+| R-25 | E3 | hardship level | `arop_before_transfers`, `transfer_effect` | diagnostic, cond. on AROP + year | n=270 | +0.8800 both, identical | 0.3334 | none applied | — | — | — | `transfer_effect ≡ arop_before_transfers − arop` exactly; same regression twice | `blocked_by_proximity` | `e3_results.csv` |
 
 Allowed statuses: `supported`, `unsupported_with_adequate_power`,
 `inconclusive_under_available_power`, `failed_incremental_criterion`,
@@ -1974,4 +2144,6 @@ Deviations must be disclosed in the stage that made them, not only here.
 | E1 | `e1_secondary.csv` | Secondary outcome, BH family 3, promotion blocked | present |
 | E2 | `e2_pooled_posthoc.csv` | Post hoc pooled FDR, disclosed under PD-01 | present |
 | E2 | `e2_results.csv` | Within-construct sensitivities and dispositions | present |
+| E3 | `e3_restatement.csv` | P1 absorbs 71% of Greece's baseline residual | present |
+| E3 | `e3_results.csv` | Contextual and legacy checks; no family, no FDR | present |
 <!-- AUTO:END artifact-index -->

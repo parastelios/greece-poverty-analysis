@@ -1,0 +1,13 @@
+section,var,stat,value,greece_timeseries_r,eligible_for_finding,se,p_raw,adverse_direction,proximity_class,n,blocked,note
+A2 validation,severe_mat_soc_deprivation,within_country_r,0.7857992530273322,0.9424522551654396,False,,,,,,,
+A2 validation,arrears,within_country_r,0.796794741688532,0.3712584285917017,False,,,,,,,
+A2 validation,unexpected_expenses,within_country_r,0.7797422816427474,0.9187105975866341,False,,,,,,,
+A2 validation,warm,within_country_r,0.6264854249716553,0.8693043060298591,False,,,,,,,
+B,s80s20,coef_on_baseline,6.467919638118029,,False,3.8135754608339862,0.0898811299122266,higher_is_worse,objective,270.0,False,RETEST of the known null at claim 8.1. Never a fresh candidate.
+C,net_migration,coef_on_baseline,0.649191491361229,,False,0.7723127492457401,0.40058265695841777,lower_is_worse,contextual,269.0,False,Causal position ambiguous: both a response to and a contributor to labour-market damage.
+D,saving_rate,coef_on_baseline,-1.2890614373205371,,False,0.5276180874174352,0.014558819799323016,ambiguous,objective,268.0,False,NO pre-registered direction. High saving may be prudence or demand collapse. Reported descriptively; no directional claim is made.
+D,debt_to_income,coef_on_baseline,-0.0726944187761108,,False,0.029500106690044013,0.013731614078478158,ambiguous,objective,268.0,False,NO pre-registered direction. High saving may be prudence or demand collapse. Reported descriptively; no directional claim is made.
+D,working_hours,coef_on_baseline,4.598349691816576,,False,1.4725766130903555,0.0017922730354321573,ambiguous,objective,270.0,False,NO pre-registered direction. High saving may be prudence or demand collapse. Reported descriptively; no directional claim is made.
+E,work_effort_squeeze,coef_on_baseline,0.1704528308410662,,False,0.046937609837021124,0.00028180423471963693,higher_is_worse,objective,270.0,False,"r = 0.963 with wadj_a01 in all three views. Run ALONE here; it may never enter a specification with C4's primary, and its result cannot be read as independent of C4."
+F,arop_before_transfers,coef_on_baseline,0.8800279368130441,,False,0.9097872182466161,0.33339915908833007,higher_is_worse,mechanical_with_arop,270.0,True,"Mechanically tied to AROP, which is in the baseline. Blocked."
+F,transfer_effect,coef_on_baseline,0.880027936813034,,False,0.9097872182466462,0.3333991590883516,lower_is_worse,mechanical_with_arop,270.0,True,"Mechanically tied to AROP, which is in the baseline. Blocked."

@@ -187,6 +187,8 @@ ARTIFACT_PURPOSE = {
     "e1_secondary.csv": ("E1", "Secondary outcome, BH family 3, promotion blocked"),
     "e2_results.csv": ("E2", "Within-construct sensitivities and dispositions"),
     "e2_pooled_posthoc.csv": ("E2", "Post hoc pooled FDR, disclosed under PD-01"),
+    "e3_results.csv": ("E3", "Contextual and legacy checks; no family, no FDR"),
+    "e3_restatement.csv": ("E3", "P1 absorbs 71% of Greece's baseline residual"),
     "ea_companion_residuals.csv": ("EA", "Companion residual ladder, 27 countries"),
 }
 
