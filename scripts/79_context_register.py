@@ -174,6 +174,49 @@ ENTRIES = [
         "source_status": "not applicable", "review_date": "2026-08-23",
         "verified_how": "not applicable",
     },
+    {
+        # Added after the ESS aggregates were obtained from the portal's public
+        # Analysis tab. It is descriptive context, not a tested result: the
+        # means are approximate reconstructions with no confidence intervals,
+        # and no test was run on them.
+        "id": "CTX-7", "topic": "Pre-crisis wellbeing baseline (ESS)",
+        "status": "descriptive corroboration",
+        "permitted": "On a balanced set of 12 countries observed in every Greek "
+                     "ESS round, Greece already sat about 0.8 points below the "
+                     "median before the crisis, fell to 5.64 by 2010/11, and "
+                     "recovered its LEVEL to roughly the pre-crisis value by "
+                     "2023/24. Its comparative position did not recover: the "
+                     "gap to the balanced median is wider than before the "
+                     "crisis, and Greece has been worst of the 12 since "
+                     "2010/11. A longstanding low-wellbeing pattern therefore "
+                     "remains plausible and generic pessimism or reporting "
+                     "culture CANNOT be dismissed.",
+        "forbidden": "Splicing ESS to the Eurostat EU-SILC series, or reading "
+                     "the two as one trajectory. Attaching any confidence "
+                     "interval, standard error or significance test to these "
+                     "means, which are approximate reconstructions from "
+                     "displayed weighted percentages. Comparing ALL-COUNTRY "
+                     "ranks across rounds, since the country set varies from "
+                     "22 to 30. Treating the decade after 2010/11 as observed.",
+        "relates_to_claim": "V2-7.1",
+        "evidence": "ESS Data Portal public Analysis tab, stflife, six Greek rounds",
+        # Deliberately ESS-specific. An earlier version matched the bare phrase
+        # "pre-crisis baseline", which the narrative uses about the social
+        # safety net and which has nothing to do with this entry.
+        "detect": "European Social Survey|ESS round|stflife|"
+                  "balanced 12 countries|same 12 countries|same twelve countries",
+        "source": "European Social Survey Data Portal, public Analysis tab for "
+                  "stflife (life satisfaction, 0-10), rounds 1, 2, 4, 5, 10 and 11.",
+        "source_url": "https://ess.sikt.no/en/",
+        "source_detail": "Weighted distributions with the post-stratification "
+                         "weight; country means reconstructed by the authors.",
+        "source_status": "verified",
+        "review_date": "2026-08-23",
+        "verified_how": "per-round analysis URLs recorded in "
+                        "data/raw/ess/ess_life_satisfaction_round_summary.csv; "
+                        "stated percentiles recomputed from stated ranks and "
+                        "country counts, all six agree",
+    },
 ]
 
 PLACEMENT = {

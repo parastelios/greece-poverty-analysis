@@ -186,6 +186,71 @@ FIGS["F17"] = dict(
     series=f17, first="Entity")
 
 
+# ---- F18: the ESS pre-crisis baseline -------------------------------------
+# A SEPARATELY LABELLED DESCRIPTIVE EXTENSION. ESS is a different instrument
+# from EU-SILC and is never joined to it. The means are approximate
+# reconstructions from the portal's public weighted distributions, so no
+# interval is drawn and no test is reported. Levels lead, because a rank on its
+# own inverts the reading: Greece's level recovered while its rank did not.
+ess = pd.read_csv(PROC / "ess_greece_life_satisfaction.csv").sort_values("essround")
+elab = [str(x) for x in ess.fieldwork]
+
+# Numeric years, not evenly spaced categories: the x-scale is linear, so the
+# decade with no Greek round renders as real horizontal distance instead of
+# being collapsed into one more equal step.
+eyrs = [2003, 2005, 2009, 2011, 2021, 2024]
+
+f18a = ce.Series(elab, dp=2, title="Level")
+f18a.add("Greece", [float(v) for v in ess.greece_mean_approx])
+f18a.add("Median of the same 12 countries",
+         [float(v) for v in ess.balanced_12_median_approx])
+f18a.add("Greece's gap to that median", [float(v) for v in ess.gap_vs_balanced])
+
+f18b = ce.Series(elab, dp=0, title="Rank among the same 12")
+f18b.add("Greece's rank, 1 = worst",
+         [float(v) for v in ess.balanced_12_rank_worst])
+
+v18a = {"years": eyrs, "dp": 2, "yLabel": "Life satisfaction, 0-10 (approx.)",
+        "alt": "Greek life satisfaction against the median of the same twelve "
+               "countries across six ESS rounds; Greece is below the median in "
+               "every round, falls to 5.64 in 2010/11 and recovers to 6.42",
+        "series": [
+            {"label": "Greece", "tone": "gr", "style": "solid",
+             "weight": "strong",
+             "values": [float(v) for v in ess.greece_mean_approx]},
+            {"label": "Median of the same 12 countries", "tone": "series-3",
+             "style": "dashed", "weight": "normal",
+             "values": [float(v) for v in ess.balanced_12_median_approx]}]}
+
+v18b = {"years": eyrs, "dp": 0, "invertY": True,
+        "yLabel": "Rank among the same 12, 1 = worst",
+        "alt": "Greece's rank among the same twelve countries, worst first; "
+               "third or fourth before the crisis, worst from 2010/11 onward",
+        "series": [
+            {"label": "Greece's rank among the same 12", "tone": "gr",
+             "style": "solid", "weight": "strong",
+             "values": [int(v) for v in ess.balanced_12_rank_worst]}]}
+
+FIGS["F18"] = dict(
+    caption="Greece was already below the median before the crisis, lost about "
+            "0.8 points by 2010/11, and recovered its level but not its position",
+    kind="panel",
+    views=[("Level", v18a), ("Rank among the same 12", v18b)],
+    view_series=[f18a, f18b], first="ESS round",
+    extra_caveat=(
+        "EUROPEAN SOCIAL SURVEY, NOT EUROSTAT - a separate instrument, shown "
+        "separately, and never joined to the EU-SILC series used elsewhere in "
+        "this report. Means are APPROXIMATE, reconstructed from the weighted "
+        "percentages the ESS portal displays publicly; no confidence interval "
+        "exists for them and no test is run on them. The 12 countries are held "
+        "fixed across all six rounds, because the full ESS country set varies "
+        "from 22 to 30 and all-country ranks are not comparable between rounds. "
+        "No Greek round falls between 2010/11 and 2020-22, so the depth of the "
+        "adjustment and the recovery are both unobserved. Greek LEVEL recovered "
+        "to roughly its pre-crisis value while the gap to the median stayed "
+        "wider than before, so the rank must not be read as the level."))
+
+
 def build(fid, spec):
     m = man.loc[fid]
     views = spec.get("views")
@@ -287,12 +352,47 @@ BASE = re.search(r"<style.*?</style>", (OUT / "report.html").read_text(), re.S).
 F15 = build("F15", FIGS["F15"])
 F16 = build("F16", FIGS["F16"])
 F17 = build("F17", FIGS["F17"])
+F18 = build("F18", FIGS["F18"])
 
 # Connected discussion, not six equal cards: each entry is introduced by prose
 # that says why it appears here and how it relates to the one before.
 # Order: the figure that TESTS reporting style is followed immediately by the
 # entry that interprets it. Previously reporting style was introduced, cut
 # across by four other topics, and then introduced again.
+ESS_LEAD = """
+<h3>A separately labelled descriptive extension</h3>
+<p>The Eurostat series used everywhere else in this report begins in 2013, at
+the crisis trough, so it cannot say whether Greece was already unusual before
+2008. The European Social Survey can, and the following figure is kept
+deliberately apart from everything above: a different instrument, shown on its
+own, never joined to the EU-SILC series and never modelled.</p>
+<p>It also carries a weaker warrant than the rest of the report. The underlying
+respondent files are behind a login; what is used here comes from the ESS
+portal's public analysis view, which displays weighted response distributions
+by country. Country means were reconstructed by multiplying each displayed
+percentage by its score and summing. That reconstruction is approximate at the
+precision the portal shows, it produces no confidence intervals, and nothing
+inferential is built on it.</p>
+"""
+
+ESS_CTX = """
+<p>Across six ESS rounds, holding the same twelve countries fixed in every
+round, Greece sat roughly 0.8 points below the median <em>before</em> the
+crisis, at third or fourth worst of the twelve. Its level then fell to 5.64 by
+2010/11 and recovered to 6.42 by 2023/24 &mdash; approximately its pre-crisis
+value.</p>
+<p>Its comparative position did not recover. The gap to the median is wider
+now than before the crisis, and Greece has been the worst of the twelve since
+2010/11: the two countries that were below it before the crisis have since
+passed it. A rise in the median accounts for part of this and being overtaken
+accounts for the rest.</p>
+<p>The bearing on the reporting-style question is direct. A low Greek baseline
+pre-dates the crisis, so the low position cannot be attributed to the crisis
+alone, and a longstanding low-wellbeing pattern remains plausible. Generic
+pessimism or reporting culture cannot be dismissed &mdash; nor, on this
+evidence, established.</p>
+"""
+
 DISC = {
  "CTX-1": "<p>That is the one contextual topic this project tested, and the "
           "figure above is the test. It weakens the reading-style alternative "
@@ -364,6 +464,9 @@ produced that history, and the honest thing is to say so and then say what is
 plausible anyway &mdash; labelled as what it is.</p>
 {F15}
 {DISC['CTX-1']}{ctx_block('CTX-1', '')}
+{ESS_LEAD}
+{F18}
+{ctx_block('CTX-7', ESS_CTX)}
 {DISC['CTX-2']}{ctx_block('CTX-2', '')}
 {F17}
 {DISC['CTX-3']}{ctx_block('CTX-3', '')}

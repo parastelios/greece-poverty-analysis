@@ -237,6 +237,20 @@ M = [
       # country table would allow -- is in the research record.
       caveat="A 2023 snapshot, not a trend; contextual and not modelled.",
       status_label="contextual evidence"),
+ dict(id="F18", stage=7, chart_type="panel",
+      question="Was Greece already below the European median on life "
+               "satisfaction before the crisis?",
+      artifact="ess_greece_life_satisfaction.csv",
+      series="Greek mean and the median of the same 12 countries across six "
+             "ESS rounds, with Greece's rank among those 12",
+      interaction="switch between level and rank; hover reads both values",
+      fallback="ESS round, Greek mean, median of the same 12, gap, rank",
+      caveat="European Social Survey, not Eurostat, and never joined to it. "
+             "Means are approximate reconstructions from publicly displayed "
+             "weighted percentages, with no confidence intervals and no test. "
+             "The 12 countries are held fixed because the full ESS set varies "
+             "from 22 to 30. No Greek round falls between 2010/11 and 2020-22.",
+      status_label="descriptive corroboration"),
 ]
 
 # NARRATIVE OWNERSHIP. Every visual belongs to a claim or a context entry, and
@@ -248,8 +262,8 @@ OWNER = {
     6: ("V2-3.2", "expandable"), 7: ("V2-4.X", "main"), 8: ("V2-3.1", "main"),
     9: ("V2-4.C2", "main"), 10: ("V2-4.C1", "expandable"),
     11: ("V2-5.C2", "main"), 12: ("V2-5.C2", "main"), 13: ("V2-5.Y", "main"),
-    14: ("V2-6.1", "main"), 15: ("CTX-4", "main"), 16: ("CTX-2", "expandable"),
-    17: ("CTX-1", "main"),
+    14: ("V2-6.1", "main"), 15: ("CTX-1", "main"), 16: ("CTX-4", "expandable"),
+    17: ("CTX-2", "main"), 18: ("CTX-7", "main"),
 }
 for i, e in enumerate(M, start=1):
     e["id"] = f"F{i}"
@@ -299,8 +313,12 @@ print(bar); print("BUDGET"); print(bar)
 # restrict INTERPRETATION, not prevent visualisation, and forcing migration and
 # trust into an existing chart would have made one figure carry two unrelated
 # topics.
-print(f"  figures          {len(df)}   (target 12-17)")
-if not 12 <= len(df) <= 17:
+# Raised again from 17 to 18 for the ESS pre-crisis extension, which answers a
+# question no existing figure can: the Eurostat series starts in 2013 and has no
+# pre-crisis baseline. It is a separate instrument and cannot share an axis with
+# anything already here.
+print(f"  figures          {len(df)}   (target 12-18)")
+if not 12 <= len(df) <= 18:
     raise SystemExit(f"manifest is outside the agreed budget: {len(df)} figures")
 print("  the evidence ladder is a TABLE, not a chart: it summarises status "
       "rather than showing a distribution")

@@ -1,5 +1,4 @@
-[SKIPPED: authenticated source unavailable]
-stage: 7 (optional descriptive extension)
-reason: ESS microdata requires a registered account; no account is configured for this project
-expected input: data/raw/ess_life_satisfaction.csv
-blocks publication: no
+[BUILT: approximate aggregates from the ESS public Analysis tab]
+inference permitted: NO -- descriptive context only
+confidence intervals: none exist for these values
+spliced to Eurostat: never

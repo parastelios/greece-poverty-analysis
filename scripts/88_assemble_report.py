@@ -35,7 +35,9 @@ for n in (1, 2, 3, 4):
     for m in re.finditer(r'<figure class="figure" id="(F\d+)">.*?</figure>', page, re.S):
         FIG_SOURCE[m.group(1)] = m.group(0)
 
-EXPECTED = [f"F{i}" for i in range(1, 18)]
+# Derived from the frozen manifest, never hardcoded: a hardcoded range silently
+# stops covering any figure added after it was written.
+EXPECTED = list(pd.read_csv(PROC / "report_visual_manifest.csv")["id"])
 missing = [f for f in EXPECTED if f not in FIG_SOURCE]
 if missing:
     raise SystemExit(f"figures missing from the batch pages: {missing}")
@@ -1294,28 +1296,57 @@ alongside genuine financial difficulty. Both could be true at once, and this
 design cannot separate them.</p>
 ''')}
 
-<div class="skipped" data-status="skipped">
-<div class="skipped-head"><span class="tag">SKIPPED</span>
-<span>authenticated source unavailable</span></div>
-<h4>The pre-crisis baseline that is missing</h4>
-<p>The Eurostat wellbeing series begins in <strong>2013</strong>, at the
-trough of the Greek crisis. It therefore cannot say whether Greece was already
-unusual on life satisfaction before 2008, or whether its position emerged
-afterwards. That is a real limitation on the claim above, and it is stated
-rather than worked around.</p>
-<p>The European Social Survey could address it: Greece took part in rounds
-1&nbsp;(2002/03) and 2&nbsp;(2004/05) before the crisis, round 4&nbsp;(2008/09)
-at its onset and round 5&nbsp;(2010/11) early in it, then rounds
-10&nbsp;(2020&ndash;22) and 11&nbsp;(2023/24). The unobserved decade falls
-<em>after</em> 2010/11, and covers both the depth of the adjustment and the
-recovery.</p>
-<p>The analysis is written and tested, and has not been run: ESS microdata
-requires a registered account that this project does not have. No ESS figure
-appears anywhere in this report. Should the data become available, it would
-enter this stage as a separately labelled descriptive extension &mdash; never
-spliced onto the Eurostat series, never modelled, and without reopening the
-analysis or altering the conclusion below.</p>
-</div>
+<h3>A separately labelled descriptive extension</h3>
+
+<p>The Eurostat series used everywhere else in this report begins in 2013, at
+the crisis trough, so it cannot say whether Greece was already unusual before
+2008. The European Social Survey can. What follows is kept deliberately apart
+from everything above: a different instrument, shown on its own, never joined
+to the EU-SILC series and never modelled.</p>
+
+<p>It also carries a weaker warrant than the rest of the report, and the
+difference matters. The respondent-level files are behind a login. What is used
+here comes from the ESS portal's public analysis view, which displays weighted
+response distributions by country; country means were reconstructed by
+multiplying each displayed percentage by its score and summing. The portal
+rounds those percentages, so the means are approximate at that precision. There
+are no standard errors and no confidence intervals, and nothing inferential is
+built on them.</p>
+
+{fig('F18')}
+
+<p>Three things happen in sequence, and separating them is the whole point of
+showing levels rather than ranks alone. Greece was <em>already</em> about
+0.8 points below the median of these twelve countries before the crisis, at
+third or fourth worst. Its level then fell to 5.64 by 2010/11. And by 2023/24
+it had recovered to 6.42, close to where it started.</p>
+
+<p>Its comparative position did not recover with it. The gap to the median is
+wider now than before the crisis, and Greece has been the worst of the twelve
+since 2010/11 &mdash; the two countries that were below it before the crisis
+have since passed it. Part of that is the median rising; part is being
+overtaken.</p>
+
+<p class="caution"><strong>What this does to the reporting-style
+question.</strong> A low Greek baseline pre-dates the crisis, so the position
+cannot be attributed to the crisis alone, and a longstanding low-wellbeing
+pattern remains plausible. Generic pessimism or reporting culture cannot be
+dismissed on this evidence &mdash; and cannot be established by it either. It
+sharpens the caveat already attached to the claim above rather than replacing
+it: the distinction between the financial indicators and the general one is one
+of degree, not a contrast between financial hardship and general
+contentment.</p>
+
+{context('CTX-7', '''
+<p>Across six ESS rounds, holding the same twelve countries fixed, Greece sat
+roughly 0.8 points below the median before the crisis, fell to 5.64 by 2010/11,
+and recovered its level to approximately its pre-crisis value by 2023/24 while
+its comparative position did not recover.</p>
+<p>The all-country ranks in the source data are deliberately not used for
+comparison here. The full ESS country set varies from twenty-two to thirty
+between rounds, so an all-country rank moves when the country set moves, and a
+change in it would be partly composition rather than substance.</p>
+''')}
 
 <h3>What this project did not test</h3>
 

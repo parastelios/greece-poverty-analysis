@@ -1,0 +1,7 @@
+essround,fieldwork,period,greece_mean_approx,balanced_12_median_approx,gap_vs_balanced,balanced_12_rank_worst,balanced_n,all_country_median_approx,greece_rank_worst,n_countries,worst_percentile,source_url
+1,2002/03,pre-crisis,6.348,7.21,-0.862,3,12,7.056,4,22,85.7,https://ess.sikt.no/en/datafile/bcc624a3-edbb-4df3-ab18-9a96702c92ae?tab=2&elems=7d06b60d-e34d-4fd9-b6fb-2b2895aaed9b
+2,2004/05,pre-crisis,6.459,7.255,-0.796,4,12,7.085,9,25,66.7,https://ess.sikt.no/en/datafile/edee45f2-976b-4c8b-902d-b65dc003c92e?tab=2&elems=e0ba5ff5-2a91-4b54-8063-6c2e2250db85
+4,2008/09,crisis onset,5.96,7.091,-1.131,3,12,6.851,8,29,75.0,https://ess.sikt.no/en/datafile/99ba8b91-a921-4a2a-9436-52c536d7ec9d?tab=2&elems=409675e7-2f76-4af6-8794-5e3dccd80c60
+5,2010/11,early crisis,5.641,7.001,-1.36,1,12,6.966,4,27,88.5,https://ess.sikt.no/en/datafile/0189b86b-8aa4-4be3-88ad-39c58b02f19f?tab=2&elems=f4b8e618-5bea-4a79-917e-fb68be333a79
+10,2020-22,later period,6.354,7.478,-1.124,1,12,7.203,4,22,85.7,https://ess.sikt.no/en/datafile/f37d014a-6958-42d4-b03b-17c29e481d3d?tab=2&elems=5afa13a1-b82b-4d9c-9268-71b4c14424b3
+11,2023/24,later period,6.419,7.389,-0.97,1,12,7.121,5,30,86.2,https://ess.sikt.no/en/datafile/242aaa39-3bbb-40f5-98bf-bfb1ce53d8ef?tab=2&elems=a2ea0537-870e-40c8-b592-c5a52d794ea7
