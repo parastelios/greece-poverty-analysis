@@ -40,26 +40,42 @@ def payload_tag(d, kind="", label=""):
 FIGS = {}
 
 # ---- F11: the three supported accumulated measures, all countries ---------
+# Units differ between these measures and must be stated: summing an annual
+# excess over years gives percentage-point-YEARS, while a duration count gives
+# years. Presenting them without units invites the reader to compare 137.5 with
+# 15 as if they were the same quantity.
+ACC_UNIT = {"acc_cum_excess_unemployment": "percentage-point-years above 2009",
+            "acc_housing_excess": "percentage-point-years above 2010",
+            "dur_real_wages_below": "consecutive years below the 2008 level"}
 views11, series11 = [], []
 for v in ["acc_cum_excess_unemployment", "dur_real_wages_below", "acc_housing_excess"]:
     d = acc.dropna(subset=[v])
     latest = d[d.time == d.time.max()][["geo", v]].sort_values(v, ascending=False)
     med = float(latest[v].median())
-    s = ce.Series([ce.name(v)], dp=1, title=ce.name(v))
+    unit = ACC_UNIT[v]
+    s = ce.Series([f"{ce.name(v)} ({unit})"], dp=1, title=ce.name(v))
     rows = []
-    for r in latest.itertuples():
+    for i, r in enumerate(latest.itertuples(), start=1):
         val = float(getattr(r, v))
         s.add(NAMES.get(r.geo, r.geo), [val])
         rows.append({"label": NAMES.get(r.geo, r.geo), "name": NAMES.get(r.geo, r.geo),
-                     "value": round(val, 1), "highlight": r.geo == "EL"})
+                     "value": round(val, 1), "highlight": r.geo == "EL",
+                     "detail": f"rank {i} of {len(latest)}<br>"
+                               f"<span style='opacity:.6'>{unit}</span>"})
     series11.append(s)
     views11.append((ce.name(v), {
         "rows": rows, "dp": 1, "reference": round(med, 1),
-        "referenceLabel": "EU median",
-        "alt": f"{ce.name(v)} for all 27 countries, latest year"}, "ladder"))
+        "referenceLabel": "EU median", "unit": unit,
+        "alt": f"{ce.name(v)} for all 27 countries, latest year, in {unit}"},
+        "ladder"))
 FIGS["F11"] = dict(
-    caption="Greece carries more accumulated damage than any other member state",
-    kind="ladder", views=views11, view_series=series11, first="Country")
+    caption="Greece ranks first on accumulated unemployment and housing "
+            "deterioration, and second on wage non-recovery",
+    kind="ladder", views=views11, view_series=series11, first="Country",
+    extra_caveat=("The three measures are in different units and may not be "
+                  "compared with each other: accumulated unemployment and "
+                  "housing deterioration are percentage-point-years, wage "
+                  "non-recovery is a count of consecutive years."))
 
 # ---- F12: the conditional coefficients ------------------------------------
 TONE = {"supported": "series-3",
@@ -101,8 +117,8 @@ for r in d12.itertuples():
                    f"<br>this pair's detectable effect: "
                    f"{'—' if r.conditional_mde_sd != r.conditional_mde_sd else f'{r.conditional_mde_sd:.2f} SD'}")})
 FIGS["F12"] = dict(
-    caption="Accumulated history adds information beyond current conditions in "
-            "three of eight pairs",
+    caption="Accumulated history provides additional conditional cross-country "
+            "information in three of eight pairs",
     kind="coefficient",
     payload={"rows": rows12, "alt": "The sixteen conditional coefficients, each "
              "tested with its counterpart in the same model"},
@@ -134,14 +150,19 @@ for r in dyn.itertuples():
                    f"<br>within {r.acc_within:+.4f} (p {r.acc_within_p:.4f})"
                    f"<br>first difference {r.fd_acc:+.4f} (p {r.fd_acc_p:.4f})")})
 FIGS["F13"] = dict(
-    caption="Every accumulated result is carried by differences BETWEEN "
-            "countries, not by change within them",
+    caption="The supported historical associations are predominantly between "
+            "countries; the within-country estimates provide no supporting "
+            "dynamic evidence",
     kind="dumbbell",
     payload={"rows": rows13, "dp": 3, "legendA": "within countries",
              "legendB": "between countries", "zeroLabel": "no effect",
              "alt": "Between-country against within-country estimates for every "
                     "accumulated measure"},
-    series=f13, first="Accumulated measure")
+    series=f13, first="Accumulated measure",
+    extra_caveat=("This does NOT establish that no within-country relationship "
+                  "exists: the within estimates are too imprecise to establish "
+                  "or rule one out. The frozen result records them as "
+                  "inconclusive, not absent."))
 
 # ---- F14: model dependence -----------------------------------------------
 a = p3r.set_index("geo").resid
@@ -161,8 +182,8 @@ for g in common:
                    "detail": (f"frozen {a[g]:+.2f} &rarr; companion {b[g]:+.2f}"
                               f"<br>{'crosses zero' if a[g] * b[g] < 0 else 'same side of zero'}")})
 FIGS["F14"] = dict(
-    caption="Removing one predictor moves Greece from under-predicted to "
-            "over-predicted",
+    caption="Removing the same-instrument deprivation measure moves Greece "
+            "from under-predicted to over-predicted",
     kind="dumbbell",
     payload={"rows": rows14, "dp": 2, "legendA": "frozen specification",
              "legendB": "deprivation-free companion", "zeroLabel": "predicted exactly",
@@ -228,9 +249,10 @@ recovered without hardship following it down, which is what makes accumulated
 history worth testing: not what a country looks like now, but how much damage it
 has absorbed and for how long.</p>
 {b['F11']}
-<p>Greece leads Europe on all three of the accumulated measures that survive
-testing. That is the strongest-looking result in the report, and the next two
-figures establish exactly how far it can be taken.</p>
+<p>Greece ranks first of 27 on accumulated unemployment and on housing
+deterioration since 2010, and second behind Hungary on years of wage
+non-recovery. That is the strongest-looking result in the report, and the next
+two figures establish exactly how far it can be taken.</p>
 <p>The first question is whether accumulated history adds anything once today's
 conditions are in the same model. Separate models cannot answer that; comparing
 two p-values from two regressions is not a test.</p>
@@ -244,9 +266,12 @@ above compares countries with different histories. It does not show that
 hardship rose <em>inside</em> Greece as damage accumulated &mdash; a different
 claim, and one this evidence does not support.</p>
 {b['F13']}
-<p>Not one within-country estimate is significant in the adverse direction, and
-no first-difference test supports one. Countries carrying more accumulated
-damage report more hardship; that is a marker, not a demonstrated process.</p>
+<p>No within-country estimate is significant in the adverse direction and no
+first-difference test supports one, so there is no dynamic evidence here. That
+is not the same as showing there is none: the within estimates are too imprecise
+to establish or rule out such a relationship. Countries carrying more historical
+exposure report more hardship, and that is a marker rather than a demonstrated
+process.</p>
 
 <h2>Stage 6 &mdash; Which model?</h2>
 <p>A reader is entitled to ask how much of Greece's gap the full model accounts
