@@ -385,7 +385,10 @@ then collapse under the bootstrap, to 0.40 and 0.55.</p>
     d.series.forEach(s=>s.values.forEach(v=>{if(v!=null){lo=Math.min(lo,v);hi=Math.max(hi,v);}}));
     if(!isFinite(lo)){lo=0;hi=1;}
     const pad=(hi-lo)*0.10||1; hi+=pad; lo=(lo<0)?lo-pad:Math.max(0,lo-pad);
-    const ys=v=>padT+ph-(v-lo)/(hi-lo)*ph;
+    // invertY puts the WORSE value higher, which a rank axis needs: rank 1 is
+    // the worst position, and drawing it at the bottom would read backwards.
+    const ys=v=>d.invertY ? padT+(v-lo)/(hi-lo)*ph
+                          : padT+ph-(v-lo)/(hi-lo)*ph;
     const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,class:'chart',role:'img',
       'aria-label':d.alt||d.caption||'chart'});
     for(let i=0;i<=4;i++){const v=lo+(hi-lo)*i/4,y=ys(v);

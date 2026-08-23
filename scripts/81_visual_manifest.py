@@ -105,10 +105,16 @@ M = [
       caveat="Correlations identify duplication and sign reversals. They do "
              "NOT select variables.",
       status_label="descriptive"),
- dict(id="F6", stage=3, chart_type="dumbbell",
+ dict(id="F6", stage=3, chart_type="ladder",
       question="Which measures converged toward the EU and which diverged?",
       artifact="e_descriptive_recovery.csv",
-      series="gap in 2015 against gap in 2024, per variable",
+      # CHANGED from dumbbell to a diverging ladder: the 2015 gaps run from
+      # -2,819 PPS to +48.8 percentage points, and percentage points, index
+      # points and PPS currency cannot share one axis. The plotted quantity is
+      # the dimensionless share of each gap closed; the original values and
+      # units live in the tooltip and the table.
+      series="share of each 2015 Greece-EU gap closed by 2024, as diverging "
+             "bars from a no-change line",
       interaction="hover reads both endpoints and the shift; converging, flat "
                   "and diverging coloured separately",
       fallback="variable, gap 2015, gap 2024, shift, trend",
@@ -145,11 +151,15 @@ M = [
       interaction="hover reads Greece, EU median and the gap",
       fallback="latest values and ranks for the three",
       caveat="", status_label="pre-planned confirmatory"),
- dict(id="F11", stage=5, chart_type="panel",
+ dict(id="F11", stage=5, chart_type="ladder",
       question="How much accumulated unemployment has each country absorbed, "
                "and where does Greece sit?",
       artifact="e4_accumulated_panel.csv",
-      series="acc_cum_excess_unemployment, all 27 with Greece and median marked",
+      # CHANGED from panel to ladder: the question is where Greece sits among
+      # 27 countries, which a ranked comparison answers and a time series does
+      # not. Three views, one per supported accumulated measure.
+      series="each supported accumulated measure, all 27 countries ranked, "
+             "with Greece and the EU median marked",
       interaction="hover names the country and value; Greece always labelled",
       fallback="latest value and rank for all 27",
       caveat="cross-country association | no demonstrated within-Greece "
