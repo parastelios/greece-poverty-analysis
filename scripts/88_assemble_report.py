@@ -363,6 +363,7 @@ reported as prominently as the findings.</p>
 </div>
 
 <nav class="toc" aria-label="Contents">
+  <p class="toc-jump"><a href="#summary">Skip to the findings in one page</a></p>
   <h2>The eight stages</h2>
   <ol>
     <li><a href="#s1">The puzzle</a> &mdash; how far apart the two measures are,
@@ -431,6 +432,75 @@ in this report, and collapsing them would misrepresent the findings
 substantially.</p>
 </div>
 </div>
+"""
+
+SUMMARY = """
+<section class="summary" id="summary">
+<h2>The findings, in one page</h2>
+<p class="sum-lede">Everything below is set out in full over the eight stages
+that follow, with the evidence and the limits of each. A reader who stops here
+should still come away with an accurate picture.</p>
+
+<div class="sum-gap">
+  <p class="sum-num">52.6</p>
+  <p class="sum-cap">percentage points between Greece's official
+  income-poverty rate and the share of Greek households reporting difficulty
+  making ends meet, averaged over 2015&ndash;2024. Greece ranks first of
+  twenty-seven on the second measure and seventh on the first, and sits further
+  from its nearest neighbour than that neighbour sits from most of Europe.</p>
+</div>
+
+<div class="sum-cols">
+<div class="sum-col">
+<h3>What accounts for part of it</h3>
+<ol>
+  <li><strong>The official measures are narrower than the experience.</strong>
+  The EU's broader measure closes about a fifth of the distance, and its
+  contribution is shrinking. The income line itself fell with the Greek
+  economy, which a relative measure cannot avoid doing.</li>
+
+  <li><strong>The reported difficulty corresponds to concrete failure.</strong>
+  It moves with arrears, unaffordable heating and unexpected expenses, within
+  countries as well as across them &mdash; though every one of those items comes
+  from the same survey as the question itself.</li>
+
+  <li><strong>Present conditions and accumulated history both carry
+  information.</strong> Material resources, long-term unemployment and
+  wage-adjusted affordability each predict hardship beyond income poverty; so
+  do accumulated unemployment, the years wages have stayed below 2008, and
+  housing-cost deterioration, even after their present-day counterparts are
+  accounted for.</li>
+</ol>
+</div>
+
+<div class="sum-col">
+<h3>What the evidence does not support</h3>
+<ol>
+  <li><strong>Nothing here shows what causes what.</strong> Every result is a
+  cross-country association across twenty-seven countries.</li>
+
+  <li><strong>Nothing here shows Greece changing over time.</strong> The
+  accumulated measures separate countries; the within-country tests are too
+  imprecise either to establish a trend or to rule one out.</li>
+
+  <li><strong>Most measures that did not work are unresolved, not
+  excluded.</strong> Six of nine present-day measures are inconclusive because
+  the study could not have detected an effect of the relevant size.</li>
+
+  <li><strong>One central result reverses.</strong> Admitting a single
+  same-survey predictor moves Greece from the third to the twenty-fifth largest
+  unexplained gap in Europe, on identical data. Neither version is definitive.</li>
+</ol>
+</div>
+</div>
+
+<p class="sum-rest"><strong>And most of the gap is unexplained.</strong> Of the
+52.6 points, what is accounted for above is a minority. The remainder is not
+attributed to anything here, because the analysis could not establish where it
+goes. A reporting tendency among Greek respondents cannot be excluded either,
+and a separate survey reaching back before 2008 suggests Greece started
+lower.</p>
+</section>
 """
 
 
@@ -735,15 +805,11 @@ poor ones. It remains corroboration from inside a single instrument.</p>
 
 {claim('V2-3.1')}
 
-<p>The caveats on that claim carry real weight and should not be read past.
-Every one of those items, and the outcome itself, comes from the same survey
-instrument: EU-SILC. A household in a difficult financial position may answer
-the whole battery of questions in a consistently downbeat way, and that alone
-would generate correlations of this size without any of the items being
-independent confirmation of the others. This is corroboration from within one
-instrument, not validation from outside it. Nor is the pattern uniform: the
-within-Greece correlation for arrears is much weaker than the range headline
-suggests.</p>
+<p>The limits on that finding carry real weight. A household in a difficult
+position may answer the whole battery downbeat, and that alone would generate
+correlations of this size without any item independently confirming another.
+Nor is the pattern uniform: the within-Greece correlation for arrears is much
+weaker than the range headline suggests.</p>
 
 <p>The arrears figure deserves particular attention because it is the item
 most often treated as the hard, objective anchor of financial distress. Within
@@ -760,12 +826,12 @@ items can statistically absorb.</p>
 {claim('V2-3.2')}
 
 <p>The word <em>absorb</em> is doing precise work and is not a synonym for
-<em>explain</em>. What this shows is that once concrete deprivation items are
-in the model, most of Greece's unexplained excess is no longer statistically
-distinguishable. That is a diagnostic about shared variance. It does not
-establish that deprivation causes reported hardship, because both are measured
-by the same survey of the same households at the same moment. Stage 6 shows how
-much rests on this single modelling decision.</p>
+<em>explain</em>. Once concrete deprivation items are in the model, most of
+Greece's unexplained excess is no longer statistically distinguishable. That is
+a statement about shared variance, not about mechanism &mdash; and for the
+reason given above, part of that shared variance is the interview rather than
+the world. Stage 6 shows how much rests on admitting such a predictor at
+all.</p>
 
 {methods("Within-country versus pooled correlation, and why the distinction matters", '''
 <p>A pooled correlation computed across all country-years conflates two very
@@ -1221,11 +1287,10 @@ different answer?</p>
 findings hold up. This one includes a robustness section demonstrating that one
 of them does not, and that fact is a result rather than an embarrassment.</p>
 
-<p>Recall from Stage 3 that four deprivation items statistically absorbed most
-of Greece's excess residual. Those items come from the same survey as the
-outcome. Whether to admit a same-instrument predictor into the model is a real
-methodological choice with arguments on both sides, and it cannot be settled by
-the data.</p>
+<p>Recall from Stage 3 that four deprivation items absorbed most of Greece's
+excess residual, and that they share their instrument with the outcome. Whether
+to admit such a predictor is a real methodological choice, and the data cannot
+settle it.</p>
 
 <p>The case for admitting it: severe material deprivation is a substantively
 meaningful measure of hardship, it is officially published, and excluding
@@ -1848,6 +1913,7 @@ body{max-width:54rem;margin:0 auto;padding:0 1.2rem 6rem;
 .lede p:first-of-type{font-size:1.08rem}
 .toc{background:var(--surface-2);border-radius:8px;padding:1.4rem 1.6rem;
   margin:2.6rem 0;font:.95rem/1.6 ui-sans-serif,system-ui,sans-serif}
+.toc-jump{margin:0 0 .9rem;font:600 .95rem/1.4 ui-sans-serif,system-ui,sans-serif}
 .toc h2{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;
   margin:0 0 .9rem;color:var(--text-secondary)}
 .toc ol{margin:0;padding-left:1.3rem}
@@ -1861,6 +1927,30 @@ body{max-width:54rem;margin:0 auto;padding:0 1.2rem 6rem;
 .vocab dl{margin:0;font-size:.93rem}
 .vocab dt{font-weight:700;margin-top:.7rem}
 .vocab dd{margin:.15rem 0 0;color:var(--text-secondary)}
+.summary{margin:2.6rem 0 0;padding:1.8rem 0 0;border-top:2px solid var(--text-primary)}
+.summary h2{font-size:clamp(1.4rem,3.4vw,1.85rem);margin:0 0 .6rem;
+  letter-spacing:-.015em}
+.sum-lede{font:.95rem/1.6 ui-sans-serif,system-ui,sans-serif;
+  color:var(--text-secondary);max-width:38rem;margin:0 0 1.6rem}
+.sum-gap{display:flex;gap:1.2rem;align-items:baseline;flex-wrap:wrap;
+  background:var(--surface-2);border-radius:8px;padding:1.2rem 1.4rem;
+  margin:0 0 1.6rem}
+.sum-num{font:700 clamp(2.4rem,7vw,3.4rem)/1 ui-sans-serif,system-ui,sans-serif;
+  color:var(--series-gr);margin:0;flex:none;font-variant-numeric:tabular-nums}
+.sum-cap{font:.92rem/1.55 ui-sans-serif,system-ui,sans-serif;margin:0;
+  flex:1 1 18rem;color:var(--text-secondary)}
+.sum-cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(17rem,1fr));
+  gap:1.4rem 2rem}
+.sum-col h3{font:600 .76rem/1 ui-sans-serif,system-ui,sans-serif;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--text-secondary);
+  margin:0 0 .8rem}
+.sum-col ol{margin:0;padding-left:1.2rem;
+  font:.94rem/1.6 ui-sans-serif,system-ui,sans-serif}
+.sum-col li{margin:0 0 .8rem}
+.sum-col li strong{color:var(--text-primary)}
+.sum-rest{margin:1.5rem 0 0;padding:.9rem 1.1rem;border-left:3px solid var(--div-neg);
+  background:var(--surface-2);border-radius:0 5px 5px 0;
+  font:.95rem/1.6 ui-sans-serif,system-ui,sans-serif}
 .stage{margin:4.5rem 0 0;scroll-margin-top:1rem}
 .stage-head{display:flex;align-items:baseline;gap:.9rem;flex-wrap:wrap;
   border-top:2px solid var(--text-primary);padding-top:1rem;margin-bottom:.4rem}
@@ -1966,7 +2056,7 @@ PAGE = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
 <style>{ce.CSS}
 :root{{--gr:var(--series-gr);--eu:var(--series-eu)}}
 {REPORT_CSS}</style></head><body>
-{FRONT}{S1}{S2}{S3}{S4}{S5}{S6}{S7}{S8}{BACK}
+{FRONT}{SUMMARY}{S1}{S2}{S3}{S4}{S5}{S6}{S7}{S8}{BACK}
 <script>{ce.JS}</script>
 </body></html>
 """

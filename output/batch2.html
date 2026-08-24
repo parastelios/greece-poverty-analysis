@@ -571,11 +571,16 @@ then collapse under the bootstrap, to 0.40 and 0.55.</p>
     ms.done();
     if(typeof ms!=='undefined'&&ms.done)ms.done();
     host.insertBefore(svg,host.firstChild);
-    // A legend keyed on the same tone/style, so the encoding is stated once
-    // rather than inferred from four crowded end labels.
-    if(d.series.filter(s=>s.label).length>2){
+    // The legend carries ONLY what the chart did not label directly. A series
+    // named at the end of its own line does not need naming again underneath:
+    // that is the same key twice, and it makes the reader look away from the
+    // data to learn something already written beside it. Where every series is
+    // labelled directly, there is no legend at all.
+    const ended=new Set(ends.map(e=>e.s));
+    const unlabelled=d.series.filter(s=>s.label&&!ended.has(s));
+    if(unlabelled.length){
       const lg=document.createElement('div');lg.className='legend';
-      d.series.filter(s=>s.label).forEach(s=>{
+      unlabelled.forEach(s=>{
         const i=document.createElement('span');i.className='lg-item';
         i.innerHTML=`<svg width="22" height="8" aria-hidden="true"><line x1="0" y1="4" x2="22" y2="4"
           stroke="var(--${s.tone||'chart-neutral'})" stroke-width="${WT[s.weight||'normal']}"
@@ -991,7 +996,11 @@ then collapse under the bootstrap, to 0.40 and 0.55.</p>
       const d=JSON.parse(payload.textContent);
       const fn=KINDS[host.dataset.chart];
       if(!fn)return;
-      host.querySelectorAll('svg').forEach(s=>s.remove());
+      // Remove the whole of the previous drawing, not just its canvas. This
+      // took out old <svg> only, so every redraw appended another legend -- and
+      // because a legend's swatches are themselves <svg>, the stale legend was
+      // stripped of its swatches and left behind as a row of bare text.
+      host.querySelectorAll(':scope > svg, :scope > .legend').forEach(s=>s.remove());
       fn(host,d);
       host.dataset.drawn='1';
     });
