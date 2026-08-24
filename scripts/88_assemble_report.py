@@ -59,16 +59,21 @@ def claim(cid, *, show_caveats=True):
 
     The wording is copied from the freeze, never restated, so the report cannot
     drift from what was actually established.
+
+    The identifier and the evidence tier stay in the markup -- the release gate
+    and the parity audit both key on data-claim-id, and the tier is kept as a
+    title attribute for anyone who wants it. Neither is printed. They are the
+    project's bookkeeping, and a reader following the argument does not need a
+    catalogue number stamped on every paragraph.
     """
     c = claims.loc[cid]
     cav = ""
     if show_caveats and str(c.caveats) not in ("nan", ""):
-        items = "".join(f"<li>{html.escape(x.strip())}</li>"
-                        for x in str(c.caveats).split("||"))
-        cav = f'<ul class="caveats">{items}</ul>'
-    return (f'<div class="claim" data-claim-id="{cid}">'
-            f'<div class="claim-head"><span class="cid">{cid}</span>'
-            f'<span class="tier">{html.escape(str(c.tier))}</span></div>'
+        items = "; ".join(html.escape(x.strip())
+                          for x in str(c.caveats).split("||"))
+        cav = f'<p class="caveats"><strong>Limits.</strong> {items}.</p>'
+    return (f'<div class="claim" data-claim-id="{cid}" '
+            f'title="{html.escape(str(c.tier))}">'
             f"<p class=\"canonical\">{html.escape(str(c.canonical_wording))}</p>{cav}</div>")
 
 
@@ -82,7 +87,7 @@ def context(cid, prose):
         det = f" {e.source_detail}" if isinstance(e.source_detail, str) and e.source_detail else ""
         cite = f'<p class="cite"><strong>Source.</strong> {html.escape(str(e.source))}{det}{url}</p>'
     return (f'<div class="ctx" data-context-id="{cid}">'
-            f'<div class="ctx-head"><span class="cid">{cid}</span>'
+            f'<div class="ctx-head">'
             f'<span class="status">{html.escape(str(e.status))}</span></div>'
             f"<h4>{html.escape(str(e.topic))}</h4>{prose}"
             f'<p class="permitted"><strong>What may be concluded.</strong> '
@@ -265,19 +270,22 @@ def t_summary():
 
 def t_context():
     """The context register at a glance, in its own disjoint vocabulary."""
+    # No identifier column: the register numbering is this project's
+    # bookkeeping and tells a reader nothing about the topic.
     rows = []
     for cid, e in ctx.iterrows():
-        rows.append([f'<span class="tid">{cid}</span>',
-                     html.escape(str(e.topic)),
+        rows.append([html.escape(str(e.topic)),
                      f'<span class="ctx-status">{html.escape(str(e.status))}</span>',
                      "no" if str(e.may_support_a_claim).strip().lower()
                      in ("false", "no", "0") else "yes"])
     return table(
-        "T5", "The context register: material discussed but not tested here.",
-        ["ID", "Topic", "Status", "May support a claim"], rows,
-        "These statuses belong to a deliberately separate vocabulary from the "
-        "evidence statuses above, so that contextual material can never be "
-        "read as an empirical result.")
+        "T5", "Material this report discusses without establishing.",
+        ["Topic", "What it is", "Can it support a finding?"], rows,
+        "Some of these were examined here &mdash; migration was tested on this "
+        "panel, and the cross-domain and ESS comparisons are descriptive "
+        "analyses done for this report. None of them can carry a finding, and "
+        "their statuses come from a deliberately separate vocabulary from the "
+        "evidence statuses above so the two cannot be confused.")
 
 
 STAGES = [
@@ -351,25 +359,22 @@ reported as prominently as the findings.</p>
 
 <div class="howto">
 <h2>How to read this document</h2>
-<p>Every numbered claim in this report is drawn from a <strong>frozen claim
-set</strong>, committed to version control before any of this report was
-composed. The freeze followed the last analytical stage rather than preceding
-it, and one claim &mdash; V2-7.1, on life satisfaction &mdash; was narrowed
-after review when its original wording was found to overstate Greece's
-position. Every change to the set is recorded in the research record. Claims appear in their canonical wording, in bordered
-blocks marked with an identifier such as <span class="inline-cid">V2-4.C2</span>,
-together with the caveats that were frozen alongside them. The caveats are not
-decoration: several of them exist because an earlier draft of this report
-overstated the finding and was corrected.</p>
+<p>Findings appear as <strong>indented statements with a coloured rule</strong>,
+each followed by its limits. Those statements are fixed: they were written down
+when the analysis finished, before this report was drafted, and they are
+reproduced here word for word rather than paraphrased. The limits are fixed in
+the same way and matter as much as the findings &mdash; several of them exist
+because an earlier draft of this report claimed more than the evidence
+carried.</p>
 
-<p>Contextual material &mdash; institutional trust, migration, the adjustment
-programmes, tax incidence, the pre-crisis wellbeing baseline &mdash; is kept in
-a separate <strong>context register</strong> with its own vocabulary, and is
-visually distinct from empirical findings. Some of it was examined here:
-migration was tested diagnostically, and the cross-domain and ESS comparisons
-are descriptive analyses carried out for this report. What the register enforces
-is that <strong>none of it may establish a headline analytical claim</strong>.
-Each entry states explicitly what it permits and forbids.</p>
+<p>Some material is discussed here without having been established here:
+institutional trust, migration, the adjustment programmes, tax incidence and the
+pre-crisis wellbeing comparison. It appears in <strong>dashed boxes</strong>
+that say what may and may not be concluded from it. Parts of it were examined
+&mdash; migration was tested on this panel, and the cross-domain and ESS
+comparisons are descriptive analyses done for this report &mdash; but none of it
+can carry a headline finding, and the boxes exist so that it is never mistaken
+for one.</p>
 
 <p>Technical material sits behind expandable <em>methods</em> panels. The main
 reading path does not depend on opening them; they are there so that every
@@ -904,8 +909,11 @@ caring about. Those constructs are <em>inconclusive under available power</em>:
 the study is silent about them, not negative.</p>
 
 <p>A small number are genuinely different. Where the design had adequate power
-and still found nothing, the exclusion is real &mdash; but it is specific to a
-magnitude, not general.</p>
+and still found nothing, the exclusion is real &mdash; but it holds at a stated
+size, not in general. The inflation measures are the clearest case: annual food
+and housing inflation can be excluded at the magnitude this design could detect,
+which is not the same as showing that inflation does not matter to Greek
+households.</p>
 
 {claim('L-4')}
 
@@ -963,6 +971,22 @@ magnitude at which the exclusion holds. For Stage 5 the MDEs are computed
 pair-specifically and conditionally, because the relevant question there is
 whether an accumulated measure adds anything <em>given</em> its current-level
 counterpart, which is a different and harder test.</p>
+
+<h4>Leaving one country out</h4>
+<p>Twenty-seven countries is few enough that a single one can carry a result.
+Every construct is therefore refitted twenty-seven times, each time with one
+country removed, and the range of coefficients across those refits is recorded
+alongside the headline estimate.</p>
+<p>The three supported constructs are stable under this: long-term unemployment
+ranges from 3.20 to 4.83 against a headline of 4.34, wage-adjusted affordability
+from 0.25 to 0.33 against 0.31, and material resources holds its sign and
+magnitude throughout. None of them depends on any single country, and in
+particular none depends on Greece &mdash; which matters, because Greece is the
+case the report is about and a result driven by it would be circular.</p>
+<p>Housing pressure behaves differently. Its refits run from &minus;0.10 to
+1.27, so dropping one country flips the sign. That instability is one of the
+reasons it does not clear the gates, and it is a more informative fact about
+that construct than its p-value.</p>
 
 <h4>What the specification controls</h4>
 <p>All models include the country's AROP rate and year fixed effects. Year
@@ -1087,10 +1111,21 @@ quietly dropped.</p>
 
 <p>Moving the baseline to 2015 would have made it testable and would also have
 made it a different measure, one that could not register the crisis it was
-built to capture. The baseline was left where it was and the construct is
-recorded as infeasible.</p>
+built to capture. The baseline was left where it was.</p>
+
+<p>One further result is reported here without being counted. The accumulated
+wage-shortfall measure passed every conditional test it faced &mdash; but the
+present-day measure it was paired with had not been supported in the previous
+stage, and a rule fixed in advance prevents this stage from promoting anything
+its predecessor did not establish. Reported, and not a finding.</p>
 
 {claim('L-3')}
+
+<p>The rule costs something here: on the face of the numbers this measure looks
+as convincing as the three that are counted. The reason for keeping the rule
+anyway is that conditional tests run after seeing which measures succeeded are
+selected tests, and a rule that can be set aside when its result is inconvenient
+is not a rule.</p>
 
 {methods("Accumulation, conditioning, the Mundlak decomposition, and the E7 ceiling", '''
 <h4>How accumulation is computed</h4>
@@ -1212,29 +1247,35 @@ than an explanation, and why the conclusion in Stage 8 does not rest on it. A
 finding that reverses under a defensible alternative is not a finding to build
 on.</p>
 
-<h3>What else was tried and did not work</h3>
+<h3>Two analyses that were planned and failed</h3>
 
-<p>Two further specifications were pre-registered and both failed. They are
-recorded here rather than omitted, because a report that shows only the
-analyses that worked gives a false impression of how much was attempted.</p>
+<p>The report would look stronger without this section, which is the reason it
+is here. Both of the analyses below were specified in advance, both were meant
+to carry weight, and neither worked.</p>
+
+<p>The first was a synthetic control, and it was intended as the centrepiece:
+build a weighted combination of other countries that tracks pre-crisis Greece,
+then read the divergence after 2008 as the crisis effect. The construction
+failed. The donor weights collapsed onto two countries, so the synthetic Greece
+was a blend of Hungary and Bulgaria rather than a credible counterfactual, and
+the design missed four of its six pre-registered conditions.</p>
 
 {claim('L-1')}
+
+<p>Its divergence chart would be the most arresting image in this report. It is
+not shown anywhere, and that is deliberate: a striking picture built on a
+counterfactual this thin would persuade readers of something the analysis
+cannot support. Being compelling is not the same as being right, and the first
+is more dangerous when the second is absent.</p>
+
+<p>The second was a measure of how many domains of disadvantage a country shows
+at once. Adding it to the frozen model made Greece's residual worse rather than
+better, and its sign flipped once other measures were controlled. That
+reversal is left uninterpreted here. An unexplained sign flip in a specification
+that has already failed is exactly the kind of loose end that invites a story to
+be built around it, and the story would be untestable.</p>
+
 {claim('L-2')}
-
-<p>The synthetic-control design was intended to be a centrepiece: construct a
-weighted combination of other countries resembling pre-crisis Greece, and read
-the divergence after 2008 as the crisis effect. It failed four of six
-pre-registered gates. The donor weights collapsed onto two countries, which
-means the synthetic Greece was not a credible counterfactual. Its divergence
-figure would be the most striking image in this report, and it is machine-blocked
-from every output document precisely because it is striking and
-uninterpretable.</p>
-
-<p>The multi-domain breadth measure failed a different way: adding it to the
-frozen model made Greece's residual worse and reversed its sign under
-conditioning. The reversal is left uninterpreted. Post-hoc explanations of sign
-reversals in failed specifications are how failed specifications get revived,
-and the pre-registration does not permit it.</p>
 
 {methods("Specification choices, what was frozen, and the blocking mechanism", '''
 <h4>The frozen specification</h4>
@@ -1492,6 +1533,26 @@ baseline, which this series does not have, or an external anchor on Greek
 response style, which this project does not have. The claim is worded to leave
 both possibilities open.</p>
 
+<h4>How the ESS figures were reconstructed</h4>
+<p>The respondent-level ESS files require an account. The portal's public
+analysis view does not, and it publishes, for each country and round, the
+weighted percentage of respondents choosing each point on the 0&ndash;10 life
+satisfaction scale. A country mean is recovered from that by multiplying each
+percentage by its score and summing.</p>
+<p>The portal rounds the percentages it displays, so the recovered means are
+approximate at that precision. More importantly, a distribution published as
+percentages carries no information about sampling variability: there is no way
+to attach a standard error or an interval to a mean recovered this way, and no
+test is run on them anywhere in this report.</p>
+<p>The twelve-country balanced set exists because the full ESS country set
+ranges from twenty-two to thirty across the six Greek rounds. A rank computed
+against a changing set moves when the set moves, so an all-country rank
+trajectory would confound Greece's position with who happened to participate.
+Holding the same twelve countries fixed removes that, at the cost of comparing
+Greece against a smaller and richer group than the EU average used elsewhere
+&mdash; which is one more reason the two series are never placed on the same
+axis.</p>
+
 <h4>Why trust was not tested</h4>
 <p>Institutional trust is measured by the OECD on a different instrument, a
 different sample and a different periodicity from the Eurostat panel used
@@ -1615,38 +1676,6 @@ deficit predating the crisis, but it rests on approximate means reconstructed
 from published distributions, with no standard errors and no way to test
 anything.</p>
 
-{methods("How each sentence of this conclusion maps to a frozen claim", '''
-<p>The conclusion above introduces no new results. Each of its statements
-corresponds to a claim in the frozen set, and the mapping is given here so that
-any reader can check the conclusion against what was actually established
-rather than against how it is phrased.</p>
-<ul>
-<li>The size and persistence of the gap, and Greece's rank on each measure:
-<strong>V2-1.2</strong>, with the provenance of the extended series in
-<strong>V2-1.1</strong>.</li>
-<li>AROPE's partial and shrinking contribution: <strong>V2-2.1</strong>.</li>
-<li>Correspondence between reported difficulty and concrete failure:
-<strong>V2-3.1</strong>, with the absorption diagnostic in
-<strong>V2-3.2</strong> and its model dependence in
-<strong>V2-6.1</strong>.</li>
-<li>The three supported current-level constructs:
-<strong>V2-4.C1</strong>, <strong>V2-4.C2</strong> and
-<strong>V2-4.C4</strong>; the unresolved remainder in <strong>V2-4.X</strong>
-and the magnitude-specific exclusions in <strong>L-4</strong>.</li>
-<li>The three supported accumulated measures: <strong>V2-5.C2</strong>,
-<strong>V2-5.C3</strong> and <strong>V2-5.C6</strong>; the reversal in
-<strong>V2-5.X</strong>; the prohibition on dynamic wording in
-<strong>V2-5.Y</strong>; the untestable construct in
-<strong>V2-5.Z</strong>; the capped result in <strong>L-3</strong>.</li>
-<li>The reporting-style question: <strong>V2-7.1</strong>, whose caveats carry
-the second-worst life-satisfaction position and the rising Greek level.</li>
-<li>The failed designs: <strong>L-1</strong> and <strong>L-2</strong>.</li>
-</ul>
-<p>The measurement recommendation is <strong>CTX-6</strong> and is registered
-as author interpretation rather than as a finding. It follows from what the
-analysis showed the single measures miss; it is not itself a result.</p>
-''')}
-
 <p>Each of these is a route to a stronger answer than this report can give. It
 is worth saying plainly that this report's central finding is a well-documented
 gap with a partial account of its composition, and that the honest description
@@ -1673,65 +1702,16 @@ results</strong> before it was run. The commit history shows, for every stage,
 a specification-only commit preceding the commit that adds output. This is
 checkable rather than asserted: the repository is the record.</p>
 
-<p>The decision rules are executable code with unit tests, not prose. This
-followed from repeated failure of the prose version. On three separate
-occasions a rule that read unambiguously in the protocol document failed to
-bind when results arrived &mdash; not through bad faith, but because prose
-admits interpretation precisely when interpretation is most tempting. Rules
-that live in <code>e_rule.py</code>, <code>registry.py</code> and
-<code>accumulate.py</code> carry 64, 12 and 27 tests respectively and cannot be
-reinterpreted after seeing an outcome.</p>
+<p>The decision rules are executable code with unit tests, not prose. That
+followed from watching the prose version fail: on three occasions a rule that
+read unambiguously in the protocol did not bind when the results arrived, not
+through bad faith but because prose admits interpretation exactly when
+interpretation is most tempting. A rule that runs as code cannot be reread more
+favourably after the fact.</p>
 
-<p>Two protocol deviations occurred and both are recorded in the research
-record with their reasons. Neither was a change made after seeing a result it
-would affect.</p>
-
-{methods("Corrections made during review, and what they changed", '''
-<p>Thirty-three corrections are logged in the research record. Most were
-routine. Several changed a stated finding, and those are summarised here
-because a report that mentions only its successes misrepresents how it was
-produced.</p>
-<ul>
-<li><strong>Adverse-direction inversion.</strong> A translation between two
-vocabularies silently mapped every variable to the same direction, flagging four
-correct results as contradictions. Caught by inspection, fixed by passing the
-registry vocabulary through directly, and prevented from recurring by
-validating vocabularies at module load.</li>
-<li><strong>A degenerate constructed series.</strong> The wage-adjusted excess
-measure was built from a source holding absolute euros where an index was
-assumed, producing zeros throughout. Every test on it had been meaningless. Now
-indexed explicitly with a failing assertion on the source scale.</li>
-<li><strong>A robustness rule that returned the wrong verdict.</strong> The
-companion-model rule compared absolute residuals across a sign change, treating
-a movement from +2.46 to a larger negative value as degradation. The
-implementation was corrected to match the frozen wording rather than the
-wording being loosened to match the implementation.</li>
-<li><strong>A ceiling that did not bind.</strong> The Stage 5 ceiling existed
-only in prose, and a construct that its own prior stage had not supported was
-briefly written up as a finding. The ceiling is now enforced in code.</li>
-<li><strong>A verification check that could not fail.</strong> The figure
-checksum test compared two stored values both written by the same builder, so a
-tampered figure passed. It now recomputes the checksum from the rendered table
-content, and the negative test fails as it should.</li>
-<li><strong>A figure whose default view was empty.</strong> Every structural
-check passed on a figure whose first tab displayed nothing, because the checks
-verified structure and not data. A data gate was added requiring every view to
-carry at least two x-values and one finite number.</li>
-<li><strong>Three separate overstatements of the between/within
-result</strong>, each treating imprecise within-country estimates as evidence
-of absence. The third prompted a claim-specific guard in the verification
-harness.</li>
-<li><strong>A factually false headline.</strong> A figure caption claimed
-Greece led Europe on all three accumulated measures; Hungary leads on wage
-non-recovery. Corrected, and the figure now shows the full ranking.</li>
-<li><strong>A misread rank.</strong> Greece's life-satisfaction position was
-described as middling when it is second-worst in the EU. The affected claim was
-narrowed and its caveats extended.</li>
-</ul>
-<p>The pattern worth noting is that most of these were caught by a reviewer
-rather than by the harness, and each one that was caught by a person produced a
-new automated check so that it could not recur silently.</p>
-''')}
+<p>Where a result in this report was corrected during review, the correction
+and its reason are logged in the research record, which is generated from the
+same registers as this document.</p>
 
 <h3>Data</h3>
 
@@ -1741,9 +1721,45 @@ extension described in Stage 1 used for description only. The institutional
 trust figures come from the OECD's 2024 trust survey and were read from the
 primary release. Migration figures are national-level Greek data.</p>
 
-<p>The literature cited in the context register was verified against primary
-sources rather than secondary summaries: each reference in Stage 7 was checked
-at its publisher or repository of record.</p>
+<p>The literature cited in Stage 7 was verified against primary sources rather
+than secondary summaries: each reference was checked at its publisher or
+repository of record.</p>
+
+{methods("Sources, coverage, and how missing data is handled", '''
+<h4>What the panel contains</h4>
+<p>The estimation panel is country-year, covering the EU27 across
+2015&ndash;2024, drawn from Eurostat. The outcome and the deprivation items come
+from EU-SILC; the labour-market measures from the Labour Force Survey; prices
+and wages from the harmonised price and national accounts series; and
+purchasing-power figures from the PPP programme. The accumulated measures in
+Stage 5 reach back to 2008 or 2010 for their baselines, so their inputs extend
+earlier than the estimation window even though the outcome does not.</p>
+
+<h4>The EU comparison</h4>
+<p>Where a figure shows "the EU median" it is the median across the member
+states present in that year, recomputed per year rather than fixed to a base
+year's membership, and Greece is included in it. An excluded-Greece median would
+widen every gap shown here by construction, which would flatter the argument;
+the difference is small but it runs in the direction that favours the report's
+own case, so the conservative choice is the one taken.</p>
+
+<h4>Missing values</h4>
+<p>Nothing is imputed. Where a country-year lacks a value the observation is
+dropped from the model that needs it, which is why the row counts differ between
+specifications &mdash; and why Stage 6's two models are explicitly run on the
+intersection of their rows rather than on whatever each could manage alone.
+Series with structural breaks flagged by Eurostat are used as published; this
+project does not attempt its own break adjustment, and cross-vintage
+comparability before 2010 is a limitation noted in Stage 1 rather than a
+problem solved here.</p>
+
+<h4>Two coverage gaps that shaped the analysis</h4>
+<p>The purchasing-power consumption series begins in 2015, which is why the
+accumulated version of material resources could not be built at all rather than
+being built badly from a later baseline. And the wellbeing module begins in
+2013, which is why the pre-crisis question in Stage 7 needed an entirely
+separate survey to address at all.</p>
+''')}
 
 <h3>Scope, and what this design can carry</h3>
 
@@ -1770,47 +1786,31 @@ supports roughly a decade of variation, and within-country identification draws
 only on that. This is the direct cause of the imprecision in Stage 5, and it is
 why the dynamic question is left open rather than answered.</p>
 
-<h3>Registers</h3>
+<h3>Provenance</h3>
 
-<p>Four registers govern the documents in this project and are maintained in
-the research record: results (49 entries), decisions (64), corrections (33) and
-protocol deviations (2). The frozen claim set contains 21 claims; the context
-register contains 6 entries with a deliberately disjoint vocabulary, so that a
-contextual statement can never be mistaken for an empirical one.</p>
+<p>Every claim, decision, correction and deviation in this project is recorded
+in the research record, along with which script produced each number and from
+which artifact. This report states its results; the record shows how each one
+was arrived at, and what was changed along the way.</p>
 
-{methods("The verification harness", '''
-<p>Documents in this project are generated, not written by hand, and are
-checked mechanically before they are published.</p>
-<h4>Claim anchoring</h4>
-<p>Every claim in the frozen set must appear in each document that is required
-to carry it, inside a container tagged with its identifier. Matching is by
-distinctive-word overlap against the canonical wording, so a container that
-merely cites an identifier without stating the claim does not pass. The
-harness reports how many of the required claim-document pairs are present and
-fails the build below the threshold.</p>
-<h4>Context anchoring</h4>
-<p>The same mechanism applies to context entries, with an additional
-constraint: a document that discusses a registered topic without an anchored
-container is flagged. This prevents contextual material from drifting into the
-main argument unlabelled.</p>
-<h4>Figure checks</h4>
-<p>Thirteen checks run against every figure: that no internal variable name
-appears in a reader-facing label, that the value checksum recomputed from the
-rendered fallback table matches the one the chart carries, that every view
-holds at least two x-values and one finite number, that the view count and
-chart type match the frozen visual manifest, that each figure carries a badge,
-a question and a keyboard-reachable chart, that no figure uses a bare pixel
-width, and that pinned-width content scrolls within its own container. All 65
-checks pass across the four figure batches.</p>
-<h4>Blocked outputs</h4>
-<p>Results registered as non-reportable &mdash; principally the failed
-synthetic-control divergence figure &mdash; are checked for by identifier in
-every generated document. Their reappearance fails the build.</p>
-<h4>Skipped inputs</h4>
-<p>An optional input that is unavailable writes an explicit status marker
-recording that it was skipped and why. A stage whose optional input is missing
-must not be able to read as a completed one merely because the pipeline exited
-cleanly. The ESS extension in Stage 7 is the current instance.</p>
+{methods("What is checked before this report is published", '''
+<p>Every figure is checked mechanically before publication, and the checks that
+matter to a reader are these.</p>
+<p>The numbers in each chart and the numbers in its table are compared by a
+checksum recomputed from the rendered table, so a chart cannot drift from the
+figures beneath it. Every view must contain real data &mdash; at least two
+positions on its axis and one finite value &mdash; because a chart that renders
+correctly while displaying nothing will otherwise pass unnoticed, as one did.
+No internal variable name may appear in a reader-facing label. Every figure must
+carry its question, its evidence status, a keyboard-reachable chart and a table
+fallback, and wide content must scroll inside its own container rather than
+pushing the page sideways.</p>
+<p>Results that were registered as not reportable &mdash; principally the failed
+synthetic control's divergence chart &mdash; are checked for by name in every
+generated document, so they cannot reappear by accident. An optional input that
+is unavailable writes an explicit marker recording that it was skipped, so a
+stage that did not run can never be mistaken for one that ran and found
+nothing.</p>
 ''')}
 
 <h3>Reproduction</h3>
@@ -1860,8 +1860,6 @@ body{max-width:54rem;margin:0 auto;padding:0 1.2rem 6rem;
 .vocab dl{margin:0;font-size:.93rem}
 .vocab dt{font-weight:700;margin-top:.7rem}
 .vocab dd{margin:.15rem 0 0;color:var(--text-secondary)}
-.inline-cid{font:600 .85em ui-monospace,SFMono-Regular,Menlo,monospace;
-  background:var(--surface-2);padding:.1em .4em;border-radius:3px}
 .stage{margin:4.5rem 0 0;scroll-margin-top:1rem}
 .stage-head{display:flex;align-items:baseline;gap:.9rem;flex-wrap:wrap;
   border-top:2px solid var(--text-primary);padding-top:1rem;margin-bottom:.4rem}
@@ -1872,18 +1870,12 @@ body{max-width:54rem;margin:0 auto;padding:0 1.2rem 6rem;
 .stage-q{font:italic 1.06rem/1.55 ui-serif,Georgia,serif;color:var(--text-secondary);
   margin:.2rem 0 1.6rem;max-width:38rem}
 .stage h3{font-size:1.22rem;margin:2.6rem 0 .7rem;letter-spacing:-.01em}
-.claim{border:1px solid var(--border);border-left:4px solid var(--series-gr);
-  border-radius:0 6px 6px 0;padding:1rem 1.2rem;margin:1.6rem 0;
-  background:var(--surface-2)}
-.claim-head{display:flex;gap:.7rem;align-items:center;margin-bottom:.5rem}
-.claim .cid{font:700 .74rem ui-monospace,SFMono-Regular,Menlo,monospace;
-  letter-spacing:.04em}
-.claim .tier{font:.7rem ui-sans-serif,system-ui,sans-serif;text-transform:uppercase;
-  letter-spacing:.08em;color:var(--text-secondary)}
-.canonical{margin:0;font-size:1.01rem;line-height:1.6}
-.caveats{margin:.7rem 0 0;padding-left:1.1rem;font:.89rem/1.55 ui-sans-serif,
-  system-ui,sans-serif;color:var(--text-secondary)}
-.caveats li{margin:.25rem 0}
+.claim{border-left:3px solid var(--series-gr);padding:.15rem 0 .15rem 1.1rem;
+  margin:1.5rem 0}
+.canonical{margin:0;font-size:1.06rem;line-height:1.62}
+.caveats{margin:.5rem 0 0;font:.9rem/1.6 ui-sans-serif,system-ui,sans-serif;
+  color:var(--text-secondary)}
+.caveats strong{color:var(--text-secondary);font-weight:700}
 .ctx{border:1px dashed var(--border);border-radius:6px;padding:1.1rem 1.3rem;
   margin:1.8rem 0;background:transparent}
 .ctx-head{display:flex;gap:.7rem;align-items:center;margin-bottom:.3rem}

@@ -44,7 +44,7 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `p6-rewrite` |
-| HEAD | `29e181c` Fix chart label overflow found by visual inspection |
+| HEAD | `31ead10` Suppress F18's synthetic tick; fix over-truncation at desktop width |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-24 |
 | Frozen V1 reference | `v1-final` |
@@ -3098,6 +3098,7 @@ Claim and context containers are added **during composition**, not retrofitted.
 | D-68 | 2026-08-23 | FINAL | The ESS extension is BUILT from aggregate distributions obtained through the ESS portal's public Analysis tab, not from microdata, and is registered as CTX-7 rather than as a claim | Respondent files stay login-gated; the portal publishes weighted response distributions by country, and country means were reconstructed as the score-weighted sum of displayed percentages. The portal rounds those percentages, so the means are approximate, carry no standard errors and support no interval | Attaching any confidence interval, standard error or significance test to these means; splicing ESS to EU-SILC; treating the decade after 2010/11 as observed | `frozen` | — | — |
 | D-69 | 2026-08-23 | FINAL | Only the BALANCED 12-country comparison may be used across rounds; the all-country ranks are recorded but never compared between rounds | The full ESS country set varies from 22 to 30 countries across the six Greek rounds, so an all-country rank moves when the country set moves and a change in it is partly composition | Reading Greece's all-country rank trajectory (4, 9, 8, 4, 4, 5) as movement in Greek satisfaction | `frozen` | — | — |
 | D-70 | 2026-08-23 | FINAL | V2-7.1 is NOT reworded again; ESS corroborates its existing caveat descriptively | The claim was already narrowed to state that a broader negative reporting tendency is not ruled out. ESS shows a Greek deficit that pre-dates the crisis, which supports that caveat rather than changing the claim, and ESS is context, not a tested result | Promoting CTX-7 into claim support; letting a descriptive extension reopen the analytical freeze | `frozen` | — | — |
+| D-71 | 2026-08-23 | The report presents OUTCOMES of failed and constrained analyses in prose, and stops printing the project's governance apparatus | Readers need to know that the synthetic control failed, that breadth reversed its sign, that one measure was capped by a prior-stage rule and one was untestable. They do not need claim identifiers, tier labels, register inventories or a corrections diary to follow the argument | Removing any failed-analysis OUTCOME, or removing the `data-claim-id` and `data-context-id` anchors, which the release gate and parity audit both key on and which remain in the markup | `frozen` | — | — |
 
 Allowed statuses: `proposed`, `pre-registered`, `frozen`, `superseded`,
 `withdrawn`, `infeasible`.

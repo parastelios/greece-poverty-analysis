@@ -282,8 +282,6 @@ body{max-width:54rem;margin:0 auto;padding:0 1.2rem 6rem;
 .vocab dl{margin:0;font-size:.93rem}
 .vocab dt{font-weight:700;margin-top:.7rem}
 .vocab dd{margin:.15rem 0 0;color:var(--text-secondary)}
-.inline-cid{font:600 .85em ui-monospace,SFMono-Regular,Menlo,monospace;
-  background:var(--surface-2);padding:.1em .4em;border-radius:3px}
 .stage{margin:4.5rem 0 0;scroll-margin-top:1rem}
 .stage-head{display:flex;align-items:baseline;gap:.9rem;flex-wrap:wrap;
   border-top:2px solid var(--text-primary);padding-top:1rem;margin-bottom:.4rem}
@@ -294,18 +292,12 @@ body{max-width:54rem;margin:0 auto;padding:0 1.2rem 6rem;
 .stage-q{font:italic 1.06rem/1.55 ui-serif,Georgia,serif;color:var(--text-secondary);
   margin:.2rem 0 1.6rem;max-width:38rem}
 .stage h3{font-size:1.22rem;margin:2.6rem 0 .7rem;letter-spacing:-.01em}
-.claim{border:1px solid var(--border);border-left:4px solid var(--series-gr);
-  border-radius:0 6px 6px 0;padding:1rem 1.2rem;margin:1.6rem 0;
-  background:var(--surface-2)}
-.claim-head{display:flex;gap:.7rem;align-items:center;margin-bottom:.5rem}
-.claim .cid{font:700 .74rem ui-monospace,SFMono-Regular,Menlo,monospace;
-  letter-spacing:.04em}
-.claim .tier{font:.7rem ui-sans-serif,system-ui,sans-serif;text-transform:uppercase;
-  letter-spacing:.08em;color:var(--text-secondary)}
-.canonical{margin:0;font-size:1.01rem;line-height:1.6}
-.caveats{margin:.7rem 0 0;padding-left:1.1rem;font:.89rem/1.55 ui-sans-serif,
-  system-ui,sans-serif;color:var(--text-secondary)}
-.caveats li{margin:.25rem 0}
+.claim{border-left:3px solid var(--series-gr);padding:.15rem 0 .15rem 1.1rem;
+  margin:1.5rem 0}
+.canonical{margin:0;font-size:1.06rem;line-height:1.62}
+.caveats{margin:.5rem 0 0;font:.9rem/1.6 ui-sans-serif,system-ui,sans-serif;
+  color:var(--text-secondary)}
+.caveats strong{color:var(--text-secondary);font-weight:700}
 .ctx{border:1px dashed var(--border);border-radius:6px;padding:1.1rem 1.3rem;
   margin:1.8rem 0;background:transparent}
 .ctx-head{display:flex;gap:.7rem;align-items:center;margin-bottom:.3rem}
@@ -444,25 +436,22 @@ reported as prominently as the findings.</p>
 
 <div class="howto">
 <h2>How to read this document</h2>
-<p>Every numbered claim in this report is drawn from a <strong>frozen claim
-set</strong>, committed to version control before any of this report was
-composed. The freeze followed the last analytical stage rather than preceding
-it, and one claim &mdash; V2-7.1, on life satisfaction &mdash; was narrowed
-after review when its original wording was found to overstate Greece's
-position. Every change to the set is recorded in the research record. Claims appear in their canonical wording, in bordered
-blocks marked with an identifier such as <span class="inline-cid">V2-4.C2</span>,
-together with the caveats that were frozen alongside them. The caveats are not
-decoration: several of them exist because an earlier draft of this report
-overstated the finding and was corrected.</p>
+<p>Findings appear as <strong>indented statements with a coloured rule</strong>,
+each followed by its limits. Those statements are fixed: they were written down
+when the analysis finished, before this report was drafted, and they are
+reproduced here word for word rather than paraphrased. The limits are fixed in
+the same way and matter as much as the findings &mdash; several of them exist
+because an earlier draft of this report claimed more than the evidence
+carried.</p>
 
-<p>Contextual material &mdash; institutional trust, migration, the adjustment
-programmes, tax incidence, the pre-crisis wellbeing baseline &mdash; is kept in
-a separate <strong>context register</strong> with its own vocabulary, and is
-visually distinct from empirical findings. Some of it was examined here:
-migration was tested diagnostically, and the cross-domain and ESS comparisons
-are descriptive analyses carried out for this report. What the register enforces
-is that <strong>none of it may establish a headline analytical claim</strong>.
-Each entry states explicitly what it permits and forbids.</p>
+<p>Some material is discussed here without having been established here:
+institutional trust, migration, the adjustment programmes, tax incidence and the
+pre-crisis wellbeing comparison. It appears in <strong>dashed boxes</strong>
+that say what may and may not be concluded from it. Parts of it were examined
+&mdash; migration was tested on this panel, and the cross-domain and ESS
+comparisons are descriptive analyses done for this report &mdash; but none of it
+can carry a headline finding, and the boxes exist so that it is never mistaken
+for one.</p>
 
 <p>Technical material sits behind expandable <em>methods</em> panels. The main
 reading path does not depend on opening them; they are there so that every
@@ -527,7 +516,7 @@ narrow band around 20%. The distance narrows somewhat after 2016, which matters
 and is returned to in Stage 3, but it never closes to anything that could be
 called agreement. This is the finding the rest of the report is about.</p>
 
-<div class="claim" data-claim-id="V2-1.2"><div class="claim-head"><span class="cid">V2-1.2</span><span class="tier">descriptive corroboration</span></div><p class="canonical">Greek subjective hardship runs 52.6 points above relative income poverty on average, and Greece ranks first of 27 on hardship while ranking seventh on AROP.</p></div>
+<div class="claim" data-claim-id="V2-1.2" title="descriptive corroboration"><p class="canonical">Greek subjective hardship runs 52.6 points above relative income poverty on average, and Greece ranks first of 27 on hardship while ranking seventh on AROP.</p></div>
 
 <p>It is worth pausing on what a gap of this size means. Roughly one Greek
 household in five is counted as at risk of poverty. Roughly two in three report
@@ -545,7 +534,7 @@ constructed series, validated against the official one where the two overlap.
 That construction is ours, not Eurostat's, and it is flagged wherever it
 appears.</p>
 
-<div class="claim" data-claim-id="V2-1.1"><div class="claim-head"><span class="cid">V2-1.1</span><span class="tier">pre-planned confirmatory</span></div><p class="canonical">The outcome is Eurostat&#x27;s official subjective-hardship indicator, extended backwards before 2010 using a constructed series validated against it on 432 overlapping country-years.</p><ul class="caveats"><li>pre-2010 provenance is ours, not Eurostat&#x27;s</li></ul></div>
+<div class="claim" data-claim-id="V2-1.1" title="pre-planned confirmatory"><p class="canonical">The outcome is Eurostat&#x27;s official subjective-hardship indicator, extended backwards before 2010 using a constructed series validated against it on 432 overlapping country-years.</p><p class="caveats"><strong>Limits.</strong> pre-2010 provenance is ours, not Eurostat&#x27;s.</p></div>
 
 <details class="methods"><summary>How the pre-2010 series was constructed and checked</summary><div class="methods-body">
 <p>From 2010 onward the outcome is Eurostat's official indicator
@@ -648,7 +637,7 @@ distance. More telling is the direction of travel: AROPE's contribution is
 of the period and is adding seven by the end, so as a solution to this puzzle
 it is getting weaker rather than stronger.</p>
 
-<div class="claim" data-claim-id="V2-2.1"><div class="claim-head"><span class="cid">V2-2.1</span><span class="tier">descriptive corroboration</span></div><p class="canonical">Switching to AROPE closes 9.8 of those 52.6 points (19%), leaving 42.8 unexplained, and its contribution shrinks from 11.0 points in 2015 to 7.3 in 2024.</p></div>
+<div class="claim" data-claim-id="V2-2.1" title="descriptive corroboration"><p class="canonical">Switching to AROPE closes 9.8 of those 52.6 points (19%), leaving 42.8 unexplained, and its contribution shrinks from 11.0 points in 2015 to 7.3 in 2024.</p></div>
 
 <p>An aggregate can conceal as much as it reveals, and AROPE is an aggregate of
 three quite different components. Before concluding that the broader measure
@@ -838,7 +827,7 @@ they do so within countries as well as across them &mdash; which is the harder
 test, because it cannot be satisfied by rich countries simply differing from
 poor ones. It remains corroboration from inside a single instrument.</p>
 
-<div class="claim" data-claim-id="V2-3.1"><div class="claim-head"><span class="cid">V2-3.1</span><span class="tier">descriptive corroboration</span></div><p class="canonical">Reported difficulty co-moves with arrears, inability to meet an unexpected expense, inadequate heating and severe deprivation at within-country correlations of 0.63 to 0.80.</p><ul class="caveats"><li>same-instrument corroboration, NOT independent validation | all items and the outcome come from EU-SILC | not uniform: arrears within Greece is 0.371</li></ul></div>
+<div class="claim" data-claim-id="V2-3.1" title="descriptive corroboration"><p class="canonical">Reported difficulty co-moves with arrears, inability to meet an unexpected expense, inadequate heating and severe deprivation at within-country correlations of 0.63 to 0.80.</p><p class="caveats"><strong>Limits.</strong> same-instrument corroboration, NOT independent validation | all items and the outcome come from EU-SILC | not uniform: arrears within Greece is 0.371.</p></div>
 
 <p>The caveats on that claim carry real weight and should not be read past.
 Every one of those items, and the outcome itself, comes from the same survey
@@ -862,7 +851,7 @@ that the underlying items do not have.</p>
 <p>A stronger version of the same check asks how much of Greece's anomaly these
 items can statistically absorb.</p>
 
-<div class="claim" data-claim-id="V2-3.2"><div class="claim-head"><span class="cid">V2-3.2</span><span class="tier">descriptive corroboration</span></div><p class="canonical">Those same four items statistically absorb 71% of Greece&#x27;s baseline residual (+46.92 to +13.74).</p><ul class="caveats"><li>ABSORPTION, never explanation | shared instrument is not shared cause | diagnostic only; never a headline explanation</li></ul></div>
+<div class="claim" data-claim-id="V2-3.2" title="descriptive corroboration"><p class="canonical">Those same four items statistically absorb 71% of Greece&#x27;s baseline residual (+46.92 to +13.74).</p><p class="caveats"><strong>Limits.</strong> ABSORPTION, never explanation | shared instrument is not shared cause | diagnostic only; never a headline explanation.</p></div>
 
 <p>The word <em>absorb</em> is doing precise work and is not a synonym for
 <em>explain</em>. What this shows is that once concrete deprivation items are
@@ -1026,9 +1015,9 @@ is small.</p>
 
 <p>Three constructs cleared every gate.</p>
 
-<div class="claim" data-claim-id="V2-4.C1"><div class="claim-head"><span class="cid">V2-4.C1</span><span class="tier">pre-planned confirmatory</span></div><p class="canonical">Material resources (aic_pps_pc) predicts hardship beyond AROP and year effects (coef -0.0013, wild-cluster bootstrap p=0.0055).</p><ul class="caveats"><li>cross-country association | no causal claim</li></ul></div>
-<div class="claim" data-claim-id="V2-4.C2"><div class="claim-head"><span class="cid">V2-4.C2</span><span class="tier">pre-planned confirmatory</span></div><p class="canonical">Labour-market exclusion (ltu_rate) predicts hardship beyond AROP and year effects (coef +4.3402, wild-cluster bootstrap p=0.0085).</p><ul class="caveats"><li>cross-country association | no causal claim</li></ul></div>
-<div class="claim" data-claim-id="V2-4.C4"><div class="claim-head"><span class="cid">V2-4.C4</span><span class="tier">pre-planned confirmatory</span></div><p class="canonical">Wage-adjusted affordability (wadj_a01) predicts hardship beyond AROP and year effects (coef +0.3110, wild-cluster bootstrap p=0.0005).</p><ul class="caveats"><li>cross-country association | no causal claim</li></ul></div>
+<div class="claim" data-claim-id="V2-4.C1" title="pre-planned confirmatory"><p class="canonical">Material resources (aic_pps_pc) predicts hardship beyond AROP and year effects (coef -0.0013, wild-cluster bootstrap p=0.0055).</p><p class="caveats"><strong>Limits.</strong> cross-country association | no causal claim.</p></div>
+<div class="claim" data-claim-id="V2-4.C2" title="pre-planned confirmatory"><p class="canonical">Labour-market exclusion (ltu_rate) predicts hardship beyond AROP and year effects (coef +4.3402, wild-cluster bootstrap p=0.0085).</p><p class="caveats"><strong>Limits.</strong> cross-country association | no causal claim.</p></div>
+<div class="claim" data-claim-id="V2-4.C4" title="pre-planned confirmatory"><p class="canonical">Wage-adjusted affordability (wadj_a01) predicts hardship beyond AROP and year effects (coef +0.3110, wild-cluster bootstrap p=0.0005).</p><p class="caveats"><strong>Limits.</strong> cross-country association | no causal claim.</p></div>
 
 <p>Their directions are what one would expect and are worth stating, since a
 result that ran the other way would be a reason to distrust the measure rather
@@ -1063,7 +1052,7 @@ that the official income-poverty rate does not.</p>
 these as ruled out. That would be wrong for most of them, and the distinction
 is the most important methodological point in this report.</p>
 
-<div class="claim" data-claim-id="V2-4.X"><div class="claim-head"><span class="cid">V2-4.X</span><span class="tier">pre-planned confirmatory</span></div><p class="canonical">Six of nine current-level constructs are inconclusive under available power, not unsupported; two cleared FDR and collapsed under the bootstrap (p=0.40 and 0.55).</p><ul class="caveats"><li>inconclusive is not evidence of absence</li></ul></div>
+<div class="claim" data-claim-id="V2-4.X" title="pre-planned confirmatory"><p class="canonical">Six of nine current-level constructs are inconclusive under available power, not unsupported; two cleared FDR and collapsed under the bootstrap (p=0.40 and 0.55).</p><p class="caveats"><strong>Limits.</strong> inconclusive is not evidence of absence.</p></div>
 
 <p>A test that fails to detect an effect tells us something only if it could
 have detected one. With twenty-seven countries and roughly a decade of
@@ -1073,10 +1062,13 @@ caring about. Those constructs are <em>inconclusive under available power</em>:
 the study is silent about them, not negative.</p>
 
 <p>A small number are genuinely different. Where the design had adequate power
-and still found nothing, the exclusion is real &mdash; but it is specific to a
-magnitude, not general.</p>
+and still found nothing, the exclusion is real &mdash; but it holds at a stated
+size, not in general. The inflation measures are the clearest case: annual food
+and housing inflation can be excluded at the magnitude this design could detect,
+which is not the same as showing that inflation does not matter to Greek
+households.</p>
 
-<div class="claim" data-claim-id="L-4"><div class="claim-head"><span class="cid">L-4</span><span class="tier">pre-planned confirmatory</span></div><p class="canonical">Annual food and housing inflation are unsupported with adequate power at 0.70 SD; annual headline inflation is unsupported at its detectable conditional magnitude; compounded inflation since 2008 remains inconclusive.</p><ul class="caveats"><li>the exclusions are narrow and magnitude-specific | compounded inflation is INCONCLUSIVE, not ruled out</li></ul></div>
+<div class="claim" data-claim-id="L-4" title="pre-planned confirmatory"><p class="canonical">Annual food and housing inflation are unsupported with adequate power at 0.70 SD; annual headline inflation is unsupported at its detectable conditional magnitude; compounded inflation since 2008 remains inconclusive.</p><p class="caveats"><strong>Limits.</strong> the exclusions are narrow and magnitude-specific | compounded inflation is INCONCLUSIVE, not ruled out.</p></div>
 
 <div class="evidence-table" id="T1"><p class="tcap"><span class="tid">T1</span> All nine current-level constructs, with the gate that stopped each one that did not clear.</p><div class="tscroll"><table><thead><tr><th>Construct</th><th>Coefficient</th><th>FDR p</th><th>Bootstrap p</th><th>Verdict</th><th>Stopped at</th></tr></thead><tbody><tr><td>Proximate material hardship</td><td>+1.4524</td><td>&mdash;</td><td>&mdash;</td><td><span class="verdict no">Blocked</span></td><td>proximity to outcome</td></tr><tr><td>Loss against own past <span class="vsub">Real wages</span></td><td>-0.0924</td><td>0.6531</td><td>&mdash;</td><td><span class="verdict no">Inconclusive</span></td><td>insufficient power</td></tr><tr><td>Loss against own past <span class="vsub">Real household income</span></td><td>-0.2168</td><td>0.4131</td><td>&mdash;</td><td><span class="verdict no">Inconclusive</span></td><td>insufficient power</td></tr><tr><td>Loss against own past <span class="vsub">Real poverty threshold</span></td><td>-0.0556</td><td>0.6531</td><td>&mdash;</td><td><span class="verdict no">Inconclusive</span></td><td>insufficient power</td></tr><tr><td>Loss against own past <span class="vsub">Share below own GDP peak</span></td><td>+1.8675</td><td>&lt;0.0001</td><td>0.4005</td><td><span class="verdict no">Inconclusive</span></td><td>wild cluster bootstrap</td></tr><tr><td>Inflation exposure</td><td>-0.9925</td><td>0.4131</td><td>&mdash;</td><td><span class="verdict no">Inconclusive</span></td><td>insufficient power</td></tr><tr><td>Housing pressure</td><td>+1.1385</td><td>0.0147</td><td>0.5530</td><td><span class="verdict no">Inconclusive</span></td><td>wild cluster bootstrap</td></tr><tr><td>Material resources</td><td>-0.0013</td><td>&lt;0.0001</td><td>0.0055</td><td><span class="verdict ok">Supported</span></td><td>&mdash;</td></tr><tr><td>Labour-market exclusion</td><td>+4.3402</td><td>&lt;0.0001</td><td>0.0085</td><td><span class="verdict ok">Supported</span></td><td>&mdash;</td></tr><tr><td>Wage-adjusted affordability</td><td>+0.3110</td><td>&lt;0.0001</td><td>0.0005</td><td><span class="verdict ok">Supported</span></td><td>&mdash;</td></tr></tbody></table></div><p class="tnote">Coefficients are on each construct's own scale and are not comparable across rows. Verdicts are the output of the pre-registered decision function, not a reading of the p-values.</p></div>
 
@@ -1132,6 +1124,22 @@ magnitude at which the exclusion holds. For Stage 5 the MDEs are computed
 pair-specifically and conditionally, because the relevant question there is
 whether an accumulated measure adds anything <em>given</em> its current-level
 counterpart, which is a different and harder test.</p>
+
+<h4>Leaving one country out</h4>
+<p>Twenty-seven countries is few enough that a single one can carry a result.
+Every construct is therefore refitted twenty-seven times, each time with one
+country removed, and the range of coefficients across those refits is recorded
+alongside the headline estimate.</p>
+<p>The three supported constructs are stable under this: long-term unemployment
+ranges from 3.20 to 4.83 against a headline of 4.34, wage-adjusted affordability
+from 0.25 to 0.33 against 0.31, and material resources holds its sign and
+magnitude throughout. None of them depends on any single country, and in
+particular none depends on Greece &mdash; which matters, because Greece is the
+case the report is about and a result driven by it would be circular.</p>
+<p>Housing pressure behaves differently. Its refits run from &minus;0.10 to
+1.27, so dropping one country flips the sign. That instability is one of the
+reasons it does not clear the gates, and it is a more informative fact about
+that construct than its p-value.</p>
 
 <h4>What the specification controls</h4>
 <p>All models include the country's AROP rate and year fixed effects. Year
@@ -1218,9 +1226,9 @@ construction.</p>
 
 <p>Three accumulated measures cleared it.</p>
 
-<div class="claim" data-claim-id="V2-5.C2"><div class="claim-head"><span class="cid">V2-5.C2</span><span class="tier">post-selection robustness</span></div><p class="canonical">Accumulated excess unemployment predicts hardship (bootstrap p=0.0025) and retains a cross-country association after its current-level counterpart is controlled (conditional bootstrap p=0.0025).</p><ul class="caveats"><li>cross-country association | no demonstrated within-Greece dynamic | no causal claim | current conditions not ruled out</li></ul></div>
-<div class="claim" data-claim-id="V2-5.C3"><div class="claim-head"><span class="cid">V2-5.C3</span><span class="tier">post-selection robustness</span></div><p class="canonical">Duration of real wages below their 2008 level predicts hardship (bootstrap p=0.0245) and retains a cross-country association after its current-level counterpart is controlled (conditional bootstrap p=0.0060).</p><ul class="caveats"><li>cross-country association | no demonstrated within-Greece dynamic | no causal claim | current conditions not ruled out | supported only as the CURRENT uninterrupted run against a fixed 2008 base; alternative constructions point the same way but do not meet the criteria</li></ul></div>
-<div class="claim" data-claim-id="V2-5.C6"><div class="claim-head"><span class="cid">V2-5.C6</span><span class="tier">post-selection robustness</span></div><p class="canonical">Housing-cost deterioration since 2010 predicts hardship (bootstrap p=0.0460) and retains a cross-country association after its current-level counterpart is controlled (conditional bootstrap p=0.0015).</p><ul class="caveats"><li>cross-country association | no demonstrated within-Greece dynamic | no causal claim | current conditions not ruled out | BORDERLINE: bootstrap p=0.0460, 91 of 1,999 exceedances</li></ul></div>
+<div class="claim" data-claim-id="V2-5.C2" title="post-selection robustness"><p class="canonical">Accumulated excess unemployment predicts hardship (bootstrap p=0.0025) and retains a cross-country association after its current-level counterpart is controlled (conditional bootstrap p=0.0025).</p><p class="caveats"><strong>Limits.</strong> cross-country association | no demonstrated within-Greece dynamic | no causal claim | current conditions not ruled out.</p></div>
+<div class="claim" data-claim-id="V2-5.C3" title="post-selection robustness"><p class="canonical">Duration of real wages below their 2008 level predicts hardship (bootstrap p=0.0245) and retains a cross-country association after its current-level counterpart is controlled (conditional bootstrap p=0.0060).</p><p class="caveats"><strong>Limits.</strong> cross-country association | no demonstrated within-Greece dynamic | no causal claim | current conditions not ruled out | supported only as the CURRENT uninterrupted run against a fixed 2008 base; alternative constructions point the same way but do not meet the criteria.</p></div>
+<div class="claim" data-claim-id="V2-5.C6" title="post-selection robustness"><p class="canonical">Housing-cost deterioration since 2010 predicts hardship (bootstrap p=0.0460) and retains a cross-country association after its current-level counterpart is controlled (conditional bootstrap p=0.0015).</p><p class="caveats"><strong>Limits.</strong> cross-country association | no demonstrated within-Greece dynamic | no causal claim | current conditions not ruled out | BORDERLINE: bootstrap p=0.0460, 91 of 1,999 exceedances.</p></div>
 
 <p>The third of these is borderline and is labelled as such in its frozen
 caveat: 91 of 1,999 bootstrap replications exceeded the observed statistic. It
@@ -1234,7 +1242,7 @@ are not counted as corroboration.</p>
 
 <p>The pattern is not uniform across constructs, which is itself informative.</p>
 
-<div class="claim" data-claim-id="V2-5.X"><div class="claim-head"><span class="cid">V2-5.X</span><span class="tier">post-selection robustness</span></div><p class="canonical">For wage-adjusted affordability the pattern reverses: the current measure survives conditioning (bootstrap p=0.0035) while the accumulated one remains inconclusive.</p><ul class="caveats"><li>the accumulated measure is inconclusive, NOT unsupported</li></ul></div>
+<div class="claim" data-claim-id="V2-5.X" title="post-selection robustness"><p class="canonical">For wage-adjusted affordability the pattern reverses: the current measure survives conditioning (bootstrap p=0.0035) while the accumulated one remains inconclusive.</p><p class="caveats"><strong>Limits.</strong> the accumulated measure is inconclusive, NOT unsupported.</p></div>
 
 <p>For wage-adjusted affordability the relationship runs the other way: the
 present-day measure survives conditioning while the accumulated one does not
@@ -1261,7 +1269,7 @@ It is tempting, and wrong, to convert it into a statement about change
 <table data-checksum="97839bc484e223f0" data-view="0"><caption>Between vs within</caption><thead><tr><th>Accumulated measure</th><th class="num">Between (SD)</th><th class="num">Within (SD)</th><th class="num">Between p</th><th class="num">Within p</th><th class="num">First difference (raw)</th><th class="num">First difference p</th></tr></thead><tbody><tr><td>Accumulated unemployment</td><td class="num">0.5924</td><td class="num">0.0296</td><td class="num">0.0000</td><td class="num">0.6867</td><td class="num">0.0461</td><td class="num">0.7324</td></tr><tr><td>Cumulative wage shortfall</td><td class="num">0.6584</td><td class="num">-0.0544</td><td class="num">0.0130</td><td class="num">0.3147</td><td class="num">-0.0596</td><td class="num">0.0284</td></tr><tr><td>Years wages below 2008</td><td class="num">0.7271</td><td class="num">0.0700</td><td class="num">0.0025</td><td class="num">0.0823</td><td class="num">0.0721</td><td class="num">0.4952</td></tr><tr><td>Cumulative GDP shortfall</td><td class="num">0.3890</td><td class="num">0.0674</td><td class="num">0.0289</td><td class="num">0.0600</td><td class="num">0.0273</td><td class="num">0.1442</td></tr><tr><td>Cumulative threshold shortfall</td><td class="num">0.8271</td><td class="num">0.0123</td><td class="num">0.0000</td><td class="num">0.5599</td><td class="num">-0.0148</td><td class="num">0.3917</td></tr><tr><td>Accumulated affordability pressure</td><td class="num">-0.3953</td><td class="num">-0.0764</td><td class="num">0.3639</td><td class="num">0.2825</td><td class="num">-0.0298</td><td class="num">0.0000</td></tr><tr><td>Compounded inflation since 2008</td><td class="num">-0.1718</td><td class="num">-0.1228</td><td class="num">0.4947</td><td class="num">0.3738</td><td class="num">-0.0314</td><td class="num">0.5766</td></tr><tr><td>Housing deterioration since 2010</td><td class="num">0.9282</td><td class="num">-0.0658</td><td class="num">0.0000</td><td class="num">0.2343</td><td class="num">-0.0090</td><td class="num">0.8679</td></tr></tbody></table><table data-checksum="4d493b7214b2bdc4" data-view="1"><caption>Year-on-year changes</caption><thead><tr><th>Accumulated measure</th><th class="num">First difference</th><th class="num">p</th><th class="num">n</th></tr></thead><tbody><tr><td>Accumulated unemployment</td><td class="num">0.0461</td><td class="num">0.7324</td><td class="num">243.0000</td></tr><tr><td>Cumulative wage shortfall</td><td class="num">-0.0596</td><td class="num">0.0284</td><td class="num">243.0000</td></tr><tr><td>Years wages below 2008</td><td class="num">0.0721</td><td class="num">0.4952</td><td class="num">243.0000</td></tr><tr><td>Cumulative GDP shortfall</td><td class="num">0.0273</td><td class="num">0.1442</td><td class="num">243.0000</td></tr><tr><td>Cumulative threshold shortfall</td><td class="num">-0.0148</td><td class="num">0.3917</td><td class="num">234.0000</td></tr><tr><td>Accumulated affordability pressure</td><td class="num">-0.0298</td><td class="num">0.0000</td><td class="num">243.0000</td></tr><tr><td>Compounded inflation since 2008</td><td class="num">-0.0314</td><td class="num">0.5766</td><td class="num">243.0000</td></tr><tr><td>Housing deterioration since 2010</td><td class="num">-0.0090</td><td class="num">0.8679</td><td class="num">242.0000</td></tr></tbody></table></details>
 </figure>
 
-<div class="claim" data-claim-id="V2-5.Y"><div class="claim-head"><span class="cid">V2-5.Y</span><span class="tier">pre-planned confirmatory</span></div><p class="canonical">No accumulated measure permits dynamic wording. Across P5, E4 and E7 no within-country estimate is significant in the adverse direction and no first-difference test supports one.</p><ul class="caveats"><li>three RELATED checks on one panel, not independent replications | the dynamic tests were not multiplicity-corrected</li></ul></div>
+<div class="claim" data-claim-id="V2-5.Y" title="pre-planned confirmatory"><p class="canonical">No accumulated measure permits dynamic wording. Across P5, E4 and E7 no within-country estimate is significant in the adverse direction and no first-difference test supports one.</p><p class="caveats"><strong>Limits.</strong> three RELATED checks on one panel, not independent replications | the dynamic tests were not multiplicity-corrected.</p></div>
 
 <p class="caution"><strong>This is the report's most easily overstated
 result.</strong> No within-country estimate reaches significance in the adverse
@@ -1276,14 +1284,25 @@ was caught.</p>
 <p>One construct could not be tested at all, and is reported rather than
 quietly dropped.</p>
 
-<div class="claim" data-claim-id="V2-5.Z"><div class="claim-head"><span class="cid">V2-5.Z</span><span class="tier">descriptive corroboration</span></div><p class="canonical">Accumulated material resources (C1) could not be tested at all: the source series begins in 2015 and no 2008 baseline exists. The baseline was not moved to make it testable.</p><ul class="caveats"><li>infeasible, not null</li></ul></div>
+<div class="claim" data-claim-id="V2-5.Z" title="descriptive corroboration"><p class="canonical">Accumulated material resources (C1) could not be tested at all: the source series begins in 2015 and no 2008 baseline exists. The baseline was not moved to make it testable.</p><p class="caveats"><strong>Limits.</strong> infeasible, not null.</p></div>
 
 <p>Moving the baseline to 2015 would have made it testable and would also have
 made it a different measure, one that could not register the crisis it was
-built to capture. The baseline was left where it was and the construct is
-recorded as infeasible.</p>
+built to capture. The baseline was left where it was.</p>
 
-<div class="claim" data-claim-id="L-3"><div class="claim-head"><span class="cid">L-3</span><span class="tier">post-selection robustness</span></div><p class="canonical">The accumulated wage-shortfall coefficient cleared every conditional gate but its prior stage did not support it, so the pre-registered ceiling caps it. It is reported and is not a finding.</p><ul class="caveats"><li>capped by the E7 ceiling: E7 may only qualify or withdraw</li></ul></div>
+<p>One further result is reported here without being counted. The accumulated
+wage-shortfall measure passed every conditional test it faced &mdash; but the
+present-day measure it was paired with had not been supported in the previous
+stage, and a rule fixed in advance prevents this stage from promoting anything
+its predecessor did not establish. Reported, and not a finding.</p>
+
+<div class="claim" data-claim-id="L-3" title="post-selection robustness"><p class="canonical">The accumulated wage-shortfall coefficient cleared every conditional gate but its prior stage did not support it, so the pre-registered ceiling caps it. It is reported and is not a finding.</p><p class="caveats"><strong>Limits.</strong> capped by the E7 ceiling: E7 may only qualify or withdraw.</p></div>
+
+<p>The rule costs something here: on the face of the numbers this measure looks
+as convincing as the three that are counted. The reason for keeping the rule
+anyway is that conditional tests run after seeing which measures succeeded are
+selected tests, and a rule that can be set aside when its result is inconvenient
+is not a rule.</p>
 
 <details class="methods"><summary>Accumulation, conditioning, the Mundlak decomposition, and the E7 ceiling</summary><div class="methods-body">
 <h4>How accumulation is computed</h4>
@@ -1386,7 +1405,7 @@ really instrument.</p>
 <table data-checksum="1618e743943b9f2d"><thead><tr><th>Country</th><th class="num">Frozen specification</th><th class="num">Deprivation-free companion</th><th class="num">Change</th></tr></thead><tbody><tr><td>Luxembourg</td><td class="num">8.80</td><td class="num">15.48</td><td class="num">6.68</td></tr><tr><td>Cyprus</td><td class="num">7.05</td><td class="num">10.75</td><td class="num">3.70</td></tr><tr><td>Greece</td><td class="num">6.93</td><td class="num">-9.39</td><td class="num">-16.32</td></tr><tr><td>Latvia</td><td class="num">6.32</td><td class="num">4.65</td><td class="num">-1.66</td></tr><tr><td>Hungary</td><td class="num">4.86</td><td class="num">7.42</td><td class="num">2.56</td></tr><tr><td>Bulgaria</td><td class="num">4.06</td><td class="num">14.65</td><td class="num">10.60</td></tr><tr><td>Czechia</td><td class="num">3.53</td><td class="num">-3.63</td><td class="num">-7.16</td></tr><tr><td>Slovakia</td><td class="num">3.28</td><td class="num">-0.68</td><td class="num">-3.96</td></tr><tr><td>Belgium</td><td class="num">3.13</td><td class="num">5.26</td><td class="num">2.13</td></tr><tr><td>Ireland</td><td class="num">3.05</td><td class="num">6.14</td><td class="num">3.09</td></tr><tr><td>Croatia</td><td class="num">2.62</td><td class="num">-0.38</td><td class="num">-2.99</td></tr><tr><td>France</td><td class="num">1.85</td><td class="num">3.88</td><td class="num">2.02</td></tr><tr><td>Austria</td><td class="num">1.36</td><td class="num">0.95</td><td class="num">-0.41</td></tr><tr><td>Portugal</td><td class="num">1.30</td><td class="num">0.62</td><td class="num">-0.67</td></tr><tr><td>Malta</td><td class="num">1.28</td><td class="num">0.36</td><td class="num">-0.91</td></tr><tr><td>Poland</td><td class="num">0.56</td><td class="num">-4.32</td><td class="num">-4.88</td></tr><tr><td>Denmark</td><td class="num">0.16</td><td class="num">-3.65</td><td class="num">-3.81</td></tr><tr><td>Sweden</td><td class="num">-1.00</td><td class="num">-4.55</td><td class="num">-3.55</td></tr><tr><td>Slovenia</td><td class="num">-2.66</td><td class="num">-6.33</td><td class="num">-3.67</td></tr><tr><td>Netherlands</td><td class="num">-3.47</td><td class="num">-4.87</td><td class="num">-1.39</td></tr><tr><td>Lithuania</td><td class="num">-4.17</td><td class="num">-1.81</td><td class="num">2.36</td></tr><tr><td>Germany</td><td class="num">-4.31</td><td class="num">-6.00</td><td class="num">-1.69</td></tr><tr><td>Estonia</td><td class="num">-4.49</td><td class="num">-10.12</td><td class="num">-5.63</td></tr><tr><td>Finland</td><td class="num">-5.07</td><td class="num">-6.80</td><td class="num">-1.72</td></tr><tr><td>Italy</td><td class="num">-6.35</td><td class="num">-5.18</td><td class="num">1.17</td></tr><tr><td>Romania</td><td class="num">-10.32</td><td class="num">9.76</td><td class="num">20.08</td></tr><tr><td>Spain</td><td class="num">-10.63</td><td class="num">-10.06</td><td class="num">0.57</td></tr></tbody></table></details>
 </figure>
 
-<div class="claim" data-claim-id="V2-6.1"><div class="claim-head"><span class="cid">V2-6.1</span><span class="tier">post-selection robustness</span></div><p class="canonical">Greece&#x27;s residual is +6.93 (rank 3/27) in the frozen P3 specification and -9.39 (rank 25/27) when the same-instrument deprivation predictor is removed, on identical rows. Neither specification is definitive.</p><ul class="caveats"><li>NEITHER specification is definitive | the two may not be merged or averaged | selection between them may not be made on residual size | conclusions about absorption depend materially on whether same-instrument deprivation is admitted</li></ul></div>
+<div class="claim" data-claim-id="V2-6.1" title="post-selection robustness"><p class="canonical">Greece&#x27;s residual is +6.93 (rank 3/27) in the frozen P3 specification and -9.39 (rank 25/27) when the same-instrument deprivation predictor is removed, on identical rows. Neither specification is definitive.</p><p class="caveats"><strong>Limits.</strong> NEITHER specification is definitive | the two may not be merged or averaged | selection between them may not be made on residual size | conclusions about absorption depend materially on whether same-instrument deprivation is admitted.</p></div>
 
 <div class="evidence-table" id="T3"><p class="tcap"><span class="tid">T3</span> The same rows, one predictor, two opposite conclusions.</p><div class="tscroll"><table><thead><tr><th>Specification</th><th>Same-instrument deprivation</th><th>Greek residual</th><th>Rank</th><th>Reading</th></tr></thead><tbody><tr><td>Frozen specification (P3)</td><td>included</td><td>+6.93</td><td>3 of 27</td><td>Greece markedly worse than predicted</td></tr><tr><td>Companion specification</td><td>removed</td><td>&minus;9.39</td><td>25 of 27</td><td>Greece markedly better than predicted</td></tr></tbody></table></div><p class="tnote">Neither specification is definitive. The two may not be averaged, and the choice between them may not be made on residual size.</p></div>
 
@@ -1409,29 +1428,35 @@ than an explanation, and why the conclusion in Stage 8 does not rest on it. A
 finding that reverses under a defensible alternative is not a finding to build
 on.</p>
 
-<h3>What else was tried and did not work</h3>
+<h3>Two analyses that were planned and failed</h3>
 
-<p>Two further specifications were pre-registered and both failed. They are
-recorded here rather than omitted, because a report that shows only the
-analyses that worked gives a false impression of how much was attempted.</p>
+<p>The report would look stronger without this section, which is the reason it
+is here. Both of the analyses below were specified in advance, both were meant
+to carry weight, and neither worked.</p>
 
-<div class="claim" data-claim-id="L-1"><div class="claim-head"><span class="cid">L-1</span><span class="tier">failed design</span></div><p class="canonical">The synthetic-control comparative design failed four of six pre-registered gates and is not a usable comparison. Its divergence figure is machine-blocked from every output document.</p><ul class="caveats"><li>donor weights collapse to Hungary 0.55 and Bulgaria 0.45 | the divergence figure is NON-REPORTABLE</li></ul></div>
-<div class="claim" data-claim-id="L-2"><div class="claim-head"><span class="cid">L-2</span><span class="tier">pre-planned confirmatory</span></div><p class="canonical">Multi-domain breadth failed the incremental criterion: adding it to the frozen model worsened Greece&#x27;s residual from 6.93 to 10.39 and reversed its sign conditionally. The reversal is left uninterpreted.</p><ul class="caveats"><li>a result about the specification, not about power | the sign reversal is deliberately left uninterpreted</li></ul></div>
+<p>The first was a synthetic control, and it was intended as the centrepiece:
+build a weighted combination of other countries that tracks pre-crisis Greece,
+then read the divergence after 2008 as the crisis effect. The construction
+failed. The donor weights collapsed onto two countries, so the synthetic Greece
+was a blend of Hungary and Bulgaria rather than a credible counterfactual, and
+the design missed four of its six pre-registered conditions.</p>
 
-<p>The synthetic-control design was intended to be a centrepiece: construct a
-weighted combination of other countries resembling pre-crisis Greece, and read
-the divergence after 2008 as the crisis effect. It failed four of six
-pre-registered gates. The donor weights collapsed onto two countries, which
-means the synthetic Greece was not a credible counterfactual. Its divergence
-figure would be the most striking image in this report, and it is machine-blocked
-from every output document precisely because it is striking and
-uninterpretable.</p>
+<div class="claim" data-claim-id="L-1" title="failed design"><p class="canonical">The synthetic-control comparative design failed four of six pre-registered gates and is not a usable comparison. Its divergence figure is machine-blocked from every output document.</p><p class="caveats"><strong>Limits.</strong> donor weights collapse to Hungary 0.55 and Bulgaria 0.45 | the divergence figure is NON-REPORTABLE.</p></div>
 
-<p>The multi-domain breadth measure failed a different way: adding it to the
-frozen model made Greece's residual worse and reversed its sign under
-conditioning. The reversal is left uninterpreted. Post-hoc explanations of sign
-reversals in failed specifications are how failed specifications get revived,
-and the pre-registration does not permit it.</p>
+<p>Its divergence chart would be the most arresting image in this report. It is
+not shown anywhere, and that is deliberate: a striking picture built on a
+counterfactual this thin would persuade readers of something the analysis
+cannot support. Being compelling is not the same as being right, and the first
+is more dangerous when the second is absent.</p>
+
+<p>The second was a measure of how many domains of disadvantage a country shows
+at once. Adding it to the frozen model made Greece's residual worse rather than
+better, and its sign flipped once other measures were controlled. That
+reversal is left uninterpreted here. An unexplained sign flip in a specification
+that has already failed is exactly the kind of loose end that invites a story to
+be built around it, and the story would be untestable.</p>
+
+<div class="claim" data-claim-id="L-2" title="pre-planned confirmatory"><p class="canonical">Multi-domain breadth failed the incremental criterion: adding it to the frozen model worsened Greece&#x27;s residual from 6.93 to 10.39 and reversed its sign conditionally. The reversal is left uninterpreted.</p><p class="caveats"><strong>Limits.</strong> a result about the specification, not about power | the sign reversal is deliberately left uninterpreted.</p></div>
 
 <details class="methods"><summary>Specification choices, what was frozen, and the blocking mechanism</summary><div class="methods-body">
 <h4>The frozen specification</h4>
@@ -1520,7 +1545,7 @@ toward circumstances rather than temperament.</p>
 <table data-checksum="3649f647d37a8851"><thead><tr><th>Year</th><th class="num">Hardship rank</th><th class="num">Expectations rank</th><th class="num">Life satisfaction rank</th><th class="num">Hardship %</th><th class="num">Expectations index</th><th class="num">Life satisfaction (0-10)</th></tr></thead><tbody><tr><td>2018</td><td class="num">1.0</td><td class="num">1.0</td><td class="num">4.0</td><td class="num">74.1</td><td class="num">-41.4</td><td class="num">6.4</td></tr><tr><td>2021</td><td class="num">1.0</td><td class="num">1.0</td><td class="num">6.0</td><td class="num">71.0</td><td class="num">-26.9</td><td class="num">6.8</td></tr><tr><td>2022</td><td class="num">1.0</td><td class="num">1.0</td><td class="num">3.0</td><td class="num">68.4</td><td class="num">-49.4</td><td class="num">6.7</td></tr><tr><td>2023</td><td class="num">1.0</td><td class="num">1.0</td><td class="num">3.0</td><td class="num">67.0</td><td class="num">-35.6</td><td class="num">6.9</td></tr><tr><td>2024</td><td class="num">1.0</td><td class="num">1.0</td><td class="num">2.0</td><td class="num">66.7</td><td class="num">-43.2</td><td class="num">6.7</td></tr></tbody></table></details>
 </figure>
 
-<div class="claim" data-claim-id="V2-7.1"><div class="claim-head"><span class="cid">V2-7.1</span><span class="tier">descriptive corroboration</span></div><p class="canonical">Greece is consistently among Europe&#x27;s worst countries on life satisfaction and consistently worst on financial hardship and expectations. The greater extremity of the financial indicators suggests domain specificity, but does not rule out a broader negative reporting tendency.</p><ul class="caveats"><li>Greece is second-WORST on life satisfaction by 2024, not middling | a broader negative reporting tendency is NOT ruled out | Greek life satisfaction ROSE over the observed period, 6.2 to 6.9; only its rank worsened, because other countries improved faster | the series begins in 2013, at the crisis trough, with no pre-crisis baseline</li></ul></div>
+<div class="claim" data-claim-id="V2-7.1" title="descriptive corroboration"><p class="canonical">Greece is consistently among Europe&#x27;s worst countries on life satisfaction and consistently worst on financial hardship and expectations. The greater extremity of the financial indicators suggests domain specificity, but does not rule out a broader negative reporting tendency.</p><p class="caveats"><strong>Limits.</strong> Greece is second-WORST on life satisfaction by 2024, not middling | a broader negative reporting tendency is NOT ruled out | Greek life satisfaction ROSE over the observed period, 6.2 to 6.9; only its rank worsened, because other countries improved faster | the series begins in 2013, at the crisis trough, with no pre-crisis baseline.</p></div>
 
 <p>The pattern is domain-specific but the difference is one of degree, not
 kind. Greece is worst in Europe on the financial indicators and close to worst
@@ -1534,7 +1559,7 @@ satisfaction <em>rose</em> over the observed period, from 6.2 to 6.9. Greece's
 worsening rank on a rising series is not falling satisfaction, and reading it
 as such would invert the finding.</p>
 
-<div class="ctx" data-context-id="CTX-1"><div class="ctx-head"><span class="cid">CTX-1</span><span class="status">descriptive corroboration</span></div><h4>Financial expectations and life satisfaction</h4>
+<div class="ctx" data-context-id="CTX-1"><div class="ctx-head"><span class="status">descriptive corroboration</span></div><h4>Financial expectations and life satisfaction</h4>
 <p>The cross-domain comparison is descriptive corroboration for the
 domain-specificity reading, not a test of it. Greece's financial indicators sit
 at the extreme of the European distribution while its general-wellbeing
@@ -1596,7 +1621,7 @@ it: the distinction between the financial indicators and the general one is one
 of degree, not a contrast between financial hardship and general
 contentment.</p>
 
-<div class="ctx" data-context-id="CTX-7"><div class="ctx-head"><span class="cid">CTX-7</span><span class="status">descriptive corroboration</span></div><h4>Pre-crisis wellbeing baseline (ESS)</h4>
+<div class="ctx" data-context-id="CTX-7"><div class="ctx-head"><span class="status">descriptive corroboration</span></div><h4>Pre-crisis wellbeing baseline (ESS)</h4>
 <p>Across six ESS rounds, holding the same twelve countries fixed, Greece sat
 roughly 0.8 points below the median before the crisis, fell to 5.64 by 2010/11,
 and recovered its level to approximately its pre-crisis value by 2023/24 while
@@ -1623,9 +1648,9 @@ their own status vocabulary, deliberately disjoint from the evidence statuses
 used in Stages 1 to 6, so that a contextual statement can never be promoted
 into a finding.</p>
 
-<div class="evidence-table" id="T5"><p class="tcap"><span class="tid">T5</span> The context register: material discussed but not tested here.</p><div class="tscroll"><table><thead><tr><th>ID</th><th>Topic</th><th>Status</th><th>May support a claim</th></tr></thead><tbody><tr><td><span class="tid">CTX-1</span></td><td>Financial expectations and life satisfaction</td><td><span class="ctx-status">descriptive corroboration</span></td><td>no</td></tr><tr><td><span class="tid">CTX-2</span></td><td>Institutional trust</td><td><span class="ctx-status">contextual evidence</span></td><td>no</td></tr><tr><td><span class="tid">CTX-3</span></td><td>Crisis and adjustment policies</td><td><span class="ctx-status">literature-grounded context</span></td><td>no</td></tr><tr><td><span class="tid">CTX-4</span></td><td>Migration</td><td><span class="ctx-status">contextual consequence</span></td><td>no</td></tr><tr><td><span class="tid">CTX-5</span></td><td>Tax burden and unequal treatment</td><td><span class="ctx-status">future hypothesis</span></td><td>no</td></tr><tr><td><span class="tid">CTX-6</span></td><td>Policy implications</td><td><span class="ctx-status">author interpretation</span></td><td>no</td></tr><tr><td><span class="tid">CTX-7</span></td><td>Pre-crisis wellbeing baseline (ESS)</td><td><span class="ctx-status">descriptive corroboration</span></td><td>no</td></tr></tbody></table></div><p class="tnote">These statuses belong to a deliberately separate vocabulary from the evidence statuses above, so that contextual material can never be read as an empirical result.</p></div>
+<div class="evidence-table" id="T5"><p class="tcap"><span class="tid">T5</span> Material this report discusses without establishing.</p><div class="tscroll"><table><thead><tr><th>Topic</th><th>What it is</th><th>Can it support a finding?</th></tr></thead><tbody><tr><td>Financial expectations and life satisfaction</td><td><span class="ctx-status">descriptive corroboration</span></td><td>no</td></tr><tr><td>Institutional trust</td><td><span class="ctx-status">contextual evidence</span></td><td>no</td></tr><tr><td>Crisis and adjustment policies</td><td><span class="ctx-status">literature-grounded context</span></td><td>no</td></tr><tr><td>Migration</td><td><span class="ctx-status">contextual consequence</span></td><td>no</td></tr><tr><td>Tax burden and unequal treatment</td><td><span class="ctx-status">future hypothesis</span></td><td>no</td></tr><tr><td>Policy implications</td><td><span class="ctx-status">author interpretation</span></td><td>no</td></tr><tr><td>Pre-crisis wellbeing baseline (ESS)</td><td><span class="ctx-status">descriptive corroboration</span></td><td>no</td></tr></tbody></table></div><p class="tnote">Some of these were examined here &mdash; migration was tested on this panel, and the cross-domain and ESS comparisons are descriptive analyses done for this report. None of them can carry a finding, and their statuses come from a deliberately separate vocabulary from the evidence statuses above so the two cannot be confused.</p></div>
 
-<div class="ctx" data-context-id="CTX-2"><div class="ctx-head"><span class="cid">CTX-2</span><span class="status">contextual evidence</span></div><h4>Institutional trust</h4>
+<div class="ctx" data-context-id="CTX-2"><div class="ctx-head"><span class="status">contextual evidence</span></div><h4>Institutional trust</h4>
 <p>Institutional trust is low in Greece by OECD measurement, and there is a
 plausible route by which it could matter: households that do not expect
 effective support may experience the same material circumstances as more
@@ -1648,7 +1673,7 @@ release and is therefore not shown.</p>
 <table data-checksum="f1a7fc5188192df7"><thead><tr><th>Entity</th><th class="num">Share reporting high or moderately high trust (%)</th></tr></thead><tbody><tr><td>Greece</td><td class="num">32.0</td></tr><tr><td>OECD average</td><td class="num">39.0</td></tr></tbody></table></details>
 </figure>
 
-<div class="ctx" data-context-id="CTX-3"><div class="ctx-head"><span class="cid">CTX-3</span><span class="status">literature-grounded context</span></div><h4>Crisis and adjustment policies</h4>
+<div class="ctx" data-context-id="CTX-3"><div class="ctx-head"><span class="status">literature-grounded context</span></div><h4>Crisis and adjustment policies</h4>
 <p>The adjustment programmes of 2010 onward reshaped Greek incomes, employment
 protection, pensions and public services simultaneously and over a compressed
 period. They are the historical setting for every accumulated measure in Stage
@@ -1659,7 +1684,7 @@ programme, measure or decision, and the design contains nothing that would
 license such an attribution.</p>
 <p class="permitted"><strong>What may be concluded.</strong> Help explain the historical setting; this project does not estimate their causal contribution.</p><p class="limitation"><strong>Limitation.</strong> Attributing any share of the accumulated exposure to a specific programme or measure.</p><p class="cite"><strong>Source.</strong> Andriopoulou, E., Kanavitsa, E. &amp; Tsakloglou, P. (2020), Decomposing Poverty in Hard Times: Greece 2007-2016. LSE GreeSE Paper No. 149. EU-SILC microdata, ELSTAT waves 2008-2017. Anchored FGT0 on a 2007 base reaches 48% at the 2013 peak. <a href="https://www.lse.ac.uk/Hellenic-Observatory/Publications/GreeSE-Papers">source</a></p></div>
 
-<div class="ctx" data-context-id="CTX-4"><div class="ctx-head"><span class="cid">CTX-4</span><span class="status">contextual consequence</span></div><h4>Migration</h4>
+<div class="ctx" data-context-id="CTX-4"><div class="ctx-head"><span class="status">contextual consequence</span></div><h4>Migration</h4>
 <p>Emigration of working-age Greeks during the crisis is well documented, and
 it interacts with the labour-market measures in Stage 4 in both directions: it
 is plausibly a consequence of prolonged labour-market damage, and plausibly a
@@ -1682,7 +1707,7 @@ either causal direction.</p>
 <table data-checksum="977b6aee1b8947f1" data-view="0"><caption>Departures and returns</caption><thead><tr><th>Series</th><th class="num">2008</th><th class="num">2009</th><th class="num">2010</th><th class="num">2011</th><th class="num">2012</th><th class="num">2013</th><th class="num">2014</th><th class="num">2015</th><th class="num">2016</th><th class="num">2017</th><th class="num">2018</th><th class="num">2019</th><th class="num">2020</th><th class="num">2021</th><th class="num">2022</th><th class="num">2023</th><th class="num">2024</th></tr></thead><tbody><tr><td>Departures</td><td class="num">19088</td><td class="num">19799</td><td class="num">28301</td><td class="num">61268</td><td class="num">70696</td><td class="num">67057</td><td class="num">59525</td><td class="num">60516</td><td class="num">61368</td><td class="num">60816</td><td class="num">57495</td><td class="num">53415</td><td class="num">41111</td><td class="num">41505</td><td class="num">40151</td><td class="num">36931</td><td class="num">32141</td></tr><tr><td>Returns</td><td class="num">25070</td><td class="num">22790</td><td class="num">25078</td><td class="num">27043</td><td class="num">26194</td><td class="num">26644</td><td class="num">29503</td><td class="num">30460</td><td class="num">30747</td><td class="num">31743</td><td class="num">32199</td><td class="num">34074</td><td class="num">20864</td><td class="num">28392</td><td class="num">32017</td><td class="num">46091</td><td class="num">51993</td></tr></tbody></table><table data-checksum="f9abba02c4af79a0" data-view="1"><caption>Net flow</caption><thead><tr><th>Series</th><th class="num">2008</th><th class="num">2009</th><th class="num">2010</th><th class="num">2011</th><th class="num">2012</th><th class="num">2013</th><th class="num">2014</th><th class="num">2015</th><th class="num">2016</th><th class="num">2017</th><th class="num">2018</th><th class="num">2019</th><th class="num">2020</th><th class="num">2021</th><th class="num">2022</th><th class="num">2023</th><th class="num">2024</th></tr></thead><tbody><tr><td>Net outflow of nationals</td><td class="num">-5982</td><td class="num">-2991</td><td class="num">3223</td><td class="num">34225</td><td class="num">44502</td><td class="num">40413</td><td class="num">30022</td><td class="num">30056</td><td class="num">30621</td><td class="num">29073</td><td class="num">25296</td><td class="num">19341</td><td class="num">20247</td><td class="num">13113</td><td class="num">8134</td><td class="num">-9160</td><td class="num">-19852</td></tr></tbody></table><table data-checksum="e459a057d7f44fe8" data-view="2"><caption>EU comparison, cumulative</caption><thead><tr><th>Series</th><th class="num">Cumulative net departures</th><th class="num">% of average population</th><th class="num">Years covered</th></tr></thead><tbody><tr><td>Lithuania</td><td class="num">243338.00</td><td class="num">8.27</td><td class="num">17.00</td></tr><tr><td>Croatia</td><td class="num">243289.00</td><td class="num">5.93</td><td class="num">17.00</td></tr><tr><td>Romania</td><td class="num">849659.00</td><td class="num">4.30</td><td class="num">17.00</td></tr><tr><td>Luxembourg</td><td class="num">17038.00</td><td class="num">2.96</td><td class="num">17.00</td></tr><tr><td>Greece</td><td class="num">290281.00</td><td class="num">2.69</td><td class="num">17.00</td></tr><tr><td>Poland</td><td class="num">1014893.00</td><td class="num">2.69</td><td class="num">16.00</td></tr><tr><td>Slovenia</td><td class="num">46557.00</td><td class="num">2.25</td><td class="num">17.00</td></tr><tr><td>France</td><td class="num">1380603.00</td><td class="num">2.08</td><td class="num">17.00</td></tr><tr><td>Ireland</td><td class="num">90151.00</td><td class="num">1.87</td><td class="num">17.00</td></tr><tr><td>Belgium</td><td class="num">198811.00</td><td class="num">1.75</td><td class="num">15.00</td></tr><tr><td>Estonia</td><td class="num">21929.00</td><td class="num">1.65</td><td class="num">17.00</td></tr><tr><td>Italy</td><td class="num">799607.00</td><td class="num">1.34</td><td class="num">17.00</td></tr><tr><td>Sweden</td><td class="num">127581.00</td><td class="num">1.29</td><td class="num">17.00</td></tr><tr><td>Austria</td><td class="num">98950.00</td><td class="num">1.14</td><td class="num">17.00</td></tr><tr><td>Germany</td><td class="num">882086.00</td><td class="num">1.07</td><td class="num">17.00</td></tr><tr><td>Netherlands</td><td class="num">173972.00</td><td class="num">1.02</td><td class="num">17.00</td></tr><tr><td>Portugal</td><td class="num">83133.00</td><td class="num">0.80</td><td class="num">16.00</td></tr><tr><td>Spain</td><td class="num">214223.00</td><td class="num">0.46</td><td class="num">17.00</td></tr><tr><td>Czechia</td><td class="num">48258.00</td><td class="num">0.46</td><td class="num">17.00</td></tr><tr><td>Finland</td><td class="num">23245.00</td><td class="num">0.43</td><td class="num">17.00</td></tr><tr><td>Slovakia</td><td class="num">-936.00</td><td class="num">-0.02</td><td class="num">17.00</td></tr><tr><td>Hungary</td><td class="num">-30075.00</td><td class="num">-0.31</td><td class="num">17.00</td></tr><tr><td>Malta</td><td class="num">-1979.00</td><td class="num">-0.43</td><td class="num">17.00</td></tr><tr><td>Denmark</td><td class="num">-68217.00</td><td class="num">-1.20</td><td class="num">17.00</td></tr><tr><td>Cyprus</td><td class="num">-11840.00</td><td class="num">-1.35</td><td class="num">16.00</td></tr></tbody></table></details>
 </figure>
 
-<div class="ctx" data-context-id="CTX-5"><div class="ctx-head"><span class="cid">CTX-5</span><span class="status">future hypothesis</span></div><h4>Tax burden and unequal treatment</h4>
+<div class="ctx" data-context-id="CTX-5"><div class="ctx-head"><span class="status">future hypothesis</span></div><h4>Tax burden and unequal treatment</h4>
 <p>Published incidence research establishes that the Greek indirect tax system
 became markedly more regressive across the crisis, shifting burden toward
 lower-income households. If a household's disposable position worsened through
@@ -1722,6 +1747,26 @@ general negative tendency. Separating those requires either a pre-crisis
 baseline, which this series does not have, or an external anchor on Greek
 response style, which this project does not have. The claim is worded to leave
 both possibilities open.</p>
+
+<h4>How the ESS figures were reconstructed</h4>
+<p>The respondent-level ESS files require an account. The portal's public
+analysis view does not, and it publishes, for each country and round, the
+weighted percentage of respondents choosing each point on the 0&ndash;10 life
+satisfaction scale. A country mean is recovered from that by multiplying each
+percentage by its score and summing.</p>
+<p>The portal rounds the percentages it displays, so the recovered means are
+approximate at that precision. More importantly, a distribution published as
+percentages carries no information about sampling variability: there is no way
+to attach a standard error or an interval to a mean recovered this way, and no
+test is run on them anywhere in this report.</p>
+<p>The twelve-country balanced set exists because the full ESS country set
+ranges from twenty-two to thirty across the six Greek rounds. A rank computed
+against a changing set moves when the set moves, so an all-country rank
+trajectory would confound Greece's position with who happened to participate.
+Holding the same twelve countries fixed removes that, at the cost of comparing
+Greece against a smaller and richer group than the EU average used elsewhere
+&mdash; which is one more reason the two series are never placed on the same
+axis.</p>
 
 <h4>Why trust was not tested</h4>
 <p>Institutional trust is measured by the OECD on a different instrument, a
@@ -1807,7 +1852,7 @@ not attributed here.</li>
 
 <h3>What follows for measurement</h3>
 
-<div class="ctx" data-context-id="CTX-6"><div class="ctx-head"><span class="cid">CTX-6</span><span class="status">author interpretation</span></div><h4>Policy implications</h4>
+<div class="ctx" data-context-id="CTX-6"><div class="ctx-head"><span class="status">author interpretation</span></div><h4>Policy implications</h4>
 <p>The analysis shows repeatedly that no single official indicator captures
 what Greek households report. AROP misses concept and yardstick alike; AROPE
 adds breadth but a shrinking share of it; anchored poverty registers what the
@@ -1840,38 +1885,6 @@ deficit predating the crisis, but it rests on approximate means reconstructed
 from published distributions, with no standard errors and no way to test
 anything.</p>
 
-<details class="methods"><summary>How each sentence of this conclusion maps to a frozen claim</summary><div class="methods-body">
-<p>The conclusion above introduces no new results. Each of its statements
-corresponds to a claim in the frozen set, and the mapping is given here so that
-any reader can check the conclusion against what was actually established
-rather than against how it is phrased.</p>
-<ul>
-<li>The size and persistence of the gap, and Greece's rank on each measure:
-<strong>V2-1.2</strong>, with the provenance of the extended series in
-<strong>V2-1.1</strong>.</li>
-<li>AROPE's partial and shrinking contribution: <strong>V2-2.1</strong>.</li>
-<li>Correspondence between reported difficulty and concrete failure:
-<strong>V2-3.1</strong>, with the absorption diagnostic in
-<strong>V2-3.2</strong> and its model dependence in
-<strong>V2-6.1</strong>.</li>
-<li>The three supported current-level constructs:
-<strong>V2-4.C1</strong>, <strong>V2-4.C2</strong> and
-<strong>V2-4.C4</strong>; the unresolved remainder in <strong>V2-4.X</strong>
-and the magnitude-specific exclusions in <strong>L-4</strong>.</li>
-<li>The three supported accumulated measures: <strong>V2-5.C2</strong>,
-<strong>V2-5.C3</strong> and <strong>V2-5.C6</strong>; the reversal in
-<strong>V2-5.X</strong>; the prohibition on dynamic wording in
-<strong>V2-5.Y</strong>; the untestable construct in
-<strong>V2-5.Z</strong>; the capped result in <strong>L-3</strong>.</li>
-<li>The reporting-style question: <strong>V2-7.1</strong>, whose caveats carry
-the second-worst life-satisfaction position and the rising Greek level.</li>
-<li>The failed designs: <strong>L-1</strong> and <strong>L-2</strong>.</li>
-</ul>
-<p>The measurement recommendation is <strong>CTX-6</strong> and is registered
-as author interpretation rather than as a finding. It follows from what the
-analysis showed the single measures miss; it is not itself a result.</p>
-</div></details>
-
 <p>Each of these is a route to a stronger answer than this report can give. It
 is worth saying plainly that this report's central finding is a well-documented
 gap with a partial account of its composition, and that the honest description
@@ -1892,65 +1905,16 @@ results</strong> before it was run. The commit history shows, for every stage,
 a specification-only commit preceding the commit that adds output. This is
 checkable rather than asserted: the repository is the record.</p>
 
-<p>The decision rules are executable code with unit tests, not prose. This
-followed from repeated failure of the prose version. On three separate
-occasions a rule that read unambiguously in the protocol document failed to
-bind when results arrived &mdash; not through bad faith, but because prose
-admits interpretation precisely when interpretation is most tempting. Rules
-that live in <code>e_rule.py</code>, <code>registry.py</code> and
-<code>accumulate.py</code> carry 64, 12 and 27 tests respectively and cannot be
-reinterpreted after seeing an outcome.</p>
+<p>The decision rules are executable code with unit tests, not prose. That
+followed from watching the prose version fail: on three occasions a rule that
+read unambiguously in the protocol did not bind when the results arrived, not
+through bad faith but because prose admits interpretation exactly when
+interpretation is most tempting. A rule that runs as code cannot be reread more
+favourably after the fact.</p>
 
-<p>Two protocol deviations occurred and both are recorded in the research
-record with their reasons. Neither was a change made after seeing a result it
-would affect.</p>
-
-<details class="methods"><summary>Corrections made during review, and what they changed</summary><div class="methods-body">
-<p>Thirty-three corrections are logged in the research record. Most were
-routine. Several changed a stated finding, and those are summarised here
-because a report that mentions only its successes misrepresents how it was
-produced.</p>
-<ul>
-<li><strong>Adverse-direction inversion.</strong> A translation between two
-vocabularies silently mapped every variable to the same direction, flagging four
-correct results as contradictions. Caught by inspection, fixed by passing the
-registry vocabulary through directly, and prevented from recurring by
-validating vocabularies at module load.</li>
-<li><strong>A degenerate constructed series.</strong> The wage-adjusted excess
-measure was built from a source holding absolute euros where an index was
-assumed, producing zeros throughout. Every test on it had been meaningless. Now
-indexed explicitly with a failing assertion on the source scale.</li>
-<li><strong>A robustness rule that returned the wrong verdict.</strong> The
-companion-model rule compared absolute residuals across a sign change, treating
-a movement from +2.46 to a larger negative value as degradation. The
-implementation was corrected to match the frozen wording rather than the
-wording being loosened to match the implementation.</li>
-<li><strong>A ceiling that did not bind.</strong> The Stage 5 ceiling existed
-only in prose, and a construct that its own prior stage had not supported was
-briefly written up as a finding. The ceiling is now enforced in code.</li>
-<li><strong>A verification check that could not fail.</strong> The figure
-checksum test compared two stored values both written by the same builder, so a
-tampered figure passed. It now recomputes the checksum from the rendered table
-content, and the negative test fails as it should.</li>
-<li><strong>A figure whose default view was empty.</strong> Every structural
-check passed on a figure whose first tab displayed nothing, because the checks
-verified structure and not data. A data gate was added requiring every view to
-carry at least two x-values and one finite number.</li>
-<li><strong>Three separate overstatements of the between/within
-result</strong>, each treating imprecise within-country estimates as evidence
-of absence. The third prompted a claim-specific guard in the verification
-harness.</li>
-<li><strong>A factually false headline.</strong> A figure caption claimed
-Greece led Europe on all three accumulated measures; Hungary leads on wage
-non-recovery. Corrected, and the figure now shows the full ranking.</li>
-<li><strong>A misread rank.</strong> Greece's life-satisfaction position was
-described as middling when it is second-worst in the EU. The affected claim was
-narrowed and its caveats extended.</li>
-</ul>
-<p>The pattern worth noting is that most of these were caught by a reviewer
-rather than by the harness, and each one that was caught by a person produced a
-new automated check so that it could not recur silently.</p>
-</div></details>
+<p>Where a result in this report was corrected during review, the correction
+and its reason are logged in the research record, which is generated from the
+same registers as this document.</p>
 
 <h3>Data</h3>
 
@@ -1960,9 +1924,45 @@ extension described in Stage 1 used for description only. The institutional
 trust figures come from the OECD's 2024 trust survey and were read from the
 primary release. Migration figures are national-level Greek data.</p>
 
-<p>The literature cited in the context register was verified against primary
-sources rather than secondary summaries: each reference in Stage 7 was checked
-at its publisher or repository of record.</p>
+<p>The literature cited in Stage 7 was verified against primary sources rather
+than secondary summaries: each reference was checked at its publisher or
+repository of record.</p>
+
+<details class="methods"><summary>Sources, coverage, and how missing data is handled</summary><div class="methods-body">
+<h4>What the panel contains</h4>
+<p>The estimation panel is country-year, covering the EU27 across
+2015&ndash;2024, drawn from Eurostat. The outcome and the deprivation items come
+from EU-SILC; the labour-market measures from the Labour Force Survey; prices
+and wages from the harmonised price and national accounts series; and
+purchasing-power figures from the PPP programme. The accumulated measures in
+Stage 5 reach back to 2008 or 2010 for their baselines, so their inputs extend
+earlier than the estimation window even though the outcome does not.</p>
+
+<h4>The EU comparison</h4>
+<p>Where a figure shows "the EU median" it is the median across the member
+states present in that year, recomputed per year rather than fixed to a base
+year's membership, and Greece is included in it. An excluded-Greece median would
+widen every gap shown here by construction, which would flatter the argument;
+the difference is small but it runs in the direction that favours the report's
+own case, so the conservative choice is the one taken.</p>
+
+<h4>Missing values</h4>
+<p>Nothing is imputed. Where a country-year lacks a value the observation is
+dropped from the model that needs it, which is why the row counts differ between
+specifications &mdash; and why Stage 6's two models are explicitly run on the
+intersection of their rows rather than on whatever each could manage alone.
+Series with structural breaks flagged by Eurostat are used as published; this
+project does not attempt its own break adjustment, and cross-vintage
+comparability before 2010 is a limitation noted in Stage 1 rather than a
+problem solved here.</p>
+
+<h4>Two coverage gaps that shaped the analysis</h4>
+<p>The purchasing-power consumption series begins in 2015, which is why the
+accumulated version of material resources could not be built at all rather than
+being built badly from a later baseline. And the wellbeing module begins in
+2013, which is why the pre-crisis question in Stage 7 needed an entirely
+separate survey to address at all.</p>
+</div></details>
 
 <h3>Scope, and what this design can carry</h3>
 
@@ -1989,47 +1989,31 @@ supports roughly a decade of variation, and within-country identification draws
 only on that. This is the direct cause of the imprecision in Stage 5, and it is
 why the dynamic question is left open rather than answered.</p>
 
-<h3>Registers</h3>
+<h3>Provenance</h3>
 
-<p>Four registers govern the documents in this project and are maintained in
-the research record: results (49 entries), decisions (64), corrections (33) and
-protocol deviations (2). The frozen claim set contains 21 claims; the context
-register contains 6 entries with a deliberately disjoint vocabulary, so that a
-contextual statement can never be mistaken for an empirical one.</p>
+<p>Every claim, decision, correction and deviation in this project is recorded
+in the research record, along with which script produced each number and from
+which artifact. This report states its results; the record shows how each one
+was arrived at, and what was changed along the way.</p>
 
-<details class="methods"><summary>The verification harness</summary><div class="methods-body">
-<p>Documents in this project are generated, not written by hand, and are
-checked mechanically before they are published.</p>
-<h4>Claim anchoring</h4>
-<p>Every claim in the frozen set must appear in each document that is required
-to carry it, inside a container tagged with its identifier. Matching is by
-distinctive-word overlap against the canonical wording, so a container that
-merely cites an identifier without stating the claim does not pass. The
-harness reports how many of the required claim-document pairs are present and
-fails the build below the threshold.</p>
-<h4>Context anchoring</h4>
-<p>The same mechanism applies to context entries, with an additional
-constraint: a document that discusses a registered topic without an anchored
-container is flagged. This prevents contextual material from drifting into the
-main argument unlabelled.</p>
-<h4>Figure checks</h4>
-<p>Thirteen checks run against every figure: that no internal variable name
-appears in a reader-facing label, that the value checksum recomputed from the
-rendered fallback table matches the one the chart carries, that every view
-holds at least two x-values and one finite number, that the view count and
-chart type match the frozen visual manifest, that each figure carries a badge,
-a question and a keyboard-reachable chart, that no figure uses a bare pixel
-width, and that pinned-width content scrolls within its own container. All 65
-checks pass across the four figure batches.</p>
-<h4>Blocked outputs</h4>
-<p>Results registered as non-reportable &mdash; principally the failed
-synthetic-control divergence figure &mdash; are checked for by identifier in
-every generated document. Their reappearance fails the build.</p>
-<h4>Skipped inputs</h4>
-<p>An optional input that is unavailable writes an explicit status marker
-recording that it was skipped and why. A stage whose optional input is missing
-must not be able to read as a completed one merely because the pipeline exited
-cleanly. The ESS extension in Stage 7 is the current instance.</p>
+<details class="methods"><summary>What is checked before this report is published</summary><div class="methods-body">
+<p>Every figure is checked mechanically before publication, and the checks that
+matter to a reader are these.</p>
+<p>The numbers in each chart and the numbers in its table are compared by a
+checksum recomputed from the rendered table, so a chart cannot drift from the
+figures beneath it. Every view must contain real data &mdash; at least two
+positions on its axis and one finite value &mdash; because a chart that renders
+correctly while displaying nothing will otherwise pass unnoticed, as one did.
+No internal variable name may appear in a reader-facing label. Every figure must
+carry its question, its evidence status, a keyboard-reachable chart and a table
+fallback, and wide content must scroll inside its own container rather than
+pushing the page sideways.</p>
+<p>Results that were registered as not reportable &mdash; principally the failed
+synthetic control's divergence chart &mdash; are checked for by name in every
+generated document, so they cannot reappear by accident. An optional input that
+is unavailable writes an explicit marker recording that it was skipped, so a
+stage that did not run can never be mistaken for one that ran and found
+nothing.</p>
 </div></details>
 
 <h3>Reproduction</h3>
@@ -2045,7 +2029,7 @@ which artifact, under which decision &mdash; is in the research record, which
 is generated alongside this report from the same registers.</p>
 </section>
 
-<footer class="stamp">Built 2026-08-24 11:37 from commit <code>29e181c</code> + uncommitted changes. If this does not match the current commit, the page is stale &mdash; reopen the file rather than refreshing.</footer>
+<footer class="stamp">Built 2026-08-24 11:51 from commit <code>31ead10</code> + uncommitted changes. If this does not match the current commit, the page is stale &mdash; reopen the file rather than refreshing.</footer>
 <script>
 (function(){
   const NS='http://www.w3.org/2000/svg';
