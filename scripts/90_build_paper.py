@@ -72,7 +72,9 @@ def fig(fid, number):
     _used.append(fid)
     src = FIG_SOURCE[fid]
     # Academic numbering: the reader sees "Figure 3", not the project's own id.
-    src = src.replace("<figcaption>", f"<figcaption><b>Figure {number}.</b> ", 1)
+    src = src.replace(
+        "<figcaption>",
+        f'<figcaption><span class="fignum">Figure {number}</span> ', 1)
     return src
 
 

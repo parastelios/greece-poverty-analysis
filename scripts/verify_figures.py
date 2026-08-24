@@ -243,6 +243,24 @@ for path in TARGETS:
           not bad_contrast, "; ".join(bad_contrast))
 
     raw_tone_use = re.findall(r"var\(--\$\{(?:tone|s\.tone|r\.tone)\}\)", raw)
+    # An id is a stable identifier, not a position. When the manifest derived
+    # ids from order, removing one figure silently re-pointed every id after
+    # it, and the companion's pre-crisis chapter ended up showing a shift-share
+    # decomposition -- with every check passing, because every id still
+    # resolved to something. The manifest must declare ids explicitly.
+    man_path = ROOT / "data" / "processed" / "report_visual_manifest.csv"
+    src = (ROOT / "scripts" / "81_visual_manifest.py").read_text()
+    declared = re.findall(r'dict\(id="(F\d+)"', src)
+    if sorted(declared) != sorted(set(declared)):
+        dup = sorted({d for d in declared if declared.count(d) > 1})
+        check("manifest figure ids are unique and declared", False,
+              f"duplicate ids: {dup}")
+    elif man_path.exists() and list(pd.read_csv(man_path)["id"]) != declared:
+        check("manifest figure ids are unique and declared", False,
+              "the published manifest does not match the declared ids")
+    else:
+        check("manifest figure ids are unique and declared", True)
+
     check("no chart colour bypasses the tone alias",
           not raw_tone_use,
           f"{len(raw_tone_use)} direct var(--${{tone}}) uses; route them "

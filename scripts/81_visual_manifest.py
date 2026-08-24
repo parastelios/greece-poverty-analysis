@@ -49,14 +49,16 @@ M = [
  dict(id="F3", stage=2, chart_type="panel",
       question="What happened to the line Greek poverty is measured against, "
                "and what does a fixed line show instead?",
-      artifact="e0_extended_panel.csv, anchored_poverty.csv",
-      series="VIEW A: arop_threshold_real for Greece and the EU median, own "
-             "2008 = 100. VIEW B: Greek AROP against anchored poverty on a "
-             "fixed pre-crisis line",
-      interaction="switch between the two views; hover reads the index or both "
-                  "rates; 100 marked as the pre-crisis level in view A, and the "
-                  "two series diverge visibly in view B",
-      fallback="year x real threshold index; year x AROP, anchored poverty",
+      artifact="e0_extended_panel.csv, anchored_poverty.csv, "
+               "analysis_dataset.csv",
+      series="VIEW A: anchored against current-year poverty rates. "
+             "VIEW B: Greek income poverty against every other country. "
+             "VIEW C: the threshold itself, cash against 2008 purchasing power",
+      interaction="switch between the three views; hover reads the rates or "
+                  "the two threshold values, and names any faint country line",
+      fallback="year x anchored and current-year rates; year x Greek and EU "
+               "median income poverty; year x threshold in cash and in 2008 "
+               "purchasing power",
       caveat="The anchored series is an approximation built in this project "
              "and is labelled as such wherever it appears.",
       status_label="descriptive"),
@@ -75,11 +77,12 @@ M = [
       artifact="age_breakdown_arope.csv, age_breakdown_arop.csv, "
                "age_breakdown_deprivation.csv, age_breakdown_low_work_intensity.csv, "
                "arope_by_sex.csv",
-      series="VIEW A: the income-poverty and deprivation components. "
-             "VIEW B: AROPE by age group, with the 65+ series emphasised. "
-             "VIEW C: AROPE by sex, whole population",
-      interaction="switch component/age/sex; hover reads the rate for the "
-                  "group and year",
+      series="VIEW A: income poverty, Greece against every other country. "
+             "VIEW B: AROPE, Greece against every other country. "
+             "VIEW C: AROPE by age group with the 65+ series emphasised. "
+             "VIEW D: AROPE by sex, whole population",
+      interaction="switch measure/age/sex; hover reads the rate for the group "
+                  "and year, and names any faint country line",
       fallback="component x year; age group x year; sex x year; and "
                "the shift-share contributions",
       caveat="These are changes in group-level rates, not evidence about the "
@@ -88,7 +91,7 @@ M = [
              "deterioration among people aged 65+, rather than population "
              "ageing. AROPE components are a UNION and may not be summed.",
       status_label="descriptive"),
- dict(id="F5", stage=3, chart_type="heatmap",
+ dict(id="F6", stage=3, chart_type="heatmap",
       question="Do relationships between the candidate variables hold across "
                "countries and within them, or do they change?",
       artifact="e0_corr_pooled.csv, e0_corr_between.csv, e0_corr_within.csv",
@@ -102,7 +105,7 @@ M = [
       caveat="Correlations identify duplication and sign reversals. They do "
              "NOT select variables.",
       status_label="descriptive"),
- dict(id="F6", stage=3, chart_type="ladder",
+ dict(id="F7", stage=3, chart_type="ladder",
       question="Which measures converged toward the EU and which diverged?",
       artifact="e_descriptive_recovery.csv",
       # CHANGED from dumbbell to a diverging ladder: the 2015 gaps run from
@@ -116,7 +119,7 @@ M = [
                   "and diverging coloured separately",
       fallback="variable, gap 2015, gap 2024, shift, trend",
       caveat="", status_label="descriptive"),
- dict(id="F7", stage=3, chart_type="scatter",
+ dict(id="F8", stage=3, chart_type="scatter",
       question="Does reported difficulty move with concrete affordability "
                "failure, or float free of it?",
       artifact="e0_extended_panel.csv, e3_results.csv",
@@ -129,7 +132,7 @@ M = [
       caveat="Same-instrument corroboration, NOT independent validation: all "
              "items and the outcome come from EU-SILC.",
       status_label="descriptive corroboration"),
- dict(id="F8", stage=4, chart_type="coefficient",
+ dict(id="F9", stage=4, chart_type="coefficient",
       question="Which current-level constructs survive every pre-registered "
                "condition, and which gate stopped the rest?",
       artifact="e1_results.csv",
@@ -234,23 +237,7 @@ M = [
       # country table would allow -- is in the research record.
       caveat="A 2023 snapshot, not a trend; contextual and not modelled.",
       status_label="contextual evidence"),
- dict(id="F18", stage=7, chart_type="panel",
-      question="Was Greece already below the European median on life "
-               "satisfaction before the crisis?",
-      artifact="ess_greece_life_satisfaction.csv",
-      series="Greek mean and the median of the same 12 countries across six "
-             "ESS rounds",
-      interaction="hover reads both values and the gap",
-      fallback="ESS round, Greek mean, median of the same 12, gap, rank",
-      # Kept short on the face of the figure; the reading caveat about the
-      # break and the level-versus-rank distinction is added at build time.
-      caveat="European Social Survey, not Eurostat, and never joined to it. "
-             "Means are approximate reconstructions from publicly displayed "
-             "weighted percentages: no confidence intervals, no tests. The 12 "
-             "countries are held fixed because the full ESS set varies from 22 "
-             "to 30, so all-country ranks are not comparable between rounds.",
-      status_label="descriptive corroboration"),
- dict(id="F19", stage=2, chart_type="dumbbell",
+ dict(id="F18", stage=2, chart_type="dumbbell",
       question="What drove the most recent rise in AROPE: rates within age "
                "groups, or the changing size of those groups?",
       artifact="age_breakdown_shiftshare_decomposition.csv",
@@ -263,7 +250,7 @@ M = [
              "rate changed inside an age group; composition means the size of "
              "the group changed.",
       status_label="descriptive"),
- dict(id="F20", stage=3, chart_type="dumbbell",
+ dict(id="F19", stage=3, chart_type="dumbbell",
       question="Which relationships with reported hardship change when the "
                "comparison moves from between countries to within them?",
       artifact="e0_corr_between.csv, e0_corr_within.csv",
@@ -282,18 +269,32 @@ M = [
 # sits either on the main reading path or behind an expandable. A figure owned
 # by nothing is a figure nobody has to justify.
 OWNER = {
-    1: ("V2-1.2", "main"), 2: ("V2-1.2", "main"), 3: ("V2-2.1", "main"),
-    4: ("V2-2.1", "main"), 5: ("V2-2.1", "expandable"),
-    6: ("V2-3.2", "expandable"), 7: ("V2-4.X", "main"), 8: ("V2-3.1", "main"),
-    9: ("V2-4.C2", "main"), 10: ("V2-4.C1", "expandable"),
-    11: ("V2-5.C2", "main"), 12: ("V2-5.C2", "main"), 13: ("V2-5.Y", "main"),
-    14: ("V2-6.1", "main"), 15: ("CTX-1", "main"), 16: ("CTX-4", "expandable"),
-    17: ("CTX-2", "main"), 18: ("CTX-7", "main"),
-    19: ("V2-2.1", "expandable"), 20: ("V2-3.1", "expandable"),
+    "F1": ("V2-1.2", "main"),
+    "F2": ("V2-1.2", "main"),
+    "F3": ("V2-2.1", "main"),
+    "F4": ("V2-2.1", "main"),
+    "F5": ("V2-2.1", "expandable"),
+    "F6": ("V2-3.2", "expandable"),
+    "F7": ("V2-4.X", "main"),
+    "F8": ("V2-3.1", "main"),
+    "F9": ("V2-4.C2", "main"),
+    "F10": ("V2-4.C1", "expandable"),
+    "F11": ("V2-5.C2", "main"),
+    "F12": ("V2-5.C2", "main"),
+    "F13": ("V2-5.Y", "main"),
+    "F14": ("V2-6.1", "main"),
+    "F15": ("CTX-1", "main"),
+    "F16": ("CTX-4", "expandable"),
+    "F17": ("CTX-2", "main"),
+    "F18": ("V2-2.1", "expandable"),
+    "F19": ("V2-3.1", "expandable"),
 }
+seen_ids = [e["id"] for e in M]
+if len(set(seen_ids)) != len(seen_ids):
+    dupes = sorted({i for i in seen_ids if seen_ids.count(i) > 1})
+    raise SystemExit(f"duplicate figure ids: {dupes}")
 for i, e in enumerate(M, start=1):
-    e["id"] = f"F{i}"
-    owner, path = OWNER[i]
+    owner, path = OWNER[e["id"]]
     e["claim_id"] = owner if owner.startswith("V2") else ""
     e["context_id"] = owner if owner.startswith("CTX") else ""
     e["reading_path"] = path

@@ -269,19 +269,6 @@ ess_table = (
       "and 2020-22, so the decade covering the depth of the adjustment and the "
       "recovery is unobserved.</p></div>")
 
-FIGS["F18"] = dict(
-    caption="Greece was already below the median before the crisis, lost about "
-            "0.8 points by 2010/11, and recovered its level but not its position",
-    kind="panel",
-    payload=v18a, series=f18a, first="ESS round",
-    extra_caveat=(
-        "The line BREAKS between 2010/11 and 2020-22 because no Greek round "
-        "was run there: the depth of the adjustment and the recovery are both "
-        "unobserved, and nothing should be read across the gap. Greek LEVEL "
-        "recovered to roughly its pre-crisis value while the gap to the median "
-        "stayed wider than before, so the rank must not be read as the level."))
-
-
 def build(fid, spec):
     m = man.loc[fid]
     views = spec.get("views")
@@ -383,7 +370,6 @@ BASE = ce.base_style((OUT / "report.html").read_text())
 F15 = build("F15", FIGS["F15"])
 F16 = build("F16", FIGS["F16"])
 F17 = build("F17", FIGS["F17"])
-F18 = build("F18", FIGS["F18"])
 
 # Connected discussion, not six equal cards: each entry is introduced by prose
 # that says why it appears here and how it relates to the one before.
@@ -497,7 +483,6 @@ plausible anyway &mdash; labelled as what it is.</p>
 {DISC['CTX-1']}{ctx_block('CTX-1', '')}
 {ESS_LEAD}
 {ess_table}
-{F18}
 {ctx_block('CTX-7', ESS_CTX)}
 {DISC['CTX-2']}{ctx_block('CTX-2', '')}
 {F17}

@@ -44,7 +44,7 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `p6-rewrite` |
-| HEAD | `af5851f` Figure pass, part 3: ESS comparison led by a table |
+| HEAD | `b396977` Fix marks and labels rendering in default black |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-24 |
 | Frozen V1 reference | `v1-final` |
@@ -3339,6 +3339,9 @@ Deviations must be disclosed in the stage that made them, not only here.
 | C-58 | 2026-08-23 | The first version of the contrast check could not fail | It read only the LAST definition of each token, so a wrong value in the `@media` block passed while the `[data-theme]` block held a good one -- proven by a negative test that wrongly passed | Rewritten to check every theme block separately; the same negative test now fails and names the offending value. A second defect surfaced while fixing it: the new code shadowed `blocks`, the figure list in the same scope, breaking every check after it |
 | C-59 | 2026-08-23 | Every chart redraw appended another legend, and the stale one was left as a row of bare text | `mount()` removed old `<svg>` elements before redrawing but not the legend div. Because a legend's own swatches ARE `<svg>`, the cleanup stripped the stale legend's swatches and left its labels behind, so a figure could show its series named three times | Cleanup now removes the previous drawing's direct `<svg>` AND `.legend` children |
 | C-60 | 2026-08-23 | The legend repeated series already named at the end of their own lines | Naming a series twice makes the reader look away from the data to learn something written beside it | The legend now carries ONLY series the chart did not label directly; where every series is end-labelled there is no legend |
+| C-61 | 2026-08-23 | Tones `warn` and `ok` were never defined as CSS variables | `var(--warn)` with no fallback makes an SVG fill default to BLACK, so marks and labels on three figures were not low-contrast but literally black. The earlier contrast pass checked a hardcoded list of tokens and never asked which tones figures actually use | Every payload tone now maps to a defined per-theme chart token; the check reads tones from the payloads, resolves them through the engine's alias map, and fails on any that is used but undefined |
+| C-62 | 2026-08-23 | Two labels built their fill from the raw tone inside a style string, bypassing the alias map | These were the two visible failures: 'unsupported' in the conditional figure and 'sign reverses' in the correlation comparison | Both routed through `toneVar()`; a check now fails any direct `var(--${tone})` |
+| C-63 | 2026-08-23 | Removing one figure silently re-pointed every id after it | The manifest DERIVED ids from position, so the companion's pre-crisis chapter rendered a shift-share decomposition instead of the ESS comparison, and every check passed because every id still resolved to something. The declared ids had drifted unnoticed for the same reason: a duplicate F5, a missing F9, a jump from F8 to F10 | Ids are declared on each entry and are authoritative; a check fails on duplicates or on any divergence between declared and published ids |
 
 ## Artifact Index
 

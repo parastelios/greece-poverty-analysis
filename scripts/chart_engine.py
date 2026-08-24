@@ -107,6 +107,7 @@ CSS = """
 background:var(--surface-1);overflow:hidden}
 .figure > figcaption{padding:.9rem 1.1rem .2rem;font:600 .95rem/1.35
 ui-sans-serif,system-ui,sans-serif;color:var(--text-primary)}
+.fignum{display:inline-block;font:700 .74rem/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--chart-label);margin-right:.5rem;vertical-align:.08em}
 .fig-meta{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;
 padding:0 1.1rem .7rem}
 .badge{font:600 .66rem/1 ui-sans-serif,system-ui,sans-serif;text-transform:uppercase;
@@ -444,8 +445,15 @@ JS = r"""
     // labelled directly, there is no legend at all.
     const ended=new Set(ends.map(e=>e.s));
     const unlabelled=d.series.filter(s=>s.label&&!ended.has(s));
-    if(unlabelled.length){
+    if(unlabelled.length||d.contextLabel){
       const lg=document.createElement('div');lg.className='legend';
+      if(d.contextLabel){
+        const ci=document.createElement('span');ci.className='lg-item';
+        ci.innerHTML=`<svg width="22" height="8" aria-hidden="true"><line x1="0" y1="4"
+          x2="22" y2="4" stroke="var(--chart-neutral)" stroke-width="1"
+          opacity=".55"/></svg>${d.contextLabel}`;
+        lg.appendChild(ci);
+      }
       unlabelled.forEach(s=>{
         const i=document.createElement('span');i.className='lg-item';
         i.innerHTML=`<svg width="22" height="8" aria-hidden="true"><line x1="0" y1="4" x2="22" y2="4"

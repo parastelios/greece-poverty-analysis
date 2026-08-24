@@ -72,6 +72,7 @@ FIGS["F1"] = dict(
     payload={"years": [int(y) for y in yrs], "dp": 1,
              "yLabel": "% of households",
              "context": ctx1,
+             "contextLabel": "Each other EU country: reported hardship",
              "alt": "Greek reported hardship against income poverty, 2015 to "
                     "2024, with every other EU country's hardship series drawn "
                     "faintly behind. Greece sits clear above the whole spread",
@@ -145,18 +146,47 @@ v3b = {"years": ay, "dp": 1, "yLabel": "% of people",
                    "weight": m["weight"], "values": [round(v, 1) for v in vs]}
                   for l, vs, m in f3b.rows]}
 
+# Greek income poverty against every other country, so the flatness of the
+# official line is visible as a fact about Greece rather than asserted.
+ctx3 = []
+for g, sub in panel.dropna(subset=["arop"]).groupby("geo"):
+    if g == "EL":
+        continue
+    s2 = sub.set_index("time").arop
+    vals = [float(s2.get(y)) if y in s2.index and pd.notna(s2.get(y)) else None
+            for y in yrs]
+    if sum(v is not None for v in vals) >= 2:
+        ctx3.append({"label": NAMES.get(g, g), "values": vals})
+
+f3c = ce.Series([str(int(y)) for y in yrs], dp=1)
+f3c.add("Greece: income poverty", [float(gr.arop.get(y)) for y in yrs],
+        tone="gr", style="solid", weight="strong")
+f3c.add("EU median: income poverty", [float(med.arop.get(y)) for y in yrs],
+        tone="eu", style="dashed", weight="normal")
+v3c = {"years": [int(y) for y in yrs], "dp": 1, "yLabel": "% of people",
+       "context": ctx3, "contextLabel": "Each other EU country: income poverty",
+       "alt": "Greek income poverty against every other EU country: Greece "
+              "sits inside the European range and barely moves",
+       "series": [{"label": l, "tone": m["tone"], "style": m["style"],
+                   "weight": m["weight"], "values": [round(v, 1) for v in vs]}
+                  for l, vs, m in f3c.rows]}
+
 FIGS["F3"] = dict(
-    caption="The Greek poverty line is back near its cash peak and a fifth "
-            "below it in what it buys",
-    kind="panel", series=f3, payload=v3a,
-    views=[("What the line is worth", v3a),
-           ("Who falls below a fixed line", v3b)],
-    view_series=[f3, f3b],
+    caption="Who counts as poor barely moved; what the poverty line buys fell "
+            "by a fifth",
+    kind="panel", series=f3b, payload=v3b,
+    views=[("Who falls below a fixed line", v3b),
+           ("Greece against every other country", v3c),
+           ("What the line itself is worth", v3a)],
+    view_series=[f3b, f3c, f3],
     extra_caveat=(
-        "Both series are Greece only and support no cross-country statement: "
-        "they show that the Greek line fell against Greece's own 2008 standard, "
-        "not that it fell further than anyone else's. The second view counts "
-        "people rather than euros."),
+        "The first two views count PEOPLE; the third counts EUROS. In the "
+        "third, both lines are the same official threshold: one as published "
+        "in each year's own money, the other converted into what it could buy "
+        "in 2008. The cash line recovers and the purchasing-power line does "
+        "not, and that difference is why the first view's two counts diverge. "
+        "The first and third views are Greece only and support no "
+        "cross-country statement."),
     first="Series")
 
 # ---- F4 the bridge -------------------------------------------------------
@@ -220,27 +250,50 @@ FIGS["F4"] = dict(
 # groups -- so the components view carries the two that do, and says so rather
 # than silently dropping one. The empty first view that shipped in the previous
 # build came from filtering it for a TOTAL that does not exist.
-comp = {}
-for f, col, lbl in [("age_breakdown_arop.csv", "arop_rate", "Income poverty"),
-                    ("age_breakdown_deprivation.csv", "deprivation_rate",
-                     "Material deprivation")]:
-    d = pd.read_csv(PROC / f)
-    d = d[(d.geo == "EL") & (d.age == "TOTAL")]
-    comp[lbl] = d.set_index("time")[col]
-cy = sorted(set.intersection(*[set(s.index) for s in comp.values()]))
-assert len(cy) >= 2, "components view needs at least two years"
-f5 = ce.Series([str(int(y)) for y in cy], dp=1)
-for (lbl, s), tone, style in zip(comp.items(), ["gr", "series-3"], ["solid", "solid"]):
-    f5.add(lbl, [float(s.get(y)) for y in cy], tone=tone, style=style, weight="normal")
-v5a = {"years": [int(y) for y in cy], "dp": 1, "yLabel": "% of people",
-       "alt": "Two of the three AROPE components for Greece: income poverty "
-              "and material deprivation. Low work intensity has no national "
-              "total in this source and is not shown",
-       "series": [{"label": l, "tone": m["tone"], "style": m["style"],
-                   "weight": m["weight"], "values": [round(v, 1) for v in vs]}
-                  for l, vs, m in f5.rows]}
-age = pd.read_csv(PROC / "age_breakdown_arope.csv")
-age = age[age.geo == "EL"]
+# One measure per view, each against the whole EU distribution. Two Greek
+# component lines on one axis invited comparison between them, which is not the
+# question; the question is where Greece sits on each.
+def _component_view(col, label, ctx_label, shown=None):
+    shown = shown or label.lower()
+    sub = panel.dropna(subset=[col])
+    cyy = sorted(sub.time.unique())
+    gser = sub[sub.geo == "EL"].set_index("time")[col]
+    mser = sub.groupby("time")[col].median()
+    ser = ce.Series([str(int(y)) for y in cyy], dp=1)
+    ser.add(f"Greece: {shown}",
+            [float(gser.get(y)) if y in gser.index else None for y in cyy],
+            tone="gr", style="solid", weight="strong")
+    ser.add(f"EU median: {shown}",
+            [float(mser.get(y)) if y in mser.index else None for y in cyy],
+            tone="eu", style="dashed", weight="normal")
+    others = []
+    for g, s2 in sub.groupby("geo"):
+        if g == "EL":
+            continue
+        ss = s2.set_index("time")[col]
+        vals = [float(ss.get(y)) if y in ss.index and pd.notna(ss.get(y)) else None
+                for y in cyy]
+        if sum(v is not None for v in vals) >= 2:
+            others.append({"label": NAMES.get(g, g), "values": vals})
+    view = {"years": [int(y) for y in cyy], "dp": 1, "yLabel": "% of people",
+            "context": others, "contextLabel": ctx_label,
+            "alt": f"{label} for Greece against the EU median, with every "
+                   f"other country drawn faintly behind",
+            "series": [{"label": l, "tone": m["tone"], "style": m["style"],
+                        "weight": m["weight"],
+                        "values": [None if v is None else round(v, 1) for v in vs]}
+                       for l, vs, m in ser.rows]}
+    return ser, view
+
+
+f5, v5a = _component_view("arop", "Income poverty",
+                          "Each other EU country: income poverty")
+f5e, v5e = _component_view("arope", "AROPE",
+                           "Each other EU country: AROPE", shown="AROPE")
+
+age_all = pd.read_csv(PROC / "age_breakdown_arope.csv")
+age = age_all[age_all.geo == "EL"]
+age_eu = age_all[age_all.geo == "EU27_2020"]
 # Reader-facing text, not HTML entities: "18&ndash;24" leaked into a chart
 # label and a table cell in the previous build.
 AGEL = {"Y_LT18": "Under 18", "Y18-24": "18-24", "Y25-49": "25-49",
@@ -258,8 +311,15 @@ for g, tone, w in [("TOTAL", "text-muted", "light"), ("Y_LT18", "series-4", "nor
         continue
     f5b.add(AGEL[g], [float(s.get(y)) if y in s.index else None for y in ay2],
             tone=tone, style="solid", weight=w)
+for g, lbl in [("Y_GE65", "EU median: 65 and over"), ("TOTAL", "EU median: all ages")]:
+    s = age_eu[age_eu.age == g].set_index("time").arope_rate
+    if s.empty:
+        continue
+    f5b.add(lbl, [float(s.get(y)) if y in s.index else None for y in ay2],
+            tone="eu", style="dashed", weight="light" if g == "TOTAL" else "normal")
 v5b = {"years": [int(y) for y in ay2], "dp": 1, "yLabel": "% of age group",
-       "alt": "Greek AROPE by age group, with 65 and over emphasised",
+       "alt": "Greek AROPE by age group with 65 and over emphasised, against "
+              "the EU median for the same band and for all ages",
        "series": [{"label": l, "tone": m["tone"], "style": m["style"],
                    "weight": m["weight"],
                    "values": [None if v is None else round(v, 1) for v in vs]}
@@ -298,15 +358,22 @@ for g, tone, w in [("T", "chart-neutral", "light"), ("F", "gr", "strong"),
         continue
     f5d.add(SEXL[g], [float(s.get(y)) if y in s.index else None for y in sy],
             tone=tone, style="solid", weight=w)
+for g, lbl in [("F", "EU median: women"), ("M", "EU median: men")]:
+    s = sx[(sx.geo == "EU27_2020") & (sx.sex == g)].set_index("time").arope_rate
+    if s.empty:
+        continue
+    f5d.add(lbl, [float(s.get(y)) if y in s.index else None for y in sy],
+            tone="eu", style="dashed", weight="normal" if g == "F" else "light")
 v5d = {"years": [int(y) for y in sy], "dp": 1, "yLabel": "% of people",
-       "alt": "Greek AROPE by sex, whole population: women above men in every "
-              "year, with the difference widening after 2022",
+       "alt": "Greek AROPE by sex against the EU median for the same sex: "
+              "Greek women above Greek men in every year, both far above their "
+              "European counterparts",
        "series": [{"label": l, "tone": m["tone"], "style": m["style"],
                    "weight": m["weight"],
                    "values": [None if v is None else round(v, 1) for v in vs]}
                   for l, vs, m in f5d.rows]}
 
-FIGS["F19"] = dict(
+FIGS["F18"] = dict(
     caption="The most recent rise came from rates within age groups, not from "
             "the changing size of those groups",
     kind="dumbbell", payload=v5c, series=f5c, first="Age group")
@@ -317,10 +384,9 @@ FIGS["F5"] = dict(
     payload=v5a,
     # 3. Reader-facing tab labels. "Floating poverty" and "shift-share" are
     # methods vocabulary and do not belong in navigation.
-    views=[("Income-poverty and deprivation components", v5a),
-           ("AROPE by age", v5b),
-           ("By sex", v5d)],
-    view_series=[f5, f5b, f5d],
+    views=[("Income poverty", v5a), ("AROPE", v5e),
+           ("By age", v5b), ("By sex", v5d)],
+    view_series=[f5, f5e, f5b, f5d],
     # Naming the first view "AROPE components" while showing two of three would
     # let a reader take it for a complete decomposition. The absence is stated
     # rather than implied.
@@ -418,7 +484,7 @@ households report.</p>
 and does not resolve the puzzle. The next question is what the aggregate
 conceals.</p>
 {built['F5']}
-{built['F19']}
+{built['F18']}
 <p class="signpost"><strong>Two different checks, not one.</strong> AROPE
 broadens the <em>concept</em> of poverty: it counts more kinds of disadvantage.
 Anchored poverty changes the <em>yardstick</em>: it holds the income line fixed

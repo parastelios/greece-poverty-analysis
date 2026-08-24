@@ -64,11 +64,18 @@ _used = []
 
 
 def fig(fid):
-    """Place a built figure. Each may be placed exactly once."""
+    """Place a built figure, numbered in the order the reader meets it.
+
+    The internal id is not a figure number. The report places twenty figures,
+    the paper six and the companion five, so a shared number would be wrong in
+    two documents out of three. Each numbers its own, in reading order.
+    """
     if fid in _used:
         raise SystemExit(f"{fid} placed twice")
     _used.append(fid)
-    return FIG_SOURCE[fid]
+    return FIG_SOURCE[fid].replace(
+        "<figcaption>",
+        f'<figcaption><span class="fignum">Figure {len(_used)}</span> ', 1)
 
 
 # Presentation only. The claim set is frozen and is NOT edited here: this
@@ -719,7 +726,7 @@ it: when AROPE last rose, did that come from rates worsening inside age groups,
 or from the groups themselves changing size? The two have different
 implications, and they can be told apart exactly rather than estimated.</p>
 
-{fig('F19')}
+{fig('F18')}
 
 <p>It came from rates within groups. Composition contributed almost nothing.
 That matters because a rise driven by an ageing population would be a different
@@ -960,7 +967,7 @@ question the correlation structure answers directly.</p>
 narrower: what happens to each measure's relationship with reported hardship
 when the scope changes from between countries to within them.</p>
 
-{fig('F20')}
+{fig('F19')}
 
 <p>Most relationships survive the change with their sign intact and their
 strength reduced. One does not: the real poverty threshold correlates weakly and
@@ -1533,14 +1540,11 @@ rounds those percentages, so the means are approximate at that precision. There
 are no standard errors and no confidence intervals, and nothing inferential is
 built on them.</p>
 
-<p>Six observations across two decades, with a ten-year hole in the middle,
-are read more easily as rows than as a line. The chart beneath the table carries
-the level, because a level that recovers while a position does not is easier to
-see than to read.</p>
+<p>Six observations across two decades, with a ten-year hole in the middle, do
+not make a line. They make a short table, which can carry the gap as a stated
+fact rather than as a break in a chart.</p>
 
 {block('ess-table')}
-
-{fig('F18')}
 
 <p>Three things happen in sequence, and separating them is the point. Greece was
 <em>already</em> about 0.8 points below the median of these twelve countries

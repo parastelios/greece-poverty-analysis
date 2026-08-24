@@ -13,6 +13,14 @@ import pandas as pd
 
 import chart_engine as ce
 
+NAMES = {"EL": "Greece", "BG": "Bulgaria", "RO": "Romania", "HU": "Hungary",
+         "LU": "Luxembourg", "CY": "Cyprus", "LV": "Latvia", "LT": "Lithuania",
+         "EE": "Estonia", "ES": "Spain", "PT": "Portugal", "IT": "Italy",
+         "FR": "France", "DE": "Germany", "NL": "Netherlands", "BE": "Belgium",
+         "AT": "Austria", "IE": "Ireland", "FI": "Finland", "SE": "Sweden",
+         "DK": "Denmark", "PL": "Poland", "CZ": "Czechia", "SK": "Slovakia",
+         "SI": "Slovenia", "HR": "Croatia", "MT": "Malta"}
+
 ROOT = Path(__file__).resolve().parents[1]
 PROC, OUT = ROOT / "data" / "processed", ROOT / "output"
 man = pd.read_csv(PROC / "report_visual_manifest.csv").set_index("id")
@@ -108,7 +116,7 @@ v6h = {"rows": rows6h, "dp": 3, "legendA": "within countries",
        "alt": "Each measure's correlation with reported hardship, between "
               "countries against within countries, ordered by how much the "
               "two differ; reversals are marked"}
-FIGS["F20"] = dict(
+FIGS["F19"] = dict(
     caption="One relationship reverses sign when the comparison moves from "
             "between countries to within them",
     kind="dumbbell", payload=v6h, series=f6h, first="Measure")
@@ -278,9 +286,23 @@ for v, dp in [("ltu_rate", 1), ("aic_pps_pc", 0), ("wadj_a01", 1)]:
     s.add("Greece", [float(gr[v].get(y)) for y in yrs])
     s.add("EU median", [float(med[v].get(y)) for y in yrs])
     series10.append(s)
+    others10 = []
+    for g, s2 in panel.dropna(subset=[v]).groupby("geo"):
+        if g == "EL":
+            continue
+        ss = s2.set_index("time")[v]
+        vals = [float(ss.get(y)) if y in ss.index and pd.notna(ss.get(y)) else None
+                for y in yrs]
+        if sum(x is not None for x in vals) >= 2:
+            others10.append({"label": NAMES.get(g, g),
+                             "values": [None if x is None else round(x, dp)
+                                        for x in vals]})
     views10.append((ce.name(v), {
         "years": [int(y) for y in yrs], "dp": dp, "yLabel": UNIT10[v],
-        "alt": f"{ce.name(v)} for Greece against the EU median, in {UNIT10[v]}",
+        "context": others10,
+        "contextLabel": f"Each other EU country: {ce.name(v).lower()}",
+        "alt": f"{ce.name(v)} for Greece against the EU median and every "
+               f"other country, in {UNIT10[v]}",
         "series": [{"label": "Greece", "tone": "gr", "style": "solid",
                     "weight": "strong",
                     "values": [round(float(gr[v].get(y)), dp) for y in yrs]},
@@ -365,7 +387,7 @@ constrains the answer.</p>
 its distance from Europe; wages and material resources moved further away. The
 hardship gap itself did neither &mdash; it is flat.</p>
 {b['F6']}
-{b['F20']}
+{b['F19']}
 
 <h2>Stage 4 &mdash; Current conditions</h2>
 <p>Each construct is tested one at a time against relative income poverty and

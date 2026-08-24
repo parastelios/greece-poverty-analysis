@@ -56,15 +56,32 @@ for n in (1, 2, 3, 4):
 
 # A general reader needs fewer charts than the technical report carries, and
 # each has to earn its place in the story rather than complete the record.
-NARRATIVE_FIGS = ["F1", "F3", "F11", "F14", "F18"]
+NARRATIVE_FIGS = ["F1", "F3", "F11", "F14"]
+
+# Non-figure blocks that travel from the batch pages. The pre-crisis comparison
+# is six rows with a decade missing from the middle, which is a table.
+BLOCKS = {}
+for _n in (1, 2, 3, 4):
+    _page = (OUT / f"batch{_n}.html").read_text()
+    for _m in re.finditer(r'<div class="(ess-table)">.*?</p></div>', _page, re.S):
+        BLOCKS[_m.group(1)] = _m.group(0)
+
+
+def block(key):
+    if key not in BLOCKS:
+        raise SystemExit(f"block '{key}' not found in any batch page")
+    return BLOCKS[key]
 _used = []
 
 
 def fig(fid):
+    """Place a built figure, numbered in the order the reader meets it."""
     if fid in _used:
         raise SystemExit(f"{fid} placed twice")
     _used.append(fid)
-    return FIG_SOURCE[fid]
+    n = len(_used)
+    return FIG_SOURCE[fid].replace(
+        "<figcaption>", f'<figcaption><span class="fignum">Figure {n}</span> ', 1)
 
 
 def finding(cid):
@@ -665,7 +682,7 @@ to know.</p>
 <p>A different survey can, and what follows is kept deliberately separate: a
 different instrument, shown on its own, never joined to the other series.</p>
 
-{fig('F18')}
+{block('ess-table')}
 
 <p>Three things happen in order. Greece was <em>already</em> about 0.8 points
 below the middle of this group before the crisis. Its level then fell sharply,
