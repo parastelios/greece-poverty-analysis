@@ -205,13 +205,19 @@ background:var(--accent-soft,rgba(61,111,180,.12));color:var(--eu)}
 /* Correlation sign is a value scale, not a Greece/EU comparison, so it may
    not borrow those two hues. Magenta/teal is colour-blind safe. */
 :root{--div-neg:#a2306f;--div-pos:#127070;--div-zero:#6f6f6f;
---chart-label:#55534e;--chart-neutral:#7a7873;--chart-neutral-edge:#f4f3ef}
+--chart-label:#55534e;--chart-neutral:#7a7873;--chart-neutral-edge:#f4f3ef;
+--chart-warn:#a8500c;--chart-ok:#1d7a4f;--chart-s3:#127a56;--chart-s4:#8a5a00;
+--chart-s5:#4a3aa7;--chart-gr:#1d63bd;--chart-eu:#bf4a17}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
 --div-neg:#e07ab5;--div-pos:#4fc7c7;--div-zero:#9a9a9a;
---chart-label:#c8c6bf;--chart-neutral:#9a9892;--chart-neutral-edge:#141413}}
+--chart-label:#c8c6bf;--chart-neutral:#9a9892;--chart-neutral-edge:#141413;
+--chart-warn:#f0a35e;--chart-ok:#5fd39b;--chart-s3:#4ecfa0;--chart-s4:#e8b44a;
+--chart-s5:#a79cf0;--chart-gr:#5ba0f0;--chart-eu:#f08a5a}}
 :root[data-theme="dark"]{
 --div-neg:#e07ab5;--div-pos:#4fc7c7;--div-zero:#9a9a9a;
---chart-label:#c8c6bf;--chart-neutral:#9a9892;--chart-neutral-edge:#141413}
+--chart-label:#c8c6bf;--chart-neutral:#9a9892;--chart-neutral-edge:#141413;
+--chart-warn:#f0a35e;--chart-ok:#5fd39b;--chart-s3:#4ecfa0;--chart-s4:#e8b44a;
+--chart-s5:#a79cf0;--chart-gr:#5ba0f0;--chart-eu:#f08a5a}
 .gridline{stroke:var(--border);stroke-width:1}
 .axis-label{fill:var(--chart-label);font:11px ui-sans-serif,system-ui,sans-serif}
 .line-faint{fill:none;stroke:var(--chart-neutral);stroke-width:1;opacity:.34}
@@ -386,7 +392,9 @@ looks better.</p>
   // the host document and carries one value for both themes; the chart needs a
   // neutral that adapts, so it is aliased rather than chased through every
   // builder's payload.
-  const TONE_ALIAS={'text-muted':'chart-neutral'};
+  const TONE_ALIAS={'text-muted':'chart-neutral','warn':'chart-warn',
+    'ok':'chart-ok','series-3':'chart-s3','series-4':'chart-s4',
+    'series-5':'chart-s5','gr':'chart-gr','eu':'chart-eu'};
   function toneVar(tone){
     const k=TONE_ALIAS[tone]||tone||'chart-neutral';
     return `var(--${k})`;
@@ -708,7 +716,7 @@ looks better.</p>
         style:r.strong?'font-weight:700':''});
       svg.appendChild(lbl);fitLabel(lbl,r.label,padL-12,ms,!!r.strong);
       const vt=el('text',{x:W-padR+8,y:y+4,class:'axis-label',
-        style:`fill:var(--${tone});font-weight:600`});
+        style:`fill:${toneVar(tone)};font-weight:600`});
       svg.appendChild(vt);fitLabel(vt,r.right||'',padR-12,ms,true);
     });
     if(typeof ms!=='undefined'&&ms.done)ms.done();
@@ -839,7 +847,7 @@ looks better.</p>
         style:r.strong?'font-weight:700':''});
       svg.appendChild(lb);fitLabel(lb,r.label,padL-12,ms,!!r.strong);
       if(r.right){const rt=el('text',{x:W-padR+8,y:y+4,class:'axis-label',
-        style:`fill:var(--${tone});font-weight:600`});
+        style:`fill:${toneVar(tone)};font-weight:600`});
         svg.appendChild(rt);fitLabel(rt,r.right,padR-12,ms,true);}
       marks.push({y:y,r:r});});
     if(typeof ms!=='undefined'&&ms.done)ms.done();

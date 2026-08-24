@@ -197,11 +197,32 @@ for path in TARGETS:
             out.append((dark, body))
         return out
 
-    LIGHT_BG, DARK_BG = "#fcfcfb", "#1a1a19"
-    # token, minimum ratio: label text needs 4.5, data marks need 3.0
-    TOKENS = [("chart-label", 4.5), ("chart-neutral", 3.0),
-              ("div-neg", 3.0), ("div-pos", 3.0), ("div-zero", 3.0)]
     bad_contrast = []
+    LIGHT_BG, DARK_BG = "#fcfcfb", "#1a1a19"
+    # Which tones do these figures actually use? Read them from the payloads and
+    # resolve each through the engine's alias map, so a tone that is used but
+    # never defined is caught rather than silently rendering black.
+    ALIAS = dict(re.findall(r"'([a-z0-9-]+)':'([a-z0-9-]+)'",
+                            re.search(r"TONE_ALIAS=\{(.*?)\};", raw, re.S).group(1))
+                 ) if re.search(r"TONE_ALIAS=\{(.*?)\};", raw, re.S) else {}
+    used = set()
+    for m in re.finditer(r'<script type="application/json"[^>]*>(.*?)</script>',
+                         raw, re.S):
+        try:
+            d = json.loads(m.group(1).replace("<\\/", "</"))
+        except Exception:
+            continue
+        for item in (d.get("rows") or []) + (d.get("series") or []):
+            if isinstance(item, dict) and item.get("tone"):
+                used.add(ALIAS.get(item["tone"], item["tone"]))
+    undefined = sorted(u for u in used
+                       if not re.search(rf"--{re.escape(u)}\s*:", raw))
+    if undefined:
+        bad_contrast.append(
+            f"tones used but never defined (render as black): {undefined}")
+    # token, minimum ratio: label text needs 4.5, data marks need 3.0
+    TOKENS = ([("chart-label", 4.5), ("chart-neutral", 3.0)]
+              + [(u, 3.0) for u in sorted(used)])
     token_blocks = _blocks(raw)
     if not token_blocks:
         bad_contrast.append("no chart token block found")
@@ -220,6 +241,12 @@ for path in TARGETS:
                     f"{got:.2f}:1 (needs {need})")
     check("chart colours meet contrast minimums in both themes",
           not bad_contrast, "; ".join(bad_contrast))
+
+    raw_tone_use = re.findall(r"var\(--\$\{(?:tone|s\.tone|r\.tone)\}\)", raw)
+    check("no chart colour bypasses the tone alias",
+          not raw_tone_use,
+          f"{len(raw_tone_use)} direct var(--${{tone}}) uses; route them "
+          f"through toneVar() or an undefined tone renders black")
 
     # 2c. VIEW COUNT MATCHES THE MANIFEST, so scope cannot shrink silently.
     manp = ROOT / "data" / "processed" / "report_visual_manifest.csv"
