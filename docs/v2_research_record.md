@@ -44,7 +44,7 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `p6-rewrite` |
-| HEAD | `5abb37a` Fix NaN p-values printing as <0.0001; verify summary tables |
+| HEAD | `29e181c` Fix chart label overflow found by visual inspection |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-24 |
 | Frozen V1 reference | `v1-final` |
@@ -3326,6 +3326,8 @@ Deviations must be disclosed in the stage that made them, not only here.
 | C-51 | 2026-08-23 | Row labels overflowed their charts, the worst by 134px, cut mid-word | Every renderer sized its label gutter from a fixed constant or a per-character estimate. The estimate (5.9px/char) was calibrated on short country names and underestimated the real bold label font (~7.6px/char); no automated check can see clipping, only rendering can | `labelGutter()` measures the widest label with `getComputedTextLength()` at bold weight, and `fitLabel()` truncates with an ellipsis plus a `<title>` tooltip when the width cap binds. Applied to coefficient, dumbbell, ladder, panel end-labels and the heatmap column |
 | C-52 | 2026-08-23 | The measured gutter could silently regress below the fixed value it replaced | `getComputedTextLength()` returns 0 when a chart mounts without layout - inside a closed `details`, an inactive view tab, or a collapsed pane - which would hand back the minimum gutter, narrower than the old constant | Both helpers fall back to a 7.6px/char estimate when measurement returns zero, so the unmeasurable case is never worse than before |
 | C-53 | 2026-08-23 | F12's row labels read `focal | counterpart`, up to 48 characters | No gutter sizing can fit that; all sixteen labels were clipped | Label shortened to the focal measure, with the counterpart kept in the tooltip and spelled out in the fallback table |
+| C-54 | 2026-08-23 | F18's x-axis labelled the synthetic 2016 slot, implying a missing 2016 observation rather than no ESS round across 2011-2021 | The null slot exists only to hold the gap open and break the line | Opt-in `hiddenTicks` option on the panel renderer, applied to F18 alone; the position keeps its true horizontal distance and only the label is suppressed |
+| C-55 | 2026-08-23 | Labels were truncated at desktop width even where they fitted: 50 at 824px, including 'Netherlands' | Charts are built into a DETACHED svg and inserted at the end, so `getComputedTextLength()` returned 0 for every node during drawing and `fitLabel` always used its fallback estimate, which is calibrated on bold text and overestimates regular labels | A shared `measurer()` bound to the LIVE host serves both helpers, so measurement never runs against the detached tree. Desktop truncation fell from 50 to 1, with clipping still zero at both 824px and the 320px floor |
 
 ## Artifact Index
 

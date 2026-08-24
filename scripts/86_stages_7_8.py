@@ -221,6 +221,7 @@ f18b.add("Greece's rank, 1 = worst",
          [float(v) for v in ess.balanced_12_rank_worst])
 
 v18a = {"years": eyrs, "dp": 2, "yLabel": "Life satisfaction, 0-10 (approx.)",
+        "hiddenTicks": [2016],
         "alt": "Greek life satisfaction against the median of the same twelve "
                "countries across six ESS rounds; Greece is below the median in "
                "every round, falls to 5.64 in 2010/11 and recovers to 6.42; "
@@ -235,7 +236,7 @@ v18a = {"years": eyrs, "dp": 2, "yLabel": "Life satisfaction, 0-10 (approx.)",
              "values": gapped(float(v)
                               for v in ess.balanced_12_median_approx)}]}
 
-v18b = {"years": eyrs, "dp": 0, "invertY": True,
+v18b = {"years": eyrs, "dp": 0, "invertY": True, "hiddenTicks": [2016],
         "yLabel": "Rank among the same 12, 1 = worst",
         "alt": "Greece's rank among the same twelve countries, worst first; "
                "third or fourth before the crisis, worst from 2010/11 onward; "
