@@ -404,7 +404,7 @@ whether closely related deprivation measures are admitted.</p>
 <p>Nothing in that table is new. Every row points at a result reached in an
 earlier stage, and this section introduces no estimate and no interpretation
 that was not already established and bounded where it was produced.</p>
-<footer class="stamp">Built 2026-08-24 18:29 from commit <code>f140400</code> + uncommitted changes. If this does not match the current commit, the page is stale &mdash; reopen the file rather than refreshing.</footer>
+<footer class="stamp">Built 2026-08-24 18:34 from commit <code>a74ffe0</code> + uncommitted changes. If this does not match the current commit, the page is stale &mdash; reopen the file rather than refreshing.</footer>
 <script>
 (function(){
   const NS='http://www.w3.org/2000/svg';
@@ -516,6 +516,10 @@ that was not already established and bounded where it was produced.</p>
     const xs=y=>padL+(yrs.length<2?pw/2:(y-yrs[0])/(yrs[yrs.length-1]-yrs[0])*pw);
     let lo=Infinity,hi=-Infinity;
     d.series.forEach(s=>s.values.forEach(v=>{if(v!=null){lo=Math.min(lo,v);hi=Math.max(hi,v);}}));
+    // The context layer must be inside the scale, or it draws outside the plot
+    // and the chart looks broken. It is background, but it is still data.
+    if(d.context)d.context.forEach(c=>c.values.forEach(v=>{
+      if(v!=null){lo=Math.min(lo,v);hi=Math.max(hi,v);}}));
     if(!isFinite(lo)){lo=0;hi=1;}
     const pad=(hi-lo)*0.10||1; hi+=pad; lo=(lo<0)?lo-pad:Math.max(0,lo-pad);
     // invertY puts the WORSE value higher, which a rank axis needs: rank 1 is
@@ -573,6 +577,23 @@ that was not already established and bounded where it was produced.</p>
       yl.textContent=d.yLabel;svg.appendChild(yl);}
     const cur=el('line',{class:'cursor-line',y1:padT,y2:padT+ph,x1:-9,x2:-9});
     svg.appendChild(cur);
+    // Context layer: all other countries, faint, behind everything. Passing
+    // "context" in the payload rather than as extra series keeps them out of
+    // the legend, the end labels, the tooltip rows and the table -- they are
+    // background for the eye, not part of the argument.
+    const ctxHits=[];
+    if(d.context&&d.context.length){
+      d.context.forEach(c=>{
+        let p='',pen=false;
+        c.values.forEach((v,i)=>{if(v==null){pen=false;return;}
+          p+=(pen?' L ':' M ')+xs(yrs[i])+','+ys(v);pen=true;});
+        if(!p)return;
+        const el2=el('path',{d:p,fill:'none',stroke:'var(--chart-neutral)',
+          'stroke-width':1,opacity:.22,class:'ctx-line'});
+        svg.appendChild(el2);
+        ctxHits.push({node:el2,name:c.label,values:c.values});
+      });
+    }
     const DASH={solid:'',dashed:'6 3',dotted:'2 3'};
     const WT={strong:2.8,normal:1.8,light:1.4};
     const ends=[];
@@ -636,6 +657,26 @@ that was not already established and bounded where it was produced.</p>
         lg.appendChild(i);});
       host.insertBefore(lg,svg.nextSibling);
     }
+    // Hovering a faint line names it. Without this the layer is decorative:
+    // the reader can see a distribution but cannot ask what any part of it is.
+    ctxHits.forEach(h=>{
+      h.node.style.pointerEvents='stroke';
+      h.node.addEventListener('mouseenter',()=>{
+        h.node.setAttribute('opacity','.9');
+        h.node.setAttribute('stroke','var(--chart-label)');
+        h.node.setAttribute('stroke-width','2');
+        const lbl=el('text',{x:padL+6,y:padT+12,class:'axis-label',
+          style:'font-weight:700;fill:var(--chart-label)'});
+        lbl.textContent=h.name; lbl.setAttribute('data-ctx-name','1');
+        svg.appendChild(lbl);
+      });
+      h.node.addEventListener('mouseleave',()=>{
+        h.node.setAttribute('opacity','.22');
+        h.node.setAttribute('stroke','var(--chart-neutral)');
+        h.node.setAttribute('stroke-width','1');
+        svg.querySelectorAll('[data-ctx-name]').forEach(n=>n.remove());
+      });
+    });
     const tp=tip(host);
     let idx=-1;
     const show=i=>{ if(i<0||i>=yrs.length)return; idx=i;

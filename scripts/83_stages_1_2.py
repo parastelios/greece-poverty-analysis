@@ -52,13 +52,29 @@ for lbl, src, tone, style, weight in [
         ("Greece: income poverty", gr.arop, "series-3", "solid", "normal"),
         ("EU median: income poverty", med.arop, "series-3", "dashed", "light")]:
     f1.add(lbl, [float(src.get(y)) for y in yrs], tone=tone, style=style, weight=weight)
+# Every other country's hardship series, drawn faintly behind. The median alone
+# says where the middle is; the spread says whether Greece is the end of a
+# distribution or detached from it, which is the question of this stage.
+ctx1 = []
+for g, sub in panel.groupby("geo"):
+    if g == "EL":
+        continue
+    s = sub.set_index("time").subjective_poverty
+    vals = [float(s.get(y)) if y in s.index and pd.notna(s.get(y)) else None
+            for y in yrs]
+    if sum(v is not None for v in vals) >= 2:
+        ctx1.append({"label": NAMES.get(g, g), "values": vals})
+
 FIGS["F1"] = dict(
     caption="Reported hardship and income poverty remain far apart, despite "
             "some narrowing",
     kind="panel", series=f1,
     payload={"years": [int(y) for y in yrs], "dp": 1,
              "yLabel": "% of households",
-             "alt": "Greek reported hardship against income poverty, 2015 to 2024",
+             "context": ctx1,
+             "alt": "Greek reported hardship against income poverty, 2015 to "
+                    "2024, with every other EU country's hardship series drawn "
+                    "faintly behind. Greece sits clear above the whole spread",
              "series": [{"label": l, "tone": m["tone"], "style": m["style"],
                          "weight": m["weight"], "values": [round(v, 1) for v in vs]}
                         for l, vs, m in f1.rows]},
@@ -89,18 +105,30 @@ FIGS["F2"] = dict(
     first="Country")
 
 # ---- F3 two views --------------------------------------------------------
-f3 = ce.Series([str(int(y)) for y in yrs], dp=1)
-f3.add("Greece: real poverty threshold", [float(gr.arop_threshold_real.get(y)) for y in yrs],
+# The first view showed the real threshold as an index, which is two
+# abstractions deep: an index OF a threshold. It asked the reader to decode
+# rather than see. Nominal against inflation-adjusted shows the mechanism
+# directly -- the two lines separate, and the separation IS the erosion.
+ads = pd.read_csv(PROC / "analysis_dataset.csv")
+ycol = "year" if "year" in ads.columns else "time"
+thr = ads[[ycol, "gr_arop_threshold_nominal_eur",
+           "gr_arop_threshold_real_2008eur"]].dropna().sort_values(ycol)
+ty = [int(v) for v in thr[ycol]]
+f3 = ce.Series([str(y) for y in ty], dp=0)
+f3.add("Threshold in cash terms",
+       [float(v) for v in thr.gr_arop_threshold_nominal_eur],
        tone="gr", style="solid", weight="strong")
-f3.add("EU median: real poverty threshold",
-       [float(med.arop_threshold_real.get(y)) for y in yrs],
-       tone="eu", style="dashed", weight="normal")
-v3a = {"years": [int(y) for y in yrs], "dp": 1,
-       "yLabel": "Index, 2008 = 100",
-       "alt": "Real poverty threshold indexed to each country's own 2008 level",
+f3.add("Same threshold in 2008 purchasing power",
+       [float(v) for v in thr.gr_arop_threshold_real_2008eur],
+       tone="series-5", style="dashed", weight="strong")
+v3a = {"years": ty, "dp": 0, "yLabel": "Euros per year, single adult",
+       "alt": "The Greek poverty threshold in cash terms and in 2008 "
+              "purchasing power. The cash line returns close to its peak while "
+              "the purchasing-power line stays far below it",
        "series": [{"label": l, "tone": m["tone"], "style": m["style"],
-                   "weight": m["weight"], "values": [round(v, 1) for v in vs]}
+                   "weight": m["weight"], "values": [round(v) for v in vs]}
                   for l, vs, m in f3.rows]}
+
 anch = pd.read_csv(PROC / "anchored_poverty.csv")
 anch = anch.dropna(subset=["anchored_poverty_rate", "actual_arop_rate"])
 ay = [int(y) for y in anch.year]
@@ -116,22 +144,22 @@ v3b = {"years": ay, "dp": 1, "yLabel": "% of people",
        "series": [{"label": l, "tone": m["tone"], "style": m["style"],
                    "weight": m["weight"], "values": [round(v, 1) for v in vs]}
                   for l, vs, m in f3b.rows]}
+
 FIGS["F3"] = dict(
-    caption="The line moved: a falling threshold, and what a fixed one shows "
-            "instead", kind="panel", series=f3, extra_series=[("Anchored", f3b)],
-    payload=v3a, views=[("Real threshold, 2008 = 100", v3a),
-                        ("Fixed 2008 threshold vs current-year threshold", v3b)],
+    caption="The Greek poverty line is back near its cash peak and a fifth "
+            "below it in what it buys",
+    kind="panel", series=f3, payload=v3a,
+    views=[("What the line is worth", v3a),
+           ("Who falls below a fixed line", v3b)],
     view_series=[f3, f3b],
+    extra_caveat=(
+        "Both series are Greece only and support no cross-country statement: "
+        "they show that the Greek line fell against Greece's own 2008 standard, "
+        "not that it fell further than anyone else's. The second view counts "
+        "people rather than euros."),
     first="Series")
 
 # ---- F4 the bridge -------------------------------------------------------
-f4 = ce.Series([str(int(y)) for y in desc.time], dp=1)
-# Both series are Greek gaps: blue for the wider, a neutral colour for the
-# narrower, and orange stays reserved for EU comparisons.
-f4.add("Gap against income poverty", [float(v) for v in desc.gap_vs_arop],
-       tone="gr", style="solid", weight="strong")
-f4.add("Gap against AROPE", [float(v) for v in desc.gap_vs_arope],
-       tone="series-3", style="solid", weight="strong")
 # The first view plots LEVELS, not gaps. Two gap lines asked the reader to hold
 # a subtraction in their head, and a gap is a derived quantity: it cannot be
 # checked against anything they already know. Three levels in % of households

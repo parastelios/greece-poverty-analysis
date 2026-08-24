@@ -732,12 +732,21 @@ line, being a fixed fraction of it, fell with it.</p>
 
 {fig('F3')}
 
-<p>Anchoring the threshold to its pre-crisis real value tells a different
-story from the relative measure, and the difference between the two lines is a
-direct measure of how much the ruler moved. This is not a criticism of AROP,
-which is doing exactly what it was designed to do. It is a statement about what
-AROP cannot register: a decline that affects the whole distribution at once
-leaves relative position largely undisturbed.</p>
+<p>The two lines are the same threshold. One is the figure as published, in the
+euros of its own year; the other is that figure expressed in what it could buy
+in 2008. In cash the line has recovered almost entirely, from a 2010 peak of
+&euro;7,178 to &euro;7,020 in 2025, a fall of 2.2%. In purchasing power it has
+not: from &euro;6,808 to &euro;5,358, a fall of 21.3%.</p>
+
+<p>A household is counted as poor or not poor against the first line. It lives
+against the second.</p>
+
+<p>The second view asks the same question in people rather than euros: how many
+fall below a line held fixed at its 2008 real value, against how many fall below
+the line as it actually moved. This is not a criticism of AROP, which is doing
+exactly what it was designed to do. It is a statement about what AROP cannot
+register: a decline affecting the whole distribution at once leaves relative
+position largely undisturbed.</p>
 
 {methods("Anchoring, equivalisation, and why the anchor year matters", '''
 <p>Anchored poverty holds the income threshold at its real value in a chosen
