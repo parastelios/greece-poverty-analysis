@@ -332,7 +332,7 @@ for k, v in FIGS.items():
 
 # --------------------------------------------------------------------- page
 import re as _re
-BASE = _re.search(r"<style.*?</style>", (OUT / "report.html").read_text(), _re.S).group(0)
+BASE = ce.base_style((OUT / "report.html").read_text())
 built = {k: build(k, v) for k, v in FIGS.items()}
 
 PAGE = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">

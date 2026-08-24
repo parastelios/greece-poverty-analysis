@@ -44,7 +44,7 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `p6-rewrite` |
-| HEAD | `720a2a2` Rebuild the academic paper against the final evidence |
+| HEAD | `c8bc849` Review of figure and structure observations, with three corrections |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-24 |
 | Frozen V1 reference | `v1-final` |
@@ -3332,7 +3332,10 @@ Deviations must be disclosed in the stage that made them, not only here.
 | C-53 | 2026-08-23 | F12's row labels read `focal | counterpart`, up to 48 characters | No gutter sizing can fit that; all sixteen labels were clipped | Label shortened to the focal measure, with the counterpart kept in the tooltip and spelled out in the fallback table |
 | C-54 | 2026-08-23 | F18's x-axis labelled the synthetic 2016 slot, implying a missing 2016 observation rather than no ESS round across 2011-2021 | The null slot exists only to hold the gap open and break the line | Opt-in `hiddenTicks` option on the panel renderer, applied to F18 alone; the position keeps its true horizontal distance and only the label is suppressed |
 | C-55 | 2026-08-23 | Labels were truncated at desktop width even where they fitted: 50 at 824px, including 'Netherlands' | Charts are built into a DETACHED svg and inserted at the end, so `getComputedTextLength()` returned 0 for every node during drawing and `fitLabel` always used its fallback estimate, which is calibrated on bold text and overestimates regular labels | A shared `measurer()` bound to the LIVE host serves both helpers, so measurement never runs against the detached tree. Desktop truncation fell from 50 to 1, with clipping still zero at both 824px and the 320px floor |
+| C-56b | 2026-08-23 | Chart colours failed contrast in BOTH themes | The label colour was a single warm grey shared by light and dark, failing at 3.50:1 on light; the negative-correlation colour reached 2.96:1 on dark, below even the 3:1 graphics threshold; and near-zero heatmap cells rendered at 0.12 opacity, effectively invisible | Chart-local tokens defined per theme: labels dark grey on light and light grey on dark, neutral marks medium grey with a contrasting outline, sign colours kept teal/magenta but re-tuned. Greece blue and the EU orange are unchanged. Worst case now 6.32:1, from 2.96:1 |
 | C-56 | 2026-08-23 | The presentation layer was first applied to claim caveats as well as claim wordings | Release condition 4 checks mandatory caveats verbatim and failed, correctly: rewording 'NON-REPORTABLE' inside a caveat is the quiet softening that check exists to catch | Presentation layer restricted to canonical wording; caveats render verbatim |
+| C-57 | 2026-08-23 | Every builder scraped its base stylesheet from the superseded `report.html`, which carried an older copy of the chart tokens | The stale definitions were overridden at render time but remained in every published file, so the CSS did not say what it did | `ce.base_style()` strips chart-token declarations from the borrowed stylesheet, leaving exactly one definition per theme in `chart_engine.py` |
+| C-58 | 2026-08-23 | The first version of the contrast check could not fail | It read only the LAST definition of each token, so a wrong value in the `@media` block passed while the `[data-theme]` block held a good one -- proven by a negative test that wrongly passed | Rewritten to check every theme block separately; the same negative test now fails and names the offending value. A second defect surfaced while fixing it: the new code shadowed `blocks`, the figure list in the same scope, breaking every check after it |
 
 ## Artifact Index
 

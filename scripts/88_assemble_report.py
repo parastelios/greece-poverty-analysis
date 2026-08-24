@@ -1832,7 +1832,7 @@ under which decision, is recorded in the research record.</p>
 # ===========================================================================
 #  PAGE
 # ===========================================================================
-BASE = re.search(r"<style.*?</style>", (OUT / "report.html").read_text(), re.S).group(0)
+BASE = ce.base_style((OUT / "report.html").read_text())
 
 REPORT_CSS = """
 body{max-width:54rem;margin:0 auto;padding:0 1.2rem 6rem;

@@ -1146,7 +1146,7 @@ unaccounted for after the available accounts are tested.</p>
 # ===========================================================================
 #  PAGE
 # ===========================================================================
-BASE = re.search(r"<style.*?</style>", (OUT / "report.html").read_text(), re.S).group(0)
+BASE = ce.base_style((OUT / "report.html").read_text())
 
 PAPER_CSS = """
 body{max-width:46rem;margin:0 auto;padding:0 1.3rem 6rem;

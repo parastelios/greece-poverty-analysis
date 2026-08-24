@@ -357,7 +357,7 @@ print(f"batch 4: {len(FIGS)} figure, {len(ctx)} context entries, "
 
 
 # ---- the page -------------------------------------------------------------
-BASE = re.search(r"<style.*?</style>", (OUT / "report.html").read_text(), re.S).group(0)
+BASE = ce.base_style((OUT / "report.html").read_text())
 F15 = build("F15", FIGS["F15"])
 F16 = build("F16", FIGS["F16"])
 F17 = build("F17", FIGS["F17"])

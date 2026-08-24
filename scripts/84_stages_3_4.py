@@ -320,7 +320,7 @@ def build(fid, spec):
     return shell.replace(payload_tag({}), payload_html)
 
 
-BASE = re.search(r"<style.*?</style>", (OUT / "report.html").read_text(), re.S).group(0)
+BASE = ce.base_style((OUT / "report.html").read_text())
 b = {k: build(k, v) for k, v in FIGS.items()}
 PAGE = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">

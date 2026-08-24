@@ -204,13 +204,20 @@ background:var(--accent-soft,rgba(61,111,180,.12));color:var(--eu)}
 .chart{width:100%;height:auto;display:block;touch-action:pan-y}
 /* Correlation sign is a value scale, not a Greece/EU comparison, so it may
    not borrow those two hues. Magenta/teal is colour-blind safe. */
-:root{--div-neg:#a83a7d;--div-pos:#1c8f8f;--div-zero:#8a8a8a}
+:root{--div-neg:#a2306f;--div-pos:#127070;--div-zero:#6f6f6f;
+--chart-label:#55534e;--chart-neutral:#7a7873;--chart-neutral-edge:#f4f3ef}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+--div-neg:#e07ab5;--div-pos:#4fc7c7;--div-zero:#9a9a9a;
+--chart-label:#c8c6bf;--chart-neutral:#9a9892;--chart-neutral-edge:#141413}}
+:root[data-theme="dark"]{
+--div-neg:#e07ab5;--div-pos:#4fc7c7;--div-zero:#9a9a9a;
+--chart-label:#c8c6bf;--chart-neutral:#9a9892;--chart-neutral-edge:#141413}
 .gridline{stroke:var(--border);stroke-width:1}
-.axis-label{fill:var(--text-muted);font:11px ui-sans-serif,system-ui,sans-serif}
-.line-faint{fill:none;stroke:var(--text-muted);stroke-width:1;opacity:.28}
+.axis-label{fill:var(--chart-label);font:11px ui-sans-serif,system-ui,sans-serif}
+.line-faint{fill:none;stroke:var(--chart-neutral);stroke-width:1;opacity:.34}
 .line-eu{fill:none;stroke:var(--eu);stroke-width:2.2;stroke-dasharray:5 3}
 .line-gr{fill:none;stroke:var(--gr);stroke-width:2.8}
-.zero-line{stroke:var(--text-muted);stroke-width:1.4}
+.zero-line{stroke:var(--chart-label);stroke-width:1.4;opacity:.55}
 .cursor-line{stroke:var(--text-secondary);stroke-width:1;stroke-dasharray:3 3}
 .tip{position:absolute;pointer-events:none;background:var(--surface-2);
 border:1px solid var(--border);border-radius:5px;padding:.45rem .6rem;
@@ -363,6 +370,27 @@ correctly &mdash; but it cannot register a fall that affects everyone at once.</
 
   // Width is chosen from the container, not hardcoded. A fixed 860 rendered
   // labels at ~4 effective pixels on a phone.
+  // Legacy tone names map onto the chart's own tokens. "text-muted" came from
+  // the host document and carries one value for both themes; the chart needs a
+  // neutral that adapts, so it is aliased rather than chased through every
+  // builder's payload.
+  const TONE_ALIAS={'text-muted':'chart-neutral'};
+  function toneVar(tone){
+    const k=TONE_ALIAS[tone]||tone||'chart-neutral';
+    return `var(--${k})`;
+  }
+
+  // A medium grey mark loses its edge against either ground. Outlining just the
+  // neutral tone keeps it legible without adding a second colour meaning.
+  function outlineNeutral(node,tone){
+    const k=TONE_ALIAS[tone]||tone||'chart-neutral';
+    if(k==='chart-neutral'||k==='div-zero'){
+      node.setAttribute('stroke','var(--chart-neutral-edge)');
+      node.setAttribute('stroke-width','1');
+    }
+    return node;
+  }
+
   function widthFor(host){ const w=host.clientWidth||640; return Math.max(320,Math.min(920,w)); }
 
   // Measure the widest row label as the browser will actually draw it, rather
@@ -488,7 +516,7 @@ correctly &mdash; but it cannot register a fall that affects everyone at once.</
         };
         [['pos','gr'],['neg','series-3']].forEach(([w,tone])=>{
           const dd=seg(w);
-          if(dd)svg.appendChild(el('path',{d:dd,fill:`var(--${tone})`,
+          if(dd)svg.appendChild(el('path',{d:dd,fill:toneVar(tone),
             opacity:0.16,stroke:'none'}));
         });
       }
@@ -513,7 +541,7 @@ correctly &mdash; but it cannot register a fall that affects everyone at once.</
       // blue and orange -- unreadable, and the reader could not tell which line
       // was which.
       if(p)svg.appendChild(el('path',{d:p,fill:'none',
-        stroke:`var(--${s.tone||'text-muted'})`,
+        stroke:toneVar(s.tone),
         'stroke-width':WT[s.weight||'normal'],
         'stroke-dasharray':DASH[s.style||'solid'],
         opacity:s.weight==='light'?0.75:1}));
@@ -538,9 +566,9 @@ correctly &mdash; but it cannot register a fall that affects everyone at once.</
         if(e.s.values[i]!=null)return i;return 0;})()]);
       if(Math.abs(yl-e.y)>2)
         svg.appendChild(el('line',{x1:e.x-3,x2:e.x+2,y1:yl,y2:e.y-3,
-          stroke:`var(--${e.s.tone||'text-muted'})`,'stroke-width':1,opacity:.5}));
+          stroke:toneVar(e.s.tone),'stroke-width':1,opacity:.5}));
       const t=el('text',{x:e.x+4,y:e.y,class:'axis-label',
-        style:`fill:var(--${e.s.tone||'text-muted'});font-weight:700`});
+        style:`fill:var(--${e.s.tone||'chart-neutral'});font-weight:700`});
       // The end label starts at the last data point, so the space it has is
       // whatever remains to the right edge -- not the full margin.
       svg.appendChild(t);fitLabel(t,e.s.label,W-(e.x+4)-2,ms,true);});
@@ -554,7 +582,7 @@ correctly &mdash; but it cannot register a fall that affects everyone at once.</
       d.series.filter(s=>s.label).forEach(s=>{
         const i=document.createElement('span');i.className='lg-item';
         i.innerHTML=`<svg width="22" height="8" aria-hidden="true"><line x1="0" y1="4" x2="22" y2="4"
-          stroke="var(--${s.tone||'text-muted'})" stroke-width="${WT[s.weight||'normal']}"
+          stroke="var(--${s.tone||'chart-neutral'})" stroke-width="${WT[s.weight||'normal']}"
           stroke-dasharray="${DASH[s.style||'solid']}"/></svg>${s.label}`;
         lg.appendChild(i);});
       host.insertBefore(lg,svg.nextSibling);
@@ -613,10 +641,10 @@ correctly &mdash; but it cannot register a fall that affects everyone at once.</
     const marks=[];
     d.rows.forEach((r,i)=>{
       const y=padT+i*rowH+rowH/2;
-      const tone=r.tone||'text-muted';
+      const tone=r.tone||'chart-neutral';
       svg.appendChild(el('line',{x1:xs(r.lo),x2:xs(r.hi),y1:y,y2:y,
-        stroke:`var(--${tone})`,'stroke-width':2,opacity:.55}));
-      const c=el('circle',{cx:xs(r.est),cy:y,r:W<480?4.5:5.5,fill:`var(--${tone})`});
+        stroke:toneVar(tone),'stroke-width':2,opacity:.55}));
+      const c=outlineNeutral(el('circle',{cx:xs(r.est),cy:y,r:W<480?4.5:5.5,fill:toneVar(tone)}),tone);
       svg.appendChild(c);marks.push({y:y,r:r});
       const lbl=el('text',{x:padL-10,y:y+4,'text-anchor':'end',class:'axis-label',
         style:r.strong?'font-weight:700':''});
@@ -682,7 +710,7 @@ correctly &mdash; but it cannot register a fall that affects everyone at once.</
       const x0=Math.min(base,xs(r.value)), x1=Math.max(base,xs(r.value));
       svg.appendChild(el('rect',{x:x0,y:y-rowH/2+1,width:Math.max(1,x1-x0),
         height:rowH-3,rx:1.5,
-        fill:`var(--${hl?'gr':(r.tone||'text-muted')})`,opacity:hl?1:.55}));
+        fill:toneVar(hl?'gr':r.tone),opacity:hl?1:.55}));
       const lb=el('text',{x:padL-6,y:y+3.5,'text-anchor':'end',class:'axis-label',
         style:hl?'fill:var(--gr);font-weight:700':''});
       svg.appendChild(lb);fitLabel(lb,r.label,padL-8,ms,!!hl);
@@ -744,11 +772,11 @@ correctly &mdash; but it cannot register a fall that affects everyone at once.</
         style:'font-weight:700'});zt.textContent=d.zeroLabel||'0';svg.appendChild(zt);}
     const marks=[];
     d.rows.forEach((r,i)=>{
-      const y=padT+i*rowH+rowH/2, tone=r.tone||'text-muted';
+      const y=padT+i*rowH+rowH/2, tone=r.tone||'chart-neutral';
       svg.appendChild(el('line',{x1:xs(r.a),x2:xs(r.b),y1:y,y2:y,
-        stroke:`var(--${tone})`,'stroke-width':2.5,opacity:.45}));
-      svg.appendChild(el('circle',{cx:xs(r.a),cy:y,r:4,fill:'var(--text-muted)'}));
-      svg.appendChild(el('circle',{cx:xs(r.b),cy:y,r:5.5,fill:`var(--${tone})`}));
+        stroke:toneVar(tone),'stroke-width':2.5,opacity:.45}));
+      svg.appendChild(outlineNeutral(el('circle',{cx:xs(r.a),cy:y,r:4,fill:'var(--chart-neutral)'}),'chart-neutral'));
+      svg.appendChild(outlineNeutral(el('circle',{cx:xs(r.b),cy:y,r:5.5,fill:toneVar(tone)}),tone));
       const lb=el('text',{x:padL-10,y:y+4,'text-anchor':'end',class:'axis-label',
         style:r.strong?'font-weight:700':''});
       svg.appendChild(lb);fitLabel(lb,r.label,padL-12,ms,!!r.strong);
@@ -761,7 +789,7 @@ correctly &mdash; but it cannot register a fall that affects everyone at once.</
     if(d.legendA||d.legendB){
       const lg=document.createElement('div');lg.className='legend';
       lg.innerHTML=`<span class="lg-item"><svg width="12" height="12" aria-hidden="true">
-        <circle cx="6" cy="6" r="4" fill="var(--text-muted)"/></svg>${d.legendA||'start'}</span>
+        <circle cx="6" cy="6" r="4" fill="var(--chart-neutral)" stroke="var(--chart-neutral-edge)" stroke-width="1"/></svg>${d.legendA||'start'}</span>
         <span class="lg-item"><svg width="12" height="12" aria-hidden="true">
         <circle cx="6" cy="6" r="5" fill="var(--gr)"/></svg>${d.legendB||'end'}</span>`;
       host.insertBefore(lg,svg.nextSibling);}
@@ -811,7 +839,7 @@ correctly &mdash; but it cannot register a fall that affects everyone at once.</
         const mag=v==null?0:Math.min(1,Math.abs(v));
         const tone=v==null?'div-zero':(v<0?'div-neg':'div-pos');
         const rect=el('rect',{x:x+1,y:y+1,width:cell-2,height:cell-2,rx:2,
-          fill:`var(--${tone})`,opacity:v==null?0.12:0.12+mag*0.8});
+          fill:toneVar(tone),opacity:v==null?0.10:0.30+mag*0.65});
         svg.appendChild(rect);
         // A mechanical pair is outlined, not dotted: the reader needs to see
         // WHICH cells cannot be read as independent relationships.

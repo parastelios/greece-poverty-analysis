@@ -124,7 +124,7 @@ F9 = ce.figure("F9", "Three current-condition constructs survive the full "
 # ------------------------------------------------------------------- shell
 report_style = (OUT / "report.html").read_text()
 import re
-BASE = re.search(r"<style.*?</style>", report_style, re.S).group(0)
+BASE = ce.base_style(report_style)
 
 SHELL = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">

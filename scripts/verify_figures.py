@@ -163,6 +163,64 @@ for path in TARGETS:
     check("every view states its units on an axis",
           not unlabelled, "; ".join(unlabelled))
 
+    # Contrast is a property of the tokens, not of any one figure, and it was
+    # wrong in BOTH themes: the label colour was a single warm grey shared by
+    # light and dark, failing at 3.50:1 on light, and the negative-correlation
+    # colour reached only 2.96:1 on dark. Neither is visible by reading the
+    # markup, so the ratios are computed here.
+    def _lum(hx):
+        hx = hx.lstrip("#")
+        ch = [int(hx[i:i + 2], 16) / 255 for i in (0, 2, 4)]
+        ch = [(c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4) for c in ch]
+        return 0.2126 * ch[0] + 0.7152 * ch[1] + 0.0722 * ch[2]
+
+    def _ratio(a, b):
+        la, lb = _lum(a), _lum(b)
+        hi, lo = max(la, lb), min(la, lb)
+        return (hi + 0.05) / (lo + 0.05)
+
+    def _blocks(css):
+        """Every rule that defines chart tokens, tagged by the theme it serves.
+
+        A token is declared three times -- once for light, once under
+        prefers-color-scheme, once under the explicit dark attribute -- and any
+        ONE of them can be wrong while the others are right. Checking only the
+        last value let a bad @media definition through in testing, so every
+        block is checked separately.
+        """
+        out = []
+        for m in re.finditer(r"(@media[^{]*\{\s*)?:root([^{]*)\{([^}]*)\}", css):
+            body, guard = m.group(3), (m.group(1) or "") + (m.group(2) or "")
+            if "--chart-label" not in body and "--div-neg" not in body:
+                continue
+            dark = "dark" in guard
+            out.append((dark, body))
+        return out
+
+    LIGHT_BG, DARK_BG = "#fcfcfb", "#1a1a19"
+    # token, minimum ratio: label text needs 4.5, data marks need 3.0
+    TOKENS = [("chart-label", 4.5), ("chart-neutral", 3.0),
+              ("div-neg", 3.0), ("div-pos", 3.0), ("div-zero", 3.0)]
+    bad_contrast = []
+    token_blocks = _blocks(raw)
+    if not token_blocks:
+        bad_contrast.append("no chart token block found")
+    if not any(d for d, _ in token_blocks) or not any(not d for d, _ in token_blocks):
+        bad_contrast.append("chart tokens are not defined for both themes")
+    for dark, body in token_blocks:
+        bg = DARK_BG if dark else LIGHT_BG
+        for name, need in TOKENS:
+            m = re.search(rf"--{name}\s*:\s*(#[0-9a-fA-F]{{6}})", body)
+            if not m:
+                continue
+            got = _ratio(m.group(1), bg)
+            if got < need:
+                bad_contrast.append(
+                    f"--{name} {m.group(1)} on {'dark' if dark else 'light'}: "
+                    f"{got:.2f}:1 (needs {need})")
+    check("chart colours meet contrast minimums in both themes",
+          not bad_contrast, "; ".join(bad_contrast))
+
     # 2c. VIEW COUNT MATCHES THE MANIFEST, so scope cannot shrink silently.
     manp = ROOT / "data" / "processed" / "report_visual_manifest.csv"
     if manp.exists():
