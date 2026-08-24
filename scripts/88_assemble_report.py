@@ -1601,11 +1601,16 @@ into a finding.</p>
 <p>Institutional trust is low in Greece by OECD measurement, and there is a
 plausible route by which it could matter: households that do not expect
 effective support may experience the same material circumstances as more
-threatening, and report accordingly.</p>
-<p>This project ran no test on trust. The figure below reports only the two
-values read directly from the OECD source; a per-institution breakdown
-circulated in secondary coverage could not be verified against the primary
-release and is therefore not shown.</p>
+threatening, and report accordingly. The pattern within Greece is uneven, which
+matters for that reading: the institutions a household would actually turn to
+for support are not the ones Greeks trust most.</p>
+<p>This project ran no test on trust. What the figure below shows is read
+directly from the OECD's own country note for Greece, and it is more
+interesting than a single comparison: Greek trust is not uniformly low. Greeks
+report more trust in the police and the courts than in any elected or political
+institution, and political parties sit at the bottom at 17%. Central government,
+at 32% against an OECD average of 39%, sits in the middle of a wide internal
+range rather than at the bottom of it.</p>
 ''')}
 
 {fig('F17')}

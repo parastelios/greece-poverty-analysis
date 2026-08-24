@@ -1,3 +1,10 @@
 entity,share_high_or_moderate_trust,institution,year,highlight
-Greece,32.0,central government,2023,True
-OECD average,39.0,central government,2023,False
+Other people,54.0,other people,2023,False
+The police,51.0,police,2023,False
+Courts and the justice system,47.0,courts,2023,False
+Local government,39.0,local government,2023,False
+Central government,32.0,central government,2023,True
+Parliament,32.0,parliament,2023,False
+The civil service,31.0,civil service,2023,False
+The news media,22.0,news media,2023,False
+Political parties,17.0,political parties,2023,False

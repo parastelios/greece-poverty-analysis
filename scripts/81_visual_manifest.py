@@ -229,13 +229,16 @@ M = [
  dict(id="F17", stage=7, chart_type="ladder",
       question="How does Greek institutional trust compare with the OECD?",
       artifact="oecd_trust_2023.csv",
-      series="Greece against the OECD average, central government, 2023",
+      series="Greek trust across nine institutions in 2023, with the OECD "
+             "average for central government marked",
       interaction="hover reads the share and the survey window",
       fallback="entity, share reporting high or moderately high trust",
       # Kept short on the face of the figure. The provenance detail -- which
       # summary figures were never verified, and what obtaining the OECD
       # country table would allow -- is in the research record.
-      caveat="A 2023 snapshot, not a trend; contextual and not modelled.",
+      caveat="A 2023 snapshot, not a trend. The OECD Trust Survey has run in "
+             "2021, 2023 and 2025, so a short series exists, but this project "
+             "holds only the 2023 wave. Contextual and not modelled.",
       status_label="contextual evidence"),
  dict(id="F18", stage=2, chart_type="dumbbell",
       question="What drove the most recent rise in AROPE: rates within age "

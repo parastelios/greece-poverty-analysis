@@ -174,16 +174,23 @@ for r in tr.itertuples():
     rows17.append({"label": r.entity, "name": r.entity,
                    "value": float(r.share_high_or_moderate_trust),
                    "highlight": bool(r.highlight),
-                   "detail": "trust in central government, 2023<br>"
-                             "<span style='opacity:.6'>OECD Trust Survey, "
-                             "fieldwork October-November 2023</span>"})
+                   "detail": f"{r.entity}: <b>{r.share_high_or_moderate_trust:.0f}%</b>"
+                             " report high or moderately high trust"
+                             "<br><span style='opacity:.6'>OECD Trust Survey, "
+                             "Greece, fieldwork October-November 2023</span>"})
 FIGS["F17"] = dict(
-    caption="Institutional trust in Greece is below the OECD average",
+    caption="Greeks trust the police and the courts far more than they trust "
+            "the central government, parliament or political parties",
     kind="ladder",
-    payload={"rows": rows17, "xLabel": "% reporting high or moderately high trust", "dp": 1, "unit": "%", "labelAll": True,
-             "alt": "Trust in central government, Greece against the OECD "
-                    "average, 2023"},
-    series=f17, first="Entity")
+    payload={"rows": rows17,
+             "xLabel": "% reporting high or moderately high trust",
+             "dp": 1, "unit": "%", "labelAll": True,
+             "reference": 39.0,
+             "referenceLabel": "OECD average, central government",
+             "alt": "Greek trust across nine institutions in 2023, from other "
+                    "people at 54% down to political parties at 17%, with "
+                    "central government at 32% against an OECD average of 39%"},
+    series=f17, first="Institution")
 
 
 # ---- F18: the ESS pre-crisis baseline -------------------------------------
