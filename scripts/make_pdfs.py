@@ -2,7 +2,7 @@
 
 Uses headless Chrome, which is required rather than incidental: report.html
 draws every chart from an embedded JSON blob at runtime, and both report.html
-and narrative_companion.html move their method blocks into <details> elements
+and narrative.html move their method blocks into <details> elements
 with JavaScript. A non-JS renderer (weasyprint, wkhtmltopdf) would produce
 PDFs with blank charts and, worse, silently drop the collapsed method notes.
 
@@ -28,10 +28,13 @@ CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "output" / "pdf"
 
+# The three publication documents, all generated from the same claim set.
+# report.html, narrative_companion.html and academic_paper_draft.html are the
+# superseded builds and are not exported.
 DOCS = [
-    ("report.html", "Greek-Poverty-Paradox-technical-report.pdf"),
-    ("narrative_companion.html", "Greek-Poverty-Paradox-narrative.pdf"),
-    ("academic_paper_draft.html", "Greek-Poverty-Paradox-working-paper.pdf"),
+    ("v2_report.html", "Greek-Poverty-Paradox-technical-report.pdf"),
+    ("narrative.html", "Greek-Poverty-Paradox-narrative.pdf"),
+    ("academic_paper.html", "Greek-Poverty-Paradox-working-paper.pdf"),
 ]
 
 # Injected into <head>, i.e. BEFORE the documents' own scripts. This matters:

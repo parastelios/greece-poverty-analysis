@@ -1,0 +1,1572 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Greek Poverty Paradox &mdash; a companion</title><style>
+:root {
+  color-scheme: light;
+  --page:           #f9f9f7;
+  --surface-1:      #fcfcfb;
+  --surface-2:      #f3f2ee;
+  --text-primary:   #0b0b0b;
+  --text-secondary: #52514e;
+  --text-muted:     #898781;
+  --gridline:       #e1e0d9;
+  --baseline:       #c3c2b7;
+  --border:         rgba(11,11,11,0.10);
+  --series-gr:      #2a78d6;
+  --series-gr-wash: rgba(42,120,214,0.10);
+  --series-eu:      #eb6834;
+  --series-eu-wash: rgba(235,104,52,0.10);
+  --series-3:       #1baf7a;
+  --series-4:       #eda100;
+  --series-5:       #4a3aa7;
+  --band-fill:      rgba(137,135,129,0.08);
+  --good:           #0ca30c;
+  --critical:       #d03b3b;
+}
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --page:           #0d0d0d;
+    --surface-1:      #1a1a19;
+    --surface-2:      #222221;
+    --text-primary:   #ffffff;
+    --text-secondary: #c3c2b7;
+    --text-muted:     #898781;
+    --gridline:       #2c2c2a;
+    --baseline:       #383835;
+    --border:         rgba(255,255,255,0.10);
+    --series-gr:      #3987e5;
+    --series-gr-wash: rgba(57,135,229,0.13);
+    --series-eu:      #d95926;
+    --series-eu-wash: rgba(217,89,38,0.14);
+    --series-3:       #199e70;
+    --series-4:       #c98500;
+    --series-5:       #9085e9;
+    --band-fill:      rgba(137,135,129,0.10);
+    --good:           #0ca30c;
+    --critical:       #e66767;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page:           #0d0d0d;
+  --surface-1:      #1a1a19;
+  --surface-2:      #222221;
+  --text-primary:   #ffffff;
+  --text-secondary: #c3c2b7;
+  --text-muted:     #898781;
+  --gridline:       #2c2c2a;
+  --baseline:       #383835;
+  --border:         rgba(255,255,255,0.10);
+  --series-gr:      #3987e5;
+  --series-gr-wash: rgba(57,135,229,0.13);
+  --series-eu:      #d95926;
+  --series-eu-wash: rgba(217,89,38,0.14);
+  --series-3:       #199e70;
+  --series-4:       #c98500;
+  --series-5:       #9085e9;
+  --band-fill:      rgba(137,135,129,0.10);
+  --good:           #0ca30c;
+  --critical:       #e66767;
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--page); }
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: var(--text-primary);
+  background: var(--page);
+}
+.wrap { max-width: 860px; margin: 0 auto; padding: 56px 24px 90px; }
+
+header.hero { margin-bottom: 32px; }
+.eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); margin: 0 0 12px; }
+h1 { font-size: 34px; line-height: 1.15; font-weight: 700; letter-spacing: -0.02em; margin: 0 0 16px; text-wrap: balance; }
+.dek { font-size: 17px; line-height: 1.55; color: var(--text-secondary); max-width: 65ch; margin: 0 0 6px; }
+.meta { font-size: 12.5px; color: var(--text-muted); margin-top: 18px; }
+
+.summary-box { background: var(--surface-1); border: 1px solid var(--border); border-radius: 14px; padding: 26px 28px; margin: 28px 0; }
+.summary-box .eyebrow { margin-bottom: 10px; }
+.summary-box p { font-size: 15px; line-height: 1.65; color: var(--text-primary); margin: 0 0 14px; max-width: 70ch; }
+.summary-box p:last-child { margin-bottom: 0; }
+.summary-box p.limits { font-size: 13px; color: var(--text-secondary); border-top: 1px solid var(--gridline); padding-top: 14px; margin-top: 4px; }
+
+.stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; margin: 32px 0 8px; }
+.stat-tile { background: var(--surface-1); padding: 16px 16px; }
+.stat-label { font-size: 11.5px; color: var(--text-muted); margin: 0 0 6px; }
+.stat-value { font-size: 24px; font-weight: 700; letter-spacing: -0.01em; }
+.stat-value.gr { color: var(--series-gr); }
+.stat-sub { font-size: 11.5px; color: var(--text-secondary); margin-top: 4px; }
+
+.part-header { margin: 64px 0 8px; padding-top: 28px; border-top: 3px solid var(--series-gr); }
+.part-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--series-gr); margin: 0 0 8px; }
+.part-header h2 { font-size: 26px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 12px; text-wrap: balance; }
+.part-header p { font-size: 15px; line-height: 1.65; color: var(--text-secondary); max-width: 68ch; }
+.part-header p b { color: var(--text-primary); }
+
+section { margin: 44px 0; }
+section h3.sec-title { font-size: 19px; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 6px; text-wrap: balance; }
+section .lede { font-size: 14.5px; color: var(--text-secondary); line-height: 1.6; max-width: 68ch; margin: 0 0 22px; }
+section p { font-size: 14.5px; line-height: 1.65; color: var(--text-primary); max-width: 68ch; }
+section p.note { font-size: 12.5px; color: var(--text-muted); line-height: 1.55; max-width: 68ch; }
+section p.method-aside { font-size: 12.5px; color: var(--text-muted); line-height: 1.55; max-width: 68ch; margin-top: 8px; }
+section p.method-aside b { color: var(--text-secondary); font-weight: 600; }
+section h4 { font-size: 13px; font-weight: 700; margin: 18px 0 8px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.03em; }
+.method-item { margin-bottom: 22px; }
+.method-item dt { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+.method-item dd { margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--text-secondary); max-width: 68ch; }
+.method-item dd + dd { margin-top: 6px; }
+.method-item code { font-size: 12px; background: var(--surface-2); padding: 1px 5px; border-radius: 4px; color: var(--text-primary); overflow-wrap:anywhere; word-break:break-word; }
+.q-label { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; color: var(--text-muted); background: var(--surface-2); border-radius: 5px; padding: 2px 7px; margin-bottom: 10px; margin-right: 6px; }
+.badge-approx { display: inline-block; font-size: 10.5px; font-weight: 600; letter-spacing: 0.02em; color: var(--series-4); background: color-mix(in srgb, var(--series-4) 15%, transparent); border-radius: 5px; padding: 2px 7px; margin-left: 6px; vertical-align: middle; }
+
+.card { background: var(--surface-1); border: 1px solid var(--border); border-radius: 12px; padding: 22px 22px 10px; }
+.chart-title { font-size: 14px; font-weight: 600; margin: 0 0 2px; }
+.chart-sub { font-size: 12px; color: var(--text-secondary); margin: 0 0 12px; }
+.legend { display: flex; gap: 16px; margin-bottom: 12px; flex-wrap: wrap; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-secondary); }
+.legend-swatch { width: 10px; height: 10px; border-radius: 2px; flex: none; }
+.chart-wrap { position: relative; }
+svg.chart { width: 100%; height: auto; display: block; overflow: visible; }
+.gridline { stroke: var(--gridline); stroke-width: 1; }
+.baseline { stroke: var(--baseline); stroke-width: 1; }
+.axis-label { fill: var(--text-muted); font-size: 10.5px; }
+.crisis-band { fill: var(--band-fill); }
+.crisis-line { stroke: var(--text-muted); stroke-width: 1; stroke-dasharray: 2 3; }
+.crisis-label { fill: var(--text-muted); font-size: 10px; }
+.direct-label { font-size: 11px; font-weight: 600; }
+.direct-label-sub { fill: var(--text-secondary); font-size: 9.5px; }
+.hit-target { fill: transparent; }
+.hover-dot { stroke: var(--surface-1); stroke-width: 2; opacity: 0; }
+.crosshair { stroke: var(--text-muted); stroke-width: 1; opacity: 0; }
+.tooltip { position: absolute; pointer-events: none; opacity: 0; transition: opacity .08s ease; background: var(--surface-1); border: 1px solid var(--border); border-radius: 8px; padding: 8px 11px; font-size: 12px; box-shadow: 0 4px 14px rgba(0,0,0,0.14); white-space: nowrap; transform: translate(-50%,-100%); z-index: 5; }
+.tooltip .t-year { color: var(--text-muted); font-size: 10.5px; margin-bottom: 3px; }
+.tooltip .t-row { display: flex; align-items: center; gap: 6px; font-weight: 600; }
+.tooltip .t-row + .t-row { margin-top: 2px; }
+.tooltip .dot { width: 7px; height: 7px; border-radius: 50%; flex: none; }
+.foot-note { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 12px 2px 2px; font-size: 10.5px; color: var(--text-muted); border-top: 1px solid var(--gridline); margin-top: 14px; }
+
+table.data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+table.data-table th, table.data-table td { text-align: right; padding: 7px 10px; border-bottom: 1px solid var(--gridline); font-variant-numeric: tabular-nums; }
+table.data-table th:first-child, table.data-table td:first-child { text-align: left; font-variant-numeric: normal; }
+table.data-table th { color: var(--text-muted); font-weight: 500; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.03em; }
+table.data-table td.sig { color: var(--text-muted); font-size: 11px; }
+table.data-table td.hl, table.data-table tr.hl td { color: var(--series-gr); font-weight: 600; }
+.table-scroll { overflow-x: auto; }
+.table-caption { font-size: 12px; color: var(--text-secondary); margin: 0 0 10px; }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.story-map { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin:18px 0 28px; max-width:68ch; }
+.story-map a { display:flex; flex-direction:column; gap:3px; padding:12px 14px; border:1px solid var(--border); border-radius:8px; color:var(--text-primary); text-decoration:none; background:var(--surface-1); }
+.story-map a:hover { border-color:var(--series-gr); }
+.story-map span { color:var(--text-muted); font-size:11.5px; }
+@media (max-width: 720px) {
+  .wrap { padding: 24px 14px 64px; }
+  .two-col, .story-map { grid-template-columns: 1fr; }
+  .stat-row { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .card, .answer-box { padding-left:14px; padding-right:14px; }
+  table.data-table { min-width:620px; }
+  .hero h1 { font-size:34px; }
+}
+
+.finding { background: var(--surface-2); border-radius: 10px; padding: 16px 18px; margin: 18px 0; font-size: 13.5px; line-height: 1.6; }
+.finding b { color: var(--text-primary); }
+.method-details { max-width:68ch; margin:10px 0 16px; border-top:1px solid var(--gridline); }
+.method-details summary { cursor:pointer; padding:9px 0; color:var(--text-secondary); font-size:12px; font-weight:600; }
+.method-details[open] summary { color:var(--series-gr); }
+.method-details .method-aside { margin:2px 0 12px; }
+
+.answer-box { background: var(--surface-1); border: 1px solid var(--border); border-left: 3px solid var(--series-gr); border-radius: 10px; padding: 24px 26px; margin-top: 12px; }
+.answer-box h4 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--series-gr); margin: 0 0 10px; }
+.answer-box p { font-size: 14.5px; }
+
+.toc { display: flex; flex-direction: column; gap: 4px; font-size: 13px; margin-top: 14px; }
+.toc .toc-part { font-weight: 700; color: var(--text-primary); margin-top: 10px; }
+.toc .toc-part:first-child { margin-top: 0; }
+.toc a { color: var(--text-secondary); text-decoration: none; border-bottom: 1px solid transparent; padding-left: 14px; display: inline-block; }
+.toc a:hover { color: var(--series-gr); border-bottom-color: var(--series-gr); }
+
+footer { margin-top: 70px; padding-top: 20px; border-top: 1px solid var(--gridline); font-size: 11.5px; color: var(--text-muted); line-height: 1.6; }
+</style>
+<style>
+.figure{margin:1.8rem 0;border:1px solid var(--border);border-radius:8px;
+background:var(--surface-1);overflow:hidden}
+.figure > figcaption{padding:.9rem 1.1rem .2rem;font:600 .95rem/1.35
+ui-sans-serif,system-ui,sans-serif;color:var(--text-primary)}
+.fig-meta{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;
+padding:0 1.1rem .7rem}
+.badge{font:600 .66rem/1 ui-sans-serif,system-ui,sans-serif;text-transform:uppercase;
+letter-spacing:.06em;padding:.3rem .5rem;border-radius:3px;
+background:var(--accent-soft,rgba(61,111,180,.12));color:var(--eu)}
+.fig-q{font:.82rem/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--text-secondary)}
+.chart-live{padding:.2rem 1.1rem 1rem;position:relative}
+.chart-live:focus-visible{outline:2px solid var(--eu);outline-offset:2px}
+.chart{width:100%;height:auto;display:block;touch-action:pan-y}
+/* Correlation sign is a value scale, not a Greece/EU comparison, so it may
+   not borrow those two hues. Magenta/teal is colour-blind safe. */
+:root{--div-neg:#a83a7d;--div-pos:#1c8f8f;--div-zero:#8a8a8a}
+.gridline{stroke:var(--border);stroke-width:1}
+.axis-label{fill:var(--text-muted);font:11px ui-sans-serif,system-ui,sans-serif}
+.line-faint{fill:none;stroke:var(--text-muted);stroke-width:1;opacity:.28}
+.line-eu{fill:none;stroke:var(--eu);stroke-width:2.2;stroke-dasharray:5 3}
+.line-gr{fill:none;stroke:var(--gr);stroke-width:2.8}
+.zero-line{stroke:var(--text-muted);stroke-width:1.4}
+.cursor-line{stroke:var(--text-secondary);stroke-width:1;stroke-dasharray:3 3}
+.tip{position:absolute;pointer-events:none;background:var(--surface-2);
+border:1px solid var(--border);border-radius:5px;padding:.45rem .6rem;
+font:.76rem/1.45 ui-sans-serif,system-ui,sans-serif;color:var(--text-primary);
+box-shadow:0 3px 12px rgba(0,0,0,.14);max-width:15rem;z-index:5;opacity:0;
+transition:opacity .1s}
+.tip.on{opacity:1}
+.legend{display:flex;flex-wrap:wrap;gap:.35rem 1rem;padding:.3rem 0 .1rem;
+max-width:100%;
+font:.76rem/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--text-secondary)}
+.viewbar{display:flex;flex-wrap:wrap;gap:.3rem;padding:0 1.1rem .6rem}
+.viewbtn{font:600 .74rem/1 ui-sans-serif,system-ui,sans-serif;padding:.35rem .6rem;
+border:1px solid var(--border);background:transparent;color:var(--text-secondary);
+border-radius:4px;cursor:pointer}
+.viewbtn[aria-selected="true"]{background:var(--gr);border-color:var(--gr);color:#fff}
+.viewbtn:hover{color:var(--gr)}
+.viewbtn[aria-selected="true"]:hover{color:#fff}
+.lg-item{display:inline-flex;align-items:center;gap:.4rem;white-space:nowrap;
+flex:0 1 auto;min-width:0}
+@media(max-width:34rem){.legend{gap:.3rem .7rem;font-size:.72rem}}
+.tip b{color:var(--gr)}
+.fig-caveat{margin:0;padding:.7rem 1.1rem;border-top:1px solid var(--border);
+background:var(--accent-soft,rgba(192,57,43,.05));
+font:.78rem/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--text-secondary)}
+.fig-caveat strong{color:var(--gr)}
+.fallback{border-top:1px solid var(--border)}
+.fallback > summary{padding:.6rem 1.1rem;cursor:pointer;
+font:.78rem/1 ui-sans-serif,system-ui,sans-serif;color:var(--text-secondary)}
+.fallback > summary:hover{color:var(--gr)}
+.fallback table{border-collapse:collapse;width:100%;
+font:.78rem/1.4 ui-sans-serif,system-ui,sans-serif;font-variant-numeric:tabular-nums}
+.fallback th,.fallback td{padding:.4rem .8rem;border-bottom:1px solid var(--border);
+text-align:left}
+.fallback td.num,.fallback th.num{text-align:right}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media print{
+  .chart-live{display:none}
+  .fallback{border-top:0}
+  .fallback > summary{display:none}
+  .fallback[open],.fallback{display:block}
+  .figure{break-inside:avoid;border-color:#999}
+}
+
+:root{--gr:var(--series-gr);--eu:var(--series-eu)}
+
+body{max-width:40rem;margin:0 auto;padding:0 1.3rem 6rem;
+  font:1.09rem/1.78 ui-serif,Georgia,'Times New Roman',serif}
+.masthead{padding:3.6rem 0 1.4rem;margin-bottom:1rem}
+.masthead h1{font-size:clamp(2rem,6vw,2.9rem);line-height:1.1;margin:0 0 1rem;
+  letter-spacing:-.02em;text-wrap:balance}
+.standfirst{font-size:1.14rem;line-height:1.6;color:var(--text-secondary);margin:0}
+.ch{margin:4rem 0 0}
+.chnum{font:600 .7rem/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--text-secondary);margin:0 0 .5rem}
+.ch h2{font-size:clamp(1.5rem,4vw,1.95rem);margin:0 0 1.2rem;
+  letter-spacing:-.015em;text-wrap:balance}
+.ch p{margin:0 0 1.05rem}
+.finding{border-left:3px solid var(--series-gr);padding:.1rem 0 .1rem 1.1rem;
+  margin:1.6rem 0}
+.finding p{margin:0 0 .5rem;font-size:1.06rem}
+.limits{font:.92rem/1.65 ui-sans-serif,system-ui,sans-serif;
+  color:var(--text-secondary);margin:0}
+.ctx{border:1px dashed var(--border);border-radius:6px;padding:1rem 1.2rem;
+  margin:1.8rem 0}
+.ctx-status{font:600 .68rem/1 ui-sans-serif,system-ui,sans-serif;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--text-secondary);
+  margin:0 0 .45rem}
+.ctx h4{margin:0 0 .55rem;font-size:1.02rem}
+.ctx p{font-size:.98rem;margin:0 0 .7rem}
+.ctx .permitted,.ctx .limitation,.ctx .src{
+  font:.9rem/1.6 ui-sans-serif,system-ui,sans-serif;margin:.5rem 0 0}
+.ctx .limitation{color:var(--text-secondary)}
+.ctx .src{color:var(--text-secondary);font-size:.82rem;padding-top:.5rem;
+  border-top:1px solid var(--border)}
+@media (max-width:34rem){body{font-size:1.04rem}}
+</style></head><body>
+<header class="masthead">
+<h1>The Greek Poverty Paradox</h1>
+<p class="standfirst">Two official numbers say very different things about how
+Greek households are doing. This is an attempt to find out which is closer to
+the truth, and how much of the difference between them anyone can actually
+account for.</p>
+</header>
+<section class="ch" id="ch1"><p class="chnum">Chapter 1</p><h2>Two official numbers that don't agree</h2>
+<p>Europe measures poverty in two ways, and both are official.</p>
+
+<p>The first counts households whose income falls below 60% of what a typical
+household in their country earns. It is a number about position: are you far
+behind your neighbours? The second is a question put directly to households:
+are you having difficulty making ends meet? It is a number about experience.</p>
+
+<p>In most of Europe the two roughly agree. In Greece they are 52.6 percentage
+points apart, and have been for a decade.</p>
+
+<p>Put plainly: roughly one Greek household in five is officially counted as at
+risk of poverty. Roughly two in three say they are struggling to get by. Those
+are not two attempts to measure the same thing that landed slightly apart. They
+are far enough apart that no ordinary measurement error closes them.</p>
+
+<figure class="figure" id="F1">
+<figcaption>Reported hardship and income poverty remain far apart, despite some narrowing</figcaption>
+<div class="fig-meta"><span class="badge">descriptive</span>
+<span class="fig-q">How far apart are reported hardship and official income poverty for Greece, and does the distance close over time?</span></div>
+<div class="chart-live" data-chart="panel" tabindex="0"
+     data-checksum="ec03a01ae21a476a" aria-describedby="F1-fb">
+<script type="application/json">{"years": [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024], "dp": 1, "yLabel": "% of households", "alt": "Greek reported hardship against income poverty, 2015 to 2024", "series": [{"label": "Greece: reported hardship", "tone": "gr", "style": "solid", "weight": "strong", "values": [77.7, 76.8, 77.2, 74.1, 71.0, 69.8, 71.0, 68.4, 67.0, 66.7]}, {"label": "EU median: reported hardship", "tone": "eu", "style": "dashed", "weight": "normal", "values": [28.9, 25.9, 22.6, 20.5, 18.5, 16.8, 15.4, 17.9, 16.6, 17.1]}, {"label": "Greece: income poverty", "tone": "series-3", "style": "solid", "weight": "normal", "values": [21.4, 21.2, 20.2, 18.5, 17.9, 17.7, 19.6, 18.8, 18.9, 19.6]}, {"label": "EU median: income poverty", "tone": "series-3", "style": "dashed", "weight": "light", "values": [16.3, 16.5, 15.9, 16.4, 15.4, 16.1, 15.7, 15.6, 15.4, 15.5]}]}</script>
+</div><p class="fig-caveat"><strong>Read with this.</strong> AROPE is deliberately absent here. It enters at Stage 2 as the bridge, and showing it now would pre-empt that step.</p>
+<details class="fallback" id="F1-fb"><summary>Show the numbers <a href="statistical_appendix.html">Full evidence in the appendix</a>.</summary>
+<table data-checksum="ec03a01ae21a476a"><thead><tr><th>Series</th><th class="num">2015</th><th class="num">2016</th><th class="num">2017</th><th class="num">2018</th><th class="num">2019</th><th class="num">2020</th><th class="num">2021</th><th class="num">2022</th><th class="num">2023</th><th class="num">2024</th></tr></thead><tbody><tr><td>Greece: reported hardship</td><td class="num">77.7</td><td class="num">76.8</td><td class="num">77.2</td><td class="num">74.1</td><td class="num">71.0</td><td class="num">69.8</td><td class="num">71.0</td><td class="num">68.4</td><td class="num">67.0</td><td class="num">66.7</td></tr><tr><td>EU median: reported hardship</td><td class="num">28.9</td><td class="num">25.9</td><td class="num">22.6</td><td class="num">20.5</td><td class="num">18.5</td><td class="num">16.8</td><td class="num">15.4</td><td class="num">17.9</td><td class="num">16.6</td><td class="num">17.1</td></tr><tr><td>Greece: income poverty</td><td class="num">21.4</td><td class="num">21.2</td><td class="num">20.2</td><td class="num">18.5</td><td class="num">17.9</td><td class="num">17.7</td><td class="num">19.6</td><td class="num">18.8</td><td class="num">18.9</td><td class="num">19.6</td></tr><tr><td>EU median: income poverty</td><td class="num">16.3</td><td class="num">16.5</td><td class="num">15.9</td><td class="num">16.4</td><td class="num">15.4</td><td class="num">16.1</td><td class="num">15.7</td><td class="num">15.6</td><td class="num">15.4</td><td class="num">15.5</td></tr></tbody></table></details>
+</figure>
+
+<div class="finding" data-claim-id="V2-1.2"><p>Greek subjective hardship runs 52.6 points above relative income poverty on average, and Greece ranks first of 27 on hardship while ranking seventh on AROP.</p></div>
+
+<p>Greece also ranks first in the European Union on the question about
+struggling, and seventh on the income measure. That combination is what makes
+this a puzzle rather than a ranking. And Greece is not simply the last country
+in a long queue: the distance between Greece and the next country is wider than
+the distance covering most of the rest of Europe. Whatever is happening here is
+not a stronger dose of what happens elsewhere.</p>
+
+<p>This report is an attempt to find out what that gap is made of. The honest
+summary of the answer, given at the start so that nothing later reads as a
+reveal: we can account for part of it, we can rule some explanations out, and
+most of it remains unexplained.</p>
+</section><section class="ch" id="ch2"><p class="chnum">Chapter 2</p><h2>A ruler that shrank</h2>
+<p>The official poverty line isn't fixed. It moves with the very economy it is
+supposed to be measuring.</p>
+
+<p>Here is the quiet flaw at the centre of the EU's standard poverty measure:
+it is not an income level. It is a percentage &mdash; 60% of whatever the
+national median income happens to be, <em>that year</em>. In an ordinary
+economy, where incomes drift up slowly and roughly together, that is a
+reasonable way to define being poor relative to your neighbours.</p>
+
+<p>Greece's economy, from 2010, was not ordinary. Incomes across the whole
+country fell together, hard and fast. And when the median falls, the poverty
+line falls with it. A household earning exactly what it earned five years
+earlier could find itself reclassified from poor to not poor &mdash; not
+because anything in its life had improved, but because the ruler measuring it
+had shrunk to match the collapse around it.</p>
+
+<p>So the official income-poverty rate barely moved through the worst years.
+Not because Greek households weren't getting poorer &mdash; they were,
+dramatically &mdash; but because the yardstick was falling with them, always
+re-centring on a poorer and poorer normal.</p>
+
+<p>What happens if you refuse to let the ruler move? Hold the line where it
+stood in 2008, adjust it only for inflation, and measured poverty roughly
+doubles: from under 20% before the crisis to a peak above 40% in 2014.</p>
+
+<figure class="figure" id="F3">
+<figcaption>The line moved: a falling threshold, and what a fixed one shows instead</figcaption>
+<div class="fig-meta"><span class="badge">descriptive</span>
+<span class="fig-q">What happened to the line Greek poverty is measured against, and what does a fixed line show instead?</span></div>
+<div class="chart-live" data-chart="panel" tabindex="0"
+     data-checksum="61537afe7b2e198c" aria-describedby="F3-fb">
+<script type="application/json" data-kind="panel" data-label="Real threshold, 2008 = 100">{"years": [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024], "dp": 1, "yLabel": "Index, 2008 = 100", "alt": "Real poverty threshold indexed to each country's own 2008 level", "series": [{"label": "Greece: real poverty threshold", "tone": "gr", "style": "solid", "weight": "strong", "values": [65.1, 65.0, 65.1, 66.8, 69.3, 75.2, 74.5, 74.2, 75.2, 78.8]}, {"label": "EU median: real poverty threshold", "tone": "eu", "style": "dashed", "weight": "normal", "values": [106.5, 108.8, 109.5, 111.4, 113.8, 119.9, 120.4, 114.5, 113.5, 119.1]}]}</script><script type="application/json" data-kind="panel" data-label="Fixed 2008 threshold vs current-year threshold">{"years": [2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025], "dp": 1, "yLabel": "% of people", "alt": "Greek anchored poverty against the floating income-poverty rate", "series": [{"label": "Greece: fixed 2008 threshold", "tone": "gr", "style": "solid", "weight": "strong", "values": [25.6, 22.8, 20.7, 21.5, 21.2, 19.7, 17.0, 18.0, 24.6, 33.3, 39.7, 40.6, 39.8, 39.8, 38.3, 37.3, 34.6, 30.8, 32.7, 33.6, 32.0, 30.2, 27.5]}, {"label": "Greece: current-year threshold", "tone": "series-3", "style": "solid", "weight": "normal", "values": [20.7, 19.9, 19.6, 20.5, 20.3, 20.1, 19.7, 20.1, 21.4, 23.1, 23.1, 22.1, 21.4, 21.2, 20.2, 18.5, 17.9, 17.7, 19.6, 18.8, 18.9, 19.6, 19.6]}]}</script>
+</div><p class="fig-caveat"><strong>Read with this.</strong> The anchored series is an approximation built in this project and is labelled as such wherever it appears.</p>
+<details class="fallback" id="F3-fb"><summary>Show the numbers <a href="statistical_appendix.html">Full evidence in the appendix</a>.</summary>
+<table data-checksum="61537afe7b2e198c" data-view="0"><caption>Real threshold, 2008 = 100</caption><thead><tr><th>Series</th><th class="num">2015</th><th class="num">2016</th><th class="num">2017</th><th class="num">2018</th><th class="num">2019</th><th class="num">2020</th><th class="num">2021</th><th class="num">2022</th><th class="num">2023</th><th class="num">2024</th></tr></thead><tbody><tr><td>Greece: real poverty threshold</td><td class="num">65.1</td><td class="num">65.0</td><td class="num">65.1</td><td class="num">66.8</td><td class="num">69.3</td><td class="num">75.2</td><td class="num">74.5</td><td class="num">74.2</td><td class="num">75.2</td><td class="num">78.8</td></tr><tr><td>EU median: real poverty threshold</td><td class="num">106.5</td><td class="num">108.8</td><td class="num">109.5</td><td class="num">111.4</td><td class="num">113.8</td><td class="num">119.9</td><td class="num">120.4</td><td class="num">114.5</td><td class="num">113.5</td><td class="num">119.1</td></tr></tbody></table><table data-checksum="7306a714675cddf8" data-view="1"><caption>Fixed 2008 threshold vs current-year threshold</caption><thead><tr><th>Series</th><th class="num">2003</th><th class="num">2004</th><th class="num">2005</th><th class="num">2006</th><th class="num">2007</th><th class="num">2008</th><th class="num">2009</th><th class="num">2010</th><th class="num">2011</th><th class="num">2012</th><th class="num">2013</th><th class="num">2014</th><th class="num">2015</th><th class="num">2016</th><th class="num">2017</th><th class="num">2018</th><th class="num">2019</th><th class="num">2020</th><th class="num">2021</th><th class="num">2022</th><th class="num">2023</th><th class="num">2024</th><th class="num">2025</th></tr></thead><tbody><tr><td>Greece: fixed 2008 threshold</td><td class="num">25.6</td><td class="num">22.8</td><td class="num">20.7</td><td class="num">21.5</td><td class="num">21.2</td><td class="num">19.7</td><td class="num">17.0</td><td class="num">18.0</td><td class="num">24.6</td><td class="num">33.3</td><td class="num">39.7</td><td class="num">40.6</td><td class="num">39.8</td><td class="num">39.8</td><td class="num">38.3</td><td class="num">37.3</td><td class="num">34.6</td><td class="num">30.8</td><td class="num">32.7</td><td class="num">33.6</td><td class="num">32.0</td><td class="num">30.2</td><td class="num">27.5</td></tr><tr><td>Greece: current-year threshold</td><td class="num">20.7</td><td class="num">19.9</td><td class="num">19.6</td><td class="num">20.5</td><td class="num">20.3</td><td class="num">20.1</td><td class="num">19.7</td><td class="num">20.1</td><td class="num">21.4</td><td class="num">23.1</td><td class="num">23.1</td><td class="num">22.1</td><td class="num">21.4</td><td class="num">21.2</td><td class="num">20.2</td><td class="num">18.5</td><td class="num">17.9</td><td class="num">17.7</td><td class="num">19.6</td><td class="num">18.8</td><td class="num">18.9</td><td class="num">19.6</td><td class="num">19.6</td></tr></tbody></table></details>
+</figure>
+
+<p>A word on where these numbers come from, since this chapter reaches back
+further than the rest. From 2010 onward the figures are Eurostat's own,
+published and used as they are. For the years before that Eurostat does not
+publish this measure, so the earlier values are built from its own components
+using a rule we checked against the official series everywhere the two overlap
+&mdash; 432 country-years, agreeing almost exactly. Those earlier years are
+used for the picture only. Nothing later in this report is tested on them.</p>
+
+<div class="finding" data-claim-id="V2-1.1"><p>The outcome is Eurostat&#x27;s official subjective-hardship indicator, extended backwards before 2010 using a constructed series validated against it on 432 overlapping country-years.</p><p class="limits"><em>The limits of this.</em> pre-2010 provenance is ours, not Eurostat&#x27;s.</p></div>
+
+<p>Two cautions, because this chart is easy to over-read. This is a measure of
+Greece against its own past, and it contains no other country: it cannot tell
+you that Greece's line fell further than anyone else's. And the fixed line is
+not the <em>correct</em> line. The relative measure is doing exactly what it
+was designed to do &mdash; measuring position &mdash; and the fixed measure
+answers a different question about living standards. When a whole country falls
+together, those two questions come apart, and that separation is the point.</p>
+</section><section class="ch" id="ch3"><p class="chnum">Chapter 3</p><h2>The wider net</h2>
+<p>Europe already knows income alone is too narrow. Its headline measure of
+social exclusion casts a wider net: it counts you if your income is low, or if
+you can't afford a list of ordinary things, or if the adults in your household
+are barely working. If the puzzle in Chapter 1 is just that the income measure
+is too narrow, the wider one should mostly dissolve it.</p>
+
+<div class="finding" data-claim-id="V2-2.1"><p>Switching to AROPE closes 9.8 of those 52.6 points (19%), leaving 42.8 unexplained, and its contribution shrinks from 11.0 points in 2015 to 7.3 in 2024.</p></div>
+
+<p>It helps, and it isn't enough. The wider net picks up under a quarter of the
+distance. More telling is the direction of travel: its contribution is getting
+<em>smaller</em>, from eleven points at the start of the period to seven by the
+end. As an explanation of this puzzle it is weakening, not strengthening.</p>
+
+<p>There is also something hidden inside that headline number. It is built from
+three separate conditions joined by <em>or</em>: your income is low, or you
+can't afford a list of ordinary things, or the adults around you are barely
+working. Because they're joined by <em>or</em> and not added up, the headline
+can't be taken apart into neat slices &mdash; a household counted for two
+reasons is still one household.</p>
+
+<p>What that hides is that the three don't move together. One of them can be
+falling while another rises, and the combined rate sits calmly in the middle
+looking like nothing much is happening. Nor do they apply equally to everyone:
+the work-intensity condition is defined over working-age adults, so a household
+of pensioners can't trigger it at all. Comparing the headline across age groups
+is therefore partly comparing which conditions were even eligible to fire.</p>
+
+<p>This is a recurring shape in the whole investigation. The averages are calm.
+What's underneath them isn't.</p>
+</section><section class="ch" id="ch4"><p class="chnum">Chapter 4</p><h2>The average hid a reversal</h2>
+<p>National averages are averages of people, and people are not
+interchangeable.</p>
+
+<p>Underneath a Greek headline rate that moved gently, the age groups did not
+move together at all. The pattern that emerges when you split them apart is the
+kind of thing an average is very good at concealing: some groups improving
+while others did not, and the combined figure sitting placidly between
+them.</p>
+
+<p>This matters for the question this report is asking. A country where
+hardship has become concentrated in particular groups can look, on the
+headline, exactly like a country where it eased for everybody a little. The
+household answering the survey question is not answering about the national
+average. It is answering about itself.</p>
+
+<p>It also complicates the recovery story from the previous chapters. Aggregate
+improvement in unemployment and consumption is real. Whether it reached the
+same people who absorbed the worst of the crisis is a different question, and
+the age split is the closest this data comes to an answer: not evenly.</p>
+
+<p>We stop short of the stronger version of that claim. Showing that groups
+moved differently is not the same as showing which group's experience drives
+the national answer to the survey question, and this study cannot do the
+second.</p>
+</section><section class="ch" id="ch5"><p class="chnum">Chapter 5</p><h2>Is any of it real?</h2>
+<p>This is the chapter where the whole thing could have collapsed.</p>
+
+<p>If Greek households say they are struggling while nothing in their material
+circumstances corresponds to it, then this is a story about how people answer
+questions, not about poverty, and everything after this point measures a
+phantom. So it has to be dealt with before anything else.</p>
+
+<p>The test is whether the reported difficulty moves together with things that
+name events rather than feelings: falling behind on bills, being unable to
+handle an unexpected expense, being unable to heat the home, going without
+several basic things at once.</p>
+
+<div class="finding" data-claim-id="V2-3.1"><p>Reported difficulty co-moves with arrears, inability to meet an unexpected expense, inadequate heating and severe deprivation at within-country correlations of 0.63 to 0.80.</p><p class="limits"><em>The limits of this.</em> same-instrument corroboration, NOT independent validation | all items and the outcome come from EU-SILC | not uniform: arrears within Greece is 0.371.</p></div>
+
+<p>They move together, and they do so <em>within</em> countries, which is the
+harder test &mdash; it can't be satisfied by rich countries simply differing
+from poor ones.</p>
+
+<p>Now the honest part, and it matters more than the result. Every one of those
+items comes from the same survey, asked of the same household, in the same
+sitting, as the question about making ends meet. A household in a grim mood
+about its finances will answer the whole set grimly, and that alone would
+produce numbers like these. This is one instrument agreeing with itself. It is
+real evidence and it is not independent confirmation, and the difference
+between those two things runs through the rest of this report.</p>
+
+<p>It isn't even uniform. Falling behind on bills &mdash; the item you would
+expect to be the hardest, most factual anchor &mdash; tracks the reported
+difficulty far more weakly within Greece than the others do. Arrears require
+having credit and bills to fall behind on. A household that lost access to
+credit years ago, or never had it, can be in serious trouble without ever
+registering.</p>
+
+<div class="finding" data-claim-id="V2-3.2"><p>Those same four items statistically absorb 71% of Greece&#x27;s baseline residual (+46.92 to +13.74).</p><p class="limits"><em>The limits of this.</em> ABSORPTION, never explanation | shared instrument is not shared cause | diagnostic only; never a headline explanation.</p></div>
+
+<p>That word &mdash; absorb &mdash; is doing careful work, and it is not a
+synonym for explain. Put those deprivation items into the model and most of
+Greece's unexplained excess stops being statistically visible. That tells you
+the two things share a great deal of information. It does not tell you one
+causes the other, because both are measured by the same survey of the same
+households on the same day. Chapter 12 shows how much rides on that.</p>
+</section><section class="ch" id="ch6"><p class="chnum">Chapter 6</p><h2>What money actually buys</h2>
+<p>Income is not the same as what a household can get for it. Two countries can
+report similar wages and offer very different lives, depending on what things
+cost.</p>
+
+<p>The measure that captures this counts what people in a country actually
+consume, adjusted for what things cost there &mdash; not what they nominally
+earn. It is the closest thing in official statistics to asking what a household
+can actually get.</p>
+
+<p>On that measure Greece has risen substantially over the decade, from roughly
+14,800 to 21,300 in the units used for these comparisons. That is a real
+improvement and it is worth saying clearly, because a report about hardship can
+give the impression that nothing improved. A great deal improved.</p>
+
+<p>And the measure still predicts reported hardship after income poverty has
+been accounted for &mdash; meaning it carries information the official poverty
+rate does not.</p>
+
+<div class="finding" data-claim-id="V2-4.C1"><p>Material resources predicts hardship beyond AROP and year effects (coef -0.0013, wild-cluster bootstrap p=0.0055).</p><p class="limits"><em>The limits of this.</em> cross-country association | no causal claim.</p></div>
+
+<p>Read that carefully: it says the measure carries information the official
+poverty rate does not. It does not say that raising it would lower hardship by
+a calculable amount. Nothing in this study can establish that. What it
+establishes is that a country's real consuming power tells you something about
+how its households answer the question, over and above where they sit in their
+own income distribution.</p>
+</section><section class="ch" id="ch7"><p class="chnum">Chapter 7</p><h2>When joblessness stops being a spell</h2>
+<p>The headline unemployment rate tells you how many people are out of work
+this month. It tells you nothing about whether those are the same people as
+last year.</p>
+
+<p>That distinction is not a technicality. A labour market where people lose
+jobs and find new ones within months is a different place from one where the
+same people have been out of work for years, even if both report the same
+percentage. The first is churn. The second is a condition.</p>
+
+<p>Long-term unemployment &mdash; out of work for twelve months or more &mdash;
+measures the second thing, and Greece's figure was extraordinary. In 2015 it
+stood at 16.4% of the labour force. At the worst of it, roughly three out of
+every four unemployed Greeks had been out of work for over a year. Not between
+jobs. Out.</p>
+
+<p>By 2024 it had fallen to 5.4%. That is substantial, real progress, and it is
+still among the highest in Europe &mdash; most of the EU sits under 2%.</p>
+
+<p>The reason this matters for a question about making ends meet is that time
+does something specific to a household. Savings go first, then whatever could
+be sold, then the goodwill of relatives, then the ability to absorb any
+surprise at all. A month of unemployment is an inconvenience for most
+households. Two years is a different category of event, and the household that
+comes out the other side is not the household that went in.</p>
+
+<div class="finding" data-claim-id="V2-4.C2"><p>Labour-market exclusion predicts hardship beyond AROP and year effects (coef +4.3402, wild-cluster bootstrap p=0.0085).</p><p class="limits"><em>The limits of this.</em> cross-country association | no causal claim.</p></div>
+
+<p>This is the clearest of the present-day results, and it survives every check
+applied to it, including being re-estimated twenty-seven times with a different
+country left out each time. Dropping Greece itself does not overturn it &mdash;
+which matters, because a finding that only held because of the country the
+report is about would be worthless.</p>
+</section><section class="ch" id="ch8"><p class="chnum">Chapter 8</p><h2>A paycheck that never came back</h2>
+<p>Of everything measured here, this is the series that has not recovered.</p>
+
+<p>Greek real wages stood at about 77% of their 2008 level in 2015. In 2024
+they stood at about 68%. Not recovering slowly &mdash; not recovering. Greek
+wages have now been below their pre-crisis level for fifteen consecutive years,
+longer than any country in the EU except Hungary.</p>
+
+<p>What matters for households is not the wage alone but the wage against what
+things cost, and that combination also predicts reported hardship beyond income
+poverty.</p>
+
+<div class="finding" data-claim-id="V2-4.C4"><p>Wage-adjusted affordability predicts hardship beyond AROP and year effects (coef +0.3110, wild-cluster bootstrap p=0.0005).</p><p class="limits"><em>The limits of this.</em> cross-country association | no causal claim.</p></div>
+
+<p>A country can score badly here two ways: by being expensive, or by paying
+poorly. Greece does both at once, and the household experiencing it does not
+much care which half is responsible.</p>
+
+<p>It is worth sitting with what fifteen years means. A worker who started a
+job in 2008 at the going rate has spent an entire career &mdash; the whole of
+their thirties, say &mdash; without the pay level they began with ever
+returning. Not a bad year. Not a bad stretch. The entire span in which most
+people expect their earnings to rise.</p>
+
+<p>Set this beside Chapter 7 and you have the shape of the Greek recovery. The
+unemployment rate came back. The paycheck did not. A household looking at a
+labour market that has genuinely improved is also looking at a wage that has
+been below where it started for a decade and a half.</p>
+</section><section class="ch" id="ch9"><p class="chnum">Chapter 9</p><h2>The things we couldn't settle</h2>
+<p>Nine present-day measures were tested. Three worked. This chapter is about
+the other six, and it is more important than it sounds.</p>
+
+<p>The tempting thing to write is that the six were ruled out. For most of
+them, that would be false.</p>
+
+<div class="finding" data-claim-id="V2-4.X"><p>Six of nine current-level constructs are inconclusive under available power, not unsupported; two cleared FDR and collapsed under the bootstrap (p=0.40 and 0.55).</p><p class="limits"><em>The limits of this.</em> inconclusive is not evidence of absence.</p></div>
+
+<p>A test that finds nothing tells you something only if it was capable of
+finding something. With twenty-seven countries and about a decade of data, this
+study can detect large effects and not small ones. For most of the six, the
+smallest effect it could reliably have caught is bigger than any effect worth
+caring about. So the study is <em>silent</em> about them. Not negative &mdash;
+silent. Reporting that as "no evidence of an effect" would be one of the
+easiest and most common ways to mislead with a true sentence.</p>
+
+<p>A few are genuinely different, and for those the exclusion is real &mdash;
+though it holds at a stated size rather than in general.</p>
+
+<div class="finding" data-claim-id="L-4"><p>Annual food and housing inflation are unsupported with adequate power at 0.70 SD; annual headline inflation is unsupported at its detectable conditional magnitude; compounded inflation since 2008 remains inconclusive.</p><p class="limits"><em>The limits of this.</em> the exclusions are narrow and magnitude-specific | compounded inflation is INCONCLUSIVE, not ruled out.</p></div>
+
+<p>Inflation is the clearest case. Two inflation measures can be ruled out at
+the size this study could detect. That is not the same as showing that rising
+prices don't matter to Greek households, and it should not be read that
+way.</p>
+
+<p>One more thing belongs here, because it shows why the checks were worth
+having. Two measures passed the standard statistical test comfortably and then
+failed a stricter one designed for studies with few countries. Had the protocol
+stopped at the usual step, this report would contain two more findings than it
+does.</p>
+</section><section class="ch" id="ch10"><p class="chnum">Chapter 10</p><h2>How long it went on</h2>
+<p>Two countries can look identical today and have arrived by different roads.
+One has had high long-term unemployment for a year. The other has had it for
+twelve. The intuition that these are not the same situation is strong, and it
+is the intuition behind almost every account of the Greek crisis.</p>
+
+<p>Intuition isn't evidence, and this is the chapter where an appealing story
+is easiest to oversell. Three drafts of this report oversold it before the
+wording below was settled.</p>
+
+<p>For each measure that worked in the earlier chapters, we built a matching
+one that counts not the level today but the total burden a country has absorbed
+since before the crisis: how much excess unemployment it accumulated, how many
+consecutive years its wages stayed below 2008, how much its housing costs
+deteriorated.</p>
+
+<figure class="figure" id="F11">
+<figcaption>Greece ranks first on accumulated unemployment and housing deterioration, and second on wage non-recovery</figcaption>
+<div class="fig-meta"><span class="badge">post-selection robustness</span>
+<span class="fig-q">How much accumulated unemployment has each country absorbed, and where does Greece sit?</span></div>
+<div class="chart-live" data-chart="ladder" tabindex="0"
+     data-checksum="a805387c55cd1571" aria-describedby="F11-fb">
+<script type="application/json" data-kind="ladder" data-label="Accumulated unemployment">{"rows": [{"label": "Greece", "name": "Greece", "value": 137.5, "highlight": true, "detail": "rank 1 of 27<br><span style='opacity:.6'>percentage-point-years above 2009<\/span>"}, {"label": "Cyprus", "name": "Cyprus", "value": 64.1, "highlight": false, "detail": "rank 2 of 27<br><span style='opacity:.6'>percentage-point-years above 2009<\/span>"}, {"label": "Croatia", "name": "Croatia", "value": 43.5, "highlight": false, "detail": "rank 3 of 27<br><span style='opacity:.6'>percentage-point-years above 2009<\/span>"}, {"label": "Spain", "name": "Spain", "value": 33.1, "highlight": false, "detail": "rank 4 of 27<br><span style='opacity:.6'>percentage-point-years above 2009<\/span>"}, {"label": "Italy", "name": "Italy", "value": 32.9, "highlight": false, "detail": "rank 5 of 27<br><span style='opacity:.6'>percentage-point-years above 2009<\/span>"}, {"label": "Bulgaria", "name": "Bulgaria", "value": 26.6, "highlight": false, "detail": "rank 6 of 27<br><span style='opacity:.6'>percentage-point-years above 2009<\/span>"}, {"label": "Portugal", "name": "Portugal", "value": 20.6, "highlight": false, "detail": "rank 7 of 27<br><span style='opacity:.6'>percentage-point-years above 2009<\/span>"}, {"label": "Slovenia", "name": "Slovenia", "value": 20.6, "highlight": false, "detail": "rank 8 of 27<br><span style='opacity:.6'>percentage-point-years above 2009<\/span>"}, {"label": "Netherlands", "name": "Netherlands", "value": 13.1, "highlight": false, "detail": "rank 9 of 27<br><span style='opacity:.6'>percentage-point-years above 2009<\/span>"}, {"label": "Luxembourg", "name": "Luxembourg", "value": 9.1, "highlight": false, "detail": "rank 10 of 27<br><span style='opacity:.6'>percentage-point-years above 2009<\/span>"}, {"label": "Ireland", "name": "Ireland", "value": 8.9, "highlight": false, "detail": "rank 11 of 27<br><span style='opacity:.6'>percentage-point-years above 2009<\/span>"}, {"label": "Slovakia", "name": "Slovakia", "value": 8.9, "highlight": false, "detail": "rank 12 of 27<br><span style='opacity:.6'>percentage-point-years above 2009<\/span>"}, {"label": "Poland", "name": "Poland", "value": 7.7, "highlight": false, "detail": "rank 13 of 27<br><span style='opacity:.6'>percentage-point-years above 2009<\/span>"}, {"label": "France", "name": "France", "value": 5.9, "highlight": false, "detail": "rank 14 of 27<br><span style='opacity:.6'>percentage-point-years above 2009<\/span>"}, {"label": "Lithuania", "name": "Lithuania", "value": 5.6, "highlight": false, "detail": "rank 15 of 27<br><span style='opacity:.6'>percentage-point-years above 2009<\/span>"}, {"label": "Denmark", "name": "Denmark", "value": 5.6, "highlight": false, "detail": "rank 16 of 27<br><span style='opacity:.6'>percentage-point-years above 2009<\/span>"}, {"label": "Hungary", "name": "Hungary", "value": 3.2, "highlight": false, "detail": "rank 17 of 27<br><span style='opacity:.6'>percentage-point-years above 2009<\/span>"}, {"label": "Estonia", "name": "Estonia", "value": 3.1, "highlight": false, "detail": "rank 18 of 27<br><span style='opacity:.6'>percentage-point-years above 2009<\/span>"}, {"label": "Finland", "name": "Finland", "value": 2.9, "highlight": false, "detail": "rank 19 of 27<br><span style='opacity:.6'>percentage-point-years above 2009<\/span>"}, {"label": "Austria", "name": "Austria", "value": 2.5, "highlight": false, "detail": "rank 20 of 27<br><span style='opacity:.6'>percentage-point-years above 2009<\/span>"}, {"label": "Belgium", "name": "Belgium", "value": 2.4, "highlight": false, "detail": "rank 21 of 27<br><span style='opacity:.6'>percentage-point-years above 2009<\/span>"}, {"label": "Romania", "name": "Romania", "value": 2.4, "highlight": false, "detail": "rank 22 of 27<br><span style='opacity:.6'>percentage-point-years above 2009<\/span>"}, {"label": "Latvia", "name": "Latvia", "value": 2.0, "highlight": false, "detail": "rank 23 of 27<br><span style='opacity:.6'>percentage-point-years above 2009<\/span>"}, {"label": "Czechia", "name": "Czechia", "value": 1.2, "highlight": false, "detail": "rank 24 of 27<br><span style='opacity:.6'>percentage-point-years above 2009<\/span>"}, {"label": "Sweden", "name": "Sweden", "value": 0.6, "highlight": false, "detail": "rank 25 of 27<br><span style='opacity:.6'>percentage-point-years above 2009<\/span>"}, {"label": "Malta", "name": "Malta", "value": 0.0, "highlight": false, "detail": "rank 26 of 27<br><span style='opacity:.6'>percentage-point-years above 2009<\/span>"}, {"label": "Germany", "name": "Germany", "value": 0.0, "highlight": false, "detail": "rank 27 of 27<br><span style='opacity:.6'>percentage-point-years above 2009<\/span>"}], "dp": 1, "reference": 5.9, "referenceLabel": "EU median", "unit": "percentage-point-years above 2009", "alt": "Accumulated unemployment for all 27 countries, latest year, in percentage-point-years above 2009"}</script><script type="application/json" data-kind="ladder" data-label="Years wages below 2008">{"rows": [{"label": "Hungary", "name": "Hungary", "value": 16.0, "highlight": false, "detail": "rank 1 of 27<br><span style='opacity:.6'>consecutive years below the 2008 level<\/span>"}, {"label": "Greece", "name": "Greece", "value": 15.0, "highlight": true, "detail": "rank 2 of 27<br><span style='opacity:.6'>consecutive years below the 2008 level<\/span>"}, {"label": "Italy", "name": "Italy", "value": 14.0, "highlight": false, "detail": "rank 3 of 27<br><span style='opacity:.6'>consecutive years below the 2008 level<\/span>"}, {"label": "Finland", "name": "Finland", "value": 3.0, "highlight": false, "detail": "rank 4 of 27<br><span style='opacity:.6'>consecutive years below the 2008 level<\/span>"}, {"label": "Sweden", "name": "Sweden", "value": 2.0, "highlight": false, "detail": "rank 5 of 27<br><span style='opacity:.6'>consecutive years below the 2008 level<\/span>"}, {"label": "Slovenia", "name": "Slovenia", "value": 0.0, "highlight": false, "detail": "rank 6 of 27<br><span style='opacity:.6'>consecutive years below the 2008 level<\/span>"}, {"label": "Romania", "name": "Romania", "value": 0.0, "highlight": false, "detail": "rank 7 of 27<br><span style='opacity:.6'>consecutive years below the 2008 level<\/span>"}, {"label": "Portugal", "name": "Portugal", "value": 0.0, "highlight": false, "detail": "rank 8 of 27<br><span style='opacity:.6'>consecutive years below the 2008 level<\/span>"}, {"label": "Poland", "name": "Poland", "value": 0.0, "highlight": false, "detail": "rank 9 of 27<br><span style='opacity:.6'>consecutive years below the 2008 level<\/span>"}, {"label": "Netherlands", "name": "Netherlands", "value": 0.0, "highlight": false, "detail": "rank 10 of 27<br><span style='opacity:.6'>consecutive years below the 2008 level<\/span>"}, {"label": "Malta", "name": "Malta", "value": 0.0, "highlight": false, "detail": "rank 11 of 27<br><span style='opacity:.6'>consecutive years below the 2008 level<\/span>"}, {"label": "Latvia", "name": "Latvia", "value": 0.0, "highlight": false, "detail": "rank 12 of 27<br><span style='opacity:.6'>consecutive years below the 2008 level<\/span>"}, {"label": "Luxembourg", "name": "Luxembourg", "value": 0.0, "highlight": false, "detail": "rank 13 of 27<br><span style='opacity:.6'>consecutive years below the 2008 level<\/span>"}, {"label": "Lithuania", "name": "Lithuania", "value": 0.0, "highlight": false, "detail": "rank 14 of 27<br><span style='opacity:.6'>consecutive years below the 2008 level<\/span>"}, {"label": "Austria", "name": "Austria", "value": 0.0, "highlight": false, "detail": "rank 15 of 27<br><span style='opacity:.6'>consecutive years below the 2008 level<\/span>"}, {"label": "Ireland", "name": "Ireland", "value": 0.0, "highlight": false, "detail": "rank 16 of 27<br><span style='opacity:.6'>consecutive years below the 2008 level<\/span>"}, {"label": "Belgium", "name": "Belgium", "value": 0.0, "highlight": false, "detail": "rank 17 of 27<br><span style='opacity:.6'>consecutive years below the 2008 level<\/span>"}, {"label": "Croatia", "name": "Croatia", "value": 0.0, "highlight": false, "detail": "rank 18 of 27<br><span style='opacity:.6'>consecutive years below the 2008 level<\/span>"}, {"label": "France", "name": "France", "value": 0.0, "highlight": false, "detail": "rank 19 of 27<br><span style='opacity:.6'>consecutive years below the 2008 level<\/span>"}, {"label": "Spain", "name": "Spain", "value": 0.0, "highlight": false, "detail": "rank 20 of 27<br><span style='opacity:.6'>consecutive years below the 2008 level<\/span>"}, {"label": "Estonia", "name": "Estonia", "value": 0.0, "highlight": false, "detail": "rank 21 of 27<br><span style='opacity:.6'>consecutive years below the 2008 level<\/span>"}, {"label": "Denmark", "name": "Denmark", "value": 0.0, "highlight": false, "detail": "rank 22 of 27<br><span style='opacity:.6'>consecutive years below the 2008 level<\/span>"}, {"label": "Germany", "name": "Germany", "value": 0.0, "highlight": false, "detail": "rank 23 of 27<br><span style='opacity:.6'>consecutive years below the 2008 level<\/span>"}, {"label": "Czechia", "name": "Czechia", "value": 0.0, "highlight": false, "detail": "rank 24 of 27<br><span style='opacity:.6'>consecutive years below the 2008 level<\/span>"}, {"label": "Cyprus", "name": "Cyprus", "value": 0.0, "highlight": false, "detail": "rank 25 of 27<br><span style='opacity:.6'>consecutive years below the 2008 level<\/span>"}, {"label": "Bulgaria", "name": "Bulgaria", "value": 0.0, "highlight": false, "detail": "rank 26 of 27<br><span style='opacity:.6'>consecutive years below the 2008 level<\/span>"}, {"label": "Slovakia", "name": "Slovakia", "value": 0.0, "highlight": false, "detail": "rank 27 of 27<br><span style='opacity:.6'>consecutive years below the 2008 level<\/span>"}], "dp": 1, "reference": 0.0, "referenceLabel": "EU median", "unit": "consecutive years below the 2008 level", "alt": "Years wages below 2008 for all 27 countries, latest year, in consecutive years below the 2008 level"}</script><script type="application/json" data-kind="ladder" data-label="Housing deterioration since 2010">{"rows": [{"label": "Greece", "name": "Greece", "value": 233.2, "highlight": true, "detail": "rank 1 of 27<br><span style='opacity:.6'>percentage-point-years above 2010<\/span>"}, {"label": "Bulgaria", "name": "Bulgaria", "value": 116.3, "highlight": false, "detail": "rank 2 of 27<br><span style='opacity:.6'>percentage-point-years above 2010<\/span>"}, {"label": "Luxembourg", "name": "Luxembourg", "value": 37.8, "highlight": false, "detail": "rank 3 of 27<br><span style='opacity:.6'>percentage-point-years above 2010<\/span>"}, {"label": "Portugal", "name": "Portugal", "value": 35.8, "highlight": false, "detail": "rank 4 of 27<br><span style='opacity:.6'>percentage-point-years above 2010<\/span>"}, {"label": "Sweden", "name": "Sweden", "value": 17.1, "highlight": false, "detail": "rank 5 of 27<br><span style='opacity:.6'>percentage-point-years above 2010<\/span>"}, {"label": "Estonia", "name": "Estonia", "value": 11.8, "highlight": false, "detail": "rank 6 of 27<br><span style='opacity:.6'>percentage-point-years above 2010<\/span>"}, {"label": "Slovenia", "name": "Slovenia", "value": 9.9, "highlight": false, "detail": "rank 7 of 27<br><span style='opacity:.6'>percentage-point-years above 2010<\/span>"}, {"label": "Hungary", "name": "Hungary", "value": 9.6, "highlight": false, "detail": "rank 8 of 27<br><span style='opacity:.6'>percentage-point-years above 2010<\/span>"}, {"label": "Germany", "name": "Germany", "value": 9.4, "highlight": false, "detail": "rank 9 of 27<br><span style='opacity:.6'>percentage-point-years above 2010<\/span>"}, {"label": "Italy", "name": "Italy", "value": 8.2, "highlight": false, "detail": "rank 10 of 27<br><span style='opacity:.6'>percentage-point-years above 2010<\/span>"}, {"label": "Belgium", "name": "Belgium", "value": 7.9, "highlight": false, "detail": "rank 11 of 27<br><span style='opacity:.6'>percentage-point-years above 2010<\/span>"}, {"label": "Finland", "name": "Finland", "value": 7.0, "highlight": false, "detail": "rank 12 of 27<br><span style='opacity:.6'>percentage-point-years above 2010<\/span>"}, {"label": "France", "name": "France", "value": 6.6, "highlight": false, "detail": "rank 13 of 27<br><span style='opacity:.6'>percentage-point-years above 2010<\/span>"}, {"label": "Slovakia", "name": "Slovakia", "value": 6.1, "highlight": false, "detail": "rank 14 of 27<br><span style='opacity:.6'>percentage-point-years above 2010<\/span>"}, {"label": "Latvia", "name": "Latvia", "value": 5.7, "highlight": false, "detail": "rank 15 of 27<br><span style='opacity:.6'>percentage-point-years above 2010<\/span>"}, {"label": "Netherlands", "name": "Netherlands", "value": 4.9, "highlight": false, "detail": "rank 16 of 27<br><span style='opacity:.6'>percentage-point-years above 2010<\/span>"}, {"label": "Ireland", "name": "Ireland", "value": 4.6, "highlight": false, "detail": "rank 17 of 27<br><span style='opacity:.6'>percentage-point-years above 2010<\/span>"}, {"label": "Spain", "name": "Spain", "value": 4.5, "highlight": false, "detail": "rank 18 of 27<br><span style='opacity:.6'>percentage-point-years above 2010<\/span>"}, {"label": "Malta", "name": "Malta", "value": 4.5, "highlight": false, "detail": "rank 19 of 27<br><span style='opacity:.6'>percentage-point-years above 2010<\/span>"}, {"label": "Austria", "name": "Austria", "value": 4.3, "highlight": false, "detail": "rank 20 of 27<br><span style='opacity:.6'>percentage-point-years above 2010<\/span>"}, {"label": "Poland", "name": "Poland", "value": 4.2, "highlight": false, "detail": "rank 21 of 27<br><span style='opacity:.6'>percentage-point-years above 2010<\/span>"}, {"label": "Romania", "name": "Romania", "value": 4.2, "highlight": false, "detail": "rank 22 of 27<br><span style='opacity:.6'>percentage-point-years above 2010<\/span>"}, {"label": "Czechia", "name": "Czechia", "value": 3.8, "highlight": false, "detail": "rank 23 of 27<br><span style='opacity:.6'>percentage-point-years above 2010<\/span>"}, {"label": "Cyprus", "name": "Cyprus", "value": 2.1, "highlight": false, "detail": "rank 24 of 27<br><span style='opacity:.6'>percentage-point-years above 2010<\/span>"}, {"label": "Lithuania", "name": "Lithuania", "value": 0.5, "highlight": false, "detail": "rank 25 of 27<br><span style='opacity:.6'>percentage-point-years above 2010<\/span>"}, {"label": "Croatia", "name": "Croatia", "value": 0.0, "highlight": false, "detail": "rank 26 of 27<br><span style='opacity:.6'>percentage-point-years above 2010<\/span>"}, {"label": "Denmark", "name": "Denmark", "value": 0.0, "highlight": false, "detail": "rank 27 of 27<br><span style='opacity:.6'>percentage-point-years above 2010<\/span>"}], "dp": 1, "reference": 6.1, "referenceLabel": "EU median", "unit": "percentage-point-years above 2010", "alt": "Housing deterioration since 2010 for all 27 countries, latest year, in percentage-point-years above 2010"}</script>
+</div><p class="fig-caveat"><strong>Read with this.</strong> cross-country association | no demonstrated within-Greece dynamic | no causal claim | current conditions not ruled out The three measures are in different units and may not be compared with each other: accumulated unemployment and housing deterioration are percentage-point-years, wage non-recovery is a count of consecutive years.</p>
+<details class="fallback" id="F11-fb"><summary>Show the numbers <a href="statistical_appendix.html">Full evidence in the appendix</a>.</summary>
+<table data-checksum="a805387c55cd1571" data-view="0"><caption>Accumulated unemployment</caption><thead><tr><th>Country</th><th class="num">Accumulated unemployment (percentage-point-years above 2009)</th></tr></thead><tbody><tr><td>Greece</td><td class="num">137.5</td></tr><tr><td>Cyprus</td><td class="num">64.1</td></tr><tr><td>Croatia</td><td class="num">43.5</td></tr><tr><td>Spain</td><td class="num">33.1</td></tr><tr><td>Italy</td><td class="num">32.9</td></tr><tr><td>Bulgaria</td><td class="num">26.6</td></tr><tr><td>Portugal</td><td class="num">20.6</td></tr><tr><td>Slovenia</td><td class="num">20.6</td></tr><tr><td>Netherlands</td><td class="num">13.1</td></tr><tr><td>Luxembourg</td><td class="num">9.1</td></tr><tr><td>Ireland</td><td class="num">8.9</td></tr><tr><td>Slovakia</td><td class="num">8.9</td></tr><tr><td>Poland</td><td class="num">7.7</td></tr><tr><td>France</td><td class="num">5.9</td></tr><tr><td>Lithuania</td><td class="num">5.6</td></tr><tr><td>Denmark</td><td class="num">5.6</td></tr><tr><td>Hungary</td><td class="num">3.2</td></tr><tr><td>Estonia</td><td class="num">3.1</td></tr><tr><td>Finland</td><td class="num">2.9</td></tr><tr><td>Austria</td><td class="num">2.5</td></tr><tr><td>Belgium</td><td class="num">2.4</td></tr><tr><td>Romania</td><td class="num">2.4</td></tr><tr><td>Latvia</td><td class="num">2.0</td></tr><tr><td>Czechia</td><td class="num">1.2</td></tr><tr><td>Sweden</td><td class="num">0.6</td></tr><tr><td>Malta</td><td class="num">0.0</td></tr><tr><td>Germany</td><td class="num">0.0</td></tr></tbody></table><table data-checksum="08487a961a8f73e9" data-view="1"><caption>Years wages below 2008</caption><thead><tr><th>Country</th><th class="num">Years wages below 2008 (consecutive years below the 2008 level)</th></tr></thead><tbody><tr><td>Hungary</td><td class="num">16.0</td></tr><tr><td>Greece</td><td class="num">15.0</td></tr><tr><td>Italy</td><td class="num">14.0</td></tr><tr><td>Finland</td><td class="num">3.0</td></tr><tr><td>Sweden</td><td class="num">2.0</td></tr><tr><td>Slovenia</td><td class="num">0.0</td></tr><tr><td>Romania</td><td class="num">0.0</td></tr><tr><td>Portugal</td><td class="num">0.0</td></tr><tr><td>Poland</td><td class="num">0.0</td></tr><tr><td>Netherlands</td><td class="num">0.0</td></tr><tr><td>Malta</td><td class="num">0.0</td></tr><tr><td>Latvia</td><td class="num">0.0</td></tr><tr><td>Luxembourg</td><td class="num">0.0</td></tr><tr><td>Lithuania</td><td class="num">0.0</td></tr><tr><td>Austria</td><td class="num">0.0</td></tr><tr><td>Ireland</td><td class="num">0.0</td></tr><tr><td>Belgium</td><td class="num">0.0</td></tr><tr><td>Croatia</td><td class="num">0.0</td></tr><tr><td>France</td><td class="num">0.0</td></tr><tr><td>Spain</td><td class="num">0.0</td></tr><tr><td>Estonia</td><td class="num">0.0</td></tr><tr><td>Denmark</td><td class="num">0.0</td></tr><tr><td>Germany</td><td class="num">0.0</td></tr><tr><td>Czechia</td><td class="num">0.0</td></tr><tr><td>Cyprus</td><td class="num">0.0</td></tr><tr><td>Bulgaria</td><td class="num">0.0</td></tr><tr><td>Slovakia</td><td class="num">0.0</td></tr></tbody></table><table data-checksum="4b6e3c609d830e30" data-view="2"><caption>Housing deterioration since 2010</caption><thead><tr><th>Country</th><th class="num">Housing deterioration since 2010 (percentage-point-years above 2010)</th></tr></thead><tbody><tr><td>Greece</td><td class="num">233.2</td></tr><tr><td>Bulgaria</td><td class="num">116.3</td></tr><tr><td>Luxembourg</td><td class="num">37.8</td></tr><tr><td>Portugal</td><td class="num">35.8</td></tr><tr><td>Sweden</td><td class="num">17.1</td></tr><tr><td>Estonia</td><td class="num">11.8</td></tr><tr><td>Slovenia</td><td class="num">9.9</td></tr><tr><td>Hungary</td><td class="num">9.6</td></tr><tr><td>Germany</td><td class="num">9.4</td></tr><tr><td>Italy</td><td class="num">8.2</td></tr><tr><td>Belgium</td><td class="num">7.9</td></tr><tr><td>Finland</td><td class="num">7.0</td></tr><tr><td>France</td><td class="num">6.6</td></tr><tr><td>Slovakia</td><td class="num">6.1</td></tr><tr><td>Latvia</td><td class="num">5.7</td></tr><tr><td>Netherlands</td><td class="num">4.9</td></tr><tr><td>Ireland</td><td class="num">4.6</td></tr><tr><td>Spain</td><td class="num">4.5</td></tr><tr><td>Malta</td><td class="num">4.5</td></tr><tr><td>Austria</td><td class="num">4.3</td></tr><tr><td>Poland</td><td class="num">4.2</td></tr><tr><td>Romania</td><td class="num">4.2</td></tr><tr><td>Czechia</td><td class="num">3.8</td></tr><tr><td>Cyprus</td><td class="num">2.1</td></tr><tr><td>Lithuania</td><td class="num">0.5</td></tr><tr><td>Croatia</td><td class="num">0.0</td></tr><tr><td>Denmark</td><td class="num">0.0</td></tr></tbody></table></details>
+</figure>
+
+<p>Greece has absorbed a great deal on these measures. On one of the three it
+is not the highest &mdash; Hungary has a longer run of depressed wages &mdash;
+and the chart shows every country rather than Greece alone, so that this is
+visible rather than buried.</p>
+
+<p>Showing that Greece accumulated a lot is description. The real test is
+harder: does the history predict hardship <em>after</em> you already know the
+present-day situation? If you know today's unemployment rate, does the past
+decade of it still add anything?</p>
+
+<p>For three measures, it does.</p>
+
+<div class="finding" data-claim-id="V2-5.C2"><p>Accumulated excess unemployment predicts hardship (bootstrap p=0.0025) and retains a cross-country association after its current-level counterpart is controlled (conditional bootstrap p=0.0025).</p><p class="limits"><em>The limits of this.</em> cross-country association | no demonstrated within-Greece dynamic | no causal claim | current conditions not ruled out.</p></div>
+<div class="finding" data-claim-id="V2-5.C3"><p>Duration of real wages below their 2008 level predicts hardship (bootstrap p=0.0245) and retains a cross-country association after its current-level counterpart is controlled (conditional bootstrap p=0.0060).</p><p class="limits"><em>The limits of this.</em> cross-country association | no demonstrated within-Greece dynamic | no causal claim | current conditions not ruled out | supported only as the CURRENT uninterrupted run against a fixed 2008 base; alternative constructions point the same way but do not meet the criteria.</p></div>
+<div class="finding" data-claim-id="V2-5.C6"><p>Housing-cost deterioration since 2010 predicts hardship (bootstrap p=0.0460) and retains a cross-country association after its current-level counterpart is controlled (conditional bootstrap p=0.0015).</p><p class="limits"><em>The limits of this.</em> cross-country association | no demonstrated within-Greece dynamic | no causal claim | current conditions not ruled out | BORDERLINE: bootstrap p=0.0460, 91 of 1,999 exceedances.</p></div>
+
+<p>The third of those is borderline and is labelled so rather than rounded up.
+The second holds only for one specific way of counting, and other reasonable
+ways of counting the same idea point the same direction without meeting the
+standard &mdash; they are not counted as support.</p>
+
+<p>And the pattern is not universal, which is itself informative.</p>
+
+<div class="finding" data-claim-id="V2-5.X"><p>For wage-adjusted affordability the pattern reverses: the current measure survives conditioning (bootstrap p=0.0035) while the accumulated one remains inconclusive.</p><p class="limits"><em>The limits of this.</em> the accumulated measure is inconclusive, NOT unsupported.</p></div>
+
+<p>For the cost-of-living measure it runs the other way: today's number
+survives and the accumulated one doesn't resolve. If history mattered as a
+general rule, that reversal shouldn't happen. It suggests these results are
+specific to work, wages and housing rather than reflecting some broad law that
+the past always counts.</p>
+
+<p>One measure couldn't be tested at all, and is reported rather than quietly
+dropped.</p>
+
+<div class="finding" data-claim-id="V2-5.Z"><p>Accumulated material resources (C1) could not be tested at all: the source series begins in 2015 and no 2008 baseline exists. The baseline was not moved to make it testable.</p><p class="limits"><em>The limits of this.</em> infeasible, not null.</p></div>
+
+<p>The data for it simply starts too late. Moving the starting line to make it
+testable would have turned it into a measure of something else &mdash; one that
+couldn't see the crisis it was built to see. The starting line stayed where it
+was.</p>
+
+<div class="finding" data-claim-id="L-3"><p>The accumulated wage-shortfall coefficient cleared every conditional gate but its prior stage did not support it, so the pre-registered ceiling caps it. It is reported and is not a finding.</p><p class="limits"><em>The limits of this.</em> capped by the E7 ceiling: E7 may only qualify or withdraw.</p></div>
+
+<p>And one result passed every test in this chapter without being counted,
+because the measure it was paired with hadn't been supported in the earlier
+round, and a rule set in advance stops this stage from promoting anything its
+predecessor didn't establish. On the face of the numbers it looks as convincing
+as the three that count. The rule held anyway, which is the only condition
+under which having rules means anything.</p>
+</section><section class="ch" id="ch11"><p class="chnum">Chapter 11</p><h2>Between countries, not inside one</h2>
+<p>Everything in the last chapter is a statement about how countries differ
+from each other. It is very tempting, and it is wrong, to turn it into a
+statement about how Greece changed over time.</p>
+
+<div class="finding" data-claim-id="V2-5.Y"><p>No accumulated measure permits dynamic wording. Across P5, E4 and E7 no within-country estimate is significant in the adverse direction and no first-difference test supports one.</p><p class="limits"><em>The limits of this.</em> three RELATED checks on one panel, not independent replications | the dynamic tests were not multiplicity-corrected.</p></div>
+
+<p>Here is the distinction, because it is the single easiest thing in this
+report to get wrong. "Countries that accumulated more hardship report more
+difficulty" is a claim about a group photograph. "As Greece accumulated more
+hardship, Greek households reported more difficulty" is a claim about a film.
+This study took the photograph. It did not shoot the film.</p>
+
+<p>We tested for the film anyway, three separate ways, and found nothing that
+supports it. And here the caution runs in the other direction: finding nothing
+is not the same as showing there is nothing. Those tests throw away all the
+comparison between countries and rely only on movement within each one, which
+leaves far less to work with. They are too imprecise to settle the question
+either way.</p>
+
+<p>So: the honest sentence is that this design cannot support a claim about
+Greece changing over time. Not that Greece didn't change.</p>
+
+<p>This is an unsatisfying place to leave a chapter and it is where the
+evidence stops. The reason to say it this precisely, rather than letting the
+group photograph quietly stand in for the film, is that the film is the version
+everybody wants &mdash; it is the version that sounds like an explanation. It
+is also the version this study did not produce.</p>
+</section><section class="ch" id="ch12"><p class="chnum">Chapter 12</p><h2>The result that flips</h2>
+<p>Most reports include a section showing their findings hold up. This one
+includes a section showing that one of them doesn't, and that is a result
+rather than an embarrassment.</p>
+
+<p>Remember from Chapter 5 that the deprivation items &mdash; can't pay bills,
+can't heat the home &mdash; absorbed most of Greece's unexplained excess. And
+remember that those items come from the same survey as the thing being
+explained.</p>
+
+<p>Whether to let a measure like that into the model is a real choice with a
+real case on both sides. For: it is a meaningful, officially published measure
+of hardship, and refusing to use variables because they are well measured is
+not a principle anyone actually holds. Against: when the question and the
+answer come from the same person in the same interview, some of the agreement
+between them is the interview rather than the world.</p>
+
+<p>Both positions are defensible. So we ran both.</p>
+
+<figure class="figure" id="F14">
+<figcaption>Removing the same-instrument deprivation measure moves Greece from under-predicted to over-predicted</figcaption>
+<div class="fig-meta"><span class="badge">post-selection robustness</span>
+<span class="fig-q">Does the answer depend on which model is chosen?</span></div>
+<div class="chart-live" data-chart="dumbbell" tabindex="0"
+     data-checksum="09b2ba2a131a8ee7" aria-describedby="F14-fb">
+<script type="application/json">{"rows": [{"label": "Luxembourg", "a": 8.8, "b": 15.48, "tone": "text-muted", "strong": false, "right": "", "detail": "frozen +8.80 &rarr; companion +15.48<br>same side of zero"}, {"label": "Cyprus", "a": 7.05, "b": 10.75, "tone": "text-muted", "strong": false, "right": "", "detail": "frozen +7.05 &rarr; companion +10.75<br>same side of zero"}, {"label": "Greece", "a": 6.93, "b": -9.39, "tone": "gr", "strong": true, "right": "Greece", "detail": "frozen +6.93 &rarr; companion -9.39<br>crosses zero"}, {"label": "Latvia", "a": 6.32, "b": 4.65, "tone": "text-muted", "strong": false, "right": "", "detail": "frozen +6.32 &rarr; companion +4.65<br>same side of zero"}, {"label": "Hungary", "a": 4.86, "b": 7.42, "tone": "text-muted", "strong": false, "right": "", "detail": "frozen +4.86 &rarr; companion +7.42<br>same side of zero"}, {"label": "Bulgaria", "a": 4.06, "b": 14.65, "tone": "text-muted", "strong": false, "right": "", "detail": "frozen +4.06 &rarr; companion +14.65<br>same side of zero"}, {"label": "Czechia", "a": 3.53, "b": -3.63, "tone": "text-muted", "strong": false, "right": "", "detail": "frozen +3.53 &rarr; companion -3.63<br>crosses zero"}, {"label": "Slovakia", "a": 3.28, "b": -0.68, "tone": "text-muted", "strong": false, "right": "", "detail": "frozen +3.28 &rarr; companion -0.68<br>crosses zero"}, {"label": "Belgium", "a": 3.13, "b": 5.26, "tone": "text-muted", "strong": false, "right": "", "detail": "frozen +3.13 &rarr; companion +5.26<br>same side of zero"}, {"label": "Ireland", "a": 3.05, "b": 6.14, "tone": "text-muted", "strong": false, "right": "", "detail": "frozen +3.05 &rarr; companion +6.14<br>same side of zero"}, {"label": "Croatia", "a": 2.62, "b": -0.38, "tone": "text-muted", "strong": false, "right": "", "detail": "frozen +2.62 &rarr; companion -0.38<br>crosses zero"}, {"label": "France", "a": 1.85, "b": 3.88, "tone": "text-muted", "strong": false, "right": "", "detail": "frozen +1.85 &rarr; companion +3.88<br>same side of zero"}, {"label": "Austria", "a": 1.36, "b": 0.95, "tone": "text-muted", "strong": false, "right": "", "detail": "frozen +1.36 &rarr; companion +0.95<br>same side of zero"}, {"label": "Portugal", "a": 1.3, "b": 0.62, "tone": "text-muted", "strong": false, "right": "", "detail": "frozen +1.30 &rarr; companion +0.62<br>same side of zero"}, {"label": "Malta", "a": 1.28, "b": 0.36, "tone": "text-muted", "strong": false, "right": "", "detail": "frozen +1.28 &rarr; companion +0.36<br>same side of zero"}, {"label": "Poland", "a": 0.56, "b": -4.32, "tone": "text-muted", "strong": false, "right": "", "detail": "frozen +0.56 &rarr; companion -4.32<br>crosses zero"}, {"label": "Denmark", "a": 0.16, "b": -3.65, "tone": "text-muted", "strong": false, "right": "", "detail": "frozen +0.16 &rarr; companion -3.65<br>crosses zero"}, {"label": "Sweden", "a": -1.0, "b": -4.55, "tone": "text-muted", "strong": false, "right": "", "detail": "frozen -1.00 &rarr; companion -4.55<br>same side of zero"}, {"label": "Slovenia", "a": -2.66, "b": -6.33, "tone": "text-muted", "strong": false, "right": "", "detail": "frozen -2.66 &rarr; companion -6.33<br>same side of zero"}, {"label": "Netherlands", "a": -3.47, "b": -4.87, "tone": "text-muted", "strong": false, "right": "", "detail": "frozen -3.47 &rarr; companion -4.87<br>same side of zero"}, {"label": "Lithuania", "a": -4.17, "b": -1.81, "tone": "text-muted", "strong": false, "right": "", "detail": "frozen -4.17 &rarr; companion -1.81<br>same side of zero"}, {"label": "Germany", "a": -4.31, "b": -6.0, "tone": "text-muted", "strong": false, "right": "", "detail": "frozen -4.31 &rarr; companion -6.00<br>same side of zero"}, {"label": "Estonia", "a": -4.49, "b": -10.12, "tone": "text-muted", "strong": false, "right": "", "detail": "frozen -4.49 &rarr; companion -10.12<br>same side of zero"}, {"label": "Finland", "a": -5.07, "b": -6.8, "tone": "text-muted", "strong": false, "right": "", "detail": "frozen -5.07 &rarr; companion -6.80<br>same side of zero"}, {"label": "Italy", "a": -6.35, "b": -5.18, "tone": "text-muted", "strong": false, "right": "", "detail": "frozen -6.35 &rarr; companion -5.18<br>same side of zero"}, {"label": "Romania", "a": -10.32, "b": 9.76, "tone": "text-muted", "strong": false, "right": "", "detail": "frozen -10.32 &rarr; companion +9.76<br>crosses zero"}, {"label": "Spain", "a": -10.63, "b": -10.06, "tone": "text-muted", "strong": false, "right": "", "detail": "frozen -10.63 &rarr; companion -10.06<br>same side of zero"}], "xLabel": "Residual, pp: positive = MORE hardship than predicted, negative = less", "dp": 2, "legendA": "frozen specification", "legendB": "deprivation-free companion", "zeroLabel": "predicted exactly", "alt": "Country residuals under both specifications, on identical rows"}</script>
+</div><p class="fig-caveat"><strong>Read with this.</strong> NEITHER specification is definitive. They may not be merged or averaged, and selection may not be made on residual size.</p>
+<details class="fallback" id="F14-fb"><summary>Show the numbers <a href="statistical_appendix.html">Full evidence in the appendix</a>.</summary>
+<table data-checksum="09b2ba2a131a8ee7"><thead><tr><th>Country</th><th class="num">Reference specification</th><th class="num">Deprivation-free companion</th><th class="num">Change</th></tr></thead><tbody><tr><td>Luxembourg</td><td class="num">8.80</td><td class="num">15.48</td><td class="num">6.68</td></tr><tr><td>Cyprus</td><td class="num">7.05</td><td class="num">10.75</td><td class="num">3.70</td></tr><tr><td>Greece</td><td class="num">6.93</td><td class="num">-9.39</td><td class="num">-16.32</td></tr><tr><td>Latvia</td><td class="num">6.32</td><td class="num">4.65</td><td class="num">-1.66</td></tr><tr><td>Hungary</td><td class="num">4.86</td><td class="num">7.42</td><td class="num">2.56</td></tr><tr><td>Bulgaria</td><td class="num">4.06</td><td class="num">14.65</td><td class="num">10.60</td></tr><tr><td>Czechia</td><td class="num">3.53</td><td class="num">-3.63</td><td class="num">-7.16</td></tr><tr><td>Slovakia</td><td class="num">3.28</td><td class="num">-0.68</td><td class="num">-3.96</td></tr><tr><td>Belgium</td><td class="num">3.13</td><td class="num">5.26</td><td class="num">2.13</td></tr><tr><td>Ireland</td><td class="num">3.05</td><td class="num">6.14</td><td class="num">3.09</td></tr><tr><td>Croatia</td><td class="num">2.62</td><td class="num">-0.38</td><td class="num">-2.99</td></tr><tr><td>France</td><td class="num">1.85</td><td class="num">3.88</td><td class="num">2.02</td></tr><tr><td>Austria</td><td class="num">1.36</td><td class="num">0.95</td><td class="num">-0.41</td></tr><tr><td>Portugal</td><td class="num">1.30</td><td class="num">0.62</td><td class="num">-0.67</td></tr><tr><td>Malta</td><td class="num">1.28</td><td class="num">0.36</td><td class="num">-0.91</td></tr><tr><td>Poland</td><td class="num">0.56</td><td class="num">-4.32</td><td class="num">-4.88</td></tr><tr><td>Denmark</td><td class="num">0.16</td><td class="num">-3.65</td><td class="num">-3.81</td></tr><tr><td>Sweden</td><td class="num">-1.00</td><td class="num">-4.55</td><td class="num">-3.55</td></tr><tr><td>Slovenia</td><td class="num">-2.66</td><td class="num">-6.33</td><td class="num">-3.67</td></tr><tr><td>Netherlands</td><td class="num">-3.47</td><td class="num">-4.87</td><td class="num">-1.39</td></tr><tr><td>Lithuania</td><td class="num">-4.17</td><td class="num">-1.81</td><td class="num">2.36</td></tr><tr><td>Germany</td><td class="num">-4.31</td><td class="num">-6.00</td><td class="num">-1.69</td></tr><tr><td>Estonia</td><td class="num">-4.49</td><td class="num">-10.12</td><td class="num">-5.63</td></tr><tr><td>Finland</td><td class="num">-5.07</td><td class="num">-6.80</td><td class="num">-1.72</td></tr><tr><td>Italy</td><td class="num">-6.35</td><td class="num">-5.18</td><td class="num">1.17</td></tr><tr><td>Romania</td><td class="num">-10.32</td><td class="num">9.76</td><td class="num">20.08</td></tr><tr><td>Spain</td><td class="num">-10.63</td><td class="num">-10.06</td><td class="num">0.57</td></tr></tbody></table></details>
+</figure>
+
+<div class="finding" data-claim-id="V2-6.1"><p>Greece&#x27;s residual is +6.93 (rank 3/27) in the main model and -9.39 (rank 25/27) when the same-instrument deprivation predictor is removed, on identical rows. Neither specification is definitive.</p><p class="limits"><em>The limits of this.</em> NEITHER specification is definitive | the two may not be merged or averaged | selection between them may not be made on residual size | conclusions about absorption depend materially on whether same-instrument deprivation is admitted.</p></div>
+
+<p>Greece moves from the third-worst country in Europe on unexplained hardship
+to the twenty-fifth &mdash; from a stark positive outlier to a stark negative
+one &mdash; on exactly the same rows of data, with one variable added or
+removed.</p>
+
+<p>That is not a wobble. It is a reversal, and there is no honest way to pick
+between the two. We can't average them. We can't choose the one that looks more
+plausible, because choosing the model that gives the answer you expected is how
+this kind of check gets rendered meaningless. What can be said is this: how
+much of Greece's anomaly gets absorbed depends on a judgement call the data
+cannot settle, and any conclusion resting on that absorption inherits the
+uncertainty.</p>
+
+<p>Which is why the conclusion of this report does not rest on it.</p>
+</section><section class="ch" id="ch13"><p class="chnum">Chapter 13</p><h2>What it wasn't</h2>
+<p>Two analyses were planned in advance, meant to carry real weight, and
+neither worked. They are here because a report that shows only its successes
+gives a false impression of how much was tried.</p>
+
+<p>The first was the one that would have made the best chart in this report.
+The idea is elegant: build an artificial Greece out of a weighted blend of
+other countries, one that tracks the real Greece closely before 2008, then
+watch the two diverge afterwards. The gap between them is the crisis.</p>
+
+<p>It failed. The blend collapsed onto essentially two countries &mdash;
+Hungary and Bulgaria &mdash; which is not a stand-in for Greece, and the design
+missed four of the six conditions set for it in advance.</p>
+
+<div class="finding" data-claim-id="L-1"><p>The synthetic-control comparative design failed four of six pre-registered gates and is not a usable comparison. Its divergence figure is kept out of every document.</p><p class="limits"><em>The limits of this.</em> donor weights collapse to Hungary 0.55 and Bulgaria 0.45 | the divergence figure is NON-REPORTABLE.</p></div>
+
+<p>The chart it would have produced is not in this report, and that is
+deliberate. A dramatic picture resting on a counterfactual that thin would
+convince people of something the evidence cannot support. Being convincing and
+being right are different properties, and the first is most dangerous when the
+second is missing.</p>
+
+<p>The second was a measure of how many different kinds of disadvantage a
+country shows at once. Adding it made Greece's position worse rather than
+better, and its direction flipped once other things were held constant. That
+flip is left unexplained here on purpose: inventing a story for a strange result
+in an analysis that has already failed is exactly how failed analyses come back
+from the dead.</p>
+
+<div class="finding" data-claim-id="L-2"><p>Multi-domain breadth failed the incremental criterion: adding it to the main model worsened Greece&#x27;s residual from 6.93 to 10.39 and reversed its sign conditionally. The reversal is left uninterpreted.</p><p class="limits"><em>The limits of this.</em> a result about the specification, not about power | the sign reversal is deliberately left uninterpreted.</p></div>
+</section><section class="ch" id="ch14"><p class="chnum">Chapter 14</p><h2>Is this just how Greeks talk?</h2>
+<p>There is a simpler explanation for everything so far, and it deserves to be
+taken seriously rather than waved away: maybe Greeks are just gloomier
+answerers.</p>
+
+<p>Chapter 5 got partway to an answer &mdash; the reported difficulty does
+track real material trouble &mdash; but all of that evidence came from inside
+one survey, so it can't settle this on its own.</p>
+
+<p>A better test looks across <em>different</em> subjects. A general tendency
+to answer darkly should drag everything down about equally. A pattern that is
+extreme on money and milder elsewhere points at circumstances instead.</p>
+
+<div class="finding" data-claim-id="V2-7.1"><p>Greece is consistently among Europe&#x27;s worst countries on life satisfaction and consistently worst on financial hardship and expectations. The greater extremity of the financial indicators suggests domain specificity, but does not rule out a broader negative reporting tendency.</p><p class="limits"><em>The limits of this.</em> Greece is second-WORST on life satisfaction by 2024, not middling | a broader negative reporting tendency is NOT ruled out | Greek life satisfaction ROSE over the observed period, 6.2 to 6.9; only its rank worsened, because other countries improved faster | the series begins in 2013, at the crisis trough, with no pre-crisis baseline.</p></div>
+
+<p>The pattern is specific to money, but it is a difference of degree, not of
+kind. Greece is worst in Europe on the financial questions and close to worst
+on general life satisfaction. That is not the profile of a country that is
+desperate about money and otherwise content, and an earlier version of this
+report described it that way and was wrong.</p>
+
+<p>One more thing has to be held apart here, because getting it backwards
+inverts the finding. Greek life satisfaction <em>rose</em> over this period,
+from 6.2 to 6.9. Greece's <em>rank</em> got worse anyway, because other
+countries improved faster. A falling rank on a rising number is not a country
+getting unhappier.</p>
+
+<div class="ctx" data-context-id="CTX-1"><p class="ctx-status">descriptive corroboration</p><h4>Financial expectations and life satisfaction</h4>
+<p>Greece's money questions sit at the far edge of the European range while its
+general-wellbeing question sits closer to it. That difference of degree is what
+the comparison shows, and it is description rather than a test.</p><p class="permitted"><em>What this lets us say.</em> The financial indicators are more extreme than the general-wellbeing one, which suggests domain specificity. A broader negative reporting tendency is NOT ruled out.</p><p class="limitation"><em>What it does not.</em> Describing Greece as ordinary or middling on life satisfaction: it is second-worst in the EU by 2024. And reading a worsening RANK as falling satisfaction, when the Greek level rose over the period.</p><p class="src">reporting_style_cross_indicator.csv, this project</p></div>
+</section><section class="ch" id="ch15"><p class="chnum">Chapter 15</p><h2>Before the crisis</h2>
+<p>There is a hole in the middle of the last chapter. The European survey used
+throughout this report only starts asking about life satisfaction in 2013
+&mdash; at the bottom of the Greek crisis. So it cannot tell you whether Greece
+was already unusual <em>before</em> 2008, which is exactly what you would want
+to know.</p>
+
+<p>A different survey can, and what follows is kept deliberately separate: a
+different instrument, shown on its own, never joined to the other series.</p>
+
+<figure class="figure" id="F18">
+<figcaption>Greece was already below the median before the crisis, lost about 0.8 points by 2010/11, and recovered its level but not its position</figcaption>
+<div class="fig-meta"><span class="badge">descriptive corroboration</span>
+<span class="fig-q">Was Greece already below the European median on life satisfaction before the crisis?</span></div>
+<div class="chart-live" data-chart="panel" tabindex="0"
+     data-checksum="e687ad70323b58c6" aria-describedby="F18-fb">
+<script type="application/json" data-kind="panel" data-label="Level">{"years": [2003, 2005, 2009, 2011, 2016, 2021, 2024], "dp": 2, "yLabel": "Life satisfaction, 0-10 (approx.)", "hiddenTicks": [2016], "alt": "Greek life satisfaction against the median of the same twelve countries across six ESS rounds; Greece is below the median in every round, falls to 5.64 in 2010/11 and recovers to 6.42; the line is broken between 2010/11 and 2020-22, where no Greek round was run", "series": [{"label": "Greece", "tone": "gr", "style": "solid", "weight": "strong", "values": [6.348, 6.459, 5.96, 5.641, null, 6.354, 6.419]}, {"label": "Median of the same 12 countries", "tone": "series-3", "style": "dashed", "weight": "normal", "values": [7.21, 7.255, 7.091, 7.001, null, 7.478, 7.389]}]}</script><script type="application/json" data-kind="panel" data-label="Rank among the same 12">{"years": [2003, 2005, 2009, 2011, 2016, 2021, 2024], "dp": 0, "invertY": true, "hiddenTicks": [2016], "yLabel": "Rank among the same 12, 1 = worst", "alt": "Greece's rank among the same twelve countries, worst first; third or fourth before the crisis, worst from 2010/11 onward; the line is broken across the unobserved decade", "series": [{"label": "Greece's rank among the same 12", "tone": "gr", "style": "solid", "weight": "strong", "values": [3, 4, 3, 1, null, 1, 1]}]}</script>
+</div><p class="fig-caveat"><strong>Read with this.</strong> European Social Survey, not Eurostat, and never joined to it. Means are approximate reconstructions from publicly displayed weighted percentages: no confidence intervals, no tests. The 12 countries are held fixed because the full ESS set varies from 22 to 30, so all-country ranks are not comparable between rounds. The line BREAKS between 2010/11 and 2020-22 because no Greek round was run there: the depth of the adjustment and the recovery are both unobserved, and nothing should be read across the gap. Greek LEVEL recovered to roughly its pre-crisis value while the gap to the median stayed wider than before, so the rank must not be read as the level.</p>
+<details class="fallback" id="F18-fb"><summary>Show the numbers <a href="statistical_appendix.html">Full evidence in the appendix</a>.</summary>
+<table data-checksum="e687ad70323b58c6" data-view="0"><caption>Level</caption><thead><tr><th>ESS round</th><th class="num">2002/03</th><th class="num">2004/05</th><th class="num">2008/09</th><th class="num">2010/11</th><th class="num">2020-22</th><th class="num">2023/24</th></tr></thead><tbody><tr><td>Greece</td><td class="num">6.35</td><td class="num">6.46</td><td class="num">5.96</td><td class="num">5.64</td><td class="num">6.35</td><td class="num">6.42</td></tr><tr><td>Median of the same 12 countries</td><td class="num">7.21</td><td class="num">7.25</td><td class="num">7.09</td><td class="num">7.00</td><td class="num">7.48</td><td class="num">7.39</td></tr><tr><td>Greece&#x27;s gap to that median</td><td class="num">-0.86</td><td class="num">-0.80</td><td class="num">-1.13</td><td class="num">-1.36</td><td class="num">-1.12</td><td class="num">-0.97</td></tr></tbody></table><table data-checksum="38aad8c24c6f3a71" data-view="1"><caption>Rank among the same 12</caption><thead><tr><th>ESS round</th><th class="num">2002/03</th><th class="num">2004/05</th><th class="num">2008/09</th><th class="num">2010/11</th><th class="num">2020-22</th><th class="num">2023/24</th></tr></thead><tbody><tr><td>Greece&#x27;s rank, 1 = worst</td><td class="num">3</td><td class="num">4</td><td class="num">3</td><td class="num">1</td><td class="num">1</td><td class="num">1</td></tr></tbody></table></details>
+</figure>
+
+<p>Three things happen in order. Greece was <em>already</em> about 0.8 points
+below the middle of this group before the crisis. Its level then fell sharply,
+to 5.64 by 2010/11. And by 2023/24 it had climbed back to 6.42, roughly where
+it started.</p>
+
+<p>Its position, though, did not climb back. The gap to the middle of the group
+is wider now than before the crisis, and Greece has been the lowest of these
+twelve countries since 2010/11 &mdash; the two countries that used to sit below
+it have both passed it.</p>
+
+<p>This cuts against a tidy conclusion, which is why it is here. A low Greek
+starting point pre-dates the crisis, so the crisis cannot be the whole story,
+and a long-standing pattern of lower reported wellbeing remains entirely
+plausible. Gloominess as a national trait can't be dismissed on this evidence.
+It also can't be established by it.</p>
+
+<div class="ctx" data-context-id="CTX-7"><p class="ctx-status">descriptive corroboration</p><h4>Pre-crisis wellbeing baseline (ESS)</h4>
+<p>Across six rounds of a separate European survey, holding the same twelve
+countries fixed each time, Greece's level fell and then recovered while its
+position relative to the others did not.</p>
+<p>This is descriptive corroboration and not a test: it shows a pattern that
+sits alongside the previous chapter without confirming or refuting it.</p><p class="permitted"><em>What this lets us say.</em> On a balanced set of 12 countries observed in every Greek ESS round, Greece already sat about 0.8 points below the median before the crisis, fell to 5.64 by 2010/11, and recovered its LEVEL to roughly the pre-crisis value by 2023/24. Its comparative position did not recover: the gap to the balanced median is wider than before the crisis, and Greece has been worst of the 12 since 2010/11. A longstanding low-wellbeing pattern therefore remains plausible and generic pessimism or reporting culture CANNOT be dismissed.</p><p class="limitation"><em>What it does not.</em> Splicing ESS to the Eurostat EU-SILC series, or reading the two as one trajectory. Attaching any confidence interval, standard error or significance test to these means, which are approximate reconstructions from displayed weighted percentages. Comparing ALL-COUNTRY ranks across rounds, since the country set varies from 22 to 30. Treating the decade after 2010/11 as observed.</p><p class="src">European Social Survey Data Portal, public Analysis tab for stflife (life satisfaction, 0-10), rounds 1, 2, 4, 5, 10 and 11. <a href="https://ess.sikt.no/en/">source</a></p></div>
+
+<p>A caution about where these numbers come from: they are reconstructed from
+percentages the survey publishes publicly, not from the underlying responses,
+which sit behind a login. They are approximate, they carry no margin of error,
+and nothing is tested on them. There is also a decade with no Greek survey
+round at all, right through the deepest part of the adjustment.</p>
+</section><section class="ch" id="ch16"><p class="chnum">Chapter 16</p><h2>What we didn't test</h2>
+<p>Several things that come up in every conversation about the Greek crisis are
+not established in this report. Leaving them out silently would be misleading.
+Discussing them as though they were findings would be worse.</p>
+
+<p>Some of them were looked at. Migration was tested here directly. The
+cross-country comparison in Chapter 14 and the survey in
+Chapter 15 are both
+analyses done for this report. What none of them can do is carry a conclusion,
+and each one below says what it permits and what it doesn't.</p>
+
+<div class="ctx" data-context-id="CTX-2"><p class="ctx-status">contextual evidence</p><h4>Institutional trust</h4>
+<p>Trust in institutions is low in Greece, and there is a plausible route by
+which it could matter: a household that doesn't expect help to arrive may
+experience the same circumstances as more frightening. Nothing here tested
+that.</p><p class="permitted"><em>What this lets us say.</em> May affect how households interpret insecurity; available evidence does not identify an independent effect.</p><p class="limitation"><em>What it does not.</em> Presenting trust as an explanation of the residual, or implying it was tested and found to matter.</p><p class="src">OECD (2024), OECD Survey on Drivers of Trust in Public Institutions - 2024 Results, Country Notes: Greece. OECD Publishing, Paris. <a href="https://www.oecd.org/en/publications/oecd-survey-on-drivers-of-trust-in-public-institutions-2024-results-country-notes_a8004759-en/greece_56edc018-en.html">source</a></p></div>
+
+<div class="ctx" data-context-id="CTX-3"><p class="ctx-status">literature-grounded context</p><h4>Crisis and adjustment policies</h4>
+<p>The bailout programmes from 2010 reshaped incomes, job protections, pensions
+and public services at once and in a hurry. They are the backdrop to every
+accumulated measure in Chapter {10}.</p><p class="permitted"><em>What this lets us say.</em> Help explain the historical setting; this project does not estimate their causal contribution.</p><p class="limitation"><em>What it does not.</em> Attributing any share of the accumulated exposure to a specific programme or measure.</p><p class="src">Andriopoulou, E., Kanavitsa, E. &amp; Tsakloglou, P. (2020), Decomposing Poverty in Hard Times: Greece 2007-2016. LSE GreeSE Paper No. 149. <a href="https://www.lse.ac.uk/Hellenic-Observatory/Publications/GreeSE-Papers">source</a></p></div>
+
+<div class="ctx" data-context-id="CTX-4"><p class="ctx-status">contextual consequence</p><h4>Migration</h4>
+<p>Large numbers of working-age Greeks left during the crisis, and some have
+returned. This cuts both ways: plausibly a consequence of a broken labour
+market, and plausibly part of why the people who stayed look the way they
+do.</p><p class="permitted"><em>What this lets us say.</em> A plausible consequence of prolonged labour-market damage and a possible contributor to it. It is UNSUPPORTED as an independent aggregate predictor here.</p><p class="limitation"><em>What it does not.</em> Reading it as a driver, or as ruled out. E3 tested it on this panel and found nothing (p=0.4006), which speaks to aggregate prediction and not to either causal direction.</p><p class="src">Lazaretou, S. (2016), The Greek brain drain: the new pattern of Greek emigration during the recent crisis. Economic Bulletin, Bank of Greece, issue 43, pp. 31-53. <a href="https://www.bankofgreece.gr/BogEkdoseis/econbull201607.pdf">source</a></p></div>
+
+<div class="ctx" data-context-id="CTX-5"><p class="ctx-status">future hypothesis</p><h4>Tax burden and unequal treatment</h4>
+<p>Published research establishes that Greece's system of indirect taxes became
+markedly harder on lower-income households across the crisis. If a household's
+position worsened through tax in a way income-based poverty measures capture
+badly, that would be one route to the kind of gap this report describes.</p><p class="permitted"><em>What this lets us say.</em> Published incidence evidence establishes that Greece&#x27;s indirect tax system became markedly more regressive over the crisis. Whether that channel contributes to the hardship gap is a plausible hypothesis and is NOT tested here.</p><p class="limitation"><em>What it does not.</em> Any quantitative statement linking tax burden to the hardship gap. The literature is about incidence, not about this outcome, and this project tested nothing on tax.</p><p class="src">Kaplanoglou, G. (2015), Who Pays Indirect Taxes in Greece? From EU Entry to the Fiscal Crisis. Public Finance Review 43(4), 529-556. <a href="https://doi.org/10.1177/1091142113517925">source</a></p></div>
+</section><section class="ch" id="ch17"><p class="chnum">Chapter 17</p><h2>Landing</h2>
+<p>Greek households report struggling at a rate far above what the official
+poverty figure predicts, and they have done so consistently for a decade. Three
+bodies of evidence make part of that distance easier to understand.</p>
+
+<p>The official measures are narrower than the experience they get used to
+summarise. The wider net closes about a fifth of the gap and is closing less
+each year, and the income line itself fell along with the Greek economy, which
+a relative measure cannot help doing.</p>
+
+<p>What households report corresponds to real material trouble &mdash; bills,
+heating, unexpected expenses &mdash; though that agreement comes from inside a
+single survey rather than from an independent source.</p>
+
+<p>And both the present and the past carry information: what a country can
+actually afford, how much long-term unemployment it carries, how its wages
+stand against its prices, together with the accumulated weight of unemployment,
+of wages that never recovered, and of housing costs that worsened.</p>
+
+<p>What the evidence does not support is just as much part of the answer.
+Nothing here shows what causes what. Nothing here shows Greece changing over
+time; that question was asked and the answer was too imprecise to settle. Most
+of the measures that didn't work are unresolved rather than ruled out. One
+central result flips depending on a judgement call the data can't settle. And a
+general tendency to answer darkly cannot be excluded &mdash; the survey
+reaching back before the crisis suggests Greece started lower.</p>
+
+<p>And most of the gap is still unexplained. Of the 52.6 points, what is
+accounted for here is a minority. The rest is not attributed to anything,
+because we could not establish where it goes.</p>
+
+<div class="ctx" data-context-id="CTX-6"><p class="ctx-status">author interpretation</p><h4>Policy implications</h4>
+<p>What runs through all of this is that no single official number captures
+what Greek households are reporting. Each one misses something different, and
+the ones that catch what the others miss are not the headline.</p><p class="permitted"><em>What this lets us say.</em> POLICY RECOMMENDATION, NOT AN EMPIRICAL CONCLUSION: poverty dashboards should combine AROP, its real threshold, anchored poverty, AROPE/deprivation and accumulated labour and housing indicators.</p><p class="limitation"><em>What it does not.</em> Presenting this as a finding. It follows from what the analysis showed AROP alone misses; it is not itself a result.</p></div>
+
+<p>That is a recommendation about how poverty gets reported, and it follows
+from what the single measures were seen to miss. It is not itself a finding,
+and it is the last thing in this report rather than the first for that
+reason.</p>
+</section>
+<script>
+(function(){
+  const NS='http://www.w3.org/2000/svg';
+  const el=(t,a)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;};
+  const cssv=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const fmt=(v,d)=>v==null?'—':(Math.abs(v)>=1000?v.toLocaleString(undefined,{maximumFractionDigits:0}):v.toFixed(d==null?1:d));
+
+  // Width is chosen from the container, not hardcoded. A fixed 860 rendered
+  // labels at ~4 effective pixels on a phone.
+  function widthFor(host){ const w=host.clientWidth||640; return Math.max(320,Math.min(920,w)); }
+
+  // Measure the widest row label as the browser will actually draw it, rather
+  // than estimating from character count. A per-character constant is a guess
+  // about the font, and the guess was wrong: 5.9px/char underestimated the
+  // real ~7.6px/char, so every row label in the conditional figures was
+  // clipped on the left. No automated check sees this -- only rendering does.
+  // Text measurement for layout. Charts are built into a DETACHED svg and
+  // inserted at the end, so getComputedTextLength() on a node inside that tree
+  // returns 0 while it is being drawn. Both helpers below therefore measure
+  // through a probe attached to the live host, never through the node itself.
+  function measurer(host){
+    const probe=document.createElementNS('http://www.w3.org/2000/svg','svg');
+    probe.setAttribute('style',
+      'position:absolute;visibility:hidden;width:0;height:0;overflow:hidden');
+    const txt=document.createElementNS('http://www.w3.org/2000/svg','text');
+    txt.setAttribute('class','axis-label');
+    probe.appendChild(txt); host.appendChild(probe);
+    const fn=(s,bold)=>{
+      txt.setAttribute('style',bold?'font-weight:700':'');
+      txt.textContent=String(s);
+      const w=txt.getComputedTextLength();
+      // Fall back to an estimate only when the host itself has no layout --
+      // a collapsed pane, a closed <details>, an inactive view tab.
+      return w>0?w:String(s).length*(bold?7.6:6.0);
+    };
+    fn.done=()=>{ if(probe.parentNode)probe.parentNode.removeChild(probe); };
+    return fn;
+  }
+
+  // Size a label gutter to the widest label it must hold, measured bold since
+  // emphasised rows draw bold and bold is wider.
+  function labelGutter(measure,labels,min,max){
+    let widest=0;
+    for(const l of labels){widest=Math.max(widest,measure(l,true));}
+    return Math.min(max,Math.max(min,Math.ceil(widest)+20));
+  }
+
+  // Shorten a label until it fits, keeping the full text as a tooltip. Sizing
+  // the gutter is not enough on its own: when the width cap binds, the surplus
+  // has to come off the text.
+  function fitLabel(node,full,maxW,measure,bold){
+    node.textContent=full;
+    if(maxW<=0||measure(full,bold)<=maxW){return node;}
+    const title=document.createElementNS('http://www.w3.org/2000/svg','title');
+    title.textContent=full;
+    let lo=0,hi=String(full).length;
+    while(lo<hi){
+      const mid=Math.ceil((lo+hi)/2);
+      if(measure(String(full).slice(0,mid)+'\u2026',bold)<=maxW){lo=mid;}else{hi=mid-1;}
+    }
+    node.textContent=String(full).slice(0,lo).trimEnd()+'\u2026';
+    node.appendChild(title);
+    return node;
+  }
+
+  function tip(host){
+    let t=host.querySelector('.tip');
+    if(!t){t=document.createElement('div');t.className='tip';host.appendChild(t);}
+    return t;
+  }
+  function say(host,msg){
+    let s=host.querySelector('.sr');
+    if(!s){s=document.createElement('div');s.className='sr';s.setAttribute('aria-live','polite');host.appendChild(s);}
+    s.textContent=msg;
+  }
+
+  /* ---------------------------------------------------------------- panel */
+  function panel(host,d){
+    const W=widthFor(host), H=Math.round(W*0.42);
+    // Right padding is derived from the longest end label, not fixed: a fixed
+    // 14% clipped "Greece: hardship" in the first prototype.
+    const longest=Math.max(0,...d.series.filter(s=>s.label).map(s=>s.label.length));
+    const padL=(d.yLabel?66:46);
+    const ms=measurer(host);
+    const padR=labelGutter(ms,(d.series||[]).map(s=>s.label||''),52,W*0.34);
+    const padT=12,padB=28;
+    const pw=W-padL-padR, ph=H-padT-padB, yrs=d.years;
+    const xs=y=>padL+(yrs.length<2?pw/2:(y-yrs[0])/(yrs[yrs.length-1]-yrs[0])*pw);
+    let lo=Infinity,hi=-Infinity;
+    d.series.forEach(s=>s.values.forEach(v=>{if(v!=null){lo=Math.min(lo,v);hi=Math.max(hi,v);}}));
+    if(!isFinite(lo)){lo=0;hi=1;}
+    const pad=(hi-lo)*0.10||1; hi+=pad; lo=(lo<0)?lo-pad:Math.max(0,lo-pad);
+    // invertY puts the WORSE value higher, which a rank axis needs: rank 1 is
+    // the worst position, and drawing it at the bottom would read backwards.
+    const ys=v=>d.invertY ? padT+(v-lo)/(hi-lo)*ph
+                          : padT+ph-(v-lo)/(hi-lo)*ph;
+    const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,class:'chart',role:'img',
+      'aria-label':d.alt||d.caption||'chart'});
+    for(let i=0;i<=4;i++){const v=lo+(hi-lo)*i/4,y=ys(v);
+      svg.appendChild(el('line',{x1:padL,x2:W-padR,y1:y,y2:y,class:'gridline'}));
+      const t=el('text',{x:padL-6,y:y+3.5,'text-anchor':'end',class:'axis-label'});
+      t.textContent=fmt(v,d.dp);svg.appendChild(t);}
+    const step=Math.max(1,Math.ceil(yrs.length/(W<480?4:8)));
+    // hiddenTicks is opt-in per figure. A series may carry an x position that
+    // exists only to hold a gap open -- ESS has no round between 2010/11 and
+    // 2020-22, and the null slot that breaks the line there must not be
+    // labelled, or it reads as an observation that went missing in that one
+    // year rather than a decade with no round at all. The position still
+    // occupies its true horizontal distance; only its label is suppressed.
+    const hide=new Set((d.hiddenTicks||[]).map(Number));
+    yrs.forEach((y,i)=>{if(i%step&&i!==yrs.length-1)return;
+      if(hide.has(Number(y)))return;
+      const t=el('text',{x:xs(y),y:H-padB+16,'text-anchor':'middle',class:'axis-label'});
+      t.textContent=y;svg.appendChild(t);});
+    // A series that crosses zero needs the zero drawn. Without it the turn from
+    // net exit to net return is invisible: the reader sees a falling line and
+    // cannot tell where it changes sign. The area between the series and zero
+    // is filled by sign, so the two regimes read at a glance.
+    if(lo<0&&hi>0){
+      const zy=ys(0), s0=d.series[0];
+      if(d.zeroBand&&s0){
+        const seg=(want)=>{
+          let dd='',open=false;
+          s0.values.forEach((v,i)=>{
+            const inSeg=v!=null&&((want==='pos'&&v>0)||(want==='neg'&&v<0));
+            if(inSeg&&!open){dd+=` M ${xs(yrs[i])},${zy} L ${xs(yrs[i])},${ys(v)}`;open=true;}
+            else if(inSeg){dd+=` L ${xs(yrs[i])},${ys(v)}`;}
+            else if(open){dd+=` L ${xs(yrs[i-1])},${zy} Z`;open=false;}
+          });
+          if(open)dd+=` L ${xs(yrs[yrs.length-1])},${zy} Z`;
+          return dd;
+        };
+        [['pos','gr'],['neg','series-3']].forEach(([w,tone])=>{
+          const dd=seg(w);
+          if(dd)svg.appendChild(el('path',{d:dd,fill:`var(--${tone})`,
+            opacity:0.16,stroke:'none'}));
+        });
+      }
+      svg.appendChild(el('line',{x1:padL,x2:W-padR,y1:zy,y2:zy,class:'zero-line'}));
+      const zt=el('text',{x:padL+4,y:zy-5,class:'axis-label',style:'font-weight:700'});
+      zt.textContent=d.zeroLabel||'0';svg.appendChild(zt);
+    }
+    if(d.yLabel){const yl=el('text',{x:16,y:padT+ph/2,class:'axis-label',
+      'text-anchor':'middle',transform:`rotate(-90 16 ${padT+ph/2})`});
+      yl.textContent=d.yLabel;svg.appendChild(yl);}
+    const cur=el('line',{class:'cursor-line',y1:padT,y2:padT+ph,x1:-9,x2:-9});
+    svg.appendChild(cur);
+    const DASH={solid:'',dashed:'6 3',dotted:'2 3'};
+    const WT={strong:2.8,normal:1.8,light:1.4};
+    const ends=[];
+    d.series.forEach(s=>{let p='',pen=false;
+      s.values.forEach((v,i)=>{if(v==null){pen=false;return;}
+        p+=(pen?' L ':' M ')+xs(yrs[i])+','+ys(v);pen=true;});
+      // Line and label take their colour from the SAME tone. Previously the
+      // stroke came from a CSS class and the label from the tone, so both
+      // "income poverty" series drew as identical grey while their labels were
+      // blue and orange -- unreadable, and the reader could not tell which line
+      // was which.
+      if(p)svg.appendChild(el('path',{d:p,fill:'none',
+        stroke:`var(--${s.tone||'text-muted'})`,
+        'stroke-width':WT[s.weight||'normal'],
+        'stroke-dasharray':DASH[s.style||'solid'],
+        opacity:s.weight==='light'?0.75:1}));
+      const li=(()=>{for(let i=s.values.length-1;i>=0;i--)if(s.values[i]!=null)return i;return -1;})();
+      // With a legend present, end-labelling every series just crowds the right
+      // margin. Only the emphasised series get an end label; the legend carries
+      // the rest.
+      const labelled=d.series.filter(x=>x.label).length<=2||s.weight!=='light';
+      if(li>=0&&s.label&&labelled)ends.push({y:ys(s.values[li]),x:xs(yrs[li])+6,s:s});
+    });
+    // End labels collide when series converge -- three of them stacked on one
+    // pixel row in the first prototype. Sort by y and push apart by a minimum
+    // gap, keeping each label anchored to its own line by a short leader.
+    const GAP=W<480?12:13.5;
+    ends.sort((a,b)=>a.y-b.y);
+    for(let i=1;i<ends.length;i++)
+      if(ends[i].y-ends[i-1].y<GAP)ends[i].y=ends[i-1].y+GAP;
+    const overflow=ends.length?Math.max(0,ends[ends.length-1].y-(padT+ph)):0;
+    if(overflow)ends.forEach(e=>e.y-=overflow);
+    ends.forEach(e=>{
+      const yl=ys(e.s.values[(()=>{for(let i=e.s.values.length-1;i>=0;i--)
+        if(e.s.values[i]!=null)return i;return 0;})()]);
+      if(Math.abs(yl-e.y)>2)
+        svg.appendChild(el('line',{x1:e.x-3,x2:e.x+2,y1:yl,y2:e.y-3,
+          stroke:`var(--${e.s.tone||'text-muted'})`,'stroke-width':1,opacity:.5}));
+      const t=el('text',{x:e.x+4,y:e.y,class:'axis-label',
+        style:`fill:var(--${e.s.tone||'text-muted'});font-weight:700`});
+      // The end label starts at the last data point, so the space it has is
+      // whatever remains to the right edge -- not the full margin.
+      svg.appendChild(t);fitLabel(t,e.s.label,W-(e.x+4)-2,ms,true);});
+    ms.done();
+    if(typeof ms!=='undefined'&&ms.done)ms.done();
+    host.insertBefore(svg,host.firstChild);
+    // A legend keyed on the same tone/style, so the encoding is stated once
+    // rather than inferred from four crowded end labels.
+    if(d.series.filter(s=>s.label).length>2){
+      const lg=document.createElement('div');lg.className='legend';
+      d.series.filter(s=>s.label).forEach(s=>{
+        const i=document.createElement('span');i.className='lg-item';
+        i.innerHTML=`<svg width="22" height="8" aria-hidden="true"><line x1="0" y1="4" x2="22" y2="4"
+          stroke="var(--${s.tone||'text-muted'})" stroke-width="${WT[s.weight||'normal']}"
+          stroke-dasharray="${DASH[s.style||'solid']}"/></svg>${s.label}`;
+        lg.appendChild(i);});
+      host.insertBefore(lg,svg.nextSibling);
+    }
+    const tp=tip(host);
+    let idx=-1;
+    const show=i=>{ if(i<0||i>=yrs.length)return; idx=i;
+      cur.setAttribute('x1',xs(yrs[i]));cur.setAttribute('x2',xs(yrs[i]));
+      const rows=d.series.filter(s=>s.label).map(s=>`${s.label}: <b>${fmt(s.values[i],d.dp)}</b>`).join('<br>');
+      // Extra rows carry quantities the chart does not plot -- ranks hide the
+      // size of the differences, so the underlying values travel with them.
+      const extra=(d.extraRows&&d.extraRows[i])?`<br><span style="opacity:.65">
+        ${d.extraRows[i]}</span>`:'';
+      tp.innerHTML=`<strong>${yrs[i]}</strong><br>${rows}${extra}`;tp.classList.add('on');
+      const r=svg.getBoundingClientRect(),hr=host.getBoundingClientRect();
+      tp.style.left=Math.min(hr.width-tp.offsetWidth-8,(xs(yrs[i])/W)*r.width+8)+'px';
+      tp.style.top='8px';
+      say(host,`${yrs[i]}. `+d.series.filter(s=>s.label).map(s=>`${s.label} ${fmt(s.values[i],d.dp)}`).join(', '));
+    };
+    const near=e=>{const r=svg.getBoundingClientRect();
+      const x=(e.clientX-r.left)/r.width*W;
+      let best=0,bd=1e9;yrs.forEach((y,i)=>{const dd=Math.abs(xs(y)-x);if(dd<bd){bd=dd;best=i;}});
+      show(best);};
+    svg.addEventListener('mousemove',near);
+    svg.addEventListener('mouseleave',()=>{tp.classList.remove('on');cur.setAttribute('x1',-9);cur.setAttribute('x2',-9);});
+    host.addEventListener('keydown',e=>{
+      if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();
+        show(Math.max(0,Math.min(yrs.length-1,(idx<0?yrs.length-1:idx)+(e.key==='ArrowRight'?1:-1))));}
+      if(e.key==='Home'){e.preventDefault();show(0);}
+      if(e.key==='End'){e.preventDefault();show(yrs.length-1);}
+      if(e.key==='Escape'){tp.classList.remove('on');cur.setAttribute('x1',-9);}
+    });
+  }
+
+  /* ---------------------------------------------- coefficient (new type) */
+  function coefficient(host,d){
+    const W=widthFor(host), rowH=W<480?34:30;
+    // Same fix the ladder already carries: derive the label gutter from the
+    // longest label. A fixed 190 clipped every row label in the conditional
+    // figure, the worst by 86px, and no automated check could see it.
+    const ms=measurer(host);
+    const padL=labelGutter(ms,d.rows.map(r=>r.label),W<480?110:150,W*0.42);
+    const padR=labelGutter(ms,d.rows.map(r=>r.right||''),W<480?54:96,W*0.26);
+    const padT=26, padB=30;
+    const H=padT+d.rows.length*rowH+padB, pw=W-padL-padR;
+    let lo=Infinity,hi=-Infinity;
+    d.rows.forEach(r=>{lo=Math.min(lo,r.lo,r.est);hi=Math.max(hi,r.hi,r.est);});
+    const span=(hi-lo)||1; lo-=span*0.08; hi+=span*0.08;
+    const xs=v=>padL+(v-lo)/(hi-lo)*pw;
+    const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,class:'chart',role:'img',
+      'aria-label':d.alt||d.caption||'coefficient plot'});
+    [lo,(lo+hi)/2,hi].forEach(v=>{const t=el('text',{x:xs(v),y:H-8,
+      'text-anchor':'middle',class:'axis-label'});t.textContent=fmt(v,2);svg.appendChild(t);});
+    if(lo<0&&hi>0)svg.appendChild(el('line',{x1:xs(0),x2:xs(0),y1:padT-6,y2:padT+d.rows.length*rowH,class:'zero-line'}));
+    const tp=tip(host); let idx=-1;
+    const marks=[];
+    d.rows.forEach((r,i)=>{
+      const y=padT+i*rowH+rowH/2;
+      const tone=r.tone||'text-muted';
+      svg.appendChild(el('line',{x1:xs(r.lo),x2:xs(r.hi),y1:y,y2:y,
+        stroke:`var(--${tone})`,'stroke-width':2,opacity:.55}));
+      const c=el('circle',{cx:xs(r.est),cy:y,r:W<480?4.5:5.5,fill:`var(--${tone})`});
+      svg.appendChild(c);marks.push({y:y,r:r});
+      const lbl=el('text',{x:padL-10,y:y+4,'text-anchor':'end',class:'axis-label',
+        style:r.strong?'font-weight:700':''});
+      svg.appendChild(lbl);fitLabel(lbl,r.label,padL-12,ms,!!r.strong);
+      const vt=el('text',{x:W-padR+8,y:y+4,class:'axis-label',
+        style:`fill:var(--${tone});font-weight:600`});
+      svg.appendChild(vt);fitLabel(vt,r.right||'',padR-12,ms,true);
+    });
+    if(typeof ms!=='undefined'&&ms.done)ms.done();
+    host.insertBefore(svg,host.firstChild);
+    const show=i=>{if(i<0||i>=d.rows.length)return;idx=i;const r=d.rows[i];
+      tp.innerHTML=`<strong>${r.label}</strong><br>${r.detail}`;tp.classList.add('on');
+      const rc=svg.getBoundingClientRect(),hr=host.getBoundingClientRect();
+      tp.style.left=Math.min(hr.width-tp.offsetWidth-8,24)+'px';
+      tp.style.top=Math.max(4,(marks[i].y/H)*rc.height-tp.offsetHeight-6)+'px';
+      say(host,`${r.label}. ${r.detail.replace(/<[^>]+>/g,' ')}`);};
+    svg.addEventListener('mousemove',e=>{const rc=svg.getBoundingClientRect();
+      const y=(e.clientY-rc.top)/rc.height*H;let best=0,bd=1e9;
+      marks.forEach((m,i)=>{const dd=Math.abs(m.y-y);if(dd<bd){bd=dd;best=i;}});show(best);});
+    svg.addEventListener('mouseleave',()=>tp.classList.remove('on'));
+    host.addEventListener('keydown',e=>{
+      if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();
+        show(Math.max(0,Math.min(d.rows.length-1,(idx<0?-1:idx)+(e.key==='ArrowDown'?1:-1))));}
+      if(e.key==='Escape')tp.classList.remove('on');});
+  }
+
+
+  /* -------------------------------------------------------- ladder (new) */
+  /* All countries on one measure, ranked, with Greece and the EU marked.
+     Answers "is Greece unusual, or at one end of a continuum?" -- which a
+     Greece-only time series cannot. */
+  function ladder(host,d){
+    const W=widthFor(host), n=d.rows.length;
+    // Left padding derives from the longest label. A fixed 54 clipped
+    // "Long-term unemployment" and "Housing-cost overburden" -- the same bug
+    // the panel's right margin had.
+    const rowH=W<480?15:17;
+    const ms=measurer(host);
+    const padL=labelGutter(ms,d.rows.map(r=>r.label),W<480?42:54,W*0.42);
+    const padR=W<480?46:64, padT=18, padB=26;
+    const H=padT+n*rowH+padB, pw=W-padL-padR;
+    let lo=Math.min(0,...d.rows.map(r=>r.value)), hi=Math.max(0,...d.rows.map(r=>r.value));
+    const sp=(hi-lo)||1; hi+=sp*0.06; if(lo<0)lo-=sp*0.06;
+    const xs=v=>padL+(v-lo)/(hi-lo)*pw;
+    const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,class:'chart',role:'img',
+      'aria-label':d.alt||'ranked comparison of all countries'});
+    [lo,(lo+hi)/2,hi].forEach(v=>{
+      svg.appendChild(el('line',{x1:xs(v),x2:xs(v),y1:padT-4,y2:padT+n*rowH,class:'gridline'}));
+      const t=el('text',{x:xs(v),y:H-8,'text-anchor':'middle',class:'axis-label'});
+      t.textContent=fmt(v,d.dp);svg.appendChild(t);});
+    if(d.reference!=null){
+      svg.appendChild(el('line',{x1:xs(d.reference),x2:xs(d.reference),
+        y1:padT-4,y2:padT+n*rowH,class:'zero-line','stroke-dasharray':'4 3'}));
+      const rt=el('text',{x:xs(d.reference),y:padT-7,'text-anchor':'middle',
+        class:'axis-label',style:'fill:var(--eu);font-weight:700'});
+      rt.textContent=d.referenceLabel||'EU median';svg.appendChild(rt);}
+    const marks=[];
+    d.rows.forEach((r,i)=>{
+      const y=padT+i*rowH+rowH/2, hl=!!r.highlight;
+      // Bars grow from zero when the scale spans it, so a negative value reads
+      // as a bar to the left rather than a short bar from the axis.
+      const base=(lo<0)?xs(0):padL;
+      const x0=Math.min(base,xs(r.value)), x1=Math.max(base,xs(r.value));
+      svg.appendChild(el('rect',{x:x0,y:y-rowH/2+1,width:Math.max(1,x1-x0),
+        height:rowH-3,rx:1.5,
+        fill:`var(--${hl?'gr':(r.tone||'text-muted')})`,opacity:hl?1:.55}));
+      const lb=el('text',{x:padL-6,y:y+3.5,'text-anchor':'end',class:'axis-label',
+        style:hl?'fill:var(--gr);font-weight:700':''});
+      svg.appendChild(lb);fitLabel(lb,r.label,padL-8,ms,!!hl);
+      if(hl||i===0||i===n-1||d.labelAll){const vt=el('text',{
+        x:xs(r.value)+(r.value<0?-5:5),y:y+3.5,class:'axis-label',
+        'text-anchor':r.value<0?'end':'start',
+        style:hl?'fill:var(--gr);font-weight:700':''});
+        vt.textContent=fmt(r.value,d.dp);svg.appendChild(vt);}
+      marks.push({y:y,r:r,i:i});});
+    if(typeof ms!=='undefined'&&ms.done)ms.done();
+    host.insertBefore(svg,host.firstChild);
+    const tp=tip(host);let idx=-1;
+    const show=i=>{if(i<0||i>=marks.length)return;idx=i;const r=marks[i].r;
+      tp.innerHTML=`<strong>${r.name||r.label}</strong><br>${fmt(r.value,d.dp)}${d.unit?' '+d.unit:''}`
+        +(r.detail?'<br>'+r.detail:'')+`<br><span style="opacity:.6">rank ${i+1} of ${marks.length}</span>`;
+      tp.classList.add('on');
+      const rc=svg.getBoundingClientRect(),hr=host.getBoundingClientRect();
+      tp.style.left=Math.min(hr.width-tp.offsetWidth-8,padL/W*rc.width+10)+'px';
+      tp.style.top=Math.max(2,Math.min(rc.height-tp.offsetHeight-4,
+        (marks[i].y/H)*rc.height-tp.offsetHeight/2))+'px';
+      say(host,`${r.name||r.label}, ${fmt(r.value,d.dp)}, rank ${i+1} of ${marks.length}`);};
+    svg.addEventListener('mousemove',e=>{const rc=svg.getBoundingClientRect();
+      const y=(e.clientY-rc.top)/rc.height*H;let b=0,bd=1e9;
+      marks.forEach((m,i)=>{const dd=Math.abs(m.y-y);if(dd<bd){bd=dd;b=i;}});show(b);});
+    svg.addEventListener('mouseleave',()=>tp.classList.remove('on'));
+    host.addEventListener('keydown',e=>{
+      if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();
+        show(Math.max(0,Math.min(marks.length-1,(idx<0?-1:idx)+(e.key==='ArrowDown'?1:-1))));}
+      if(e.key==='Home'){e.preventDefault();show(0);}
+      if(e.key==='End'){e.preventDefault();show(marks.length-1);}
+      if(e.key==='Escape')tp.classList.remove('on');});
+  }
+
+
+  /* ------------------------------------------------------ dumbbell (new) */
+  /* Two states joined per row. Reads a change -- a gap in 2015 against 2024,
+     or a between estimate against a within one -- as a single object rather
+     than two bars the reader has to subtract. */
+  function dumbbell(host,d){
+    const W=widthFor(host), rowH=W<480?26:24;
+    const ms=measurer(host);
+    const padL=labelGutter(ms,d.rows.map(r=>r.label),W<480?104:150,W*0.42);
+    const padR=labelGutter(ms,d.rows.map(r=>r.right||''),W<480?52:92,W*0.26);
+    const padT=26, padB=32;
+    const H=padT+d.rows.length*rowH+padB, pw=W-padL-padR;
+    let lo=Infinity,hi=-Infinity;
+    d.rows.forEach(r=>{lo=Math.min(lo,r.a,r.b);hi=Math.max(hi,r.a,r.b);});
+    const sp=(hi-lo)||1; lo-=sp*0.08; hi+=sp*0.08;
+    const xs=v=>padL+(v-lo)/(hi-lo)*pw;
+    const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,class:'chart',role:'img',
+      'aria-label':d.alt||'paired comparison'});
+    [lo,(lo+hi)/2,hi].forEach(v=>{
+      svg.appendChild(el('line',{x1:xs(v),x2:xs(v),y1:padT-6,y2:padT+d.rows.length*rowH,class:'gridline'}));
+      const t=el('text',{x:xs(v),y:H-10,'text-anchor':'middle',class:'axis-label'});
+      t.textContent=fmt(v,d.dp);svg.appendChild(t);});
+    if(lo<0&&hi>0){svg.appendChild(el('line',{x1:xs(0),x2:xs(0),y1:padT-6,
+      y2:padT+d.rows.length*rowH,class:'zero-line'}));
+      const zt=el('text',{x:xs(0),y:padT-10,'text-anchor':'middle',class:'axis-label',
+        style:'font-weight:700'});zt.textContent=d.zeroLabel||'0';svg.appendChild(zt);}
+    const marks=[];
+    d.rows.forEach((r,i)=>{
+      const y=padT+i*rowH+rowH/2, tone=r.tone||'text-muted';
+      svg.appendChild(el('line',{x1:xs(r.a),x2:xs(r.b),y1:y,y2:y,
+        stroke:`var(--${tone})`,'stroke-width':2.5,opacity:.45}));
+      svg.appendChild(el('circle',{cx:xs(r.a),cy:y,r:4,fill:'var(--text-muted)'}));
+      svg.appendChild(el('circle',{cx:xs(r.b),cy:y,r:5.5,fill:`var(--${tone})`}));
+      const lb=el('text',{x:padL-10,y:y+4,'text-anchor':'end',class:'axis-label',
+        style:r.strong?'font-weight:700':''});
+      svg.appendChild(lb);fitLabel(lb,r.label,padL-12,ms,!!r.strong);
+      if(r.right){const rt=el('text',{x:W-padR+8,y:y+4,class:'axis-label',
+        style:`fill:var(--${tone});font-weight:600`});
+        svg.appendChild(rt);fitLabel(rt,r.right,padR-12,ms,true);}
+      marks.push({y:y,r:r});});
+    if(typeof ms!=='undefined'&&ms.done)ms.done();
+    host.insertBefore(svg,host.firstChild);
+    if(d.legendA||d.legendB){
+      const lg=document.createElement('div');lg.className='legend';
+      lg.innerHTML=`<span class="lg-item"><svg width="12" height="12" aria-hidden="true">
+        <circle cx="6" cy="6" r="4" fill="var(--text-muted)"/></svg>${d.legendA||'start'}</span>
+        <span class="lg-item"><svg width="12" height="12" aria-hidden="true">
+        <circle cx="6" cy="6" r="5" fill="var(--gr)"/></svg>${d.legendB||'end'}</span>`;
+      host.insertBefore(lg,svg.nextSibling);}
+    const tp=tip(host);let idx=-1;
+    const show=i=>{if(i<0||i>=marks.length)return;idx=i;const r=marks[i].r;
+      tp.innerHTML=`<strong>${r.label}</strong><br>${d.legendA||'start'}: ${fmt(r.a,d.dp)}`
+        +`<br>${d.legendB||'end'}: <b>${fmt(r.b,d.dp)}</b>`+(r.detail?'<br>'+r.detail:'');
+      tp.classList.add('on');
+      const rc=svg.getBoundingClientRect(),hr=host.getBoundingClientRect();
+      tp.style.left=Math.min(hr.width-tp.offsetWidth-8,20)+'px';
+      tp.style.top=Math.max(2,Math.min(rc.height-tp.offsetHeight-4,
+        (marks[i].y/H)*rc.height-tp.offsetHeight-6))+'px';
+      say(host,`${r.label}, ${fmt(r.a,d.dp)} to ${fmt(r.b,d.dp)}`);};
+    svg.addEventListener('mousemove',e=>{const rc=svg.getBoundingClientRect();
+      const y=(e.clientY-rc.top)/rc.height*H;let b=0,bd=1e9;
+      marks.forEach((m,i)=>{const dd=Math.abs(m.y-y);if(dd<bd){bd=dd;b=i;}});show(b);});
+    svg.addEventListener('mouseleave',()=>tp.classList.remove('on'));
+    host.addEventListener('keydown',e=>{
+      if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();
+        show(Math.max(0,Math.min(marks.length-1,(idx<0?-1:idx)+(e.key==='ArrowDown'?1:-1))));}
+      if(e.key==='Escape')tp.classList.remove('on');});
+  }
+
+  /* ------------------------------------------------------- heatmap (new) */
+  /* A correlation matrix. Deliberately small by default: a 31x31 grid contains
+     everything and communicates almost nothing, so the main view carries the
+     outcomes and the frozen construct representatives only. */
+  function heatmap(host,d){
+    const W=widthFor(host);
+    const ms=measurer(host);
+    const labW=labelGutter(ms,d.rows.map(r=>r.label),W<480?96:150,W*0.40);
+    const cell=Math.max(16,Math.min(34,(W-labW-16)/d.cols.length));
+    const top=Math.min(120,labW*0.8);
+    const H=top+d.rows.length*cell+10;
+    const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,class:'chart',role:'img',
+      'aria-label':d.alt||'correlation matrix'});
+    d.cols.forEach((c,j)=>{const x=labW+j*cell+cell/2;
+      const t=el('text',{x:x,y:top-6,class:'axis-label','text-anchor':'start',
+        transform:`rotate(-55 ${x} ${top-6})`});t.textContent=c;svg.appendChild(t);});
+    const marks=[];
+    d.rows.forEach((r,i)=>{
+      const y=top+i*cell;
+      const lb=el('text',{x:labW-8,y:y+cell/2+3.5,'text-anchor':'end',class:'axis-label'});
+      svg.appendChild(lb);fitLabel(lb,r.label,labW-10,ms,false);
+      r.values.forEach((v,j)=>{
+        const x=labW+j*cell;
+        const mag=v==null?0:Math.min(1,Math.abs(v));
+        const tone=v==null?'div-zero':(v<0?'div-neg':'div-pos');
+        const rect=el('rect',{x:x+1,y:y+1,width:cell-2,height:cell-2,rx:2,
+          fill:`var(--${tone})`,opacity:v==null?0.12:0.12+mag*0.8});
+        svg.appendChild(rect);
+        // A mechanical pair is outlined, not dotted: the reader needs to see
+        // WHICH cells cannot be read as independent relationships.
+        if(d.flags&&d.flags[i]&&d.flags[i][j]){
+          svg.appendChild(el('rect',{x:x+1,y:y+1,width:cell-2,height:cell-2,rx:2,
+            fill:'none',stroke:'var(--text-primary)','stroke-width':1.6,
+            'stroke-dasharray':'2.5 2'}));}
+        marks.push({x:x,y:y,i:i,j:j,v:v});});});
+    if(typeof ms!=='undefined'&&ms.done)ms.done();
+    host.insertBefore(svg,host.firstChild);
+    const lg=document.createElement('div');lg.className='legend';
+    lg.innerHTML=`<span class="lg-item"><svg width="34" height="10" aria-hidden="true">
+      <rect width="11" height="10" fill="var(--div-neg)" opacity=".85"/>
+      <rect x="11" width="11" height="10" fill="var(--div-zero)" opacity=".3"/>
+      <rect x="22" width="11" height="10" fill="var(--div-pos)" opacity=".85"/></svg>
+      negative &rarr; positive</span>`
+      +(d.flagLabel?`<span class="lg-item"><svg width="12" height="12" aria-hidden="true">
+      <rect x="1" y="1" width="10" height="10" fill="none" stroke="var(--text-primary)"
+      stroke-width="1.6" stroke-dasharray="2.5 2"/></svg>${d.flagLabel}</span>`:'');
+    host.insertBefore(lg,svg.nextSibling);
+    const tp=tip(host);let idx=-1;
+    const show=k=>{if(k<0||k>=marks.length)return;idx=k;const m=marks[k];
+      const flag=d.flags&&d.flags[m.i]&&d.flags[m.i][m.j];
+      tp.innerHTML=`<strong>${d.rows[m.i].label}</strong><br>vs ${d.cols[m.j]}`
+        +`<br>r = <b>${m.v==null?'&mdash;':m.v.toFixed(3)}</b>`
+        +(flag?`<br><span style="color:var(--text-primary)">${d.flagExplain||d.flagLabel}</span>`:'');
+      tp.classList.add('on');
+      const rc=svg.getBoundingClientRect(),hr=host.getBoundingClientRect();
+      tp.style.left=Math.min(hr.width-tp.offsetWidth-8,
+        Math.max(4,(m.x/W)*rc.width-tp.offsetWidth/2))+'px';
+      tp.style.top=Math.max(2,(m.y/H)*rc.height-tp.offsetHeight-4)+'px';
+      say(host,`${d.rows[m.i].label} versus ${d.cols[m.j]}, r ${m.v==null?'missing':m.v.toFixed(3)}`);};
+    svg.addEventListener('mousemove',e=>{const rc=svg.getBoundingClientRect();
+      const x=(e.clientX-rc.left)/rc.width*W, y=(e.clientY-rc.top)/rc.height*H;
+      let b=-1,bd=1e9;marks.forEach((m,k)=>{
+        const dd=Math.abs(m.x+cell/2-x)+Math.abs(m.y+cell/2-y);if(dd<bd){bd=dd;b=k;}});
+      if(b>=0)show(b);});
+    svg.addEventListener('mouseleave',()=>tp.classList.remove('on'));
+    host.addEventListener('keydown',e=>{
+      const step={ArrowRight:1,ArrowLeft:-1,ArrowDown:d.cols.length,ArrowUp:-d.cols.length}[e.key];
+      if(step){e.preventDefault();show(Math.max(0,Math.min(marks.length-1,(idx<0?0:idx)+step)));}
+      if(e.key==='Escape')tp.classList.remove('on');});
+  }
+
+
+  /* ------------------------------------------------------------- scatter */
+  /* Country-years as points. Used with country means removed, so the cloud
+     shows co-movement WITHIN countries rather than differences between them. */
+  function scatter(host,d){
+    const W=widthFor(host), H=Math.round(W*0.62);
+    const padL=56,padR=18,padT=16,padB=46;
+    const pw=W-padL-padR, ph=H-padT-padB;
+    const xs_=d.points.map(p=>p.x), ys_=d.points.map(p=>p.y);
+    const xlo=Math.min(...xs_),xhi=Math.max(...xs_),ylo=Math.min(...ys_),yhi=Math.max(...ys_);
+    const px=(xhi-xlo)*0.06||1, py=(yhi-ylo)*0.06||1;
+    const xs=v=>padL+(v-(xlo-px))/((xhi+px)-(xlo-px))*pw;
+    const ys=v=>padT+ph-(v-(ylo-py))/((yhi+py)-(ylo-py))*ph;
+    const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,class:'chart',role:'img',
+      'aria-label':d.alt||'scatter'});
+    for(let i=0;i<=4;i++){const v=(ylo-py)+((yhi+py)-(ylo-py))*i/4,y=ys(v);
+      svg.appendChild(el('line',{x1:padL,x2:W-padR,y1:y,y2:y,class:'gridline'}));
+      const t=el('text',{x:padL-6,y:y+3.5,'text-anchor':'end',class:'axis-label'});
+      t.textContent=fmt(v,d.dp);svg.appendChild(t);}
+    for(let i=0;i<=4;i++){const v=(xlo-px)+((xhi+px)-(xlo-px))*i/4;
+      const t=el('text',{x:xs(v),y:H-padB+16,'text-anchor':'middle',class:'axis-label'});
+      t.textContent=fmt(v,d.dp);svg.appendChild(t);}
+    if(xlo<0&&xhi>0)svg.appendChild(el('line',{x1:xs(0),x2:xs(0),y1:padT,y2:padT+ph,class:'zero-line'}));
+    if(ylo<0&&yhi>0)svg.appendChild(el('line',{x1:padL,x2:W-padR,y1:ys(0),y2:ys(0),class:'zero-line'}));
+    // least-squares line, drawn because the figure is about co-movement
+    const n=d.points.length,mx=xs_.reduce((a,b)=>a+b,0)/n,my=ys_.reduce((a,b)=>a+b,0)/n;
+    let sxy=0,sxx=0;d.points.forEach(p=>{sxy+=(p.x-mx)*(p.y-my);sxx+=(p.x-mx)**2;});
+    if(sxx>0){const b1=sxy/sxx,b0=my-b1*mx;
+      svg.appendChild(el('line',{x1:xs(xlo-px),y1:ys(b0+b1*(xlo-px)),
+        x2:xs(xhi+px),y2:ys(b0+b1*(xhi+px)),stroke:'var(--text-secondary)',
+        'stroke-width':1.6,'stroke-dasharray':'5 3',opacity:.8}));}
+    const marks=[];
+    d.points.forEach(p=>{const c=el('circle',{cx:xs(p.x),cy:ys(p.y),
+      r:p.highlight?4.5:2.8,fill:`var(--${p.highlight?'gr':'text-muted'})`,
+      opacity:p.highlight?1:.45});svg.appendChild(c);marks.push({x:xs(p.x),y:ys(p.y),p:p});});
+    const xt=el('text',{x:padL+pw/2,y:H-10,'text-anchor':'middle',class:'axis-label'});
+    xt.textContent=d.xLabel||'';svg.appendChild(xt);
+    const yt=el('text',{x:14,y:padT+ph/2,class:'axis-label','text-anchor':'middle',
+      transform:`rotate(-90 14 ${padT+ph/2})`});yt.textContent=d.yLabel||'';svg.appendChild(yt);
+    if(d.r!=null){const rt=el('text',{x:W-padR-4,y:padT+12,'text-anchor':'end',
+      class:'axis-label',style:'font-weight:700'});rt.textContent='r = '+d.r;svg.appendChild(rt);}
+    if(typeof ms!=='undefined'&&ms.done)ms.done();
+    host.insertBefore(svg,host.firstChild);
+    const tp=tip(host);let idx=-1;
+    const show=i=>{if(i<0||i>=marks.length)return;idx=i;const p=marks[i].p;
+      tp.innerHTML=`<strong>${p.label}</strong><br>${fmt(p.x,d.dp)} , ${fmt(p.y,d.dp)}`;
+      tp.classList.add('on');
+      const rc=svg.getBoundingClientRect(),hr=host.getBoundingClientRect();
+      tp.style.left=Math.min(hr.width-tp.offsetWidth-8,
+        Math.max(4,(marks[i].x/W)*rc.width-tp.offsetWidth/2))+'px';
+      tp.style.top=Math.max(2,(marks[i].y/H)*rc.height-tp.offsetHeight-8)+'px';
+      say(host,`${p.label}, ${fmt(p.x,d.dp)} and ${fmt(p.y,d.dp)}`);};
+    svg.addEventListener('mousemove',e=>{const rc=svg.getBoundingClientRect();
+      const x=(e.clientX-rc.left)/rc.width*W,y=(e.clientY-rc.top)/rc.height*H;
+      let b=-1,bd=1e9;marks.forEach((m,i)=>{const dd=(m.x-x)**2+(m.y-y)**2;
+        if(dd<bd){bd=dd;b=i;}});if(b>=0&&bd<900)show(b);else tp.classList.remove('on');});
+    svg.addEventListener('mouseleave',()=>tp.classList.remove('on'));
+    host.addEventListener('keydown',e=>{
+      if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();
+        show(Math.max(0,Math.min(marks.length-1,(idx<0?-1:idx)+(e.key==='ArrowRight'?1:-1))));}
+      if(e.key==='Escape')tp.classList.remove('on');});
+  }
+
+  const KINDS={panel:panel,coefficient:coefficient,ladder:ladder,dumbbell:dumbbell,heatmap:heatmap,scatter:scatter};
+
+
+  // VIEW SWITCHING. Some questions need more than one look -- the real
+  // threshold and the anchored comparison, or AROPE by component, age,
+  // household and shift-share. Views live in one figure so the reader does not
+  // lose the question while changing the picture.
+  function mountViews(host){
+    const payloads=[...host.querySelectorAll('script[type="application/json"]')];
+    if(payloads.length<2)return false;
+    const bar=document.createElement('div');bar.className='viewbar';
+    bar.setAttribute('role','tablist');
+    const draw=i=>{
+      const d=JSON.parse(payloads[i].textContent);
+      host.querySelectorAll('svg,.legend,.tip,.sr').forEach(n=>n.remove());
+      (KINDS[payloads[i].dataset.kind||host.dataset.chart]||panel)(host,d);
+      [...bar.children].forEach((b,j)=>{b.setAttribute('aria-selected',j===i?'true':'false');
+        b.tabIndex=j===i?0:-1;});
+      // Scope from the FIGURE, not the chart host: the fallback tables live in
+      // the <details> sibling, so querying the host matched nothing and every
+      // view's table stayed visible at once.
+      const fig=host.closest('figure')||document;
+      fig.querySelectorAll('table[data-view]').forEach(tb=>{
+        tb.hidden = tb.dataset.view !== String(i);});
+    };
+    payloads.forEach((pl,i)=>{
+      const b=document.createElement('button');b.type='button';b.className='viewbtn';
+      b.setAttribute('role','tab');b.textContent=pl.dataset.label||('View '+(i+1));
+      b.addEventListener('click',()=>draw(i));
+      b.addEventListener('keydown',e=>{
+        if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();
+          const j=(i+(e.key==='ArrowRight'?1:-1)+payloads.length)%payloads.length;
+          bar.children[j].focus();draw(j);}});
+      bar.appendChild(b);});
+    host.parentNode.insertBefore(bar,host);
+    draw(0);
+    return true;
+  }
+
+  function mount(){
+    document.querySelectorAll('[data-chart]').forEach(host=>{
+      if(host.dataset.drawn)return;
+      if(mountViews(host)){host.dataset.drawn='1';return;}
+      const payload=host.querySelector('script[type="application/json"]');
+      if(!payload)return;
+      const d=JSON.parse(payload.textContent);
+      const fn=KINDS[host.dataset.chart];
+      if(!fn)return;
+      host.querySelectorAll('svg').forEach(s=>s.remove());
+      fn(host,d);
+      host.dataset.drawn='1';
+    });
+  }
+  function redraw(){document.querySelectorAll('.viewbar').forEach(b=>b.remove());
+    document.querySelectorAll('[data-chart]').forEach(h=>h.dataset.drawn='');mount();}
+  document.addEventListener('DOMContentLoaded',mount);
+  if(document.readyState!=='loading')mount();
+  let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(redraw,180);});
+})();
+</script>
+</body></html>

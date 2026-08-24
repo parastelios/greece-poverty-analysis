@@ -28,8 +28,8 @@ RELEASE = "--release" in sys.argv
 # output/report.html is the superseded v3 build, kept only because the batch
 # pages still borrow its stylesheet.
 DOCS = {"report": "../output/v2_report.html",
-        "paper": "../output/academic_paper_draft.html",
-        "narrative": "../output/narrative_companion.html"}
+        "paper": "../output/academic_paper.html",
+        "narrative": "../output/narrative.html"}
 
 # distinctive fingerprints per claim id: any ONE match counts as present
 FP = {
@@ -101,7 +101,18 @@ def text_of(p):
     s = re.sub(r"<[^>]+>", " ", s)
     return html.unescape(s)
 
-m = pd.read_csv("../docs/claim_matrix.csv", dtype=str)  # ids like "1.1" must stay strings
+# THE LEGACY MATRIX IS RETIRED. docs/claim_matrix.csv held 53 claims from the
+# analysis that preceded the E-stage sequence, matched by hand-written
+# fingerprints. All three documents are now written against the frozen claim
+# set, so the matrix audits a specification none of them targets: it reported
+# every document as missing claims that were deliberately superseded.
+#
+# Parity is now audited against e_final_claims.csv using the same container
+# matching the release gate applies, so one specification governs every
+# document. The matrix is kept on disk as a record of what was superseded and
+# is not read here.
+m = pd.read_csv("../data/processed/e_final_claims.csv", dtype=str)
+m = m.rename(columns={"canonical_wording": "claim", "movement": "element"})
 texts = {k: text_of(v) for k, v in DOCS.items()}
 # Scripts and styles are stripped from the RAW text too. Searching the raw HTML
 # is useful for markup and entities, but an embedded data blob made "6.93"
@@ -115,21 +126,33 @@ raws = {k: _strip(Path(v).read_text(encoding="utf-8")) for k, v in DOCS.items()}
 v2_ids_pre = (set(m[m["introduced_in"].astype(str) == "v2"]["id"])
               if "introduced_in" in m.columns else set())
 
+def _states(block, wording):
+    """Does this container actually state the claim, or merely cite its id?
+
+    Distinctive-word overlap against the canonical wording, so a container that
+    carries the anchor without the substance does not pass.
+    """
+    words = [w for w in re.findall(r"[a-z0-9.%+-]{5,}", str(wording).lower())
+             if w not in ("greece", "greek", "hardship", "poverty", "country",
+                          "countries", "measure", "measures")]
+    if not words:
+        return True
+    low = block.lower()
+    hits = sum(1 for w in set(words) if w in low)
+    return hits >= max(2, len(set(words)) // 4)
+
+
 problems = []
 for _, r in m.iterrows():
-    fps = FP.get(r.id, [])
     for doc in DOCS:
-        need = r[doc]
-        if need == "--":
+        need = str(r.get(doc, "--"))
+        if need in ("--", "nan", ""):
             continue
-        if r.id in v2_ids_pre:
-            blocks = claim_containers(raws[doc], r.id)
-            found = any(f.lower() in b.lower() for b in blocks for f in fps)
-        else:
-            found = any(f.lower() in texts[doc].lower()
-                        or f.lower() in raws[doc].lower() for f in fps)
-        if not found:
-            problems.append((r.id, r.element, r.claim[:58], doc, need))
+        blocks = claim_containers(raws[doc], r.id)
+        if not blocks:
+            problems.append((r.id, r.element, str(r.claim)[:58], doc, "no container"))
+        elif not any(_states(b, r.claim) for b in blocks):
+            problems.append((r.id, r.element, str(r.claim)[:58], doc, "container empty"))
 
 # ---------------------------------------------------------------------------
 # CONTEXT PARITY. A context entry that appears in a document must appear WITH

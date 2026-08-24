@@ -97,6 +97,7 @@ def context(cid, prose):
         det = f" {e.source_detail}" if isinstance(e.source_detail, str) and e.source_detail else ""
         cite = (f'<p class="src">{html.escape(str(e.source))}{det}{url}</p>')
     return (f'<div class="ctx" data-context-id="{cid}">'
+            f'<p class="ctx-status">{html.escape(str(e.status))}</p>'
             f"<h4>{html.escape(str(e.topic))}</h4>{prose}"
             f'<p class="permitted"><em>What may be concluded.</em> '
             f"{html.escape(str(e.permitted))}</p>"
@@ -1176,6 +1177,9 @@ p{margin:0 0 .9rem}
   color:var(--text-secondary);margin:0}
 .ctx{border:1px dashed var(--border);border-radius:5px;padding:.9rem 1.1rem;
   margin:1.4rem 0}
+.ctx-status{font:600 .68rem/1 ui-sans-serif,system-ui,sans-serif;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--text-secondary);
+  margin:0 0 .45rem}
 .ctx h4{margin:0 0 .5rem;font-size:.98rem}
 .ctx p{font-size:.93rem}
 .ctx .permitted,.ctx .limitation,.ctx .src{
