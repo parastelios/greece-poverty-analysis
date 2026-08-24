@@ -246,12 +246,34 @@ v18b = {"years": eyrs, "dp": 0, "invertY": True, "hiddenTicks": [2016],
              "style": "solid", "weight": "strong",
              "values": gapped(int(v) for v in ess.balanced_12_rank_worst)}]}
 
+ess_table = (
+    '<div class="ess-table"><table><caption>Greek life satisfaction across six '
+    'ESS rounds, against the median of the same twelve countries in every '
+    'round. Means are approximate reconstructions from published weighted '
+    'percentages: no interval can be attached to them and nothing is tested on '
+    'them.</caption><thead><tr><th>Period</th><th>Fieldwork</th>'
+    '<th class="n">Greece</th><th class="n">Median of the 12</th>'
+    '<th class="n">Gap</th><th class="n">Rank of 12</th></tr></thead><tbody>'
+    + "".join(
+        f'<tr{" class=gap-row" if i and int(r.essround) - prev > 2 else ""}>'
+        f"<td>{r.period}</td><td>{r.fieldwork}</td>"
+        f'<td class="n">{r.greece_mean_approx:.2f}</td>'
+        f'<td class="n">{r.balanced_12_median_approx:.2f}</td>'
+        f'<td class="n">{r.gap_vs_balanced:+.2f}</td>'
+        f'<td class="n">{int(r.balanced_12_rank_worst)}'
+        f'{" (worst)" if r.balanced_12_rank_worst == 1 else ""}</td></tr>'
+        for i, (r, prev) in enumerate(
+            zip(ess.itertuples(),
+                [0] + [int(x) for x in ess.essround[:-1]])))
+    + "</tbody></table><p class='tnote'>No Greek round falls between 2010/11 "
+      "and 2020-22, so the decade covering the depth of the adjustment and the "
+      "recovery is unobserved.</p></div>")
+
 FIGS["F18"] = dict(
     caption="Greece was already below the median before the crisis, lost about "
             "0.8 points by 2010/11, and recovered its level but not its position",
     kind="panel",
-    views=[("Level", v18a), ("Rank among the same 12", v18b)],
-    view_series=[f18a, f18b], first="ESS round",
+    payload=v18a, series=f18a, first="ESS round",
     extra_caveat=(
         "The line BREAKS between 2010/11 and 2020-22 because no Greek round "
         "was run there: the depth of the adjustment and the recovery are both "
@@ -474,6 +496,7 @@ plausible anyway &mdash; labelled as what it is.</p>
 {F15}
 {DISC['CTX-1']}{ctx_block('CTX-1', '')}
 {ESS_LEAD}
+{ess_table}
 {F18}
 {ctx_block('CTX-7', ESS_CTX)}
 {DISC['CTX-2']}{ctx_block('CTX-2', '')}

@@ -40,6 +40,22 @@ for n in (1, 2, 3, 4):
 # Derived from the frozen manifest, never hardcoded: a hardcoded range silently
 # stops covering any figure added after it was written.
 EXPECTED = list(pd.read_csv(PROC / "report_visual_manifest.csv")["id"])
+
+# Non-figure blocks that also travel from the batch pages. The ESS comparison
+# leads with a table rather than a chart, and a table is not a <figure>, so it
+# needs lifting explicitly -- the assembler would otherwise carry prose
+# referring to a table the document does not contain.
+BLOCKS = {}
+for _n in (1, 2, 3, 4):
+    _page = (OUT / f"batch{_n}.html").read_text()
+    for _m in re.finditer(r'<div class="(ess-table)">.*?</p></div>', _page, re.S):
+        BLOCKS[_m.group(1)] = _m.group(0)
+
+
+def block(key):
+    if key not in BLOCKS:
+        raise SystemExit(f"block '{key}' not found in any batch page")
+    return BLOCKS[key]
 missing = [f for f in EXPECTED if f not in FIG_SOURCE]
 if missing:
     raise SystemExit(f"figures missing from the batch pages: {missing}")
@@ -1517,13 +1533,20 @@ rounds those percentages, so the means are approximate at that precision. There
 are no standard errors and no confidence intervals, and nothing inferential is
 built on them.</p>
 
+<p>Six observations across two decades, with a ten-year hole in the middle,
+are read more easily as rows than as a line. The chart beneath the table carries
+the level, because a level that recovers while a position does not is easier to
+see than to read.</p>
+
+{block('ess-table')}
+
 {fig('F18')}
 
-<p>Three things happen in sequence, and separating them is the whole point of
-showing levels rather than ranks alone. Greece was <em>already</em> about
-0.8 points below the median of these twelve countries before the crisis, at
-third or fourth worst. Its level then fell to 5.64 by 2010/11. And by 2023/24
-it had recovered to 6.42, close to where it started.</p>
+<p>Three things happen in sequence, and separating them is the point. Greece was
+<em>already</em> about 0.8 points below the median of these twelve countries
+before the crisis, at third or fourth worst. Its level then fell to 5.64 by
+2010/11. And by 2023/24 it had recovered to 6.42, close to where it
+started.</p>
 
 <p>Its comparative position did not recover with it. The gap to the median is
 wider now than before the crisis, and Greece has been the worst of the twelve

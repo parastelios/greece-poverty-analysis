@@ -183,6 +183,18 @@ low = " ".join(re.sub(r"<[^>]+>", " ", raw).lower().split())
 back = [f"{ph!r} ({why})" for ph, why in REGRESSED if ph in low]
 check("15. no corrected sentence has regressed", not back, "; ".join(back))
 
+# 16. A document that talks about "the table" must contain one. Blocks that are
+# not <figure> elements are lifted separately from the batch pages, and the
+# first version of that lift used the wrong closing pattern: the report shipped
+# prose introducing a table it did not carry, and every existing check passed.
+tbl_refs = re.findall(r"[Tt]he table (?:above|below|beneath)|beneath the table",
+                      re.sub(r"<[^>]+>", " ", raw))
+if tbl_refs and 'class="ess-table"' not in raw and "<table" not in raw:
+    check("16. prose referring to a table has a table", False,
+          f"{len(tbl_refs)} references, no table in the document")
+else:
+    check("16. prose referring to a table has a table", True)
+
 FIG_MIN, FLOOR = 620, 7.0
 small = []
 for m in re.finditer(r'<svg[^>]*viewBox="0 0 (\d+)[^"]*"(.*?)</svg>', raw, re.S):

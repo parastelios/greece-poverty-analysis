@@ -44,7 +44,7 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `p6-rewrite` |
-| HEAD | `a74ffe0` Figure pass, part 1: sex breakdown, standalone figures, full heatmap |
+| HEAD | `7964f9a` Figure pass, part 3: ESS comparison led by a table |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-24 |
 | Frozen V1 reference | `v1-final` |

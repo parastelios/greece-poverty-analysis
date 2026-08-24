@@ -252,6 +252,23 @@ font:.78rem/1.4 ui-sans-serif,system-ui,sans-serif;font-variant-numeric:tabular-
 .fallback th,.fallback td{padding:.4rem .8rem;border-bottom:1px solid var(--border);
 text-align:left}
 .fallback td.num,.fallback th.num{text-align:right}
+/* Tables that travel with a figure between documents. They are lifted from a
+   batch page like figures are, so their styling has to be shared rather than
+   living in one page's own stylesheet. */
+.ess-table{margin:1.6rem 0}
+.ess-table table{border-collapse:collapse;width:100%;
+font:.86rem/1.45 ui-sans-serif,system-ui,sans-serif;
+font-variant-numeric:tabular-nums;display:block;overflow-x:auto}
+.ess-table caption{caption-side:top;text-align:left;font-size:.84rem;
+color:var(--text-secondary);margin-bottom:.5rem;line-height:1.5;max-width:44rem}
+.ess-table th{text-align:left;font-weight:700;font-size:.74rem;
+text-transform:uppercase;letter-spacing:.05em;color:var(--text-secondary);
+padding:.5rem .7rem;border-bottom:1px solid var(--text-secondary);white-space:nowrap}
+.ess-table td{padding:.45rem .7rem;border-bottom:1px solid var(--border)}
+.ess-table .n{text-align:right;white-space:nowrap}
+.ess-table .gap-row td{border-top:2px dashed var(--border)}
+.ess-table .tnote{font:.82rem/1.5 ui-sans-serif,system-ui,sans-serif;
+color:var(--text-secondary);margin:.5rem 0 0;max-width:44rem}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 @media print{
   .chart-live{display:none}
@@ -330,16 +347,17 @@ percentage by its score and summing. That reconstruction is approximate at the
 precision the portal shows, it produces no confidence intervals, and nothing
 inferential is built on it.</p>
 
+<div class="ess-table"><table><caption>Greek life satisfaction across six ESS rounds, against the median of the same twelve countries in every round. Means are approximate reconstructions from published weighted percentages: no interval can be attached to them and nothing is tested on them.</caption><thead><tr><th>Period</th><th>Fieldwork</th><th class="n">Greece</th><th class="n">Median of the 12</th><th class="n">Gap</th><th class="n">Rank of 12</th></tr></thead><tbody><tr><td>pre-crisis</td><td>2002/03</td><td class="n">6.35</td><td class="n">7.21</td><td class="n">-0.86</td><td class="n">3</td></tr><tr><td>pre-crisis</td><td>2004/05</td><td class="n">6.46</td><td class="n">7.25</td><td class="n">-0.80</td><td class="n">4</td></tr><tr><td>crisis onset</td><td>2008/09</td><td class="n">5.96</td><td class="n">7.09</td><td class="n">-1.13</td><td class="n">3</td></tr><tr><td>early crisis</td><td>2010/11</td><td class="n">5.64</td><td class="n">7.00</td><td class="n">-1.36</td><td class="n">1 (worst)</td></tr><tr class=gap-row><td>later period</td><td>2020-22</td><td class="n">6.35</td><td class="n">7.48</td><td class="n">-1.12</td><td class="n">1 (worst)</td></tr><tr><td>later period</td><td>2023/24</td><td class="n">6.42</td><td class="n">7.39</td><td class="n">-0.97</td><td class="n">1 (worst)</td></tr></tbody></table><p class='tnote'>No Greek round falls between 2010/11 and 2020-22, so the decade covering the depth of the adjustment and the recovery is unobserved.</p></div>
 <figure class="figure" id="F18">
 <figcaption>Greece was already below the median before the crisis, lost about 0.8 points by 2010/11, and recovered its level but not its position</figcaption>
 <div class="fig-meta"><span class="badge">descriptive corroboration</span>
 <span class="fig-q">Was Greece already below the European median on life satisfaction before the crisis?</span></div>
 <div class="chart-live" data-chart="panel" tabindex="0"
      data-checksum="e687ad70323b58c6" aria-describedby="F18-fb">
-<script type="application/json" data-kind="panel" data-label="Level">{"years": [2003, 2005, 2009, 2011, 2016, 2021, 2024], "dp": 2, "yLabel": "Life satisfaction, 0-10 (approx.)", "hiddenTicks": [2016], "alt": "Greek life satisfaction against the median of the same twelve countries across six ESS rounds; Greece is below the median in every round, falls to 5.64 in 2010/11 and recovers to 6.42; the line is broken between 2010/11 and 2020-22, where no Greek round was run", "series": [{"label": "Greece", "tone": "gr", "style": "solid", "weight": "strong", "values": [6.348, 6.459, 5.96, 5.641, null, 6.354, 6.419]}, {"label": "Median of the same 12 countries", "tone": "series-3", "style": "dashed", "weight": "normal", "values": [7.21, 7.255, 7.091, 7.001, null, 7.478, 7.389]}]}</script><script type="application/json" data-kind="panel" data-label="Rank among the same 12">{"years": [2003, 2005, 2009, 2011, 2016, 2021, 2024], "dp": 0, "invertY": true, "hiddenTicks": [2016], "yLabel": "Rank among the same 12, 1 = worst", "alt": "Greece's rank among the same twelve countries, worst first; third or fourth before the crisis, worst from 2010/11 onward; the line is broken across the unobserved decade", "series": [{"label": "Greece's rank among the same 12", "tone": "gr", "style": "solid", "weight": "strong", "values": [3, 4, 3, 1, null, 1, 1]}]}</script>
+<script type="application/json">{"years": [2003, 2005, 2009, 2011, 2016, 2021, 2024], "dp": 2, "yLabel": "Life satisfaction, 0-10 (approx.)", "hiddenTicks": [2016], "alt": "Greek life satisfaction against the median of the same twelve countries across six ESS rounds; Greece is below the median in every round, falls to 5.64 in 2010/11 and recovers to 6.42; the line is broken between 2010/11 and 2020-22, where no Greek round was run", "series": [{"label": "Greece", "tone": "gr", "style": "solid", "weight": "strong", "values": [6.348, 6.459, 5.96, 5.641, null, 6.354, 6.419]}, {"label": "Median of the same 12 countries", "tone": "series-3", "style": "dashed", "weight": "normal", "values": [7.21, 7.255, 7.091, 7.001, null, 7.478, 7.389]}]}</script>
 </div><p class="fig-caveat"><strong>Read with this.</strong> European Social Survey, not Eurostat, and never joined to it. Means are approximate reconstructions from publicly displayed weighted percentages: no confidence intervals, no tests. The 12 countries are held fixed because the full ESS set varies from 22 to 30, so all-country ranks are not comparable between rounds. The line BREAKS between 2010/11 and 2020-22 because no Greek round was run there: the depth of the adjustment and the recovery are both unobserved, and nothing should be read across the gap. Greek LEVEL recovered to roughly its pre-crisis value while the gap to the median stayed wider than before, so the rank must not be read as the level.</p>
 <details class="fallback" id="F18-fb"><summary>Show the numbers <a href="statistical_appendix.html">Full evidence in the appendix</a>.</summary>
-<table data-checksum="e687ad70323b58c6" data-view="0"><caption>Level</caption><thead><tr><th>ESS round</th><th class="num">2002/03</th><th class="num">2004/05</th><th class="num">2008/09</th><th class="num">2010/11</th><th class="num">2020-22</th><th class="num">2023/24</th></tr></thead><tbody><tr><td>Greece</td><td class="num">6.35</td><td class="num">6.46</td><td class="num">5.96</td><td class="num">5.64</td><td class="num">6.35</td><td class="num">6.42</td></tr><tr><td>Median of the same 12 countries</td><td class="num">7.21</td><td class="num">7.25</td><td class="num">7.09</td><td class="num">7.00</td><td class="num">7.48</td><td class="num">7.39</td></tr><tr><td>Greece&#x27;s gap to that median</td><td class="num">-0.86</td><td class="num">-0.80</td><td class="num">-1.13</td><td class="num">-1.36</td><td class="num">-1.12</td><td class="num">-0.97</td></tr></tbody></table><table data-checksum="38aad8c24c6f3a71" data-view="1"><caption>Rank among the same 12</caption><thead><tr><th>ESS round</th><th class="num">2002/03</th><th class="num">2004/05</th><th class="num">2008/09</th><th class="num">2010/11</th><th class="num">2020-22</th><th class="num">2023/24</th></tr></thead><tbody><tr><td>Greece&#x27;s rank, 1 = worst</td><td class="num">3</td><td class="num">4</td><td class="num">3</td><td class="num">1</td><td class="num">1</td><td class="num">1</td></tr></tbody></table></details>
+<table data-checksum="e687ad70323b58c6"><caption>Level</caption><thead><tr><th>ESS round</th><th class="num">2002/03</th><th class="num">2004/05</th><th class="num">2008/09</th><th class="num">2010/11</th><th class="num">2020-22</th><th class="num">2023/24</th></tr></thead><tbody><tr><td>Greece</td><td class="num">6.35</td><td class="num">6.46</td><td class="num">5.96</td><td class="num">5.64</td><td class="num">6.35</td><td class="num">6.42</td></tr><tr><td>Median of the same 12 countries</td><td class="num">7.21</td><td class="num">7.25</td><td class="num">7.09</td><td class="num">7.00</td><td class="num">7.48</td><td class="num">7.39</td></tr><tr><td>Greece&#x27;s gap to that median</td><td class="num">-0.86</td><td class="num">-0.80</td><td class="num">-1.13</td><td class="num">-1.36</td><td class="num">-1.12</td><td class="num">-0.97</td></tr></tbody></table></details>
 </figure>
 <div class="ctx" data-context-id="CTX-7"><div class="ctx-head"><span class="cid">CTX-7</span><span class="status">descriptive corroboration</span></div><h4>Pre-crisis wellbeing baseline (ESS)</h4>
 <p>Across six ESS rounds, holding the same twelve countries fixed in every
@@ -404,7 +422,7 @@ whether closely related deprivation measures are admitted.</p>
 <p>Nothing in that table is new. Every row points at a result reached in an
 earlier stage, and this section introduces no estimate and no interpretation
 that was not already established and bounded where it was produced.</p>
-<footer class="stamp">Built 2026-08-24 18:34 from commit <code>a74ffe0</code> + uncommitted changes. If this does not match the current commit, the page is stale &mdash; reopen the file rather than refreshing.</footer>
+<footer class="stamp">Built 2026-08-24 18:40 from commit <code>7964f9a</code> + uncommitted changes. If this does not match the current commit, the page is stale &mdash; reopen the file rather than refreshing.</footer>
 <script>
 (function(){
   const NS='http://www.w3.org/2000/svg';

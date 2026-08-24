@@ -239,8 +239,8 @@ M = [
                "satisfaction before the crisis?",
       artifact="ess_greece_life_satisfaction.csv",
       series="Greek mean and the median of the same 12 countries across six "
-             "ESS rounds, with Greece's rank among those 12",
-      interaction="switch between level and rank; hover reads both values",
+             "ESS rounds",
+      interaction="hover reads both values and the gap",
       fallback="ESS round, Greek mean, median of the same 12, gap, rank",
       # Kept short on the face of the figure; the reading caveat about the
       # break and the level-versus-rank distinction is added at build time.

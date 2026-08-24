@@ -166,6 +166,23 @@ font:.78rem/1.4 ui-sans-serif,system-ui,sans-serif;font-variant-numeric:tabular-
 .fallback th,.fallback td{padding:.4rem .8rem;border-bottom:1px solid var(--border);
 text-align:left}
 .fallback td.num,.fallback th.num{text-align:right}
+/* Tables that travel with a figure between documents. They are lifted from a
+   batch page like figures are, so their styling has to be shared rather than
+   living in one page's own stylesheet. */
+.ess-table{margin:1.6rem 0}
+.ess-table table{border-collapse:collapse;width:100%;
+font:.86rem/1.45 ui-sans-serif,system-ui,sans-serif;
+font-variant-numeric:tabular-nums;display:block;overflow-x:auto}
+.ess-table caption{caption-side:top;text-align:left;font-size:.84rem;
+color:var(--text-secondary);margin-bottom:.5rem;line-height:1.5;max-width:44rem}
+.ess-table th{text-align:left;font-weight:700;font-size:.74rem;
+text-transform:uppercase;letter-spacing:.05em;color:var(--text-secondary);
+padding:.5rem .7rem;border-bottom:1px solid var(--text-secondary);white-space:nowrap}
+.ess-table td{padding:.45rem .7rem;border-bottom:1px solid var(--border)}
+.ess-table .n{text-align:right;white-space:nowrap}
+.ess-table .gap-row td{border-top:2px dashed var(--border)}
+.ess-table .tnote{font:.82rem/1.5 ui-sans-serif,system-ui,sans-serif;
+color:var(--text-secondary);margin:.5rem 0 0;max-width:44rem}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 @media print{
   .chart-live{display:none}
