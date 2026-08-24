@@ -44,7 +44,7 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `p6-rewrite` |
-| HEAD | `7ebe95d` Figure pass, part 4: numbering, context layers, ESS as a table |
+| HEAD | `42f61f2` Enrich the trust figure with the verified per-institution breakdown |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-24 |
 | Frozen V1 reference | `v1-final` |

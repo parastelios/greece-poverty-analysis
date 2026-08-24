@@ -288,6 +288,8 @@ def _component_view(col, label, ctx_label, shown=None):
 
 f5, v5a = _component_view("arop", "Income poverty",
                           "Each other EU country: income poverty")
+f5m, v5m = _component_view("severe_mat_soc_deprivation", "Material deprivation",
+                           "Each other EU country: material deprivation")
 f5e, v5e = _component_view("arope", "AROPE",
                            "Each other EU country: AROPE", shown="AROPE")
 
@@ -384,9 +386,9 @@ FIGS["F5"] = dict(
     payload=v5a,
     # 3. Reader-facing tab labels. "Floating poverty" and "shift-share" are
     # methods vocabulary and do not belong in navigation.
-    views=[("Income poverty", v5a), ("AROPE", v5e),
-           ("By age", v5b), ("By sex", v5d)],
-    view_series=[f5, f5e, f5b, f5d],
+    views=[("Income poverty", v5a), ("Material deprivation", v5m),
+           ("AROPE", v5e), ("By age", v5b), ("By sex", v5d)],
+    view_series=[f5, f5m, f5e, f5b, f5d],
     # Naming the first view "AROPE components" while showing two of three would
     # let a reader take it for a complete decomposition. The absence is stated
     # rather than implied.

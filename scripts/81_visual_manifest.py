@@ -76,11 +76,12 @@ M = [
       question="What sits behind AROPE, and did every age group move the same way?",
       artifact="age_breakdown_arope.csv, age_breakdown_arop.csv, "
                "age_breakdown_deprivation.csv, age_breakdown_low_work_intensity.csv, "
-               "arope_by_sex.csv",
+               "arope_by_sex.csv, e0_extended_panel.csv",
       series="VIEW A: income poverty, Greece against every other country. "
-             "VIEW B: AROPE, Greece against every other country. "
-             "VIEW C: AROPE by age group with the 65+ series emphasised. "
-             "VIEW D: AROPE by sex, whole population",
+             "VIEW B: severe material deprivation, likewise. "
+             "VIEW C: AROPE, likewise. "
+             "VIEW D: AROPE by age group with the 65+ series emphasised. "
+             "VIEW E: AROPE by sex, whole population",
       interaction="switch measure/age/sex; hover reads the rate for the group "
                   "and year, and names any faint country line",
       fallback="component x year; age group x year; sex x year; and "

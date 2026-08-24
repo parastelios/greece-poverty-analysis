@@ -671,10 +671,15 @@ plots.</p>
 
 {claim('V2-2.1')}
 
-<p>An aggregate can conceal as much as it reveals, and AROPE is an aggregate of
-three quite different components. Before concluding that the broader measure
-merely falls short, it is worth asking which of its parts moved and for
-whom.</p>
+<p>An aggregate can conceal as much as it reveals, and AROPE is built from
+three quite different conditions. Before concluding that the broader measure
+merely falls short, it is worth asking which of its parts moved, how each looks
+against the rest of Europe, and for whom.</p>
+
+<p>The first three views take one measure each &mdash; income poverty, severe
+material deprivation, then AROPE itself &mdash; and show Greece against every
+other member state rather than against a single median. The last two split the
+Greek population by age and by sex.</p>
 
 {fig('F5')}
 
