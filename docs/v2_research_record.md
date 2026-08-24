@@ -44,7 +44,7 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `p6-rewrite` |
-| HEAD | `31ead10` Suppress F18's synthetic tick; fix over-truncation at desktop width |
+| HEAD | `3577d43` Editorial pass: keep the outcomes, drop the governance diary |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-24 |
 | Frozen V1 reference | `v1-final` |
@@ -3099,6 +3099,7 @@ Claim and context containers are added **during composition**, not retrofitted.
 | D-69 | 2026-08-23 | FINAL | Only the BALANCED 12-country comparison may be used across rounds; the all-country ranks are recorded but never compared between rounds | The full ESS country set varies from 22 to 30 countries across the six Greek rounds, so an all-country rank moves when the country set moves and a change in it is partly composition | Reading Greece's all-country rank trajectory (4, 9, 8, 4, 4, 5) as movement in Greek satisfaction | `frozen` | — | — |
 | D-70 | 2026-08-23 | FINAL | V2-7.1 is NOT reworded again; ESS corroborates its existing caveat descriptively | The claim was already narrowed to state that a broader negative reporting tendency is not ruled out. ESS shows a Greek deficit that pre-dates the crisis, which supports that caveat rather than changing the claim, and ESS is context, not a tested result | Promoting CTX-7 into claim support; letting a descriptive extension reopen the analytical freeze | `frozen` | — | — |
 | D-71 | 2026-08-23 | The report presents OUTCOMES of failed and constrained analyses in prose, and stops printing the project's governance apparatus | Readers need to know that the synthetic control failed, that breadth reversed its sign, that one measure was capped by a prior-stage rule and one was untestable. They do not need claim identifiers, tier labels, register inventories or a corrections diary to follow the argument | Removing any failed-analysis OUTCOME, or removing the `data-claim-id` and `data-context-id` anchors, which the release gate and parity audit both key on and which remain in the markup | `frozen` | — | — |
+| D-72 | 2026-08-23 | The report carries NO build stamp, and internal names reach the reader through a presentation layer that never edits the claim set | A generated document that is then committed cannot name the commit containing itself: the stamp is written before that commit exists, so it is always the previous hash plus 'uncommitted changes'. Provenance lives in the research record, which is not subject to that circularity. Separately, `reader_text()` in `88_assemble_report.py` strips redundant `(code)` glosses and maps internal specification labels to the words the report uses, at RENDER time only | Editing `e_final_claims.csv` to achieve reader-facing wording; applying the presentation layer to CAVEATS, which are checked verbatim by release condition 4 and must never be softened, even cosmetically | `frozen` | — | — |
 
 Allowed statuses: `proposed`, `pre-registered`, `frozen`, `superseded`,
 `withdrawn`, `infeasible`.
@@ -3329,6 +3330,7 @@ Deviations must be disclosed in the stage that made them, not only here.
 | C-53 | 2026-08-23 | F12's row labels read `focal | counterpart`, up to 48 characters | No gutter sizing can fit that; all sixteen labels were clipped | Label shortened to the focal measure, with the counterpart kept in the tooltip and spelled out in the fallback table |
 | C-54 | 2026-08-23 | F18's x-axis labelled the synthetic 2016 slot, implying a missing 2016 observation rather than no ESS round across 2011-2021 | The null slot exists only to hold the gap open and break the line | Opt-in `hiddenTicks` option on the panel renderer, applied to F18 alone; the position keeps its true horizontal distance and only the label is suppressed |
 | C-55 | 2026-08-23 | Labels were truncated at desktop width even where they fitted: 50 at 824px, including 'Netherlands' | Charts are built into a DETACHED svg and inserted at the end, so `getComputedTextLength()` returned 0 for every node during drawing and `fitLabel` always used its fallback estimate, which is calibrated on bold text and overestimates regular labels | A shared `measurer()` bound to the LIVE host serves both helpers, so measurement never runs against the detached tree. Desktop truncation fell from 50 to 1, with clipping still zero at both 824px and the 320px floor |
+| C-56 | 2026-08-23 | The presentation layer was first applied to claim caveats as well as claim wordings | Release condition 4 checks mandatory caveats verbatim and failed, correctly: rewording 'NON-REPORTABLE' inside a caveat is the quiet softening that check exists to catch | Presentation layer restricted to canonical wording; caveats render verbatim |
 
 ## Artifact Index
 

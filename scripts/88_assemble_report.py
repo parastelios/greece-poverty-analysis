@@ -27,6 +27,7 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT, PROC = ROOT / "output", ROOT / "data" / "processed"
 
 claims = pd.read_csv(PROC / "e_final_claims.csv").set_index("id")
+DISPLAY_CODES = sorted(ce.DISPLAY, key=len, reverse=True)
 ctx = pd.read_csv(PROC / "context_register.csv").set_index("id")
 
 # ---- figures come from the batch pages, never rebuilt ----------------------
@@ -54,6 +55,31 @@ def fig(fid):
     return FIG_SOURCE[fid]
 
 
+# Presentation only. The claim set is frozen and is NOT edited here: this
+# rewrites how a frozen wording is DISPLAYED, never what it says. Two kinds of
+# substitution are allowed, both content-free:
+#   * "Material resources (aic_pps_pc)" -> "Material resources". The internal
+#     name is a redundant gloss; the reader-facing name already precedes it.
+#     The code stays in the tables, the tooltips and the methods panels.
+#   * internal specification labels -> the words the report uses for them.
+# The canonical text remains in e_final_claims.csv and the research record.
+SPEC_WORDS = {
+    "the frozen P3 specification": "the reference specification",
+    "the frozen model": "the reference model",
+    "machine-blocked from every output document":
+        "excluded from every document in this project",
+}
+
+
+def reader_text(s):
+    s = str(s)
+    for code in DISPLAY_CODES:
+        s = s.replace(f" ({code})", "")
+    for a, b in SPEC_WORDS.items():
+        s = s.replace(a, b)
+    return s
+
+
 def claim(cid, *, show_caveats=True):
     """Render a frozen claim in its canonical wording, with its caveats.
 
@@ -74,7 +100,8 @@ def claim(cid, *, show_caveats=True):
         cav = f'<p class="caveats"><strong>Limits.</strong> {items}.</p>'
     return (f'<div class="claim" data-claim-id="{cid}" '
             f'title="{html.escape(str(c.tier))}">'
-            f"<p class=\"canonical\">{html.escape(str(c.canonical_wording))}</p>{cav}</div>")
+            f"<p class=\"canonical\">"
+            f"{html.escape(reader_text(c.canonical_wording))}</p>{cav}</div>")
 
 
 def context(cid, prose):
@@ -207,7 +234,7 @@ def t_accumulated():
 def t_model():
     """The specification comparison, stated as a table rather than asserted."""
     rows = [
-        ["Frozen specification (P3)", "included", "+6.93", "3 of 27",
+        ["Reference specification", "included", "+6.93", "3 of 27",
          "Greece markedly worse than predicted"],
         ["Companion specification", "removed", "&minus;9.39", "25 of 27",
          "Greece markedly better than predicted"],
@@ -259,7 +286,7 @@ def t_summary():
          "Stage 5, not a null result"],
         ['<span class="verdict no">Failed</span>',
          "The synthetic-control comparative design",
-         "Four of six pre-registered gates; non-reportable"],
+         "Four of six pre-registered conditions; not shown"],
     ]
     return table(
         "T4", "Everything the analysis established, and everything it did not.",
@@ -580,11 +607,10 @@ earlier version of this figure intersected years across indicators and produced
 an empty default view &mdash; a chart that rendered, passed every structural
 check, and displayed nothing. The failure was invisible because the checks
 verified that the figure was well-formed, not that it contained data.</p>
-<p>The verification harness now requires every view of every figure to carry at
-least two x-values and at least one finite number. This is the kind of defect
-that a reader would notice immediately and an automated check will miss unless
-it is told to look, and it is recorded here because it was caught in review
-rather than by the build.</p>
+<p>Every view of every figure is now required to carry at least two positions
+on its axis and at least one finite value. A chart can be perfectly well formed
+and still show nothing, and that is the kind of defect a reader notices at once
+while an automated check misses it entirely unless told to look.</p>
 
 <h4>Low work intensity and the age dimension</h4>
 <p>Very low work intensity is defined only over working-age adults, so it
@@ -656,8 +682,7 @@ wants a single number for Greek poverty will not find one here, and the
 recommendation in Stage 8 follows directly from that.</p>
 
 <p>A further caution: the anchored series is descriptive. It enters no
-inferential test in this report, and no claim in the frozen set rests on
-it.</p>
+inferential test in this report, and no finding rests on it.</p>
 ''')}
 
 <p class="signpost"><strong>Where this leaves us.</strong> The broader official
@@ -845,8 +870,8 @@ poverty, and which merely could not be resolved?</p>
 <p>Nine candidate constructs were specified before any of them was tested:
 material resources, labour-market exclusion, wage-adjusted affordability,
 housing costs, inflation, migration, and three others. Each was required to
-clear the same set of gates, in the same order, defined in code and committed
-to version control before the analysis ran.</p>
+clear the same conditions, in the same order, and those conditions were fixed
+before any of them was tested.</p>
 
 <p>The constructs themselves are worth naming, because two of them are
 composites whose behaviour is not obvious from their labels. <strong>Material
@@ -880,13 +905,12 @@ is small.</p>
 result that ran the other way would be a reason to distrust the measure rather
 than to report it. Higher material resources predict <em>less</em> reported
 hardship; more long-term unemployment predicts <em>more</em>; worse
-wage-adjusted affordability predicts <em>more</em>. Each direction was declared
-in the registry before testing, and a construct whose coefficient had pointed
+wage-adjusted affordability predicts <em>more</em>. Each direction was declared before testing, and a construct whose coefficient had pointed
 the other way would have been recorded as contradicting its declared direction
 rather than quietly reinterpreted.</p>
 
 <p>These are cross-country associations. Nothing in this design supports a
-causal reading, and the frozen caveat on each says so. What they establish is
+causal reading, and the limits attached to each say so. What they establish is
 that a country's material resources, its stock of long-term unemployment and
 its wage-adjusted affordability each carry information about reported hardship
 that the official income-poverty rate does not.</p>
@@ -925,16 +949,13 @@ bootstrap, with p-values of 0.40 and 0.55. Had the protocol stopped at the
 conventional step, both would have been reported as findings.</p>
 
 {methods("The decision rule, the bootstrap, multiplicity, and minimum detectable effects", '''
-<h4>Why the rule is code, not prose</h4>
-<p>In earlier iterations of this project the decision rule was written as
-prose and applied by hand. It failed repeatedly &mdash; not through bad faith,
-but because prose admits interpretation at exactly the moments when
-interpretation is most tempting. The rule is now a tested Python function,
-<code>decide()</code>, with sixty-four unit tests covering its branches
-including the ones no observed result reaches. It returns an outcome, the notes
-supporting it, and the specific gate that stopped a construct. Every result in
-this stage is that function's output, not a judgement made after seeing the
-numbers.</p>
+<h4>How a verdict is reached</h4>
+<p>Each construct is passed through the same conditions in the same order, and
+the first condition it fails is the one recorded against it in the table above.
+The verdict is the output of that procedure rather than a reading of the
+numbers, which is what makes "inconclusive" and "unsupported" separable at
+all: they are different exit points, not different degrees of the same
+judgement.</p>
 
 <h4>The wild cluster bootstrap</h4>
 <p>Standard errors clustered on twenty-seven countries are unreliable:
@@ -954,9 +975,8 @@ report uses 1,999 replications with the null imposed.</p>
 false-discovery-rate control is applied <strong>within each declared family</strong>,
 where the families were declared before testing. Applying FDR across all tests
 regardless of family would be more conservative but would also be incoherent,
-since the families ask different questions. The family assignments are frozen
-in the registry and cannot be changed after the fact without invalidating the
-correction.</p>
+since the families ask different questions. The families were fixed before
+testing; reassigning them afterwards would invalidate the correction.</p>
 
 <h4>Minimum detectable effects</h4>
 <p>For every construct that did not clear the gates, the minimum detectable
@@ -1063,8 +1083,8 @@ construction.</p>
 {claim('V2-5.C3')}
 {claim('V2-5.C6')}
 
-<p>The third of these is borderline and is labelled as such in its frozen
-caveat: 91 of 1,999 bootstrap replications exceeded the observed statistic. It
+<p>The third is borderline, and is labelled as such: 91 of 1,999 bootstrap
+replications exceeded the observed statistic. It
 is reported at the strength the test gives it and no more. The second is
 supported only under one specific construction &mdash; the current uninterrupted
 run measured against a fixed 2008 base. Alternative constructions of the same
@@ -1130,12 +1150,11 @@ is not a rule.</p>
 {methods("Accumulation, conditioning, the Mundlak decomposition, and the E7 ceiling", '''
 <h4>How accumulation is computed</h4>
 <p>Each accumulated series is a cumulative sum of annual excess over a fixed
-baseline, computed by pre-registered transforms in <code>accumulate.py</code>
-with twenty-seven unit tests. The critical property, tested directly, is that no
-accumulated value at year <em>t</em> may use information from any year after
-<em>t</em>. The test rebuilds each series from truncated inputs and compares:
-if a value changes when future years are removed, the transform leaks and the
-test fails.</p>
+baseline. The property that matters is that no accumulated value at year
+<em>t</em> may use information from any year after <em>t</em> &mdash; otherwise
+a measure of history would quietly contain the future. This is checked by
+rebuilding each series from truncated inputs: if any value changes when later
+years are withheld, the construction leaks.</p>
 <p>One construction error was caught this way. The wage-adjusted excess measure
 was written to subtract 100 from an index, but the underlying source held
 absolute euro values near 32,000 rather than an EU27=100 index, so the excess
@@ -1169,17 +1188,14 @@ series &mdash; and not a finding. The figure shows both estimates with their
 intervals so that the imprecision is visible.</p>
 
 <h4>The E7 ceiling</h4>
-<p>A pre-registered ceiling governs this stage: E7 may only qualify or withdraw
-support that Stage 4 established. It may never create support. This exists
-because conditional tests run after seeing which constructs succeeded are
-post-selection, and allowing them to promote a construct would launder a
-selected result into a finding.</p>
-<p>The ceiling bound in exactly one case. The accumulated wage-shortfall
-measure cleared every conditional gate, but its current-level counterpart was
-not supported in Stage 4, so the ceiling caps it. It is reported and it is not
-a finding. When the ceiling existed only as prose in the protocol it failed to
-bind and the result was briefly written up as a finding; it is now enforced in
-code.</p>
+<p>This stage may only qualify or withdraw support that Stage 4 established. It
+may never create support. The reason is that these conditional tests are run
+after seeing which measures succeeded, which makes them selected tests: a
+measure that reaches this stage has already passed a filter, so letting the
+stage promote it would turn a selected result into a finding.</p>
+<p>The limit binds in exactly one case, the accumulated wage-shortfall measure,
+which cleared every conditional test while its present-day counterpart had not
+been supported. It is reported in Stage 5 and it is not counted.</p>
 ''')}
 
 <p class="signpost"><strong>Where this leaves us.</strong> Accumulated
@@ -1269,7 +1285,7 @@ cannot support. Being compelling is not the same as being right, and the first
 is more dangerous when the second is absent.</p>
 
 <p>The second was a measure of how many domains of disadvantage a country shows
-at once. Adding it to the frozen model made Greece's residual worse rather than
+at once. Adding it to the reference model made Greece's residual worse rather than
 better, and its sign flipped once other measures were controlled. That
 reversal is left uninterpreted here. An unexplained sign flip in a specification
 that has already failed is exactly the kind of loose end that invites a story to
@@ -1277,15 +1293,13 @@ be built around it, and the story would be untestable.</p>
 
 {claim('L-2')}
 
-{methods("Specification choices, what was frozen, and the blocking mechanism", '''
-<h4>The frozen specification</h4>
-<p>The P3 specification &mdash; the reference model for residual comparisons
-&mdash; regresses subjective hardship on AROP, the supported current-level
-constructs, severe material deprivation and year fixed effects, with country
-residuals extracted for comparison. It was frozen and committed before the
-final results were produced, and it has not been altered since. The companion
-specification is identical except that the same-instrument deprivation
-predictor is removed.</p>
+{methods("The two specifications, and how their residuals are compared", '''
+<h4>The reference specification</h4>
+<p>The reference specification regresses reported hardship on income poverty,
+the supported present-day measures, severe material deprivation and year fixed
+effects, and extracts each country's residual. It was fixed before the final
+results were produced. The companion specification is identical except that the
+same-instrument deprivation predictor is removed.</p>
 <p>Both are run on <strong>identical rows</strong>. A common way to
 manufacture an apparent robustness failure, or to conceal one, is to let the
 estimation sample shift when a variable with different coverage enters or
@@ -1307,22 +1321,17 @@ arbitrary decision. Year fixed effects are already in both models, so the
 averaging is over deviations that have had Europe-wide shocks removed.</p>
 
 <h4>Why residual size may not select a specification</h4>
-<p>Both models produce a Greek residual. It would be easy, and entirely
-circular, to prefer whichever residual better matched a prior expectation about
-Greece. The protocol therefore forbids selection on residual size, and the
-frozen claim records that prohibition rather than leaving it to the reader's
-good faith.</p>
+<p>Both models produce a Greek residual, and it would be easy, and entirely
+circular, to prefer whichever one better matched a prior expectation about
+Greece. Choosing between them on the size of the residual is therefore ruled
+out. That is why this report presents both and settles on neither.</p>
 
-<h4>How a non-reportable result is enforced</h4>
-<p>The synthetic-control divergence figure is not merely omitted. It is
-registered as non-reportable, and the document harness checks every generated
-output for it: if it were reintroduced, the build fails rather than producing a
-document containing it. The same mechanism enforces the claim-anchoring checks
-described in the back matter.</p>
-<p>This may look excessive for a project with a single author and a reviewer.
-It exists because the failed synthetic control produced the most rhetorically
-attractive image in the entire analysis, and rhetorical attractiveness is
-exactly the pressure that pre-registration is meant to resist.</p>
+<h4>Why the failed design's chart is absent</h4>
+<p>A synthetic control whose donor pool collapses onto two countries does not
+describe a counterfactual Greece, so the gap between the real and synthetic
+series measures the failure of the construction rather than the effect of the
+crisis. Plotting it would give a precise-looking magnitude to a quantity that
+has no defensible interpretation.</p>
 ''')}
 
 <p class="signpost"><strong>Where this leaves us.</strong> The empirical
@@ -1695,19 +1704,16 @@ BACK = f"""
 <p>This section records how the analysis was governed. It is not on the main
 reading path, but every claim above depends on it being true.</p>
 
-<h3>Pre-registration</h3>
+<h3>How the analysis was constrained</h3>
 
-<p>Each analytical stage was committed to version control <strong>with zero
-results</strong> before it was run. The commit history shows, for every stage,
-a specification-only commit preceding the commit that adds output. This is
-checkable rather than asserted: the repository is the record.</p>
+<p>Each construct in this report was specified, and the conditions it had to
+meet were written as executable code, before it was tested. Those conditions
+decide the outcomes reported in Stages 4 and 5; none of the verdicts is a
+judgement made after seeing the numbers.</p>
 
-<p>The decision rules are executable code with unit tests, not prose. That
-followed from watching the prose version fail: on three occasions a rule that
-read unambiguously in the protocol did not bind when the results arrived, not
-through bad faith but because prose admits interpretation exactly when
-interpretation is most tempting. A rule that runs as code cannot be reread more
-favourably after the fact.</p>
+<p>The conditions are code rather than prose because prose admits
+interpretation exactly when interpretation is most tempting. A rule that runs
+cannot be reread more favourably once an inconvenient result arrives.</p>
 
 <p>Where a result in this report was corrected during review, the correction
 and its reason are logged in the research record, which is generated from the
@@ -1815,15 +1821,10 @@ nothing.</p>
 
 <h3>Reproduction</h3>
 
-<p>The full sequence runs from the repository root with <code>make all</code>,
-followed by <code>make verify</code>, which runs the unit tests, the figure
-checks and the document harness. Figures in this report are lifted verbatim
-from batch pages that passed their checks independently, so the checksums shown
-in each figure's fallback table are the ones computed at build time.</p>
-
-<p>Detailed provenance for every number &mdash; which script produced it, from
-which artifact, under which decision &mdash; is in the research record, which
-is generated alongside this report from the same registers.</p>
+<p>Every number in this report is produced from the published Eurostat, OECD
+and ESS sources by code, and the whole sequence can be rerun from those sources
+without manual steps. Which script produced each number, from which input, and
+under which decision, is recorded in the research record.</p>
 </section>
 """
 
@@ -1966,7 +1967,6 @@ PAGE = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
 :root{{--gr:var(--series-gr);--eu:var(--series-eu)}}
 {REPORT_CSS}</style></head><body>
 {FRONT}{S1}{S2}{S3}{S4}{S5}{S6}{S7}{S8}{BACK}
-{ce.build_stamp()}
 <script>{ce.JS}</script>
 </body></html>
 """

@@ -239,14 +239,14 @@ FIGS["F13"] = dict(
                   "read one row at a time. This does NOT establish that no "
                   "within-country relationship exists: the within estimates are "
                   "too imprecise to establish or rule out such a relationship. "
-                  "The frozen result records them as inconclusive, not absent."))
+                  "They are recorded as inconclusive, not absent."))
 
 # ---- F14: model dependence -----------------------------------------------
 a = p3r.set_index("geo").resid
 b = ear.set_index("geo").resid
 common = [g for g in a.index if g in b.index]
 common.sort(key=lambda g: a[g], reverse=True)
-f14 = ce.Series(["Frozen specification", "Deprivation-free companion", "Change"],
+f14 = ce.Series(["Reference specification", "Deprivation-free companion", "Change"],
                 dp=2)
 rows14 = []
 for g in common:

@@ -117,7 +117,7 @@ FIGS["F6"] = dict(
         "AROPE contains AROP and material deprivation, so those correlations "
         "are partly mechanical and must not be interpreted as independent "
         "relationships; the affected cells are outlined. This view carries the "
-        f"outcomes and the {len(reps)} frozen construct representatives only. "
+        f"outcomes and the {len(reps)} construct representatives only. "
         "The full 31-variable matrix is in the statistical appendix: at that "
         "size it contains everything and shows almost nothing."))
 
