@@ -59,20 +59,22 @@ for label, fname in [("Between countries", "e0_corr_between.csv"),
     flags = [[1 if (a, b) in MECH else 0 for b in keep] for a in keep]
     views6.append((label, {
         "flags": flags,
-        "triangular": True,
+
         "flagLabel": "partly mechanical",
         "flagExplain": "AROPE CONTAINS this measure, so the correlation is "
                        "partly mechanical and is not an independent relationship.",
         "cols": [ce.name(c) for c in keep],
-        # A correlation matrix is symmetric and its diagonal is always 1, so
-        # two thirds of the cells carry no information. Showing only the lower
-        # triangle leaves the reader looking at the comparisons that exist.
+        # The full matrix, with the diagonal blanked: a variable's correlation
+        # with itself is always 1 and is the only genuinely uninformative cell.
+        # Showing both halves keeps the conventional shape, so a reader can
+        # scan a row or a column without discovering that half is missing.
         "rows": [{"label": ce.name(r),
-                  "values": [round(float(sub.loc[r, c]), 3) if i > j else None
+                  "values": [round(float(sub.loc[r, c]), 3) if i != j else None
                              for j, c in enumerate(keep)]}
                  for i, r in enumerate(keep)],
         "alt": f"Correlations {label.lower()}, outcomes and construct "
-               "representatives only, lower triangle",
+               "representatives only; the diagonal is blank because a variable "
+               "always correlates perfectly with itself",
     }, "heatmap"))
 # The matrices show every pair; the result that MATTERS is what happens to the
 # hardship row when the scope changes from between countries to within them.
@@ -106,8 +108,10 @@ v6h = {"rows": rows6h, "dp": 3, "legendA": "within countries",
        "alt": "Each measure's correlation with reported hardship, between "
               "countries against within countries, ordered by how much the "
               "two differ; reversals are marked"}
-views6.append(("Hardship only: between vs within", v6h, "dumbbell"))
-series6.append(f6h)
+FIGS["F20"] = dict(
+    caption="One relationship reverses sign when the comparison moves from "
+            "between countries to within them",
+    kind="dumbbell", payload=v6h, series=f6h, first="Measure")
 
 FIGS["F6"] = dict(
     caption="The same pair can point one way across countries and the other "
@@ -361,6 +365,7 @@ constrains the answer.</p>
 its distance from Europe; wages and material resources moved further away. The
 hardship gap itself did neither &mdash; it is flat.</p>
 {b['F6']}
+{b['F20']}
 
 <h2>Stage 4 &mdash; Current conditions</h2>
 <p>Each construct is tested one at a time against relative income poverty and

@@ -259,25 +259,29 @@ v5c = {"rows": rows5c, "dp": 3, "legendA": "composition",
               "2024-2025 change, in percentage points. These are exact "
               "decomposition terms, not estimates: they carry no uncertainty "
               "interval"}
-hh = pd.read_csv(PROC / "age_breakdown_household_arope.csv")
-hh = hh[hh.geo == "EL"]
-HHL = {"TOTAL": "All households", "A1_GE65": "One adult aged 65+",
-       "A2_GE1_GE65": "Two adults, at least one 65+"}
-hy = sorted(hh.time.unique())
-f5d = ce.Series([str(int(y)) for y in hy], dp=1)
-for g, tone, w in [("TOTAL", "text-muted", "light"),
-                   ("A1_GE65", "gr", "strong"), ("A2_GE1_GE65", "series-5", "normal")]:
-    s = hh[hh.hhcomp == g].set_index("time").arope_rate
+sx = pd.read_csv(PROC / "arope_by_sex.csv")
+SEXL = {"T": "All", "F": "Women", "M": "Men"}
+sy = sorted(sx.time.unique())
+f5d = ce.Series([str(int(y)) for y in sy], dp=1)
+for g, tone, w in [("T", "chart-neutral", "light"), ("F", "gr", "strong"),
+                   ("M", "series-5", "normal")]:
+    s = sx[(sx.geo == "EL") & (sx.sex == g)].set_index("time").arope_rate
     if s.empty:
         continue
-    f5d.add(HHL[g], [float(s.get(y)) if y in s.index else None for y in hy],
+    f5d.add(SEXL[g], [float(s.get(y)) if y in s.index else None for y in sy],
             tone=tone, style="solid", weight=w)
-v5d = {"years": [int(y) for y in hy], "dp": 1, "yLabel": "% of households",
-       "alt": "Greek AROPE by household profile, older-person households marked",
+v5d = {"years": [int(y) for y in sy], "dp": 1, "yLabel": "% of people",
+       "alt": "Greek AROPE by sex, whole population: women above men in every "
+              "year, with the difference widening after 2022",
        "series": [{"label": l, "tone": m["tone"], "style": m["style"],
                    "weight": m["weight"],
                    "values": [None if v is None else round(v, 1) for v in vs]}
                   for l, vs, m in f5d.rows]}
+
+FIGS["F19"] = dict(
+    caption="The most recent rise came from rates within age groups, not from "
+            "the changing size of those groups",
+    kind="dumbbell", payload=v5c, series=f5c, first="Age group")
 
 FIGS["F5"] = dict(
     caption="What sits behind AROPE, and which groups moved",
@@ -287,9 +291,8 @@ FIGS["F5"] = dict(
     # methods vocabulary and do not belong in navigation.
     views=[("Income-poverty and deprivation components", v5a),
            ("AROPE by age", v5b),
-           ("Household profiles", v5d),
-           ("What drove the 2025 increase?", v5c, "dumbbell")],
-    view_series=[f5, f5b, f5d, f5c],
+           ("By sex", v5d)],
+    view_series=[f5, f5b, f5d],
     # Naming the first view "AROPE components" while showing two of three would
     # let a reader take it for a complete decomposition. The absence is stated
     # rather than implied.
@@ -387,6 +390,7 @@ households report.</p>
 and does not resolve the puzzle. The next question is what the aggregate
 conceals.</p>
 {built['F5']}
+{built['F19']}
 <p class="signpost"><strong>Two different checks, not one.</strong> AROPE
 broadens the <em>concept</em> of poverty: it counts more kinds of disadvantage.
 Anchored poverty changes the <em>yardstick</em>: it holds the income line fixed

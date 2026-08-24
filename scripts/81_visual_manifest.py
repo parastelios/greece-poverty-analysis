@@ -74,16 +74,13 @@ M = [
       question="What sits behind AROPE, and did every age group move the same way?",
       artifact="age_breakdown_arope.csv, age_breakdown_arop.csv, "
                "age_breakdown_deprivation.csv, age_breakdown_low_work_intensity.csv, "
-               "age_breakdown_household_arope.csv, "
-               "age_breakdown_shiftshare_decomposition.csv",
-      series="VIEW A: the three AROPE components. VIEW B: AROPE by age group, "
-             "with the 65+ series emphasised. VIEW C: by household composition. "
-             "VIEW D: the shift-share split of within-group against "
-             "compositional contribution",
-      interaction="switch component/age/household/shift-share; hover reads the "
-                  "rate for the group and year, and in the shift-share view "
-                  "the two contributions separately",
-      fallback="component x year; age group x year; household type x year; and "
+               "arope_by_sex.csv",
+      series="VIEW A: the income-poverty and deprivation components. "
+             "VIEW B: AROPE by age group, with the 65+ series emphasised. "
+             "VIEW C: AROPE by sex, whole population",
+      interaction="switch component/age/sex; hover reads the rate for the "
+                  "group and year",
+      fallback="component x year; age group x year; sex x year; and "
                "the shift-share contributions",
       caveat="These are changes in group-level rates, not evidence about the "
              "same individuals over time. The 2024-2025 national increase was "
@@ -253,6 +250,32 @@ M = [
              "countries are held fixed because the full ESS set varies from 22 "
              "to 30, so all-country ranks are not comparable between rounds.",
       status_label="descriptive corroboration"),
+ dict(id="F19", stage=2, chart_type="dumbbell",
+      question="What drove the most recent rise in AROPE: rates within age "
+               "groups, or the changing size of those groups?",
+      artifact="age_breakdown_shiftshare_decomposition.csv",
+      series="within-group and compositional contribution per age group, "
+             "in percentage points",
+      interaction="hover reads both contributions and the underlying rates",
+      fallback="age group, within-group contribution, composition contribution",
+      caveat="These are exact decomposition terms, not estimates: they carry "
+             "no uncertainty and no interval is drawn. Within-group means the "
+             "rate changed inside an age group; composition means the size of "
+             "the group changed.",
+      status_label="descriptive"),
+ dict(id="F20", stage=3, chart_type="dumbbell",
+      question="Which relationships with reported hardship change when the "
+               "comparison moves from between countries to within them?",
+      artifact="e0_corr_between.csv, e0_corr_within.csv",
+      series="each measure's correlation with reported hardship, between "
+             "against within, ordered by how much the two differ",
+      interaction="hover reads both correlations and the change",
+      fallback="measure, between-country correlation, within-country "
+               "correlation, change",
+      caveat="Correlations identify duplication and sign reversals. They do "
+             "NOT select variables, and a reversal is a fact about the two "
+             "scopes rather than evidence about mechanism.",
+      status_label="descriptive"),
 ]
 
 # NARRATIVE OWNERSHIP. Every visual belongs to a claim or a context entry, and
@@ -266,6 +289,7 @@ OWNER = {
     11: ("V2-5.C2", "main"), 12: ("V2-5.C2", "main"), 13: ("V2-5.Y", "main"),
     14: ("V2-6.1", "main"), 15: ("CTX-1", "main"), 16: ("CTX-4", "expandable"),
     17: ("CTX-2", "main"), 18: ("CTX-7", "main"),
+    19: ("V2-2.1", "expandable"), 20: ("V2-3.1", "expandable"),
 }
 for i, e in enumerate(M, start=1):
     e["id"] = f"F{i}"
@@ -319,8 +343,12 @@ print(bar); print("BUDGET"); print(bar)
 # question no existing figure can: the Eurostat series starts in 2013 and has no
 # pre-crisis baseline. It is a separate instrument and cannot share an axis with
 # anything already here.
-print(f"  figures          {len(df)}   (target 12-18)")
-if not 12 <= len(df) <= 18:
+# Raised to 20: the shift-share decomposition and the hardship-correlation
+# comparison were tabs inside figures that answered a different question.
+# A tab implies an alternative view of one question; these are second
+# questions and are now their own figures.
+print(f"  figures          {len(df)}   (target 12-20)")
+if not 12 <= len(df) <= 20:
     raise SystemExit(f"manifest is outside the agreed budget: {len(df)} figures")
 print("  the evidence ladder is a TABLE, not a chart: it summarises status "
       "rather than showing a distribution")

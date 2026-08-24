@@ -169,6 +169,19 @@ print("(Reported TOTAL AROPE change was 26.9 -> 27.5, +0.6pp; the 5-subgroup wei
 # to what Eurostat actually publishes as a genuine cross-tab -- no marginal tables are
 # combined to infer a breakdown Eurostat doesn't itself provide.
 
+# --- Whole-population AROPE by sex (sex is a native dimension; no age filter) ---
+# The report previously showed AROPE by household composition, where the only
+# published types are "one adult 65+" and "two adults, at least one 65+". Those
+# are standard Eurostat categories but they look arbitrary on the face of a
+# chart, and they cover a small slice of the population. Sex covers everyone.
+sex_all = fetch("ilc_peps01n", geo=GEOS, time=YEARS, age=["TOTAL"], sex=["F", "M", "T"],
+                unit=["PC"])
+sex_all = sex_all[["geo", "sex", "time", "value"]].rename(columns={"value": "arope_rate"})
+sex_all.to_csv(f"{OUT}/arope_by_sex.csv", index=False)
+print("\n=== AROPE by sex, all ages, Greece vs EU27 ===")
+print(sex_all[sex_all.time.isin([2015, 2020, 2025])]
+      .sort_values(["geo", "sex", "time"]).to_string(index=False))
+
 # --- 65+ AROPE by sex, over time (age x sex is a native two-way dimension, not inferred) ---
 sex_ts = fetch("ilc_peps01n", geo=GEOS, time=YEARS, age=["Y_GE65"], sex=["F", "M", "T"], unit=["PC"])
 sex_ts = sex_ts[["geo", "sex", "time", "value"]].rename(columns={"value": "arope_rate"})

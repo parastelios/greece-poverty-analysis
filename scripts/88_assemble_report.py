@@ -698,6 +698,18 @@ components can apply, and the figure separates the age groups rather than
 presenting a single aggregate that would hide this.</p>
 ''')}
 
+<p>One further question sits behind the aggregate and is worth separating from
+it: when AROPE last rose, did that come from rates worsening inside age groups,
+or from the groups themselves changing size? The two have different
+implications, and they can be told apart exactly rather than estimated.</p>
+
+{fig('F19')}
+
+<p>It came from rates within groups. Composition contributed almost nothing.
+That matters because a rise driven by an ageing population would be a different
+phenomenon from a rise driven by conditions deteriorating for people already
+counted.</p>
+
 <p class="signpost"><strong>Two different checks, not one.</strong> AROPE
 broadens the <em>concept</em> of poverty: it counts more kinds of disadvantage.
 Anchored poverty changes the <em>yardstick</em>: it holds the income line fixed
@@ -918,6 +930,19 @@ recovery on its own.</p>
 question the correlation structure answers directly.</p>
 
 {fig('F6')}
+
+<p>The matrices show every pair. The comparison that matters for this stage is
+narrower: what happens to each measure's relationship with reported hardship
+when the scope changes from between countries to within them.</p>
+
+{fig('F20')}
+
+<p>Most relationships survive the change with their sign intact and their
+strength reduced. One does not: the real poverty threshold correlates weakly and
+positively across countries and strongly negatively within them. A reversal like
+that is a fact about the two scopes rather than evidence about mechanism, and it
+is the clearest illustration of why the within figures are the ones reported in
+the claim above.</p>
 
 <p class="signpost"><strong>Where this leaves us.</strong> The reported
 hardship corresponds to concrete affordability failure, so the puzzle is not
