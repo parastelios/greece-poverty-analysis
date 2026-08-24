@@ -101,14 +101,20 @@ f12 = ce.Series(["Standardised effect (SD)", "Raw coefficient", "p FDR",
                  "Bootstrap p", "Conditional MDE (SD)"], dp=4)
 rows12 = []
 for r in d12.itertuples():
-    lbl = f"{ce.name(r.focal)} | {ce.name(r.controlling_for)}"
+    # The label gutter is a fixed fraction of the chart width, and
+    # "focal | counterpart" overflowed it by up to 134px -- every one of the
+    # sixteen labels was clipped on the left, several unreadably. The focal
+    # measure alone fits; what it is controlled for is in the tooltip and the
+    # table, and the rows are ordered so each pair sits together.
+    lbl = ce.name(r.focal)
     # The CI travels through the same scale factor as the point estimate, so
     # the interval stays an interval on the standardised axis.
     scale = float(r.std_effect) / abs(float(r.coef_joint)) if r.coef_joint else 0.0
     sgn = 1.0 if r.coef_joint >= 0 else -1.0
     est_s, lo_s, hi_s = (sgn * float(r.std_effect),
                          float(r.ci_lo) * scale, float(r.ci_hi) * scale)
-    f12.add(lbl, [est_s, float(r.coef_joint),
+    f12.add(f"{ce.name(r.focal)} (controlling for {ce.name(r.controlling_for)})",
+            [est_s, float(r.coef_joint),
                   None if r.p_fdr != r.p_fdr else float(r.p_fdr),
                   None if r.boot_p != r.boot_p else float(r.boot_p),
                   None if r.conditional_mde_sd != r.conditional_mde_sd
@@ -122,7 +128,10 @@ for r in d12.itertuples():
         "tone": TONE.get(r.reportable_outcome, "text-muted"),
         "strong": r.reportable_outcome == "supported",
         "right": SHORT.get(r.reportable_outcome, ""),
-        "detail": (f"<span style='opacity:.6'>{r.focal} | {r.controlling_for}</span>"
+        "detail": (f"<b>{ce.name(r.focal)}</b>, controlling for "
+                   f"{ce.name(r.controlling_for)}"
+                   f"<br><span style='opacity:.6'>{r.focal} | "
+                   f"{r.controlling_for}</span>"
                    f"<br><b>{est_s:+.3f} SD</b> of hardship per SD of the predictor"
                    f"<br>raw coefficient {r.coef_joint:+.4f} "
                    f"(this measure's own units)"

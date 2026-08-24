@@ -365,6 +365,70 @@ correctly &mdash; but it cannot register a fall that affects everyone at once.</
   // labels at ~4 effective pixels on a phone.
   function widthFor(host){ const w=host.clientWidth||640; return Math.max(320,Math.min(920,w)); }
 
+  // Measure the widest row label as the browser will actually draw it, rather
+  // than estimating from character count. A per-character constant is a guess
+  // about the font, and the guess was wrong: 5.9px/char underestimated the
+  // real ~7.6px/char, so every row label in the conditional figures was
+  // clipped on the left. No automated check sees this -- only rendering does.
+  function labelGutter(host,labels,min,max){
+    const probe=document.createElementNS('http://www.w3.org/2000/svg','svg');
+    probe.setAttribute('style','position:absolute;visibility:hidden;width:0;height:0');
+    const txt=document.createElementNS('http://www.w3.org/2000/svg','text');
+    txt.setAttribute('class','axis-label');
+    // Supported rows draw bold, and bold is wider. Measuring at the regular
+    // weight left the boldest label clipped by its first two characters.
+    txt.setAttribute('style','font-weight:700');
+    probe.appendChild(txt); host.appendChild(probe);
+    let widest=0;
+    for(const l of labels){
+      txt.textContent=String(l);
+      widest=Math.max(widest,txt.getComputedTextLength()||0);
+    }
+    host.removeChild(probe);
+    // getComputedTextLength returns 0 when the chart mounts without layout --
+    // inside a closed <details>, an inactive view tab, or a collapsed pane.
+    // Trusting that would hand back the minimum gutter, which is NARROWER than
+    // the fixed value this replaced, turning an improvement into a regression.
+    // Fall back to an estimate calibrated on the bold label font (~7.6px/char).
+    if(!(widest>0)){
+      const chars=Math.max(0,...labels.map(l=>String(l).length));
+      widest=chars*7.6;
+    }
+    return Math.min(max,Math.max(min,Math.ceil(widest)+16));
+  }
+
+  // Shorten a rendered label until it fits, keeping the full text reachable as
+  // a tooltip. Sizing the gutter to the longest label is not enough on its own:
+  // when the width cap binds, the surplus has to come off the text.
+  function fitLabel(node,full,maxW){
+    node.textContent=full;
+    const measured=node.getComputedTextLength();
+    // Same guard: an unmeasurable label is left intact rather than truncated
+    // against a bogus zero.
+    const wide=measured>0?measured:String(full).length*7.6;
+    if(maxW<=0||wide<=maxW){return node;}
+    if(!(measured>0)){
+      const fit=Math.max(1,Math.floor(maxW/7.6)-1);
+      if(fit<full.length){
+        const ttl=document.createElementNS('http://www.w3.org/2000/svg','title');
+        ttl.textContent=full;
+        node.textContent=full.slice(0,fit).trimEnd()+'\u2026';
+        node.appendChild(ttl);
+      }
+      return node;
+    }
+    const title=document.createElementNS('http://www.w3.org/2000/svg','title');
+    title.textContent=full; node.appendChild(title);
+    let lo=0,hi=full.length;
+    while(lo<hi){
+      const mid=Math.ceil((lo+hi)/2);
+      node.firstChild.nodeValue=full.slice(0,mid)+'\u2026';
+      if(node.getComputedTextLength()<=maxW){lo=mid;}else{hi=mid-1;}
+    }
+    node.firstChild.nodeValue=full.slice(0,lo).trimEnd()+'\u2026';
+    return node;
+  }
+
   function tip(host){
     let t=host.querySelector('.tip');
     if(!t){t=document.createElement('div');t.className='tip';host.appendChild(t);}
@@ -382,7 +446,9 @@ correctly &mdash; but it cannot register a fall that affects everyone at once.</
     // Right padding is derived from the longest end label, not fixed: a fixed
     // 14% clipped "Greece: hardship" in the first prototype.
     const longest=Math.max(0,...d.series.filter(s=>s.label).map(s=>s.label.length));
-    const padL=(d.yLabel?66:46),padR=Math.min(W*0.34,Math.max(52,longest*6.2+14)),padT=12,padB=28;
+    const padL=(d.yLabel?66:46);
+    const padR=labelGutter(host,(d.series||[]).map(s=>s.label||''),52,W*0.34);
+    const padT=12,padB=28;
     const pw=W-padL-padR, ph=H-padT-padB, yrs=d.years;
     const xs=y=>padL+(yrs.length<2?pw/2:(y-yrs[0])/(yrs[yrs.length-1]-yrs[0])*pw);
     let lo=Infinity,hi=-Infinity;
@@ -476,7 +542,9 @@ correctly &mdash; but it cannot register a fall that affects everyone at once.</
           stroke:`var(--${e.s.tone||'text-muted'})`,'stroke-width':1,opacity:.5}));
       const t=el('text',{x:e.x+4,y:e.y,class:'axis-label',
         style:`fill:var(--${e.s.tone||'text-muted'});font-weight:700`});
-      t.textContent=e.s.label;svg.appendChild(t);});
+      // The end label starts at the last data point, so the space it has is
+      // whatever remains to the right edge -- not the full margin.
+      svg.appendChild(fitLabel(t,e.s.label,W-(e.x+4)-2));});
     host.insertBefore(svg,host.firstChild);
     // A legend keyed on the same tone/style, so the encoding is stated once
     // rather than inferred from four crowded end labels.
@@ -523,7 +591,12 @@ correctly &mdash; but it cannot register a fall that affects everyone at once.</
   /* ---------------------------------------------- coefficient (new type) */
   function coefficient(host,d){
     const W=widthFor(host), rowH=W<480?34:30;
-    const padL=W<480?110:190, padR=W<480?54:96, padT=26, padB=30;
+    // Same fix the ladder already carries: derive the label gutter from the
+    // longest label. A fixed 190 clipped every row label in the conditional
+    // figure, the worst by 86px, and no automated check could see it.
+    const padL=labelGutter(host,d.rows.map(r=>r.label),W<480?110:150,W*0.42);
+    const padR=labelGutter(host,d.rows.map(r=>r.right||''),W<480?54:96,W*0.26);
+    const padT=26, padB=30;
     const H=padT+d.rows.length*rowH+padB, pw=W-padL-padR;
     let lo=Infinity,hi=-Infinity;
     d.rows.forEach(r=>{lo=Math.min(lo,r.lo,r.est);hi=Math.max(hi,r.hi,r.est);});
@@ -545,10 +618,10 @@ correctly &mdash; but it cannot register a fall that affects everyone at once.</
       svg.appendChild(c);marks.push({y:y,r:r});
       const lbl=el('text',{x:padL-10,y:y+4,'text-anchor':'end',class:'axis-label',
         style:r.strong?'font-weight:700':''});
-      lbl.textContent=r.label;svg.appendChild(lbl);
+      svg.appendChild(fitLabel(lbl,r.label,padL-14));
       const vt=el('text',{x:W-padR+8,y:y+4,class:'axis-label',
         style:`fill:var(--${tone});font-weight:600`});
-      vt.textContent=r.right||'';svg.appendChild(vt);
+      svg.appendChild(fitLabel(vt,r.right||'',padR-12));
     });
     host.insertBefore(svg,host.firstChild);
     const show=i=>{if(i<0||i>=d.rows.length)return;idx=i;const r=d.rows[i];
@@ -577,9 +650,8 @@ correctly &mdash; but it cannot register a fall that affects everyone at once.</
     // Left padding derives from the longest label. A fixed 54 clipped
     // "Long-term unemployment" and "Housing-cost overburden" -- the same bug
     // the panel's right margin had.
-    const maxLab=Math.max(0,...d.rows.map(r=>String(r.label).length));
     const rowH=W<480?15:17;
-    const padL=Math.min(W*0.42,Math.max(W<480?42:54,maxLab*5.9+12));
+    const padL=labelGutter(host,d.rows.map(r=>r.label),W<480?42:54,W*0.42);
     const padR=W<480?46:64, padT=18, padB=26;
     const H=padT+n*rowH+padB, pw=W-padL-padR;
     let lo=Math.min(0,...d.rows.map(r=>r.value)), hi=Math.max(0,...d.rows.map(r=>r.value));
@@ -609,7 +681,7 @@ correctly &mdash; but it cannot register a fall that affects everyone at once.</
         fill:`var(--${hl?'gr':(r.tone||'text-muted')})`,opacity:hl?1:.55}));
       const lb=el('text',{x:padL-6,y:y+3.5,'text-anchor':'end',class:'axis-label',
         style:hl?'fill:var(--gr);font-weight:700':''});
-      lb.textContent=r.label;svg.appendChild(lb);
+      svg.appendChild(fitLabel(lb,r.label,padL-10));
       if(hl||i===0||i===n-1||d.labelAll){const vt=el('text',{
         x:xs(r.value)+(r.value<0?-5:5),y:y+3.5,class:'axis-label',
         'text-anchor':r.value<0?'end':'start',
@@ -646,7 +718,9 @@ correctly &mdash; but it cannot register a fall that affects everyone at once.</
      than two bars the reader has to subtract. */
   function dumbbell(host,d){
     const W=widthFor(host), rowH=W<480?26:24;
-    const padL=W<480?104:180, padR=W<480?52:92, padT=26, padB=32;
+    const padL=labelGutter(host,d.rows.map(r=>r.label),W<480?104:150,W*0.42);
+    const padR=labelGutter(host,d.rows.map(r=>r.right||''),W<480?52:92,W*0.26);
+    const padT=26, padB=32;
     const H=padT+d.rows.length*rowH+padB, pw=W-padL-padR;
     let lo=Infinity,hi=-Infinity;
     d.rows.forEach(r=>{lo=Math.min(lo,r.a,r.b);hi=Math.max(hi,r.a,r.b);});
@@ -671,9 +745,10 @@ correctly &mdash; but it cannot register a fall that affects everyone at once.</
       svg.appendChild(el('circle',{cx:xs(r.b),cy:y,r:5.5,fill:`var(--${tone})`}));
       const lb=el('text',{x:padL-10,y:y+4,'text-anchor':'end',class:'axis-label',
         style:r.strong?'font-weight:700':''});
-      lb.textContent=r.label;svg.appendChild(lb);
+      svg.appendChild(fitLabel(lb,r.label,padL-14));
       if(r.right){const rt=el('text',{x:W-padR+8,y:y+4,class:'axis-label',
-        style:`fill:var(--${tone});font-weight:600`});rt.textContent=r.right;svg.appendChild(rt);}
+        style:`fill:var(--${tone});font-weight:600`});
+        svg.appendChild(fitLabel(rt,r.right,padR-12));}
       marks.push({y:y,r:r});});
     host.insertBefore(svg,host.firstChild);
     if(d.legendA||d.legendB){
@@ -709,7 +784,8 @@ correctly &mdash; but it cannot register a fall that affects everyone at once.</
      outcomes and the frozen construct representatives only. */
   function heatmap(host,d){
     const W=widthFor(host);
-    const labW=W<480?96:150, cell=Math.max(16,Math.min(34,(W-labW-16)/d.cols.length));
+    const labW=labelGutter(host,d.rows.map(r=>r.label),W<480?96:150,W*0.40);
+    const cell=Math.max(16,Math.min(34,(W-labW-16)/d.cols.length));
     const top=Math.min(120,labW*0.8);
     const H=top+d.rows.length*cell+10;
     const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,class:'chart',role:'img',
@@ -721,7 +797,7 @@ correctly &mdash; but it cannot register a fall that affects everyone at once.</
     d.rows.forEach((r,i)=>{
       const y=top+i*cell;
       const lb=el('text',{x:labW-8,y:y+cell/2+3.5,'text-anchor':'end',class:'axis-label'});
-      lb.textContent=r.label;svg.appendChild(lb);
+      svg.appendChild(fitLabel(lb,r.label,labW-12));
       r.values.forEach((v,j)=>{
         const x=labW+j*cell;
         const mag=v==null?0:Math.min(1,Math.abs(v));
