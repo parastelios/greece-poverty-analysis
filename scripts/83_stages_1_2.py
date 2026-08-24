@@ -132,22 +132,32 @@ f4.add("Gap against income poverty", [float(v) for v in desc.gap_vs_arop],
        tone="gr", style="solid", weight="strong")
 f4.add("Gap against AROPE", [float(v) for v in desc.gap_vs_arope],
        tone="series-3", style="solid", weight="strong")
-# The headline of this stage is AROPE's CONTRIBUTION and its decline, which two
-# gap lines only imply: the reader has to subtract by eye, year by year. The
-# difference is therefore drawn directly, as its own series and its own view.
+# The first view plots LEVELS, not gaps. Two gap lines asked the reader to hold
+# a subtraction in their head, and a gap is a derived quantity: it cannot be
+# checked against anything they already know. Three levels in % of households
+# show AROPE sitting between reported hardship and income poverty, which is the
+# fact the stage turns on. The size of the gap belongs in the sentence beside
+# the chart, where it can be stated precisely.
 contrib = [float(a) - float(b)
            for a, b in zip(desc.gap_vs_arop, desc.gap_vs_arope)]
-f4.add("Points closed by AROPE", contrib, tone="series-5", style="dashed",
-       weight="normal")
+
+f4 = ce.Series([str(int(y)) for y in desc.time], dp=1)
+f4.add("Reported hardship", [float(v) for v in desc.gr_subjective_poverty],
+       tone="gr", style="solid", weight="strong")
+f4.add("AROPE", [float(v) for v in desc.gr_arope],
+       tone="series-3", style="solid", weight="normal")
+f4.add("Income poverty", [float(v) for v in desc.gr_arop],
+       tone="series-5", style="dashed", weight="normal")
 
 f4c = ce.Series([str(int(y)) for y in desc.time], dp=1)
 f4c.add("Points closed by AROPE", contrib)
 f4c.add("Gap still open after AROPE", [float(v) for v in desc.gap_vs_arope])
 
 v4a = {"years": [int(y) for y in desc.time], "dp": 1,
-       "yLabel": "Gap, percentage points",
-       "alt": "Greek hardship gap against AROP and against AROPE, with the "
-              "points AROPE closes drawn directly",
+       "yLabel": "% of households",
+       "alt": "Greek reported hardship, AROPE and income poverty as shares of "
+              "households; AROPE sits between the other two and closes only "
+              "part of the distance",
        "series": [{"label": l, "tone": m["tone"], "style": m["style"],
                    "weight": m["weight"], "values": [round(v, 1) for v in vs]}
                   for l, vs, m in f4.rows]}
@@ -165,16 +175,16 @@ v4b = {"years": [int(y) for y in desc.time], "dp": 1,
             "values": [round(float(v), 1) for v in desc.gap_vs_arope]}]}
 
 FIGS["F4"] = dict(
-    caption="AROPE narrows the puzzle by about a fifth, and its contribution "
-            "is shrinking",
+    caption="AROPE sits between reported hardship and income poverty, and "
+            "closes only about a fifth of the distance",
     kind="panel", series=f4, payload=v4a,
-    views=[("Both gaps", v4a), ("What AROPE actually closes", v4b)],
+    views=[("The three measures", v4a), ("What AROPE actually closes", v4b)],
     view_series=[f4, f4c],
     extra_caveat=(
-        "The second view plots the DIFFERENCE between the two gaps directly - "
-        "the points AROPE closes - because that is the quantity the stage's "
-        "conclusion rests on, and reading it off two lines means subtracting "
-        "by eye. It falls from 11.0 points in 2015 to 7.3 in 2024."),
+        "The first view shows the three measures as they are reported, in "
+        "shares of households, so the distance between them can be read "
+        "directly. The second plots that distance: the points AROPE closes, "
+        "which fall from 11.0 in 2015 to 7.3 in 2024."),
     first="Series")
 
 # ---- F5 four views -------------------------------------------------------

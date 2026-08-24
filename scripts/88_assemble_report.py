@@ -632,12 +632,19 @@ dissolve it.</p>
 
 {fig('F4')}
 
-<p>It helps, and it is not enough. AROPE moves Greece meaningfully closer to
-what Greek households report, but it recovers well under a quarter of the
-distance. More telling is the direction of travel: AROPE's contribution is
-<em>shrinking</em>. The broader measure was adding eleven points at the start
-of the period and is adding seven by the end, so as a solution to this puzzle
-it is getting weaker rather than stronger.</p>
+<p>The three measures are shown as they are reported, in shares of households,
+so the distance between them can be read directly. AROPE sits where its design
+implies: above income poverty, because it counts more kinds of disadvantage, and
+far below what households themselves report. In 2024 income poverty stands at
+19.6% of households, AROPE at 26.9%, and reported difficulty at 66.7%.</p>
+
+<p>So it helps, and it is not enough. Adding deprivation and low work intensity
+to income poverty moves Greece about seven points closer to what its households
+report, out of a distance of forty-seven. More telling is the direction of
+travel: that contribution is <em>shrinking</em>, from eleven points at the start
+of the period to seven by the end. As a solution to this puzzle the broader
+measure is getting weaker rather than stronger, which is what the second view
+plots.</p>
 
 {claim('V2-2.1')}
 
