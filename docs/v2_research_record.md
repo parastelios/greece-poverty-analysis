@@ -44,7 +44,7 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `p6-rewrite` |
-| HEAD | `bac8421` Rebuild the appendix as a true superset of the report |
+| HEAD | `0710255` Reselect paper and narrative figures by purpose, and freeze them |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-25 |
 | Frozen V1 reference | `v1-final` |
@@ -3105,6 +3105,7 @@ Claim and context containers are added **during composition**, not retrofitted.
 | D-75 | 2026-08-23 | The report opens with a one-page findings summary, and states each limitation once rather than in every stage that touches it | The stages are the right depth but the report had no findings-first entry point, so a reader had to walk all eight before the argument resolved. The summary states findings in plain prose and carries NO claim containers, because a claim may appear only once in a document | Compressing the stages themselves; anchoring claims in the summary, which would place them twice | `frozen` | — | — |
 | D-76 | 2026-08-23 | The statistical appendix is a strict SUPERSET of the report: every report figure appears there with an identical payload, lifted from the same built pages rather than rebuilt | The appendix held 65 tables and no figures at all while report caveats sent readers there for detail that did not exist. Identity is enforced by hashing payloads, so a reader checking a number finds the same object rather than a similar one | Rebuilding an appendix figure independently of the report's; letting a report figure exist that the appendix lacks | `frozen` | — | — |
 | D-77 | 2026-08-23 | Paper and narrative figure selections are chosen by PURPOSE and frozen in code | Several figure ids changed meaning during the figure work, so reuse by id was unsafe: an id that once pointed at a rank trajectory now points at a distribution strip. The paper carries seven (paradox, threshold, breadth, current conditions, historical exposure, between/within, model dependence); the companion five (paradox, threshold, breadth, historical scars, the reporting-style comparison) | Changing either list without changing the frozen constant, which fails the build | `frozen` | — | — |
+| D-78 | 2026-08-23 | The appendix detail figures are built in-process by the appendix builder, not written to an intermediate page | They were rendered to `output/_appendix_figures.html` purely so the appendix builder could read them back. That file was a second appendix document on disk, looking like an output while being a build artifact, and the superset rule exists precisely to keep one | Reintroducing an intermediate figure page; the detail module exposes `cards()` and writes nothing | `frozen` | — | — |
 
 Allowed statuses: `proposed`, `pre-registered`, `frozen`, `superseded`,
 `withdrawn`, `infeasible`.

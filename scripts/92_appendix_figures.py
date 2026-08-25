@@ -199,8 +199,16 @@ def build(fid, spec):
     return shell.replace(payload_tag({}), payload_tag(spec["payload"]))
 
 
-CARDS = "\n".join(build(k, v) for k, v in FIGS.items())
-(OUT / "_appendix_figures.html").write_text(
-    f"<!doctype html><html><head><meta charset='utf-8'><style>{ce.CSS}</style>"
-    f"</head><body>{CARDS}<script>{ce.JS}</script></body></html>")
-print(f"built {len(FIGS)} appendix figures: {', '.join(FIGS)}")
+def cards():
+    """The detail figures as HTML, in declaration order.
+
+    Called by the appendix builder. Nothing is written here: an intermediate
+    page would be a second appendix document, and the whole point of the
+    superset rule is that there is one.
+    """
+    return "\n".join(build(k, v) for k, v in FIGS.items())
+
+
+if __name__ == "__main__":
+    print(f"{len(FIGS)} appendix detail figures ready: {', '.join(FIGS)}")
+    print("built into output/statistical_appendix.html by 47_build_appendix.py")

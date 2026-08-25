@@ -1630,8 +1630,22 @@ def _lift(paths):
     return found
 
 
+def _detail_module():
+    """The detail figures, built in-process rather than lifted from a file.
+
+    They used to be written to an intermediate page that only existed for this
+    builder to read back. That page was a second appendix document on disk,
+    which is exactly what the superset rule exists to prevent.
+    """
+    import importlib.util
+    src = Path(__file__).resolve().parent / "92_appendix_figures.py"
+    spec = importlib.util.spec_from_file_location("_appendix_detail", src)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod.cards()
+
+
 _report_figs = _lift([ROOT / "output" / f"batch{n}.html" for n in (1, 2, 3, 4)])
-_detail_figs = _lift([ROOT / "output" / "_appendix_figures.html"])
 _man = pd.read_csv(OUT / "report_visual_manifest.csv")
 _missing = [i for i in _man["id"] if i not in _report_figs]
 if _missing:
@@ -1648,7 +1662,7 @@ _fig_section = (
     "are exactly what someone checking it wants: every observation behind a "
     "binned summary, every year rather than the latest, and the whole "
     "correlation matrix rather than ten representatives.</p>"
-    + "".join(_detail_figs[k] for k in sorted(_detail_figs))
+    + _detail_module()
     + "</section>")
 
 html = f"""{HEAD}
