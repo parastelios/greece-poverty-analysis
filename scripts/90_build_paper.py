@@ -62,7 +62,23 @@ for n in (1, 2, 3, 4):
 
 # A paper carries the figures its argument needs, not the full evidence base.
 # The rest stays in the technical report and the statistical appendix.
-PAPER_FIGS = ["F1", "F3", "F9", "F12", "F13", "F14"]
+# One figure per argument the paper has to make:
+#   F1  the central paradox
+#   F3  the moving threshold, which Section 5.4 rests on
+#   F5  breadth of deterioration, across measures and across groups
+#   F9  the current-condition results
+#   F12 historical exposure, conditional on present conditions
+#   F13 the between/within limitation
+#   F14 model dependence
+PAPER_FIGS = ["F1", "F3", "F5", "F9", "F12", "F13", "F14"]
+# The selection is FROZEN. Figure ids changed meaning during the figure work --
+# what an id pointed at was not stable -- so this list records a decision about
+# what this document argues, and any change to it has to be a decision too.
+_FROZEN = ['F1', 'F3', 'F5', 'F9', 'F12', 'F13', 'F14']
+if PAPER_FIGS != _FROZEN if "PAPER_FIGS" in dir() else NARRATIVE_FIGS != _FROZEN:
+    raise SystemExit(
+        "the paper figure selection changed; update _FROZEN deliberately")
+
 _used = []
 
 
@@ -538,6 +554,15 @@ across age groups is therefore partly a comparison of which components can
 apply. We report the components separately for this reason rather than
 presenting an age-disaggregated aggregate that would obscure it.</p>
 
+{fig('F5', 2)}
+
+<p>Two features of the disaggregation bear on the argument. Greece is at or
+near the top of the European distribution on income poverty, severe material
+deprivation and the combined measure alike, so the position is not an artefact
+of one component. And the burden is not evenly distributed: the age groups
+diverge, and women sit above men throughout, with the difference widening after
+2022.</p>
+
 <h3>5.4 The moving threshold</h3>
 
 <p>The second measurement account concerns the ruler rather than the concept.
@@ -548,10 +573,10 @@ the threshold falls with it, and a household whose real income dropped sharply
 can remain above a line that dropped as sharply.</p>
 
 <p>Greek median equivalised income fell by roughly a third over the crisis. The
-poverty line, being a fixed fraction of it, fell in step. Figure 2 compares the
+poverty line, being a fixed fraction of it, fell in step. Figure 3 compares the
 relative threshold with one anchored to its 2008 real value.</p>
 
-{fig('F3', 2)}
+{fig('F3', 3)}
 
 <p>The anchor year was fixed before the comparison was run and was not selected
 by inspecting which choice produced the largest divergence. We note two
@@ -640,11 +665,11 @@ predicts more, and worse wage-adjusted affordability predicts more. A construct
 whose coefficient had pointed the other way would have been recorded as
 contradicting its declared direction rather than reinterpreted.</p>
 
-<p>Figure 3 shows all nine as standardised effects, which is what makes them
+<p>Figure 4 shows all nine as standardised effects, which is what makes them
 comparable: the constructs are measured in percentages, purchasing power
 standards and index points, and raw coefficients could not share an axis.</p>
 
-{fig('F9', 3)}
+{fig('F9', 4)}
 
 {results_table()}
 
@@ -684,7 +709,7 @@ present-day counterpart and asking whether it survives. Because the two are
 correlated by construction, the test is conservative: shared variance is
 attributed to neither.</p>
 
-{fig('F12', 4)}
+{fig('F12', 5)}
 
 {claim('V2-5.C2')}
 {claim('V2-5.C3')}
@@ -719,9 +744,9 @@ omitting it.</p>
 
 <p>The results in Section 6.3 are statements about differences between
 countries. Converting them into statements about change within Greece over time
-is not supported, and Figure 5 shows why.</p>
+is not supported, and Figure 7 shows why.</p>
 
-{fig('F13', 5)}
+{fig('F13', 6)}
 
 {claim('V2-5.Y')}
 
@@ -742,7 +767,7 @@ predictor and outcome come from the same respondents answering adjacent
 questions, part of any relationship reflects shared measurement rather than
 shared substance. We ran both.</p>
 
-{fig('F14', 6)}
+{fig('F14', 7)}
 
 {claim('V2-6.1')}
 

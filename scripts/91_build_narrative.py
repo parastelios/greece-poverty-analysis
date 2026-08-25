@@ -56,7 +56,14 @@ for n in (1, 2, 3, 4):
 
 # A general reader needs fewer charts than the technical report carries, and
 # each has to earn its place in the story rather than complete the record.
-NARRATIVE_FIGS = ["F1", "F3", "F11", "F14"]
+# Selected by purpose, not by id: several ids changed meaning during the figure
+# work, so reuse by id was unsafe. Five, deliberately fewer than the report:
+#   F1  the paradox
+#   F3  the threshold that moved
+#   F5  breadth, across measures and across groups
+#   F11 the historical scars
+#   F15 the strongest contextual figure -- where Greece sits on three indicators
+NARRATIVE_FIGS = ["F1", "F3", "F5", "F11", "F15"]
 
 # Non-figure blocks that travel from the batch pages. The pre-crisis comparison
 # is six rows with a decade missing from the middle, which is a table.
@@ -71,6 +78,14 @@ def block(key):
     if key not in BLOCKS:
         raise SystemExit(f"block '{key}' not found in any batch page")
     return BLOCKS[key]
+# The selection is FROZEN. Figure ids changed meaning during the figure work --
+# what an id pointed at was not stable -- so this list records a decision about
+# what this document argues, and any change to it has to be a decision too.
+_FROZEN = ['F1', 'F3', 'F5', 'F11', 'F15']
+if PAPER_FIGS != _FROZEN if "PAPER_FIGS" in dir() else NARRATIVE_FIGS != _FROZEN:
+    raise SystemExit(
+        "the narrative figure selection changed; update _FROZEN deliberately")
+
 _used = []
 
 
@@ -271,6 +286,8 @@ move together at all. The pattern that emerges when you split them apart is the
 kind of thing an average is very good at concealing: some groups improving
 while others did not, and the combined figure sitting placidly between
 them.</p>
+
+{fig('F5')}
 
 <p>This matters for the question this report is asking. A country where
 hardship has become concentrated in particular groups can look, on the
@@ -587,14 +604,13 @@ between them is the interview rather than the world.</p>
 
 <p>Both positions are defensible. So we ran both.</p>
 
-{fig('F14')}
-
 {finding('V2-6.1')}
 
 <p>Greece moves from the third-worst country in Europe on unexplained hardship
 to the twenty-fifth &mdash; from a stark positive outlier to a stark negative
 one &mdash; on exactly the same rows of data, with one variable added or
-removed.</p>
+removed. Third to twenty-fifth, out of twenty-seven, from a single judgement
+call.</p>
 
 <p>That is not a wobble. It is a reversal, and there is no honest way to pick
 between the two. We can't average them. We can't choose the one that looks more
@@ -652,9 +668,12 @@ one survey, so it can't settle this on its own.</p>
 to answer darkly should drag everything down about equally. A pattern that is
 extreme on money and milder elsewhere points at circumstances instead.</p>
 
+{fig('F15')}
+
 {finding('V2-7.1')}
 
-<p>The pattern is specific to money, but it is a difference of degree, not of
+<p>Each row places every EU country on one indicator, with Greece marked. The
+pattern is specific to money, but it is a difference of degree, not of
 kind. Greece is worst in Europe on the financial questions and close to worst
 on general life satisfaction. That is not the profile of a country that is
 desperate about money and otherwise content, and an earlier version of this
