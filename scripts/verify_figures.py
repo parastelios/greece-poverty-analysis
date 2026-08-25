@@ -687,6 +687,72 @@ if _rep.exists() and _app.exists():
     check("no report figure restates another's series and question",
           not _near, "; ".join(_near[:3]))
 
+    # ---- THE APPENDIX AS A NAVIGABLE DOCUMENT ---------------------------
+    #
+    # Ninety-odd charts behind collapsible groups is only an improvement if
+    # every one of them is still reachable, still counted, and still printed.
+    # Four things can silently break that, so four checks.
+
+    # 1. DUPLICATE IDS. Two elements sharing an id makes getElementById return
+    #    the first, so a deep link lands on the wrong chart -- or on the right
+    #    chart in the wrong group, which the reveal logic then fails to open.
+    _all_ids = re.findall(r'\sid="([^"]+)"', _at)
+    _dupe_ids = sorted({i for i in _all_ids if _all_ids.count(i) > 1})
+    check("appendix element ids are unique",
+          not _dupe_ids, ", ".join(_dupe_ids[:6]))
+
+    # 2. UNRESOLVED DEEP LINKS. Every in-page link must resolve to an id that
+    #    exists. A link into the atlas that points at a renamed anchor now
+    #    fails twice over: it does not scroll, and it does not open the group.
+    _ids = set(_all_ids)
+    _links = {h for h in re.findall(r'href="#([^"]+)"', _at) if h}
+    _dead = sorted(h for h in _links if h not in _ids)
+    check("every in-page link resolves to an element that exists",
+          not _dead, ", ".join(_dead[:6]))
+
+    # 3. THE ATLAS IS STILL WHOLE. Regrouping ten sections into eight domains
+    #    is the kind of edit that loses a chart between two lists without any
+    #    error. The anchors are counted directly off the page.
+    _atlas = (len(re.findall(r'\sid="s_[a-z0-9_]+"', _at))
+              + len(re.findall(r'\sid="p_[a-z0-9_]+"', _at))
+              + len(re.findall(r'\sid="x_[a-z0-9_]+"', _at)))
+    check("the variable atlas still carries all 89 charts",
+          _atlas == 89, f"found {_atlas}")
+
+    # 4. PRINT VISIBILITY. A closed <details> prints as missing content, not as
+    #    a closed block, so the appendix would lose most of the atlas on paper.
+    #    Two independent mechanisms have to be present: a CSS rule that shows
+    #    the content, and a beforeprint handler that opens the elements.
+    _print_css = re.search(r"@media print\{(.*?)\}\s*\.howto", _at, re.S)
+    _has_css = bool(_print_css) and "details{display:block}" in \
+        re.sub(r"\s+", "", _print_css.group(1))
+    _has_js = "beforeprint" in _at and "d.open=true" in re.sub(r"\s+", "", _at)
+    check("the atlas is expanded for print, by CSS and by script",
+          _has_css and _has_js,
+          f"css={_has_css} js={_has_js}")
+
+    # 5. EVERY ATLAS CHART SITS IN A GROUP THAT CAN BE OPENED. An anchor that
+    #    is inside no <details> is fine; one inside a <details> the reveal
+    #    logic never sees is not. The logic walks ancestors, so the only
+    #    failure mode is an anchor outside the domain wrappers entirely, which
+    #    would mean a chart lost from the grouping.
+    _grouped = 0
+    for _m in re.finditer(
+            r'<details class="atlas-domain"[^>]*>(.*?)(?=<details class="atlas-domain"|</div>\s*<h2|\Z)',
+            _at, re.S):
+        _grouped += (len(re.findall(r'\sid="s_[a-z0-9_]+"', _m.group(1)))
+                     + len(re.findall(r'\sid="p_[a-z0-9_]+"', _m.group(1)))
+                     + len(re.findall(r'\sid="x_[a-z0-9_]+"', _m.group(1))))
+    check("every atlas chart sits inside a collapsible domain",
+          _grouped == _atlas, f"{_grouped} of {_atlas} grouped")
+
+    # 6. NO STALE REPORT NUMBERS. A figure moved out of the report must not
+    #    still announce itself as "Figure 7": that number belongs to whatever
+    #    now occupies the seventh position there.
+    _numbered = re.findall(r'<span class="fignum">([^<]*)</span>', _at)
+    check("no appendix figure displays a report figure number",
+          not _numbered, ", ".join(_numbered[:5]))
+
     _r, _a = _fig_hashes(_rt), _fig_hashes(_at)
     _gap = [k for k in _r if k not in _a]
     _diff = [k for k in _r if k in _a and _r[k] != _a[k]]

@@ -44,7 +44,7 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `p6-rewrite` |
-| HEAD | `fd26858` Add two cross-document gates, and fix the two live errors they caught |
+| HEAD | `455f4ba` Cut the report to fifteen figures; nothing deleted, everything relocated |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-25 |
 | Frozen V1 reference | `v1-final` |

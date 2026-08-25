@@ -177,6 +177,43 @@ body{margin:0;background:var(--page);color:var(--text-primary);
   color:var(--text-muted);margin:0 0 12px}
 h1{font-size:38px;line-height:1.12;letter-spacing:-.02em;margin:0 0 16px;text-wrap:balance}
 .dek{font-size:16.5px;color:var(--text-secondary);max-width:70ch;margin:0 0 10px}
+/* THE ATLAS, COLLAPSED. Closed by default so the page opens as a table of
+   contents; a deep link opens the group holding its target, and print opens
+   everything. */
+.atlas-domain{border:1px solid var(--border);border-radius:10px;margin:14px 0;
+background:var(--surface-1)}
+.atlas-domain > summary{cursor:pointer;list-style:none;padding:14px 18px;
+display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+font:700 1.02rem/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--text-primary)}
+.atlas-domain > summary::-webkit-details-marker{display:none}
+.atlas-domain > summary::before{content:"\25B8";margin-right:.55rem;
+display:inline-block;transition:transform .15s ease;color:var(--text-muted)}
+.atlas-domain[open] > summary::before{transform:rotate(90deg)}
+.atlas-domain > summary:hover{color:var(--accent,var(--text-primary))}
+.atlas-domain > summary:focus-visible{outline:2px solid var(--text-primary);
+outline-offset:-2px}
+.atlas-title{flex:1}
+.atlas-count{font:500 .78rem/1 ui-sans-serif,system-ui,sans-serif;
+color:var(--text-muted);white-space:nowrap}
+.atlas-domain > *:not(summary){padding-left:18px;padding-right:18px}
+.atlas-domain[open] > summary{border-bottom:1px solid var(--border)}
+/* A figure here is not "Figure 7 of the report" -- it has no number in this
+   document, and saying so is better than leaving the reader to wonder. */
+.appx-tag{display:inline-block;font:700 .68rem/1 ui-sans-serif,system-ui,sans-serif;
+letter-spacing:.07em;text-transform:uppercase;color:var(--text-muted);
+border:1px solid var(--border);border-radius:4px;padding:.28rem .45rem;
+margin-right:.5rem;vertical-align:.08em}
+@media print{
+  /* Nothing may be hidden behind a disclosure control on paper: a closed
+     <details> prints as missing content, not as a closed block. */
+  details{display:block}
+  .atlas-domain > summary{border-bottom:1px solid #999}
+  .atlas-domain > summary::before{content:""}
+  .atlas-domain > *:not(summary){display:block !important}
+  .atlas-domain{break-inside:auto}
+}
+.toc-break{font:700 .7rem/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;
+text-transform:uppercase;color:var(--text-muted);padding:.35rem 0;align-self:center}
 .howto{background:var(--surface-2);border-radius:10px;padding:16px 18px;margin:22px 0 8px;
   font-size:13.5px;color:var(--text-secondary);max-width:78ch}
 .howto b{color:var(--text-primary)}
@@ -1210,7 +1247,7 @@ if missing:
     print("WARNING: not placed in any section ->", missing)
 
 n_items = sum(1 for sec in SECTIONS for kind, _ in sec["items"] if kind != "sub")
-print(f"placing {n_items} charts across {len(SECTIONS)} sections "
+print(f"placing {n_items} charts across {len(SECTIONS)} source sections "
       f"({len(leftover)} auto-routed to the candidate family)")
 
 
@@ -1588,21 +1625,88 @@ def safe_json(value):
 RENDER = {"series": series_card, "panel": panel_card, "scatter": scatter_card,
           "sub": sub_head}
 
-body, toc = [], []
+# ---------------------------------------------------------------------------
+# THE VARIABLE ATLAS, COLLAPSED BY DOMAIN.
+#
+# Eighty-nine charts in ten flat sections is a complete record and an
+# unnavigable one. They are regrouped into eight domains, each a <details>
+# closed by default, so the page opens as a readable table of contents and the
+# evidence is one click away rather than three screens down.
+#
+# Nothing is removed and no anchor changes: every chart keeps the id its deep
+# links already use. The existing sections map onto domains; only the
+# expectations section splits, because it carried migration and transfer
+# effectiveness alongside wellbeing.
+DOMAINS = [
+    ("poverty", "Poverty and measurement", ["puzzle", "ruler"]),
+    ("labour", "Labour-market history", ["labour"]),
+    ("income", "Income, wages and output", ["income", "work"]),
+    ("prices", "Prices and purchasing power", ["prices"]),
+    ("housing", "Housing and affordability", ["strain"]),
+    ("wellbeing", "Expectations and wellbeing", ["expectations"]),
+    ("migration", "Migration and policy", []),
+    ("modeldiag", "Model diagnostics", ["diagnostics", "candidates"]),
+]
+# Items that belong to a domain other than their section's.
+ITEM_DOMAIN = {"net_migration": "migration", "transfer_effect": "migration"}
+
+_sec_by_id = {s["id"]: s for s in SECTIONS}
+_dom_of_sec = {sid: d for d, _, sids in DOMAINS for sid in sids}
+_dom_items = {d: [] for d, _, _ in DOMAINS}
+_dom_blurbs = {d: [] for d, _, _ in DOMAINS}
+
 for sec in SECTIONS:
-    if not sec["items"]:
+    if not sec["items"] or sec["id"] not in _dom_of_sec:
         continue
-    toc.append(f'<a href="#{sec["id"]}"><b>{sec["num"]}</b> {sec["title"]}</a>')
-    body.append(f'<h2 class="group" id="{sec["id"]}">'
-                f'<span class="secnum">{sec["num"]}</span>{sec["title"]}</h2>')
-    body.append(f'<p class="group-blurb">{sec["blurb"]}</p>')
+    home = _dom_of_sec[sec["id"]]
+    _dom_blurbs[home].append((sec["title"], sec["blurb"]))
     for kind, k in sec["items"]:
+        _dom_items[ITEM_DOMAIN.get(k, home) if kind != "sub" else home].append(
+            (sec["id"], kind, k))
+
+body, toc = [], []
+_atlas_charts = 0
+for dom, title, _ in DOMAINS:
+    items = _dom_items[dom]
+    if not items:
+        continue
+    toc.append(f'<a href="#atlas-{dom}">{title}</a>')
+    n = sum(1 for _, kind, _ in items if kind != "sub")
+    _atlas_charts += n
+    inner = []
+    _seen_sub = set()
+    for sid, kind, k in items:
+        # A section's own sub-headings still separate its groups inside the
+        # domain, so merging two sections does not merge their structure.
+        if kind == "sub" and k in _seen_sub:
+            continue
+        _seen_sub.add(k if kind == "sub" else None)
         rendered = RENDER[kind](k)
-        if sec["id"] == "candidates" and kind == "series":
+        if sid == "candidates" and kind == "series":
             rendered = (f'<details class="candidate-detail"><summary>View candidate trajectory: '
                         f'{series[k]["label"]}</summary>{rendered}</details>')
-        body.append(rendered)
+        inner.append(rendered)
+    blurb = " ".join(b for _, b in _dom_blurbs[dom]) or (
+        "Migration of nationals and the effectiveness of welfare transfers: "
+        "two measures that describe policy and its consequences rather than "
+        "household conditions.")
+    body.append(
+        f'<details class="atlas-domain" id="atlas-{dom}">'
+        f'<summary><span class="atlas-title">{title}</span>'
+        f'<span class="atlas-count">{n} charts</span></summary>'
+        f'<p class="group-blurb">{blurb}</p>' + "".join(inner) + "</details>")
 
+# The figure sections come first in the document, so they come first in the
+# contents. Without them the table of contents listed only the atlas and made
+# five sections of figures invisible to anyone navigating by it.
+toc[:0] = [f'<a href="#{sid}">{title}</a>' for sid, title in [
+    ("figures", "Figures used in the report"),
+    ("appx-shed", "Views simplified out of the report"),
+    ("appx-descriptive", "Additional descriptive evidence"),
+    ("appx-diagnostic", "Technical diagnostics"),
+    ("appx-context", "Contextual extensions"),
+]]
+toc.insert(5, '<span class="toc-break">Variable atlas</span>')
 toc.append('<a href="#glossary"><b>&#167;</b> Abbreviations</a>')
 body.append('<h2 class="group" id="glossary"><span class="secnum">&#167;</span>'
             'Abbreviations and terms</h2>')
@@ -1691,29 +1795,135 @@ for _key, _title, _lede in _SECTIONS:
         + "".join(_report_figs[i] for i in _ids)
         + "</section>")
 
+# The detail figures are split between two of the six sections rather than
+# sitting in a bucket of their own: the correlation matrices and the raw
+# observation scatters are diagnostics, the health extension is context.
+_detail_html = _detail_module()
+_detail_figs = {m.group(1): m.group(0) for m in _re.finditer(
+    r'<figure class="figure" id="([A-Z]\d+[A-Z]?)">.*?</figure>',
+    _detail_html, _re.S)}
+_DIAG_DETAIL = ["A1", "A4", "A2", "A3W", "A3B", "A3A", "A11"]
+_CTX_DETAIL = ["A5", "A6", "A7"]
+_unplaced_detail = [k for k in _detail_figs
+                    if k not in _DIAG_DETAIL + _CTX_DETAIL]
+if _unplaced_detail:
+    raise SystemExit(
+        f"detail figures with no section: {_unplaced_detail}")
+
+
+def _tag(fig_html, label="Appendix figure"):
+    """Mark a figure as belonging to this document, not the report.
+
+    Figures here carry no number -- numbers are assigned at placement in the
+    report, and a figure that left the report would otherwise announce a
+    position it no longer holds. An explicit tag is better than silence: it
+    tells a reader arriving by deep link which document they are in.
+    """
+    return fig_html.replace(
+        "<figcaption>", f'<figcaption><span class="appx-tag">{label}</span> ', 1)
+
+
+def _sec(sid, title, lede, ids, source=None, tag="Appendix figure"):
+    src = source or _report_figs
+    figs = "".join(_tag(src[i], tag) if tag else src[i] for i in ids)
+    return (f'<section id="{sid}"><h2>{title}</h2>'
+            f'<p class="lede">{lede}</p>' + figs + "</section>")
+
+
+def _named(key):
+    return [i for i in _man.loc[_man.appendix_section == key, "id"]]
+
+
+# SIX SECTIONS, in the order a reader needs them: what the report showed, what
+# it showed and then simplified, what it described in prose instead, what
+# qualifies its results, what sits outside its evidentiary reach, and finally
+# the atlas of every variable.
 _fig_section = (
-    '<section id="figures"><h2>Every figure in the report</h2>'
-    "<p class='lede'>Each one is the same object the report carries, with the "
-    "same numbers behind it. The report explains what they mean; this is where "
-    "the values live.</p>"
-    + "".join(_report_figs[i] for i in _MAIN)
-    + "</section>"
-    + ("<section id='appx-shed'><h2>Views the report simplified away</h2>"
-       "<p class='lede'>Each of these was a tab on a report figure. They were "
-       "removed to leave one question per figure, not because the numbers "
-       "stopped mattering: the distance the broader measure closes, each "
-       "component against every member state, and the full eight-pair "
-       "conditional comparison.</p>"
-       + "".join(_report_figs[i] for i in _SHED)
-       + "</section>" if _SHED else "")
-    + _by_section
-    + "<section id='detail'><h2>Detail the report leaves out</h2>"
-    "<p class='lede'>Views that would slow a reader following the argument and "
-    "are exactly what someone checking it wants: every observation behind a "
-    "binned summary, every year rather than the latest, and the whole "
-    "correlation matrix rather than ten representatives.</p>"
-    + _detail_module()
-    + "</section>")
+    _sec("figures", "Figures used in the report",
+         "Each one is the same object the report carries, with the same "
+         "numbers behind it. The report explains what they mean; this is "
+         "where the values live.", _MAIN, tag=None)
+    + (_sec("appx-shed", "Views simplified out of the report",
+            "Each of these was a tab on a report figure, removed to leave one "
+            "question per figure rather than because the numbers stopped "
+            "mattering: the distance the broader measure closes, each AROPE "
+            "component against every member state, and the full eight-pair "
+            "conditional comparison.", _SHED) if _SHED else "")
+    + _sec("appx-descriptive", "Additional descriptive evidence",
+           "Descriptions the report states in a sentence rather than a chart: "
+           "the full hardship ranking, and the decomposition of the last "
+           "AROPE rise into rates within age groups against the changing size "
+           "of those groups.", _named("descriptive"))
+    + _sec("appx-diagnostic", "Technical diagnostics",
+           "Checks that qualify a result rather than establishing one, and "
+           "the objects behind conclusions the report states in prose: every "
+           "observation behind a binned summary, every year rather than the "
+           "latest, and the complete correlation matrices rather than ten "
+           "representatives.",
+           _named("diagnostic"))
+    + '<section id="appx-diagnostic-detail">'
+    + "".join(_tag(_detail_figs[i]) for i in _DIAG_DETAIL) + "</section>"
+    + _sec("appx-context", "Contextual extensions",
+           "Evidence that cannot support a headline claim by design, and is "
+           "recorded in the report's context register or in a separately "
+           "labelled extension instead: single-wave snapshots, comparisons "
+           "across instruments that share no scale, and the post-freeze "
+           "health analysis.", _named("context"))
+    + '<section id="appx-context-detail">'
+    + "".join(_tag(_detail_figs[i]) for i in _CTX_DETAIL) + "</section>")
+
+ATLAS_JS = r'''<script>
+// DEEP LINKS INTO A CLOSED GROUP.
+//
+// Every one of the 89 atlas charts keeps the anchor its existing links use,
+// but those anchors now sit inside a <details> that is closed by default. A
+// browser will not scroll to a target it cannot lay out, so the link would
+// land at the top of the page and look broken. Opening every ancestor
+// <details> first, then re-triggering the jump, makes the old links work
+// unchanged.
+(function () {
+  function reveal(hash) {
+    if (!hash || hash.length < 2) return false;
+    var el;
+    try { el = document.getElementById(decodeURIComponent(hash.slice(1))); }
+    catch (e) { return false; }
+    if (!el) return false;
+    var n = el, opened = false;
+    while (n && n !== document.body) {
+      if (n.tagName === 'DETAILS' && !n.open) { n.open = true; opened = true; }
+      n = n.parentNode;
+    }
+    // Re-scroll after opening: the first jump happened against a collapsed
+    // layout, so the element was not where the browser thought it was.
+    requestAnimationFrame(function () {
+      el.scrollIntoView({ block: 'start' });
+    });
+    return opened || true;
+  }
+  function onHash() { reveal(location.hash); }
+  window.addEventListener('hashchange', onHash);
+  if (document.readyState === 'loading')
+    document.addEventListener('DOMContentLoaded', onHash);
+  else onHash();
+  // In-page links to a chart inside a closed group.
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href^="#"]');
+    if (a) reveal(a.getAttribute('href'));
+  });
+  // Ctrl-F finds nothing inside a closed <details> in most browsers, and the
+  // print path must never lose content, so both open everything first.
+  window.addEventListener('beforeprint', function () {
+    document.querySelectorAll('details').forEach(function (d) {
+      if (!d.open) { d.dataset.reopen = '1'; d.open = true; }
+    });
+  });
+  window.addEventListener('afterprint', function () {
+    document.querySelectorAll('details[data-reopen]').forEach(function (d) {
+      d.open = false; delete d.dataset.reopen;
+    });
+  });
+})();
+</script>'''
 
 html = f"""{HEAD}
 <div class="wrap">
@@ -1725,11 +1935,15 @@ for the EU comparator, and for each of the other 26 member states. The country s
 27 current EU members &mdash; the same panel the models are estimated on. Eurostat publishes many of
 these series for candidate and EFTA countries as well, and for the euro-area aggregates; those are
 excluded here so that what you see is the country set the analysis actually used.</p>
-<div class="howto"><b>How this is organised.</b> The ten sections follow the reports' own
-argument rather than the data's categories: the puzzle first, then why the official measure
-understates it, then the labour-market explanation in three steps (how much unemployment, how long
-it lasts, how much has accumulated), then what that history did to household finances, the
-alternatives tested, and finally the model diagnostics and the full family of screened candidates.
+<div class="howto"><b>How this is organised.</b> Five sections of figures, then the variable atlas.
+The figures come first in the order a reader needs them: the fifteen the report carries, the views
+it simplified out, the descriptions it states in prose, the diagnostics that qualify its results,
+and the contextual extensions that cannot support a headline claim by design. The atlas holds every
+variable in its own units, grouped into eight domains that follow the reports' argument rather than
+the data's categories &mdash; poverty and measurement first, then the labour market, incomes,
+prices, housing, expectations, migration and policy, and finally the model diagnostics and the full
+family of screened candidates. <b>The atlas groups start closed</b>; open one to read it, or follow
+a link straight to a chart and its group opens for you. Printing expands everything.
 Charts marked <span class="tag">relationship</span> are cross-country scatters placed in the section
 whose claim they illustrate. Version 2 adds the final fixed and nested model results, the complete
 multiple-testing screen, conditional diagnostics and country-level residual comparisons; detailed
@@ -1796,6 +2010,7 @@ Object.entries(SCATTERS).forEach(([k, sc]) => {{
 }});
 </script>
 <style>{ce.CSS}</style>
+{ATLAS_JS}
 {_fig_section}
 <script>{ce.JS}</script>
 """
