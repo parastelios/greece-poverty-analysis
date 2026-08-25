@@ -5,6 +5,7 @@ figure, so the strongest-looking result is immediately bounded by the
 limitation that governs it.
 """
 import json
+import math
 import re
 from pathlib import Path
 
@@ -30,7 +31,31 @@ NAMES = {"EL": "Greece", "BG": "Bulgaria", "RO": "Romania", "HU": "Hungary",
          "SI": "Slovenia", "HR": "Croatia", "MT": "Malta"}
 
 
+def _assert_json_safe(d, where="payload"):
+    """json.dumps happily emits bare NaN and Infinity. Neither is valid JSON,
+    so a payload containing one does NOT fail the build -- it fails silently in
+    the reader's browser, and the figure quietly shows some other view. An
+    empty string read back from a CSV as NaN did exactly that."""
+    bad = []
+
+    def walk(v, path):
+        if isinstance(v, float) and not math.isfinite(v):
+            bad.append(f"{path}={v}")
+        elif isinstance(v, dict):
+            for k, x in v.items():
+                walk(x, f"{path}.{k}")
+        elif isinstance(v, (list, tuple)):
+            for i, x in enumerate(v):
+                walk(x, f"{path}[{i}]")
+
+    walk(d, where)
+    if bad:
+        raise SystemExit(
+            "payload contains values JSON cannot represent: " + "; ".join(bad[:5]))
+
+
 def payload_tag(d, kind="", label=""):
+    _assert_json_safe(d)
     body = json.dumps(d).replace("</", "<\\/")
     a = (f' data-kind="{kind}"' if kind else "") + \
         (f' data-label="{label}"' if label else "")

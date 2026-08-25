@@ -849,20 +849,27 @@ inferential test in this report, and no finding rests on it.</p>
 
 <p>A single detached measure invites a single explanation, and the most
 deflating one is that the measure is broken. So it is worth asking how much
-company that measure keeps. Take twenty-five indicators of Greek economic and
-social conditions &mdash; wages, hours, prices, unemployment, migration, debt,
-savings, expectations &mdash; and for each one ask a deliberately crude
-question: is this country in the worst fifth of the Union? Then count.</p>
+company that measure keeps. Take indicators of Greek economic and social
+conditions &mdash; wages, hours worked, prices, migration, savings,
+expectations &mdash; and for each one ask a deliberately crude question: is
+this country in the worst fifth of the Union? Then count, twice, on the same
+set.</p>
 
 {fig('F21')}
 
-<p>Before the crisis Greece was in Europe's worst fifth on roughly a quarter of
-the indicators then available &mdash; four of sixteen in 2008. It is now in the
-worst fifth on around two thirds of them: seventeen of twenty-five in 2024. The
-basket grows over the period as more indicators begin reporting, so the two
-shares are not taken from the same set; the count for each year is in the
-figure's table, and the apparent dip in the final year is coverage falling to
-seventeen indicators rather than any improvement. The
+<p>The basket is fixed before the count is taken: every indicator with a valid
+EU position in both 2008 and 2024, chosen without reference to whether it
+improved or deteriorated. Sixteen qualify. On those same sixteen, Greece moved
+from the EU's worst fifth on four in 2008 to eleven in 2024 &mdash; 25.0% to
+68.8% &mdash; and because the set is identical at both ends and in every year
+between, the rise cannot be an artefact of a growing denominator.</p>
+
+<p>The second view separates what changed from what was already true. Four
+indicators were in the worst fifth before the crisis and remain there; seven
+more entered it over the period; none left. Greece was not uniformly weak in
+2008 and is not uniformly weak now &mdash; five of the sixteen sit outside the
+worst fifth at both ends. What happened is that seven further dimensions joined
+the four that were already there. The
 second view shows where each indicator moved. Sixteen of the twenty-five now
 place Greece at or near the bottom of the Union, and they are not variations on
 one theme: pay per hour, hours worked, the real value of the poverty line

@@ -5,6 +5,7 @@ per section: the moving threshold, the AROPE bridge and what sits behind AROPE
 are three different questions.
 """
 import json
+import math
 import re
 from pathlib import Path
 
@@ -31,7 +32,31 @@ med = panel.groupby("time")[["subjective_poverty", "arop", "arope",
                              "arop_threshold_real"]].median()
 
 
+def _assert_json_safe(d, where="payload"):
+    """json.dumps happily emits bare NaN and Infinity. Neither is valid JSON,
+    so a payload containing one does NOT fail the build -- it fails silently in
+    the reader's browser, and the figure quietly shows some other view. An
+    empty string read back from a CSV as NaN did exactly that."""
+    bad = []
+
+    def walk(v, path):
+        if isinstance(v, float) and not math.isfinite(v):
+            bad.append(f"{path}={v}")
+        elif isinstance(v, dict):
+            for k, x in v.items():
+                walk(x, f"{path}.{k}")
+        elif isinstance(v, (list, tuple)):
+            for i, x in enumerate(v):
+                walk(x, f"{path}[{i}]")
+
+    walk(d, where)
+    if bad:
+        raise SystemExit(
+            "payload contains values JSON cannot represent: " + "; ".join(bad[:5]))
+
+
 def payload_tag(d, kind="", label=""):
+    _assert_json_safe(d)
     body = json.dumps(d).replace("</", "<\\/")
     a = (f' data-kind="{kind}"' if kind else "") + \
         (f' data-label="{label}"' if label else "")
@@ -153,17 +178,16 @@ FIGS["F1"] = dict(
         "and say nothing about any individual household."),
     first="Series")
 
-# ---- F21: breadth of disadvantage ----------------------------------------
-# The AROPE breakdown was labelled "breadth" in an earlier selection and is not:
-# it decomposes ONE measure by component and group. Breadth is how many
-# different indicators place a country in Europe's worst fifth, which is a
-# different question and the one that shows deterioration spreading.
+# ---- F21: breadth of disadvantage, on a FIXED 2008-2024 basket ------------
+# The earlier version measured each indicator from its own earliest usable
+# year, which cannot be added up: 25 different baselines are 25 different
+# questions. The report now uses one basket measured twice, derived in
+# 46_appendix_data.py under a rule fixed before any result was looked at --
+# every indicator with a valid EU position in BOTH 2008 and 2024, selected
+# without reference to whether it improved or deteriorated. The full
+# varying-year universe stays in the appendix, where it belongs.
 #
-# DESCRIPTIVE ONLY. It was tested as a predictor in P3a and does not survive:
-# not significant alone, and sign-reversing once the other accumulated measures
-# are in the model. The caveat is read from p3a_results.csv rather than written
-# by hand -- an earlier version asserted "null (p = 0.083)", a number that
-# appears nowhere in the artifacts.
+# DESCRIPTIVE ONLY. Tested as a predictor in P3a and does not survive.
 import json as _json
 
 _p3a = pd.read_csv(PROC / "p3a_results.csv")
@@ -174,53 +198,19 @@ assert _P3A_ALONE > 0.05 and _P3A_CTL < 0, (
     "sign under controls; p3a_results.csv no longer supports that reading")
 
 _blob = _json.load(open(PROC / "appendix_series_core.json"))
-_bs = _blob["series"]["breadth_worst_quintile"]
-_byrs = [int(y) for y in _bs["years"]]
-_gr_b = _bs["countries"]["EL"]
+# keep_default_na=False: the "outside" rows carry an EMPTY status label by
+# design, and pandas reads an empty cell back as NaN. json.dumps then emits a
+# bare NaN, which is not valid JSON, and the whole view silently fails to
+# parse -- the figure renders its other tab and nothing reports an error.
+_basket = pd.read_csv(PROC / "breadth_fixed_basket.csv", keep_default_na=False)
+_btraj = pd.read_csv(PROC / "breadth_fixed_trajectory.csv")
+_N = len(_basket)
+_C = _blob["panels"]["breadth_fixed_basket"]["counts"]
+assert _C["total"] == _N and set(_btraj.n_ind) == {_N}, (
+    "the trajectory and the basket disagree about how many indicators there "
+    "are; a constant denominator that varies is worse than an honest one")
 
-# The denominator MOVES: 13 indicators reported in 2005, 25 by 2018, and only
-# 17 in 2025. A share plotted without its base invites two misreadings -- that
-# the 2005 baseline and the 2024 value count the same things, and that the 2025
-# dip is improvement rather than thinner coverage. The count travels with the
-# series so the table always shows what each percentage is a percentage of.
-_comp = pd.read_csv(PROC / "persistence_share_composite.csv")
-_nind = (_comp[_comp.geo == "EL"].set_index("time")["n_ind"].to_dict())
-_gr_n = [_nind.get(y) for y in _byrs]
-
-f21 = ce.Series([str(y) for y in _byrs], dp=1)
-f21.add("Greece", [None if v is None else float(v) for v in _gr_b])
-f21.add("Indicators available for Greece",
-        [None if v is None else float(v) for v in _gr_n])
-_eu_b = _bs.get("eu") or []
-if any(v is not None for v in _eu_b):
-    f21.add("EU", [None if v is None else float(v) for v in _eu_b])
-
-_ctx_b = []
-for _c, _v in _bs["countries"].items():
-    if _c == "EL" or sum(x is not None for x in _v) < 2:
-        continue
-    _ctx_b.append({"label": NAMES.get(_c, _c),
-                   "values": [None if x is None else round(float(x), 1) for x in _v]})
-
-v21a = {"years": _byrs, "dp": 1, "yLabel": "% of available indicators",
-        "context": _ctx_b,
-        "contextLabel": "Each other EU country",
-        "alt": "The share of indicators placing each country in the EU's worst "
-               "fifth. Greece rises from roughly a quarter before the crisis to "
-               "around two thirds",
-        # The count is carried in the table, not drawn: it is a number of
-        # indicators, and putting it on a percentage axis would be the
-        # mixed-units defect this project has corrected twice already.
-        "series": [{"label": l, "tone": "gr" if l == "Greece" else "eu",
-                    "style": "solid" if l == "Greece" else "dashed",
-                    "weight": "strong" if l == "Greece" else "normal",
-                    "values": [None if v is None else round(v, 1) for v in vs]}
-                   for l, vs, m in f21.rows
-                   if l in ("Greece", "EU")]}
-
-# The audit trail: which indicators, and where Greece moved on each.
-#
-# The stored labels are the analysis spec's own names, several of which carry
+# The stored labels are the analysis spec's own names, several carrying
 # internal notation a reader should not have to decode ("own 2008 = 100",
 # "scarring stock", "EU = 100"). This is the presentation layer, not an edit to
 # the data: the keys, values and checksums are untouched.
@@ -259,41 +249,86 @@ _LADDER_LABEL = {
     "Household debt-to-income": "Household debt against income",
     "HICP inflation, food & non-alcoholic beverages": "Food prices",
 }
-_lad = _blob["panels"]["breadth_indicator_ladder"]["rows"]
-_missing = [r["label"] for r in _lad if r["label"] not in _LADDER_LABEL]
-assert not _missing, f"ladder labels without a reader name: {_missing}"
-f21b = ce.Series(["Position then", "Position now", "First year", "Latest year"], dp=1)
-_rows21 = []
-for r in _lad:
-    _rl = _LADDER_LABEL[r["label"]]
-    f21b.add(_rl, [float(r["pct_first"]), float(r["pct_last"]),
-                   float(r["year_first"]), float(r["year_last"])])
-    _worst = r["pct_last"] >= 80
-    _rows21.append({
-        "label": _rl, "a": round(float(r["pct_first"]), 1),
-        "b": round(float(r["pct_last"]), 1),
-        "tone": "chart-warn" if _worst else "chart-neutral",
-        "strong": _worst,
-        "right": "worst fifth" if _worst else "",
-        "detail": (f"<b>{r['label']}</b><br>{r['unit']}<br>"
-                   f"{r['year_first']}: position "
-                   f"{r['pct_first']:.0f} of 100<br>{r['year_last']}: position "
-                   f"{r['pct_last']:.0f} of 100<br>"
-                   f"<span style='opacity:.65'>0 is the best place in the Union "
-                   f"to be on this indicator, 100 the worst</span>")})
+_missing = [r for r in _basket.label if r not in _LADDER_LABEL]
+assert not _missing, f"basket labels without a reader name: {_missing}"
 
-v21b = {"rows": _rows21, "dp": 1,
+# ---- view A: the trajectory, constant denominator -------------------------
+_byrs = [int(y) for y in _btraj.time]
+f21 = ce.Series([str(y) for y in _byrs], dp=1)
+f21.add("Greece", [float(v) for v in _btraj.value])
+f21.add(f"Indicators in the worst fifth (of {_N})",
+        [float(v) for v in _btraj.n_worst])
+
+v21a = {"years": _byrs, "dp": 1,
+        "yLabel": f"% of the same {_N} indicators",
+        "yMin": 0, "yMax": 100,
+        "alt": f"The share of a fixed basket of {_N} indicators placing Greece "
+               f"in the EU's worst fifth, every year from 2008 to 2024. The "
+               f"same {_N} indicators are counted every year",
+        "series": [{"label": "Greece", "tone": "gr", "weight": "strong",
+                    "values": [round(float(v), 1) for v in _btraj.value]}]}
+
+# ---- view B: the same basket, then and now --------------------------------
+# Colour alone cannot carry "was it already there". Four derived statuses do,
+# with the shaded band showing the threshold they are derived from, and the
+# hollow start marker showing which side of it 2008 fell on.
+_TONE = {"entered": "chart-warn", "already": "chart-s4",
+         "left": "chart-ok", "outside": "chart-neutral"}
+f21b = ce.Series(["2008 position", "2024 position", "Transition"], dp=1)
+_rows21 = []
+for r in _basket.itertuples():
+    _lab = _LADDER_LABEL.get(r.label, r.label)
+    f21b.add(_lab, [float(r.pct_2008), float(r.pct_2024), r.status_label or "outside both years"])
+    _rows21.append({
+        "label": _lab, "a": round(float(r.pct_2008), 1),
+        "b": round(float(r.pct_2024), 1),
+        "tone": _TONE[r.status], "toneA": _TONE[r.status], "toneB": _TONE[r.status],
+        "strong": r.status in ("entered", "already"),
+        "right": r.status_label,
+        "detail": (f"<b>{r.label}</b><br>{r.unit}<br>"
+                   f"2008: position {r.pct_2008:.0f} of 100<br>"
+                   f"2024: position {r.pct_2024:.0f} of 100<br>"
+                   f"<b>{r.status_label or 'outside the worst fifth in both years'}"
+                   f"</b><br><span style='opacity:.65'>0 is the best place in "
+                   f"the Union to be on this indicator, 100 the worst</span>")})
+
+v21b = {"rows": _rows21, "dp": 0,
+        "xMin": 0, "xMax": 100,
+        "band": {"from": 80, "to": 100, "label": "EU's worst fifth"},
+        "hollowStart": True,
         "toneA": "chart-neutral", "toneB": "chart-gr",
-        "legendA": "Greece's earliest usable year",
-        "legendB": "Greece's latest year",
-        "xLabel": "position in the EU distribution, 100 = worst",
-        "alt": "One row per indicator behind the breadth measure, showing where "
-               "Greece sat at that indicator's earliest usable year and where it "
-               "sits now"}
+        "legendA": "2008", "legendB": "2024",
+        # The per-row status text needs a right gutter the chart does not have
+        # at phone width, where fitLabel trims it away. The key names every
+        # category at every width, so the reader is never left with colour
+        # alone -- which is what the shape and the band are also for.
+        "legendExtra": (
+            f'<span class="lg-item"><svg width="12" height="12" aria-hidden="true">'
+            f'<circle cx="6" cy="6" r="5" fill="var(--chart-warn)"/></svg>'
+            f'entered the worst fifth ({_C["entered"]})</span>'
+            f'<span class="lg-item"><svg width="12" height="12" aria-hidden="true">'
+            f'<circle cx="6" cy="6" r="5" fill="var(--chart-s4)"/></svg>'
+            f'already in it in 2008 ({_C["already"]})</span>'
+            + (f'<span class="lg-item"><svg width="12" height="12" aria-hidden="true">'
+               f'<circle cx="6" cy="6" r="5" fill="var(--chart-ok)"/></svg>'
+               f'left it ({_C["left"]})</span>' if _C["left"] else "")
+            + f'<span class="lg-item"><svg width="12" height="12" aria-hidden="true">'
+              f'<circle cx="6" cy="6" r="5" fill="var(--chart-neutral)"/></svg>'
+              f'outside in both years ({_C["outside"]})</span>'),
+        "xLabel": "position in the EU distribution, 0 = best, 100 = worst",
+        "alt": f"The same {_N} indicators placed by Greece's position in the "
+               f"EU distribution in 2008 and again in 2024, with the worst "
+               f"fifth shaded. {_C['entered']} entered the band over the "
+               f"period, {_C['already']} were already inside it"}
+
+_SUMMARY21 = (
+    f"Of {_N} indicators, <b>{_C['already']} were already in the EU's worst "
+    f"fifth in 2008, {_C['entered']} entered it by 2024, and "
+    f"{_C['left'] if _C['left'] else 'none'} left</b>.")
 
 FIGS["F21"] = dict(
-    caption="Greek disadvantage spread across measures: from a quarter of "
-            "indicators in Europe's worst fifth before the crisis to two thirds",
+    caption=f"On the same {_N} indicators, Greece went from the EU's worst "
+            f"fifth on {_C['worst_2008']} in 2008 to {_C['worst_2024']} in 2024",
     kind="panel", series=f21, payload=v21a,
     views=[("How many measures", v21a),
            ("Which measures", v21b, "dumbbell")],
@@ -303,14 +338,20 @@ FIGS["F21"] = dict(
         f"hardship in P3a and does not survive: on its own it is not "
         f"significant (p = {_P3A_ALONE:.2f}), and once the other accumulated "
         f"measures enter the model its coefficient reverses sign. It "
-        f"summarises the condition rather than explaining it. The outcome and "
-        f"every model "
-        "covariate are excluded from the count, so it cannot restate what the "
-        "report set out to explain. The second view's axis is POSITION, not "
-        "value: the indicators have no common unit, so 0 is the best place in "
-        "the Union to be on that indicator and 100 the worst, whichever "
-        "direction 'worse' runs in. Years reporting fewer than ten indicators "
-        "are dropped."),
+        f"summarises the condition rather than explaining it. THE BASKET IS "
+        f"FIXED: these are the {_N} indicators with a valid EU position in "
+        f"both 2008 and 2024, chosen without reference to whether they "
+        f"improved or deteriorated, so the same things are counted at both "
+        f"ends and in every year between. Unemployment, youth unemployment "
+        f"and the employment rate are absent because comparable EU coverage "
+        f"for them begins in 2009; hours worked, pay per hour, the work-effort "
+        f"squeeze and real wages are all present, so this is not a basket "
+        f"without labour-market information. The outcome and every model "
+        f"covariate are excluded. The second view's axis is POSITION, not "
+        f"value: the indicators have no common unit, so 0 is the best place in "
+        f"the Union to be on that indicator and 100 the worst, whichever "
+        f"direction 'worse' runs in."),
+    lede=_SUMMARY21,
     first="Series")
 
 # ---- F2 ladder -----------------------------------------------------------
@@ -711,6 +752,8 @@ def build(fid, spec):
     cav = caveat0
     if spec.get("extra_caveat"):
         cav = ("" if cav != cav else str(cav) + " ") + spec["extra_caveat"]
+    if spec.get("lede"):
+        body = f'<p class="fig-lede">{spec["lede"]}</p>' + body
     shell = ce.figure(fid, spec["caption"], question, status,
                       spec["kind"], {}, body, caveat=cav,
                       appendix_link="statistical_appendix.html", checksum=stamp)

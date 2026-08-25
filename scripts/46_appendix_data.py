@@ -683,6 +683,114 @@ except Exception as e:
     PROBLEMS.append(f"breadth_worst_quintile: {e}")
 
 
+# ------------------------------------- the fixed-basket comparison, 2008 vs 2024 ----
+# The ladder above uses each indicator's OWN earliest usable year, which is the
+# honest way to show the whole universe and a poor way to compare: 25 different
+# baselines cannot be added up. The report needs one basket measured twice.
+#
+# SELECTION RULE, fixed before any result was looked at: every indicator with a
+# valid EU position in BOTH 2008 and 2024, chosen without reference to whether
+# it improved or deteriorated. Nothing is interpolated and nothing is
+# substituted -- an indicator either has both endpoints or it is not in the
+# basket.
+#
+# The cost is stated rather than hidden. Unemployment, youth unemployment and
+# the employment rate are absent because comparable EU coverage for them begins
+# in 2009, one year late. The basket is not free of labour-market information:
+# hours worked, pay per hour, the work-effort squeeze and real wages are all in
+# it. What is missing is the unemployment count itself.
+BASKET_FIRST, BASKET_LAST = 2008, 2024
+
+
+def _greek_position(v, hi, year):
+    """Greece's position in the EU distribution that year, 100 = worst."""
+    if year not in v["years"]:
+        return None
+    i = v["years"].index(year)
+    vals = {c: sv[i] for c, sv in v["countries"].items() if sv[i] is not None}
+    if len(vals) < MIN_REPORTERS or "EL" not in vals:
+        return None
+    signed = pd.Series(vals) if hi else -pd.Series(vals)
+    return 100 * float(signed.rank(pct=True)["EL"]), float(vals["EL"]), len(vals)
+
+
+WORST_LINE = 100 * (1 - WORST_Q)      # a position at or above this is worst-fifth
+STATUS = {
+    (True, True): ("already", "already worst fifth"),
+    (False, True): ("entered", "entered worst fifth"),
+    (True, False): ("left", "left worst fifth"),
+    (False, False): ("outside", ""),
+}
+# New entrants first: they carry the change. Then the ones that were already
+# there, then any that left, then the rest.
+STATUS_ORDER = {"entered": 0, "already": 1, "left": 2, "outside": 3}
+
+try:
+    fixed = []
+    for k in [k for k in WORSE_HIGH if k not in CIRCULAR and k in SERIES]:
+        v, hi = SERIES[k], WORSE_HIGH[k]
+        a = _greek_position(v, hi, BASKET_FIRST)
+        b = _greek_position(v, hi, BASKET_LAST)
+        if a is None or b is None:
+            continue
+        key, label = STATUS[(a[0] >= WORST_LINE, b[0] >= WORST_LINE)]
+        fixed.append(dict(
+            key=k, label=v["label"], unit=v["unit"], worse_high=bool(hi),
+            pct_2008=round(a[0], 1), val_2008=round(a[1], 2), n_2008=a[2],
+            pct_2024=round(b[0], 1), val_2024=round(b[1], 2), n_2024=b[2],
+            status=key, status_label=label))
+    if not fixed:
+        raise ValueError("the fixed basket is empty")
+    fixed.sort(key=lambda r: (STATUS_ORDER[r["status"]], -r["pct_2024"]))
+
+    counts = {s: sum(1 for r in fixed if r["status"] == s) for s in STATUS_ORDER}
+    n_2008 = counts["already"] + counts["left"]
+    n_2024 = counts["already"] + counts["entered"]
+    pd.DataFrame(fixed).to_csv(OUT / "breadth_fixed_basket.csv", index=False)
+
+    # The trajectory on the SAME basket, so the line and the endpoints count the
+    # same things every year. Verified to have no gaps before it is written: a
+    # constant denominator that quietly varies would be worse than an honest
+    # varying one.
+    byears = list(range(BASKET_FIRST, BASKET_LAST + 1))
+    traj, holes = [], []
+    for y in byears:
+        ps = [_greek_position(SERIES[r["key"]], WORSE_HIGH[r["key"]], y) for r in fixed]
+        if any(p is None for p in ps):
+            holes.append(y)
+            continue
+        traj.append(dict(time=y, n_ind=len(ps),
+                         n_worst=sum(1 for p in ps if p[0] >= WORST_LINE),
+                         value=round(100 * sum(1 for p in ps if p[0] >= WORST_LINE)
+                                     / len(ps), 1)))
+    if holes:
+        raise ValueError(f"fixed basket has gaps in {holes}; the constant "
+                         f"denominator would be a fiction")
+    pd.DataFrame(traj).to_csv(OUT / "breadth_fixed_trajectory.csv", index=False)
+
+    PANELS["breadth_fixed_basket"] = dict(
+        label=f"The same {len(fixed)} indicators in {BASKET_FIRST} and {BASKET_LAST}",
+        group="Poverty measures", unit="position in the EU distribution",
+        kind="fixed_basket", rows=fixed,
+        counts=dict(total=len(fixed), worst_2008=n_2008, worst_2024=n_2024,
+                    already=counts["already"], entered=counts["entered"],
+                    left=counts["left"], outside=counts["outside"]),
+        note=f"Every indicator with a valid EU position in both {BASKET_FIRST} "
+             f"and {BASKET_LAST}, selected without reference to whether it "
+             f"improved or deteriorated. Unemployment, youth unemployment and "
+             f"the employment rate are absent because comparable EU coverage "
+             f"for them begins in 2009; hours worked, pay per hour, the "
+             f"work-effort squeeze and real wages are all present, so the "
+             f"basket is not free of labour-market information.")
+    print(f"  fixed basket {BASKET_FIRST}-{BASKET_LAST}: {len(fixed)} indicators, "
+          f"{n_2008} -> {n_2024} in the worst fifth "
+          f"({100*n_2008/len(fixed):.1f}% -> {100*n_2024/len(fixed):.1f}%); "
+          f"{counts['already']} already, {counts['entered']} entered, "
+          f"{counts['left']} left")
+except Exception as e:
+    PROBLEMS.append(f"breadth_fixed_basket: {e}")
+
+
 # ------------------------------------------------- the composite, indicator by indicator ----
 # The composite above is one number a year; this is the audit trail behind it.
 # For each contributing indicator: where Greece sat in the EU distribution at its
@@ -729,7 +837,8 @@ try:
             eu_basis=v["eu_basis"]))
     rows.sort(key=lambda r: -r["pct_last"])
     PANELS["breadth_indicator_ladder"] = dict(
-        label="Every indicator behind the breadth measure, then and now",
+        label="Every indicator behind the breadth measure: earliest available "
+              "year versus latest year",
         group="Poverty measures", unit="position in the EU distribution", kind="position_ladder",
         note="One row per contributing indicator. The hollow dot is Greece's position at that "
              "indicator's earliest usable year, the solid dot its latest; the shaded band is the "

@@ -753,6 +753,69 @@ if _rep.exists() and _app.exists():
     check("no appendix figure displays a report figure number",
           not _numbered, ", ".join(_numbered[:5]))
 
+    # ---- THE FIXED BASKET IS STILL THE BASKET THE RULE SELECTS ----------
+    #
+    # The breadth figure rests on a membership rule fixed before any result was
+    # looked at: every indicator with a valid EU position in both 2008 and
+    # 2024, chosen without reference to direction. A stored basket is only
+    # worth anything if the rule still produces it, so the rule is re-run here
+    # against the series and the two memberships compared. A silent change of
+    # membership would move the headline without moving anything visible.
+    import pandas as _pd
+    _bk = ROOT / "data" / "processed" / "breadth_fixed_basket.csv"
+    _core = ROOT / "data" / "processed" / "appendix_series_core.json"
+    if _bk.exists() and _core.exists():
+        _src = (ROOT / "scripts" / "46_appendix_data.py").read_text()
+        _wh = eval("{" + _src.split("WORSE_HIGH = {")[1].split("}")[0] + "}")
+        _circ = eval("{" + _src.split("CIRCULAR = {")[1].split("}")[0] + "}")
+        _minr = int(_src.split("MIN_REPORTERS = ")[1].split("\n")[0])
+        _wq = float(_src.split("WORST_Q = ")[1].split("\n")[0])
+        _ser = json.loads(_core.read_text())["series"]
+
+        def _pos(k, yr):
+            v = _ser[k]
+            if yr not in v["years"]:
+                return None
+            i = v["years"].index(yr)
+            vals = {c: sv[i] for c, sv in v["countries"].items()
+                    if sv[i] is not None}
+            if len(vals) < _minr or "EL" not in vals:
+                return None
+            s = _pd.Series(vals) if _wh[k] else -_pd.Series(vals)
+            return 100 * float(s.rank(pct=True)["EL"])
+
+        _want = sorted(k for k in _wh if k not in _circ and k in _ser
+                       and _pos(k, 2008) is not None and _pos(k, 2024) is not None)
+        _have = sorted(_pd.read_csv(_bk)["key"])
+        check("the fixed basket is exactly what its selection rule derives",
+              _want == _have,
+              f"rule gives {len(_want)}, stored has {len(_have)}; "
+              f"differences {sorted(set(_want) ^ set(_have))[:4]}")
+
+        # And the headline the report prints must be the basket's own count.
+        _b = _pd.read_csv(_bk)
+        _line = 100 * (1 - _wq)
+        _n8 = int((_b.pct_2008 >= _line).sum())
+        _n24 = int((_b.pct_2024 >= _line).sum())
+        # The caption is generated and prints digits; the prose is written and
+        # spells the numbers. Both must agree with the basket.
+        _WORDS = {"one": 1, "two": 2, "three": 3, "four": 4, "five": 5,
+                  "six": 6, "seven": 7, "eight": 8, "nine": 9, "ten": 10,
+                  "eleven": 11, "twelve": 12, "thirteen": 13, "fourteen": 14,
+                  "fifteen": 15, "sixteen": 16, "seventeen": 17}
+
+        def _num(s):
+            s = s.strip().lower()
+            return int(s) if s.isdigit() else _WORDS.get(s)
+
+        _claims = re.findall(
+            r"worst fifth on ([\w]+) in 2008 to ([\w]+) in 2024", _rt)
+        _bad_h = [c for c in _claims
+                  if _num(c[0]) != _n8 or _num(c[1]) != _n24]
+        check("every breadth headline in the report matches the stored basket",
+              bool(_claims) and not _bad_h,
+              f"basket says {_n8} -> {_n24}; report says {_bad_h or _claims}")
+
     _r, _a = _fig_hashes(_rt), _fig_hashes(_at)
     _gap = [k for k in _r if k not in _a]
     _diff = [k for k in _r if k in _a and _r[k] != _a[k]]

@@ -200,6 +200,10 @@ padding:0 1.1rem .7rem}
 letter-spacing:.06em;padding:.3rem .5rem;border-radius:3px;
 background:var(--accent-soft,rgba(61,111,180,.12));color:var(--badge-ink)}
 .fig-q{font:.82rem/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--text-secondary)}
+/* A generated one-line reading of the figure, above the plot. It states what
+   the rows add up to, which a reader should not have to count off the chart. */
+.fig-lede{margin:.1rem 1.1rem .7rem;font:.86rem/1.45 ui-sans-serif,system-ui,
+sans-serif;color:var(--text-primary)}
 .chart-live{padding:.2rem 1.1rem 1rem;position:relative}
 .chart-live:focus-visible{outline:2px solid var(--eu);outline-offset:2px}
 .chart{width:100%;height:auto;display:block;touch-action:pan-y}
@@ -1111,9 +1115,28 @@ looks better.</p>
     let lo=Infinity,hi=-Infinity;
     d.rows.forEach(r=>{lo=Math.min(lo,r.a,r.b);hi=Math.max(hi,r.a,r.b);});
     const sp=(hi-lo)||1; lo-=sp*0.08; hi+=sp*0.08;
+    // A figure may declare the range its measure actually has. Percentile
+    // positions run 0 to 100 and the padding above put 107.4 on the axis --
+    // a position no country can occupy.
+    if(d.xMin!=null)lo=d.xMin;
+    if(d.xMax!=null)hi=d.xMax;
     const xs=v=>padL+(v-lo)/(hi-lo)*pw;
     const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,class:'chart',role:'img',
       'aria-label':d.alt||'paired comparison'});
+    // A named region of the axis, drawn behind the rows. The worst fifth is
+    // what the breadth measure counts, and shading it lets a reader see which
+    // side of the threshold each end of each row falls without reading a
+    // number off the axis.
+    if(d.band){
+      const x0=xs(Math.max(lo,d.band.from)), x1=xs(Math.min(hi,d.band.to));
+      svg.appendChild(el('rect',{x:Math.min(x0,x1),y:padT-6,
+        width:Math.abs(x1-x0),height:n*rowH+6,
+        fill:'var(--chart-warn)',opacity:.10}));
+      if(d.band.label){
+        const bt=el('text',{x:(x0+x1)/2,y:padT-10,'text-anchor':'middle',
+          class:'axis-label',style:'fill:var(--chart-warn);font-weight:700'});
+        bt.textContent=d.band.label;svg.appendChild(bt);}
+    }
     const zeroShown=lo<0&&hi>0;
     [lo,(lo+hi)/2,hi].forEach(v=>{
       // A midpoint that coincides with zero draws a second line a pixel from
@@ -1131,9 +1154,16 @@ looks better.</p>
       const y=padT+i*rowH+rowH/2, tone=r.tone||'chart-neutral';
       svg.appendChild(el('line',{x1:xs(r.a),x2:xs(r.b),y1:y,y2:y,
         stroke:toneVar(tone),'stroke-width':2.5,opacity:.45}));
-      const tA=d.toneA||'chart-neutral', tB=d.toneB||'chart-gr';
-      svg.appendChild(outlineNeutral(el('circle',{cx:xs(r.a),cy:y,r:5,
-        fill:toneVar(tA)}),tA));
+      const tA=r.toneA||d.toneA||'chart-neutral', tB=r.toneB||d.toneB||'chart-gr';
+      // A hollow start marker lets "was it already inside the band" read from
+      // SHAPE as well as position, which colour alone cannot carry.
+      if(d.hollowStart){
+        svg.appendChild(el('circle',{cx:xs(r.a),cy:y,r:5,fill:'var(--surface-1)',
+          stroke:toneVar(tA),'stroke-width':2}));
+      }else{
+        svg.appendChild(outlineNeutral(el('circle',{cx:xs(r.a),cy:y,r:5,
+          fill:toneVar(tA)}),tA));
+      }
       svg.appendChild(el('circle',{cx:xs(r.b),cy:y,r:5.5,fill:toneVar(tB)}));
       const lb=el('text',{x:padL-10,y:y+4,'text-anchor':'end',class:'axis-label',
         style:r.strong?'font-weight:700':''});
@@ -1147,10 +1177,14 @@ looks better.</p>
     if(d.legendA||d.legendB){
       const lg=document.createElement('div');lg.className='legend';
       const lA=`var(--${d.toneA||'chart-neutral'})`, lB=`var(--${d.toneB||'chart-gr'})`;
+      const startSwatch=d.hollowStart
+        ? `<circle cx="6" cy="6" r="4.5" fill="none" stroke="${lA}" stroke-width="2"/>`
+        : `<circle cx="6" cy="6" r="5" fill="${lA}"/>`;
       lg.innerHTML=`<span class="lg-item"><svg width="12" height="12" aria-hidden="true">
-        <circle cx="6" cy="6" r="5" fill="${lA}"/></svg>${d.legendA||'start'}</span>
+        ${startSwatch}</svg>${d.legendA||'start'}</span>
         <span class="lg-item"><svg width="12" height="12" aria-hidden="true">
-        <circle cx="6" cy="6" r="5" fill="${lB}"/></svg>${d.legendB||'end'}</span>`;
+        <circle cx="6" cy="6" r="5" fill="${lB}"/></svg>${d.legendB||'end'}</span>`
+        + (d.legendExtra||'');
       host.insertBefore(lg,svg.nextSibling);}
     const tp=tip(host);let idx=-1;
     const show=i=>{if(i<0||i>=marks.length)return;idx=i;const r=marks[i].r;
