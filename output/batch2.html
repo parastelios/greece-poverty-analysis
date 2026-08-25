@@ -511,6 +511,11 @@ then collapse under the bootstrap, to 0.40 and 0.55.</p>
       if(v!=null){lo=Math.min(lo,v);hi=Math.max(hi,v);}}));
     if(!isFinite(lo)){lo=0;hi=1;}
     const pad=(hi-lo)*0.10||1; hi+=pad; lo=(lo<0)?lo-pad:Math.max(0,lo-pad);
+    // An explicit range, so sibling views can share one scale. Without it each
+    // view fits its own data and the axis silently rescales between tabs,
+    // which makes two charts look comparable when they are not.
+    if(d.yMin!=null)lo=d.yMin;
+    if(d.yMax!=null)hi=d.yMax;
     // invertY puts the WORSE value higher, which a rank axis needs: rank 1 is
     // the worst position, and drawing it at the bottom would read backwards.
     const ys=v=>d.invertY ? padT+(v-lo)/(hi-lo)*ph

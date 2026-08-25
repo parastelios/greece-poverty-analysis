@@ -418,7 +418,7 @@ whether closely related deprivation measures are admitted.</p>
 <p>Nothing in that table is new. Every row points at a result reached in an
 earlier stage, and this section introduces no estimate and no interpretation
 that was not already established and bounded where it was produced.</p>
-<footer class="stamp">Built 2026-08-25 10:02 from commit <code>2b01db8</code> + uncommitted changes. If this does not match the current commit, the page is stale &mdash; reopen the file rather than refreshing.</footer>
+<footer class="stamp">Built 2026-08-25 10:10 from commit <code>7e193a0</code> + uncommitted changes. If this does not match the current commit, the page is stale &mdash; reopen the file rather than refreshing.</footer>
 <script>
 (function(){
   const NS='http://www.w3.org/2000/svg';
@@ -538,6 +538,11 @@ that was not already established and bounded where it was produced.</p>
       if(v!=null){lo=Math.min(lo,v);hi=Math.max(hi,v);}}));
     if(!isFinite(lo)){lo=0;hi=1;}
     const pad=(hi-lo)*0.10||1; hi+=pad; lo=(lo<0)?lo-pad:Math.max(0,lo-pad);
+    // An explicit range, so sibling views can share one scale. Without it each
+    // view fits its own data and the axis silently rescales between tabs,
+    // which makes two charts look comparable when they are not.
+    if(d.yMin!=null)lo=d.yMin;
+    if(d.yMax!=null)hi=d.yMax;
     // invertY puts the WORSE value higher, which a rank axis needs: rank 1 is
     // the worst position, and drawing it at the bottom would read backwards.
     const ys=v=>d.invertY ? padT+(v-lo)/(hi-lo)*ph

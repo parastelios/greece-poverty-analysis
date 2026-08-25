@@ -52,57 +52,73 @@ for lbl, src, tone, style, weight in [
         ("Greece: income poverty", gr.arop, "series-3", "solid", "normal"),
         ("EU median: income poverty", med.arop, "series-3", "dashed", "light")]:
     f1.add(lbl, [float(src.get(y)) for y in yrs], tone=tone, style=style, weight=weight)
-# Two views. The first is the comparison alone: four lines, nothing else, so
-# the distance between the two measures reads without competition. The second
-# puts every other country's hardship behind it, which answers a different
-# question -- is Greece the end of a distribution, or outside it?
-ctx1 = []
-for g, sub in panel.groupby("geo"):
-    if g == "EL":
-        continue
-    s = sub.set_index("time").subjective_poverty
-    vals = [float(s.get(y)) if y in s.index and pd.notna(s.get(y)) else None
-            for y in yrs]
-    if sum(v is not None for v in vals) >= 2:
-        ctx1.append({"label": NAMES.get(g, g), "values": vals})
+# Two views, one per measure, built the same way so they can be read against
+# each other: every country faint, Greece solid, the EU median dashed, and the
+# OTHER measure's Greek line dashed in a second colour as the comparison. The
+# gap between the solid blue and the green dashed line is the subject of this
+# whole report, and it appears in both views from opposite sides.
+def _country_context(col):
+    out = []
+    for g, sub in panel.dropna(subset=[col]).groupby("geo"):
+        if g == "EL":
+            continue
+        s = sub.set_index("time")[col]
+        vals = [float(s.get(y)) if y in s.index and pd.notna(s.get(y)) else None
+                for y in yrs]
+        if sum(v is not None for v in vals) >= 2:
+            out.append({"label": NAMES.get(g, g), "values": vals})
+    return out
 
-_series1 = [{"label": l, "tone": m["tone"], "style": m["style"],
-             "weight": m["weight"], "values": [round(v, 1) for v in vs]}
-            for l, vs, m in f1.rows]
 
-v1a = {"years": [int(y) for y in yrs], "dp": 1, "yLabel": "% of households",
-       "alt": "Greek reported hardship against income poverty, 2015 to 2024, "
-              "with the EU median of each for comparison",
-       "series": _series1}
+def _measure_view(col, label, other_col, other_label):
+    ser = ce.Series([str(int(y)) for y in yrs], dp=1)
+    ser.add(f"Greece: {label}", [float(gr[col].get(y)) for y in yrs],
+            tone="gr", style="solid", weight="strong")
+    ser.add(f"EU median: {label}", [float(med[col].get(y)) for y in yrs],
+            tone="gr", style="dashed", weight="normal")
+    ser.add(f"Greece: {other_label}", [float(gr[other_col].get(y)) for y in yrs],
+            tone="series-3", style="dashed", weight="normal")
+    view = {"years": [int(y) for y in yrs], "dp": 1, "yLabel": "% of households",
+            "context": _country_context(col),
+            "contextLabel": f"Each other EU country: {label}",
+            "alt": f"{label.capitalize()} for every EU country, with Greece and "
+                   f"the EU median marked and Greek {other_label} shown for "
+                   f"comparison",
+            "series": [{"label": l, "tone": m["tone"], "style": m["style"],
+                        "weight": m["weight"], "values": [round(v, 1) for v in vs]}
+                       for l, vs, m in ser.rows]}
+    return ser, view
 
-# The second view drops the EU median for hardship: with every country drawn,
-# the median is one line among twenty-seven and adds nothing the spread does
-# not already say. Income poverty stays, because the gap is the subject.
-f1b = ce.Series([str(int(y)) for y in yrs], dp=1)
-for lbl, src, tone, style, weight in [
-        ("Greece: reported hardship", gr.subjective_poverty, "gr", "solid", "strong"),
-        ("Greece: income poverty", gr.arop, "series-3", "solid", "normal"),
-        ("EU median: income poverty", med.arop, "series-3", "dashed", "light")]:
-    f1b.add(lbl, [float(src.get(y)) for y in yrs], tone=tone, style=style,
-            weight=weight)
 
-v1b = {"years": [int(y) for y in yrs], "dp": 1, "yLabel": "% of households",
-       "context": ctx1,
-       "contextLabel": "Each other EU country: reported hardship",
-       "alt": "Greek reported hardship against every other EU country's, with "
-              "Greek and EU-median income poverty for scale. Greece sits clear "
-              "above the whole spread",
-       "series": [{"label": l, "tone": m["tone"], "style": m["style"],
-                   "weight": m["weight"], "values": [round(v, 1) for v in vs]}
-                  for l, vs, m in f1b.rows]}
+f1, v1a = _measure_view("subjective_poverty", "reported hardship",
+                        "arop", "income poverty")
+f1b, v1b = _measure_view("arop", "income poverty",
+                         "subjective_poverty", "reported hardship")
+
+# One scale for both views. Each view otherwise fits its own data, and income
+# poverty spans a third of hardship's range: the axis would silently rescale
+# between tabs and the two charts would look comparable while sharing nothing.
+_all1 = [v for c in ("subjective_poverty", "arop")
+         for v in panel[c].dropna().tolist()]
+_lo1, _hi1 = min(_all1), max(_all1)
+_pad1 = (_hi1 - _lo1) * 0.06
+for _v in (v1a, v1b):
+    _v["yMin"] = max(0.0, round(_lo1 - _pad1, 1))
+    _v["yMax"] = round(_hi1 + _pad1, 1)
 
 FIGS["F1"] = dict(
     caption="Reported hardship and income poverty remain far apart, despite "
             "some narrowing",
     kind="panel", series=f1, payload=v1a,
-    views=[("Greece against the EU median", v1a),
-           ("Greece against every country", v1b)],
+    views=[("Reported hardship across the EU", v1a),
+           ("Income poverty across the EU", v1b)],
     view_series=[f1, f1b],
+    extra_caveat=(
+        "Both views are built the same way, one per measure: every country "
+        "faint, Greece solid, the EU median dashed, and the other measure's "
+        "Greek line dashed in green. The distance between the blue and green "
+        "Greek lines is the same distance in both views, seen from either "
+        "side."),
     first="Series")
 
 # ---- F2 ladder -----------------------------------------------------------
