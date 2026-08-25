@@ -2267,7 +2267,7 @@ details.methods>summary:focus-visible{outline:2px solid var(--series-gr);
 .verdict{font-weight:700;white-space:nowrap}
 .verdict.ok{color:var(--div-pos)}
 .verdict.no{color:var(--text-secondary)}
-.verdict.mid{color:var(--series-3)}
+.verdict.mid{color:var(--ink-ok)}
 .ctx-status{font-size:.82rem;color:var(--text-secondary)}
 .vsub{display:block;font-size:.82em;color:var(--text-secondary)}
 .tnote{font:.82rem/1.5 ui-sans-serif,system-ui,sans-serif;

@@ -150,12 +150,25 @@ HEAD = """<meta name="viewport" content="width=device-width, initial-scale=1">
 :root{
   color-scheme: light;
   --page:#f9f9f7; --surface-1:#fcfcfb; --surface-2:#f3f2ee;
-  --text-primary:#0b0b0b; --text-secondary:#52514e; --text-muted:#898781;
+  /* Light-theme muted text: see the note in chart_engine.CSS. #898781 is
+     3.4:1 on this ground, below the AA minimum for 11-12px labels. */
+  /* #52514e is 4.30:1 on the card ground -- the glossary's bold terms and
+     definition titles sit at 14px, so they need 4.5:1. */
+  --text-primary:#0b0b0b; --text-secondary:#4c4b48; --text-muted:#74726c;
+  --ink-gr:#1f66be; --ink-hi:#0d7350; --ink-eu:#aa4722;
   --gridline:#e1e0d9; --border:rgba(11,11,11,0.10);
   --gr:#2a78d6; --eu:#eb6834; --faint:#b8b7b0; --hi:#1baf7a;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
+    /* color-scheme must follow the theme, not stay pinned at "light" on
+       :root. Chrome resolves UA-styled elements against it, and <table>
+       is one: with the page dark and color-scheme still light, every
+       atlas mini-table rendered near-black text on the card's near-black
+       ground -- 1.12:1, effectively invisible, across all 89 charts. The
+       borrowed report stylesheet already switches it; this one did not. */
+    color-scheme: dark;
+    --ink-gr:#6aa9f0; --ink-hi:#2fd39a; --ink-eu:#f0946b;
     --page:#111110; --surface-1:#191918; --surface-2:#222221;
     --text-primary:#ffffff; --text-secondary:#c3c2b7; --text-muted:#898781;
     --gridline:#2c2c2a; --border:rgba(255,255,255,0.12);
@@ -163,6 +176,8 @@ HEAD = """<meta name="viewport" content="width=device-width, initial-scale=1">
   }
 }
 :root[data-theme="dark"]{
+  color-scheme: dark;
+  --ink-gr:#6aa9f0; --ink-hi:#2fd39a; --ink-eu:#f0946b;
   --page:#111110; --surface-1:#191918; --surface-2:#222221;
   --text-primary:#ffffff; --text-secondary:#c3c2b7; --text-muted:#898781;
   --gridline:#2c2c2a; --border:rgba(255,255,255,0.12);
@@ -219,7 +234,7 @@ text-transform:uppercase;color:var(--text-muted);padding:.35rem 0;align-self:cen
 .howto b{color:var(--text-primary)}
 nav.toc{background:var(--surface-1);border:1px solid var(--border);border-radius:10px;
   padding:16px 18px;margin:22px 0 34px}
-nav.toc a{display:inline-block;margin:3px 14px 3px 0;font-size:13.5px;color:var(--gr);
+nav.toc a{display:inline-block;margin:3px 14px 3px 0;font-size:13.5px;color:var(--ink-gr);
   text-decoration:none}
 nav.toc a:hover{text-decoration:underline}
 h2.group{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
@@ -250,11 +265,11 @@ dl.gloss{margin:0}
 .chart-card{background:var(--surface-1);border:1px solid var(--border);border-radius:12px;
   padding:18px 20px 12px;margin:0 0 20px}
 .chart-title{font-size:15.5px;font-weight:650;margin:0 0 3px;letter-spacing:-.01em}
-.secnum{display:inline-block;min-width:26px;color:var(--gr);font-weight:800}
+.secnum{display:inline-block;min-width:26px;color:var(--ink-gr);font-weight:800}
 .subhead{font-size:12.5px;font-weight:700;letter-spacing:.03em;color:var(--text-secondary);
   margin:26px 0 12px;padding-bottom:5px;border-bottom:1px solid var(--gridline);max-width:74ch}
 .tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.05em;
-  text-transform:uppercase;color:var(--hi);border:1px solid var(--hi);border-radius:4px;
+  text-transform:uppercase;color:var(--ink-hi);border:1px solid var(--hi);border-radius:4px;
   padding:1px 6px;margin-right:8px;vertical-align:2px}
 .scatter-card{border-left:3px solid var(--hi)}
 .candidate-detail{margin:0 0 12px;border:1px solid var(--border);border-radius:10px;
@@ -293,7 +308,7 @@ table.mini{border-collapse:collapse;width:100%;font-size:12.5px;margin-top:10px}
 table.mini th,table.mini td{padding:6px 9px;border-bottom:1px solid var(--gridline);text-align:right}
 table.mini th:first-child,table.mini td:first-child{text-align:left}
 table.mini th{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-muted);font-weight:600}
-table.mini td.gr{color:var(--gr);font-weight:650}
+table.mini td.gr{color:var(--ink-gr);font-weight:650}
 .scroll{overflow-x:auto}
 footer{margin-top:64px;padding-top:20px;border-top:1px solid var(--gridline);
   font-size:12.5px;color:var(--text-muted);max-width:80ch}
@@ -1949,7 +1964,7 @@ whose claim they illustrate. Version 2 adds the final fixed and nested model res
 multiple-testing screen, conditional diagnostics and country-level residual comparisons; detailed
 candidate trajectories are collapsed by default so the central evidence remains readable.
 <br><br><b>How to read the charts.</b> Each line chart draws every EU member state as a faint grey
-line, with <b style="color:var(--gr)">Greece</b> in blue and the <b style="color:var(--eu)">EU
+line, with <b style="color:var(--ink-gr)">Greece</b> in blue and the <b style="color:var(--ink-eu)">EU
 comparator</b> as an orange dashed line. Hover anywhere to read the year, Greece's value, the EU
 value, and the value of whichever country's line your cursor is nearest &mdash; that line lights up
 in green. The small table under each chart gives the same figures at fixed years, so the numbers are

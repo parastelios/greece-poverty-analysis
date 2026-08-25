@@ -44,7 +44,7 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `p6-rewrite` |
-| HEAD | `455f4ba` Cut the report to fifteen figures; nothing deleted, everything relocated |
+| HEAD | `8b7abe8` Reorganise the appendix: six sections, and an atlas collapsed by domain |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-25 |
 | Frozen V1 reference | `v1-final` |

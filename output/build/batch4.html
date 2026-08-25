@@ -198,7 +198,7 @@ ui-sans-serif,system-ui,sans-serif;color:var(--text-primary)}
 padding:0 1.1rem .7rem}
 .badge{font:600 .66rem/1 ui-sans-serif,system-ui,sans-serif;text-transform:uppercase;
 letter-spacing:.06em;padding:.3rem .5rem;border-radius:3px;
-background:var(--accent-soft,rgba(61,111,180,.12));color:var(--eu)}
+background:var(--accent-soft,rgba(61,111,180,.12));color:var(--badge-ink)}
 .fig-q{font:.82rem/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--text-secondary)}
 .chart-live{padding:.2rem 1.1rem 1rem;position:relative}
 .chart-live:focus-visible{outline:2px solid var(--eu);outline-offset:2px}
@@ -242,7 +242,7 @@ color:var(--chart-label);letter-spacing:.01em}
 .viewbtn{font:600 .74rem/1 ui-sans-serif,system-ui,sans-serif;padding:.35rem .6rem;
 border:1px solid var(--border);background:transparent;color:var(--text-secondary);
 border-radius:4px;cursor:pointer}
-.viewbtn[aria-selected="true"]{background:var(--gr);border-color:var(--gr);color:#fff}
+.viewbtn[aria-selected="true"]{background:var(--btn-sel);border-color:var(--btn-sel);color:#fff}
 .viewbtn:hover{color:var(--gr)}
 .viewbtn[aria-selected="true"]:hover{color:#fff}
 .lg-item{display:inline-flex;align-items:center;gap:.4rem;white-space:nowrap;
@@ -252,7 +252,7 @@ flex:0 1 auto;min-width:0}
 .fig-caveat{margin:0;padding:.7rem 1.1rem;border-top:1px solid var(--border);
 background:var(--accent-soft,rgba(192,57,43,.05));
 font:.78rem/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--text-secondary)}
-.fig-caveat strong{color:var(--gr)}
+.fig-caveat strong{color:var(--ink-accent)}
 .fallback{border-top:1px solid var(--border)}
 .fallback > summary{padding:.6rem 1.1rem;cursor:pointer;
 font:.78rem/1 ui-sans-serif,system-ui,sans-serif;color:var(--text-secondary)}
@@ -280,8 +280,39 @@ padding:.5rem .7rem;border-bottom:1px solid var(--text-secondary);white-space:no
 .ess-table .tnote{font:.82rem/1.5 ui-sans-serif,system-ui,sans-serif;
 color:var(--text-secondary);margin:.5rem 0 0;max-width:44rem}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+/* MUTED TEXT, LIGHT THEME ONLY.
+   The borrowed stylesheet sets --text-muted:#898781 in all three theme blocks.
+   On the dark ground that is 5.3:1 and fine; on the light ground it is 3.4:1,
+   below the 4.5:1 WCAG AA minimum for text of this size -- and every small
+   label in the documents uses it. Only the light value moves, redefined in all
+   three blocks so an explicit theme choice wins in either direction. */
+:root{--text-muted:#74726c;
+  /* 11px uppercase on the tinted chip: 4.70:1 here, against 2.60:1 for the
+     chart-line blue it used to borrow. */
+  --badge-ink:#aa4722;
+  /* White on this blue is 4.66:1, and it is the same value in both themes so
+     a selected tab does not shift colour when the theme does. */
+  --btn-sel:#2674d2;
+  /* Ink versions of two chart colours, for the places where those colours are
+     used as TEXT. A chart line clears its 3:1 bar at #1baf7a and #2a78d6; the
+     same values on 12-14px bold prose are 2.67:1 and 4.0:1. */
+  --ink-ok:#0f7f57; --ink-accent:#1f66be}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){--text-muted:#898781;--badge-ink:#c37958;
+    --ink-ok:#2fd39a;--ink-accent:#6aa9f0}
+}
+:root[data-theme="dark"]{--text-muted:#898781;--badge-ink:#c37958;
+  --ink-ok:#2fd39a;--ink-accent:#6aa9f0}
 @media print{
   .chart-live{display:none}
+  /* The view switcher is interactive furniture. On paper it is a row of dead
+     buttons, and worse, it implies the other views are reachable. */
+  .viewbar{display:none}
+  /* Switching views hides the other views' tables with [hidden]. On screen
+     that is right; in print it silently drops every view but the first, which
+     is the whole fallback for a figure whose chart does not print. */
+  .fallback table[data-view][hidden]{display:table !important}
+  .fallback table[data-view]{margin-bottom:.7rem}
   /* Stacked figures are the deliberate exception. The rule above exists
      because a tabbed chart prints as one arbitrary view plus a row of dead
      buttons, so the table is the honest artefact. A stacked figure has no tabs
@@ -427,7 +458,7 @@ whether closely related deprivation measures are admitted.</p>
 <p>Nothing in that table is new. Every row points at a result reached in an
 earlier stage, and this section introduces no estimate and no interpretation
 that was not already established and bounded where it was produced.</p>
-<footer class="stamp">Built 2026-08-25 16:05 from commit <code>fd26858</code> + uncommitted changes. If this does not match the current commit, the page is stale &mdash; reopen the file rather than refreshing.</footer>
+<footer class="stamp">Built 2026-08-25 17:22 from commit <code>8b7abe8</code> + uncommitted changes. If this does not match the current commit, the page is stale &mdash; reopen the file rather than refreshing.</footer>
 <script>
 (function(){
   const NS='http://www.w3.org/2000/svg';
@@ -570,10 +601,29 @@ that was not already established and bounded where it was produced.</p>
     // year rather than a decade with no round at all. The position still
     // occupies its true horizontal distance; only its label is suppressed.
     const hide=new Set((d.hiddenTicks||[]).map(Number));
-    yrs.forEach((y,i)=>{if(i%step&&i!==yrs.length-1)return;
-      if(hide.has(Number(y)))return;
-      const t=el('text',{x:xs(y),y:H-padB+16,'text-anchor':'middle',class:'axis-label'});
-      t.textContent=y;svg.appendChild(t);});
+    // The last year is always labelled, because the endpoint is what a reader
+    // looks for. But the stride rarely lands on it, so the last label used to
+    // be drawn hard against the one before it -- "2024 2025" touching at
+    // desktop width and overlapping by 16px on a phone.
+    //
+    // Candidates are chosen by stride, then filtered RIGHT TO LEFT with their
+    // measured widths, so the endpoint always survives and whichever neighbour
+    // would collide with it is the one dropped.
+    const cand=[];
+    yrs.forEach((y,i)=>{
+      if(i%step && i!==yrs.length-1) return;
+      if(hide.has(Number(y))) return;
+      cand.push({y:y, x:xs(y), half:ms(String(y),false)/2});
+    });
+    const keep=[];
+    for(let i=cand.length-1;i>=0;i--){
+      const c=cand[i], prev=keep[keep.length-1];
+      if(prev && c.x+c.half+4 > prev.x-prev.half) continue;
+      keep.push(c);
+    }
+    keep.forEach(c=>{
+      const t=el('text',{x:c.x,y:H-padB+16,'text-anchor':'middle',class:'axis-label'});
+      t.textContent=c.y;svg.appendChild(t);});
     // A series that crosses zero needs the zero drawn. Without it the turn from
     // net exit to net return is invisible: the reader sees a falling line and
     // cannot tell where it changes sign. The area between the series and zero
@@ -1045,11 +1095,21 @@ that was not already established and bounded where it was produced.</p>
           style:'fill:var(--chart-warn);font-weight:700'});
         gt.textContent=r.gapLabel||'';svg.appendChild(gt);
       }
-      if(hl||i===0||i===n-1||d.labelAll){const vt=el('text',{
-        x:xs(r.value)+(r.value<0?-5:5),y:y+3.5,class:'axis-label',
-        'text-anchor':r.value<0?'end':'start',
-        style:hl?'fill:var(--gr);font-weight:700':''});
-        vt.textContent=fmt(r.value,d.dp);svg.appendChild(vt);}
+      if(hl||i===0||i===n-1||d.labelAll){
+        // The label sits outside the bar's end -- left of a negative bar,
+        // right of a positive one. For the MOST negative row the bar reaches
+        // the left of the plot, so its label ran back into the row-label
+        // gutter and landed on the country name. Flip it inboard when the
+        // outside has no room, the same rule the scatter's callout uses.
+        const txt=fmt(r.value,d.dp), tw=ms(txt,!!hl);
+        const neg=r.value<0;
+        const outside=neg?xs(r.value)-5-tw:xs(r.value)+5+tw;
+        const fits=neg?(outside>padL+2):(outside<W-padR-2);
+        const vt=el('text',{
+          x:xs(r.value)+((neg===fits)?-5:5),y:y+3.5,class:'axis-label',
+          'text-anchor':(neg===fits)?'end':'start',
+          style:hl?'fill:var(--gr);font-weight:700':''});
+        vt.textContent=txt;svg.appendChild(vt);}
       marks.push({y:y,r:r,i:i});});
     if(typeof ms!=='undefined'&&ms.done)ms.done();
     host.insertBefore(svg,host.firstChild);
@@ -1327,7 +1387,14 @@ that was not already established and bounded where it was produced.</p>
       svg.appendChild(el('circle',{cx:cx,cy:cy,r:5,fill:'var(--chart-eu)',
         stroke:'var(--surface-1)','stroke-width':1.5}));
       if(d.crosshair.label){
-        const below=d.crosshair.place!=='above';
+        // Below the point by default, but flipped above when "below" would
+        // land in the axis-tick band. On a short chart -- 174px tall at phone
+        // width -- 26px under the median point is exactly where the x-axis
+        // numerals live, and the callout sat across three of them. An earlier
+        // check missed this because it filtered numeric labels out before
+        // testing for collisions.
+        const wantBelow=d.crosshair.place!=='above';
+        const below=wantBelow && (cy+26+7 < padT+ph-2);
         const cfull0=d.crosshair.label;
         const w0=ms((d.crosshair.shortLabel&&ms(cfull0,false)>pw*0.6)
                     ?d.crosshair.shortLabel:cfull0,false);

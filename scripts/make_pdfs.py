@@ -35,6 +35,11 @@ DOCS = [
     ("v2_report.html", "Greek-Poverty-Paradox-technical-report.pdf"),
     ("narrative.html", "Greek-Poverty-Paradox-narrative.pdf"),
     ("academic_paper.html", "Greek-Poverty-Paradox-working-paper.pdf"),
+    # The appendix now hides most of its content behind collapsed groups, so it
+    # is exactly the document where a print path has to be proved rather than
+    # assumed: a closed <details> prints as missing content, not as a closed
+    # block.
+    ("statistical_appendix.html", "Greek-Poverty-Paradox-statistical-appendix.pdf"),
 ]
 
 # Injected into <head>, i.e. BEFORE the documents' own scripts. This matters:
@@ -76,6 +81,15 @@ BODY_LAYER = """
   .stat-tile, .tile, table, figure, .chart-wrap, .proof, .checked-item,
   .table-wrap, blockquote, .callout, .story-map
     { break-inside: avoid; page-break-inside: avoid; }
+
+  /* A figure that is TALLER THAN A PAGE cannot honour break-inside:avoid. The
+     renderer pushes it to the next page, finds it still does not fit, and
+     drops it -- the stacked threshold figure printed as a blank page with its
+     caption gone and the prose above it referring to a figure that was not
+     there. Figures carrying more than one view are allowed to flow. */
+  figure:has(.chart-live[data-views="stacked"]),
+  figure:has(table[data-view]:nth-of-type(2))
+    { break-inside: auto; page-break-inside: auto; }
   details.method-details > summary
     { break-after: avoid; page-break-after: avoid; }
   h1,h2,h3,h4,.chapter-title,.sec-title { break-after: avoid; page-break-after: avoid; }
@@ -93,7 +107,25 @@ BODY_LAYER = """
 
   /* Long identifiers in method notes must wrap rather than overflow. */
   code { overflow-wrap:anywhere; word-break:break-word; }
-  table { width:100% !important; min-width:0 !important; font-size:11px !important; }
+  /* A fallback table with a column per year is far wider than A4. With
+     `width:100%` alone the columns kept their content widths and the last two
+     years were sliced off the right edge -- silent data loss on paper, in the
+     one artefact that exists because the chart does not print. `fixed` makes
+     the columns share the width they actually have. */
+  table { table-layout: fixed !important; width:100% !important;
+          min-width:0 !important; font-size:8.5px !important; }
+  /* Numbers and year headings must never break. `overflow-wrap:anywhere` fixed
+     the clipping and produced something worse: "2003" set as "200" over "3",
+     and "4923" as "492" over "3". Only the row-label column may wrap. */
+  table th, table td { padding:3px 1.5px !important; white-space:nowrap;
+                       overflow-wrap:normal; word-break:keep-all; }
+  table th:first-child, table td:first-child { width:16% !important;
+                       white-space:normal; overflow-wrap:break-word; }
+  /* At 23 year-columns the cells end up exactly as wide as their contents, so
+     a row of years reads as one long number. Hairline rules give the eye the
+     column boundaries that whitespace no longer can. */
+  table th + th, table td + td { border-left:1px solid #dcdcdc !important; }
+  table thead th { border-bottom:1px solid #bbb !important; }
   .table-scroll, .mini-scroll { overflow:visible !important; }
   a { color: inherit; text-decoration: none; }
 </style>

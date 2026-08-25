@@ -290,7 +290,9 @@ dict(id="F16", stage=7, chart_type="panel",
       interaction="switch view; hover names a country or reads an indicator's "
                   "underlying values",
       fallback="year x share of indicators; indicator x position then and now",
-      caveat="DESCRIPTIVE ONLY: tested as a predictor in P3a and does not survive -- not significant alone, sign-reversing under controls.",
+      # Short by design: the figure states the full version, and printing both
+      # gave the reader the same sentence twice.
+      caveat="Descriptive summary of the condition, not a predictor of it.",
       status_label="descriptive"),
 ]
 
