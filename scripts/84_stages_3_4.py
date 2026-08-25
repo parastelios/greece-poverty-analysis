@@ -201,30 +201,43 @@ FIGS["F7"] = dict(
         "because the underlying gaps are measured in percentage points, index "
         "points and PPS per head and cannot share an axis."))
 
-# ---- F8 scatter: same-instrument, country means removed -------------------
+# ---- F8 small multiples: same-instrument, country means removed -----------
+# These were four tabs. Switching between them made the comparison an act of
+# memory, when the comparison IS the finding: does reported difficulty move with
+# every kind of concrete failure, or only some? Side by side that reads at a
+# glance, and the correlation sits on each panel rather than in a caption.
 ITEMS = ["arrears", "unexpected_expenses", "warm", "severe_mat_soc_deprivation"]
-views8, series8 = [], []
+panels8, f8 = [], ce.Series(["Within-country r", "Country-years"], dp=3)
 for it in ITEMS:
     d = panel.dropna(subset=[it, "subjective_poverty"]).copy()
     for c in [it, "subjective_poverty"]:
         d[c + "_w"] = d[c] - d.groupby("geo")[c].transform("mean")
     r = float(d["subjective_poverty_w"].corr(d[it + "_w"]))
-    pts = [{"x": round(float(a), 2), "y": round(float(b), 2),
-            "label": f"{g} {int(t)}", "highlight": g == "EL"}
-           for g, t, a, b in zip(d.geo, d.time, d[it + "_w"], d["subjective_poverty_w"])]
-    s = ce.Series(["Within-country r", "Country-years"], dp=3, title=ce.name(it))
-    s.add(ce.name(it), [r, len(d)])
-    series8.append(s)
-    views8.append((ce.name(it), {
-        "points": pts, "r": round(r, 3), "dp": 2,
-        "xLabel": ce.name(it) + ", deviation from country mean",
-        "yLabel": "Reported hardship, deviation from country mean",
-        "alt": f"Reported hardship against {ce.name(it).lower()}, country means removed",
-    }, "scatter"))
+    f8.add(ce.name(it), [r, float(len(d))])
+    panels8.append({
+        "label": ce.name(it), "r": round(r, 3),
+        "xLabel": "deviation from country mean",
+        "points": [{"x": round(float(a), 2), "y": round(float(b), 2),
+                    "highlight": g == "EL"}
+                   for g, a, b in zip(d.geo, d[it + "_w"], d["subjective_poverty_w"])]})
+
 FIGS["F8"] = dict(
     caption="When a country's reported difficulty moves, its concrete "
             "affordability failures move with it",
-    kind="scatter", views=views8, view_series=series8, first="Item")
+    kind="multiples",
+    payload={"panels": panels8,
+             "yLabel": "Reported hardship, deviation from country mean",
+             "alt": "Four panels, one per affordability item, each plotting "
+                    "reported hardship against that item with country means "
+                    "removed. Greek observations are marked in every panel"},
+    series=f8, first="Item",
+    extra_caveat=(
+        "Country means are removed from BOTH axes, so each point is a country's "
+        "deviation from its own average rather than its level: this asks "
+        "whether the two move together within a country, not whether richer "
+        "countries score better on both. Greek observations are marked. Every "
+        "item and the outcome come from the same survey, so this is one "
+        "instrument agreeing with itself."))
 
 # ---- F9 coefficient (as prototyped) --------------------------------------
 TONE9 = {"supported": "series-3", "inconclusive_under_available_power": "text-muted",

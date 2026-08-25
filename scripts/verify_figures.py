@@ -130,7 +130,8 @@ for path in TARGETS:
             d = json.loads(body.replace("<\\/", "</"))
             xs = (len(d.get("years", [])) or len(d.get("rows", []))
                   or len(d.get("points", []))
-                  or sum(len(s.get("points", [])) for s in d.get("strips", [])))
+                  or sum(len(s.get("points", [])) for s in d.get("strips", []))
+                  or sum(len(s.get("points", [])) for s in d.get("panels", [])))
             # Each chart type names its numbers differently: series carry
             # "values", coefficient rows carry "est", ladder rows carry
             # "value". Missing one gave a false positive on the ladder.
@@ -145,6 +146,9 @@ for path in TARGETS:
             for s in d.get("strips", []):
                 vals.extend([pt["value"] for pt in s.get("points", [])
                              if pt.get("value") is not None])
+            for s in d.get("panels", []):
+                vals.extend([pt["y"] for pt in s.get("points", [])
+                             if pt.get("y") is not None])
             if xs < 2 and not d.get("rows"):
                 empty.append(f"{fid}/{lbl}: {xs} x-values")
             elif not vals:
@@ -268,6 +272,28 @@ for path in TARGETS:
               "the published manifest does not match the declared ids")
     else:
         check("manifest figure ids are unique and declared", True)
+
+    # A figure's caveat is assembled from the manifest text plus whatever the
+    # builder adds. Three figures have shipped saying the same thing twice,
+    # because the builder restated what the manifest already carried. Compare
+    # the two halves for a repeated sentence rather than trusting review.
+    dupes = []
+    for b in blocks:
+        fid = re.search(r'id="([^"]+)"', b).group(1)
+        cav = re.search(r'<p class="fig-caveat">(.*?)</p>', b, re.S)
+        if not cav:
+            continue
+        txt = htmlmod.unescape(re.sub(r"<[^>]+>", " ", cav.group(1)))
+        sents = [s.strip().lower() for s in re.split(r"(?<=[.!?])\s+", txt)
+                 if len(s.strip()) > 45]
+        # near-duplicate: same opening eight words
+        heads = {}
+        for s in sents:
+            k = " ".join(s.split()[:8])
+            if k in heads:
+                dupes.append(f"{fid}: caveat repeats \"{k}...\"")
+            heads[k] = True
+    check("no figure states the same caveat twice", not dupes, "; ".join(dupes))
 
     check("no chart colour bypasses the tone alias",
           not raw_tone_use,

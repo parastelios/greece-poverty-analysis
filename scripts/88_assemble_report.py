@@ -854,10 +854,14 @@ through this entire stage.</p>
 
 {fig('F8')}
 
-<p>Reported difficulty and concrete affordability failure move together, and
-they do so within countries as well as across them &mdash; which is the harder
-test, because it cannot be satisfied by rich countries simply differing from
-poor ones. It remains corroboration from inside a single instrument.</p>
+<p>All four are shown together rather than one at a time, because the
+comparison between them is the point. Reported difficulty moves with every one:
+arrears at 0.80, unexpected expenses at 0.78, severe deprivation at 0.79, and
+the ability to heat the home at 0.63 &mdash; looser than the others, but in the
+same direction. The relationship holds within countries as well as across them,
+which is the harder test, because it cannot be satisfied by rich countries
+simply differing from poor ones. It remains corroboration from inside a single
+instrument.</p>
 
 {claim('V2-3.1')}
 

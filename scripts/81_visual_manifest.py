@@ -26,7 +26,7 @@ PROC = Path(__file__).resolve().parents[1] / "data" / "processed"
 # Types the appendix engine already provides, validated across the full appendix.
 EXISTING = {"series", "panel", "scatter"}
 # Types the shared engine must gain. Kept deliberately few.
-NEW = {"ladder", "coefficient", "dumbbell", "heatmap", "strip"}
+NEW = {"ladder", "coefficient", "dumbbell", "heatmap", "strip", "multiples"}
 
 M = [
  dict(id="F1", stage=1, chart_type="panel",
@@ -120,18 +120,18 @@ M = [
                   "and diverging coloured separately",
       fallback="variable, gap 2015, gap 2024, shift, trend",
       caveat="", status_label="descriptive"),
- dict(id="F8", stage=3, chart_type="scatter",
+ dict(id="F8", stage=3, chart_type="multiples",
       question="Does reported difficulty move with concrete affordability "
                "failure, or float free of it?",
-      artifact="e0_extended_panel.csv, e3_results.csv",
-      series="hardship against each same-instrument item, COUNTRY MEANS "
-             "REMOVED, switchable between the four items",
-      interaction="switch item; hover names the country-year and reads both "
-                  "demeaned values; Greek points highlighted; the fitted slope "
-                  "and its correlation shown per item",
-      fallback="item, within-country r, Greece over time",
-      caveat="Same-instrument corroboration, NOT independent validation: all "
-             "items and the outcome come from EU-SILC.",
+      artifact="e0_extended_panel.csv",
+      series="four panels, one per affordability item, hardship against the "
+             "item with country means removed from both axes",
+      interaction="Greek observations marked in every panel; each panel carries "
+                  "its own within-country correlation",
+      fallback="item, within-country correlation, country-years",
+      # Kept short on the face of the figure; the reading caveat is added at
+      # build time and would otherwise be stated twice.
+      caveat="Same-instrument corroboration, not independent validation.",
       status_label="descriptive corroboration"),
  dict(id="F9", stage=4, chart_type="coefficient",
       question="Which current-level constructs survive every pre-registered "

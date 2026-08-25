@@ -44,7 +44,7 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `p6-rewrite` |
-| HEAD | `1abf5f5` Add a material deprivation view to the AROPE breakdown |
+| HEAD | `597b1ac` Redesign the reporting-style figure as distribution strips |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-25 |
 | Frozen V1 reference | `v1-final` |
@@ -3342,6 +3342,10 @@ Deviations must be disclosed in the stage that made them, not only here.
 | C-61 | 2026-08-23 | Tones `warn` and `ok` were never defined as CSS variables | `var(--warn)` with no fallback makes an SVG fill default to BLACK, so marks and labels on three figures were not low-contrast but literally black. The earlier contrast pass checked a hardcoded list of tokens and never asked which tones figures actually use | Every payload tone now maps to a defined per-theme chart token; the check reads tones from the payloads, resolves them through the engine's alias map, and fails on any that is used but undefined |
 | C-62 | 2026-08-23 | Two labels built their fill from the raw tone inside a style string, bypassing the alias map | These were the two visible failures: 'unsupported' in the conditional figure and 'sign reverses' in the correlation comparison | Both routed through `toneVar()`; a check now fails any direct `var(--${tone})` |
 | C-63 | 2026-08-23 | Removing one figure silently re-pointed every id after it | The manifest DERIVED ids from position, so the companion's pre-crisis chapter rendered a shift-share decomposition instead of the ESS comparison, and every check passed because every id still resolved to something. The declared ids had drifted unnoticed for the same reason: a duplicate F5, a missing F9, a jump from F8 to F10 | Ids are declared on each entry and are authoritative; a check fails on duplicates or on any divergence between declared and published ids |
+| C-64 | 2026-08-23 | The reporting-style figure used rank trajectories | A rank hides how large the differences are, needs its axis inverted to stay readable, moves when OTHER countries move, and put two of the three series permanently on top of each other at rank 1 | Replaced with distribution strips: all 27 member states as dots on each indicator's own scale, Greece marked and valued. New `strip` chart type |
+| C-65 | 2026-08-23 | The affordability figure asked the reader to compare four tabs from memory | The comparison between items IS the finding, and switching tabs makes it an act of recall | Replaced with small multiples, four panels side by side, each carrying its own within-country correlation. New `multiples` chart type |
+| C-66 | 2026-08-23 | The checksum routine unescaped table CELLS but not HEADERS | Any column name containing an apostrophe or ampersand hashed differently from the builder's own. Latent since the check was written; it fired the first time a header contained one, 'Greece's position' | Headers unescaped identically to cells; the checksum still catches a tampered value |
+| C-67 | 2026-08-23 | Three figures shipped stating the same caveat twice | The caveat is assembled from the manifest text plus whatever the builder adds, and builders restated what the manifest already carried | Manifest caveats shortened; a check now compares the two halves for a repeated opening and fails on it |
 
 ## Artifact Index
 

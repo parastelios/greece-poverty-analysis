@@ -571,6 +571,58 @@ JS = r"""
     host.insertBefore(svg,host.firstChild);
   }
 
+
+  /* ------------------------------------------------ multiples (new type) */
+  // Small multiples: the same relationship drawn once per item, side by side.
+  // As tabs these were four separate acts of memory -- the reader had to hold
+  // one panel in mind while looking at the next. Side by side the comparison
+  // is visual, which is the whole point of asking whether the relationship
+  // holds across items.
+  function multiples(host,d){
+    const W=widthFor(host);
+    const cols=W<560?1:2, n=d.panels.length, rows=Math.ceil(n/cols);
+    const gapX=W<560?0:18, gapY=34;
+    const cw=(W-gapX*(cols-1))/cols, ch=W<560?150:132;
+    const H=rows*ch+(rows-1)*gapY+16;
+    const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,class:'chart',role:'img',
+      'aria-label':d.alt||'small multiples'});
+    d.panels.forEach((p,i)=>{
+      const cx=(i%cols)*(cw+gapX), cy=Math.floor(i/cols)*(ch+gapY);
+      const padL=42,padR=8,padT=20,padB=24;
+      const pw=cw-padL-padR, ph=ch-padT-padB;
+      const xs2=p.points.map(q=>q.x), ys2=p.points.map(q=>q.y);
+      const xlo=Math.min(...xs2),xhi=Math.max(...xs2);
+      const ylo=Math.min(...ys2),yhi=Math.max(...ys2);
+      const X=v=>cx+padL+(v-xlo)/((xhi-xlo)||1)*pw;
+      const Y=v=>cy+padT+ph-(v-ylo)/((yhi-ylo)||1)*ph;
+      const ttl=el('text',{x:cx+padL,y:cy+12,class:'axis-label',
+        style:'font-weight:700'});
+      svg.appendChild(ttl);
+      // Each panel names its item and its within-country correlation, so the
+      // number travels with the picture instead of sitting in a caption.
+      ttl.textContent=`${p.label}   r = ${fmt(p.r,2)}`;
+      // Zero lines: these are deviations from a country mean, so the origin is
+      // the country's own average and quadrants carry meaning.
+      if(xlo<0&&xhi>0)svg.appendChild(el('line',{x1:X(0),x2:X(0),y1:cy+padT,
+        y2:cy+padT+ph,class:'gridline'}));
+      if(ylo<0&&yhi>0)svg.appendChild(el('line',{x1:cx+padL,x2:cx+padL+pw,
+        y1:Y(0),y2:Y(0),class:'gridline'}));
+      p.points.forEach(q=>{
+        const hl=!!q.highlight;
+        svg.appendChild(el('circle',{cx:X(q.x),cy:Y(q.y),r:hl?3:1.9,
+          fill:hl?'var(--chart-gr)':'var(--chart-neutral)',
+          opacity:hl?0.95:0.34}));
+      });
+      const xl=el('text',{x:cx+padL+pw/2,y:cy+ch-4,'text-anchor':'middle',
+        class:'axis-label',style:'opacity:.8'});
+      xl.textContent=p.xLabel||'';svg.appendChild(xl);
+    });
+    const yl=el('text',{x:12,y:H/2,class:'axis-label',
+      transform:`rotate(-90 12 ${H/2})`,'text-anchor':'middle'});
+    yl.textContent=d.yLabel||'';svg.appendChild(yl);
+    host.insertBefore(svg,host.firstChild);
+  }
+
   /* ---------------------------------------------- coefficient (new type) */
   function coefficient(host,d){
     const W=widthFor(host), rowH=W<480?34:30;
@@ -901,7 +953,7 @@ JS = r"""
       if(e.key==='Escape')tp.classList.remove('on');});
   }
 
-  const KINDS={panel:panel,strip:strip,coefficient:coefficient,ladder:ladder,dumbbell:dumbbell,heatmap:heatmap,scatter:scatter};
+  const KINDS={panel:panel,strip:strip,multiples:multiples,coefficient:coefficient,ladder:ladder,dumbbell:dumbbell,heatmap:heatmap,scatter:scatter};
 
 
   // VIEW SWITCHING. Some questions need more than one look -- the real
