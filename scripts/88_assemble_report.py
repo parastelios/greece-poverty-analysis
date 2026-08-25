@@ -1654,6 +1654,44 @@ between rounds, so an all-country rank moves when the country set moves, and a
 change in it would be partly composition rather than substance.</p>
 ''')}
 
+<h3>Health: a second post-freeze extension</h3>
+
+<p>Health is the other obvious candidate a reader will ask about, and it was
+examined after the claim set was frozen. Like the survey extension above, it is
+kept apart from everything in Stages 1 to 6, and for the same reason: it could
+not have changed a headline claim whatever it returned.</p>
+
+<p>The finding worth carrying forward is descriptive and it is stark. On unmet
+medical care &mdash; the share who needed care and did not get it because of
+cost, waiting time or distance &mdash; Greece was second-worst in the Union in
+2016, 2019 and 2022, and worst of twenty-seven in 2024, at 12.1% against a
+median member state of 1.9%. That is a health-system fact of the same order as
+anything in Stage 1, and it belongs in any account of what hardship means in
+practice for a Greek household.</p>
+
+<p>What health does <em>not</em> do is explain the gap. Four measures were
+tested against the same baseline used elsewhere &mdash; unmet care, self-rated
+health, long-standing illness, and activity limitation &mdash; and none
+survives. Three of the four carry the wrong sign: across countries, worse
+reported health goes with <em>less</em> reported hardship, which is not a
+finding but a warning. Separating the comparison shows why. All three
+health-status measures reverse sign between countries and within them, so the
+pooled coefficient describes neither comparison; within a country, years of
+worse reported health are years of more reported hardship, the expected
+direction. National composition and reporting conventions dominate the pooled
+association. Unmet care is the exception that makes the point: it measures
+access rather than health, it is positive in both comparisons, and it is also
+the one measure whose leave-one-country-out refits change sign.</p>
+
+<p>So health enters this report as context and as a research direction, not as
+a predictor. The natural next step is not more EU-SILC: it is
+age-standardised rates and independent sources &mdash; out-of-pocket and
+catastrophic health spending, medicine access, avoidable mortality &mdash;
+which could test whether the survey signal matches administrative evidence
+instead of restating the same instrument. The full analysis, its eight
+artifacts and three figures are in the statistical appendix and in
+<code>docs/health_preliminary_analysis.md</code>.</p>
+
 <h3>What this project did not test</h3>
 
 <p>Several factors are prominent in accounts of the Greek crisis and are absent

@@ -44,7 +44,7 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `p6-rewrite` |
-| HEAD | `a7dd398` Simplify Figure 1's scatter: one median marker, key off the line |
+| HEAD | `53846e9` Put code behind the health extension, and correct what it got wrong |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-25 |
 | Frozen V1 reference | `v1-final` |

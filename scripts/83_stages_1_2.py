@@ -122,9 +122,14 @@ v1b = {"points": pts1, "dp": 1, "aspect": 0.52,
        # and the Greece annotation; the two medians are one reference point and
        # a marker says so in one line instead of two.
        "crosshair": {"x": round(_medx, 1), "y": round(_medy, 1),
+                     "place": "below",
                      "label": (f"Median EU country: poverty {_medx:.1f}%, "
                                f"hardship {_medy:.1f}%"),
                      "shortLabel": f"Median EU: {_medx:.1f}%, {_medy:.1f}%"},
+       # The size of the paradox, read off this chart's own fitted line rather
+       # than quoted from a model built elsewhere.
+       "residualTo": "{gap} points above the peer prediction",
+       "residualToShort": "+{gap} vs peers",
        "frameLabel": str(_lastyr),
        "alt": f"Every EU country in {_lastyr} placed by income poverty and "
               "reported hardship. Greece has an ordinary income-poverty rate "

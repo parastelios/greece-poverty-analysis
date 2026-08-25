@@ -133,22 +133,32 @@ models; the lack of individual support is.
 
 ## Within-country evidence, and a sign reversal
 
-Separating country means from annual deviations changes the sign for every
-health-status measure:
+Separating country means from annual deviations changes the sign for all three
+health-**status** measures. It does not change the sign of unmet medical care,
+which measures **access** to care rather than health, and which is positive in
+both comparisons. Three of the four rows reverse, not four:
 
-| Measure | Between countries | Within countries | Within cluster p | Within bootstrap p | Reversal |
-|---|---:|---:|---:|---:|:--:|
-| Unmet medical care | +0.803 (p 0.670) | +0.500 | 0.198 | 0.185 | no |
-| Not-good health | −0.350 (p 0.269) | **+0.567** | 0.014 | 0.034 | **yes** |
-| Long-standing illness | −0.559 (p 0.087) | +0.332 | 0.351 | 0.379 | **yes** |
-| Activity limitation | −0.427 (p 0.237) | **+0.406** | 0.020 | 0.031 | **yes** |
+| Measure | Kind | Between countries | Within countries | Within cluster p | Within bootstrap p | Reversal |
+|---|---|---:|---:|---:|---:|:--:|
+| Unmet medical care | access | +0.803 (p 0.670) | +0.500 | 0.198 | 0.185 | no |
+| Not-good health | status | −0.350 (p 0.269) | **+0.567** | 0.014 | 0.034 | **yes** |
+| Long-standing illness | status | −0.559 (p 0.087) | +0.332 | 0.351 | 0.379 | **yes** |
+| Activity limitation | status | −0.427 (p 0.237) | **+0.406** | 0.020 | 0.031 | **yes** |
 
 This is the single most important result in the extension, and the earlier draft
 missed it by reporting the two halves in separate sections. It is the same
 between/within reversal the main report treats as a headline limitation.
 
-The reading is that the negative pooled coefficients are cross-country
-composition, not a health effect. Richer countries report worse health *and*
+That unmet care behaves consistently while the status measures do not is itself
+informative. Access to care is a property of a health system, comparable across
+borders in a way that self-rated health is not; self-rated health carries
+national reporting conventions, age composition and expectations that differ
+systematically between countries and cancel within one. Consistency here is not
+support, though: unmet care is also the only measure whose leave-one-out refits
+change sign.
+
+The reading for the three that do reverse is that the negative pooled
+coefficients are cross-country composition, not a health effect. Richer countries report worse health *and*
 less hardship, so pooling the two comparisons produces a coefficient with the
 wrong sign that describes neither. Within a country, years of worse reported
 health are years of more reported hardship — the expected direction. Both within
@@ -229,7 +239,7 @@ produce.
 | "The combined block is not interpretable" | **Withdrawn**, as it rested on the VIF error |
 | Within-Greece correlations 0.84, 0.71 | **Confirmed** (0.84, 0.70); chronic illness at −0.70 added |
 | Companion bootstrap 0.087, 0.088 | **Not reproduced**; this specification gives 0.439 and 0.308, further from significance |
-| Between/within sign reversal | **New** — not in the first draft |
+| Between/within sign reversal | **New** — not in the first draft. Three of four measures; the access measure does not reverse |
 | First differences correctly signed | **New** — the first draft reported only that they fail FDR |
 
 ## Main limitations

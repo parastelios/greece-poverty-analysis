@@ -291,26 +291,36 @@ FIGS["A6"] = dict(
 # ---- A7: the between/within reversal --------------------------------------
 _rows7, fA7 = [], ce.Series(["Between countries", "Within countries"], dp=3)
 for _r in _hbw.itertuples():
-    fA7.add(_r.name, [_r.between, _r.within])
+    fA7.add(f"{_r.name} ({'access' if _r.var == 'unmet_care' else 'health status'})",
+            [_r.between, _r.within])
+    # Name the kind of measure on the row. "Every health-status measure
+    # reverses" is true and was still misread, because the chart carries four
+    # rows and unmet care -- an ACCESS measure, not a status one -- is not
+    # among them. The distinction now travels with the data instead of
+    # depending on the reader knowing the term.
+    _kind = "access" if _r.var == "unmet_care" else "health status"
     _rows7.append({
-        "label": _r.name, "a": round(_r.between, 3), "b": round(_r.within, 3),
+        "label": f"{_r.name} ({_kind})",
+        "a": round(_r.between, 3), "b": round(_r.within, 3),
         "tone": "chart-warn" if _r.sign_reversal else "chart-neutral",
-        "right": "reverses" if _r.sign_reversal else "same sign",
+        "right": "reverses" if _r.sign_reversal else "consistent",
         "strong": bool(_r.sign_reversal),
         "detail": (f"<b>{_r.name}</b><br>between {_r.between:+.3f} "
                    f"(p = {_r.between_p:.3f})<br>within {_r.within:+.3f} "
                    f"(p = {_r.within_p:.3f}, bootstrap {_r.within_boot_p:.3f})")})
 
 FIGS["A7"] = dict(
-    caption="Every health-status measure reverses sign between countries and within them",
+    caption="The three health-STATUS measures reverse sign between countries "
+            "and within them; the access measure does not",
     kind="dumbbell",
     payload={"rows": _rows7, "dp": 2,
              "toneA": "chart-neutral", "toneB": "chart-gr",
              "legendA": "Between countries", "legendB": "Within countries",
              "xLabel": "coefficient on reported hardship",
              "alt": "Four measures, each with its between-country and "
-                    "within-country coefficient. Three of the four cross zero "
-                    "between the two comparisons"},
+                    "within-country coefficient. All three health-status "
+                    "measures cross zero between the two comparisons; unmet "
+                    "medical care, the access measure, is positive in both"},
     series=fA7, first="Measure",
     extra_caveat=(
         "Country means and annual deviations are entered together, so the two "
@@ -320,7 +330,11 @@ FIGS["A7"] = dict(
         "comparisons yields a sign describing neither. Within a country the "
         "direction is the expected one. This is the same limitation the main "
         "report documents, and it does not establish a mechanism: both sides "
-        "come from EU-SILC, so common survey method remains live."))
+        "come from EU-SILC, so common survey method remains live. THREE OF "
+        "FOUR ROWS REVERSE, not all four: unmet medical care measures access "
+        "to care rather than health status, and it is positive in both "
+        "comparisons. It is also the only measure whose leave-one-country-out "
+        "refits change sign, so consistent here does not mean supported."))
 
 
 def payload_tag(d, kind="", label=""):

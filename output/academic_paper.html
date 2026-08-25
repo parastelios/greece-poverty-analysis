@@ -236,6 +236,9 @@ transition:opacity .1s}
 max-width:100%;
 font:.76rem/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--text-secondary)}
 .viewbar{display:flex;flex-wrap:wrap;gap:.3rem;padding:0 1.1rem .6rem}
+.stack+.stack{margin-top:1.4rem}
+.stack-h{font:600 .8rem/1.3 ui-sans-serif,system-ui,sans-serif;margin:0 0 .35rem;
+color:var(--chart-label);letter-spacing:.01em}
 .viewbtn{font:600 .74rem/1 ui-sans-serif,system-ui,sans-serif;padding:.35rem .6rem;
 border:1px solid var(--border);background:transparent;color:var(--text-secondary);
 border-radius:4px;cursor:pointer}
@@ -279,6 +282,12 @@ color:var(--text-secondary);margin:.5rem 0 0;max-width:44rem}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 @media print{
   .chart-live{display:none}
+  /* Stacked figures are the deliberate exception. The rule above exists
+     because a tabbed chart prints as one arbitrary view plus a row of dead
+     buttons, so the table is the honest artefact. A stacked figure has no tabs
+     and has already drawn every view, so it prints as what it is. Its table
+     still prints beneath it: the fallback guarantee is not traded away. */
+  .chart-live[data-views="stacked"]{display:block}
   .fallback{border-top:0}
   .fallback > summary{display:none}
   .fallback[open],.fallback{display:block}
@@ -748,7 +757,7 @@ never approaches agreement.</p>
 <span class="fig-q">Does official income poverty account for the hardship Greek households report?</span></div>
 <div class="chart-live" data-chart="panel" tabindex="0"
      data-checksum="ec03a01ae21a476a" aria-describedby="F1-fb">
-<script type="application/json" data-kind="panel" data-label="How Greece's hardship gap developed">{"years": [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024], "dp": 1, "yLabel": "Percent", "aspect": 0.52, "context": [{"label": "Austria", "values": [13.4, 12.8, 11.5, 11.3, 10.7, 9.4, 10.1, 11.9, 13.6, 13.1]}, {"label": "Belgium", "values": [20.5, 21.5, 20.9, 19.1, 19.1, 16.8, 15.6, 16.7, 15.5, 17.1]}, {"label": "Bulgaria", "values": [64.0, 61.7, 58.4, 55.9, 50.099999999999994, 43.7, 37.099999999999994, 40.3, 33.2, 37.4]}, {"label": "Cyprus", "values": [58.8, 59.8, 43.599999999999994, 46.4, 36.3, 26.7, 26.1, 29.6, 24.200000000000003, 20.8]}, {"label": "Czechia", "values": [26.6, 23.200000000000003, 22.0, 16.2, 13.1, 12.1, 11.4, 12.3, 13.4, 14.2]}, {"label": "Germany", "values": [7.6, 6.8999999999999995, 6.1, 5.9, 5.1, 5.7, 6.699999999999999, 8.5, 9.7, 7.300000000000001]}, {"label": "Denmark", "values": [10.4, 10.0, 9.4, 9.3, 9.4, 8.5, 8.1, 10.3, 13.2, 12.8]}, {"label": "Estonia", "values": [16.200000000000003, 15.4, 14.3, 13.9, 11.2, 9.1, 7.8, 9.5, 11.6, 9.9]}, {"label": "Spain", "values": [35.2, 35.6, 25.1, 27.1, 22.0, 22.8, 21.6, 22.1, 22.6, 21.9]}, {"label": "Finland", "values": [7.0, 6.8999999999999995, 6.7, 6.1, 6.4, 6.8, 5.9, 6.1, 7.5, 8.9]}, {"label": "France", "values": [19.9, 19.2, 18.1, 18.3, 16.8, 18.5, 16.6, 21.7, 22.1, 21.8]}, {"label": "Croatia", "values": [54.4, 51.4, 43.9, 42.7, 35.5, 33.5, 27.3, 26.6, 22.0, 19.8]}, {"label": "Hungary", "values": [46.6, 42.8, 41.2, 34.7, 27.700000000000003, 27.4, 26.7, 22.0, 22.6, 19.799999999999997]}, {"label": "Ireland", "values": [31.799999999999997, 27.4, 23.6, 20.9, 18.5, 16.8, 15.4, 17.9, 16.6, 16.9]}, {"label": "Italy", "values": [37.9, 33.3, 28.1, 30.3, 22.9, 23.8, 24.299999999999997, 22.3, 18.7, 18.7]}, {"label": "Lithuania", "values": [28.9, 29.6, 28.200000000000003, 23.4, 19.0, 15.1, 12.9, 12.6, 13.4, 11.4]}, {"label": "Luxembourg", "values": [12.4, 12.4, 12.6, 12.8, 10.5, 12.4, 10.0, 5.8, 6.1, 8.5]}, {"label": "Latvia", "values": [42.7, 39.3, 40.5, 32.1, 25.0, 24.2, 20.1, 23.9, 24.0, 23.299999999999997]}, {"label": "Malta", "values": [21.6, 19.9, 16.1, 14.1, 12.3, 15.4, 15.4, 21.4, 16.6, 17.3]}, {"label": "Netherlands", "values": [12.9, 12.6, 11.5, 10.0, 10.1, 7.5, 5.6, 6.9, 7.3, 7.3]}, {"label": "Poland", "values": [29.4, 24.799999999999997, 22.1, 18.6, 15.7, 15.9, 13.7, 15.3, 15.1, 11.5]}, {"label": "Portugal", "values": [40.400000000000006, 36.7, 33.599999999999994, 29.200000000000003, 25.799999999999997, 20.7, 20.9, 23.299999999999997, 23.6, 21.799999999999997]}, {"label": "Romania", "values": [45.599999999999994, 44.1, 37.4, 36.0, 32.0, 35.900000000000006, 29.0, 26.0, 27.7, 23.8]}, {"label": "Sweden", "values": [7.1, 7.6, 7.0, 8.0, 7.6, 7.4, 7.4, 7.199999999999999, 9.3, 9.9]}, {"label": "Slovenia", "values": [28.700000000000003, 25.9, 22.6, 20.5, 17.4, 17.0, 11.5, 14.2, 14.5, 13.6]}, {"label": "Slovakia", "values": [32.7, 29.6, 26.200000000000003, 25.4, 28.299999999999997, 28.700000000000003, 26.6, 27.7, 30.299999999999997, 28.700000000000003]}], "contextLabel": "Each other EU country: reported hardship", "alt": "Greek reported hardship and income poverty against the EU median of each, with every other country's hardship faint behind. The distance between the blue and green Greek lines never closes", "series": [{"label": "Greece: reported hardship", "tone": "gr", "style": "solid", "weight": "strong", "values": [77.7, 76.8, 77.2, 74.1, 71.0, 69.8, 71.0, 68.4, 67.0, 66.7]}, {"label": "EU median: reported hardship", "tone": "gr", "style": "dashed", "weight": "normal", "values": [28.9, 25.9, 22.6, 20.5, 18.5, 16.8, 15.4, 17.9, 16.6, 17.1]}, {"label": "Greece: income poverty", "tone": "series-3", "style": "solid", "weight": "strong", "values": [21.4, 21.2, 20.2, 18.5, 17.9, 17.7, 19.6, 18.8, 18.9, 19.6]}, {"label": "EU median: income poverty", "tone": "series-3", "style": "dashed", "weight": "normal", "values": [16.3, 16.5, 15.9, 16.4, 15.4, 16.1, 15.7, 15.6, 15.4, 15.5]}]}</script><script type="application/json" data-kind="scatter" data-label="Where countries stood in 2024">{"points": [{"x": 14.3, "y": 13.1, "label": "Austria", "shortLabel": null, "highlight": false}, {"x": 11.4, "y": 17.1, "label": "Belgium", "shortLabel": null, "highlight": false}, {"x": 21.7, "y": 37.4, "label": "Bulgaria", "shortLabel": null, "highlight": false}, {"x": 14.6, "y": 20.8, "label": "Cyprus", "shortLabel": null, "highlight": false}, {"x": 9.5, "y": 14.2, "label": "Czechia", "shortLabel": null, "highlight": false}, {"x": 15.5, "y": 7.3, "label": "Germany", "shortLabel": null, "highlight": false}, {"x": 11.6, "y": 12.8, "label": "Denmark", "shortLabel": null, "highlight": false}, {"x": 20.2, "y": 9.9, "label": "Estonia", "shortLabel": null, "highlight": false}, {"x": 19.6, "y": 66.7, "label": "Greece: income poverty 19.6%, hardship 66.7%", "shortLabel": "Greece", "highlight": true}, {"x": 19.7, "y": 21.9, "label": "Spain", "shortLabel": null, "highlight": false}, {"x": 12.6, "y": 8.9, "label": "Finland", "shortLabel": null, "highlight": false}, {"x": 15.9, "y": 21.8, "label": "France", "shortLabel": null, "highlight": false}, {"x": 20.3, "y": 19.8, "label": "Croatia", "shortLabel": null, "highlight": false}, {"x": 14.3, "y": 19.8, "label": "Hungary", "shortLabel": null, "highlight": false}, {"x": 12.7, "y": 16.9, "label": "Ireland", "shortLabel": null, "highlight": false}, {"x": 18.9, "y": 18.7, "label": "Italy", "shortLabel": null, "highlight": false}, {"x": 21.5, "y": 11.4, "label": "Lithuania", "shortLabel": null, "highlight": false}, {"x": 18.1, "y": 8.5, "label": "Luxembourg", "shortLabel": null, "highlight": false}, {"x": 21.6, "y": 23.3, "label": "Latvia", "shortLabel": null, "highlight": false}, {"x": 16.9, "y": 17.3, "label": "Malta", "shortLabel": null, "highlight": false}, {"x": 12.1, "y": 7.3, "label": "Netherlands", "shortLabel": null, "highlight": false}, {"x": 13.8, "y": 11.5, "label": "Poland", "shortLabel": null, "highlight": false}, {"x": 16.6, "y": 21.8, "label": "Portugal", "shortLabel": null, "highlight": false}, {"x": 19.0, "y": 23.8, "label": "Romania", "shortLabel": null, "highlight": false}, {"x": 14.8, "y": 9.9, "label": "Sweden", "shortLabel": null, "highlight": false}, {"x": 13.2, "y": 13.6, "label": "Slovenia", "shortLabel": null, "highlight": false}, {"x": 14.5, "y": 28.7, "label": "Slovakia", "shortLabel": null, "highlight": false}], "dp": 1, "aspect": 0.52, "xLabel": "Income poverty, percent of people", "yLabel": "Reported hardship, percent of households", "fitExcludesHighlight": true, "fitLabel": "Peer relationship, Greece excluded", "fitLabelShort": "Peer relationship", "crosshair": {"x": 15.5, "y": 17.1, "label": "Median EU country: poverty 15.5%, hardship 17.1%", "shortLabel": "Median EU: 15.5%, 17.1%"}, "frameLabel": "2024", "alt": "Every EU country in 2024 placed by income poverty and reported hardship. Greece has an ordinary income-poverty rate and an extraordinary hardship rate, far above the peer line"}</script>
+<script type="application/json" data-kind="panel" data-label="How Greece's hardship gap developed">{"years": [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024], "dp": 1, "yLabel": "Percent", "aspect": 0.52, "context": [{"label": "Austria", "values": [13.4, 12.8, 11.5, 11.3, 10.7, 9.4, 10.1, 11.9, 13.6, 13.1]}, {"label": "Belgium", "values": [20.5, 21.5, 20.9, 19.1, 19.1, 16.8, 15.6, 16.7, 15.5, 17.1]}, {"label": "Bulgaria", "values": [64.0, 61.7, 58.4, 55.9, 50.099999999999994, 43.7, 37.099999999999994, 40.3, 33.2, 37.4]}, {"label": "Cyprus", "values": [58.8, 59.8, 43.599999999999994, 46.4, 36.3, 26.7, 26.1, 29.6, 24.200000000000003, 20.8]}, {"label": "Czechia", "values": [26.6, 23.200000000000003, 22.0, 16.2, 13.1, 12.1, 11.4, 12.3, 13.4, 14.2]}, {"label": "Germany", "values": [7.6, 6.8999999999999995, 6.1, 5.9, 5.1, 5.7, 6.699999999999999, 8.5, 9.7, 7.300000000000001]}, {"label": "Denmark", "values": [10.4, 10.0, 9.4, 9.3, 9.4, 8.5, 8.1, 10.3, 13.2, 12.8]}, {"label": "Estonia", "values": [16.200000000000003, 15.4, 14.3, 13.9, 11.2, 9.1, 7.8, 9.5, 11.6, 9.9]}, {"label": "Spain", "values": [35.2, 35.6, 25.1, 27.1, 22.0, 22.8, 21.6, 22.1, 22.6, 21.9]}, {"label": "Finland", "values": [7.0, 6.8999999999999995, 6.7, 6.1, 6.4, 6.8, 5.9, 6.1, 7.5, 8.9]}, {"label": "France", "values": [19.9, 19.2, 18.1, 18.3, 16.8, 18.5, 16.6, 21.7, 22.1, 21.8]}, {"label": "Croatia", "values": [54.4, 51.4, 43.9, 42.7, 35.5, 33.5, 27.3, 26.6, 22.0, 19.8]}, {"label": "Hungary", "values": [46.6, 42.8, 41.2, 34.7, 27.700000000000003, 27.4, 26.7, 22.0, 22.6, 19.799999999999997]}, {"label": "Ireland", "values": [31.799999999999997, 27.4, 23.6, 20.9, 18.5, 16.8, 15.4, 17.9, 16.6, 16.9]}, {"label": "Italy", "values": [37.9, 33.3, 28.1, 30.3, 22.9, 23.8, 24.299999999999997, 22.3, 18.7, 18.7]}, {"label": "Lithuania", "values": [28.9, 29.6, 28.200000000000003, 23.4, 19.0, 15.1, 12.9, 12.6, 13.4, 11.4]}, {"label": "Luxembourg", "values": [12.4, 12.4, 12.6, 12.8, 10.5, 12.4, 10.0, 5.8, 6.1, 8.5]}, {"label": "Latvia", "values": [42.7, 39.3, 40.5, 32.1, 25.0, 24.2, 20.1, 23.9, 24.0, 23.299999999999997]}, {"label": "Malta", "values": [21.6, 19.9, 16.1, 14.1, 12.3, 15.4, 15.4, 21.4, 16.6, 17.3]}, {"label": "Netherlands", "values": [12.9, 12.6, 11.5, 10.0, 10.1, 7.5, 5.6, 6.9, 7.3, 7.3]}, {"label": "Poland", "values": [29.4, 24.799999999999997, 22.1, 18.6, 15.7, 15.9, 13.7, 15.3, 15.1, 11.5]}, {"label": "Portugal", "values": [40.400000000000006, 36.7, 33.599999999999994, 29.200000000000003, 25.799999999999997, 20.7, 20.9, 23.299999999999997, 23.6, 21.799999999999997]}, {"label": "Romania", "values": [45.599999999999994, 44.1, 37.4, 36.0, 32.0, 35.900000000000006, 29.0, 26.0, 27.7, 23.8]}, {"label": "Sweden", "values": [7.1, 7.6, 7.0, 8.0, 7.6, 7.4, 7.4, 7.199999999999999, 9.3, 9.9]}, {"label": "Slovenia", "values": [28.700000000000003, 25.9, 22.6, 20.5, 17.4, 17.0, 11.5, 14.2, 14.5, 13.6]}, {"label": "Slovakia", "values": [32.7, 29.6, 26.200000000000003, 25.4, 28.299999999999997, 28.700000000000003, 26.6, 27.7, 30.299999999999997, 28.700000000000003]}], "contextLabel": "Each other EU country: reported hardship", "alt": "Greek reported hardship and income poverty against the EU median of each, with every other country's hardship faint behind. The distance between the blue and green Greek lines never closes", "series": [{"label": "Greece: reported hardship", "tone": "gr", "style": "solid", "weight": "strong", "values": [77.7, 76.8, 77.2, 74.1, 71.0, 69.8, 71.0, 68.4, 67.0, 66.7]}, {"label": "EU median: reported hardship", "tone": "gr", "style": "dashed", "weight": "normal", "values": [28.9, 25.9, 22.6, 20.5, 18.5, 16.8, 15.4, 17.9, 16.6, 17.1]}, {"label": "Greece: income poverty", "tone": "series-3", "style": "solid", "weight": "strong", "values": [21.4, 21.2, 20.2, 18.5, 17.9, 17.7, 19.6, 18.8, 18.9, 19.6]}, {"label": "EU median: income poverty", "tone": "series-3", "style": "dashed", "weight": "normal", "values": [16.3, 16.5, 15.9, 16.4, 15.4, 16.1, 15.7, 15.6, 15.4, 15.5]}]}</script><script type="application/json" data-kind="scatter" data-label="Where countries stood in 2024">{"points": [{"x": 14.3, "y": 13.1, "label": "Austria", "shortLabel": null, "highlight": false}, {"x": 11.4, "y": 17.1, "label": "Belgium", "shortLabel": null, "highlight": false}, {"x": 21.7, "y": 37.4, "label": "Bulgaria", "shortLabel": null, "highlight": false}, {"x": 14.6, "y": 20.8, "label": "Cyprus", "shortLabel": null, "highlight": false}, {"x": 9.5, "y": 14.2, "label": "Czechia", "shortLabel": null, "highlight": false}, {"x": 15.5, "y": 7.3, "label": "Germany", "shortLabel": null, "highlight": false}, {"x": 11.6, "y": 12.8, "label": "Denmark", "shortLabel": null, "highlight": false}, {"x": 20.2, "y": 9.9, "label": "Estonia", "shortLabel": null, "highlight": false}, {"x": 19.6, "y": 66.7, "label": "Greece: income poverty 19.6%, hardship 66.7%", "shortLabel": "Greece", "highlight": true}, {"x": 19.7, "y": 21.9, "label": "Spain", "shortLabel": null, "highlight": false}, {"x": 12.6, "y": 8.9, "label": "Finland", "shortLabel": null, "highlight": false}, {"x": 15.9, "y": 21.8, "label": "France", "shortLabel": null, "highlight": false}, {"x": 20.3, "y": 19.8, "label": "Croatia", "shortLabel": null, "highlight": false}, {"x": 14.3, "y": 19.8, "label": "Hungary", "shortLabel": null, "highlight": false}, {"x": 12.7, "y": 16.9, "label": "Ireland", "shortLabel": null, "highlight": false}, {"x": 18.9, "y": 18.7, "label": "Italy", "shortLabel": null, "highlight": false}, {"x": 21.5, "y": 11.4, "label": "Lithuania", "shortLabel": null, "highlight": false}, {"x": 18.1, "y": 8.5, "label": "Luxembourg", "shortLabel": null, "highlight": false}, {"x": 21.6, "y": 23.3, "label": "Latvia", "shortLabel": null, "highlight": false}, {"x": 16.9, "y": 17.3, "label": "Malta", "shortLabel": null, "highlight": false}, {"x": 12.1, "y": 7.3, "label": "Netherlands", "shortLabel": null, "highlight": false}, {"x": 13.8, "y": 11.5, "label": "Poland", "shortLabel": null, "highlight": false}, {"x": 16.6, "y": 21.8, "label": "Portugal", "shortLabel": null, "highlight": false}, {"x": 19.0, "y": 23.8, "label": "Romania", "shortLabel": null, "highlight": false}, {"x": 14.8, "y": 9.9, "label": "Sweden", "shortLabel": null, "highlight": false}, {"x": 13.2, "y": 13.6, "label": "Slovenia", "shortLabel": null, "highlight": false}, {"x": 14.5, "y": 28.7, "label": "Slovakia", "shortLabel": null, "highlight": false}], "dp": 1, "aspect": 0.52, "xLabel": "Income poverty, percent of people", "yLabel": "Reported hardship, percent of households", "fitExcludesHighlight": true, "fitLabel": "Peer relationship, Greece excluded", "fitLabelShort": "Peer relationship", "crosshair": {"x": 15.5, "y": 17.1, "place": "below", "label": "Median EU country: poverty 15.5%, hardship 17.1%", "shortLabel": "Median EU: 15.5%, 17.1%"}, "residualTo": "{gap} points above the peer prediction", "residualToShort": "+{gap} vs peers", "frameLabel": "2024", "alt": "Every EU country in 2024 placed by income poverty and reported hardship. Greece has an ordinary income-poverty rate and an extraordinary hardship rate, far above the peer line"}</script>
 </div><p class="fig-caveat"><strong>Read with this.</strong> Descriptive comparison of two official measures. Reported hardship is answered by HOUSEHOLDS and income poverty counts PEOPLE, so the axis is labelled percent rather than either. In the second view the fitted line excludes Greece, describing the European pattern Greece is being judged against rather than one Greece helped set. The cross marks the median country on each measure taken SEPARATELY, so it is a reference point rather than an actual country: no member state necessarily sits there. Both views are country-level and say nothing about any individual household.</p>
 <details class="fallback" id="F1-fb"><summary>Show the numbers <a href="statistical_appendix.html#F1">This figure in the appendix</a>, with the detail the report leaves out.</summary>
 <table data-checksum="ec03a01ae21a476a" data-view="0"><caption>How Greece&#x27;s hardship gap developed</caption><thead><tr><th>Series</th><th class="num">2015</th><th class="num">2016</th><th class="num">2017</th><th class="num">2018</th><th class="num">2019</th><th class="num">2020</th><th class="num">2021</th><th class="num">2022</th><th class="num">2023</th><th class="num">2024</th></tr></thead><tbody><tr><td>Greece: reported hardship</td><td class="num">77.7</td><td class="num">76.8</td><td class="num">77.2</td><td class="num">74.1</td><td class="num">71.0</td><td class="num">69.8</td><td class="num">71.0</td><td class="num">68.4</td><td class="num">67.0</td><td class="num">66.7</td></tr><tr><td>EU median: reported hardship</td><td class="num">28.9</td><td class="num">25.9</td><td class="num">22.6</td><td class="num">20.5</td><td class="num">18.5</td><td class="num">16.8</td><td class="num">15.4</td><td class="num">17.9</td><td class="num">16.6</td><td class="num">17.1</td></tr><tr><td>Greece: income poverty</td><td class="num">21.4</td><td class="num">21.2</td><td class="num">20.2</td><td class="num">18.5</td><td class="num">17.9</td><td class="num">17.7</td><td class="num">19.6</td><td class="num">18.8</td><td class="num">18.9</td><td class="num">19.6</td></tr><tr><td>EU median: income poverty</td><td class="num">16.3</td><td class="num">16.5</td><td class="num">15.9</td><td class="num">16.4</td><td class="num">15.4</td><td class="num">16.1</td><td class="num">15.7</td><td class="num">15.6</td><td class="num">15.4</td><td class="num">15.5</td></tr></tbody></table><table data-checksum="3c52ae90e921cd3a" data-view="1"><caption>Where countries stood in 2024</caption><thead><tr><th>Series</th><th class="num">Income poverty (%)</th><th class="num">Reported hardship (%)</th></tr></thead><tbody><tr><td>Czechia</td><td class="num">9.5</td><td class="num">14.2</td></tr><tr><td>Belgium</td><td class="num">11.4</td><td class="num">17.1</td></tr><tr><td>Denmark</td><td class="num">11.6</td><td class="num">12.8</td></tr><tr><td>Netherlands</td><td class="num">12.1</td><td class="num">7.3</td></tr><tr><td>Finland</td><td class="num">12.6</td><td class="num">8.9</td></tr><tr><td>Ireland</td><td class="num">12.7</td><td class="num">16.9</td></tr><tr><td>Slovenia</td><td class="num">13.2</td><td class="num">13.6</td></tr><tr><td>Poland</td><td class="num">13.8</td><td class="num">11.5</td></tr><tr><td>Austria</td><td class="num">14.3</td><td class="num">13.1</td></tr><tr><td>Hungary</td><td class="num">14.3</td><td class="num">19.8</td></tr><tr><td>Slovakia</td><td class="num">14.5</td><td class="num">28.7</td></tr><tr><td>Cyprus</td><td class="num">14.6</td><td class="num">20.8</td></tr><tr><td>Sweden</td><td class="num">14.8</td><td class="num">9.9</td></tr><tr><td>Germany</td><td class="num">15.5</td><td class="num">7.3</td></tr><tr><td>France</td><td class="num">15.9</td><td class="num">21.8</td></tr><tr><td>Portugal</td><td class="num">16.6</td><td class="num">21.8</td></tr><tr><td>Malta</td><td class="num">16.9</td><td class="num">17.3</td></tr><tr><td>Luxembourg</td><td class="num">18.1</td><td class="num">8.5</td></tr><tr><td>Italy</td><td class="num">18.9</td><td class="num">18.7</td></tr><tr><td>Romania</td><td class="num">19.0</td><td class="num">23.8</td></tr><tr><td>Greece</td><td class="num">19.6</td><td class="num">66.7</td></tr><tr><td>Spain</td><td class="num">19.7</td><td class="num">21.9</td></tr><tr><td>Estonia</td><td class="num">20.2</td><td class="num">9.9</td></tr><tr><td>Croatia</td><td class="num">20.3</td><td class="num">19.8</td></tr><tr><td>Lithuania</td><td class="num">21.5</td><td class="num">11.4</td></tr><tr><td>Latvia</td><td class="num">21.6</td><td class="num">23.3</td></tr><tr><td>Bulgaria</td><td class="num">21.7</td><td class="num">37.4</td></tr></tbody></table></details>
@@ -882,7 +891,7 @@ relative threshold with one anchored to its 2008 real value.</p>
 <figcaption><span class="fignum">Figure 4</span> Who counts as poor barely moved; what the poverty line buys fell by a fifth</figcaption>
 <div class="fig-meta"><span class="badge">descriptive</span>
 <span class="fig-q">What happened to the line Greek poverty is measured against, and what does a fixed line show instead?</span></div>
-<div class="chart-live" data-chart="panel" tabindex="0"
+<div class="chart-live" data-views="stacked" data-chart="panel" tabindex="0"
      data-checksum="7306a714675cddf8" aria-describedby="F3-fb">
 <script type="application/json" data-kind="panel" data-label="Who falls below a fixed line">{"years": [2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025], "dp": 1, "yLabel": "% of people", "alt": "Greek anchored poverty against the floating income-poverty rate", "series": [{"label": "Greece: fixed 2008 threshold", "tone": "gr", "style": "solid", "weight": "strong", "values": [25.6, 22.8, 20.7, 21.5, 21.2, 19.7, 17.0, 18.0, 24.6, 33.3, 39.7, 40.6, 39.8, 39.8, 38.3, 37.3, 34.6, 30.8, 32.7, 33.6, 32.0, 30.2, 27.5]}, {"label": "Greece: current-year threshold", "tone": "series-3", "style": "solid", "weight": "normal", "values": [20.7, 19.9, 19.6, 20.5, 20.3, 20.1, 19.7, 20.1, 21.4, 23.1, 23.1, 22.1, 21.4, 21.2, 20.2, 18.5, 17.9, 17.7, 19.6, 18.8, 18.9, 19.6, 19.6]}]}</script><script type="application/json" data-kind="panel" data-label="What the line itself is worth">{"years": [2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025], "dp": 0, "yLabel": "Euros per year, single adult", "alt": "The Greek poverty threshold in cash terms and in 2008 purchasing power. The cash line returns close to its peak while the purchasing-power line stays far below it", "series": [{"label": "Threshold in cash terms", "tone": "gr", "style": "solid", "weight": "strong", "values": [4923, 5306, 5650, 5910, 6120, 6480, 6897, 7178, 6591, 5708, 5023, 4608, 4512, 4500, 4560, 4718, 4917, 5269, 5251, 5712, 6030, 6510, 7020]}, {"label": "Same threshold in 2008 purchasing power", "tone": "series-5", "style": "dashed", "weight": "strong", "values": [5819, 6089, 6264, 6343, 6377, 6480, 6808, 6768, 6027, 5168, 4589, 4270, 4228, 4216, 4226, 4338, 4498, 4884, 4838, 4815, 4878, 5113, 5358]}]}</script>
 </div><p class="fig-caveat"><strong>Read with this.</strong> The anchored series is an approximation built in this project and is labelled as such wherever it appears. The first view counts PEOPLE, the second counts EUROS. In the second, both lines are the same official threshold: one as published in each year&#x27;s own money, the other converted into what it could buy in 2008. The cash line recovers and the purchasing-power line does not, and that difference is why the first view&#x27;s two counts diverge. Both views are Greece only and support no cross-country statement.</p>
@@ -2320,8 +2329,9 @@ source data rather than transcribed.</p>
         'text-anchor':isX?'start':'end',class:'axis-label',
         style:'fill:var(--chart-neutral);opacity:.9'});
       gt.textContent=g.label||'';svg.appendChild(gt);});
-    let keyRight=padL;
+    let keyRight=padL, FIT=null;
     if(sxx>0){const b1=sxy/sxx,b0=my-b1*mx;
+      FIT={b0:b0,b1:b1};
       svg.appendChild(el('line',{x1:xs(xlo-px),y1:ys(b0+b1*(xlo-px)),
         x2:xs(xhi+px),y2:ys(b0+b1*(xhi+px)),stroke:'var(--chart-label)',
         'stroke-width':1.6,'stroke-dasharray':'5 3',opacity:.85}));
@@ -2349,23 +2359,68 @@ source data rather than transcribed.</p>
         if(txt!==full){const ti=el('title',{});ti.textContent=full;ft.appendChild(ti);}
         svg.appendChild(ft);}}
     if(d.crosshair){
-      const cx=xs(d.crosshair.x), cy=ys(d.crosshair.y), a=7;
-      const arm={stroke:'var(--chart-label)','stroke-width':1.4,opacity:.75};
-      svg.appendChild(el('line',Object.assign({x1:cx-a,x2:cx+a,y1:cy,y2:cy},arm)));
-      svg.appendChild(el('line',Object.assign({x1:cx,x2:cx,y1:cy-a,y2:cy+a},arm)));
+      // A cross drawn at the median sat directly on the fitted line -- the
+      // median country is ON the peer relationship, which is the point, but
+      // visually the two marks merged and the label landed among the dots.
+      // It is now an EU-coloured point with a short leader to text placed in
+      // clear space, so the reference reads as a reference.
+      const cx=xs(d.crosshair.x), cy=ys(d.crosshair.y);
+      svg.appendChild(el('circle',{cx:cx,cy:cy,r:5,fill:'var(--chart-eu)',
+        stroke:'var(--surface-1)','stroke-width':1.5}));
       if(d.crosshair.label){
-        // Below the marker, and flipped inboard near either edge so the text
-        // never runs off the plot.
-        const right=cx>padL+pw*0.6, left=cx<padL+pw*0.25;
+        const below=d.crosshair.place!=='above';
+        const cfull0=d.crosshair.label;
+        const w0=ms((d.crosshair.shortLabel&&ms(cfull0,false)>pw*0.6)
+                    ?d.crosshair.shortLabel:cfull0,false);
+        // Pick the side that actually has room for the measured text, not the
+        // side implied by the point's position. At phone widths the callout
+        // ran past the right edge because the point sat left of centre while
+        // the label was wider than the space beyond it.
+        const fitsR=cx+16+w0<=W-padR, fitsL=cx-16-w0>=padL;
+        // Three cases, not two. When the label fits on neither side -- a wide
+        // callout on a narrow chart -- neither anchor works and the old code
+        // silently ran off the edge. Centre it under the point and clamp.
+        const mode=fitsR?'start':(fitsL?'end':'middle');
+        const right=(mode==='end');
+        let lx=cx+(right?-16:mode==='start'?16:0);
+        if(mode==='middle')lx=Math.max(padL+w0/2,Math.min(W-padR-w0/2,cx));
+        const ly=cy+(below?26:-22);
+        svg.appendChild(el('line',{x1:cx,y1:cy+(below?6:-6),
+          x2:mode==='middle'?lx:lx+(right?4:-4),y2:ly+(below?-9:5),
+          stroke:'var(--chart-eu)','stroke-width':1,opacity:.7}));
         const cfull=d.crosshair.label;
-        const ctxt=(d.crosshair.shortLabel && ms(cfull,false)>pw*0.9)
+        const ctxt=(d.crosshair.shortLabel && ms(cfull,false)>pw*0.6)
                    ? d.crosshair.shortLabel : cfull;
-        const ct=el('text',{x:cx+(right?-a-4:left?a+4:0),y:cy+a+13,
-          'text-anchor':right?'end':left?'start':'middle',class:'axis-label',
-          style:'fill:var(--chart-label);opacity:.9'});
+        const ct=el('text',{x:lx,y:ly,'text-anchor':mode,
+          class:'axis-label',
+          style:'fill:var(--chart-eu);font-weight:600'});
         ct.textContent=ctxt;
         if(ctxt!==cfull){const ti=el('title',{});ti.textContent=cfull;ct.appendChild(ti);}
         svg.appendChild(ct);}}
+    // How far the highlighted case sits above what the peer relationship
+    // predicts for it. Drawn from FIT, the same b0/b1 plotted above, so the
+    // number and the picture cannot disagree.
+    if(d.residualTo&&FIT){
+      const hp=d.points.find(p=>p.highlight);
+      if(hp){
+        const pred=FIT.b0+FIT.b1*hp.x, gap=hp.y-pred;
+        const gx=xs(hp.x);
+        svg.appendChild(el('line',{x1:gx,x2:gx,y1:ys(pred),y2:ys(hp.y),
+          stroke:'var(--chart-gr)','stroke-width':1.6,
+          'stroke-dasharray':'2 3',opacity:.85}));
+        [ys(pred),ys(hp.y)].forEach(yy=>svg.appendChild(el('line',
+          {x1:gx-4,x2:gx+4,y1:yy,y2:yy,stroke:'var(--chart-gr)',
+           'stroke-width':1.6,opacity:.85})));
+        const gt=el('text',{x:gx-9,y:(ys(pred)+ys(hp.y))/2+4,
+          'text-anchor':'end',class:'axis-label',
+          style:'fill:var(--chart-gr);font-weight:600'});
+        const gfull=d.residualTo.replace('{gap}',fmt(gap,d.dp==null?1:d.dp));
+        const gshort=(d.residualToShort||'').replace('{gap}',fmt(gap,d.dp==null?1:d.dp));
+        const groom=gx-9-padL;
+        gt.textContent=(gshort&&ms(gfull,true)>groom)?gshort:gfull;
+        if(gt.textContent!==gfull){const ti=el('title',{});ti.textContent=gfull;
+          gt.appendChild(ti);}
+        svg.appendChild(gt);}}
     const marks=[];
     d.points.forEach(p=>{
       const c=p.reference
@@ -2433,7 +2488,33 @@ source data rather than transcribed.</p>
   // threshold and the anchored comparison, or AROPE by component, age,
   // household and shift-share. Views live in one figure so the reader does not
   // lose the question while changing the picture.
+  // STACKED MODE. Tabs are right for a reader following an argument on screen
+  // and wrong for print, where a tab bar is a row of dead buttons and only the
+  // first view survives. A figure marked data-views="stacked" draws every view
+  // at once as labelled sub-panels, with every fallback table visible.
+  function mountStacked(host){
+    const payloads=[...host.querySelectorAll('script[type="application/json"]')];
+    if(payloads.length<2)return false;
+    host.querySelectorAll(':scope > svg, :scope > .legend, :scope > .stack')
+        .forEach(n=>n.remove());
+    payloads.forEach((pl,i)=>{
+      const wrap=document.createElement('div');wrap.className='stack';
+      const h=document.createElement('p');h.className='stack-h';
+      h.textContent=String.fromCharCode(97+i)+'. '+(pl.dataset.label||('View '+(i+1)));
+      wrap.appendChild(h);
+      const sub=document.createElement('div');
+      // The sub-host carries the width the chart functions measure against, and
+      // must be in the document before they run or every label measures zero.
+      sub.className='stack-body';wrap.appendChild(sub);host.appendChild(wrap);
+      (KINDS[pl.dataset.kind||host.dataset.chart]||panel)(sub,JSON.parse(pl.textContent));
+    });
+    const fig=host.closest('figure')||document;
+    fig.querySelectorAll('table[data-view]').forEach(tb=>{tb.hidden=false;});
+    return true;
+  }
+
   function mountViews(host){
+    if(host.dataset.views==='stacked')return mountStacked(host);
     const payloads=[...host.querySelectorAll('script[type="application/json"]')];
     if(payloads.length<2)return false;
     const bar=document.createElement('div');bar.className='viewbar';
@@ -2484,6 +2565,7 @@ source data rather than transcribed.</p>
     });
   }
   function redraw(){document.querySelectorAll('.viewbar').forEach(b=>b.remove());
+    document.querySelectorAll('[data-views="stacked"] > .stack').forEach(s=>s.remove());
     document.querySelectorAll('[data-chart]').forEach(h=>h.dataset.drawn='');mount();}
   document.addEventListener('DOMContentLoaded',mount);
   if(document.readyState!=='loading')mount();

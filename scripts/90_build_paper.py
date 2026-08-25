@@ -86,6 +86,17 @@ if PAPER_FIGS != _FROZEN if "PAPER_FIGS" in dir() else NARRATIVE_FIGS != _FROZEN
 _used = []
 
 
+# Figures whose views must all be visible at once here rather than sitting
+# behind tabs. A tab bar is a row of dead buttons on paper and in PDF, where
+# only the first view survives, and these figures need both halves together:
+#   F3  the fixed-versus-moving threshold AND the nominal-versus-real threshold
+#       are two different questions. The first shows that ordinary AROP misses
+#       people whose income fell because the line fell with it; the second
+#       shows why -- the line recovered in euros and is still about a fifth
+#       lower in what it buys. Neither carries the argument alone.
+STACKED = {"F3"}
+
+
 def fig(fid, number):
     if fid in _used:
         raise SystemExit(f"{fid} placed twice")
@@ -95,6 +106,13 @@ def fig(fid, number):
     src = src.replace(
         "<figcaption>",
         f'<figcaption><span class="fignum">Figure {number}</span> ', 1)
+    if fid in STACKED:
+        n = src.count('type="application/json"')
+        if n < 2:
+            raise SystemExit(
+                f"{fid} is marked STACKED but carries {n} view(s); either it "
+                "lost a view or the marking is stale")
+        src = src.replace('data-chart=', 'data-views="stacked" data-chart=', 1)
     return src
 
 

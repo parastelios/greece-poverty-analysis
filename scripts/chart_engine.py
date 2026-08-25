@@ -150,6 +150,9 @@ transition:opacity .1s}
 max-width:100%;
 font:.76rem/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--text-secondary)}
 .viewbar{display:flex;flex-wrap:wrap;gap:.3rem;padding:0 1.1rem .6rem}
+.stack+.stack{margin-top:1.4rem}
+.stack-h{font:600 .8rem/1.3 ui-sans-serif,system-ui,sans-serif;margin:0 0 .35rem;
+color:var(--chart-label);letter-spacing:.01em}
 .viewbtn{font:600 .74rem/1 ui-sans-serif,system-ui,sans-serif;padding:.35rem .6rem;
 border:1px solid var(--border);background:transparent;color:var(--text-secondary);
 border-radius:4px;cursor:pointer}
@@ -193,6 +196,12 @@ color:var(--text-secondary);margin:.5rem 0 0;max-width:44rem}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 @media print{
   .chart-live{display:none}
+  /* Stacked figures are the deliberate exception. The rule above exists
+     because a tabbed chart prints as one arbitrary view plus a row of dead
+     buttons, so the table is the honest artefact. A stacked figure has no tabs
+     and has already drawn every view, so it prints as what it is. Its table
+     still prints beneath it: the fallback guarantee is not traded away. */
+  .chart-live[data-views="stacked"]{display:block}
   .fallback{border-top:0}
   .fallback > summary{display:none}
   .fallback[open],.fallback{display:block}
@@ -1061,8 +1070,9 @@ JS = r"""
         'text-anchor':isX?'start':'end',class:'axis-label',
         style:'fill:var(--chart-neutral);opacity:.9'});
       gt.textContent=g.label||'';svg.appendChild(gt);});
-    let keyRight=padL;
+    let keyRight=padL, FIT=null;
     if(sxx>0){const b1=sxy/sxx,b0=my-b1*mx;
+      FIT={b0:b0,b1:b1};
       svg.appendChild(el('line',{x1:xs(xlo-px),y1:ys(b0+b1*(xlo-px)),
         x2:xs(xhi+px),y2:ys(b0+b1*(xhi+px)),stroke:'var(--chart-label)',
         'stroke-width':1.6,'stroke-dasharray':'5 3',opacity:.85}));
@@ -1090,23 +1100,68 @@ JS = r"""
         if(txt!==full){const ti=el('title',{});ti.textContent=full;ft.appendChild(ti);}
         svg.appendChild(ft);}}
     if(d.crosshair){
-      const cx=xs(d.crosshair.x), cy=ys(d.crosshair.y), a=7;
-      const arm={stroke:'var(--chart-label)','stroke-width':1.4,opacity:.75};
-      svg.appendChild(el('line',Object.assign({x1:cx-a,x2:cx+a,y1:cy,y2:cy},arm)));
-      svg.appendChild(el('line',Object.assign({x1:cx,x2:cx,y1:cy-a,y2:cy+a},arm)));
+      // A cross drawn at the median sat directly on the fitted line -- the
+      // median country is ON the peer relationship, which is the point, but
+      // visually the two marks merged and the label landed among the dots.
+      // It is now an EU-coloured point with a short leader to text placed in
+      // clear space, so the reference reads as a reference.
+      const cx=xs(d.crosshair.x), cy=ys(d.crosshair.y);
+      svg.appendChild(el('circle',{cx:cx,cy:cy,r:5,fill:'var(--chart-eu)',
+        stroke:'var(--surface-1)','stroke-width':1.5}));
       if(d.crosshair.label){
-        // Below the marker, and flipped inboard near either edge so the text
-        // never runs off the plot.
-        const right=cx>padL+pw*0.6, left=cx<padL+pw*0.25;
+        const below=d.crosshair.place!=='above';
+        const cfull0=d.crosshair.label;
+        const w0=ms((d.crosshair.shortLabel&&ms(cfull0,false)>pw*0.6)
+                    ?d.crosshair.shortLabel:cfull0,false);
+        // Pick the side that actually has room for the measured text, not the
+        // side implied by the point's position. At phone widths the callout
+        // ran past the right edge because the point sat left of centre while
+        // the label was wider than the space beyond it.
+        const fitsR=cx+16+w0<=W-padR, fitsL=cx-16-w0>=padL;
+        // Three cases, not two. When the label fits on neither side -- a wide
+        // callout on a narrow chart -- neither anchor works and the old code
+        // silently ran off the edge. Centre it under the point and clamp.
+        const mode=fitsR?'start':(fitsL?'end':'middle');
+        const right=(mode==='end');
+        let lx=cx+(right?-16:mode==='start'?16:0);
+        if(mode==='middle')lx=Math.max(padL+w0/2,Math.min(W-padR-w0/2,cx));
+        const ly=cy+(below?26:-22);
+        svg.appendChild(el('line',{x1:cx,y1:cy+(below?6:-6),
+          x2:mode==='middle'?lx:lx+(right?4:-4),y2:ly+(below?-9:5),
+          stroke:'var(--chart-eu)','stroke-width':1,opacity:.7}));
         const cfull=d.crosshair.label;
-        const ctxt=(d.crosshair.shortLabel && ms(cfull,false)>pw*0.9)
+        const ctxt=(d.crosshair.shortLabel && ms(cfull,false)>pw*0.6)
                    ? d.crosshair.shortLabel : cfull;
-        const ct=el('text',{x:cx+(right?-a-4:left?a+4:0),y:cy+a+13,
-          'text-anchor':right?'end':left?'start':'middle',class:'axis-label',
-          style:'fill:var(--chart-label);opacity:.9'});
+        const ct=el('text',{x:lx,y:ly,'text-anchor':mode,
+          class:'axis-label',
+          style:'fill:var(--chart-eu);font-weight:600'});
         ct.textContent=ctxt;
         if(ctxt!==cfull){const ti=el('title',{});ti.textContent=cfull;ct.appendChild(ti);}
         svg.appendChild(ct);}}
+    // How far the highlighted case sits above what the peer relationship
+    // predicts for it. Drawn from FIT, the same b0/b1 plotted above, so the
+    // number and the picture cannot disagree.
+    if(d.residualTo&&FIT){
+      const hp=d.points.find(p=>p.highlight);
+      if(hp){
+        const pred=FIT.b0+FIT.b1*hp.x, gap=hp.y-pred;
+        const gx=xs(hp.x);
+        svg.appendChild(el('line',{x1:gx,x2:gx,y1:ys(pred),y2:ys(hp.y),
+          stroke:'var(--chart-gr)','stroke-width':1.6,
+          'stroke-dasharray':'2 3',opacity:.85}));
+        [ys(pred),ys(hp.y)].forEach(yy=>svg.appendChild(el('line',
+          {x1:gx-4,x2:gx+4,y1:yy,y2:yy,stroke:'var(--chart-gr)',
+           'stroke-width':1.6,opacity:.85})));
+        const gt=el('text',{x:gx-9,y:(ys(pred)+ys(hp.y))/2+4,
+          'text-anchor':'end',class:'axis-label',
+          style:'fill:var(--chart-gr);font-weight:600'});
+        const gfull=d.residualTo.replace('{gap}',fmt(gap,d.dp==null?1:d.dp));
+        const gshort=(d.residualToShort||'').replace('{gap}',fmt(gap,d.dp==null?1:d.dp));
+        const groom=gx-9-padL;
+        gt.textContent=(gshort&&ms(gfull,true)>groom)?gshort:gfull;
+        if(gt.textContent!==gfull){const ti=el('title',{});ti.textContent=gfull;
+          gt.appendChild(ti);}
+        svg.appendChild(gt);}}
     const marks=[];
     d.points.forEach(p=>{
       const c=p.reference
@@ -1174,7 +1229,33 @@ JS = r"""
   // threshold and the anchored comparison, or AROPE by component, age,
   // household and shift-share. Views live in one figure so the reader does not
   // lose the question while changing the picture.
+  // STACKED MODE. Tabs are right for a reader following an argument on screen
+  // and wrong for print, where a tab bar is a row of dead buttons and only the
+  // first view survives. A figure marked data-views="stacked" draws every view
+  // at once as labelled sub-panels, with every fallback table visible.
+  function mountStacked(host){
+    const payloads=[...host.querySelectorAll('script[type="application/json"]')];
+    if(payloads.length<2)return false;
+    host.querySelectorAll(':scope > svg, :scope > .legend, :scope > .stack')
+        .forEach(n=>n.remove());
+    payloads.forEach((pl,i)=>{
+      const wrap=document.createElement('div');wrap.className='stack';
+      const h=document.createElement('p');h.className='stack-h';
+      h.textContent=String.fromCharCode(97+i)+'. '+(pl.dataset.label||('View '+(i+1)));
+      wrap.appendChild(h);
+      const sub=document.createElement('div');
+      // The sub-host carries the width the chart functions measure against, and
+      // must be in the document before they run or every label measures zero.
+      sub.className='stack-body';wrap.appendChild(sub);host.appendChild(wrap);
+      (KINDS[pl.dataset.kind||host.dataset.chart]||panel)(sub,JSON.parse(pl.textContent));
+    });
+    const fig=host.closest('figure')||document;
+    fig.querySelectorAll('table[data-view]').forEach(tb=>{tb.hidden=false;});
+    return true;
+  }
+
   function mountViews(host){
+    if(host.dataset.views==='stacked')return mountStacked(host);
     const payloads=[...host.querySelectorAll('script[type="application/json"]')];
     if(payloads.length<2)return false;
     const bar=document.createElement('div');bar.className='viewbar';
@@ -1225,6 +1306,7 @@ JS = r"""
     });
   }
   function redraw(){document.querySelectorAll('.viewbar').forEach(b=>b.remove());
+    document.querySelectorAll('[data-views="stacked"] > .stack').forEach(s=>s.remove());
     document.querySelectorAll('[data-chart]').forEach(h=>h.dataset.drawn='');mount();}
   document.addEventListener('DOMContentLoaded',mount);
   if(document.readyState!=='loading')mount();
