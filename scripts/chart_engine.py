@@ -52,9 +52,9 @@ DISPLAY = {
     "hicp_housing": "Housing inflation",
     "housing_cost_overburden": "Housing-cost overburden",
     "severe_mat_soc_deprivation": "Material deprivation",
-    "arrears": "Arrears on bills",
-    "unexpected_expenses": "Cannot meet an unexpected expense",
-    "warm": "Cannot keep the home warm",
+    "arrears": "Falling behind on bills",
+    "unexpected_expenses": "Unexpected expenses",
+    "warm": "Keeping the home warm",
     "net_migration": "Net migration",
     "s80s20": "Income inequality (S80/S20)",
     "saving_rate": "Household saving rate",
@@ -302,7 +302,7 @@ JS = r"""
 
   /* ---------------------------------------------------------------- panel */
   function panel(host,d){
-    const W=widthFor(host), H=Math.round(W*0.42);
+    const W=widthFor(host), H=Math.round(W*(d.aspect||0.42));
     // Right padding is derived from the longest end label, not fixed: a fixed
     // 14% clipped "Greece: hardship" in the first prototype.
     const longest=Math.max(0,...d.series.filter(s=>s.label).map(s=>s.label.length));
@@ -1021,7 +1021,7 @@ JS = r"""
         bar.appendChild(b);});
       host.appendChild(bar);draw();return;
     }
-    const W=widthFor(host), H=Math.round(W*0.62);
+    const W=widthFor(host), H=Math.round(W*(d.aspect||0.62));
     const padL=56,padR=18,padT=16,padB=46;
     const pw=W-padL-padR, ph=H-padT-padB;
     const scope=d.fixedFrom||d.points;
@@ -1261,7 +1261,8 @@ def figure(fid, caption, question, badge, host_kind, payload, fallback_html,
     caveat = "" if caveat is None or caveat != caveat else str(caveat).strip()
     cav = (f'<p class="fig-caveat"><strong>Read with this.</strong> '
            f'{html.escape(caveat)}</p>' if caveat else "")
-    link = (f' <a href="{appendix_link}">Full evidence in the appendix</a>.'
+    link = (f' <a href="{appendix_link}#{fid}">This figure in the appendix</a>,'
+            f' with the detail the report leaves out.'
             if appendix_link else "")
     # DO NOT html-escape the payload. Script-tag content is raw text, so
     # entities survive JSON.parse as literal characters and the tooltip then

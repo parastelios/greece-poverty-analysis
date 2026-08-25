@@ -124,15 +124,16 @@ M = [
                   "and diverging coloured separately",
       fallback="variable, gap 2015, gap 2024, shift, trend",
       caveat="", status_label="descriptive"),
- dict(id="F8", stage=3, chart_type="multiples",
-      question="Does reported difficulty move with concrete affordability "
-               "failure, in Europe and in Greece?",
+ dict(id="F8", stage=3, chart_type="panel",
+      question="Did concrete affordability difficulties rise and fall with "
+               "what Greek households reported?",
       artifact="e0_extended_panel.csv",
-      series="VIEW A: Greek hardship against each measure over time, on one "
-             "shared scale. VIEW B, technical: the European relationship as "
-             "binned country-year averages in standard deviations",
-      interaction="hover reads both figures and flags the Greek exception",
-      fallback="measure, EU within-country correlation, Greece-only correlation",
+      series="one tab per measure: Greek reported hardship, the Greek measure "
+             "and the EU median for that measure, each as a distance from its "
+             "own 2015-2024 average",
+      interaction="switch measure; each tab carries its Greek correlation, and "
+                  "the four are summarised together beneath the chart",
+      fallback="year x the three series, per measure",
       caveat="Same-survey corroboration, not independent validation or causal "
              "evidence.",
       status_label="descriptive corroboration"),

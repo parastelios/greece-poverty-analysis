@@ -867,10 +867,13 @@ without ever registering. The item most often treated as the hard, factual
 anchor of financial distress is the one that tracks Greek hardship least
 closely.</p>
 
-<p>The second view asks whether this is a Greek peculiarity. It is not. Each
-point there groups country-years in which a measure sat similarly above or
-below that country's own normal level, across all twenty-seven member states,
-and the relationship holds at 0.63 to 0.80.</p>
+<p>Each tab also carries the European median for that same measure, so a
+reader can see whether the concrete difficulty was moving the same way
+elsewhere or only in Greece. And this is not a Greek peculiarity: pooled across
+all twenty-seven member states, once each country's own average is removed, the
+same relationships hold at 0.63 to 0.80. The binned version of that pooled
+comparison, and every observation behind it, are in the statistical
+appendix.</p>
 
 {claim('V2-3.1')}
 

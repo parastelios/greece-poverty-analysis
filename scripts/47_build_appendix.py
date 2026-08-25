@@ -9,9 +9,13 @@ could not previously look up what any of them actually was.
 import json
 from pathlib import Path
 
+import re as _re
+
 import numpy as np
 import pandas as pd
 import statsmodels.formula.api as smf
+
+import chart_engine as ce
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "data" / "processed"
@@ -1607,6 +1611,46 @@ body.append('<p class="group-blurb">Technical measures, methods and data codes u
             'to make it usable, a plain-language explanation is included.</p>')
 body.append(glossary_html())
 
+# ---------------------------------------------------------------------------
+# THE APPENDIX IS A SUPERSET. Every figure in the report appears here with the
+# IDENTICAL payload -- lifted from the same built pages the report lifts from,
+# not rebuilt -- so a reader can check any report figure here and find the same
+# numbers. Beside them sit the views the report simplified away.
+# ---------------------------------------------------------------------------
+def _lift(paths):
+    found = {}
+    for pth in paths:
+        if not pth.exists():
+            continue
+        page = pth.read_text()
+        for m in _re.finditer(
+                r'<figure class="figure" id="([A-Z]\d+[A-Z]?)">.*?</figure>',
+                page, _re.S):
+            found.setdefault(m.group(1), m.group(0))
+    return found
+
+
+_report_figs = _lift([ROOT / "output" / f"batch{n}.html" for n in (1, 2, 3, 4)])
+_detail_figs = _lift([ROOT / "output" / "_appendix_figures.html"])
+_man = pd.read_csv(OUT / "report_visual_manifest.csv")
+_missing = [i for i in _man["id"] if i not in _report_figs]
+if _missing:
+    raise SystemExit(f"appendix cannot be a superset: {_missing} not built")
+
+_fig_section = (
+    '<section id="figures"><h2>Every figure in the report</h2>'
+    "<p class='lede'>Each one is the same object the report carries, with the "
+    "same numbers behind it. The report explains what they mean; this is where "
+    "the values live.</p>"
+    + "".join(_report_figs[i] for i in _man["id"])
+    + "</section><section id='detail'><h2>Detail the report leaves out</h2>"
+    "<p class='lede'>Views that would slow a reader following the argument and "
+    "are exactly what someone checking it wants: every observation behind a "
+    "binned summary, every year rather than the latest, and the whole "
+    "correlation matrix rather than ten representatives.</p>"
+    + "".join(_detail_figs[k] for k in sorted(_detail_figs))
+    + "</section>")
+
 html = f"""{HEAD}
 <div class="wrap">
 <p class="eyebrow">Statistical appendix &middot; EU-SILC / Eurostat</p>
@@ -1687,6 +1731,9 @@ Object.entries(SCATTERS).forEach(([k, sc]) => {{
   if (host) try {{ drawScatter(host, k, sc); }} catch (e) {{ console.error('scatter', k, e); }}
 }});
 </script>
+<style>{ce.CSS}</style>
+{_fig_section}
+<script>{ce.JS}</script>
 """
 DEST.write_text(html, encoding="utf-8")
 print(f"{DEST}  ({len(html)/1024:.0f} KB)  {len(series)} series, {len(panels)} panels, {len(scatters)} scatters")

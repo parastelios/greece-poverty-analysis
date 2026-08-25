@@ -202,101 +202,71 @@ FIGS["F7"] = dict(
         "points and PPS per head and cannot share an axis."))
 
 # ---- F8: the movement itself --------------------------------------------
-# Two earlier attempts failed for the same reason: they showed STATISTICS about
-# a relationship rather than the relationship. A dumbbell comparing a pooled
-# European correlation with a Greece-only one asked the reader to hold two
-# different estimands in mind, and drew a line between them that implied a
-# change. This shows the quantities moving.
-ITEMS = [("unexpected_expenses", "Cannot meet an unexpected expense"),
+# One tab per measure. Four panels carrying three lines each would be twelve
+# lines on one figure, which is where the earlier versions became unreadable.
+# Each tab asks one question: did this concrete difficulty rise and fall with
+# what Greek households reported, and was it moving the same way elsewhere?
+ITEMS = [("unexpected_expenses", "Unexpected expenses"),
          ("severe_mat_soc_deprivation", "Material deprivation"),
-         ("arrears", "Arrears on bills"),
-         ("warm", "Cannot keep the home warm")]
+         ("arrears", "Falling behind on bills"),
+         ("warm", "Keeping the home warm")]
 
 el = panel[panel.geo == "EL"].dropna(subset=["subjective_poverty"]).sort_values("time")
-el_years = [int(y) for y in el.time]
-hard_dev = [round(float(v - el.subjective_poverty.mean()), 1)
-            for v in el.subjective_poverty]
-
-panels_gr, f8 = [], ce.Series(["Greece correlation", "Years"], dp=2)
+views8, series8, summary = [], [], []
 for col, label in ITEMS:
     sub = el.dropna(subset=[col])
     if len(sub) < 6:
         continue
     r = float(sub.subjective_poverty.corr(sub[col]))
-    m = float(sub[col].mean())
-    f8.add(label, [r, float(len(sub))])
-    panels_gr.append({
-        "label": label, "r": round(r, 3),
-        "x": [int(y) for y in sub.time],
-        "xLabel": "",
-        "series": [
-            {"label": "Reported hardship", "tone": "chart-gr",
-             "values": [round(float(v - sub.subjective_poverty.mean()), 1)
-                        for v in sub.subjective_poverty]},
-            {"label": label, "tone": "chart-s3",
-             "values": [round(float(v - m), 1) for v in sub[col]]}]})
+    yy = [int(y) for y in sub.time]
+    eu = panel.dropna(subset=[col]).groupby("time")[col].median()
+    eu_v = [float(eu.get(y)) if y in eu.index else None for y in yy]
+    eu_m = pd.Series([v for v in eu_v if v is not None]).mean()
 
-# The European relationship, binned so it can be seen rather than inferred.
-panels_eu, f8b = [], ce.Series(["Bins", "Country-years", "Pooled correlation"], dp=2)
-for col, label in ITEMS:
-    d = panel.dropna(subset=[col, "subjective_poverty"]).copy()
-    for c in [col, "subjective_poverty"]:
-        d[c + "_w"] = d[c] - d.groupby("geo")[c].transform("mean")
-    r = float(d["subjective_poverty_w"].corr(d[col + "_w"]))
-    d[col + "_z"] = d[col + "_w"] / d[col + "_w"].std()
-    d["hard_z"] = d["subjective_poverty_w"] / d["subjective_poverty_w"].std()
-    d["_bin"] = pd.qcut(d[col + "_z"], 9, labels=False, duplicates="drop")
-    b = d.groupby("_bin").agg(x=(col + "_z", "mean"),
-                              y=("hard_z", "mean")).reset_index()
-    sxx = ((b.x - b.x.mean()) ** 2).sum()
-    b1 = (((b.x - b.x.mean()) * (b.y - b.y.mean())).sum() / sxx) if sxx else 0.0
-    f8b.add(label, [float(len(b)), float(len(d)), r])
-    panels_eu.append({
-        "label": label, "r": round(r, 3),
-        "xLabel": "",
-        "points": [{"x": round(float(x), 2), "y": round(float(y), 2)}
-                   for x, y in zip(b.x, b.y)],
-        "fit": {"b1": round(b1, 4),
-                "b0": round(float(b.y.mean() - b1 * b.x.mean()), 4)}})
+    # Everything is a distance from its OWN 2015-2024 average, including the
+    # European median, or the three lines could not share one axis.
+    hz = [round(float(v - sub.subjective_poverty.mean()), 1)
+          for v in sub.subjective_poverty]
+    iz = [round(float(v - sub[col].mean()), 1) for v in sub[col]]
+    ez = [None if v is None else round(float(v - eu_m), 1) for v in eu_v]
+
+    s = ce.Series([str(y) for y in yy], dp=1, title=label)
+    s.add("Greece: reported hardship", hz)
+    s.add(f"Greece: {label.lower()}", iz)
+    s.add(f"EU median: {label.lower()}", ez)
+    series8.append(s)
+    summary.append(f"{label.lower()} {r:.2f}")
+    views8.append((f"{label}  r = {r:.2f}", {
+        "years": yy, "dp": 1, "aspect": 0.44,
+        "yMin": -9, "yMax": 9,
+        "yLabel": "Percentage-point deviation from each series' "
+                  "2015-2024 average",
+        "alt": f"Greek reported hardship, Greek {label.lower()} and the EU "
+               f"median for {label.lower()}, each as distances from its own "
+               f"average. Greek correlation {r:.2f}",
+        "series": [
+            {"label": "Greece: reported hardship", "tone": "chart-gr",
+             "style": "solid", "weight": "strong", "values": hz},
+            {"label": f"Greece: {label.lower()}", "tone": "chart-s3",
+             "style": "solid", "weight": "strong", "values": iz},
+            {"label": f"EU median: {label.lower()}", "tone": "chart-s3",
+             "style": "dashed", "weight": "normal", "values": ez}]},
+        "panel"))
 
 FIGS["F8"] = dict(
     caption="Three affordability measures closely track hardship in Greece; "
             "falling behind on bills tracks it much less closely",
-    kind="multiples",
-    payload={"panels": panels_gr,
-             "yMin": -9, "yMax": 9, "yTicks": [-8, -4, 0, 4, 8],
-             "yLabel": "Percentage points from each series' own 2015-2024 average",
-             "alt": "Four panels, one per affordability measure, each showing "
-                    "Greek reported hardship and that measure as deviations "
-                    "from their own averages. Three track closely; arrears do "
-                    "not"},
-    series=f8, first="Measure",
-    views=[("In Greece, year by year",
-            {"panels": panels_gr,
-             "yMin": -9, "yMax": 9, "yTicks": [-8, -4, 0, 4, 8],
-             "yLabel": "Percentage points from each series' own average",
-             "alt": "Greek reported hardship and each affordability measure as "
-                    "deviations from their own averages"}, "multiples"),
-           ("Across Europe (technical)",
-            {"panels": panels_eu,
-             "xMin": -2.2, "xMax": 2.2, "yMin": -2.2, "yMax": 2.2,
-             "xTicks": [-1, 0, 1], "yTicks": [-1, 0, 1],
-             "yLabel": "Reported hardship, standard deviations from the "
-                       "country's own average",
-             "alt": "Binned averages of country-years, each point grouping "
-                    "country-years where the measure was similarly above or "
-                    "below that country's normal level"}, "multiples")],
-    view_series=[f8, f8b],
+    kind="panel", views=views8, view_series=series8, first="Year",
     extra_caveat=(
-        "Both series in the first view are drawn as distances from their own "
-        "2015-2024 average, so they share an axis without one dwarfing the "
-        "other; the shapes may be compared, the levels may not. In the second "
-        "view both axes are in standard deviations from each country's own "
-        "average, so one step means the same thing in all four panels, and "
-        "each point groups country-years in which a problem sat similarly "
-        "above or below that country's normal level. The line there is fitted "
-        "through the nine plotted bins while the correlation in the title is "
-        "computed from all country-years: they are not the same calculation."))
+        "Greek correlations with reported hardship: " + " \u00b7 ".join(summary)
+        + ". Every line is a distance from its own 2015-2024 average, "
+        "including the European median, so three series on different scales "
+        "can share one axis: the shapes may be compared, the levels may not. "
+        "The scale is the same in all four tabs. European median hardship is "
+        "deliberately absent, since the question here is whether the concrete "
+        "difficulty moved with Greek reports, not how Greece compares. "
+        "Same-survey corroboration: not independent validation, and not "
+        "causal evidence."))
 
 # ---- F20: what the model predicts against what Greece reports --------------
 # A one-row dumbbell was too little for a figure, and its grammar implied a

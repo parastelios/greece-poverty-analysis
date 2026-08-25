@@ -472,6 +472,32 @@ for path in TARGETS:
     check("print rules hide the live layer and show the table",
           "@media print" in raw and ".chart-live{display:none}" in raw.replace(" ", ""))
 
+# ---------------------------------------------------------------------------
+# THE APPENDIX MUST BE A SUPERSET. Every figure the report carries has to
+# appear in the appendix with the SAME payload, so a reader sent there to check
+# a number finds the same object rather than a similar one. Hashed, not counted.
+# ---------------------------------------------------------------------------
+_rep = ROOT / "output" / "v2_report.html"
+_app = ROOT / "output" / "statistical_appendix.html"
+if _rep.exists() and _app.exists():
+    def _fig_hashes(text):
+        out = {}
+        for m in re.finditer(
+                r'<figure class="figure" id="([A-Z]\d+[A-Z]?)">(.*?)</figure>',
+                text, re.S):
+            pls = re.findall(
+                r'<script type="application/json"[^>]*>(.*?)</script>',
+                m.group(2), re.S)
+            out[m.group(1)] = hashlib.sha256("".join(pls).encode()).hexdigest()[:12]
+        return out
+
+    _r, _a = _fig_hashes(_rep.read_text()), _fig_hashes(_app.read_text())
+    _gap = [k for k in _r if k not in _a]
+    _diff = [k for k in _r if k in _a and _r[k] != _a[k]]
+    print(f"\nappendix superset: {len(_r)} report figures, {len(_a)} in appendix")
+    check("every report figure appears in the appendix", not _gap, str(_gap))
+    check("appendix figures carry the report's exact payloads", not _diff, str(_diff))
+
 bad = [n for n, ok in F if not ok]
 print(f"\n{len(F) - len(bad)}/{len(F)} figure checks pass")
 if bad:

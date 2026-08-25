@@ -78,6 +78,7 @@ f1.add("Greece: income poverty", [float(gr.arop.get(y)) for y in yrs],
 f1.add("EU median: income poverty", [float(med.arop.get(y)) for y in yrs],
        tone="series-3", style="dashed", weight="normal")
 v1a = {"years": [int(y) for y in yrs], "dp": 1, "yLabel": "Percent",
+       "aspect": 0.52,
        "context": ctx1,
        "contextLabel": "Each other EU country: reported hardship",
        "alt": "Greek reported hardship and income poverty against the EU median "
@@ -107,7 +108,7 @@ f1b = ce.Series(["Income poverty (%)", "Reported hardship (%)"], dp=1)
 for r in _last.sort_values("arop").itertuples():
     f1b.add(NAMES.get(r.geo, r.geo), [float(r.arop), float(r.subjective_poverty)])
 
-v1b = {"points": pts1, "dp": 1,
+v1b = {"points": pts1, "dp": 1, "aspect": 0.52,
        "xLabel": "Income poverty, percent of people",
        "yLabel": "Reported hardship, percent of households",
        "fitExcludesHighlight": True,
