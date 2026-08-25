@@ -337,6 +337,56 @@ FIGS["A7"] = dict(
         "refits change sign, so consistent here does not mean supported."))
 
 
+# ---- A11: arrears against reported hardship --------------------------------
+# The one direct pairing the appendix was missing. It belongs here and nowhere
+# else: arrears and reported hardship are BOTH EU-SILC self-reports from the
+# same household in the same interview, so their agreement is corroboration
+# within one instrument and can never be explanation.
+_arr = panel.dropna(subset=["arrears", "subjective_poverty"])
+_ayrs = [int(y) for y in sorted(_arr.time.unique())
+         if _arr[_arr.time == y].geo.nunique() >= 25]
+_frames11 = [{"label": str(y), "points": [
+    {"x": round(float(r.arrears), 1),
+     "y": round(float(r.subjective_poverty), 1),
+     "label": NAMES.get(r.geo, r.geo),
+     "shortLabel": "Greece" if r.geo == "EL" else None,
+     "highlight": r.geo == "EL"}
+    for r in _arr[_arr.time == y].itertuples()]} for y in _ayrs]
+
+fA11 = ce.Series(["Greece: arrears", "Greece: reported hardship",
+                  "Pooled correlation", "Countries"], dp=2)
+for y in _ayrs:
+    s = _arr[_arr.time == y]
+    g = s[s.geo == "EL"]
+    fA11.add(str(y), [
+        float(g.arrears.iloc[0]) if len(g) else None,
+        float(g.subjective_poverty.iloc[0]) if len(g) else None,
+        round(float(s.arrears.corr(s.subjective_poverty)), 3),
+        float(s.geo.nunique())])
+
+FIGS["A11"] = dict(
+    caption="Falling behind on bills against reported hardship, year by year",
+    kind="scatter",
+    payload={"frames": _frames11, "dp": 1, "aspect": 0.55,
+             "xLabel": "Households in arrears, percent",
+             "yLabel": "Reported hardship, percent of households",
+             "fitExcludesHighlight": True,
+             "fitLabel": "European relationship, Greece excluded",
+             "fitLabelShort": "European relationship",
+             "alt": "Every member state placed by arrears and reported "
+                    "hardship, one frame per year, with Greece marked"},
+    series=fA11, first="Year",
+    extra_caveat=(
+        "SAME-INSTRUMENT CORROBORATION, NOT EXPLANATION. Both axes are "
+        "EU-SILC self-reports collected from the same household in the same "
+        "interview, so agreement between them is partly the interview. "
+        "Arrears also depend on HAVING credit and obligations to fall behind "
+        "on: a household that has lost access to credit, or never had it, can "
+        "be in severe difficulty and register no arrears at all, which is why "
+        "this is the weakest of the four affordability items in the report's "
+        "own tracking figure. The fitted line excludes Greece."))
+
+
 def payload_tag(d, kind="", label=""):
     body = json.dumps(d).replace("</", "<\\/")
     a = (f' data-kind="{kind}"' if kind else "") + \

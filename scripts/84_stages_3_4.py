@@ -117,8 +117,8 @@ v6h = {"rows": rows6h, "dp": 3, "legendA": "within countries",
               "countries against within countries, ordered by how much the "
               "two differ; reversals are marked"}
 FIGS["F19"] = dict(
-    caption="One relationship reverses sign when the comparison moves from "
-            "between countries to within them",
+    caption="Only the real poverty threshold reverses sign between countries "
+            "and within them; the rest change in magnitude, not direction",
     kind="dumbbell", payload=v6h, series=f6h, first="Measure")
 
 FIGS["F6"] = dict(
@@ -291,6 +291,14 @@ _rows20 = [
 ]
 for lbl, val, _ in _rows20:
     f20.add(lbl, [val])
+
+# The report carries these three numbers as a TABLE rather than a chart: three
+# points on one axis is a table wearing a chart's clothes. The figure stays in
+# the appendix; this artifact is what the report's table is generated from and
+# checked against, cell by cell, so the two cannot drift.
+pd.DataFrame([{"row": lbl, "percent_of_households": round(val, 1)}
+              for lbl, val, _ in _rows20]).to_csv(
+    PROC / "e_f20_absorption.csv", index=False)
 
 FIGS["F20"] = dict(
     caption=f"The baseline model expects Greece to report "

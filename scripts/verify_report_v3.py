@@ -161,6 +161,63 @@ for tid, cs in [("T1", t1), ("T2", t2)]:
 check("14. summary tables agree with their source artifacts", not bad,
       "; ".join(bad[:6]))
 
+# 17. THE REPLACEMENT TABLES. Two figures became tables when the main path was
+# cut to fifteen: the same-survey absorption ladder (three numbers on one axis)
+# and the three-domain comparison (a percentage, a net balance and a 0-10
+# rating, which share no axis). A table is the honest form for both -- but a
+# table is also the easiest thing in the document to type by hand and leave
+# behind. Both are generated from artifacts, and every rendered cell is
+# compared back to the CSV here, the same way T1 and T2 are.
+tbad = []
+
+
+def _gen_cells(tid):
+    m = re.search(rf'<div class="table-wrap" data-table-id="{tid}">.*?</table>',
+                  raw, re.S)
+    if not m:
+        return None
+    body = re.search(r"<tbody>(.*?)</tbody>", m.group(0), re.S)
+    rows = []
+    for tr in re.findall(r"<tr>(.*?)</tr>", body.group(1), re.S):
+        rows.append([_html.unescape(re.sub(r"<[^>]+>", "", c)).strip()
+                     for c in re.findall(r"<t[hd][^>]*>(.*?)</t[hd]>", tr, re.S)])
+    return rows
+
+
+def _show(v):
+    if isinstance(v, str):
+        return v
+    f = float(v)
+    return f"{f:.1f}" if f % 1 else f"{f:.0f}"
+
+
+for tid, csv, cols in [
+        ("T-ABSORB", "e_f20_absorption.csv", ["row", "percent_of_households"]),
+        ("T-DOMAIN", "e_f15_domains.csv",
+         ["indicator", "unit", "greece", "eu_median",
+          "greece_position_worst_first", "countries"])]:
+    got = _gen_cells(tid)
+    src = pd.read_csv(ROOT / "data" / "processed" / csv)
+    if got is None:
+        tbad.append(f"{tid} not rendered")
+        continue
+    if len(got) != len(src):
+        tbad.append(f"{tid} has {len(got)} rows, artifact has {len(src)}")
+        continue
+    for i, row in enumerate(got):
+        if len(row) != len(cols):
+            tbad.append(f"{tid} r{i} has {len(row)} cells, expected {len(cols)}")
+            continue
+        for j, c in enumerate(cols):
+            want = _show(src.iloc[i][c])
+            if row[j] != want:
+                tbad.append(f"{tid} r{i} {c}: shows '{row[j]}', artifact '{want}'")
+            if row[j].strip() in ("nan", "NaN", "None", "inf", "-inf"):
+                tbad.append(f"{tid} r{i}: raw '{row[j]}' leaked into a cell")
+
+check("17. generated tables agree with their source artifacts", not tbad,
+      "; ".join(tbad[:6]))
+
 # 15. Sentences corrected in review, each of which had shipped once. These are
 # exact phrases rather than a broad pattern, so a sentence that correctly
 # DENIES the overstatement is not flagged.

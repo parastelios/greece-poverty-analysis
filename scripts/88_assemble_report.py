@@ -39,7 +39,13 @@ for n in (1, 2, 3, 4):
 
 # Derived from the frozen manifest, never hardcoded: a hardcoded range silently
 # stops covering any figure added after it was written.
-EXPECTED = list(pd.read_csv(PROC / "report_visual_manifest.csv")["id"])
+# The manifest declares WHERE each figure is published. The report places the
+# main-path set; the six marked "appendix" are not deleted, they are carried in
+# the statistical appendix with their ids, payloads and tables intact, and the
+# superset gate checks them there.
+_MAN = pd.read_csv(PROC / "report_visual_manifest.csv")
+EXPECTED = list(_MAN.loc[_MAN.venue == "report", "id"])
+APPENDIX_ONLY = list(_MAN.loc[_MAN.venue == "appendix", "id"])
 
 # Non-figure blocks that also travel from the batch pages. The ESS comparison
 # leads with a table rather than a chart, and a table is not a <figure>, so it
@@ -101,6 +107,40 @@ def reader_text(s):
     for a, b in SPEC_WORDS.items():
         s = s.replace(a, b)
     return s
+
+
+def _num(v):
+    if isinstance(v, float):
+        return f"{v:.1f}" if v % 1 else f"{v:.0f}"
+    return str(v)
+
+
+def artifact_table(tid, path, cols, headers, note=""):
+    """A results table generated from its artifact, never transcribed.
+
+    Two figures became tables: three numbers on one axis is a table wearing a
+    chart's clothes, and three indicators on three unrelated scales -- a
+    percentage, a net balance and a 0-10 rating -- cannot be compared across a
+    shared axis. A table is the honest form for both, but only if it is
+    GENERATED. A hand-typed table is a figure's numbers copied once and then
+    left behind to drift. Release condition 17 compares every cell rendered
+    here against the CSV it came from.
+    """
+    d = pd.read_csv(PROC / path)
+    head = "".join(f"<th>{html.escape(h)}</th>" for h in headers)
+    body = ""
+    for r in d.itertuples():
+        cells = ""
+        for i, c in enumerate(cols):
+            v = getattr(r, c)
+            txt = v if isinstance(v, str) else _num(v)
+            cells += (f"<th scope='row'>{html.escape(str(txt))}</th>" if i == 0
+                      else f"<td class='num'>{html.escape(str(txt))}</td>")
+        body += f"<tr>{cells}</tr>"
+    n = f'<p class="table-note">{note}</p>' if note else ""
+    return (f'<div class="table-wrap" data-table-id="{tid}">'
+            f'<table class="data"><thead><tr>{head}</tr></thead>'
+            f"<tbody>{body}</tbody></table>{n}</div>")
 
 
 def claim(cid, *, show_caveats=True):
@@ -614,50 +654,14 @@ extension was possible.</p>
 <p>Ranking first is not by itself remarkable &mdash; some country must rank
 first. The question is whether Greece sits at the end of a smooth distribution,
 in which case it is the extreme case of an ordinary European pattern, or
-whether it is detached from that distribution, in which case something
-different is happening.</p>
-
-{fig('F2')}
-
-<p>Greece is detached. The gap between Greece and the second-placed country is
-larger than the range spanning the middle of the distribution. On a measure
-where most of Europe is packed within a few points, Greece sits well clear of
-the pack. Whatever produces this is not simply a stronger dose of what produces
-variation elsewhere.</p>
-
-<h3>One measure, or many?</h3>
-
-<p>A single detached measure invites a single explanation, and the most
-deflating one is that the measure is broken. So it is worth asking how much
-company that measure keeps. Take twenty-five indicators of Greek economic and
-social conditions &mdash; wages, hours, prices, unemployment, migration, debt,
-savings, expectations &mdash; and for each one ask a deliberately crude
-question: is this country in the worst fifth of the Union? Then count.</p>
-
-{fig('F21')}
-
-<p>Before the crisis Greece was in Europe's worst fifth on roughly a quarter of
-the indicators then available &mdash; four of sixteen in 2008. It is now in the
-worst fifth on around two thirds of them: seventeen of twenty-five in 2024. The
-basket grows over the period as more indicators begin reporting, so the two
-shares are not taken from the same set; the count for each year is in the
-figure's table, and the apparent dip in the final year is coverage falling to
-seventeen indicators rather than any improvement. The
-second view shows where each indicator moved. Sixteen of the twenty-five now
-place Greece at or near the bottom of the Union, and they are not variations on
-one theme: pay per hour, hours worked, the real value of the poverty line
-itself, household saving, what households expect of the coming year, and the
-number of citizens leaving the country all sit in the same place.</p>
-
-<p>This is a description, not an explanation. We tested breadth as a predictor
-of reported hardship and it does not survive: on its own it is not significant
-(p = 0.12), and once the other accumulated measures are in the same model its
-coefficient reverses sign. A quantity whose sign depends on what else is in the
-model cannot carry an explanatory reading, so this figure summarises the
-condition rather than accounting for it. What it establishes here is narrower and still useful: the
-measure that put Greece at the top of Europe is not an isolated instrument
-behaving strangely. It sits inside a wide field of measures that moved with
-it.</p>
+whether it is detached from that distribution. The second view of the figure
+above answers it: fit the European relationship between income poverty and
+reported hardship through the other twenty-six countries, and Greece sits 47
+percentage points above what that relationship predicts at its own
+income-poverty rate. The gap between Greece and the second-placed country is
+larger than the range spanning the middle of the distribution. Whatever
+produces this is not a stronger dose of what produces variation elsewhere. The
+full ranking is in the statistical appendix.</p>
 
 <p class="signpost"><strong>Where this leaves us.</strong> Two official
 measures of the same underlying concept disagree by a wide margin for one
@@ -760,17 +764,13 @@ components can apply, and the figure separates the age groups rather than
 presenting a single aggregate that would hide this.</p>
 ''')}
 
-<p>One further question sits behind the aggregate and is worth separating from
-it: when AROPE last rose, did that come from rates worsening inside age groups,
-or from the groups themselves changing size? The two have different
-implications, and they can be told apart exactly rather than estimated.</p>
-
-{fig('F18')}
-
-<p>It came from rates within groups. Composition contributed almost nothing.
-That matters because a rise driven by an ageing population would be a different
-phenomenon from a rise driven by conditions deteriorating for people already
-counted.</p>
+<p>One further question sits behind the aggregate: when AROPE last rose, did
+that come from rates worsening inside age groups, or from the groups themselves
+changing size? The two can be told apart exactly rather than estimated, and the
+decomposition &mdash; charted in the statistical appendix &mdash; is
+unambiguous. It came from rates within groups; composition contributed almost
+nothing. A rise driven by an ageing population would be a different phenomenon
+from a rise driven by conditions deteriorating for people already counted.</p>
 
 <p class="signpost"><strong>Two different checks, not one.</strong> AROPE
 broadens the <em>concept</em> of poverty: it counts more kinds of disadvantage.
@@ -844,6 +844,40 @@ recommendation in Stage 8 follows directly from that.</p>
 <p>A further caution: the anchored series is descriptive. It enters no
 inferential test in this report, and no finding rests on it.</p>
 ''')}
+
+<h3>One measure, or many?</h3>
+
+<p>A single detached measure invites a single explanation, and the most
+deflating one is that the measure is broken. So it is worth asking how much
+company that measure keeps. Take twenty-five indicators of Greek economic and
+social conditions &mdash; wages, hours, prices, unemployment, migration, debt,
+savings, expectations &mdash; and for each one ask a deliberately crude
+question: is this country in the worst fifth of the Union? Then count.</p>
+
+{fig('F21')}
+
+<p>Before the crisis Greece was in Europe's worst fifth on roughly a quarter of
+the indicators then available &mdash; four of sixteen in 2008. It is now in the
+worst fifth on around two thirds of them: seventeen of twenty-five in 2024. The
+basket grows over the period as more indicators begin reporting, so the two
+shares are not taken from the same set; the count for each year is in the
+figure's table, and the apparent dip in the final year is coverage falling to
+seventeen indicators rather than any improvement. The
+second view shows where each indicator moved. Sixteen of the twenty-five now
+place Greece at or near the bottom of the Union, and they are not variations on
+one theme: pay per hour, hours worked, the real value of the poverty line
+itself, household saving, what households expect of the coming year, and the
+number of citizens leaving the country all sit in the same place.</p>
+
+<p>This is a description, not an explanation. We tested breadth as a predictor
+of reported hardship and it does not survive: on its own it is not significant
+(p = 0.12), and once the other accumulated measures are in the same model its
+coefficient reverses sign. A quantity whose sign depends on what else is in the
+model cannot carry an explanatory reading, so this figure summarises the
+condition rather than accounting for it. What it establishes here is narrower and still useful: the
+measure that put Greece at the top of Europe is not an isolated instrument
+behaving strangely. It sits inside a wide field of measures that moved with
+it.</p>
 
 <p class="signpost"><strong>Where this leaves us.</strong> The broader official
 measure closes about a fifth of the gap and is closing less over time. The
@@ -927,9 +961,14 @@ arrears at all. A summary that reported only the range would imply a uniformity
 that the underlying items do not have.</p>
 
 <p>A stronger version of the same check asks how much of Greece's anomaly these
-items can statistically absorb.</p>
+items can statistically absorb. Three numbers answer it.</p>
 
-{fig('F20')}
+{artifact_table('T-ABSORB', 'e_f20_absorption.csv',
+                ['row', 'percent_of_households'],
+                ['Specification', 'Percent of households'],
+                "Greece, on the country-years where all four items and the "
+                "outcome are observed. Both predictions are out-of-sample: "
+                "the model is fitted without Greece.")}
 
 {claim('V2-3.2')}
 
@@ -1016,13 +1055,11 @@ countries' contributions, and it should not be read as evidence of Greek
 recovery on its own.</p>
 
 <p>Whether these relationships hold across countries and within them is the
-question the correlation structure answers directly.</p>
-
-{fig('F6')}
-
-<p>The matrices show every pair. The comparison that matters for this stage is
-narrower: what happens to each measure's relationship with reported hardship
-when the scope changes from between countries to within them.</p>
+question the correlation structure answers directly. The full matrices &mdash;
+within countries, between countries and pooled &mdash; are in the statistical
+appendix. The comparison that matters for this stage is narrower: what happens
+to each measure's relationship with reported hardship when the scope changes
+from between countries to within them.</p>
 
 {fig('F19')}
 
@@ -1569,10 +1606,17 @@ tendency should depress everything roughly equally. A domain-specific pattern
 &mdash; extreme on financial questions, less extreme elsewhere &mdash; points
 toward circumstances rather than temperament.</p>
 
-{fig('F15')}
+{artifact_table('T-DOMAIN', 'e_f15_domains.csv',
+                ['indicator', 'unit', 'greece', 'eu_median',
+                 'greece_position_worst_first', 'countries'],
+                ['Indicator', 'Unit', 'Greece', 'EU median',
+                 "Greece's position, worst first", 'Countries'],
+                "2024. A percentage, a net balance and a 0-10 rating do not "
+                "share a scale, so level and position are given rather than "
+                "plotted together. The distributions themselves are charted "
+                "in the statistical appendix.")}
 
-<p>Each row is one indicator with every member state placed on it, so the
-question is answered by looking rather than by ranking. On the two money
+<p>The level and the position answer the question together. On the two money
 questions Greece is not merely last: it sits clear of the cluster, at 66.7%
 reporting difficulty against a European median of 17.1%, and at &minus;43.2 on
 expectations against a median of &minus;1.8. On life satisfaction Greece is
@@ -1731,8 +1775,6 @@ institution, and political parties sit at the bottom at 17%. Central government,
 at 32% against an OECD average of 39%, sits in the middle of a wide internal
 range rather than at the bottom of it.</p>
 ''')}
-
-{fig('F17')}
 
 {context('CTX-3', '''
 <p>The adjustment programmes of 2010 onward reshaped Greek incomes, employment
@@ -2257,6 +2299,10 @@ PAGE = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
 unplaced = [f for f in EXPECTED if f not in _used]
 if unplaced:
     raise SystemExit(f"figures built but never placed: {unplaced}")
+_stray = [f for f in APPENDIX_ONLY if f in _used]
+if _stray:
+    raise SystemExit(
+        f"appendix-only figures placed in the report: {_stray}")
 
 for cid in ctx.index:
     if f'data-context-id="{cid}"' not in PAGE:

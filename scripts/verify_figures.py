@@ -604,6 +604,89 @@ if _rep.exists() and _app.exists():
     check("claims a caveat makes about the appendix hold in the appendix",
           not _unsup, "; ".join(_unsup[:3]))
 
+    # ---- NEAR-DUPLICATION, not just byte-duplication --------------------
+    #
+    # The payload-hash check catches two views that are literally the same
+    # object. It cannot catch two figures that show the same lines with one
+    # added, or ask the same question of the same data -- which is an
+    # editorial problem regardless of whether the bytes differ. Merging the
+    # AROPE component tabs into one view put Greek income poverty and AROPE on
+    # a chart beside the figure that already plots exactly those two.
+    _STOP = {"what", "does", "with", "that", "this", "from", "much", "have",
+             "into", "than", "when", "which", "were", "been", "they", "them",
+             "their", "each", "every", "same", "more", "most", "other",
+             "greek", "greece", "country", "countries"}
+
+    def _shown(fig_html):
+        """Series labels a reader actually sees, and the figure's question."""
+        labels = set()
+        for pl in re.findall(
+                r'<script type="application/json"[^>]*>(.*?)</script>',
+                fig_html, re.S):
+            try:
+                d = json.loads(pl)
+            except Exception:
+                continue
+            for s in d.get("series", []) or []:
+                if s.get("label"):
+                    labels.add(re.sub(r"^.*?:\s*", "", s["label"]).strip().lower())
+            for r in d.get("rows", []) or []:
+                if r.get("label"):
+                    labels.add(r["label"].strip().lower())
+        # The question is a <span>, not a <p>. Matching the wrong tag made
+        # this check unable to fire at all -- it passed on every document
+        # because the question was always empty.
+        q = re.search(r'<span class="fig-q">(.*?)</span>', fig_html, re.S)
+        return labels, " ".join(
+            htmlmod.unescape(re.sub(r"<[^>]+>", " ", q.group(1))).split()
+        ).lower() if q else ""
+
+    # A check that cannot fire is documentation, not enforcement. Prove the
+    # question is actually being read before trusting the result.
+    _probe = {k: _shown(v)[1] for k, v in
+              list(re.finditer(r'<figure class="figure" id="([A-Z]\d+)">.*?</figure>',
+                               _rt, re.S).__class__ and
+              {m.group(1): m.group(0) for m in re.finditer(
+                  r'<figure class="figure" id="([A-Z]\d+)">.*?</figure>',
+                  _rt, re.S)}.items())}
+    if not any(_probe.values()):
+        raise SystemExit(
+            "near-duplication check read no figure questions: its selector is "
+            "wrong and the check cannot fail")
+
+    _figs = {m.group(1): m.group(0) for m in re.finditer(
+        r'<figure class="figure" id="([A-Z]\d+)">.*?</figure>', _rt, re.S)}
+    _near = []
+    _ids = sorted(_figs)
+    for _i, _x in enumerate(_ids):
+        lx, qx = _shown(_figs[_x])
+        for _y in _ids[_i + 1:]:
+            ly, qy = _shown(_figs[_y])
+            if not lx or not ly:
+                continue
+            _shared = lx & ly
+            # Shared series ALONE is not restatement, and a first version of
+            # this check said it was: it flagged the accumulated-exposure
+            # ladder against the model-dependence chart because both label
+            # rows with country names, and the conditional figure against the
+            # between/within one because both name the same measures. They do,
+            # and they ask different things of them.
+            #
+            # Restatement is the same QUESTION asked of the same series. The
+            # question is the figure's own one-line statement of what it
+            # answers, so comparing content words in it is comparing intent.
+            _overlap = len(_shared) / min(len(lx), len(ly))
+            _wx = set(re.findall(r"[a-z]{4,}", qx)) - _STOP
+            _wy = set(re.findall(r"[a-z]{4,}", qy)) - _STOP
+            _qsim = (len(_wx & _wy) / min(len(_wx), len(_wy))) if _wx and _wy else 0
+            if _overlap >= 0.8 and _qsim >= 0.6:
+                _near.append(
+                    f"{_x}/{_y}: {int(_overlap*100)}% of displayed series "
+                    f"shared and questions {int(_qsim*100)}% alike "
+                    f"({sorted(_shared)[:3]})")
+    check("no report figure restates another's series and question",
+          not _near, "; ".join(_near[:3]))
+
     _r, _a = _fig_hashes(_rt), _fig_hashes(_at)
     _gap = [k for k in _r if k not in _a]
     _diff = [k for k in _r if k in _a and _r[k] != _a[k]]

@@ -1651,13 +1651,63 @@ _missing = [i for i in _man["id"] if i not in _report_figs]
 if _missing:
     raise SystemExit(f"appendix cannot be a superset: {_missing} not built")
 
+# WHERE EACH FIGURE SITS.
+#
+# Six figures left the report's main path. They cannot stay under a heading
+# that says "every figure in the report" while no longer being in it, so the
+# manifest's venue and section fields route them into named sections here.
+# Nothing is deleted: every id, payload and fallback table is preserved, and
+# the superset gate still checks them against the report's own copies.
+_MAIN = [i for i in _man.loc[_man.venue == "report", "id"]]
+
+# Views the report's own figures no longer carry. They are built alongside
+# those figures and lifted from the same pages, so they cannot drift from
+# them -- and they keep their own ids, because a report figure and the view it
+# shed must never both answer to the same name.
+_SHED = sorted(i for i in _report_figs
+               if _re.fullmatch(r"A\d+", i) and i not in _man["id"].values)
+_SECTIONS = [
+    ("descriptive", "Additional descriptive views",
+     "Descriptions the report states in a sentence rather than a chart: the "
+     "full hardship ranking, and the decomposition of the last AROPE rise into "
+     "rates within age groups against the changing size of those groups."),
+    ("diagnostic", "Technical diagnostics",
+     "Checks that qualify a result rather than establishing one. The report "
+     "carries their conclusions; these are the objects behind them."),
+    ("context", "Contextual evidence",
+     "Evidence that cannot support a headline claim by design, and is recorded "
+     "in the report's context register instead: single-wave snapshots, and "
+     "comparisons across instruments that share no scale."),
+]
+
+_by_section = ""
+for _key, _title, _lede in _SECTIONS:
+    _ids = [i for i in _man.loc[_man.appendix_section == _key, "id"]]
+    if not _ids:
+        continue
+    _by_section += (
+        f"<section id='appx-{_key}'><h2>{_title}</h2>"
+        f"<p class='lede'>{_lede}</p>"
+        + "".join(_report_figs[i] for i in _ids)
+        + "</section>")
+
 _fig_section = (
     '<section id="figures"><h2>Every figure in the report</h2>'
     "<p class='lede'>Each one is the same object the report carries, with the "
     "same numbers behind it. The report explains what they mean; this is where "
     "the values live.</p>"
-    + "".join(_report_figs[i] for i in _man["id"])
-    + "</section><section id='detail'><h2>Detail the report leaves out</h2>"
+    + "".join(_report_figs[i] for i in _MAIN)
+    + "</section>"
+    + ("<section id='appx-shed'><h2>Views the report simplified away</h2>"
+       "<p class='lede'>Each of these was a tab on a report figure. They were "
+       "removed to leave one question per figure, not because the numbers "
+       "stopped mattering: the distance the broader measure closes, each "
+       "component against every member state, and the full eight-pair "
+       "conditional comparison.</p>"
+       + "".join(_report_figs[i] for i in _SHED)
+       + "</section>" if _SHED else "")
+    + _by_section
+    + "<section id='detail'><h2>Detail the report leaves out</h2>"
     "<p class='lede'>Views that would slow a reader following the argument and "
     "are exactly what someone checking it wants: every observation behind a "
     "binned summary, every year rather than the latest, and the whole "

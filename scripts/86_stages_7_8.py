@@ -85,6 +85,28 @@ for s in strips15:
         len(vs) - sorted(vs).index(g))
     f15.add(s["label"], [g, round(med, 2), float(len(vs)), float(pos)])
 
+# As with the absorption figure, the report carries this as a table. Three
+# indicators on three unrelated scales -- a percentage, a net balance and a
+# 0-10 rating -- do not make a chart a reader can compare across; the level and
+# the position do the work. There is deliberately no CHANGE column: financial
+# expectations has only one year with comparable cross-country coverage, so a
+# change for it would have to be invented or taken from a different basis than
+# the other two.
+_f15_rows = []
+for _s in strips15:
+    _vs = sorted(p_["value"] for p_ in _s["points"])
+    _g = next(p_["value"] for p_ in _s["points"] if p_["highlight"])
+    _med = (_vs[len(_vs) // 2] if len(_vs) % 2
+            else (_vs[len(_vs) // 2 - 1] + _vs[len(_vs) // 2]) / 2)
+    _pos = ((sorted(_vs).index(_g) + 1) if _s["worseIs"] == "low"
+            else (len(_vs) - sorted(_vs).index(_g)))
+    _f15_rows.append({"indicator": _s["label"],
+                      "unit": _s["unit"] or "index",
+                      "greece": round(_g, 1), "eu_median": round(_med, 1),
+                      "greece_position_worst_first": _pos,
+                      "countries": len(_vs)})
+pd.DataFrame(_f15_rows).to_csv(PROC / "e_f15_domains.csv", index=False)
+
 FIGS["F15"] = dict(
     caption="Greece is the worst in Europe on both money questions, and among "
             "the worst on general life satisfaction",

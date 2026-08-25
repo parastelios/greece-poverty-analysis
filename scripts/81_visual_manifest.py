@@ -81,13 +81,12 @@ M = [
       artifact="age_breakdown_arope.csv, age_breakdown_arop.csv, "
                "age_breakdown_deprivation.csv, age_breakdown_low_work_intensity.csv, "
                "arope_by_sex.csv, e0_extended_panel.csv",
-      series="VIEW A: income poverty, Greece against every other country. "
-             "VIEW B: severe material deprivation, likewise. "
-             "VIEW C: AROPE, likewise. "
-             "VIEW D: AROPE by age group with the 65+ series emphasised. "
-             "VIEW E: AROPE by sex, whole population",
-      interaction="switch measure/age/sex; hover reads the rate for the group "
-                  "and year, and names any faint country line",
+      series="VIEW A: the three components together, Greece against the EU "
+             "median, colour marking the measure and dash the country. "
+             "VIEW B: AROPE by age group with the 65+ series emphasised. "
+             "VIEW C: AROPE by sex, whole population",
+      interaction="switch components/age/sex; hover reads the rate for the "
+                  "group and year",
       fallback="component x year; age group x year; sex x year; and "
                "the shift-share contributions",
       caveat="These are changes in group-level rates, not evidence about the "
@@ -281,7 +280,7 @@ dict(id="F16", stage=7, chart_type="panel",
       fallback="model, percent of households",
       caveat="Absorption is not explanation.",
       status_label="descriptive corroboration"),
- dict(id="F21", stage=1, chart_type="panel",
+ dict(id="F21", stage=2, chart_type="panel",
       question="Did Greek disadvantage deepen on a few measures, or spread "
                "across many?",
       artifact="appendix_series_core.json",
@@ -318,8 +317,40 @@ OWNER = {
     "F17": ("CTX-2", "main"),
     "F18": ("V2-2.1", "expandable"),
     "F19": ("V2-3.1", "expandable"), "F20": ("V2-3.1", "expandable"),
-    "F21": ("V2-1.2", "main"),
+    "F21": ("V2-2.1", "main"),
 }
+# WHERE EACH FIGURE IS PUBLISHED.
+#
+# The report was analytically complete and visually over-complete at 21
+# figures: several consecutive figures qualified a point the previous one had
+# already made, which costs momentum without adding evidence. Six move to the
+# appendix. Nothing is deleted -- the appendix is a superset and every one of
+# them keeps its id, payload and tables there.
+#
+#   F2   Greece's rank on hardship. F1's second view now draws Greece's
+#        distance from the peer line and labels it, which is the outlier claim
+#        with a number on it. F2 restates it without one.
+#   F18  the 2025 age shift-share. Detail, not a step in the argument.
+#   F6   the correlation heatmap. F19 makes the same point -- one relationship
+#        reverses between and within -- in a form a reader can act on.
+#   F17  institutional trust. A single-wave OECD snapshot, context by nature.
+#   F20  same-survey absorption. THREE NUMBERS (25 -> 58 -> 72); it becomes a
+#        table in place, so Stage 3 keeps the result and loses the chart.
+#   F15  hardship, expectations and life satisfaction. Percent, a net balance
+#        and a 0-10 rating do not share a meaning; a table is the honest form.
+#        Also becomes a table in place.
+APPENDIX_ONLY = {"F2", "F18", "F6", "F17", "F20", "F15"}
+
+# Which appendix section each lands in, so they do not sit under a heading that
+# says "every figure in the report" while no longer being in it.
+APPENDIX_SECTION = {
+    "F2": "descriptive", "F18": "descriptive", "F15": "context",
+    "F6": "diagnostic", "F20": "diagnostic", "F17": "context",
+}
+_bad = APPENDIX_ONLY ^ set(APPENDIX_SECTION)
+if _bad:
+    raise SystemExit(f"appendix figures without a section, or vice versa: {_bad}")
+
 seen_ids = [e["id"] for e in M]
 if len(set(seen_ids)) != len(seen_ids):
     dupes = sorted({i for i in seen_ids if seen_ids.count(i) > 1})
@@ -329,6 +360,8 @@ for i, e in enumerate(M, start=1):
     e["claim_id"] = owner if owner.startswith("V2") else ""
     e["context_id"] = owner if owner.startswith("CTX") else ""
     e["reading_path"] = path
+    e["venue"] = "appendix" if e["id"] in APPENDIX_ONLY else "report"
+    e["appendix_section"] = APPENDIX_SECTION.get(e["id"], "")
 df = pd.DataFrame(M)
 df["engine_type_is_new"] = ~df.chart_type.isin(EXISTING)
 
@@ -383,9 +416,11 @@ print(bar); print("BUDGET"); print(bar)
 # AROPE breakdown "breadth", which it is not: that decomposes ONE measure by
 # component and group, while breadth counts how many DIFFERENT measures place a
 # country in Europe's worst fifth. The report was missing the second entirely.
-print(f"  figures          {len(df)}   (target 12-21)")
-if not 12 <= len(df) <= 21:
-    raise SystemExit(f"manifest is outside the agreed budget: {len(df)} figures")
+_main = int((df.venue == "report").sum())
+print(f"  figures          {len(df)} total, {_main} on the main path")
+if not 12 <= _main <= 16:
+    raise SystemExit(
+        f"main-path figures outside the agreed budget: {_main}")
 print("  the evidence ladder is a TABLE, not a chart: it summarises status "
       "rather than showing a distribution")
 print(f"  new engine types {len(set(df[df.engine_type_is_new].chart_type))}   "

@@ -140,16 +140,68 @@ for r in d12.itertuples():
                    f"<br>bootstrap p <b>{boot}</b>"
                    f"<br>focal VIF {r.focal_vif:.2f}"
                    f"<br>this pair's detectable effect: {mde_txt}")})
+# LEAD WITH THE RESULT. Sixteen rows -- eight pairs, each a focal measure and
+# its counterpart -- is the full audit and buries the finding it contains. The
+# report carries the three pairs that survive; the complete comparison keeps
+# every row and moves to the appendix under its own id, so F12 never means one
+# thing in the report and another there.
+# rows12 and f12.rows are built in one loop, so they align by INDEX. They do
+# not align by label: the chart shows the focal measure alone because the full
+# "focal, controlling for counterpart" string overflowed the label gutter,
+# while the table carries the full string. Matching on label silently selected
+# nothing.
+# Supported is not enough. Four of the sixteen rows are supported, but one of
+# them is P6, where the PRESENT-DAY measure survives controlling for the
+# accumulated one -- the opposite direction to the caption's claim. Leading
+# with all four would put a row contradicting the caption inside the figure the
+# caption describes. The lead is the rows where an accumulated or duration
+# measure is the focal one and survives: three pairs, as stated.
+_acc_ix = [i for i, r in enumerate(d12.itertuples())
+           if getattr(r, "is_acc")]
+_keep_ix = [i for i, r in enumerate(rows12)
+            if r.get("strong") and i in set(_acc_ix)]
+_npairs = len({d12.iloc[i].pair for i in _keep_ix})
+if _npairs != 3:
+    raise SystemExit(
+        f"the conditional figure's caption says three pairs; the artifact "
+        f"now supports {_npairs}")
+rows12_lead = [rows12[i] for i in _keep_ix]
+f12_lead = ce.Series(f12.columns, dp=3)
+for i in _keep_ix:
+    _l, _vs, _m = f12.rows[i]
+    f12_lead.add(_l, _vs, **_m)
+
+FIGS["A10"] = dict(
+    question="What does the accumulated measure add once its present-day "
+             "counterpart is in the same model, for every pair tested?",
+    caption="All eight accumulated measures against their present-day "
+            "counterparts",
+    kind="coefficient",
+    payload={"rows": rows12, "dp": 3,
+             "xLabel": "Standardised effect: SD of hardship per SD of predictor",
+             "alt": "All sixteen conditional coefficients as standardised "
+                    "effects, each tested with its counterpart in the same "
+                    "model"},
+    series=f12, first="Test",
+    extra_caveat=("The complete comparison the report's conditional figure "
+                  "leads from. Five of the eight pairs do not survive, and are "
+                  "here rather than there because a figure that leads with "
+                  "thirteen null rows buries the three that are not. The axis "
+                  "is standardised: the eight measures are in different units, "
+                  "so raw coefficients could not share it."))
+
 FIGS["F12"] = dict(
     caption="Accumulated history provides additional conditional cross-country "
             "information in three of eight pairs",
     kind="coefficient",
-    payload={"rows": rows12, "dp": 3,
+    payload={"rows": rows12_lead, "dp": 3,
              "xLabel": "Standardised effect: SD of hardship per SD of predictor",
              "alt": "The sixteen conditional coefficients as standardised "
                     "effects, each tested with its counterpart in the same model"},
-    series=f12, first="Test",
-    extra_caveat=("The axis is STANDARDISED: SDs of hardship per SD of the "
+    series=f12_lead, first="Test",
+    extra_caveat=("This shows the pairs that survive; all eight, including the "
+                  "five that do not, are in the statistical appendix. "
+                  "The axis is STANDARDISED: SDs of hardship per SD of the "
                   "predictor. The eight measures are in different units - "
                   "percentage-point-years, years, index points, percentages - "
                   "so raw coefficients could not share an axis, and the raw "
@@ -275,7 +327,13 @@ for k, v in FIGS.items():
 
 
 def build(fid, spec):
-    m = man.loc[fid]
+    if fid in man.index:
+        m = man.loc[fid]
+        question, status, caveat0 = m.question, m.status_label, m.caveat
+    else:
+        question = spec.get("question", "")
+        status = spec.get("status_label", "appendix")
+        caveat0 = ""
     views = spec.get("views")
     if views:
         tags, tables = [], []
@@ -290,10 +348,10 @@ def build(fid, spec):
         payload_html = payload_tag(spec["payload"])
         body = spec["series"].fallback_table(spec.get("first", ""))
         stamp = spec["series"].checksum()
-    cav = m.caveat
+    cav = caveat0
     if spec.get("extra_caveat"):
         cav = ("" if cav != cav else str(cav) + " ") + spec["extra_caveat"]
-    shell = ce.figure(fid, spec["caption"], m.question, m.status_label,
+    shell = ce.figure(fid, spec["caption"], question, status,
                       spec["kind"], {}, body, caveat=cav,
                       appendix_link="statistical_appendix.html", checksum=stamp)
     return shell.replace(payload_tag({}), payload_html)
@@ -301,6 +359,7 @@ def build(fid, spec):
 
 BASE = ce.base_style((OUT / "build" / "report.html").read_text())
 b = {k: build(k, v) for k, v in FIGS.items()}
+import re as _re
 PAGE = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Batch 3 &mdash; stages 5 and 6</title>{BASE}
@@ -367,5 +426,15 @@ looks better.</p>
 # output/ holds the canonical publications and nothing else.
 _BUILD = OUT / "build"
 _BUILD.mkdir(exist_ok=True)
+# Anything built but not placed above is an appendix-only view. Appending it
+# here rather than naming it in the template means a new one cannot be built
+# and then silently dropped -- which is exactly what happened to the three
+# views shed in the fifteen-figure cut.
+_placed = set(_re.findall(r'<figure class="figure" id="([A-Z]\d+)"', PAGE))
+_extra = [k for k in b if k not in _placed]
+if _extra:
+    PAGE = PAGE.replace("</body>",
+                        "".join(b[k] for k in _extra) + "</body>")
+
 (_BUILD / "batch3.html").write_text(PAGE)
 print(f"\nwrote output/build/batch3.html  {len(PAGE):,} chars")

@@ -441,13 +441,24 @@ FIGS["F4"] = dict(
     caption="AROPE sits between reported hardship and income poverty, and "
             "closes only about a fifth of the distance",
     kind="panel", series=f4, payload=v4a,
-    views=[("The three measures", v4a), ("What AROPE actually closes", v4b)],
-    view_series=[f4, f4c],
     extra_caveat=(
-        "The first view shows the three measures as they are reported, in "
-        "shares of households, so the distance between them can be read "
-        "directly. The second plots that distance: the points AROPE closes, "
-        "which fall from 11.0 in 2015 to 7.3 in 2024."),
+        "The three measures are shown as they are reported, in shares of "
+        "households, so the distance between them can be read directly. That "
+        "distance is plotted on its own in the statistical appendix, where the "
+        "points AROPE closes fall from 11.0 in 2015 to 7.3 in 2024."),
+    first="Series")
+
+# The view the report no longer carries, under its own appendix id.
+FIGS["A8"] = dict(
+    question="How much of the distance does the broader measure actually "
+             "close, and is that share growing?",
+    caption="What AROPE actually closes, and what stays open",
+    kind="panel", series=f4c, payload=v4b,
+    extra_caveat=(
+        "This is the distance the report's AROPE figure shows as three levels, "
+        "plotted as a subtraction. It is the same quantity seen a second way, "
+        "not a second result: the points AROPE closes fall from 11.0 in 2015 "
+        "to 7.3 in 2024 while the gap it leaves open grows."),
     first="Series")
 
 # ---- F5 four views -------------------------------------------------------
@@ -498,6 +509,40 @@ f5m, v5m = _component_view("severe_mat_soc_deprivation", "Material deprivation",
 f5e, v5e = _component_view("arope", "AROPE",
                            "Each other EU country: AROPE", shown="AROPE")
 
+# THREE COMPONENT TABS BECOME ONE VIEW. Five tabs on one figure is a menu, not
+# a figure, and the reader had to hold three charts in their head to compare
+# them. Merged, the comparison is on the page.
+#
+# The convention is the one the age and sex views already use: COLOUR marks the
+# measure, DASH marks the country. Three colour-pairs is legible where six
+# independent colours would not be, and it makes the Greece/EU comparison the
+# thing the eye does first.
+#
+# This is deliberately NOT a restatement of the AROPE bridge figure. That one
+# is Greece alone, and answers how much of the hardship gap the broader measure
+# closes. This one is Greece AGAINST EUROPE on each component, and answers
+# whether the Greek position is a property of one component or all of them.
+_COMPONENTS = [("Income poverty", f5, "series-5"),
+               ("Material deprivation", f5m, "series-4"),
+               ("AROPE", f5e, "series-3")]
+_cyrs = v5a["years"]
+f5comp = ce.Series([str(y) for y in _cyrs], dp=1)
+_cser = []
+for _lbl, _s, _tone in _COMPONENTS:
+    for _row_lbl, _vs, _m in _s.rows:
+        _is_gr = "Greece" in _row_lbl or _row_lbl == "Greece"
+        _name = f"{_lbl}: {'Greece' if _is_gr else 'EU median'}"
+        f5comp.add(_name, [None if v is None else float(v) for v in _vs])
+        _cser.append({"label": _name, "tone": _tone,
+                      "style": "solid" if _is_gr else "dashed",
+                      "weight": "strong" if _is_gr else "normal",
+                      "values": [None if v is None else round(float(v), 1)
+                                 for v in _vs]})
+v5comp = {"years": _cyrs, "dp": 1, "yLabel": "% of people", "series": _cser,
+       "alt": "The three AROPE components for Greece against the EU median, "
+              "colour marking the measure and dash marking the country. "
+              "Greece is above the EU median on all three"}
+
 age_all = pd.read_csv(PROC / "age_breakdown_arope.csv")
 age = age_all[age_all.geo == "EL"]
 age_eu = age_all[age_all.geo == "EU27_2020"]
@@ -539,10 +584,10 @@ v5b = {"years": [int(y) for y in ay2], "dp": 1, "yLabel": "% of age group",
                    "values": [None if v is None else round(v, 1) for v in vs]}
                   for l, vs, m in f5b.rows]}
 ss = pd.read_csv(PROC / "age_breakdown_shiftshare_decomposition.csv")
-f5c = ce.Series(["Within-group (pp)", "Composition (pp)"], dp=3)
+f5shift = ce.Series(["Within-group (pp)", "Composition (pp)"], dp=3)
 rows5c = []
 for r in ss.itertuples():
-    f5c.add(AGEL.get(r.age, r.age),
+    f5shift.add(AGEL.get(r.age, r.age),
             [float(r.within_group_contribution_pp), float(r.composition_contribution_pp)])
     rows5c.append({"label": AGEL.get(r.age, r.age),
                    "a": round(float(r.composition_contribution_pp), 3),
@@ -554,7 +599,7 @@ for r in ss.itertuples():
                    "detail": (f"within-group <b>{r.within_group_contribution_pp:+.3f} pp</b>"
                               f"<br>composition {r.composition_contribution_pp:+.3f} pp"
                               f"<br>rate {r.arope_rate_2024:.1f} &rarr; {r.arope_rate_2025:.1f}")})
-v5c = {"rows": rows5c, "dp": 3, "legendA": "composition",
+v5shift = {"rows": rows5c, "dp": 3, "legendA": "composition",
        "legendB": "within-group", "zeroLabel": "no contribution",
        "xLabel": "Contribution to the 2024-2025 change (percentage points)",
        "alt": "Within-group against compositional contribution to the "
@@ -593,17 +638,16 @@ v5d = {"years": [int(y) for y in sy], "dp": 1, "yLabel": "% of people",
 FIGS["F18"] = dict(
     caption="The most recent rise came from rates within age groups, not from "
             "the changing size of those groups",
-    kind="dumbbell", payload=v5c, series=f5c, first="Age group")
+    kind="dumbbell", payload=v5shift, series=f5shift, first="Age group")
 
 FIGS["F5"] = dict(
     caption="What sits behind AROPE, and which groups moved",
-    kind="panel", series=f5,
-    payload=v5a,
+    kind="panel", series=f5comp,
+    payload=v5comp,
     # 3. Reader-facing tab labels. "Floating poverty" and "shift-share" are
     # methods vocabulary and do not belong in navigation.
-    views=[("Income poverty", v5a), ("Material deprivation", v5m),
-           ("AROPE", v5e), ("By age", v5b), ("By sex", v5d)],
-    view_series=[f5, f5m, f5e, f5b, f5d],
+    views=[("Components", v5comp), ("By age", v5b), ("By sex", v5d)],
+    view_series=[f5comp, f5b, f5d],
     # Naming the first view "AROPE components" while showing two of three would
     # let a reader take it for a complete decomposition. The absence is stated
     # rather than implied.
@@ -612,16 +656,42 @@ FIGS["F5"] = dict(
         "hold a comparable national-total series for this view; its available "
         "age coverage uses a different population base, and aggregate "
         "component rates cannot reconstruct the AROPE union in any case. In "
-        "the age and sex views, colour marks the group and dash marks the "
-        "country: each Greek line is paired with the EU median for the same "
-        "group in the same colour."),
+        "all three views colour marks the measure or group and dash marks the "
+        "country, so each Greek line is paired with the EU median for the same "
+        "thing in the same colour. The per-component views with every other "
+        "member state drawn behind are in the statistical appendix."),
     first="Series")
 
+
+FIGS["A9"] = dict(
+    question="Where does Greece sit against every other member state on each "
+             "AROPE component separately?",
+    caption="Each AROPE component on its own, against every member state",
+    kind="panel", series=f5, payload=v5a,
+    views=[("Income poverty", v5a), ("Material deprivation", v5m),
+           ("AROPE", v5e)],
+    view_series=[f5, f5m, f5e],
+    extra_caveat=(
+        "The report merges these three into one view so the components can be "
+        "compared directly; that merge cannot carry the faint per-country "
+        "layer, which is what these keep. Very low work intensity is missing "
+        "for the reason the report's figure states, and aggregate component "
+        "rates cannot reconstruct the AROPE union in any case."),
+    first="Series")
 
 def build(fid, spec):
     """One figure. Every view gets its own payload AND its own table fallback,
     so switching view never leaves the reader without the numbers."""
-    m = man.loc[fid]
+    # Appendix-only ids are not in the report's manifest -- they are views the
+    # report simplified away, and the manifest describes the report. They carry
+    # their own question and status on the spec instead.
+    if fid in man.index:
+        m = man.loc[fid]
+        question, status, caveat0 = m.question, m.status_label, m.caveat
+    else:
+        question = spec.get("question", "")
+        status = spec.get("status_label", "appendix")
+        caveat0 = ""
     views = spec.get("views")
     if views:
         tags, tables = [], []
@@ -638,10 +708,10 @@ def build(fid, spec):
         payload_html = payload_tag(spec["payload"])
         body = spec["series"].fallback_table(spec.get("first", ""))
         stamp = spec["series"].checksum()
-    cav = m.caveat
+    cav = caveat0
     if spec.get("extra_caveat"):
         cav = ("" if cav != cav else str(cav) + " ") + spec["extra_caveat"]
-    shell = ce.figure(fid, spec["caption"], m.question, m.status_label,
+    shell = ce.figure(fid, spec["caption"], question, status,
                       spec["kind"], {}, body, caveat=cav,
                       appendix_link="statistical_appendix.html", checksum=stamp)
     return shell.replace(payload_tag({}), payload_html)
@@ -721,5 +791,15 @@ correctly &mdash; but it cannot register a fall that affects everyone at once.</
 # output/ holds the canonical publications and nothing else.
 _BUILD = OUT / "build"
 _BUILD.mkdir(exist_ok=True)
+# Anything built but not placed above is an appendix-only view. Appending it
+# here rather than naming it in the template means a new one cannot be built
+# and then silently dropped -- which is exactly what happened to the three
+# views shed in the fifteen-figure cut.
+_placed = set(_re.findall(r'<figure class="figure" id="([A-Z]\d+)"', PAGE))
+_extra = [k for k in built if k not in _placed]
+if _extra:
+    PAGE = PAGE.replace("</body>",
+                        "".join(built[k] for k in _extra) + "</body>")
+
 (_BUILD / "batch1.html").write_text(PAGE)
 print(f"\nwrote output/build/batch1.html  {len(PAGE):,} chars")

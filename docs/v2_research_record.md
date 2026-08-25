@@ -44,7 +44,7 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `p6-rewrite` |
-| HEAD | `021c84e` Fix a false caveat on the heatmap, and make the breadth denominator visible |
+| HEAD | `fd26858` Add two cross-document gates, and fix the two live errors they caught |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-25 |
 | Frozen V1 reference | `v1-final` |
@@ -3429,4 +3429,6 @@ Deviations must be disclosed in the stage that made them, not only here.
 | FINAL | `final_freeze.json` | The eight locked items; model searching closed | present |
 | FINAL | `report_visual_manifest.csv` | 15 figures specified before any was built | present |
 | ? | `e7_between_within_scales.csv` | **undocumented — add to ARTIFACT_PURPOSE** | present |
+| ? | `e_f15_domains.csv` | **undocumented — add to ARTIFACT_PURPOSE** | present |
+| ? | `e_f20_absorption.csv` | **undocumented — add to ARTIFACT_PURPOSE** | present |
 <!-- AUTO:END artifact-index -->
