@@ -293,12 +293,19 @@ for path in TARGETS:
         sents = [s.strip().lower() for s in re.split(r"(?<=[.!?])\s+", txt)
                  if len(s.strip()) > 18]
         # near-duplicate: same opening eight words
-        heads = {}
-        for s in sents:
-            k = " ".join(s.split()[:8]) if len(s.split()) >= 8 else s
-            if k in heads:
-                dupes.append(f"{fid}: caveat repeats \"{k}...\"")
-            heads[k] = True
+        # Two sentences are the same statement if one opens with the other,
+        # not only if their first eight words match. "Absorption is not
+        # explanation." and "Absorption is not explanation: these four items..."
+        # slipped through a fixed-length prefix comparison.
+        norm = [re.sub(r"[^a-z0-9 ]", "", s).strip() for s in sents]
+        for x in range(len(norm)):
+            for y in range(x + 1, len(norm)):
+                a2, b2 = norm[x], norm[y]
+                if not a2 or not b2:
+                    continue
+                short, long_ = (a2, b2) if len(a2) <= len(b2) else (b2, a2)
+                if len(short.split()) >= 3 and long_.startswith(short):
+                    dupes.append(f"{fid}: caveat repeats \"{short[:52]}...\"")
     check("no figure states the same caveat twice", not dupes, "; ".join(dupes))
 
     # Two views plotting identical data. This happened twice: a view added to

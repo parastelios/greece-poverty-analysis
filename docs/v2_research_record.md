@@ -44,7 +44,7 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `p6-rewrite` |
-| HEAD | `961bd7e` Show the affordability relationship moving; give Figure 8 a new result |
+| HEAD | `944482e` Common scales for Figure 7; Figure 8 as predicted against observed |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-25 |
 | Frozen V1 reference | `v1-final` |
@@ -3359,6 +3359,8 @@ Deviations must be disclosed in the stage that made them, not only here.
 | C-78 | 2026-08-23 | Two caveats claimed the statistical appendix contains raw scatter observations and the full 31-variable matrix | The appendix contains 65 TABLES and no figures at all, and no such matrix. These were assertions about another document's contents made without opening it | Both claims removed; the numbers behind each figure are in its own fallback table, which is true |
 | C-79 | 2026-08-23 | Small-multiple panels each chose their own scale | Similar-looking slopes were not comparable across panels and a small change could occupy as much height as a large one; the panels also carried almost no numerical axis | One scale across all panels, labelled ticks and a zero line; the European view standardised so one step means the same thing in every panel |
 | C-80 | 2026-08-23 | The absorption figure was a one-row dumbbell implying a before-and-after process | What changed is the SPECIFICATION, not time, and the figure asked the reader to translate residuals mentally | Rebuilt as three values on one axis: the baseline prediction at 25.1%, the prediction after four related items at 58.2%, and the 72.0% Greek households actually report. The claim that the residual 'stops being statistically distinguishable' is removed from the figure, since no interval is drawn |
+| C-81 | 2026-08-23 | The prediction figure said 'Absorption is not explanation' twice, and the duplicate check did not catch it | The check compared fixed-length prefixes, so a short sentence repeated as the OPENING of a longer one read as two different sentences | Duplicate removed; the check now flags any sentence that another sentence begins with, negative-tested |
+| C-82 | 2026-08-23 | The prediction figure's rows read as a sequence in time | 'After adding four related survey items' describes a specification change as though something happened; and the unaccounted-for distance had to be worked out by subtracting two numbers | Both rows renamed as predictions, and each distance to the observed value is drawn and labelled, so 46.92 falling to 13.74 is visible rather than inferred |
 
 ## Artifact Index
 

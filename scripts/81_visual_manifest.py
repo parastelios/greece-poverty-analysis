@@ -128,8 +128,9 @@ M = [
       question="Does reported difficulty move with concrete affordability "
                "failure, in Europe and in Greece?",
       artifact="e0_extended_panel.csv",
-      series="four affordability measures, each with its European "
-             "within-country correlation and its Greece-only correlation",
+      series="VIEW A: Greek hardship against each measure over time, on one "
+             "shared scale. VIEW B, technical: the European relationship as "
+             "binned country-year averages in standard deviations",
       interaction="hover reads both figures and flags the Greek exception",
       fallback="measure, EU within-country correlation, Greece-only correlation",
       caveat="Same-survey corroboration, not independent validation or causal "

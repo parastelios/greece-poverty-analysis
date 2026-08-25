@@ -1001,6 +1001,18 @@ correctly &mdash; but it cannot register a fall that affects everyone at once.</
       const lb=el('text',{x:padL-6,y:y+3.5,'text-anchor':'end',class:'axis-label',
         style:hl?'fill:var(--gr);font-weight:700':''});
       svg.appendChild(lb);fitLabel(lb,r.label,padL-8,ms,!!hl);
+      // A row may draw its distance to a target value. Here that distance IS
+      // the finding -- the part the model does not account for -- and leaving
+      // the reader to subtract two numbers hides it.
+      if(r.gapTo!=null){
+        svg.appendChild(el('line',{x1:xs(r.value),x2:xs(r.gapTo),y1:y,y2:y,
+          stroke:'var(--chart-warn)','stroke-width':1.4,
+          'stroke-dasharray':'3 3',opacity:.9}));
+        const gt=el('text',{x:(xs(r.value)+xs(r.gapTo))/2,y:y-6,
+          'text-anchor':'middle',class:'axis-label',
+          style:'fill:var(--chart-warn);font-weight:700'});
+        gt.textContent=r.gapLabel||'';svg.appendChild(gt);
+      }
       if(hl||i===0||i===n-1||d.labelAll){const vt=el('text',{
         x:xs(r.value)+(r.value<0?-5:5),y:y+3.5,class:'axis-label',
         'text-anchor':r.value<0?'end':'start',
@@ -1236,12 +1248,12 @@ correctly &mdash; but it cannot register a fall that affects everyone at once.</
       svg.appendChild(el('line',{
         x1:isX?xs(g.value):padL, x2:isX?xs(g.value):W-padR,
         y1:isX?padT:ys(g.value), y2:isX?padT+ph:ys(g.value),
-        stroke:'var(--chart-eu)','stroke-width':1.2,
-        'stroke-dasharray':'4 4',opacity:.8}));
+        stroke:'var(--chart-neutral)','stroke-width':1,
+        'stroke-dasharray':'3 5',opacity:.55}));
       const gt=el('text',{x:isX?xs(g.value)+4:W-padR,
         y:isX?padT+11:ys(g.value)-5,
         'text-anchor':isX?'start':'end',class:'axis-label',
-        style:'fill:var(--chart-eu)'});
+        style:'fill:var(--chart-neutral);opacity:.9'});
       gt.textContent=g.label||'';svg.appendChild(gt);});
     if(sxx>0){const b1=sxy/sxx,b0=my-b1*mx;
       svg.appendChild(el('line',{x1:xs(xlo-px),y1:ys(b0+b1*(xlo-px)),

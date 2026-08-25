@@ -277,7 +277,7 @@ FIGS["F8"] = dict(
              "yLabel": "Percentage points from each series' own average",
              "alt": "Greek reported hardship and each affordability measure as "
                     "deviations from their own averages"}, "multiples"),
-           ("Across Europe, binned",
+           ("Across Europe (technical)",
             {"panels": panels_eu,
              "xMin": -2.2, "xMax": 2.2, "yMin": -2.2, "yMax": 2.2,
              "xTicks": [-1, 0, 1], "yTicks": [-1, 0, 1],
@@ -310,9 +310,11 @@ _obs = float(panel.dropna(subset=["subjective_poverty", "arop"] + _items)
              .query("geo == 'EL'").subjective_poverty.mean())
 
 f20 = ce.Series(["Percent of households"], dp=2)
+# "After adding" sounds temporal, and nothing happened in time: the
+# specification changed. Both rows are predictions, named as such.
 _rows20 = [
-    ("Income poverty and year alone", _obs - _base_r, False),
-    ("After adding four related survey items", _obs - _with_r, False),
+    ("Prediction from income poverty and year alone", _obs - _base_r, False),
+    ("Prediction including four related survey items", _obs - _with_r, False),
     ("What Greek households actually report", _obs, True),
 ]
 for lbl, val, _ in _rows20:
@@ -323,8 +325,14 @@ FIGS["F20"] = dict(
             f"{_obs - _base_r:.0f}% hardship; Greek households report "
             f"{_obs:.0f}%",
     kind="ladder",
-    payload={"rows": [{"label": lbl, "name": lbl, "value": round(v, 1),
-                       "highlight": hl} for lbl, v, hl in _rows20],
+    payload={"rows": [
+        {"label": lbl, "name": lbl, "value": round(v, 1), "highlight": hl,
+         # The distance to what Greece reports IS the unaccounted-for part.
+         # Drawing it makes the 71% visible instead of a subtraction.
+         **({"gapTo": round(_obs, 1),
+             "gapLabel": f"{_base_r if i == 0 else _with_r:.2f} points "
+                         f"unaccounted for"} if not hl else {})}
+        for i, (lbl, v, hl) in enumerate(_rows20)],
              "dp": 1, "unit": "%", "labelAll": True,
              "xLabel": "percent of households reporting difficulty",
              "alt": f"Three values on one scale: the baseline model predicts "
@@ -337,8 +345,8 @@ FIGS["F20"] = dict(
         f"model does not account for: {_base_r:.2f} points on income poverty and "
         f"year alone, {_with_r:.2f} after the four items enter, so "
         f"{_base_r - _with_r:.2f} points, or {(1 - _with_r / _base_r) * 100:.0f}%, "
-        f"is absorbed. Absorption is not explanation: these four items are "
-        f"answered by the same households in the same interview as the outcome, "
+        f"is absorbed. These four items are answered by the same "
+        f"households in the same interview as the outcome, "
         f"so part of what they take with them is the interview rather than the "
         f"world."))
 
