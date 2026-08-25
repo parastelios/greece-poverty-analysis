@@ -418,7 +418,7 @@ whether closely related deprivation measures are admitted.</p>
 <p>Nothing in that table is new. Every row points at a result reached in an
 earlier stage, and this section introduces no estimate and no interpretation
 that was not already established and bounded where it was produced.</p>
-<footer class="stamp">Built 2026-08-25 10:10 from commit <code>7e193a0</code> + uncommitted changes. If this does not match the current commit, the page is stale &mdash; reopen the file rather than refreshing.</footer>
+<footer class="stamp">Built 2026-08-25 10:16 from commit <code>1f48926</code> + uncommitted changes. If this does not match the current commit, the page is stale &mdash; reopen the file rather than refreshing.</footer>
 <script>
 (function(){
   const NS='http://www.w3.org/2000/svg';
@@ -997,7 +997,11 @@ that was not already established and bounded where it was produced.</p>
     const xs=v=>padL+(v-lo)/(hi-lo)*pw;
     const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,class:'chart',role:'img',
       'aria-label':d.alt||'paired comparison'});
+    const zeroShown=lo<0&&hi>0;
     [lo,(lo+hi)/2,hi].forEach(v=>{
+      // A midpoint that coincides with zero draws a second line a pixel from
+      // the zero line, which reads as a rendering fault rather than an axis.
+      if(zeroShown&&Math.abs(xs(v)-xs(0))<12)return;
       svg.appendChild(el('line',{x1:xs(v),x2:xs(v),y1:padT-6,y2:padT+d.rows.length*rowH,class:'gridline'}));
       const t=el('text',{x:xs(v),y:H-10,'text-anchor':'middle',class:'axis-label'});
       t.textContent=fmt(v,d.dp);svg.appendChild(t);});
@@ -1010,8 +1014,9 @@ that was not already established and bounded where it was produced.</p>
       const y=padT+i*rowH+rowH/2, tone=r.tone||'chart-neutral';
       svg.appendChild(el('line',{x1:xs(r.a),x2:xs(r.b),y1:y,y2:y,
         stroke:toneVar(tone),'stroke-width':2.5,opacity:.45}));
-      svg.appendChild(outlineNeutral(el('circle',{cx:xs(r.a),cy:y,r:4,fill:'var(--chart-neutral)'}),'chart-neutral'));
-      svg.appendChild(outlineNeutral(el('circle',{cx:xs(r.b),cy:y,r:5.5,fill:toneVar(tone)}),tone));
+      svg.appendChild(outlineNeutral(el('circle',{cx:xs(r.a),cy:y,r:4,
+        fill:'var(--chart-neutral)'}),'chart-neutral'));
+      svg.appendChild(el('circle',{cx:xs(r.b),cy:y,r:5.5,fill:'var(--chart-gr)'}));
       const lb=el('text',{x:padL-10,y:y+4,'text-anchor':'end',class:'axis-label',
         style:r.strong?'font-weight:700':''});
       svg.appendChild(lb);fitLabel(lb,r.label,padL-12,ms,!!r.strong);
@@ -1026,7 +1031,7 @@ that was not already established and bounded where it was produced.</p>
       lg.innerHTML=`<span class="lg-item"><svg width="12" height="12" aria-hidden="true">
         <circle cx="6" cy="6" r="4" fill="var(--chart-neutral)" stroke="var(--chart-neutral-edge)" stroke-width="1"/></svg>${d.legendA||'start'}</span>
         <span class="lg-item"><svg width="12" height="12" aria-hidden="true">
-        <circle cx="6" cy="6" r="5" fill="var(--gr)"/></svg>${d.legendB||'end'}</span>`;
+        <circle cx="6" cy="6" r="5" fill="var(--chart-gr)"/></svg>${d.legendB||'end'}</span>`;
       host.insertBefore(lg,svg.nextSibling);}
     const tp=tip(host);let idx=-1;
     const show=i=>{if(i<0||i>=marks.length)return;idx=i;const r=marks[i].r;

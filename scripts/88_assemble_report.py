@@ -1040,6 +1040,22 @@ is small.</p>
 {claim('V2-4.C2')}
 {claim('V2-4.C4')}
 
+<p class="signpost"><strong>Material resources and material deprivation are
+not the same thing, and the difference matters later.</strong> Material
+resources is what a country actually consumes per head, adjusted for local
+prices, and it comes from national accounts and the purchasing-power
+programme &mdash; measured independently of any household survey. Material
+deprivation is a survey item: the share of households reporting they cannot
+afford a specified list of things, collected in the same EU-SILC interview as
+the question about making ends meet.</p>
+
+<p>So one is an outside measure of what money buys, and the other is the same
+households answering an adjacent question. That is why material resources can
+be a supported predictor here while material deprivation appears in this report
+only as corroboration in Stage 3 and as the contested predictor in Stage 6.
+Admitting the second into a model is the choice that moves Greece from third to
+twenty-fifth; admitting the first is not controversial at all.</p>
+
 <p>Their directions are what one would expect and are worth stating, since a
 result that ran the other way would be a reason to distrust the measure rather
 than to report it. Higher material resources predict <em>less</em> reported

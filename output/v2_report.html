@@ -1207,6 +1207,22 @@ is small.</p>
 <div class="claim" data-claim-id="V2-4.C2" title="pre-planned confirmatory"><p class="canonical">Labour-market exclusion predicts hardship beyond AROP and year effects (coef +4.3402, wild-cluster bootstrap p=0.0085).</p><p class="caveats"><strong>Limits.</strong> cross-country association | no causal claim.</p></div>
 <div class="claim" data-claim-id="V2-4.C4" title="pre-planned confirmatory"><p class="canonical">Wage-adjusted affordability predicts hardship beyond AROP and year effects (coef +0.3110, wild-cluster bootstrap p=0.0005).</p><p class="caveats"><strong>Limits.</strong> cross-country association | no causal claim.</p></div>
 
+<p class="signpost"><strong>Material resources and material deprivation are
+not the same thing, and the difference matters later.</strong> Material
+resources is what a country actually consumes per head, adjusted for local
+prices, and it comes from national accounts and the purchasing-power
+programme &mdash; measured independently of any household survey. Material
+deprivation is a survey item: the share of households reporting they cannot
+afford a specified list of things, collected in the same EU-SILC interview as
+the question about making ends meet.</p>
+
+<p>So one is an outside measure of what money buys, and the other is the same
+households answering an adjacent question. That is why material resources can
+be a supported predictor here while material deprivation appears in this report
+only as corroboration in Stage 3 and as the contested predictor in Stage 6.
+Admitting the second into a model is the choice that moves Greece from third to
+twenty-fifth; admitting the first is not controversial at all.</p>
+
 <p>Their directions are what one would expect and are worth stating, since a
 result that ran the other way would be a reason to distrust the measure rather
 than to report it. Higher material resources predict <em>less</em> reported
@@ -2776,7 +2792,11 @@ under which decision, is recorded in the research record.</p>
     const xs=v=>padL+(v-lo)/(hi-lo)*pw;
     const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,class:'chart',role:'img',
       'aria-label':d.alt||'paired comparison'});
+    const zeroShown=lo<0&&hi>0;
     [lo,(lo+hi)/2,hi].forEach(v=>{
+      // A midpoint that coincides with zero draws a second line a pixel from
+      // the zero line, which reads as a rendering fault rather than an axis.
+      if(zeroShown&&Math.abs(xs(v)-xs(0))<12)return;
       svg.appendChild(el('line',{x1:xs(v),x2:xs(v),y1:padT-6,y2:padT+d.rows.length*rowH,class:'gridline'}));
       const t=el('text',{x:xs(v),y:H-10,'text-anchor':'middle',class:'axis-label'});
       t.textContent=fmt(v,d.dp);svg.appendChild(t);});
@@ -2789,8 +2809,9 @@ under which decision, is recorded in the research record.</p>
       const y=padT+i*rowH+rowH/2, tone=r.tone||'chart-neutral';
       svg.appendChild(el('line',{x1:xs(r.a),x2:xs(r.b),y1:y,y2:y,
         stroke:toneVar(tone),'stroke-width':2.5,opacity:.45}));
-      svg.appendChild(outlineNeutral(el('circle',{cx:xs(r.a),cy:y,r:4,fill:'var(--chart-neutral)'}),'chart-neutral'));
-      svg.appendChild(outlineNeutral(el('circle',{cx:xs(r.b),cy:y,r:5.5,fill:toneVar(tone)}),tone));
+      svg.appendChild(outlineNeutral(el('circle',{cx:xs(r.a),cy:y,r:4,
+        fill:'var(--chart-neutral)'}),'chart-neutral'));
+      svg.appendChild(el('circle',{cx:xs(r.b),cy:y,r:5.5,fill:'var(--chart-gr)'}));
       const lb=el('text',{x:padL-10,y:y+4,'text-anchor':'end',class:'axis-label',
         style:r.strong?'font-weight:700':''});
       svg.appendChild(lb);fitLabel(lb,r.label,padL-12,ms,!!r.strong);
@@ -2805,7 +2826,7 @@ under which decision, is recorded in the research record.</p>
       lg.innerHTML=`<span class="lg-item"><svg width="12" height="12" aria-hidden="true">
         <circle cx="6" cy="6" r="4" fill="var(--chart-neutral)" stroke="var(--chart-neutral-edge)" stroke-width="1"/></svg>${d.legendA||'start'}</span>
         <span class="lg-item"><svg width="12" height="12" aria-hidden="true">
-        <circle cx="6" cy="6" r="5" fill="var(--gr)"/></svg>${d.legendB||'end'}</span>`;
+        <circle cx="6" cy="6" r="5" fill="var(--chart-gr)"/></svg>${d.legendB||'end'}</span>`;
       host.insertBefore(lg,svg.nextSibling);}
     const tp=tip(host);let idx=-1;
     const show=i=>{if(i<0||i>=marks.length)return;idx=i;const r=marks[i].r;
