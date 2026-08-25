@@ -44,7 +44,7 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `p6-rewrite` |
-| HEAD | `3ee4817` Visual sign-off pass: eleven concrete defects found and fixed |
+| HEAD | `efaf265` Fixed 2008-2024 basket for the breadth figure, with transition status |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-25 |
 | Frozen V1 reference | `v1-final` |

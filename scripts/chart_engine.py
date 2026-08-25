@@ -1359,6 +1359,18 @@ JS = r"""
     if(host.dataset.views==='stacked')return mountStacked(host);
     const payloads=[...host.querySelectorAll('script[type="application/json"]')];
     if(payloads.length<2)return false;
+    // A resize re-runs mount() from scratch (see redraw() below), and used to
+    // always redraw at view 0 -- so a reader who switched to the second tab of
+    // a figure and then resized the window, or rotated a phone, silently lost
+    // their selection and saw the FIRST view again with no indication anything
+    // changed. The previous selection is read off the viewbar being replaced,
+    // which sits as host's immediate previous sibling, and carried forward.
+    let startAt=0;
+    const prev=host.previousElementSibling;
+    if(prev&&prev.classList.contains('viewbar')){
+      const sel=[...prev.children].findIndex(b=>b.getAttribute('aria-selected')==='true');
+      if(sel>=0)startAt=sel;
+    }
     const bar=document.createElement('div');bar.className='viewbar';
     bar.setAttribute('role','tablist');
     const draw=i=>{
@@ -1384,7 +1396,7 @@ JS = r"""
           bar.children[j].focus();draw(j);}});
       bar.appendChild(b);});
     host.parentNode.insertBefore(bar,host);
-    draw(0);
+    draw(startAt);
     return true;
   }
 

@@ -2255,6 +2255,39 @@ details.methods>summary:focus-visible{outline:2px solid var(--series-gr);
 .methods-body h4{font-size:.95rem;margin:1.2rem 0 .4rem}
 .methods-body code{font:.88em ui-monospace,SFMono-Regular,Menlo,monospace;
   background:var(--surface-1);padding:.1em .35em;border-radius:3px}
+/* The two figures replaced by generated tables (T-ABSORB, T-DOMAIN) reuse
+   this file's own artifact_table() helper, which emits <div class="table-wrap">
+   <table class="data">...</table></div> -- a different markup pattern from
+   the T1/T2 evidence tables below, and one that was never given CSS. It
+   rendered as bare unstyled browser-default rows: no borders, no header
+   emphasis, numeric columns not visually separated from the label column.
+   Styled here in the same visual language as .evidence-table so a reader
+   cannot tell which mechanism produced which table. */
+.table-wrap{margin:1.4rem 0;overflow-x:auto;border:1px solid var(--border);
+  border-radius:6px}
+.table-wrap table.data{border-collapse:collapse;width:100%;min-width:26rem;
+  font:.87rem/1.45 ui-sans-serif,system-ui,sans-serif}
+/* The row label is marked up as <th scope="row">, which is the more correct
+   choice for a screen reader -- it associates the label with its row the way
+   scope="col" does for a column. But a bare `th` selector cannot tell a row
+   header from the column header row, and gave every row label the same
+   heavy background as the header: every row looked like a second header.
+   Scoped to thead specifically for the header treatment; row headers get
+   their own, lighter rule. */
+.table-wrap table.data thead th{text-align:left;font-weight:700;font-size:.76rem;
+  letter-spacing:.05em;text-transform:uppercase;color:var(--text-secondary);
+  padding:.6rem .8rem;border-bottom:1px solid var(--border);
+  background:var(--surface-2);white-space:nowrap}
+.table-wrap table.data td,.table-wrap table.data tbody th{
+  padding:.55rem .8rem;border-bottom:1px solid var(--border);vertical-align:top}
+.table-wrap table.data tbody th{text-align:left;font-weight:600;
+  color:var(--text-primary)}
+.table-wrap table.data td.num{font-variant-numeric:tabular-nums;text-align:right}
+.table-wrap table.data tbody tr:last-child td,
+.table-wrap table.data tbody tr:last-child th{border-bottom:none}
+.table-wrap .table-note{font:.82rem/1.5 ui-sans-serif,system-ui,sans-serif;
+  color:var(--text-secondary);margin:.6rem .1rem 0}
+
 .evidence-table{margin:2rem 0}
 .tcap{font:600 .9rem/1.5 ui-sans-serif,system-ui,sans-serif;margin:0 0 .6rem;
   display:flex;gap:.6rem;align-items:baseline}

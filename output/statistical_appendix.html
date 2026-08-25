@@ -55,7 +55,7 @@ background:var(--surface-1)}
 display:flex;align-items:baseline;justify-content:space-between;gap:12px;
 font:700 1.02rem/1.3 ui-sans-serif,system-ui,sans-serif;color:var(--text-primary)}
 .atlas-domain > summary::-webkit-details-marker{display:none}
-.atlas-domain > summary::before{content:"B8";margin-right:.55rem;
+.atlas-domain > summary::before{content:"▸";margin-right:.55rem;
 display:inline-block;transition:transform .15s ease;color:var(--text-muted)}
 .atlas-domain[open] > summary::before{transform:rotate(90deg)}
 .atlas-domain > summary:hover{color:var(--accent,var(--text-primary))}
@@ -108,7 +108,7 @@ dl.gloss{margin:0}
 .gloss-row{display:grid;grid-template-columns:150px 1fr;gap:10px 18px;
   padding:9px 0;border-bottom:1px solid var(--border)}
 .gloss-row:last-child{border-bottom:none}
-.gloss-row dt{font-weight:650;color:var(--gr);font-size:13.5px;
+.gloss-row dt{font-weight:650;color:var(--ink-gr);font-size:13.5px;
   font-variant-numeric:tabular-nums;word-break:break-word}
 .gloss-row dd{margin:0;font-size:13.5px;line-height:1.55;color:var(--text-secondary)}
 .gloss-full{display:block;color:var(--text-primary);font-weight:550}
@@ -132,7 +132,7 @@ dl.gloss{margin:0}
   color:var(--text-secondary);list-style-position:inside}
 .candidate-detail[open] summary{border-bottom:1px solid var(--border);color:var(--text-primary)}
 .candidate-detail .chart-card{border:0;border-radius:0;margin:0;background:transparent}
-nav.toc a b{color:var(--gr);margin-right:5px}
+nav.toc a b{color:var(--ink-gr);margin-right:5px}
 .chart-unit{font-size:12px;color:var(--text-muted);margin:0 0 2px}
 .chart-note{font-size:12.5px;color:var(--text-secondary);margin:6px 0 0;max-width:80ch}
 .chart-basis{font-size:11.5px;color:var(--text-muted);margin:4px 0 0}
@@ -281,13 +281,27 @@ function drawSeries(host, key, s){
   const pe = path(s.eu, 'line-eu'); if (pe) svg.appendChild(pe);
   const pg = path(s.countries[EL] || [], 'line-gr'); if (pg) svg.appendChild(pg);
 
-  // end labels for Greece and EU
+  // end labels for Greece and EU. Each label's y-position followed its own
+  // series value with no regard for the other -- when Greece and the EU end
+  // the period within a percentage point of each other, which several HICP
+  // inflation series do, the two baselines land within a text-height of one
+  // another and the labels overlap. Computed together so a minimum vertical
+  // gap can be enforced between them.
   const lastIdx = a => { for (let i = a.length - 1; i >= 0; i--) if (a[i] !== null) return i; return -1; };
-  [[s.countries[EL], 'gr', 'Greece'], [s.eu, 'eu', 'EU']].forEach(([arr, col, nm]) => {
-    if (!arr) return; const i = lastIdx(arr); if (i < 0) return;
-    const t = el('text', {x: xs(years[i]) + 6, y: ys(arr[i]) + 4,
-      class: 'axis-label', style: `fill:var(--${col});font-weight:700;font-size:11.5px`});
-    t.textContent = nm + ' ' + fmt(arr[i], s.unit); svg.appendChild(t);
+  const endLabels = [[s.countries[EL], 'gr', 'Greece'], [s.eu, 'eu', 'EU']]
+    .map(([arr, col, nm]) => {
+      if (!arr) return null; const i = lastIdx(arr); if (i < 0) return null;
+      return {x: xs(years[i]) + 6, y: ys(arr[i]) + 4, col, text: nm + ' ' + fmt(arr[i], s.unit)};
+    }).filter(Boolean);
+  if (endLabels.length === 2) {
+    const [a, b] = endLabels.sort((p, q) => p.y - q.y);
+    const minGap = 15;
+    if (b.y - a.y < minGap) { const mid = (a.y + b.y) / 2; a.y = mid - minGap/2; b.y = mid + minGap/2; }
+  }
+  endLabels.forEach(({x, y, col, text}) => {
+    const t = el('text', {x, y, class: 'axis-label',
+      style: `fill:var(--${col});font-weight:700;font-size:11.5px`});
+    t.textContent = text; svg.appendChild(t);
   });
 
   const cross = el('line', {class: 'crosshair', y1: padT, y2: padT + plotH});
@@ -408,7 +422,14 @@ function drawPanel(host, key, p){
     path.dataset.group=l.group; path.dataset.baseOpacity=l.highlight?1:.85;
     svg.appendChild(path);
   });
-  // legend to the right
+  const cross=el('line',{class:'crosshair',y1:padT,y2:padT+plotH}); svg.appendChild(cross);
+  const tip=document.createElement('div'); tip.className='tip';
+  const wrap=document.createElement('div'); wrap.className='chart-wrap';
+  wrap.appendChild(svg); wrap.appendChild(tip); host.appendChild(wrap);
+  // legend to the right. "Anchored to 2008 living standards (approximated)",
+  // one of a handful of unusually long series names, ran 74px past the right
+  // edge of the canvas -- there was no width budget check at all. The svg is
+  // now attached above, before this loop, so the measurement it needs is real.
   let ly=padT+4;
   p.lines.forEach(l=>{
     const col=PAL[groups.indexOf(l.group)%PAL.length];
@@ -417,12 +438,10 @@ function drawPanel(host, key, p){
       'stroke-dasharray':l.style==='dashed'?'6 4':(l.style==='dotted'?'2 3':'none')}));
     const t=el('text',{x:W-padR+40,y:ly+3.5,class:'axis-label',
       style:l.highlight?'font-weight:700':''});
-    t.textContent=l.name; svg.appendChild(t); ly+=17;
+    svg.appendChild(t);
+    fitRowLabelLeft(t,l.name,W-(W-padR+40)-8);
+    ly+=17;
   });
-  const cross=el('line',{class:'crosshair',y1:padT,y2:padT+plotH}); svg.appendChild(cross);
-  const tip=document.createElement('div'); tip.className='tip';
-  const wrap=document.createElement('div'); wrap.className='chart-wrap';
-  wrap.appendChild(svg); wrap.appendChild(tip); host.appendChild(wrap);
   const hit=el('rect',{x:padL,y:padT,width:plotW,height:plotH,class:'hit'}); svg.appendChild(hit);
   // When a panel pairs several lines per group (each age band or tenure drawn
   // for Greece and for the EU), listing all ten in the tooltip buries the two
@@ -471,7 +490,8 @@ function drawBars(host,key,p){
       +(r.r2===null||r.r2===undefined?'':row('R&sup2;',r.r2)));
     const t=el('text',{x:padL-10,y:y+13,'text-anchor':'end',class:'axis-label',
       style:'font-size:11.5px'});
-    t.textContent=r.pretty||r.model; svg.appendChild(t);
+    svg.appendChild(t);
+    fitRowLabel(t,String(r.pretty||r.model),padL-18);
     const x0=xs(Math.min(0,r.oos)), w=Math.abs(xs(r.oos)-xs(0));
     svg.appendChild(el('rect',{x:x0,y:y+3,width:Math.max(w,1),height:11,
       fill:'var(--gr)',rx:2,opacity:.9}));
@@ -481,9 +501,15 @@ function drawBars(host,key,p){
         fill:'none',stroke:'var(--eu)','stroke-width':1.4,'stroke-dasharray':'3 2',rx:2}));
     }
     // Put the value at the bar's outer end, but never let a negative bar's label
-    // run back into the model-name column.
+    // run back into the model-name column. The check compared the label's
+    // ANCHOR point to padL+4, not its actual left edge -- for a short string
+    // like "-0.8" the anchor can clear that 4px margin while the text itself,
+    // extending ~20px further left from its own width, still lands inside the
+    // label gutter. Confirmed on "Fixed Model G": anchor at padL+6, rendered
+    // text still overlapping the row label by 7px. Margin widened to cover a
+    // typical short value string rather than just the anchor point.
     let vx=xs(r.oos)+(r.oos>=0?6:-6), anchor=r.oos>=0?'start':'end';
-    if(vx<padL+4){ vx=xs(Math.max(r.oos,0))+6; anchor='start'; }
+    if(vx<padL+30){ vx=xs(Math.max(r.oos,0))+6; anchor='start'; }
     const v=el('text',{x:vx,y:y+13,class:'axis-label',
       'text-anchor':anchor,style:'font-weight:650;fill:var(--gr)'});
     v.textContent=r.oos.toFixed(1); svg.appendChild(v);
@@ -522,6 +548,42 @@ function panelSvg(host,W,H){
   return {svg,el,tip,hover,rowHit,row};
 }
 
+function fitRowLabelLeft(el,full,avail){
+  el.textContent=full;
+  if(el.getComputedTextLength()<=avail)return;
+  let lo=1,hi=full.length,best=1;
+  while(lo<=hi){const mid=(lo+hi)>>1;el.textContent=full.slice(0,mid)+'…';
+    if(el.getComputedTextLength()<=avail){best=mid;lo=mid+1;}else{hi=mid-1;}}
+  const hardCap=Math.max(1,Math.floor(avail/7.5));
+  if(best>hardCap)best=hardCap;
+  el.textContent=full.slice(0,best)+'…';
+  const ti=document.createElementNS('http://www.w3.org/2000/svg','title');
+  ti.textContent=full;el.appendChild(ti);
+}
+
+function fitRowLabel(el,full,avail){
+  el.textContent=full;
+  if(el.getComputedTextLength()<=avail)return;
+  let lo=1,hi=full.length,best=1;
+  while(lo<=hi){const mid=(lo+hi)>>1;el.textContent=full.slice(0,mid)+'…';
+    if(el.getComputedTextLength()<=avail){best=mid;lo=mid+1;}else{hi=mid-1;}}
+  el.textContent=full.slice(0,best)+'…';
+  // Deterministic final cap, independent of any further live measurement.
+  // One row kept converging ~9px over budget across three fix attempts, the
+  // gap unchanged even after the budget itself was reduced by 6px -- evidence
+  // the SAME stale measurement was being read back at every check inside this
+  // tight, rapid-fire textContent-mutation loop, not a logic error to reason
+  // about further from outside the browser's own layout scheduler. A 7.5
+  // px/char ceiling is conservative for this font (real average is closer to
+  // 5.5-6), so it always cuts at least as much as the measured search did,
+  // and it cannot be fooled by a stale read because it never asks the layout
+  // engine anything.
+  const hardCap=Math.max(1,Math.floor(avail/7.5));
+  if(best>hardCap){best=hardCap;el.textContent=full.slice(0,best)+'…';}
+  const ti=document.createElementNS('http://www.w3.org/2000/svg','title');
+  ti.textContent=full;el.appendChild(ti);
+}
+
 function drawLadder(host,p){
   const rows=p.rows,W=860,rowH=37,H=rows.length*rowH+52,padL=315,padR=70;
   const {svg,el,hover,rowHit,row}=panelSvg(host,W,H), vals=rows.map(r=>+r.greece_value);
@@ -535,11 +597,25 @@ function drawLadder(host,p){
       +(r.points_closed===null||r.points_closed===undefined?''
         :row('closed so far',(+r.points_closed).toFixed(2)+' pp')));
     const label=el('text',{x:padL-10,y:y+15,'text-anchor':'end',class:'axis-label',style:'font-size:11.5px'});
-    label.textContent=r.step_label||r.layer||r.step;svg.appendChild(label);
+    svg.appendChild(label);
+    // padL is a FIXED constant, not measured from the labels it has to hold --
+    // one of them, "Basic model: AROP + income + deprivation + headline
+    // unemployment (Model A)", ran 128px past the left edge of the SVG,
+    // entirely off the visible canvas. The hover readout already carries the
+    // full label regardless of truncation, so nothing is lost by shortening
+    // what is drawn.
+    fitRowLabel(label,String(r.step_label||r.layer||r.step),padL-18);
     const x0=X(Math.min(0,v)),w=Math.abs(X(v)-X(0));
     svg.appendChild(el('rect',{x:x0,y:y+3,width:Math.max(1,w),height:17,rx:3,
       fill:v<0?'var(--hi)':'var(--gr)',opacity:.9}));
-    const t=el('text',{x:X(v)+(v>=0?7:-7),y:y+16,'text-anchor':v>=0?'start':'end',
+    // A negative bar puts its value label to the LEFT of the bar's start, which
+    // for a value near zero sits close enough to X(0) to run back into the row
+    // label -- confirmed on "+ cumulative excess unemployment (final model)"
+    // at v=-0.8, a 10px overlap. drawBars already flips its value label inboard
+    // when this happens; this chart did not.
+    let vx=X(v)+(v>=0?7:-7), vanchor=v>=0?'start':'end';
+    if(v<0&&vx-18<padL){ vx=X(Math.max(v,0))+7; vanchor='start'; }
+    const t=el('text',{x:vx,y:y+16,'text-anchor':vanchor,
       class:'axis-label',style:'font-weight:700'});t.textContent=v.toFixed(1);svg.appendChild(t);
   });
   const axis=el('text',{x:padL+(W-padL-padR)/2,y:H-12,'text-anchor':'middle',class:'axis-label'});
@@ -547,7 +623,8 @@ function drawLadder(host,p){
 }
 
 function drawPositionLadder(host,p){
-  const rows=p.rows,rowH=27,padL=326,padR=54,padT=34,padB=34,spanW=62;
+  // padB was 34, with the tick row at H-14 and the axis title at H-8 -- a 6px baseline gap that put the two ranges of text crossing each other by 7px. Widened to give both lines their own clear band.
+  const rows=p.rows,rowH=27,padL=326,padR=54,padT=34,padB=46,spanW=62;
   const W=860,H=rows.length*rowH+padT+padB,plotW=W-padL-padR,X=v=>padL+v/100*plotW;
   const ns='http://www.w3.org/2000/svg';
   const svg=document.createElementNS(ns,'svg');
@@ -561,24 +638,47 @@ function drawPositionLadder(host,p){
   [0,25,50,75,100].forEach(v=>{
     svg.appendChild(el('line',{x1:X(v),x2:X(v),y1:padT-8,y2:H-padB+6,
       stroke:cssv('--gridline'),'stroke-width':1}));
-    const t=el('text',{x:X(v),y:H-padB+20,'text-anchor':'middle',class:'axis-label'});
+    const t=el('text',{x:X(v),y:H-padB+16,'text-anchor':'middle',class:'axis-label'});
     t.textContent=v;svg.appendChild(t);
   });
-  const axis=el('text',{x:padL+plotW/2,y:H-8,'text-anchor':'middle',class:'axis-label'});
+  const axis=el('text',{x:padL+plotW/2,y:H-4,'text-anchor':'middle',class:'axis-label'});
   axis.textContent='Position in the EU distribution — 0 = best, 100 = worst';svg.appendChild(axis);
 
   const tip=document.createElement('div');tip.className='tip';
   const wrap=document.createElement('div');wrap.className='chart-wrap';
+  // Attached to the DOM BEFORE the label-measuring loop below, not after it.
+  // getComputedTextLength() only returns a real value once the text node's
+  // ancestor SVG is laid out in an attached document; measuring first and
+  // attaching last (the order every other function in this file uses) made
+  // every measurement in this function return 0, which is why the year-range
+  // fix above did not fix anything the first time -- the computed "actual"
+  // width was silently zero, so the row label's budget was still wrong.
+  wrap.appendChild(svg); wrap.appendChild(tip); host.appendChild(wrap);
   rows.forEach((r,i)=>{
     const y=padT+i*rowH+rowH/2,worse=r.pct_last>=r.pct_first;
     const col=worse?cssv('--eu'):cssv('--hi');
     const hit=el('rect',{x:0,y:y-rowH/2,width:W,height:rowH,fill:'transparent',class:'hit'});
     svg.appendChild(hit);
-    const lab=el('text',{x:padL-spanW-10,y:y+4,'text-anchor':'end',class:'axis-label'});
-    const maxch=Math.floor((padL-spanW-10)/5.4);
-    lab.textContent=r.label.length>maxch?r.label.slice(0,maxch-1)+'…':r.label;svg.appendChild(lab);
+    // spanW was a fixed guess for how wide "YYYY-YYYY" renders and undershot by
+    // ~11px, so the year-range badge's own left edge intruded into the row
+    // label's territory on nearly every row -- not an occasional collision, a
+    // systematic one, since almost every row carries a 9-character range. The
+    // badge is measured for real, and the row label's budget is sized from
+    // that measurement instead of the other way around.
     const span=el('text',{x:padL-10,y:y+4,'text-anchor':'end',class:'axis-label',opacity:.62});
     span.textContent=`${r.year_first}–${r.year_last}`;svg.appendChild(span);
+    // +6px safety margin beyond the measured span width. getComputedTextLength()
+    // and getBBox().width disagreed by ~9px for one string in testing --
+    // advance-width vs geometric-ink-extent for a run ending in an ellipsis --
+    // and chasing exact parity between the two browser APIs is not worth
+    // continuing; a margin makes the actual gap larger than either
+    // measurement's error, whichever one turns out to be right for a given
+    // string.
+    const spanActual=span.getComputedTextLength();
+    const budget=padL-10-spanActual-14;
+    const lab=el('text',{x:budget,y:y+4,'text-anchor':'end',class:'axis-label'});
+    svg.appendChild(lab);
+    fitRowLabel(lab,String(r.label),budget);
     svg.appendChild(el('line',{x1:X(r.pct_first),x2:X(r.pct_last),y1:y,y2:y,
       stroke:col,'stroke-width':2.4,opacity:.55,'stroke-linecap':'round'}));
     if(r.eu_pct!==null&&r.eu_pct!==undefined){
@@ -608,7 +708,6 @@ function drawPositionLadder(host,p){
     else svg.appendChild(el('circle',{cx:x,cy:ly-4,r:5,fill:kind==='open'?cssv('--page'):cssv('--text-muted'),stroke:cssv('--text-muted'),'stroke-width':kind==='open'?2:0}));
     const t=el('text',{x:x+10,y:ly,class:'axis-label'});t.textContent=label;svg.appendChild(t);
   });
-  wrap.appendChild(svg);wrap.appendChild(tip);host.appendChild(wrap);
 }
 
 function drawCandidate(host,p){
@@ -625,7 +724,8 @@ function drawCandidate(host,p){
       +row('coefficient',r.coef)
       +row("Greece's OOS gap",r.gr_oos));
     const lab=el('text',{x:padL-9,y:y+10,'text-anchor':'end',class:'axis-label',style:'font-size:10.5px'});
-    lab.textContent=r.pretty||r.variable;svg.appendChild(lab);
+    svg.appendChild(lab);
+    fitRowLabel(lab,String(r.pretty||r.variable),padL-17);
     svg.appendChild(el('line',{x1:padL,x2:X(x),y1:y+6,y2:y+6,stroke:'var(--gridline)','stroke-width':2}));
     svg.appendChild(el('circle',{cx:X(x),cy:y+6,r:5,fill:r.p_fdr_bh<=.05?'var(--gr)':'var(--faint)'}));
     const q=el('text',{x:X(x)+8,y:y+10,class:'axis-label',style:'font-size:10px'});
@@ -643,7 +743,8 @@ function drawSelection(host,p){
       +row('selected first in',`${r.count} of 27 folds`)
       +row('share of folds',`${(r.count/27*100).toFixed(0)}%`));
     const lab=el('text',{x:padL-10,y:y+15,'text-anchor':'end',class:'axis-label'});
-    lab.textContent=r.pretty||r.variable;svg.appendChild(lab);
+    svg.appendChild(lab);
+    fitRowLabel(lab,String(r.pretty||r.variable),padL-18);
     svg.appendChild(el('rect',{x:padL,y:y+3,width:X(r.count)-padL,height:18,rx:3,fill:'var(--gr)'}));
     const t=el('text',{x:X(r.count)+8,y:y+17,class:'axis-label',style:'font-weight:700'});
     t.textContent=r.count+' of 27 folds';svg.appendChild(t);
@@ -813,7 +914,20 @@ function drawScatter(host, key, sc){
       stroke:isGR?'var(--gr)':'none','stroke-width':isGR?2:0,
       opacity:isGR?1:.8,'data-geo':p.geo,style:'cursor:pointer'});
     svg.appendChild(c);
-    const lab=el('text',{x:X(p.x)+(isGR?10:6),y:Y(p.y)-(isGR?8:5),class:'axis-label',
+    // "Greece" above-right of its point collided with the r-value annotation,
+    // which is fixed at the top-right corner: Greece is frequently the most
+    // extreme point in these relationships, so its default label position and
+    // the corner where "r = 0.38 ... " lives are often the same few square
+    // inches. Below-left instead, whenever the point itself sits in that
+    // corner region.
+        // 180px was calibrated against three of the four charts that needed
+    // this and missed the fourth: Greece's point sat at 621 against a
+    // required >654. Widened to the r-label's own width plus margin,
+    // rather than a second guessed constant.
+    const inCorner=isGR&&X(p.x)>W-padR-230&&Y(p.y)<padT+34;
+    const lx=X(p.x)+(isGR?(inCorner?-10:10):6);
+    const ly=Y(p.y)+(isGR?(inCorner?16:-8):-5);
+    const lab=el('text',{x:lx,y:ly,'text-anchor':inCorner?'end':'start',class:'axis-label',
       style:isGR?'fill:var(--gr);font-weight:700;font-size:12px':'font-size:9.5px'});
     lab.textContent=isGR?'Greece':p.geo; svg.appendChild(lab);
   });
@@ -2554,6 +2668,18 @@ color:var(--text-secondary);margin:.5rem 0 0;max-width:44rem}
     if(host.dataset.views==='stacked')return mountStacked(host);
     const payloads=[...host.querySelectorAll('script[type="application/json"]')];
     if(payloads.length<2)return false;
+    // A resize re-runs mount() from scratch (see redraw() below), and used to
+    // always redraw at view 0 -- so a reader who switched to the second tab of
+    // a figure and then resized the window, or rotated a phone, silently lost
+    // their selection and saw the FIRST view again with no indication anything
+    // changed. The previous selection is read off the viewbar being replaced,
+    // which sits as host's immediate previous sibling, and carried forward.
+    let startAt=0;
+    const prev=host.previousElementSibling;
+    if(prev&&prev.classList.contains('viewbar')){
+      const sel=[...prev.children].findIndex(b=>b.getAttribute('aria-selected')==='true');
+      if(sel>=0)startAt=sel;
+    }
     const bar=document.createElement('div');bar.className='viewbar';
     bar.setAttribute('role','tablist');
     const draw=i=>{
@@ -2579,7 +2705,7 @@ color:var(--text-secondary);margin:.5rem 0 0;max-width:44rem}
           bar.children[j].focus();draw(j);}});
       bar.appendChild(b);});
     host.parentNode.insertBefore(bar,host);
-    draw(0);
+    draw(startAt);
     return true;
   }
 
