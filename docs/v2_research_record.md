@@ -44,7 +44,7 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `p6-rewrite` |
-| HEAD | `d9eb1bd` Fix the paired-comparison figure; distinguish resources from deprivation |
+| HEAD | `6edcc71` Replace the affordability scatter with a correlation comparison |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-25 |
 | Frozen V1 reference | `v1-final` |
@@ -3352,6 +3352,10 @@ Deviations must be disclosed in the stage that made them, not only here.
 | C-71 | 2026-08-23 | The affordability evidence was a 1,078-point scatter | The message is simple -- reported hardship moves with concrete affordability difficulty, in Europe and in Greece, except for falling behind on bills -- and a dense diagnostic plot was the wrong instrument for it | Replaced with a four-row comparison: the European within-country figure against the Greece-only figure, two dots per row. A second, expandable figure shows each country's own correlation, so a reader can see the pattern is not driven by a few states |
 | C-72 | 2026-08-23 | The paired-comparison legend named a colour nothing was drawn in | The 'between' dot took each row's tone, so it drew grey on most rows and orange on one, never the blue the legend showed; the two ends were distinguished only by SIZE | Ends given fixed, per-figure colours; row status stays on the connecting line and the right-hand label |
 | C-73 | 2026-08-23 | The midpoint gridline coincided with the zero line | `(lo+hi)/2` lands on zero whenever the data is roughly symmetric, drawing a second vertical line a pixel away | Skipped when it would coincide |
+| C-74 | 2026-08-23 | Two attempts at the affordability evidence showed STATISTICS about a relationship rather than the relationship | A scatter of 1,078 points was unreadable; a dumbbell comparing a pooled European correlation with a Greece-only one asked the reader to hold two different estimands in mind and drew a line between them implying a change | Replaced with the quantities moving: four panels of Greek hardship against each item as deviations from their own averages, plus a binned view of the European relationship. Line panels added to the multiples type |
+| C-75 | 2026-08-23 | The country-correlation strip repeated the previous figure in another statistical layer | Correlations from ten annual observations are unstable, and the view showed neither hardship nor affordability changing | Replaced with the next substantive result: the residual falling from +46.92 to +13.74 with 71% absorbed |
+| C-76 | 2026-08-23 | The absorption figure put percentage points of hardship and percent of variation on one axis | The two rows moved in opposite directions in different units, reading as one quantity improving while another worsened -- the defect corrected in the conditional figures | Model fit moved to the tooltip and the table; the axis carries one unit |
+| C-77 | 2026-08-23 | The duplicate-caveat check skipped short sentences | 'Absorption is not explanation.' repeated verbatim and passed, because the check ignored sentences under 45 characters | Threshold lowered and short sentences compared whole |
 
 ## Artifact Index
 

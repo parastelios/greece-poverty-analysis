@@ -30,14 +30,20 @@ NEW = {"ladder", "coefficient", "dumbbell", "heatmap", "strip", "multiples"}
 
 M = [
  dict(id="F1", stage=1, chart_type="panel",
-      question="How far apart are reported hardship and official income "
-               "poverty for Greece, and does the distance close over time?",
+      question="Does official income poverty account for the hardship Greek "
+               "households report?",
       artifact="e0_extended_panel.csv",
-      series="VIEW A: Greek hardship and income poverty against the EU median of each. VIEW B: Greek hardship against every other member state, with Greek and EU-median income poverty for scale",
-      interaction="hover reads both values and the gap for the year",
-      fallback="year x subjective hardship, AROP, gap; Greece and EU median",
-      caveat="AROPE is deliberately absent here. It enters at Stage 2 as the "
-             "bridge, and showing it now would pre-empt that step.",
+      series="VIEW A: Greek hardship and income poverty against the EU median "
+             "of each, with every other country's hardship faint behind. "
+             "VIEW B: every country placed by both measures, one year at a "
+             "time, with a fit through the other 26",
+      interaction="switch view; pick a year in the second; hover names any "
+                  "country and reads both of its values",
+      fallback="year x the four series; country x income poverty and hardship "
+               "in the latest year",
+      # Kept short on the face of the figure; the reading caveat is added at
+      # build time and would otherwise be stated twice.
+      caveat="Descriptive comparison of two official measures.",
       status_label="descriptive"),
  dict(id="F2", stage=1, chart_type="ladder",
       question="Is Greece unusual, or at one end of a continuum?",
@@ -118,7 +124,7 @@ M = [
                   "and diverging coloured separately",
       fallback="variable, gap 2015, gap 2024, shift, trend",
       caveat="", status_label="descriptive"),
- dict(id="F8", stage=3, chart_type="dumbbell",
+ dict(id="F8", stage=3, chart_type="multiples",
       question="Does reported difficulty move with concrete affordability "
                "failure, in Europe and in Greece?",
       artifact="e0_extended_panel.csv",
@@ -264,18 +270,15 @@ dict(id="F16", stage=7, chart_type="panel",
              "NOT select variables, and a reversal is a fact about the two "
              "scopes rather than evidence about mechanism.",
       status_label="descriptive"),
- dict(id="F20", stage=3, chart_type="strip",
-      question="Is the European relationship a broad pattern, or driven by a "
-               "few countries?",
-      artifact="e0_extended_panel.csv",
-      series="one dot per country per measure: each country's own correlation "
-             "between reported hardship and that affordability measure",
-      interaction="hover names any country and its correlation; the median is "
-                  "marked and Greece highlighted",
-      fallback="measure, number of countries, median correlation, Greece, "
-               "number positive",
-      caveat="Each dot is one country's correlation across its own years, a "
-             "different quantity from the pooled European figure.",
+ dict(id="F20", stage=3, chart_type="dumbbell",
+      question="How much of Greece's unexplained hardship do these four items "
+               "absorb, and what does that establish?",
+      artifact="e3_restatement.csv",
+      series="Greece's residual before and after the four items enter the "
+             "model, with the share of variation explained",
+      interaction="hover reads both values and the change",
+      fallback="quantity, before, after, absorbed",
+      caveat="Absorption is not explanation.",
       status_label="descriptive corroboration"),
 ]
 

@@ -854,26 +854,23 @@ through this entire stage.</p>
 
 {fig('F8')}
 
-<p>Two figures per measure: the relationship across Europe once each country's
-own average is removed, and the relationship inside Greece alone. On three of
-the four, Greece is <em>stronger</em> than the European pattern &mdash; 0.92 on
-unexpected expenses, 0.94 on deprivation, 0.87 on heating. When Greek reported
-difficulty moves, these move with it.</p>
+<p>The first view is Greece alone, year by year. Each panel draws reported
+hardship and one affordability measure as distances from their own averages, so
+two series measured on different scales can share an axis. Three of them move
+with hardship closely: unexpected expenses at 0.92, deprivation at 0.94,
+inadequate heating at 0.87.</p>
 
-<p>Arrears are the exception, and it is a sharp one: 0.37 inside Greece against
-0.80 across Europe. Arrears require having credit and obligations to fall behind
-on, so a household that lost access to credit years ago, or never had it, can be
-in serious difficulty without ever registering. The item most often treated as
-the hard, factual anchor of financial distress is the one that tracks Greek
-hardship least closely.</p>
+<p>Falling behind on bills is the exception, and a sharp one: 0.37. Arrears
+require having credit and obligations to fall behind on, so a household that
+lost access to credit years ago, or never had it, can be in serious difficulty
+without ever registering. The item most often treated as the hard, factual
+anchor of financial distress is the one that tracks Greek hardship least
+closely.</p>
 
-{fig('F20')}
-
-<p>The European figure could in principle come from a handful of countries
-rather than a general pattern. It does not: the relationship is positive in at
-least 23 of 27 member states for every one of the four measures, with median
-country-level correlations between 0.81 and 0.91. Greece sits at the top of
-three of those distributions and near the bottom of the arrears one.</p>
+<p>The second view asks whether this is a Greek peculiarity. It is not. Each
+point there groups country-years in which a measure sat similarly above or
+below that country's own normal level, across all twenty-seven member states,
+and the relationship holds at 0.63 to 0.80.</p>
 
 {claim('V2-3.1')}
 
@@ -894,6 +891,8 @@ that the underlying items do not have.</p>
 
 <p>A stronger version of the same check asks how much of Greece's anomaly these
 items can statistically absorb.</p>
+
+{fig('F20')}
 
 {claim('V2-3.2')}
 

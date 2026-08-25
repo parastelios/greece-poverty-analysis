@@ -201,87 +201,140 @@ FIGS["F7"] = dict(
         "because the underlying gaps are measured in percentage points, index "
         "points and PPS per head and cannot share an axis."))
 
-# ---- F8: the correlation summary -----------------------------------------
-# This was 1,078 points across four scatter panels. The message is simple --
-# reported hardship moves with concrete affordability difficulty, in Europe and
-# in Greece, except for arrears -- and a dense diagnostic plot was the wrong
-# instrument for a simple message. Two dots per item say it directly. The raw
-# clouds remain available in the statistical appendix.
+# ---- F8: the movement itself --------------------------------------------
+# Two earlier attempts failed for the same reason: they showed STATISTICS about
+# a relationship rather than the relationship. A dumbbell comparing a pooled
+# European correlation with a Greece-only one asked the reader to hold two
+# different estimands in mind, and drew a line between them that implied a
+# change. This shows the quantities moving.
 ITEMS = [("unexpected_expenses", "Cannot meet an unexpected expense"),
          ("severe_mat_soc_deprivation", "Material deprivation"),
          ("arrears", "Arrears on bills"),
          ("warm", "Cannot keep the home warm")]
 
-rows8, f8 = [], ce.Series(["EU, within countries", "Greece only"], dp=2)
-strips8, f8b = [], ce.Series(["Countries", "Median", "Greece", "Positive in"], dp=2)
+el = panel[panel.geo == "EL"].dropna(subset=["subjective_poverty"]).sort_values("time")
+el_years = [int(y) for y in el.time]
+hard_dev = [round(float(v - el.subjective_poverty.mean()), 1)
+            for v in el.subjective_poverty]
+
+panels_gr, f8 = [], ce.Series(["Greece correlation", "Years"], dp=2)
+for col, label in ITEMS:
+    sub = el.dropna(subset=[col])
+    if len(sub) < 6:
+        continue
+    r = float(sub.subjective_poverty.corr(sub[col]))
+    m = float(sub[col].mean())
+    f8.add(label, [r, float(len(sub))])
+    panels_gr.append({
+        "label": label, "r": round(r, 3),
+        "x": [int(y) for y in sub.time],
+        "xLabel": "",
+        "series": [
+            {"label": "hardship", "tone": "chart-gr",
+             "values": [round(float(v - sub.subjective_poverty.mean()), 1)
+                        for v in sub.subjective_poverty]},
+            {"label": "this item", "tone": "chart-s3",
+             "values": [round(float(v - m), 1) for v in sub[col]]}]})
+
+# The European relationship, binned so it can be seen rather than inferred.
+panels_eu, f8b = [], ce.Series(["Bins", "Country-years", "Pooled correlation"], dp=2)
 for col, label in ITEMS:
     d = panel.dropna(subset=[col, "subjective_poverty"]).copy()
     for c in [col, "subjective_poverty"]:
         d[c + "_w"] = d[c] - d.groupby("geo")[c].transform("mean")
-    pooled = float(d["subjective_poverty_w"].corr(d[col + "_w"]))
-    per = {g: float(s[col].corr(s.subjective_poverty))
-           for g, s in d.groupby("geo") if len(s) >= 6}
-    el_r = per.get("EL", float("nan"))
-    weak = el_r < pooled - 0.2
-    f8.add(label, [pooled, el_r])
-    rows8.append({
-        "label": label, "a": round(pooled, 3), "b": round(el_r, 3),
-        "tone": "warn" if weak else "chart-neutral", "strong": weak,
-        "right": "weak in Greece" if weak else "",
-        "detail": (f"<b>{label}</b><br>across the EU, within countries: "
-                   f"<b>{pooled:.2f}</b><br>within Greece: <b>{el_r:.2f}</b>"
-                   + ("<br>the exception: Greek arrears track reported hardship "
-                      "far less closely than the European pattern" if weak else ""))})
-    vals = sorted(per.values())
-    med = vals[len(vals) // 2]
-    f8b.add(label, [float(len(vals)), med, el_r,
-                    float(sum(1 for v in vals if v > 0))])
-    strips8.append({
-        # No direction marker: these are correlations, and neither end is
-        # "worse". Bounded at the values a correlation can actually take.
-        "label": label, "unit": "", "dp": 2, "median": round(med, 3),
-        "min": -1.0, "max": 1.0,
-        "points": [{"name": NAMES.get(g, g), "value": round(v, 3),
-                    "highlight": g == "EL"} for g, v in per.items()]})
+    r = float(d["subjective_poverty_w"].corr(d[col + "_w"]))
+    d["_bin"] = pd.qcut(d[col + "_w"], 9, labels=False, duplicates="drop")
+    b = d.groupby("_bin").agg(x=(col + "_w", "mean"),
+                              y=("subjective_poverty_w", "mean")).reset_index()
+    sxx = ((b.x - b.x.mean()) ** 2).sum()
+    b1 = (((b.x - b.x.mean()) * (b.y - b.y.mean())).sum() / sxx) if sxx else 0.0
+    f8b.add(label, [float(len(b)), float(len(d)), r])
+    panels_eu.append({
+        "label": label, "r": round(r, 3),
+        "xLabel": "item, vs country's own average",
+        "points": [{"x": round(float(x), 2), "y": round(float(y), 2)}
+                   for x, y in zip(b.x, b.y)],
+        "fit": {"b1": round(b1, 4),
+                "b0": round(float(b.y.mean() - b1 * b.x.mean()), 4)}})
 
 FIGS["F8"] = dict(
-    caption="Reported hardship tracks concrete affordability difficulties "
-            "across Europe and within Greece",
-    kind="dumbbell",
-    payload={"rows": rows8, "dp": 2,
-             "toneA": "chart-eu", "toneB": "chart-gr",
-             "legendA": "across the EU, within countries",
-             "legendB": "within Greece",
-             "zeroLabel": "no relationship",
-             "xLabel": "correlation with reported hardship",
-             "alt": "Four affordability measures, each with its European "
-                    "within-country correlation and its Greece-only "
-                    "correlation. Greece is higher on three and much lower on "
-                    "arrears"},
+    caption="In Greece three concrete affordability problems move closely with "
+            "reported hardship; falling behind on bills does not",
+    kind="multiples",
+    payload={"panels": panels_gr,
+             "yLabel": "Percentage points from each series' own 2015-2024 average",
+             "alt": "Four panels, one per affordability measure, each showing "
+                    "Greek reported hardship and that measure as deviations "
+                    "from their own averages. Three track closely; arrears do "
+                    "not"},
     series=f8, first="Measure",
+    views=[("In Greece, year by year",
+            {"panels": panels_gr,
+             "yLabel": "Percentage points from each series' own average",
+             "alt": "Greek reported hardship and each affordability measure as "
+                    "deviations from their own averages"}, "multiples"),
+           ("Across Europe, binned",
+            {"panels": panels_eu,
+             "yLabel": "Reported hardship, vs country's own average",
+             "alt": "Binned averages of country-years, each point grouping "
+                    "country-years where the measure was similarly above or "
+                    "below that country's normal level"}, "multiples")],
+    view_series=[f8, f8b],
     extra_caveat=(
-        "Falling behind on bills is the exception: within Greece it tracks "
-        "reported hardship at 0.37 against a European figure of 0.80. A "
-        "household that has already lost access to credit can be in serious "
-        "difficulty without ever falling behind on a bill."))
+        "Both series in the first view are drawn as distances from their own "
+        "2015-2024 average, so they share an axis without one dwarfing the "
+        "other; the shapes may be compared, the levels may not. In the second "
+        "view each point groups country-years in which an affordability "
+        "problem was similarly above or below that country's normal level, and "
+        "the raw observations are in the statistical appendix. Same-survey "
+        "corroboration throughout: not independent validation, and not causal "
+        "evidence."))
 
-# The detail view: is the European figure a broad pattern or a few countries?
+# ---- F20: what the four items absorb -------------------------------------
+# The country-correlation strip that stood here repeated the previous figure in
+# another statistical layer. This carries the next substantive result instead:
+# the four items take most of Greece's unexplained excess with them, and cannot
+# be treated as an explanation because they share the outcome's instrument.
+_res = pd.read_csv(PROC / "e3_restatement.csv").iloc[0]
+_base = float(_res.greece_resid_baseline)
+_with = float(_res.greece_resid_with_p1)
+f20 = ce.Series(["Before", "After", "Absorbed"], dp=2)
+f20.add("Greece's unexplained hardship", [_base, _with, _base - _with])
+f20.add("How much the model explains (R2 x 100)",
+        [float(_res.r2_baseline) * 100, float(_res.r2_with_p1) * 100,
+         (float(_res.r2_with_p1) - float(_res.r2_baseline)) * 100])
+
 FIGS["F20"] = dict(
-    caption="The relationship holds in almost every member state, not just on "
-            "average",
-    kind="strip",
-    payload={"strips": strips8,
-             "xLabel": "each country's own correlation with reported hardship",
-             "alt": "One dot per country per measure, showing each country's "
-                    "own correlation between reported hardship and that "
-                    "affordability measure, with the median marked and Greece "
-                    "highlighted"},
-    series=f8b, first="Measure",
+    caption="The four items take most of Greece's unexplained hardship with "
+            "them, but they come from the same survey",
+    kind="dumbbell",
+    payload={"rows": [
+        {"label": "Greece's unexplained hardship",
+         "a": round(_base, 1), "b": round(_with, 1),
+         "tone": "chart-warn", "strong": True,
+         "right": f"{(1 - _with / _base) * 100:.0f}% absorbed",
+         "detail": (f"before: <b>+{_base:.2f}</b> percentage points more "
+                    f"hardship than the model predicts<br>after adding the four "
+                    f"items: <b>+{_with:.2f}</b><br>the gap does not disappear, "
+                    f"it stops being statistically distinguishable"
+                    f"<br><span style='opacity:.65'>the share of variation the "
+                    f"model accounts for rises from "
+                    f"{float(_res.r2_baseline) * 100:.0f}% to "
+                    f"{float(_res.r2_with_p1) * 100:.0f}% across "
+                    f"{int(_res.n)} country-years</span>")}],
+        "dp": 1, "toneA": "chart-eu", "toneB": "chart-gr",
+        "legendA": "without the four items", "legendB": "with them",
+        "xLabel": "percentage points of reported hardship",
+        "alt": "Greece's unexplained hardship falls from +46.9 to +13.7 "
+               "percentage points when the four affordability items enter the "
+               "model"},
+    series=f20, first="Quantity",
     extra_caveat=(
-        "The two numbers are not expected to match, and neither is wrong: "
-        "pooling mixes countries with unequal variation. What this view "
-        "answers is whether the pattern is widespread or driven by a few "
-        "countries."))
+        "These four items are answered by the same households in the same "
+        "interview as the outcome, so part of what they absorb is the "
+        "interview rather than the world. The residual does not disappear: it "
+        "stops being statistically distinguishable, which is a fact about "
+        "shared variance and not about cause."))
 
 # ---- F9 coefficient (as prototyped) --------------------------------------
 TONE9 = {"supported": "series-3", "inconclusive_under_available_power": "text-muted",

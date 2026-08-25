@@ -134,7 +134,8 @@ for path in TARGETS:
             xs = (len(d.get("years", [])) or len(d.get("rows", []))
                   or len(d.get("points", []))
                   or sum(len(s.get("points", [])) for s in d.get("strips", []))
-                  or sum(len(s.get("points", [])) for s in d.get("panels", [])))
+                  or sum(len(s.get("points", [])) or len(s.get("x", []))
+                         for s in d.get("panels", [])))
             # Each chart type names its numbers differently: series carry
             # "values", coefficient rows carry "est", ladder rows carry
             # "value". Missing one gave a false positive on the ladder.
@@ -152,6 +153,8 @@ for path in TARGETS:
             for s in d.get("panels", []):
                 vals.extend([pt["y"] for pt in s.get("points", [])
                              if pt.get("y") is not None])
+                for ln in s.get("series", []):
+                    vals.extend([v for v in ln.get("values", []) if v is not None])
             if xs < 2 and not d.get("rows"):
                 empty.append(f"{fid}/{lbl}: {xs} x-values")
             elif not vals:
@@ -288,11 +291,11 @@ for path in TARGETS:
             continue
         txt = htmlmod.unescape(re.sub(r"<[^>]+>", " ", cav.group(1)))
         sents = [s.strip().lower() for s in re.split(r"(?<=[.!?])\s+", txt)
-                 if len(s.strip()) > 45]
+                 if len(s.strip()) > 18]
         # near-duplicate: same opening eight words
         heads = {}
         for s in sents:
-            k = " ".join(s.split()[:8])
+            k = " ".join(s.split()[:8]) if len(s.split()) >= 8 else s
             if k in heads:
                 dupes.append(f"{fid}: caveat repeats \"{k}...\"")
             heads[k] = True

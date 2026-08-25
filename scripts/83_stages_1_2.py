@@ -52,73 +52,89 @@ for lbl, src, tone, style, weight in [
         ("Greece: income poverty", gr.arop, "series-3", "solid", "normal"),
         ("EU median: income poverty", med.arop, "series-3", "dashed", "light")]:
     f1.add(lbl, [float(src.get(y)) for y in yrs], tone=tone, style=style, weight=weight)
-# Two views, one per measure, built the same way so they can be read against
-# each other: every country faint, Greece solid, the EU median dashed, and the
-# OTHER measure's Greek line dashed in a second colour as the comparison. The
-# gap between the solid blue and the green dashed line is the subject of this
-# whole report, and it appears in both views from opposite sides.
-def _country_context(col):
-    out = []
-    for g, sub in panel.dropna(subset=[col]).groupby("geo"):
-        if g == "EL":
-            continue
-        s = sub.set_index("time")[col]
-        vals = [float(s.get(y)) if y in s.index and pd.notna(s.get(y)) else None
-                for y in yrs]
-        if sum(v is not None for v in vals) >= 2:
-            out.append({"label": NAMES.get(g, g), "values": vals})
-    return out
+# Two views answering two questions. The first is the gap over time. The
+# second asks whether income poverty accounts for it at all, by placing every
+# country on the two measures at once.
+ctx1 = []
+for g, sub in panel.groupby("geo"):
+    if g == "EL":
+        continue
+    s = sub.set_index("time").subjective_poverty
+    vals = [float(s.get(y)) if y in s.index and pd.notna(s.get(y)) else None
+            for y in yrs]
+    if sum(v is not None for v in vals) >= 2:
+        ctx1.append({"label": NAMES.get(g, g), "values": vals})
 
+# Only hardship is drawn for every country. Adding AROP as well would put more
+# than fifty background lines on one axis; the country spread of AROP is what
+# the second view is for.
+f1 = ce.Series([str(int(y)) for y in yrs], dp=1)
+f1.add("Greece: reported hardship", [float(gr.subjective_poverty.get(y)) for y in yrs],
+       tone="gr", style="solid", weight="strong")
+f1.add("EU median: reported hardship", [float(med.subjective_poverty.get(y)) for y in yrs],
+       tone="gr", style="dashed", weight="normal")
+f1.add("Greece: income poverty", [float(gr.arop.get(y)) for y in yrs],
+       tone="series-3", style="solid", weight="strong")
+f1.add("EU median: income poverty", [float(med.arop.get(y)) for y in yrs],
+       tone="series-3", style="dashed", weight="normal")
+v1a = {"years": [int(y) for y in yrs], "dp": 1, "yLabel": "% of households",
+       "context": ctx1,
+       "contextLabel": "Each other EU country: reported hardship",
+       "alt": "Greek reported hardship and income poverty against the EU median "
+              "of each, with every other country's hardship faint behind. The "
+              "distance between the blue and green Greek lines never closes",
+       "series": [{"label": l, "tone": m["tone"], "style": m["style"],
+                   "weight": m["weight"], "values": [round(v, 1) for v in vs]}
+                  for l, vs, m in f1.rows]}
 
-def _measure_view(col, label, other_col, other_label):
-    ser = ce.Series([str(int(y)) for y in yrs], dp=1)
-    ser.add(f"Greece: {label}", [float(gr[col].get(y)) for y in yrs],
-            tone="gr", style="solid", weight="strong")
-    ser.add(f"EU median: {label}", [float(med[col].get(y)) for y in yrs],
-            tone="gr", style="dashed", weight="normal")
-    ser.add(f"Greece: {other_label}", [float(gr[other_col].get(y)) for y in yrs],
-            tone="series-3", style="dashed", weight="normal")
-    view = {"years": [int(y) for y in yrs], "dp": 1, "yLabel": "% of households",
-            "context": _country_context(col),
-            "contextLabel": f"Each other EU country: {label}",
-            "alt": f"{label.capitalize()} for every EU country, with Greece and "
-                   f"the EU median marked and Greek {other_label} shown for "
-                   f"comparison",
-            "series": [{"label": l, "tone": m["tone"], "style": m["style"],
-                        "weight": m["weight"], "values": [round(v, 1) for v in vs]}
-                       for l, vs, m in ser.rows]}
-    return ser, view
+# One frame per year: pooling every country-year would recreate the
+# overplotting the affordability figure was redesigned to escape.
+both = panel.dropna(subset=["subjective_poverty", "arop"])
+sc_years = [int(y) for y in sorted(both.time.unique())
+            if both[both.time == y].geo.nunique() >= 25]
+frames = []
+for y in sc_years:
+    s = both[both.time == y]
+    pts = [{"x": round(float(r.arop), 1), "y": round(float(r.subjective_poverty), 1),
+            "label": NAMES.get(r.geo, r.geo), "highlight": r.geo == "EL"}
+           for r in s.itertuples()]
+    # A reference point, not an observed country: the median of each measure.
+    pts.append({"x": round(float(s.arop.median()), 1),
+                "y": round(float(s.subjective_poverty.median()), 1),
+                "label": "Median EU country", "reference": True})
+    frames.append({"label": str(y), "points": pts})
 
-
-f1, v1a = _measure_view("subjective_poverty", "reported hardship",
-                        "arop", "income poverty")
-f1b, v1b = _measure_view("arop", "income poverty",
-                         "subjective_poverty", "reported hardship")
-
-# One scale for both views. Each view otherwise fits its own data, and income
-# poverty spans a third of hardship's range: the axis would silently rescale
-# between tabs and the two charts would look comparable while sharing nothing.
-_all1 = [v for c in ("subjective_poverty", "arop")
-         for v in panel[c].dropna().tolist()]
-_lo1, _hi1 = min(_all1), max(_all1)
-_pad1 = (_hi1 - _lo1) * 0.06
-for _v in (v1a, v1b):
-    _v["yMin"] = max(0.0, round(_lo1 - _pad1, 1))
-    _v["yMax"] = round(_hi1 + _pad1, 1)
+_lastyr = sc_years[-1]
+_last = both[both.time == _lastyr]
+_lel = _last[_last.geo == "EL"].iloc[0]
+f1b = ce.Series(["Income poverty (%)", "Reported hardship (%)"], dp=1)
+for r in _last.sort_values("arop").itertuples():
+    f1b.add(NAMES.get(r.geo, r.geo), [float(r.arop), float(r.subjective_poverty)])
+v1b = {"frames": frames, "dp": 1,
+       "xLabel": "Income poverty, % of people",
+       "yLabel": "Reported hardship, % of households",
+       "fitExcludesHighlight": True,
+       "alt": f"Every EU country in {_lastyr} placed by income poverty and "
+              "reported hardship. Greece sits far above countries with similar "
+              "income poverty, and the cross-country relationship is only "
+              "moderately positive",
+       "points": frames[-1]["points"]}
 
 FIGS["F1"] = dict(
-    caption="Reported hardship and income poverty remain far apart, despite "
-            "some narrowing",
+    caption="Income poverty does not account for the hardship Greek households "
+            "report",
     kind="panel", series=f1, payload=v1a,
-    views=[("Reported hardship across the EU", v1a),
-           ("Income poverty across the EU", v1b)],
+    views=[("How Greece's hardship gap developed", v1a),
+           ("Hardship against income poverty", v1b, "scatter")],
     view_series=[f1, f1b],
     extra_caveat=(
-        "Both views are built the same way, one per measure: every country "
-        "faint, Greece solid, the EU median dashed, and the other measure's "
-        "Greek line dashed in green. The distance between the blue and green "
-        "Greek lines is the same distance in both views, seen from either "
-        "side."),
+        "In the second view the dashed line is fitted to the other 26 countries, "
+        "EXCLUDING Greece, so it describes the European pattern Greece is being "
+        "judged against rather than one Greece helped set. The square is not a "
+        "country: it is the median of each measure taken separately. Income "
+        "poverty counts PEOPLE and reported hardship is answered by HOUSEHOLDS, "
+        "and this is a country-level comparison that says nothing about any "
+        "individual household."),
     first="Series")
 
 # ---- F2 ladder -----------------------------------------------------------

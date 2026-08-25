@@ -418,7 +418,7 @@ whether closely related deprivation measures are admitted.</p>
 <p>Nothing in that table is new. Every row points at a result reached in an
 earlier stage, and this section introduces no estimate and no interpretation
 that was not already established and bounded where it was produced.</p>
-<footer class="stamp">Built 2026-08-25 10:30 from commit <code>d9eb1bd</code> + uncommitted changes. If this does not match the current commit, the page is stale &mdash; reopen the file rather than refreshing.</footer>
+<footer class="stamp">Built 2026-08-25 10:46 from commit <code>6edcc71</code> + uncommitted changes. If this does not match the current commit, the page is stale &mdash; reopen the file rather than refreshing.</footer>
 <script>
 (function(){
   const NS='http://www.w3.org/2000/svg';
@@ -830,9 +830,15 @@ that was not already established and bounded where it was produced.</p>
       'aria-label':d.alt||'small multiples'});
     d.panels.forEach((p,i)=>{
       const cx=(i%cols)*(cw+gapX), cy=Math.floor(i/cols)*(ch+gapY);
-      const padL=42,padR=8,padT=20,padB=24;
+      const isLines=!!p.series;
+      const padL=44,padR=isLines?86:12,padT=22,padB=26;
       const pw=cw-padL-padR, ph=ch-padT-padB;
-      const xs2=p.points.map(q=>q.x), ys2=p.points.map(q=>q.y);
+      // A panel is either a cloud of points or a set of lines over a shared
+      // x. Lines are what show two quantities MOVING together, which a
+      // correlation states and a scatter only implies.
+      const xs2=isLines?p.x:p.points.map(q=>q.x);
+      const ys2=isLines?p.series.flatMap(s=>s.values.filter(v=>v!=null))
+                       :p.points.map(q=>q.y);
       const xlo=Math.min(...xs2),xhi=Math.max(...xs2);
       const ylo=Math.min(...ys2),yhi=Math.max(...ys2);
       const X=v=>cx+padL+(v-xlo)/((xhi-xlo)||1)*pw;
@@ -842,19 +848,56 @@ that was not already established and bounded where it was produced.</p>
       svg.appendChild(ttl);
       // Each panel names its item and its within-country correlation, so the
       // number travels with the picture instead of sitting in a caption.
-      ttl.textContent=`${p.label}   r = ${fmt(p.r,2)}`;
+      ttl.textContent=p.r==null?p.label:`${p.label}   r = ${fmt(p.r,2)}`;
       // Zero lines: these are deviations from a country mean, so the origin is
       // the country's own average and quadrants carry meaning.
       if(xlo<0&&xhi>0)svg.appendChild(el('line',{x1:X(0),x2:X(0),y1:cy+padT,
         y2:cy+padT+ph,class:'gridline'}));
       if(ylo<0&&yhi>0)svg.appendChild(el('line',{x1:cx+padL,x2:cx+padL+pw,
         y1:Y(0),y2:Y(0),class:'gridline'}));
-      p.points.forEach(q=>{
-        const hl=!!q.highlight;
-        svg.appendChild(el('circle',{cx:X(q.x),cy:Y(q.y),r:hl?3:1.9,
-          fill:hl?'var(--chart-gr)':'var(--chart-neutral)',
-          opacity:hl?0.95:0.34}));
-      });
+      if(isLines){
+        p.series.forEach(s=>{
+          let dd='',pen=false;
+          s.values.forEach((v,k)=>{if(v==null){pen=false;return;}
+            dd+=(pen?' L ':' M ')+X(p.x[k])+','+Y(v);pen=true;});
+          if(dd)svg.appendChild(el('path',{d:dd,fill:'none',
+            stroke:toneVar(s.tone),'stroke-width':2.2}));
+          // Direct labels: a four-panel figure with a shared legend makes the
+          // reader carry the key between panels.
+          const li=(()=>{for(let k=s.values.length-1;k>=0;k--)
+            if(s.values[k]!=null)return k;return -1;})();
+          if(li>=0){
+            let ly=Y(s.values[li])+3;
+            // Two labels on one pixel row read as one. Separate them.
+            (p._lys=p._lys||[]).forEach(prev=>{
+              if(Math.abs(ly-prev)<11)ly=prev+12;});
+            p._lys.push(ly);
+            const lt=el('text',{x:X(p.x[li])+5,y:ly,class:'axis-label',
+              style:`font-weight:700;fill:${toneVar(s.tone)}`});
+            lt.textContent=s.label||'';svg.appendChild(lt);}
+        });
+      } else {
+        p.points.forEach(q=>{
+          const hl=!!q.highlight;
+          svg.appendChild(el('circle',{cx:X(q.x),cy:Y(q.y),r:hl?4:2.6,
+            fill:hl?'var(--chart-gr)':'var(--chart-neutral)',
+            stroke:hl?'none':'var(--chart-neutral-edge)','stroke-width':hl?0:1,
+            opacity:hl?0.95:0.85}));
+        });
+        // A fitted line, where the panel asks about a relationship.
+        if(p.fit){
+          svg.appendChild(el('line',{x1:X(xlo),y1:Y(p.fit.b0+p.fit.b1*xlo),
+            x2:X(xhi),y2:Y(p.fit.b0+p.fit.b1*xhi),
+            stroke:'var(--chart-eu)','stroke-width':1.8,
+            'stroke-dasharray':'5 3',opacity:.9}));
+        }
+      }
+      if(isLines&&p.x&&p.x.length>1){
+        [p.x[0],p.x[p.x.length-1]].forEach((v,k)=>{
+          const xt=el('text',{x:X(v),y:cy+ch-6,
+            'text-anchor':k?'end':'start',class:'axis-label',style:'opacity:.85'});
+          xt.textContent=v;svg.appendChild(xt);});
+      }
       const xl=el('text',{x:cx+padL+pw/2,y:cy+ch-4,'text-anchor':'middle',
         class:'axis-label',style:'opacity:.8'});
       xl.textContent=p.xLabel||'';svg.appendChild(xl);
@@ -1144,11 +1187,34 @@ that was not already established and bounded where it was produced.</p>
   /* Country-years as points. Used with country means removed, so the cloud
      shows co-movement WITHIN countries rather than differences between them. */
   function scatter(host,d){
+    // Frames: {label, points} per year. The selector picks one; the axes are
+    // fixed across all frames so switching year moves the points and not the
+    // scale, which is the only way years can be compared by eye.
+    if(d.frames&&d.frames.length){
+      let idx=d.frames.length-1;
+      const bar=document.createElement('div');bar.className='viewbar';
+      const draw=()=>{
+        host.querySelectorAll(':scope > svg, :scope > .legend').forEach(x=>x.remove());
+        const all=d.frames.flatMap(f=>f.points);
+        scatter(host,Object.assign({},d,{frames:null,points:d.frames[idx].points,
+          fixedFrom:all,frameLabel:d.frames[idx].label}));
+        [...bar.children].forEach((b,i)=>
+          b.setAttribute('aria-selected',i===idx?'true':'false'));
+      };
+      d.frames.forEach((f,i)=>{
+        const b=document.createElement('button');b.className='viewbtn';
+        b.type='button';b.textContent=f.label;
+        b.addEventListener('click',()=>{idx=i;draw();});
+        bar.appendChild(b);});
+      host.appendChild(bar);draw();return;
+    }
     const W=widthFor(host), H=Math.round(W*0.62);
     const padL=56,padR=18,padT=16,padB=46;
     const pw=W-padL-padR, ph=H-padT-padB;
+    const scope=d.fixedFrom||d.points;
     const xs_=d.points.map(p=>p.x), ys_=d.points.map(p=>p.y);
-    const xlo=Math.min(...xs_),xhi=Math.max(...xs_),ylo=Math.min(...ys_),yhi=Math.max(...ys_);
+    const sx_=scope.map(p=>p.x), sy_=scope.map(p=>p.y);
+    const xlo=Math.min(...sx_),xhi=Math.max(...sx_),ylo=Math.min(...sy_),yhi=Math.max(...sy_);
     const px=(xhi-xlo)*0.06||1, py=(yhi-ylo)*0.06||1;
     const xs=v=>padL+(v-(xlo-px))/((xhi+px)-(xlo-px))*pw;
     const ys=v=>padT+ph-(v-(ylo-py))/((yhi+py)-(ylo-py))*ph;
@@ -1164,16 +1230,34 @@ that was not already established and bounded where it was produced.</p>
     if(xlo<0&&xhi>0)svg.appendChild(el('line',{x1:xs(0),x2:xs(0),y1:padT,y2:padT+ph,class:'zero-line'}));
     if(ylo<0&&yhi>0)svg.appendChild(el('line',{x1:padL,x2:W-padR,y1:ys(0),y2:ys(0),class:'zero-line'}));
     // least-squares line, drawn because the figure is about co-movement
-    const n=d.points.length,mx=xs_.reduce((a,b)=>a+b,0)/n,my=ys_.reduce((a,b)=>a+b,0)/n;
-    let sxy=0,sxx=0;d.points.forEach(p=>{sxy+=(p.x-mx)*(p.y-my);sxx+=(p.x-mx)**2;});
+    const fitPts=d.fitExcludesHighlight?d.points.filter(p=>!p.highlight&&!p.reference)
+                                        :d.points.filter(p=>!p.reference);
+    const n=fitPts.length||1;
+    const mx=fitPts.reduce((a,b)=>a+b.x,0)/n,my=fitPts.reduce((a,b)=>a+b.y,0)/n;
+    let sxy=0,sxx=0;fitPts.forEach(p=>{sxy+=(p.x-mx)*(p.y-my);sxx+=(p.x-mx)**2;});
     if(sxx>0){const b1=sxy/sxx,b0=my-b1*mx;
       svg.appendChild(el('line',{x1:xs(xlo-px),y1:ys(b0+b1*(xlo-px)),
         x2:xs(xhi+px),y2:ys(b0+b1*(xhi+px)),stroke:'var(--text-secondary)',
         'stroke-width':1.6,'stroke-dasharray':'5 3',opacity:.8}));}
     const marks=[];
-    d.points.forEach(p=>{const c=el('circle',{cx:xs(p.x),cy:ys(p.y),
-      r:p.highlight?4.5:2.8,fill:`var(--${p.highlight?'gr':'text-muted'})`,
-      opacity:p.highlight?1:.45});svg.appendChild(c);marks.push({x:xs(p.x),y:ys(p.y),p:p});});
+    d.points.forEach(p=>{
+      const c=p.reference
+        ? el('rect',{x:xs(p.x)-4.5,y:ys(p.y)-4.5,width:9,height:9,
+            fill:'none',stroke:'var(--chart-eu)','stroke-width':2})
+        : el('circle',{cx:xs(p.x),cy:ys(p.y),r:p.highlight?5.5:3,
+            fill:toneVar(p.highlight?'gr':'chart-neutral'),
+            stroke:p.highlight?'none':'var(--chart-neutral-edge)',
+            'stroke-width':p.highlight?0:1,opacity:p.highlight?1:.6});
+      svg.appendChild(c);marks.push({x:xs(p.x),y:ys(p.y),p:p});});
+    // Name the highlighted case and the reference on the chart itself.
+    d.points.filter(p=>p.highlight||p.reference).forEach(p=>{
+      const lb=el('text',{x:xs(p.x)+9,y:ys(p.y)+4,class:'axis-label',
+        style:`font-weight:700;fill:${p.reference?'var(--chart-eu)':'var(--chart-gr)'}`});
+      lb.textContent=p.label||'';svg.appendChild(lb);});
+    if(d.frameLabel){
+      const fl=el('text',{x:W-padR,y:padT+12,'text-anchor':'end',
+        class:'axis-label',style:'font-weight:700;opacity:.9'});
+      fl.textContent=d.frameLabel;svg.appendChild(fl);}
     const xt=el('text',{x:padL+pw/2,y:H-10,'text-anchor':'middle',class:'axis-label'});
     xt.textContent=d.xLabel||'';svg.appendChild(xt);
     const yt=el('text',{x:14,y:padT+ph/2,class:'axis-label','text-anchor':'middle',
