@@ -478,6 +478,94 @@ for path in TARGETS:
           "@media print" in raw and ".chart-live{display:none}" in raw.replace(" ", ""))
 
 # ---------------------------------------------------------------------------
+# GATE: NO POSITIONAL FIGURE REFERENCES.
+#
+# Prose that says "the figure below" or "Figure 7" is correct until the next
+# reshuffle and then silently wrong: figures are numbered AT PLACEMENT, so
+# moving one renumbers everything after it and no existing check can see the
+# break. Claims and context are anchored by container and survive; sentences
+# pointing at a position do not. Reference figures by what they show.
+# ---------------------------------------------------------------------------
+# Positional PHRASES are banned everywhere: they name a position, and a
+# position is not a fact about the figure.
+#
+# A numbered reference is different. In the report and the narrative it is
+# banned too, because neither builds one deliberately. The paper needs them --
+# academic convention -- and builds them from {fig:Fxx} tokens resolved against
+# its own placement map, with 90_build_paper.py refusing to build if a number
+# was typed instead. So numbers are checked at their source, not here, where a
+# typed number and a resolved one are the same characters.
+_POSITIONAL = [
+    r"\bthe (?:figure|chart|plot|panel) (?:below|above)\b",
+    r"\bthe (?:next|previous|preceding|following) (?:figure|chart)\b",
+    r"\b(?:as )?(?:shown|seen) (?:below|above)\b",
+]
+_NUMBERED = r"\b(?:figure|fig\.)\s+\d+\b"
+
+
+def positional_hits(text, patterns=None):
+    """Prose-only: the figure's own caption legitimately carries its number."""
+    body = re.sub(r'<figcaption.*?</figcaption>', " ", text, flags=re.S)
+    body = re.sub(r'<script.*?</script>', " ", body, flags=re.S)
+    body = re.sub(r'<style.*?</style>', " ", body, flags=re.S)
+    body = re.sub(r'<table.*?</table>', " ", body, flags=re.S)
+    body = re.sub(r"<[^>]+>", " ", body)
+    body = htmlmod.unescape(body)
+    hits = []
+    for pat in (patterns or _POSITIONAL):
+        for m in re.finditer(pat, body, re.I):
+            s = max(0, m.start() - 45)
+            hits.append(" ".join(body[s:m.end() + 25].split()))
+    return hits
+
+
+# ---------------------------------------------------------------------------
+# GATE: CLAIMS ABOUT THE APPENDIX MUST BE TRUE OF THE APPENDIX.
+#
+# A caveat saying "the full matrix is not shown anywhere" was true when written
+# and false once the appendix gained figures. That has now happened three
+# times. Two rules:
+#
+#   1. Negative-existence claims are banned outright. "Not shown anywhere" is a
+#      statement about every other document in the project and cannot be kept
+#      true by anyone editing one of them.
+#   2. A positive claim that the appendix carries something is checked against
+#      the appendix's actual text.
+# ---------------------------------------------------------------------------
+_NEGATIVE_EXISTENCE = [
+    r"not shown anywhere", r"shown nowhere", r"appears nowhere",
+    r"is not shown in (?:the )?(?:appendix|report)",
+    r"nowhere in (?:the )?(?:appendix|report)",
+    r"not (?:available|reproduced) anywhere",
+]
+
+
+def appendix_claims(report_text, appendix_text):
+    """Return (banned, unsupported) claims made about the appendix."""
+    cavs = re.findall(r'<p class="fig-caveat">(.*?)</p>', report_text, re.S)
+    cavs = [htmlmod.unescape(re.sub(r"<[^>]+>", " ", c)) for c in cavs]
+    banned, unsupported = [], []
+    app = htmlmod.unescape(re.sub(r"<[^>]+>", " ", appendix_text)).lower()
+    for c in cavs:
+        flat = " ".join(c.split())
+        for pat in _NEGATIVE_EXISTENCE:
+            if re.search(pat, flat, re.I):
+                banned.append(flat[:110])
+        # A sentence naming the appendix asserts something about it. Check the
+        # distinctive tokens in that sentence -- the ones a reader would use to
+        # find the thing -- actually occur there.
+        for sent in re.split(r"(?<=[.;]) ", flat):
+            if "appendix" not in sent.lower():
+                continue
+            toks = set(re.findall(r"\b\d+-variable\b|\b\d+ tables?\b|"
+                                  r"\b\d+ figures?\b", sent.lower()))
+            missing = [tk for tk in toks if tk not in app]
+            if missing:
+                unsupported.append(f"{sent[:90]} -> {missing}")
+    return banned, unsupported
+
+
+# ---------------------------------------------------------------------------
 # THE APPENDIX MUST BE A SUPERSET. Every figure the report carries has to
 # appear in the appendix with the SAME payload, so a reader sent there to check
 # a number finds the same object rather than a similar one. Hashed, not counted.
@@ -496,7 +584,27 @@ if _rep.exists() and _app.exists():
             out[m.group(1)] = hashlib.sha256("".join(pls).encode()).hexdigest()[:12]
         return out
 
-    _r, _a = _fig_hashes(_rep.read_text()), _fig_hashes(_app.read_text())
+    # The two cross-document gates run over the published documents, so they
+    # see what a reader sees rather than what a builder intended.
+    _rt, _at = _rep.read_text(), _app.read_text()
+    _pos = []
+    for _doc in ("v2_report.html", "academic_paper.html", "narrative.html"):
+        _f = ROOT / "output" / _doc
+        if _f.exists():
+            _pos += [f"{_doc}: {h}" for h in positional_hits(_f.read_text())]
+            if _doc != "academic_paper.html":
+                _pos += [f"{_doc}: {h}"
+                         for h in positional_hits(_f.read_text(), [_NUMBERED])]
+    check("no positional figure references in prose",
+          not _pos, "; ".join(sorted(set(_pos))[:4]))
+
+    _banned, _unsup = appendix_claims(_rt, _at)
+    check("no caveat makes a negative-existence claim about other documents",
+          not _banned, "; ".join(_banned[:3]))
+    check("claims a caveat makes about the appendix hold in the appendix",
+          not _unsup, "; ".join(_unsup[:3]))
+
+    _r, _a = _fig_hashes(_rt), _fig_hashes(_at)
     _gap = [k for k in _r if k not in _a]
     _diff = [k for k in _r if k in _a and _r[k] != _a[k]]
     print(f"\nappendix superset: {len(_r)} report figures, {len(_a)} in appendix")

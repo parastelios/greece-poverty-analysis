@@ -1722,8 +1722,9 @@ effective support may experience the same material circumstances as more
 threatening, and report accordingly. The pattern within Greece is uneven, which
 matters for that reading: the institutions a household would actually turn to
 for support are not the ones Greeks trust most.</p>
-<p>This project ran no test on trust. What the figure below shows is read
-directly from the OECD's own country note for Greece, and it is more
+<p>This project ran no test on trust. What the OECD's own country note for
+Greece reports &mdash; charted in the statistical appendix under contextual
+evidence &mdash; is more
 interesting than a single comparison: Greek trust is not uniformly low. Greeks
 report more trust in the police and the courts than in any elected or political
 institution, and political parties sit at the bottom at 17%. Central government,

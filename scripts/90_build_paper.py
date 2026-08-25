@@ -84,6 +84,13 @@ if PAPER_FIGS != _FROZEN if "PAPER_FIGS" in dir() else NARRATIVE_FIGS != _FROZEN
         "the paper figure selection changed; update _FROZEN deliberately")
 
 _used = []
+# id -> the number it was actually given at placement. Prose references are
+# written as {fig:F3} and resolved from this, so a reference cannot name a
+# figure it does not mean. Two references were already wrong before this
+# existed: inserting the breadth figure as Figure 2 shifted everything after
+# it, and "Figure 3 compares the relative threshold" came to point at the AROPE
+# decomposition while the threshold figure had become Figure 4.
+_number = {}
 
 
 # Figures whose views must all be visible at once here rather than sitting
@@ -106,6 +113,7 @@ def fig(fid, number):
     src = src.replace(
         "<figcaption>",
         f'<figcaption><span class="fignum">Figure {number}</span> ', 1)
+    _number[fid] = number
     if fid in STACKED:
         n = src.count('type="application/json"')
         if n < 2:
@@ -525,7 +533,7 @@ S5 = f"""
 
 <h3>5.1 The divergence</h3>
 
-<p>Figure 1 shows the two series for Greece. They do not converge over the
+<p>Figure {{fig:F1}} shows the two series for Greece. They do not converge over the
 observed period: reported hardship begins near 80% and remains above 60%
 throughout, while income poverty moves within a narrow band around 20%. The
 distance narrows somewhat after 2016, which we return to in Section 5.6, but
@@ -634,7 +642,7 @@ the threshold falls with it, and a household whose real income dropped sharply
 can remain above a line that dropped as sharply.</p>
 
 <p>Greek median equivalised income fell by roughly a third over the crisis. The
-poverty line, being a fixed fraction of it, fell in step. Figure 3 compares the
+poverty line, being a fixed fraction of it, fell in step. Figure {{fig:F3}} compares the
 relative threshold with one anchored to its 2008 real value.</p>
 
 {fig('F3', 4)}
@@ -726,7 +734,7 @@ predicts more, and worse wage-adjusted affordability predicts more. A construct
 whose coefficient had pointed the other way would have been recorded as
 contradicting its declared direction rather than reinterpreted.</p>
 
-<p>Figure 4 shows all nine as standardised effects, which is what makes them
+<p>Figure {{fig:F9}} shows all nine as standardised effects, which is what makes them
 comparable: the constructs are measured in percentages, purchasing power
 standards and index points, and raw coefficients could not share an axis.</p>
 
@@ -805,7 +813,7 @@ omitting it.</p>
 
 <p>The results in Section 6.3 are statements about differences between
 countries. Converting them into statements about change within Greece over time
-is not supported, and Figure 7 shows why.</p>
+is not supported, and Figure {{fig:F13}} shows why.</p>
 
 {fig('F13', 7)}
 
@@ -1334,7 +1342,46 @@ source data rather than transcribed.</p>
 </body></html>
 """
 
+def resolve_figrefs(doc):
+    """Replace every {fig:Fxx} with the number that figure was placed under."""
+    def sub(m):
+        fid = m.group(1)
+        if fid not in _number:
+            raise SystemExit(
+                f"prose references {fid}, which this paper does not place")
+        return str(_number[fid])
+    return re.sub(r"\{fig:(F\d+)\}", sub, doc)
+
+
+PAGE = resolve_figrefs(PAGE)
+
 # ---- checks ---------------------------------------------------------------
+# No hardcoded figure numbers may survive in prose: they are the defect the
+# token mechanism exists to prevent, and a typed number looks identical to a
+# resolved one once rendered.
+_body = re.sub(r"<figcaption.*?</figcaption>", " ", PAGE, flags=re.S)
+_body = re.sub(r"<(script|style|table).*?</\1>", " ", _body, flags=re.S)
+_stray = re.findall(r"\{fig:[^}]*\}", PAGE)
+if _stray:
+    raise SystemExit(f"unresolved figure references: {_stray}")
+
+# A typed number is indistinguishable from a resolved one in the output, so the
+# ban has to live here, over this file's own source.
+_src = Path(__file__).read_text()
+# Comments are not prose: the note explaining this very defect names the
+# numbers it broke, and tripped the check that note exists to justify.
+_src_prose = re.sub(r"^.*?PAPER_FIGS", "", _src, flags=re.S)
+_src_prose = "\n".join(l for l in _src_prose.splitlines()
+                       if not l.lstrip().startswith("#"))
+_typed = [" ".join(m.group(0).split())
+          for m in re.finditer(r".{0,40}\bFigure \d+\b.{0,25}", _src_prose)
+          if "{fig:" not in m.group(0) and "fignum" not in m.group(0)
+          and "Figure {number}" not in m.group(0)]
+if _typed:
+    raise SystemExit(
+        "figure numbers typed into prose instead of {fig:Fxx} tokens: "
+        + "; ".join(_typed[:3]))
+
 missing_f = [f for f in PAPER_FIGS if f not in _used]
 if missing_f:
     raise SystemExit(f"paper figures selected but not placed: {missing_f}")
