@@ -201,43 +201,87 @@ FIGS["F7"] = dict(
         "because the underlying gaps are measured in percentage points, index "
         "points and PPS per head and cannot share an axis."))
 
-# ---- F8 small multiples: same-instrument, country means removed -----------
-# These were four tabs. Switching between them made the comparison an act of
-# memory, when the comparison IS the finding: does reported difficulty move with
-# every kind of concrete failure, or only some? Side by side that reads at a
-# glance, and the correlation sits on each panel rather than in a caption.
-ITEMS = ["arrears", "unexpected_expenses", "warm", "severe_mat_soc_deprivation"]
-panels8, f8 = [], ce.Series(["Within-country r", "Country-years"], dp=3)
-for it in ITEMS:
-    d = panel.dropna(subset=[it, "subjective_poverty"]).copy()
-    for c in [it, "subjective_poverty"]:
+# ---- F8: the correlation summary -----------------------------------------
+# This was 1,078 points across four scatter panels. The message is simple --
+# reported hardship moves with concrete affordability difficulty, in Europe and
+# in Greece, except for arrears -- and a dense diagnostic plot was the wrong
+# instrument for a simple message. Two dots per item say it directly. The raw
+# clouds remain available in the statistical appendix.
+ITEMS = [("unexpected_expenses", "Cannot meet an unexpected expense"),
+         ("severe_mat_soc_deprivation", "Material deprivation"),
+         ("arrears", "Arrears on bills"),
+         ("warm", "Cannot keep the home warm")]
+
+rows8, f8 = [], ce.Series(["EU, within countries", "Greece only"], dp=2)
+strips8, f8b = [], ce.Series(["Countries", "Median", "Greece", "Positive in"], dp=2)
+for col, label in ITEMS:
+    d = panel.dropna(subset=[col, "subjective_poverty"]).copy()
+    for c in [col, "subjective_poverty"]:
         d[c + "_w"] = d[c] - d.groupby("geo")[c].transform("mean")
-    r = float(d["subjective_poverty_w"].corr(d[it + "_w"]))
-    f8.add(ce.name(it), [r, float(len(d))])
-    panels8.append({
-        "label": ce.name(it), "r": round(r, 3),
-        "xLabel": "deviation from country mean",
-        "points": [{"x": round(float(a), 2), "y": round(float(b), 2),
-                    "highlight": g == "EL"}
-                   for g, a, b in zip(d.geo, d[it + "_w"], d["subjective_poverty_w"])]})
+    pooled = float(d["subjective_poverty_w"].corr(d[col + "_w"]))
+    per = {g: float(s[col].corr(s.subjective_poverty))
+           for g, s in d.groupby("geo") if len(s) >= 6}
+    el_r = per.get("EL", float("nan"))
+    weak = el_r < pooled - 0.2
+    f8.add(label, [pooled, el_r])
+    rows8.append({
+        "label": label, "a": round(pooled, 3), "b": round(el_r, 3),
+        "tone": "warn" if weak else "chart-neutral", "strong": weak,
+        "right": "weak in Greece" if weak else "",
+        "detail": (f"<b>{label}</b><br>across the EU, within countries: "
+                   f"<b>{pooled:.2f}</b><br>within Greece: <b>{el_r:.2f}</b>"
+                   + ("<br>the exception: Greek arrears track reported hardship "
+                      "far less closely than the European pattern" if weak else ""))})
+    vals = sorted(per.values())
+    med = vals[len(vals) // 2]
+    f8b.add(label, [float(len(vals)), med, el_r,
+                    float(sum(1 for v in vals if v > 0))])
+    strips8.append({
+        # No direction marker: these are correlations, and neither end is
+        # "worse". Bounded at the values a correlation can actually take.
+        "label": label, "unit": "", "dp": 2, "median": round(med, 3),
+        "min": -1.0, "max": 1.0,
+        "points": [{"name": NAMES.get(g, g), "value": round(v, 3),
+                    "highlight": g == "EL"} for g, v in per.items()]})
 
 FIGS["F8"] = dict(
-    caption="When a country's reported difficulty moves, its concrete "
-            "affordability failures move with it",
-    kind="multiples",
-    payload={"panels": panels8,
-             "yLabel": "Reported hardship, deviation from country mean",
-             "alt": "Four panels, one per affordability item, each plotting "
-                    "reported hardship against that item with country means "
-                    "removed. Greek observations are marked in every panel"},
-    series=f8, first="Item",
+    caption="Reported hardship tracks concrete affordability difficulties "
+            "across Europe and within Greece",
+    kind="dumbbell",
+    payload={"rows": rows8, "dp": 2,
+             "toneA": "chart-eu", "toneB": "chart-gr",
+             "legendA": "across the EU, within countries",
+             "legendB": "within Greece",
+             "zeroLabel": "no relationship",
+             "xLabel": "correlation with reported hardship",
+             "alt": "Four affordability measures, each with its European "
+                    "within-country correlation and its Greece-only "
+                    "correlation. Greece is higher on three and much lower on "
+                    "arrears"},
+    series=f8, first="Measure",
     extra_caveat=(
-        "Country means are removed from BOTH axes, so each point is a country's "
-        "deviation from its own average rather than its level: this asks "
-        "whether the two move together within a country, not whether richer "
-        "countries score better on both. Greek observations are marked. Every "
-        "item and the outcome come from the same survey, so this is one "
-        "instrument agreeing with itself."))
+        "Falling behind on bills is the exception: within Greece it tracks "
+        "reported hardship at 0.37 against a European figure of 0.80. A "
+        "household that has already lost access to credit can be in serious "
+        "difficulty without ever falling behind on a bill."))
+
+# The detail view: is the European figure a broad pattern or a few countries?
+FIGS["F20"] = dict(
+    caption="The relationship holds in almost every member state, not just on "
+            "average",
+    kind="strip",
+    payload={"strips": strips8,
+             "xLabel": "each country's own correlation with reported hardship",
+             "alt": "One dot per country per measure, showing each country's "
+                    "own correlation between reported hardship and that "
+                    "affordability measure, with the median marked and Greece "
+                    "highlighted"},
+    series=f8b, first="Measure",
+    extra_caveat=(
+        "The two numbers are not expected to match, and neither is wrong: "
+        "pooling mixes countries with unequal variation. What this view "
+        "answers is whether the pattern is widespread or driven by a few "
+        "countries."))
 
 # ---- F9 coefficient (as prototyped) --------------------------------------
 TONE9 = {"supported": "series-3", "inconclusive_under_available_power": "text-muted",
@@ -383,6 +427,7 @@ was in the appendix engine but had not been carried across.</p>
 being explained is real. If Greeks simply describe their circumstances more
 darkly, there is no economic puzzle to solve.</p>
 {b['F8']}
+{b['F20']}
 <p>Once each country's own average is removed, reported difficulty co-moves with
 unpaid bills, an inability to meet an unexpected expense, inadequate heating and
 material deprivation. A reporting style unmoored from circumstance would not

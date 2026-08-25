@@ -118,18 +118,16 @@ M = [
                   "and diverging coloured separately",
       fallback="variable, gap 2015, gap 2024, shift, trend",
       caveat="", status_label="descriptive"),
- dict(id="F8", stage=3, chart_type="multiples",
+ dict(id="F8", stage=3, chart_type="dumbbell",
       question="Does reported difficulty move with concrete affordability "
-               "failure, or float free of it?",
+               "failure, in Europe and in Greece?",
       artifact="e0_extended_panel.csv",
-      series="four panels, one per affordability item, hardship against the "
-             "item with country means removed from both axes",
-      interaction="Greek observations marked in every panel; each panel carries "
-                  "its own within-country correlation",
-      fallback="item, within-country correlation, country-years",
-      # Kept short on the face of the figure; the reading caveat is added at
-      # build time and would otherwise be stated twice.
-      caveat="Same-instrument corroboration, not independent validation.",
+      series="four affordability measures, each with its European "
+             "within-country correlation and its Greece-only correlation",
+      interaction="hover reads both figures and flags the Greek exception",
+      fallback="measure, EU within-country correlation, Greece-only correlation",
+      caveat="Same-survey corroboration, not independent validation or causal "
+             "evidence.",
       status_label="descriptive corroboration"),
  dict(id="F9", stage=4, chart_type="coefficient",
       question="Which current-level constructs survive every pre-registered "
@@ -266,6 +264,19 @@ dict(id="F16", stage=7, chart_type="panel",
              "NOT select variables, and a reversal is a fact about the two "
              "scopes rather than evidence about mechanism.",
       status_label="descriptive"),
+ dict(id="F20", stage=3, chart_type="strip",
+      question="Is the European relationship a broad pattern, or driven by a "
+               "few countries?",
+      artifact="e0_extended_panel.csv",
+      series="one dot per country per measure: each country's own correlation "
+             "between reported hardship and that affordability measure",
+      interaction="hover names any country and its correlation; the median is "
+                  "marked and Greece highlighted",
+      fallback="measure, number of countries, median correlation, Greece, "
+               "number positive",
+      caveat="Each dot is one country's correlation across its own years, a "
+             "different quantity from the pooled European figure.",
+      status_label="descriptive corroboration"),
 ]
 
 # NARRATIVE OWNERSHIP. Every visual belongs to a claim or a context entry, and
@@ -290,7 +301,7 @@ OWNER = {
     "F16": ("CTX-4", "expandable"),
     "F17": ("CTX-2", "main"),
     "F18": ("V2-2.1", "expandable"),
-    "F19": ("V2-3.1", "expandable"),
+    "F19": ("V2-3.1", "expandable"), "F20": ("V2-3.1", "expandable"),
 }
 seen_ids = [e["id"] for e in M]
 if len(set(seen_ids)) != len(seen_ids):

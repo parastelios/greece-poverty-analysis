@@ -44,7 +44,7 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `p6-rewrite` |
-| HEAD | `1f48926` Rebuild the paradox figure as two symmetric measure views |
+| HEAD | `d9eb1bd` Fix the paired-comparison figure; distinguish resources from deprivation |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-25 |
 | Frozen V1 reference | `v1-final` |
@@ -3349,6 +3349,9 @@ Deviations must be disclosed in the stage that made them, not only here.
 | C-68 | 2026-08-23 | The threshold figure and the AROPE breakdown plotted the SAME chart | A view added to the threshold figure reproduced the AROPE breakdown's income-poverty view exactly: same series, same 26 context countries, same values. Every check passed because each was individually well formed | The duplicate view removed from the threshold figure, where income poverty is not the subject; a check now fails when any two views plot identical data |
 | C-69 | 2026-08-23 | The legend named some series and the chart named others | Listing only the series the chart could not label directly produced a legend naming two lines out of six, which reads as an omission rather than a key | All or nothing: if any named series lacks an end label the legend carries them all, and if every one is labelled there is no legend |
 | C-70 | 2026-08-23 | Every European line in the age and sex views drew in the reserved EU colour | That said only 'these are Europe' and left the reader to work out which Greek line each belonged to | Colour now encodes the group and dash encodes the country, so each Greek band is paired with its own European counterpart |
+| C-71 | 2026-08-23 | The affordability evidence was a 1,078-point scatter | The message is simple -- reported hardship moves with concrete affordability difficulty, in Europe and in Greece, except for falling behind on bills -- and a dense diagnostic plot was the wrong instrument for it | Replaced with a four-row comparison: the European within-country figure against the Greece-only figure, two dots per row. A second, expandable figure shows each country's own correlation, so a reader can see the pattern is not driven by a few states |
+| C-72 | 2026-08-23 | The paired-comparison legend named a colour nothing was drawn in | The 'between' dot took each row's tone, so it drew grey on most rows and orange on one, never the blue the legend showed; the two ends were distinguished only by SIZE | Ends given fixed, per-figure colours; row status stays on the connecting line and the right-hand label |
+| C-73 | 2026-08-23 | The midpoint gridline coincided with the zero line | `(lo+hi)/2` lands on zero whenever the data is roughly symmetric, drawing a second vertical line a pixel away | Skipped when it would coincide |
 
 ## Artifact Index
 

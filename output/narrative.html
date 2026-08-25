@@ -1298,7 +1298,7 @@ reason.</p>
     const W=widthFor(host);
     const ms=measurer(host);
     const labW=labelGutter(ms,d.strips.map(s=>s.label),W<480?90:120,W*0.30);
-    const rowH=W<480?58:64, padR=W<480?54:72, padT=14;
+    const rowH=W<480?66:72, padR=W<480?54:72, padT=26;
     const H=padT+d.strips.length*rowH+16, pw=W-labW-padR;
     const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,class:'chart',role:'img',
       'aria-label':d.alt||'distribution strips'});
@@ -1307,6 +1307,8 @@ reason.</p>
       const vals=s.points.map(p=>p.value).filter(v=>v!=null);
       let lo=Math.min(...vals), hi=Math.max(...vals);
       const pad=(hi-lo)*0.06||1; lo-=pad; hi+=pad;
+      if(s.min!=null)lo=Math.max(lo,s.min);
+      if(s.max!=null)hi=Math.min(hi,s.max);
       const xs=v=>labW+(v-lo)/(hi-lo)*pw;
       const lb=el('text',{x:labW-10,y:y+4,'text-anchor':'end',class:'axis-label',
         style:'font-weight:700'});
@@ -1325,6 +1327,15 @@ reason.</p>
       });
       // The highlighted country is named and valued on the strip itself, so the
       // reader never has to hover to find the case the report is about.
+      if(s.median!=null){
+        svg.appendChild(el('line',{x1:xs(s.median),x2:xs(s.median),
+          y1:y-9,y2:y+9,stroke:'var(--chart-label)','stroke-width':1.5,
+          opacity:.75}));
+        const mt=el('text',{x:xs(s.median),y:y-25,'text-anchor':'middle',
+          class:'axis-label',style:'opacity:.85'});
+        mt.textContent='median '+fmt(s.median,s.dp==null?1:s.dp);
+        svg.appendChild(mt);
+      }
       const g=s.points.find(p=>p.highlight);
       if(g){
         const gt=el('text',{x:xs(g.value),y:y-12,'text-anchor':'middle',
@@ -1337,10 +1348,12 @@ reason.</p>
           class:'axis-label'});
         tx.textContent=fmt(v,s.dp==null?1:s.dp)+(s.unit||'');
         svg.appendChild(tx);});
-      const dir=el('text',{x:(labW+W-padR)/2,y:y+20,'text-anchor':'middle',
-        class:'axis-label',style:'opacity:.75'});
-      dir.textContent=s.worseIs==='low'?'\u2190 worse':'worse \u2192';
-      svg.appendChild(dir);
+      if(s.worseIs){
+        const dir=el('text',{x:(labW+W-padR)*0.78,y:y+20,'text-anchor':'middle',
+          class:'axis-label',style:'opacity:.75'});
+        dir.textContent=s.worseIs==='low'?'\u2190 worse':'worse \u2192';
+        svg.appendChild(dir);
+      }
     });
     ms.done();
     host.insertBefore(svg,host.firstChild);
@@ -1560,9 +1573,10 @@ reason.</p>
       const y=padT+i*rowH+rowH/2, tone=r.tone||'chart-neutral';
       svg.appendChild(el('line',{x1:xs(r.a),x2:xs(r.b),y1:y,y2:y,
         stroke:toneVar(tone),'stroke-width':2.5,opacity:.45}));
-      svg.appendChild(outlineNeutral(el('circle',{cx:xs(r.a),cy:y,r:4,
-        fill:'var(--chart-neutral)'}),'chart-neutral'));
-      svg.appendChild(el('circle',{cx:xs(r.b),cy:y,r:5.5,fill:'var(--chart-gr)'}));
+      const tA=d.toneA||'chart-neutral', tB=d.toneB||'chart-gr';
+      svg.appendChild(outlineNeutral(el('circle',{cx:xs(r.a),cy:y,r:5,
+        fill:toneVar(tA)}),tA));
+      svg.appendChild(el('circle',{cx:xs(r.b),cy:y,r:5.5,fill:toneVar(tB)}));
       const lb=el('text',{x:padL-10,y:y+4,'text-anchor':'end',class:'axis-label',
         style:r.strong?'font-weight:700':''});
       svg.appendChild(lb);fitLabel(lb,r.label,padL-12,ms,!!r.strong);
@@ -1574,10 +1588,11 @@ reason.</p>
     host.insertBefore(svg,host.firstChild);
     if(d.legendA||d.legendB){
       const lg=document.createElement('div');lg.className='legend';
+      const lA=`var(--${d.toneA||'chart-neutral'})`, lB=`var(--${d.toneB||'chart-gr'})`;
       lg.innerHTML=`<span class="lg-item"><svg width="12" height="12" aria-hidden="true">
-        <circle cx="6" cy="6" r="4" fill="var(--chart-neutral)" stroke="var(--chart-neutral-edge)" stroke-width="1"/></svg>${d.legendA||'start'}</span>
+        <circle cx="6" cy="6" r="5" fill="${lA}"/></svg>${d.legendA||'start'}</span>
         <span class="lg-item"><svg width="12" height="12" aria-hidden="true">
-        <circle cx="6" cy="6" r="5" fill="var(--chart-gr)"/></svg>${d.legendB||'end'}</span>`;
+        <circle cx="6" cy="6" r="5" fill="${lB}"/></svg>${d.legendB||'end'}</span>`;
       host.insertBefore(lg,svg.nextSibling);}
     const tp=tip(host);let idx=-1;
     const show=i=>{if(i<0||i>=marks.length)return;idx=i;const r=marks[i].r;

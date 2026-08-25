@@ -854,14 +854,26 @@ through this entire stage.</p>
 
 {fig('F8')}
 
-<p>All four are shown together rather than one at a time, because the
-comparison between them is the point. Reported difficulty moves with every one:
-arrears at 0.80, unexpected expenses at 0.78, severe deprivation at 0.79, and
-the ability to heat the home at 0.63 &mdash; looser than the others, but in the
-same direction. The relationship holds within countries as well as across them,
-which is the harder test, because it cannot be satisfied by rich countries
-simply differing from poor ones. It remains corroboration from inside a single
-instrument.</p>
+<p>Two figures per measure: the relationship across Europe once each country's
+own average is removed, and the relationship inside Greece alone. On three of
+the four, Greece is <em>stronger</em> than the European pattern &mdash; 0.92 on
+unexpected expenses, 0.94 on deprivation, 0.87 on heating. When Greek reported
+difficulty moves, these move with it.</p>
+
+<p>Arrears are the exception, and it is a sharp one: 0.37 inside Greece against
+0.80 across Europe. Arrears require having credit and obligations to fall behind
+on, so a household that lost access to credit years ago, or never had it, can be
+in serious difficulty without ever registering. The item most often treated as
+the hard, factual anchor of financial distress is the one that tracks Greek
+hardship least closely.</p>
+
+{fig('F20')}
+
+<p>The European figure could in principle come from a handful of countries
+rather than a general pattern. It does not: the relationship is positive in at
+least 23 of 27 member states for every one of the four measures, with median
+country-level correlations between 0.81 and 0.91. Greece sits at the top of
+three of those distributions and near the bottom of the arrears one.</p>
 
 {claim('V2-3.1')}
 
