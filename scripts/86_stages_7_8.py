@@ -377,7 +377,7 @@ print(f"batch 4: {len(FIGS)} figure, {len(ctx)} context entries, "
 
 
 # ---- the page -------------------------------------------------------------
-BASE = ce.base_style((OUT / "report.html").read_text())
+BASE = ce.base_style((OUT / "build" / "report.html").read_text())
 F15 = build("F15", FIGS["F15"])
 F16 = build("F16", FIGS["F16"])
 F17 = build("F17", FIGS["F17"])
@@ -525,5 +525,9 @@ that was not already established and bounded where it was produced.</p>
 <script>{ce.JS}</script>
 </body></html>
 """
-(OUT / "batch4.html").write_text(PAGE)
-print(f"wrote output/batch4.html  {len(PAGE):,} chars")
+# Build intermediates live in output/build/, not output/ itself:
+# output/ holds the canonical publications and nothing else.
+_BUILD = OUT / "build"
+_BUILD.mkdir(exist_ok=True)
+(_BUILD / "batch4.html").write_text(PAGE)
+print(f"wrote output/build/batch4.html  {len(PAGE):,} chars")

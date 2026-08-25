@@ -122,7 +122,7 @@ F9 = ce.figure("F9", "Three current-condition constructs survive the full "
                appendix_link="statistical_appendix.html")
 
 # ------------------------------------------------------------------- shell
-report_style = (OUT / "report.html").read_text()
+report_style = (OUT / "build" / "report.html").read_text()
 import re
 BASE = ce.base_style(report_style)
 
@@ -168,8 +168,8 @@ to 0.40 and 0.55 under the bootstrap, which is what decides.</p>
 <script>{ce.JS}</script>
 </body></html>
 """
-(OUT / "prototype.html").write_text(SHELL)
-print(f"wrote output/prototype.html  {len(SHELL):,} chars")
+(OUT / "build" / "prototype.html").write_text(SHELL)
+print(f"wrote output/build/prototype.html  {len(SHELL):,} chars")
 print(f"  F1 panel: {len(f1_payload['series'])} series, {len(yrs)} years")
 print(f"  F9 coefficient: {len(f9_rows)} rows")
 print("  both: badge, question, caveat, table fallback, keyboard, print CSS")

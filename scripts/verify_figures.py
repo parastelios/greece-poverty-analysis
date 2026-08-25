@@ -17,16 +17,21 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import chart_engine as ce
 
 ROOT = Path(__file__).resolve().parents[1]
-# output/prototype.html is the original two-figure preview, built before the
-# batch pages existed and superseded by them. It carries its own copies of two
-# figures that have since been redesigned, so checking it against the current
-# manifest measures a scaffold rather than a deliverable.
-TARGETS = [p for p in [ROOT / "output" / "batch1.html",
-                       ROOT / "output" / "batch2.html",
-                       ROOT / "output" / "batch3.html",
-                       ROOT / "output" / "batch4.html",
+# output/ holds the canonical publications; output/build/ holds the batch pages
+# the assemblers lift figures from. The prototype (build/prototype.html) is the
+# original two-figure preview, superseded by the batch pages: it carries its own
+# copies of two figures that have since been redesigned, so checking it against
+# the current manifest measures a scaffold rather than a deliverable.
+#
+# output/report.html was the v1 publication. It is preserved at tag v1-final and
+# is no longer written to output/, so the guard below simply skips it.
+_BUILD = ROOT / "output" / "build"
+TARGETS = [p for p in [_BUILD / "batch1.html",
+                       _BUILD / "batch2.html",
+                       _BUILD / "batch3.html",
+                       _BUILD / "batch4.html",
                        ROOT / "output" / "v2_report.html",
-                       ROOT / "output" / "report.html"] if p.exists()]
+                       _BUILD / "report.html"] if p.exists()]
 
 F = []
 def check(name, ok, detail=""):

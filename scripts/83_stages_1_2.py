@@ -141,6 +141,151 @@ FIGS["F1"] = dict(
         "individual household."),
     first="Series")
 
+# ---- F21: breadth of disadvantage ----------------------------------------
+# The AROPE breakdown was labelled "breadth" in an earlier selection and is not:
+# it decomposes ONE measure by component and group. Breadth is how many
+# different indicators place a country in Europe's worst fifth, which is a
+# different question and the one that shows deterioration spreading.
+#
+# DESCRIPTIVE ONLY. It was tested as a predictor in P3a and does not survive:
+# not significant alone, and sign-reversing once the other accumulated measures
+# are in the model. The caveat is read from p3a_results.csv rather than written
+# by hand -- an earlier version asserted "null (p = 0.083)", a number that
+# appears nowhere in the artifacts.
+import json as _json
+
+_p3a = pd.read_csv(PROC / "p3a_results.csv")
+_P3A_ALONE = float(_p3a.loc[_p3a.step == "alone", "p"].iloc[0])
+_P3A_CTL = float(_p3a.loc[_p3a.step == "P3_plus_famD", "coef"].iloc[0])
+assert _P3A_ALONE > 0.05 and _P3A_CTL < 0, (
+    "the breadth caveat asserts a non-significant coefficient that reverses "
+    "sign under controls; p3a_results.csv no longer supports that reading")
+
+_blob = _json.load(open(PROC / "appendix_series_core.json"))
+_bs = _blob["series"]["breadth_worst_quintile"]
+_byrs = [int(y) for y in _bs["years"]]
+_gr_b = _bs["countries"]["EL"]
+
+f21 = ce.Series([str(y) for y in _byrs], dp=1)
+f21.add("Greece", [None if v is None else float(v) for v in _gr_b])
+_eu_b = _bs.get("eu") or []
+if any(v is not None for v in _eu_b):
+    f21.add("EU", [None if v is None else float(v) for v in _eu_b])
+
+_ctx_b = []
+for _c, _v in _bs["countries"].items():
+    if _c == "EL" or sum(x is not None for x in _v) < 2:
+        continue
+    _ctx_b.append({"label": NAMES.get(_c, _c),
+                   "values": [None if x is None else round(float(x), 1) for x in _v]})
+
+v21a = {"years": _byrs, "dp": 1, "yLabel": "% of indicators",
+        "context": _ctx_b,
+        "contextLabel": "Each other EU country",
+        "alt": "The share of indicators placing each country in the EU's worst "
+               "fifth. Greece rises from roughly a quarter before the crisis to "
+               "around two thirds",
+        "series": [{"label": l, "tone": "gr" if l == "Greece" else "eu",
+                    "style": "solid" if l == "Greece" else "dashed",
+                    "weight": "strong" if l == "Greece" else "normal",
+                    "values": [None if v is None else round(v, 1) for v in vs]}
+                   for l, vs, m in f21.rows]}
+
+# The audit trail: which indicators, and where Greece moved on each.
+#
+# The stored labels are the analysis spec's own names, several of which carry
+# internal notation a reader should not have to decode ("own 2008 = 100",
+# "scarring stock", "EU = 100"). This is the presentation layer, not an edit to
+# the data: the keys, values and checksums are untouched.
+_LADDER_LABEL = {
+    "Cannot keep home adequately warm": "Keeping the home warm",
+    "Actual weekly working hours (main job)": "Hours worked each week",
+    "Work-effort squeeze (hours vs hourly pay, EU = 100)":
+        "Hours worked against hourly pay",
+    "Wage-adjusted price pressure \u2014 Overall household consumption":
+        "Prices measured against wages",
+    "% below own GDP peak (scarring stock)": "Distance below the pre-crisis peak",
+    "Compensation per hour worked (PPS)": "Pay per hour worked",
+    "Real household disposable income (2008 = 100)":
+        "Household income after inflation",
+    "Real wages, compensation per employee (own 2008 = 100)":
+        "Wages after inflation",
+    "Real AROP poverty threshold (own 2008 = 100)":
+        "The poverty line after inflation",
+    "Household saving rate": "How much households can save",
+    "Household financial expectations, next 12 months":
+        "What households expect of the year ahead",
+    "Net migration of nationals (per 1,000 population)":
+        "Citizens leaving the country",
+    "Overall life satisfaction": "Life satisfaction",
+    "Unemployment rate": "Unemployment",
+    "Employment rate (ages 20-64)": "Share of working-age people in work",
+    "Income inequality (S80/S20 ratio)": "Income inequality",
+    "Real GDP per capita": "Economic output per person",
+    "Youth unemployment (ages 15-24)": "Youth unemployment",
+    "HICP inflation, housing & energy": "Housing and energy prices",
+    "Minimum wage (first semester of each year)": "The minimum wage",
+    "HICP inflation, headline": "Prices overall",
+    "Real household consumption per capita": "What households actually spend",
+    "Welfare-transfer effectiveness (AROP removed by transfers)":
+        "How much poverty benefits remove",
+    "Household debt-to-income": "Household debt against income",
+    "HICP inflation, food & non-alcoholic beverages": "Food prices",
+}
+_lad = _blob["panels"]["breadth_indicator_ladder"]["rows"]
+_missing = [r["label"] for r in _lad if r["label"] not in _LADDER_LABEL]
+assert not _missing, f"ladder labels without a reader name: {_missing}"
+f21b = ce.Series(["Position then", "Position now", "First year", "Latest year"], dp=1)
+_rows21 = []
+for r in _lad:
+    _rl = _LADDER_LABEL[r["label"]]
+    f21b.add(_rl, [float(r["pct_first"]), float(r["pct_last"]),
+                   float(r["year_first"]), float(r["year_last"])])
+    _worst = r["pct_last"] >= 80
+    _rows21.append({
+        "label": _rl, "a": round(float(r["pct_first"]), 1),
+        "b": round(float(r["pct_last"]), 1),
+        "tone": "chart-warn" if _worst else "chart-neutral",
+        "strong": _worst,
+        "right": "worst fifth" if _worst else "",
+        "detail": (f"<b>{r['label']}</b><br>{r['unit']}<br>"
+                   f"{r['year_first']}: position "
+                   f"{r['pct_first']:.0f} of 100<br>{r['year_last']}: position "
+                   f"{r['pct_last']:.0f} of 100<br>"
+                   f"<span style='opacity:.65'>0 is the best place in the Union "
+                   f"to be on this indicator, 100 the worst</span>")})
+
+v21b = {"rows": _rows21, "dp": 1,
+        "toneA": "chart-neutral", "toneB": "chart-gr",
+        "legendA": "Greece's earliest usable year",
+        "legendB": "Greece's latest year",
+        "xLabel": "position in the EU distribution, 100 = worst",
+        "alt": "One row per indicator behind the breadth measure, showing where "
+               "Greece sat at that indicator's earliest usable year and where it "
+               "sits now"}
+
+FIGS["F21"] = dict(
+    caption="Greek disadvantage spread across measures: from a quarter of "
+            "indicators in Europe's worst fifth before the crisis to two thirds",
+    kind="panel", series=f21, payload=v21a,
+    views=[("How many measures", v21a),
+           ("Which measures", v21b, "dumbbell")],
+    view_series=[f21, f21b],
+    extra_caveat=(
+        f"DESCRIPTIVE ONLY. Breadth was tested as a predictor of reported "
+        f"hardship in P3a and does not survive: on its own it is not "
+        f"significant (p = {_P3A_ALONE:.2f}), and once the other accumulated "
+        f"measures enter the model its coefficient reverses sign. It "
+        f"summarises the condition rather than explaining it. The outcome and "
+        f"every model "
+        "covariate are excluded from the count, so it cannot restate what the "
+        "report set out to explain. The second view's axis is POSITION, not "
+        "value: the indicators have no common unit, so 0 is the best place in "
+        "the Union to be on that indicator and 100 the worst, whichever "
+        "direction 'worse' runs in. Years reporting fewer than ten indicators "
+        "are dropped."),
+    first="Series")
+
 # ---- F2 ladder -----------------------------------------------------------
 lat = ranks[(ranks.variable == "subjective_poverty") & (ranks.time == ranks.time.max())]
 lat = lat.sort_values("gr_value", ascending=False)
@@ -483,7 +628,7 @@ for k, v in FIGS.items():
 
 # --------------------------------------------------------------------- page
 import re as _re
-BASE = ce.base_style((OUT / "report.html").read_text())
+BASE = ce.base_style((OUT / "build" / "report.html").read_text())
 built = {k: build(k, v) for k, v in FIGS.items()}
 
 PAGE = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
@@ -516,6 +661,7 @@ same thing.</p>
 It is not: the distance between Greece and the next country is larger than the
 distance spanning most of the rest of the distribution.</p>
 {built['F2']}
+{built['F21']}
 
 <h2>Stage 2 &mdash; The AROPE bridge</h2>
 <p>If reported hardship sits far above income poverty, the natural first move is
@@ -544,5 +690,9 @@ correctly &mdash; but it cannot register a fall that affects everyone at once.</
 <script>{ce.JS}</script>
 </body></html>
 """
-(OUT / "batch1.html").write_text(PAGE)
-print(f"\nwrote output/batch1.html  {len(PAGE):,} chars")
+# Build intermediates live in output/build/, not output/ itself:
+# output/ holds the canonical publications and nothing else.
+_BUILD = OUT / "build"
+_BUILD.mkdir(exist_ok=True)
+(_BUILD / "batch1.html").write_text(PAGE)
+print(f"\nwrote output/build/batch1.html  {len(PAGE):,} chars")

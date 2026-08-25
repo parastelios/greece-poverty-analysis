@@ -627,6 +627,32 @@ CIRCULAR = {"subjective_poverty", "arop", "arope", "deprivation_new",
             "deprivation_legacy", "arrears", "housing_overburden", "unexpected",
             "ltu", "income_pps"}
 WORST_Q = 0.20
+def _breadth_test_note():
+    """The predictive test's outcome, read from its own artifact.
+
+    This sentence was previously hardcoded as "null (p=0.083)". No such value
+    exists in p3a_results.csv or anywhere else in data/processed -- the figure
+    was asserting a number the artifact does not contain. It is now derived,
+    and says so honestly when the test has not been run yet.
+    """
+    f = OUT / "p3a_results.csv"
+    if not f.exists():
+        return ("the predictive test (P3a) has not been run in this build, so "
+                "treat this purely as a description of the condition.")
+    r = pd.read_csv(f)
+    alone = r[r.step == "alone"].iloc[0]
+    with_ctl = r[r.step == "P3_plus_famD"]
+    s = (f"tested as a predictor of reported hardship in P3a. On its own it is "
+         f"not significant (coefficient {alone.coef:+.2f}, p = {alone.p:.2f})")
+    if len(with_ctl):
+        w = with_ctl.iloc[0]
+        s += (f", and once the other accumulated measures enter the model the "
+              f"coefficient reverses sign ({w.coef:+.2f}). A quantity whose "
+              f"sign depends on what else is in the model cannot carry an "
+              f"explanatory reading")
+    return s + ". It summarises the condition rather than explaining it."
+
+
 try:
     indep = [k for k in WORSE_HIGH if k not in CIRCULAR and k in SERIES]
     flags = []
@@ -652,8 +678,7 @@ try:
                   f"that put this country in the EU's bottom quintile that year. The outcome "
                   f"(subjective poverty) and every model covariate are excluded, so this cannot "
                   f"restate what the reports set out to explain. Years with fewer than 10 "
-                  f"reporting indicators are dropped. DESCRIPTIVE ONLY: tested as a predictor "
-                  f"and null (p=0.083), so it summarises the condition rather than explaining it.")
+                  f"reporting indicators are dropped. DESCRIPTIVE ONLY: {_breadth_test_note()}")
 except Exception as e:
     PROBLEMS.append(f"breadth_worst_quintile: {e}")
 

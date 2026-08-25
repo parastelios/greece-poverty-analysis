@@ -50,7 +50,7 @@ def reader_text(s):
 
 FIG_SOURCE = {}
 for n in (1, 2, 3, 4):
-    page = (OUT / f"batch{n}.html").read_text()
+    page = (OUT / "build" / f"batch{n}.html").read_text()
     for m in re.finditer(r'<figure class="figure" id="(F\d+)">.*?</figure>', page, re.S):
         FIG_SOURCE[m.group(1)] = m.group(0)
 
@@ -60,16 +60,22 @@ for n in (1, 2, 3, 4):
 # work, so reuse by id was unsafe. Five, deliberately fewer than the report:
 #   F1  the paradox
 #   F3  the threshold that moved
-#   F5  breadth, across measures and across groups
+#   F21 breadth: how many separate measures put Greece in Europe's worst fifth
 #   F11 the historical scars
+#   F14 model dependence -- the central limitation, not optional detail
 #   F15 the strongest contextual figure -- where Greece sits on three indicators
-NARRATIVE_FIGS = ["F1", "F3", "F5", "F11", "F15"]
+#
+# F5 (the AROPE decomposition) previously held the slot labelled "breadth". It
+# is not breadth: it splits ONE measure by component and age group. The
+# chapter it illustrated argues that averages conceal divergence, which the
+# prose carries on its own; the decomposition stays in the technical report.
+NARRATIVE_FIGS = ["F1", "F3", "F21", "F11", "F14", "F15"]
 
 # Non-figure blocks that travel from the batch pages. The pre-crisis comparison
 # is six rows with a decade missing from the middle, which is a table.
 BLOCKS = {}
 for _n in (1, 2, 3, 4):
-    _page = (OUT / f"batch{_n}.html").read_text()
+    _page = (OUT / "build" / f"batch{_n}.html").read_text()
     for _m in re.finditer(r'<div class="(ess-table)">.*?</p></div>', _page, re.S):
         BLOCKS[_m.group(1)] = _m.group(0)
 
@@ -81,7 +87,7 @@ def block(key):
 # The selection is FROZEN. Figure ids changed meaning during the figure work --
 # what an id pointed at was not stable -- so this list records a decision about
 # what this document argues, and any change to it has to be a decision too.
-_FROZEN = ['F1', 'F3', 'F5', 'F11', 'F15']
+_FROZEN = ['F1', 'F3', 'F21', 'F11', 'F14', 'F15']
 if PAPER_FIGS != _FROZEN if "PAPER_FIGS" in dir() else NARRATIVE_FIGS != _FROZEN:
     raise SystemExit(
         "the narrative figure selection changed; update _FROZEN deliberately")
@@ -198,6 +204,36 @@ reveal: we can account for part of it, we can rule some explanations out, and
 most of it remains unexplained.</p>
 """))
 
+CH.append(chapter("company", "One number, or a crowd", f"""
+<p>The obvious first suspicion about a number that disagrees with every other
+number is that the number is broken.</p>
+
+<p>So it is worth asking what company it keeps. Take twenty-five separate
+measures of Greek life &mdash; wages, hours worked, prices, unemployment,
+saving, debt, how many people are leaving, what households expect of next year
+&mdash; and ask a blunt question of each one: is Greece in the worst fifth of
+Europe on this? Then count how many say yes.</p>
+
+{fig('F21')}
+
+<p>Before the crisis, about a quarter of them did. Now about two thirds do.
+Sixteen of the twenty-five put Greece at or near the bottom of the Union, and
+they are not twenty-five ways of saying the same thing: pay per hour, hours
+worked, what households manage to save, what they expect of the coming year,
+the real value of the poverty line itself, and the number of citizens packing
+up and leaving all sit down there together.</p>
+
+<p>This does not explain anything. We tried to use it as an explanation and it
+failed &mdash; on its own it predicts nothing, and put alongside the other
+measures of accumulated damage it flips sign, which is what a number does when
+it is describing the weather rather than causing it. Chapter {{ch:untested}}
+returns to that.</p>
+
+<p>What it does settle is smaller and worth having. The measure that put Greece
+at the top of Europe is not one strange instrument twitching on its own. It is
+sitting in the middle of a crowd of measures that all moved the same way.</p>
+"""))
+
 CH.append(chapter("ruler", "A ruler that shrank", f"""
 <p>The official poverty line isn't fixed. It moves with the very economy it is
 supposed to be measuring.</p>
@@ -286,8 +322,6 @@ move together at all. The pattern that emerges when you split them apart is the
 kind of thing an average is very good at concealing: some groups improving
 while others did not, and the combined figure sitting placidly between
 them.</p>
-
-{fig('F5')}
 
 <p>This matters for the question this report is asking. A country where
 hardship has become concentrated in particular groups can look, on the
@@ -606,6 +640,8 @@ between them is the interview rather than the world.</p>
 
 {finding('V2-6.1')}
 
+{fig('F14')}
+
 <p>Greece moves from the third-worst country in Europe on unexplained hardship
 to the twenty-fifth &mdash; from a stark positive outlier to a stark negative
 one &mdash; on exactly the same rows of data, with one variable added or
@@ -814,7 +850,7 @@ reason.</p>
 # ===========================================================================
 #  PAGE
 # ===========================================================================
-BASE = ce.base_style((OUT / "report.html").read_text())
+BASE = ce.base_style((OUT / "build" / "report.html").read_text())
 
 NARR_CSS = """
 body{max-width:40rem;margin:0 auto;padding:0 1.3rem 6rem;

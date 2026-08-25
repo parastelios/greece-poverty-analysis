@@ -39,7 +39,7 @@ import subprocess
 old = subprocess.run(["git", "show", "HEAD:output/report.html"], cwd=ROOT,
                      capture_output=True, text=True).stdout
 if "<style" not in old:
-    old = (OUT / "report.html").read_text()
+    old = (OUT / "build" / "report.html").read_text()
 STYLE = re.search(r"<style.*?</style>", old, re.S).group(0)
 
 # THE OLD SCRIPT IS DELIBERATELY NOT CARRIED OVER.
@@ -619,7 +619,8 @@ closed.</p>
 """
 
 doc = HEAD + BODY + "\n</main>\n</body></html>\n"
-(OUT / "report.html").write_text(doc)
+(OUT / "build").mkdir(exist_ok=True)
+(OUT / "build" / "report.html").write_text(doc)
 
 print(f"\nwrote {(OUT / 'report.html').relative_to(ROOT)}  {len(doc):,} chars")
 print(f"  8 stages, {len(placed)} claim containers, {len(ctx)} context containers")

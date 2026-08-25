@@ -33,7 +33,7 @@ ctx = pd.read_csv(PROC / "context_register.csv").set_index("id")
 # ---- figures come from the batch pages, never rebuilt ----------------------
 FIG_SOURCE = {}
 for n in (1, 2, 3, 4):
-    page = (OUT / f"batch{n}.html").read_text()
+    page = (OUT / "build" / f"batch{n}.html").read_text()
     for m in re.finditer(r'<figure class="figure" id="(F\d+)">.*?</figure>', page, re.S):
         FIG_SOURCE[m.group(1)] = m.group(0)
 
@@ -47,7 +47,7 @@ EXPECTED = list(pd.read_csv(PROC / "report_visual_manifest.csv")["id"])
 # referring to a table the document does not contain.
 BLOCKS = {}
 for _n in (1, 2, 3, 4):
-    _page = (OUT / f"batch{_n}.html").read_text()
+    _page = (OUT / "build" / f"batch{_n}.html").read_text()
     for _m in re.finditer(r'<div class="(ess-table)">.*?</p></div>', _page, re.S):
         BLOCKS[_m.group(1)] = _m.group(0)
 
@@ -624,6 +624,35 @@ larger than the range spanning the middle of the distribution. On a measure
 where most of Europe is packed within a few points, Greece sits well clear of
 the pack. Whatever produces this is not simply a stronger dose of what produces
 variation elsewhere.</p>
+
+<h3>One measure, or many?</h3>
+
+<p>A single detached measure invites a single explanation, and the most
+deflating one is that the measure is broken. So it is worth asking how much
+company that measure keeps. Take twenty-five indicators of Greek economic and
+social conditions &mdash; wages, hours, prices, unemployment, migration, debt,
+savings, expectations &mdash; and for each one ask a deliberately crude
+question: is this country in the worst fifth of the Union? Then count.</p>
+
+{fig('F21')}
+
+<p>Before the crisis Greece was in Europe's worst fifth on roughly a quarter of
+these indicators. It is now in the worst fifth on around two thirds of them. The
+second view shows where each indicator moved. Sixteen of the twenty-five now
+place Greece at or near the bottom of the Union, and they are not variations on
+one theme: pay per hour, hours worked, the real value of the poverty line
+itself, household saving, what households expect of the coming year, and the
+number of citizens leaving the country all sit in the same place.</p>
+
+<p>This is a description, not an explanation. We tested breadth as a predictor
+of reported hardship and it does not survive: on its own it is not significant
+(p = 0.12), and once the other accumulated measures are in the same model its
+coefficient reverses sign. A quantity whose sign depends on what else is in the
+model cannot carry an explanatory reading, so this figure summarises the
+condition rather than accounting for it. What it establishes here is narrower and still useful: the
+measure that put Greece at the top of Europe is not an isolated instrument
+behaving strangely. It sits inside a wide field of measures that moved with
+it.</p>
 
 <p class="signpost"><strong>Where this leaves us.</strong> Two official
 measures of the same underlying concept disagree by a wide margin for one
@@ -2016,7 +2045,7 @@ under which decision, is recorded in the research record.</p>
 # ===========================================================================
 #  PAGE
 # ===========================================================================
-BASE = ce.base_style((OUT / "report.html").read_text())
+BASE = ce.base_style((OUT / "build" / "report.html").read_text())
 
 REPORT_CSS = """
 body{max-width:54rem;margin:0 auto;padding:0 1.2rem 6rem;

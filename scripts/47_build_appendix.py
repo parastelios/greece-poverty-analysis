@@ -1645,7 +1645,7 @@ def _detail_module():
     return mod.cards()
 
 
-_report_figs = _lift([ROOT / "output" / f"batch{n}.html" for n in (1, 2, 3, 4)])
+_report_figs = _lift([ROOT / "output" / "build" / f"batch{n}.html" for n in (1, 2, 3, 4)])
 _man = pd.read_csv(OUT / "report_visual_manifest.csv")
 _missing = [i for i in _man["id"] if i not in _report_figs]
 if _missing:

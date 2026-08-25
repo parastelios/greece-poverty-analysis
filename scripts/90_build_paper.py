@@ -56,7 +56,7 @@ def reader_text(s):
 # ---- figures: lifted from the checked batch pages, never rebuilt -----------
 FIG_SOURCE = {}
 for n in (1, 2, 3, 4):
-    page = (OUT / f"batch{n}.html").read_text()
+    page = (OUT / "build" / f"batch{n}.html").read_text()
     for m in re.finditer(r'<figure class="figure" id="(F\d+)">.*?</figure>', page, re.S):
         FIG_SOURCE[m.group(1)] = m.group(0)
 
@@ -65,16 +65,20 @@ for n in (1, 2, 3, 4):
 # One figure per argument the paper has to make:
 #   F1  the central paradox
 #   F3  the moving threshold, which Section 5.4 rests on
-#   F5  breadth of deterioration, across measures and across groups
+#   F21 breadth of deterioration: how many measures place Greece in the worst
+#       fifth of the Union, and which ones
+#   F5  what the AROPE aggregate conceals -- components and age groups. This
+#       slot previously carried the "breadth" label, which was wrong: F5
+#       decomposes ONE measure, it does not count how many measures moved.
 #   F9  the current-condition results
 #   F12 historical exposure, conditional on present conditions
 #   F13 the between/within limitation
 #   F14 model dependence
-PAPER_FIGS = ["F1", "F3", "F5", "F9", "F12", "F13", "F14"]
+PAPER_FIGS = ["F1", "F21", "F5", "F3", "F9", "F12", "F13", "F14"]
 # The selection is FROZEN. Figure ids changed meaning during the figure work --
 # what an id pointed at was not stable -- so this list records a decision about
 # what this document argues, and any change to it has to be a decision too.
-_FROZEN = ['F1', 'F3', 'F5', 'F9', 'F12', 'F13', 'F14']
+_FROZEN = ['F1', 'F21', 'F5', 'F3', 'F9', 'F12', 'F13', 'F14']
 if PAPER_FIGS != _FROZEN if "PAPER_FIGS" in dir() else NARRATIVE_FIGS != _FROZEN:
     raise SystemExit(
         "the paper figure selection changed; update _FROZEN deliberately")
@@ -506,7 +510,7 @@ S5 = f"""
 <p>Figure 1 shows the two series for Greece. They do not converge over the
 observed period: reported hardship begins near 80% and remains above 60%
 throughout, while income poverty moves within a narrow band around 20%. The
-distance narrows somewhat after 2016, which we return to in Section 5.5, but
+distance narrows somewhat after 2016, which we return to in Section 5.6, but
 never approaches agreement.</p>
 
 {fig('F1', 1)}
@@ -521,7 +525,46 @@ hardship exceeds the range spanning the middle of the distribution: whatever
 produces the Greek position is not a larger dose of what produces variation
 elsewhere.</p>
 
-<h3>5.2 Does the broader official measure close it?</h3>
+<h3>5.2 One measure, or a field of measures?</h3>
+
+<p>A single detached indicator invites the explanation that the indicator is
+faulty. That explanation is weaker if the indicator has company. We therefore
+take twenty-five indicators of Greek economic and social conditions &mdash;
+wages, hours worked, prices, unemployment, migration, household debt, saving,
+and expectations &mdash; and for each one record whether the country falls in
+the worst quintile of the Union in a given year. The outcome and every model
+covariate are excluded from the count, so the measure cannot restate the
+quantity the paper sets out to explain. Years reporting fewer than ten
+indicators are dropped.</p>
+
+{fig('F21', 2)}
+
+<p>Greece was in the worst quintile on roughly a quarter of these indicators
+before the crisis and is in the worst quintile on approximately two thirds of
+them now. Sixteen of the twenty-five now place the country at or near the
+bottom of the distribution, and they are not restatements of a single quantity:
+hourly compensation, hours worked, the real value of the poverty threshold
+itself, the household saving rate, expectations for the coming year, and net
+migration of nationals all sit together.</p>
+
+<p>This measure is descriptive and is treated as such throughout. It was
+entered as a candidate predictor of reported hardship in the exploratory Family
+D analysis and did not survive: alone it is not significant
+(<em>b</em>&nbsp;=&nbsp;5.94, <em>p</em>&nbsp;=&nbsp;0.12), and when the other
+accumulated measures enter the same specification its coefficient reverses sign
+(<em>b</em>&nbsp;=&nbsp;&minus;2.17). A quantity whose sign depends on the rest
+of the model cannot support an explanatory reading. It is not among the six
+constructs of Section 6.2, which were pre-registered; this test was exploratory
+throughout and could not have strengthened the evidentiary tier whatever it
+returned. Its role here is to establish that the divergence in
+Section 5.1 sits inside a broad deterioration rather than standing alone, which
+is a claim about the setting and not about mechanism. The second panel plots
+each indicator by <em>position</em> in the European distribution rather than by
+value, because the twenty-five share no common unit; 0 is the most favourable
+position in the Union on that indicator and 100 the least, in whichever
+direction the indicator runs.</p>
+
+<h3>5.3 Does the broader official measure close it?</h3>
 
 <p>The European Union already treats income poverty alone as too narrow. Its
 headline social indicator, at-risk-of-poverty-or-social-exclusion (AROPE),
@@ -537,7 +580,7 @@ direction of travel is against the measurement account: its contribution falls
 from 11.0 points in 2015 to 7.3 in 2024. As a resolution of this puzzle the
 broader measure is weakening rather than strengthening.</p>
 
-<h3>5.3 What the aggregate conceals</h3>
+<h3>5.4 What the aggregate conceals</h3>
 
 <p>AROPE is a union of three conditions rather than a sum, so the headline rate
 cannot be decomposed into its components without double-counting the overlap.
@@ -554,7 +597,7 @@ across age groups is therefore partly a comparison of which components can
 apply. We report the components separately for this reason rather than
 presenting an age-disaggregated aggregate that would obscure it.</p>
 
-{fig('F5', 2)}
+{fig('F5', 3)}
 
 <p>Two features of the disaggregation bear on the argument. Greece is at or
 near the top of the European distribution on income poverty, severe material
@@ -563,7 +606,7 @@ of one component. And the burden is not evenly distributed: the age groups
 diverge, and women sit above men throughout, with the difference widening after
 2022.</p>
 
-<h3>5.4 The moving threshold</h3>
+<h3>5.5 The moving threshold</h3>
 
 <p>The second measurement account concerns the ruler rather than the concept.
 AROP counts households below 60% of the <em>current</em> national median. This
@@ -576,7 +619,7 @@ can remain above a line that dropped as sharply.</p>
 poverty line, being a fixed fraction of it, fell in step. Figure 3 compares the
 relative threshold with one anchored to its 2008 real value.</p>
 
-{fig('F3', 3)}
+{fig('F3', 4)}
 
 <p>The anchor year was fixed before the comparison was run and was not selected
 by inspecting which choice produced the largest divergence. We note two
@@ -593,7 +636,7 @@ computed by Andriopoulou, Kanavitsa and Tsakloglou, and we use their
 income-year-2013 figure as an external benchmark rather than as a replication
 target.</p>
 
-<h3>5.5 Convergence, and what it does not show</h3>
+<h3>5.6 Convergence, and what it does not show</h3>
 
 <p>The narrowing after 2016 invites a recovery reading, and that reading does
 not follow. A gap between a country and the EU average can close because the
@@ -604,7 +647,7 @@ do. The measures also did not converge uniformly: some closed a substantial
 share of their 2015 distance and others closed little, so a single summary
 statement about Greek convergence would misrepresent the pattern.</p>
 
-<h3>5.6 Does the reported hardship correspond to anything?</h3>
+<h3>5.7 Does the reported hardship correspond to anything?</h3>
 
 <p>If Greek households report hardship without corresponding material
 difficulty, the object of study is response behaviour rather than poverty, and
@@ -669,7 +712,7 @@ contradicting its declared direction rather than reinterpreted.</p>
 comparable: the constructs are measured in percentages, purchasing power
 standards and index points, and raw coefficients could not share an axis.</p>
 
-{fig('F9', 4)}
+{fig('F9', 5)}
 
 {results_table()}
 
@@ -709,7 +752,7 @@ present-day counterpart and asking whether it survives. Because the two are
 correlated by construction, the test is conservative: shared variance is
 attributed to neither.</p>
 
-{fig('F12', 5)}
+{fig('F12', 6)}
 
 {claim('V2-5.C2')}
 {claim('V2-5.C3')}
@@ -746,7 +789,7 @@ omitting it.</p>
 countries. Converting them into statements about change within Greece over time
 is not supported, and Figure 7 shows why.</p>
 
-{fig('F13', 6)}
+{fig('F13', 7)}
 
 {claim('V2-5.Y')}
 
@@ -767,7 +810,7 @@ predictor and outcome come from the same respondents answering adjacent
 questions, part of any relationship reflects shared measurement rather than
 shared substance. We ran both.</p>
 
-{fig('F14', 7)}
+{fig('F14', 8)}
 
 {claim('V2-6.1')}
 
@@ -1173,7 +1216,7 @@ unaccounted for after the available accounts are tested.</p>
 # ===========================================================================
 #  PAGE
 # ===========================================================================
-BASE = ce.base_style((OUT / "report.html").read_text())
+BASE = ce.base_style((OUT / "build" / "report.html").read_text())
 
 PAPER_CSS = """
 body{max-width:46rem;margin:0 auto;padding:0 1.3rem 6rem;

@@ -299,7 +299,7 @@ def build(fid, spec):
     return shell.replace(payload_tag({}), payload_html)
 
 
-BASE = ce.base_style((OUT / "report.html").read_text())
+BASE = ce.base_style((OUT / "build" / "report.html").read_text())
 b = {k: build(k, v) for k, v in FIGS.items()}
 PAGE = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -363,5 +363,9 @@ looks better.</p>
 <script>{ce.JS}</script>
 </body></html>
 """
-(OUT / "batch3.html").write_text(PAGE)
-print(f"\nwrote output/batch3.html  {len(PAGE):,} chars")
+# Build intermediates live in output/build/, not output/ itself:
+# output/ holds the canonical publications and nothing else.
+_BUILD = OUT / "build"
+_BUILD.mkdir(exist_ok=True)
+(_BUILD / "batch3.html").write_text(PAGE)
+print(f"\nwrote output/build/batch3.html  {len(PAGE):,} chars")

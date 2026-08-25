@@ -281,6 +281,18 @@ dict(id="F16", stage=7, chart_type="panel",
       fallback="model, percent of households",
       caveat="Absorption is not explanation.",
       status_label="descriptive corroboration"),
+ dict(id="F21", stage=1, chart_type="panel",
+      question="Did Greek disadvantage deepen on a few measures, or spread "
+               "across many?",
+      artifact="appendix_series_core.json",
+      series="VIEW A: the share of indicators placing each country in the EU's "
+             "worst fifth, over time. VIEW B: every contributing indicator, "
+             "with Greece's position then and now",
+      interaction="switch view; hover names a country or reads an indicator's "
+                  "underlying values",
+      fallback="year x share of indicators; indicator x position then and now",
+      caveat="DESCRIPTIVE ONLY: tested as a predictor in P3a and does not survive -- not significant alone, sign-reversing under controls.",
+      status_label="descriptive"),
 ]
 
 # NARRATIVE OWNERSHIP. Every visual belongs to a claim or a context entry, and
@@ -306,6 +318,7 @@ OWNER = {
     "F17": ("CTX-2", "main"),
     "F18": ("V2-2.1", "expandable"),
     "F19": ("V2-3.1", "expandable"), "F20": ("V2-3.1", "expandable"),
+    "F21": ("V2-1.2", "main"),
 }
 seen_ids = [e["id"] for e in M]
 if len(set(seen_ids)) != len(seen_ids):
@@ -366,8 +379,12 @@ print(bar); print("BUDGET"); print(bar)
 # comparison were tabs inside figures that answered a different question.
 # A tab implies an alternative view of one question; these are second
 # questions and are now their own figures.
-print(f"  figures          {len(df)}   (target 12-20)")
-if not 12 <= len(df) <= 20:
+# Raised again to 21 for the breadth figure. An earlier selection labelled the
+# AROPE breakdown "breadth", which it is not: that decomposes ONE measure by
+# component and group, while breadth counts how many DIFFERENT measures place a
+# country in Europe's worst fifth. The report was missing the second entirely.
+print(f"  figures          {len(df)}   (target 12-21)")
+if not 12 <= len(df) <= 21:
     raise SystemExit(f"manifest is outside the agreed budget: {len(df)} figures")
 print("  the evidence ladder is a TABLE, not a chart: it summarises status "
       "rather than showing a distribution")

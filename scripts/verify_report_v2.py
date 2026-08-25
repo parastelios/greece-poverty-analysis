@@ -20,7 +20,7 @@ import pandas as pd
 # the same answer from the repo root, from scripts/, or from a Make recipe.
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
-REPORT = ROOT / "output" / "report.html"
+REPORT = ROOT / "output" / "build" / "report.html"
 RAW = REPORT.read_text(encoding="utf-8")
 STRIP = lambda t: re.sub(r"<style.*?</style>", " ",
                          re.sub(r"<script.*?</script>", " ", t, flags=re.S), flags=re.S)
