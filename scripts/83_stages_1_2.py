@@ -102,6 +102,7 @@ pts1 = [{"x": round(float(r.arop), 1), "y": round(float(r.subjective_poverty), 1
          "label": (f"Greece: income poverty {r.arop:.1f}%, hardship "
                    f"{r.subjective_poverty:.1f}%" if r.geo == "EL"
                    else NAMES.get(r.geo, r.geo)),
+         "shortLabel": "Greece" if r.geo == "EL" else None,
          "highlight": r.geo == "EL"} for r in _last.itertuples()]
 
 f1b = ce.Series(["Income poverty (%)", "Reported hardship (%)"], dp=1)
@@ -113,12 +114,17 @@ v1b = {"points": pts1, "dp": 1, "aspect": 0.52,
        "yLabel": "Reported hardship, percent of households",
        "fitExcludesHighlight": True,
        "fitLabel": "Peer relationship, Greece excluded",
-       # Guide lines rather than a synthetic point: a square at the two medians
-       # is not a country and needs explaining before it can be read.
-       "guides": [{"axis": "x", "value": round(_medx, 1),
-                   "label": f"median country: {_medx:.1f}%"},
-                  {"axis": "y", "value": round(_medy, 1),
-                   "label": f"median country: {_medy:.1f}%"}],
+       # Narrow-screen fallbacks. The dropped words are in the caveat verbatim,
+       # so nothing is only available to a wide screen.
+       "fitLabelShort": "Peer relationship",
+       # A small cross, not two full-width dashed lines. Guides spanning the
+       # plot read as thresholds and collided with the fitted line, its label
+       # and the Greece annotation; the two medians are one reference point and
+       # a marker says so in one line instead of two.
+       "crosshair": {"x": round(_medx, 1), "y": round(_medy, 1),
+                     "label": (f"Median EU country: poverty {_medx:.1f}%, "
+                               f"hardship {_medy:.1f}%"),
+                     "shortLabel": f"Median EU: {_medx:.1f}%, {_medy:.1f}%"},
        "frameLabel": str(_lastyr),
        "alt": f"Every EU country in {_lastyr} placed by income poverty and "
               "reported hardship. Greece has an ordinary income-poverty rate "
@@ -136,9 +142,10 @@ FIGS["F1"] = dict(
         "PEOPLE, so the axis is labelled percent rather than either. In the "
         "second view the fitted line excludes Greece, describing the European "
         "pattern Greece is being judged against rather than one Greece helped "
-        "set, and the dashed guides mark the median country on each measure "
-        "separately. Both views are country-level and say nothing about any "
-        "individual household."),
+        "set. The cross marks the median country on each measure taken "
+        "SEPARATELY, so it is a reference point rather than an actual country: "
+        "no member state necessarily sits there. Both views are country-level "
+        "and say nothing about any individual household."),
     first="Series")
 
 # ---- F21: breadth of disadvantage ----------------------------------------

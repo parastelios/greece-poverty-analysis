@@ -1022,6 +1022,7 @@ JS = r"""
       host.appendChild(bar);draw();return;
     }
     const W=widthFor(host), H=Math.round(W*(d.aspect||0.62));
+    const ms=measurer(host);
     const padL=56,padR=18,padT=16,padB=46;
     const pw=W-padL-padR, ph=H-padT-padB;
     const scope=d.fixedFrom||d.points;
@@ -1060,34 +1061,80 @@ JS = r"""
         'text-anchor':isX?'start':'end',class:'axis-label',
         style:'fill:var(--chart-neutral);opacity:.9'});
       gt.textContent=g.label||'';svg.appendChild(gt);});
+    let keyRight=padL;
     if(sxx>0){const b1=sxy/sxx,b0=my-b1*mx;
       svg.appendChild(el('line',{x1:xs(xlo-px),y1:ys(b0+b1*(xlo-px)),
         x2:xs(xhi+px),y2:ys(b0+b1*(xhi+px)),stroke:'var(--chart-label)',
         'stroke-width':1.6,'stroke-dasharray':'5 3',opacity:.85}));
       if(d.fitLabel){
-        const fx=xlo+(xhi-xlo)*0.62;
-        const ft=el('text',{x:xs(fx),y:ys(b0+b1*fx)-7,class:'axis-label',
+        // Sitting on the line, this collided with the line, the guides and the
+        // highlighted point's own label. As a corner key with a swatch it
+        // still says which line it names and stops fighting the data.
+        const ky=padT+11;
+        svg.appendChild(el('line',{x1:padL+4,x2:padL+26,y1:ky-4,y2:ky-4,
+          stroke:'var(--chart-label)','stroke-width':1.6,
+          'stroke-dasharray':'5 3',opacity:.85}));
+        // On a phone the full phrase collides with the highlighted point's
+        // own label. The short form is not a summary of the long one: the
+        // exclusion it drops is stated verbatim in the figure's caveat.
+        const room=pw*0.52;
+        const full=d.fitLabel;
+        const txt=(d.fitLabelShort && ms(full,true)>room) ? d.fitLabelShort : full;
+        // Remember where the key actually ends so a point label in the same
+        // top strip can be measured against the real obstruction rather than
+        // a guessed fraction of the plot.
+        keyRight=padL+32+ms(txt,true);
+        const ft=el('text',{x:padL+32,y:ky,class:'axis-label',
           style:'fill:var(--chart-label);font-weight:600'});
-        ft.textContent=d.fitLabel;svg.appendChild(ft);}}
+        ft.textContent=txt;
+        if(txt!==full){const ti=el('title',{});ti.textContent=full;ft.appendChild(ti);}
+        svg.appendChild(ft);}}
+    if(d.crosshair){
+      const cx=xs(d.crosshair.x), cy=ys(d.crosshair.y), a=7;
+      const arm={stroke:'var(--chart-label)','stroke-width':1.4,opacity:.75};
+      svg.appendChild(el('line',Object.assign({x1:cx-a,x2:cx+a,y1:cy,y2:cy},arm)));
+      svg.appendChild(el('line',Object.assign({x1:cx,x2:cx,y1:cy-a,y2:cy+a},arm)));
+      if(d.crosshair.label){
+        // Below the marker, and flipped inboard near either edge so the text
+        // never runs off the plot.
+        const right=cx>padL+pw*0.6, left=cx<padL+pw*0.25;
+        const cfull=d.crosshair.label;
+        const ctxt=(d.crosshair.shortLabel && ms(cfull,false)>pw*0.9)
+                   ? d.crosshair.shortLabel : cfull;
+        const ct=el('text',{x:cx+(right?-a-4:left?a+4:0),y:cy+a+13,
+          'text-anchor':right?'end':left?'start':'middle',class:'axis-label',
+          style:'fill:var(--chart-label);opacity:.9'});
+        ct.textContent=ctxt;
+        if(ctxt!==cfull){const ti=el('title',{});ti.textContent=cfull;ct.appendChild(ti);}
+        svg.appendChild(ct);}}
     const marks=[];
     d.points.forEach(p=>{
       const c=p.reference
         ? el('rect',{x:xs(p.x)-4.5,y:ys(p.y)-4.5,width:9,height:9,
             fill:'none',stroke:'var(--chart-eu)','stroke-width':2})
-        : el('circle',{cx:xs(p.x),cy:ys(p.y),r:p.highlight?5.5:3,
+        : el('circle',{cx:xs(p.x),cy:ys(p.y),r:p.highlight?6:4.2,
             fill:toneVar(p.highlight?'gr':'chart-neutral'),
             stroke:p.highlight?'none':'var(--chart-neutral-edge)',
-            'stroke-width':p.highlight?0:1,opacity:p.highlight?1:.6});
+            'stroke-width':p.highlight?0:1,opacity:p.highlight?1:.88});
       svg.appendChild(c);marks.push({x:xs(p.x),y:ys(p.y),p:p});});
     // Name the highlighted case and the reference on the chart itself.
     d.points.filter(p=>p.highlight||p.reference).forEach(p=>{
       // A long label on a point near the right edge runs off the chart. Put it
       // on whichever side has room.
       const right=xs(p.x)>padL+pw*0.55;
+      // Room on the chosen side, minus the corner key's band when the label
+      // sits in the top strip where that key lives.
+      const nearTop=ys(p.y)<padT+26;
+      const left0=(nearTop&&right)?keyRight+10:padL;
+      const room=right?xs(p.x)-9-left0:W-padR-xs(p.x)-9;
+      const full=p.label||'';
+      const txt=(p.shortLabel && ms(full,true)>room) ? p.shortLabel : full;
       const lb=el('text',{x:xs(p.x)+(right?-9:9),y:ys(p.y)+4,
         'text-anchor':right?'end':'start',class:'axis-label',
         style:`font-weight:700;fill:${p.reference?'var(--chart-eu)':'var(--chart-gr)'}`});
-      lb.textContent=p.label||'';svg.appendChild(lb);});
+      lb.textContent=txt;
+      if(txt!==full){const ti=el('title',{});ti.textContent=full;lb.appendChild(ti);}
+      svg.appendChild(lb);});
     if(d.frameLabel){
       const fl=el('text',{x:W-padR,y:padT+12,'text-anchor':'end',
         class:'axis-label',style:'font-weight:700;opacity:.9'});
