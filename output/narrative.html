@@ -1276,6 +1276,65 @@ reason.</p>
     });
   }
 
+
+  /* ------------------------------------------------- strip (distribution) */
+  // One horizontal strip per indicator: every country as a dot on that
+  // indicator's own scale, with the highlighted country marked and labelled.
+  // This replaces a rank trajectory. A rank hides the size of the differences,
+  // inverts its own axis to stay readable, and moves when OTHER countries move;
+  // a position on the real scale does none of those things.
+  function strip(host,d){
+    const W=widthFor(host);
+    const ms=measurer(host);
+    const labW=labelGutter(ms,d.strips.map(s=>s.label),W<480?90:120,W*0.30);
+    const rowH=W<480?58:64, padR=W<480?54:72, padT=14;
+    const H=padT+d.strips.length*rowH+16, pw=W-labW-padR;
+    const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,class:'chart',role:'img',
+      'aria-label':d.alt||'distribution strips'});
+    d.strips.forEach((s,i)=>{
+      const y=padT+i*rowH+rowH*0.42;
+      const vals=s.points.map(p=>p.value).filter(v=>v!=null);
+      let lo=Math.min(...vals), hi=Math.max(...vals);
+      const pad=(hi-lo)*0.06||1; lo-=pad; hi+=pad;
+      const xs=v=>labW+(v-lo)/(hi-lo)*pw;
+      const lb=el('text',{x:labW-10,y:y+4,'text-anchor':'end',class:'axis-label',
+        style:'font-weight:700'});
+      svg.appendChild(lb);fitLabel(lb,s.label,labW-14,ms,true);
+      svg.appendChild(el('line',{x1:labW,x2:W-padR,y1:y,y2:y,class:'gridline'}));
+      s.points.forEach(p=>{
+        if(p.value==null)return;
+        const hl=!!p.highlight;
+        const c=el('circle',{cx:xs(p.value),cy:y,r:hl?6:4,
+          fill:hl?'var(--chart-gr)':'var(--chart-neutral)',
+          stroke:hl?'none':'var(--chart-neutral-edge)','stroke-width':hl?0:1,
+          opacity:hl?1:.6});
+        const ttl=document.createElementNS('http://www.w3.org/2000/svg','title');
+        ttl.textContent=`${p.name}: ${fmt(p.value,s.dp==null?1:s.dp)}${s.unit||''}`;
+        c.appendChild(ttl);svg.appendChild(c);
+      });
+      // The highlighted country is named and valued on the strip itself, so the
+      // reader never has to hover to find the case the report is about.
+      const g=s.points.find(p=>p.highlight);
+      if(g){
+        const gt=el('text',{x:xs(g.value),y:y-12,'text-anchor':'middle',
+          class:'axis-label',style:'font-weight:700;fill:var(--chart-gr)'});
+        gt.textContent=`${g.name} ${fmt(g.value,s.dp==null?1:s.dp)}${s.unit||''}`;
+        svg.appendChild(gt);
+      }
+      [[lo,'start'],[hi,'end']].forEach(([v,anch],k)=>{
+        const tx=el('text',{x:k?W-padR:labW,y:y+20,'text-anchor':anch,
+          class:'axis-label'});
+        tx.textContent=fmt(v,s.dp==null?1:s.dp)+(s.unit||'');
+        svg.appendChild(tx);});
+      const dir=el('text',{x:(labW+W-padR)/2,y:y+20,'text-anchor':'middle',
+        class:'axis-label',style:'opacity:.75'});
+      dir.textContent=s.worseIs==='low'?'\u2190 worse':'worse \u2192';
+      svg.appendChild(dir);
+    });
+    ms.done();
+    host.insertBefore(svg,host.firstChild);
+  }
+
   /* ---------------------------------------------- coefficient (new type) */
   function coefficient(host,d){
     const W=widthFor(host), rowH=W<480?34:30;
@@ -1606,7 +1665,7 @@ reason.</p>
       if(e.key==='Escape')tp.classList.remove('on');});
   }
 
-  const KINDS={panel:panel,coefficient:coefficient,ladder:ladder,dumbbell:dumbbell,heatmap:heatmap,scatter:scatter};
+  const KINDS={panel:panel,strip:strip,coefficient:coefficient,ladder:ladder,dumbbell:dumbbell,heatmap:heatmap,scatter:scatter};
 
 
   // VIEW SWITCHING. Some questions need more than one look -- the real

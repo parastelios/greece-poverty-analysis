@@ -67,7 +67,11 @@ for path in TARGETS:
     #    exact labels and rounded values is written into both the chart host and
     #    the table. If they were built separately, the two will not match.
     def _hash_table(inner):
-        cols = [re.sub(r"<[^>]+>", "", c).strip()
+        # Headers must be unescaped exactly like cells are. They were not, so
+        # any column name containing an apostrophe or ampersand hashed
+        # differently from the builder's own -- a latent mismatch that only
+        # appeared when a header first contained one.
+        cols = [htmlmod.unescape(re.sub(r"<[^>]+>", "", c)).strip()
                 for c in re.findall(r"<th[^>]*>(.*?)</th>", inner, re.S)][1:]
         rows = []
         for tr in re.findall(r"<tr>(.*?)</tr>", inner, re.S):
@@ -125,7 +129,8 @@ for path in TARGETS:
                 if 'data-label' in attrs else fid
             d = json.loads(body.replace("<\\/", "</"))
             xs = (len(d.get("years", [])) or len(d.get("rows", []))
-                  or len(d.get("points", [])))
+                  or len(d.get("points", []))
+                  or sum(len(s.get("points", [])) for s in d.get("strips", [])))
             # Each chart type names its numbers differently: series carry
             # "values", coefficient rows carry "est", ladder rows carry
             # "value". Missing one gave a false positive on the ladder.
@@ -137,6 +142,9 @@ for path in TARGETS:
                         vals.append(r[k])
                 vals.extend([v for v in r.get("values", []) if v is not None])
             vals.extend([pt["y"] for pt in d.get("points", []) if pt.get("y") is not None])
+            for s in d.get("strips", []):
+                vals.extend([pt["value"] for pt in s.get("points", [])
+                             if pt.get("value") is not None])
             if xs < 2 and not d.get("rows"):
                 empty.append(f"{fid}/{lbl}: {xs} x-values")
             elif not vals:

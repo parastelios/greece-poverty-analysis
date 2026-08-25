@@ -44,9 +44,9 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `p6-rewrite` |
-| HEAD | `42f61f2` Enrich the trust figure with the verified per-institution breakdown |
+| HEAD | `1abf5f5` Add a material deprivation view to the AROPE breakdown |
 | Uncommitted changes | yes |
-| Last refreshed | 2026-08-24 |
+| Last refreshed | 2026-08-25 |
 | Frozen V1 reference | `v1-final` |
 | Frozen V2 analytical reference | `p5f-frozen` |
 <!-- AUTO:END document-control -->

@@ -26,7 +26,7 @@ PROC = Path(__file__).resolve().parents[1] / "data" / "processed"
 # Types the appendix engine already provides, validated across the full appendix.
 EXISTING = {"series", "panel", "scatter"}
 # Types the shared engine must gain. Kept deliberately few.
-NEW = {"ladder", "coefficient", "dumbbell", "heatmap"}
+NEW = {"ladder", "coefficient", "dumbbell", "heatmap", "strip"}
 
 M = [
  dict(id="F1", stage=1, chart_type="panel",
@@ -200,20 +200,21 @@ M = [
       caveat="NEITHER specification is definitive. They may not be merged or "
              "averaged, and selection may not be made on residual size.",
       status_label="post-selection robustness"),
- dict(id="F15", stage=7, chart_type="panel",
-      question="Are Greeks simply gloomier about everything?",
-      artifact="reporting_style_cross_indicator.csv",
-      series="Greece's RANK TRAJECTORY on hardship, financial expectations and "
-             "life satisfaction, one line each, worst rank at the top",
-      interaction="hover reads all three ranks for the year; the two lines "
-                  "pinned at rank 1 read against the third immediately",
-      fallback="year, hardship rank, financial expectations rank, life "
-               "satisfaction rank",
-      # Kept short: the figure's own caveat carries the rank convention, the
-      # axis zoom and the missing years.
-      caveat="",
+  dict(id="F15", stage=7, chart_type="strip",
+      question="Is Greece extreme on money questions and ordinary elsewhere, "
+               "or extreme on everything?",
+      artifact="e0_extended_panel.csv, reporting_style_life_satisfaction.csv, "
+               "near_zero_gap_comparison.csv",
+      series="every EU country as a dot on each of three indicators for 2024, "
+             "with Greece marked and valued",
+      interaction="hover names any country and its value",
+      fallback="indicator, Greece, EU median, number of countries, Greece's "
+               "position from the worst end",
+      # Kept short on the face of the figure; the reading caveat is added at
+      # build time and would otherwise be stated twice.
+      caveat="A 2024 snapshot. Contextual and not modelled.",
       status_label="descriptive corroboration"),
- dict(id="F16", stage=7, chart_type="panel",
+dict(id="F16", stage=7, chart_type="panel",
       question="Did the crisis also become an exit route, and has that reversed?",
       artifact="migration_nationals_panel.csv",
       series="departures and returns of Greek nationals 2008-2024, switchable "

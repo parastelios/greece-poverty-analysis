@@ -1503,13 +1503,20 @@ toward circumstances rather than temperament.</p>
 
 {fig('F15')}
 
+<p>Each row is one indicator with every member state placed on it, so the
+question is answered by looking rather than by ranking. On the two money
+questions Greece is not merely last: it sits clear of the cluster, at 66.7%
+reporting difficulty against a European median of 17.1%, and at &minus;43.2 on
+expectations against a median of &minus;1.8. On life satisfaction Greece is
+inside the pack, at 6.7 against a median of 7.3, and second from the worst
+end.</p>
+
 {claim('V2-7.1')}
 
-<p>The pattern is domain-specific but the difference is one of degree, not
-kind. Greece is worst in Europe on the financial indicators and close to worst
-on general life satisfaction. That is not the profile of a country whose
-financial reports are extreme while its general outlook is ordinary, and an
-earlier draft of this report described it that way in error.</p>
+<p>So the pattern is domain-specific and the difference is one of degree, not
+of kind. That is not the profile of a country whose financial reports are
+extreme while its general outlook is ordinary, and an earlier draft of this
+report described it that way in error.</p>
 
 <p>Two things must be held apart here, and conflating them is easy. Greek life
 satisfaction <em>rose</em> over the observed period, from 6.2 to 6.9. Greece's

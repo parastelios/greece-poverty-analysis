@@ -36,70 +36,74 @@ def payload_tag(d, kind="", label=""):
     return f'<script type="application/json"{a}>{body}</script>'
 
 
-# ---- F15: rank trajectories ----------------------------------------------
-# "Rank 1" means opposite things across these indicators unless the direction is
-# stated: worst on hardship, worst on expectations, but BEST on satisfaction if
-# ranked naively. Every series is oriented so 1 = WORST, and the axis is
-# inverted so worse is higher.
-yrs = [int(y) for y in cross.year] if "year" in cross else [int(y) for y in cross.time]
+FIGS = {}
 
-# Hardship and financial expectations are at rank 1 in EVERY available year, so
-# they draw as one line on top of another and the reader sees a series go
-# missing. They are combined into a single labelled series, with the fallback
-# table keeping them apart.
-same = all(a == 1 and b == 1 for a, b in
-           zip(cross.gr_subj_poverty_rank_worst, cross.gr_fin_expectations_rank_worst))
-assert same, "the two series are no longer identical; separate them again"
+# ---- F15: where Greece sits on each indicator ----------------------------
+# This was a rank trajectory, and ranks were the wrong instrument. A rank hides
+# how large the differences are, needs its own axis inverted to stay readable,
+# moves when OTHER countries move, and put two of the three series permanently
+# on top of each other at rank 1. Showing the actual distribution answers the
+# question the stage asks -- is Greece extreme on money and ordinary elsewhere?
+# -- without any of that.
+LATEST = 2024
+_pan = pd.read_csv(PROC / "e0_extended_panel.csv")
+_hard = _pan[(_pan.time == LATEST)].dropna(subset=["subjective_poverty"])
+_sat = pd.read_csv(PROC / "reporting_style_life_satisfaction.csv")
+_sat = _sat[_sat.time == LATEST].dropna(subset=["life_satisfaction"])
+_exp = pd.read_csv(PROC / "near_zero_gap_comparison.csv")
+_exp = _exp[_exp.time == LATEST].dropna(subset=["fin_expectations"])
 
-f15 = ce.Series(["Hardship rank", "Expectations rank", "Life satisfaction rank",
-                 "Hardship %", "Expectations index", "Life satisfaction (0-10)"],
-                dp=1)
-for i, y in enumerate(yrs):
-    r = cross.iloc[i]
-    f15.add(str(y), [float(r.gr_subj_poverty_rank_worst),
-                     float(r.gr_fin_expectations_rank_worst),
-                     float(r.gr_life_sat_rank_worst),
-                     float(r.gr_subj_poverty_value),
-                     float(r.gr_fin_expectations_value),
-                     float(r.gr_life_sat_value)])
+CNAME = {"EL": "Greece", "BG": "Bulgaria", "RO": "Romania", "HU": "Hungary",
+         "LU": "Luxembourg", "CY": "Cyprus", "LV": "Latvia", "LT": "Lithuania",
+         "EE": "Estonia", "ES": "Spain", "PT": "Portugal", "IT": "Italy",
+         "FR": "France", "DE": "Germany", "NL": "Netherlands", "BE": "Belgium",
+         "AT": "Austria", "IE": "Ireland", "FI": "Finland", "SE": "Sweden",
+         "DK": "Denmark", "PL": "Poland", "CZ": "Czechia", "SK": "Slovakia",
+         "SI": "Slovenia", "HR": "Croatia", "MT": "Malta"}
 
-# Ranks hide the size of the differences, so the values ride along in the tooltip.
-extra = [f"hardship {r.gr_subj_poverty_value:.1f}% &middot; expectations "
-         f"{r.gr_fin_expectations_value:.1f} &middot; life satisfaction "
-         f"{r.gr_life_sat_value:.1f}/10" for r in cross.itertuples()]
 
-FIGS = {"F15": dict(
-    # "but not on life satisfaction" implied Greece was ordinary there. It is
-    # second-WORST by 2024. What the figure shows is an ordering, not a contrast.
-    caption="Greece is worst in the EU on hardship and on financial "
-            "expectations in every available year, and close to worst on life "
-            "satisfaction",
-    kind="panel",
-    payload={"years": yrs, "dp": 0, "invertY": True,
-             "yLabel": "EU rank, 1 = worst",
-             "extraRows": extra,
-             "alt": "Greece's EU rank on three indicators, 1 is worst; hardship "
-                    "and financial expectations coincide at rank 1 throughout",
-             "series": [
-                 {"label": "Hardship and financial expectations: both rank 1",
-                  "tone": "gr", "style": "solid", "weight": "strong",
-                  "values": [int(v) for v in cross.gr_subj_poverty_rank_worst]},
-                 {"label": "Life satisfaction", "tone": "series-3",
-                  "style": "solid", "weight": "normal",
-                  "values": [int(v) for v in cross.gr_life_sat_rank_worst]}]},
-    series=f15, first="Year",
+def _points(df, col):
+    return [{"name": CNAME.get(r.geo, r.geo), "value": round(float(getattr(r, col)), 2),
+             "highlight": r.geo == "EL"} for r in df.itertuples()]
+
+
+strips15 = [
+    {"label": "Reported hardship", "unit": "%", "dp": 1, "worseIs": "high",
+     "points": _points(_hard, "subjective_poverty")},
+    {"label": "Financial expectations", "unit": "", "dp": 1, "worseIs": "low",
+     "points": _points(_exp, "fin_expectations")},
+    {"label": "Life satisfaction", "unit": "", "dp": 1, "worseIs": "low",
+     "points": _points(_sat, "life_satisfaction")},
+]
+
+f15 = ce.Series(["Greece", "EU median", "Countries", "Greece's position"], dp=2)
+for s in strips15:
+    vs = sorted(p["value"] for p in s["points"])
+    g = next(p["value"] for p in s["points"] if p["highlight"])
+    med = vs[len(vs) // 2] if len(vs) % 2 else (vs[len(vs)//2 - 1] + vs[len(vs)//2]) / 2
+    pos = (sorted(vs).index(g) + 1) if s["worseIs"] == "low" else (
+        len(vs) - sorted(vs).index(g))
+    f15.add(s["label"], [g, round(med, 2), float(len(vs)), float(pos)])
+
+FIGS["F15"] = dict(
+    caption="Greece is the worst in Europe on both money questions, and among "
+            "the worst on general life satisfaction",
+    kind="strip",
+    payload={"strips": strips15,
+             "alt": "Every EU country as a dot on each of three indicators for "
+                    "2024, with Greece marked. Greece is at the worst end of "
+                    "reported hardship and financial expectations, and near it "
+                    "on life satisfaction",
+             "xLabel": "each indicator on its own scale"},
+    series=f15, first="Indicator",
     extra_caveat=(
-        "Rank 1 is the EU's worst position. Greece ranks first on hardship and "
-        "financial expectations in every available year, and 2nd-6th on life "
-        "satisfaction - second-WORST by 2024, behind only Bulgaria. The "
-        "greater extremity of the financial indicators suggests domain "
-        "specificity; it does not rule out a broader negative reporting "
-        "tendency. Note also that Greek life satisfaction ROSE over this period "
-        "(6.4 to 6.7); the rank worsened because other countries improved "
-        "faster. The vertical axis shows "
-        "only the worst seven ranks, so movement within that band looks larger "
-        "than it is against all 27; 2019 and 2020 are not available."))}
-
+        "Each strip has its OWN scale, because the three indicators are in "
+        "different units; positions may be compared within a strip and not "
+        "between them. The last column of the table is Greece's position "
+        "counting from the worst end. Greek life satisfaction ROSE over the "
+        "observed period, from 6.2 to 6.9: the position shown here worsened "
+        "because other countries improved faster, which is not the same as "
+        "Greece becoming less satisfied."))
 
 # ---- F16: the crisis as an exit route, and its reversal -------------------
 mig = pd.read_csv(PROC / "migration_nationals_panel.csv")
