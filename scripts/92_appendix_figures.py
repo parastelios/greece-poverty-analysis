@@ -183,6 +183,146 @@ for label, fname in [("Within countries", "e0_corr_within.csv"),
             "here for anyone checking which variables duplicate which."))
 
 
+# ===========================================================================
+#  HEALTH EXTENSION (exploratory, post-freeze)
+#
+#  Built here rather than embedded as the standalone PNGs the write-up carried,
+#  so the appendix keeps one rendering path and these charts get the same
+#  checksum, fallback table and caveat treatment as everything else.
+#
+#  The point of A5 and A6 is the SIGN. The first write-up tabulated unsigned
+#  standardised effects beside a figure that plotted signed ones; three of the
+#  four measures are negative, which read as near-misses in the expected
+#  direction. Both charts here show the sign and say what it means.
+# ===========================================================================
+_hp = pd.read_csv(ROOT / "data" / "raw" / "health_panel.csv")
+if not (PROC / "health_current.csv").exists():
+    # Fail loudly rather than dropping three figures quietly. The superset gate
+    # compares the appendix against the REPORT, so an appendix that is short on
+    # appendix-only figures would pass every check.
+    raise SystemExit(
+        "health_*.csv missing: run scripts/93_health_extension.py before "
+        "47_build_appendix.py (the Makefile hoists it via STAGE_HEALTH)")
+_hcur = pd.read_csv(PROC / "health_current.csv")
+_hacc = pd.read_csv(PROC / "health_accumulated.csv")
+_hbw = pd.read_csv(PROC / "health_between_within.csv")
+
+# ---- A5: unmet medical care, Greece against every member state -------------
+_hyrs = [int(y) for y in sorted(_hp.time.unique())
+         if _hp[(_hp.time == y)].unmet_care.notna().sum() >= 20]
+_uc = _hp[_hp.time.isin(_hyrs)].pivot_table(index="time", columns="geo",
+                                            values="unmet_care")
+_gr_uc = [None if pd.isna(v) else round(float(v), 1) for v in _uc.get("EL", [])]
+_med_uc = [None if pd.isna(v) else round(float(v), 1)
+           for v in _uc.median(axis=1)]
+
+fA5 = ce.Series([str(y) for y in _hyrs], dp=1)
+fA5.add("Greece", _gr_uc)
+fA5.add("EU country median", _med_uc)
+
+FIGS["A5"] = dict(
+    caption="Unmet medical care: Greece against every other member state",
+    kind="panel",
+    payload={"years": _hyrs, "dp": 1, "yLabel": "% of people aged 16+",
+             "context": [{"label": NAMES.get(c, c),
+                          "values": [None if pd.isna(v) else round(float(v), 1)
+                                     for v in _uc[c]]}
+                         for c in _uc.columns if c != "EL"],
+             "contextLabel": "Each other EU country",
+             "series": [{"label": "Greece", "tone": "gr", "weight": "strong",
+                         "values": _gr_uc},
+                        {"label": "EU country median", "tone": "eu",
+                         "style": "dashed", "values": _med_uc}],
+             "alt": "The share reporting unmet medical need because of cost, "
+                    "waiting lists or distance. Greece runs far above the EU "
+                    "median throughout and is worst of 27 in 2024"},
+    series=fA5, first="Year",
+    extra_caveat=(
+        "DESCRIPTIVE ONLY. This is health-care ACCESS, not health status, and "
+        "it is not evidence that unmet care explains the hardship gap: tested "
+        "as a predictor it is the one correctly signed measure of four and "
+        "also the weakest, its leave-one-country-out refits change sign, and "
+        "adding it makes Greece's out-of-sample residual larger. The line is "
+        "the median MEMBER STATE, not a population-weighted EU aggregate. This "
+        "chart runs one year beyond the 2016-2024 model sample, because the "
+        "appendix shows the full series; the tests and the write-up's own "
+        "figure stop at 2024."))
+
+# ---- A6: the model estimates, signed --------------------------------------
+_rows6, fA6 = [], ce.Series(["Estimate", "Low", "High", "Bootstrap p"], dp=3)
+for _src, _role in ((_hcur, "current level"), (_hacc, "accumulated")):
+    for _r in _src.itertuples():
+        _sd = _r.std_effect / _r.coef if _r.coef else 0.0
+        _lo, _hi = sorted([_r.ci_lo * _sd, _r.ci_hi * _sd])
+        _lab = f"{_r.name} ({_role})"
+        _wrong = _r.std_effect < 0
+        _rows6.append({
+            "label": _lab, "est": round(_r.std_effect, 3),
+            "lo": round(_lo, 3), "hi": round(_hi, 3),
+            # Wrong-signed results are marked, not just plotted left of zero.
+            "tone": "chart-warn" if _wrong else "chart-neutral",
+            "right": "wrong sign" if _wrong else "",
+            "detail": (f"<b>{_lab}</b><br>{_r.std_effect:+.2f} residual SD "
+                       f"[{_lo:+.2f}, {_hi:+.2f}]<br>"
+                       f"FDR p = {_r.p_fdr:.3f}, bootstrap p = {_r.boot_p:.3f}"
+                       f"<br><span style='opacity:.65'>{_r.outcome.replace('_', ' ')}"
+                       f"</span>")})
+        fA6.add(_lab, [_r.std_effect, _lo, _hi, _r.boot_p])
+
+FIGS["A6"] = dict(
+    caption="No health measure supports the hypothesis, and most point against it",
+    kind="coefficient",
+    payload={"rows": _rows6, "dp": 2,
+             "xLabel": "standardised association with reported hardship, "
+                       "residual SD (positive = worse health, more hardship)",
+             "alt": "Eight estimates with cluster-robust intervals. Six are "
+                    "negative, meaning worse health is associated with LESS "
+                    "reported hardship, which is the opposite of the "
+                    "pre-registered direction"},
+    series=fA6, first="Estimate",
+    extra_caveat=(
+        "Every measure is pre-registered as higher-is-worse, so only a "
+        "POSITIVE estimate can support the hypothesis. Six of the eight are "
+        "negative. Intervals are country-clustered; the wild-cluster bootstrap "
+        "in the tooltip, not the interval, decides support. None clears it. "
+        "Read alongside A7: the negative pooled estimates are cross-country "
+        "composition, and the within-country sign is the expected one."))
+
+# ---- A7: the between/within reversal --------------------------------------
+_rows7, fA7 = [], ce.Series(["Between countries", "Within countries"], dp=3)
+for _r in _hbw.itertuples():
+    fA7.add(_r.name, [_r.between, _r.within])
+    _rows7.append({
+        "label": _r.name, "a": round(_r.between, 3), "b": round(_r.within, 3),
+        "tone": "chart-warn" if _r.sign_reversal else "chart-neutral",
+        "right": "reverses" if _r.sign_reversal else "same sign",
+        "strong": bool(_r.sign_reversal),
+        "detail": (f"<b>{_r.name}</b><br>between {_r.between:+.3f} "
+                   f"(p = {_r.between_p:.3f})<br>within {_r.within:+.3f} "
+                   f"(p = {_r.within_p:.3f}, bootstrap {_r.within_boot_p:.3f})")})
+
+FIGS["A7"] = dict(
+    caption="Every health-status measure reverses sign between countries and within them",
+    kind="dumbbell",
+    payload={"rows": _rows7, "dp": 2,
+             "toneA": "chart-neutral", "toneB": "chart-gr",
+             "legendA": "Between countries", "legendB": "Within countries",
+             "xLabel": "coefficient on reported hardship",
+             "alt": "Four measures, each with its between-country and "
+                    "within-country coefficient. Three of the four cross zero "
+                    "between the two comparisons"},
+    series=fA7, first="Measure",
+    extra_caveat=(
+        "Country means and annual deviations are entered together, so the two "
+        "ends come from ONE model rather than two. The reading is that the "
+        "negative between-country coefficients are composition: richer "
+        "countries report worse health AND less hardship, so pooling the "
+        "comparisons yields a sign describing neither. Within a country the "
+        "direction is the expected one. This is the same limitation the main "
+        "report documents, and it does not establish a mechanism: both sides "
+        "come from EU-SILC, so common survey method remains live."))
+
+
 def payload_tag(d, kind="", label=""):
     body = json.dumps(d).replace("</", "<\\/")
     a = (f' data-kind="{kind}"' if kind else "") + \

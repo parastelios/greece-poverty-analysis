@@ -44,7 +44,7 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `p6-rewrite` |
-| HEAD | `8e69fe8` Promote the real breadth figure, and correct a p-value it never had |
+| HEAD | `a7dd398` Simplify Figure 1's scatter: one median marker, key off the line |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-25 |
 | Frozen V1 reference | `v1-final` |

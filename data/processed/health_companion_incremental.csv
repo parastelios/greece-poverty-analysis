@@ -1,0 +1,9 @@
+var,name,role,n,countries,coef,se,p_raw,boot_p,adverse,direction_ok,p_fdr,fdr_rejected
+unmet_care,Unmet medical care,current,268,27,-0.3283482129201455,0.40132504731305424,0.4132656724593693,0.888,higher_is_worse,False,0.4723036256678506,False
+acc_unmet_care,Unmet medical care,accumulated,268,27,0.017283261229345273,0.045639760091530805,0.704919048653357,0.922,higher_is_worse,True,0.704919048653357,False
+not_good_health,Not good or very good health,current,241,27,-0.10081481930343447,0.11532070381298871,0.3820024524959783,0.692,higher_is_worse,False,0.4723036256678506,False
+acc_not_good_health,Not good or very good health,accumulated,241,27,-0.030201728626828964,0.022812466734179727,0.1855318331325846,0.531,higher_is_worse,False,0.4552442905540266,False
+chronic_illness,Long-standing illness,current,240,27,-0.33662296023427885,0.12334179462530892,0.006349047415407336,0.439,higher_is_worse,False,0.04923198384094299,True
+acc_chronic_illness,Long-standing illness,accumulated,240,27,-0.08364764558428364,0.03341643843500031,0.012307995960235747,0.308,higher_is_worse,False,0.04923198384094299,True
+activity_limitation,Activity limitation,current,240,27,-0.12609626091708273,0.14342820904798154,0.3793148442447204,0.734,higher_is_worse,False,0.4723036256678506,False
+acc_activity_limitation,Activity limitation,accumulated,240,27,-0.05496888358909405,0.04556036017522543,0.2276221452770133,0.562,higher_is_worse,False,0.4552442905540266,False

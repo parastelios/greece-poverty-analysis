@@ -35,7 +35,22 @@ SCRIPTS := scripts
 # ---------------------------------------------------------------------------
 STAGE_CORE     := 01_fetch_core.py 02_build_master_table.py 03_fetch_supplementary.py 04_merge_all.py
 STAGE_WRITEBACK := 05_threshold_hypothesis.py 21_arope.py
-STAGE_REST := $(filter-out $(STAGE_CORE) $(STAGE_WRITEBACK) 00_fetch_missing_raw.py, \
+
+# SECOND ORDERING HAZARD, same shape as the write-back one above.
+# 47_build_appendix.py imports 92_appendix_figures.py, which now draws the
+# health extension's three charts from data/processed/health_*.csv. Those are
+# produced by 93_health_extension.py, which sorts AFTER 47 and would therefore
+# run too late on a clean build -- the appendix would silently come out three
+# figures short, and the superset gate would not catch it because it only
+# compares the appendix against the report.
+#
+# 93 needs 46 (the series core), 48 and 50 (the persistence panel it uses for
+# the companion stage), so the whole short chain is hoisted ahead of 47.
+STAGE_HEALTH := 46_appendix_data.py 48_direction_persistence.py \
+                50_persistence_share.py 93_health_extension.py
+
+STAGE_REST := $(filter-out $(STAGE_CORE) $(STAGE_WRITEBACK) $(STAGE_HEALTH) \
+                00_fetch_missing_raw.py, \
                 $(notdir $(wildcard $(SCRIPTS)/[0-9][0-9]_*.py)))
 
 # `verify` runs all three gates. The branch-rule tests are included because a
@@ -96,7 +111,7 @@ fetch-write:
 
 build:
 	@cd $(SCRIPTS) && set -e; \
-	for s in $(STAGE_CORE) $(STAGE_WRITEBACK) $(sort $(STAGE_REST)); do \
+	for s in $(STAGE_CORE) $(STAGE_WRITEBACK) $(STAGE_HEALTH) $(sort $(STAGE_REST)); do \
 	  echo "=== $$s ==="; $(PY) $$s > /dev/null || { echo "FAILED: $$s"; exit 1; }; \
 	done; \
 	echo "=== 09_export_report_data.py (final export) ==="; $(PY) 09_export_report_data.py; \

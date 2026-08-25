@@ -1,0 +1,4 @@
+block,n_vars,max_vif,interpretable,greece_resid_base,greece_resid_block,worst_var
+current_health_block,4,1.7085573155324998,True,47.485938809525926,50.602683053220275,not_good_health
+accumulated_health_block,4,2.0354030432152608,True,47.485938809525926,43.31556846090759,acc_activity_limitation
+current_plus_accumulated,8,3.98394348585477,True,47.485938809525926,50.880532203488634,not_good_health

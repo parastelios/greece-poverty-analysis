@@ -3,8 +3,14 @@
 ## Status
 
 Exploratory feasibility analysis only. It does not alter the completed claim
-freeze or reopen the model search. No file in the Greece poverty project was
-changed.
+freeze or reopen the model search.
+
+Every number below is produced by `scripts/93_health_extension.py` and written
+to `data/processed/health_*.csv`. An earlier version of this document was
+written without code behind it; about half its numbers had no artifact, and its
+results table reported unsigned effects while the figure beside it plotted
+signed ones. Both problems are corrected here, and the corrections change part
+of the reasoning — see [What changed](#what-changed-from-the-first-draft).
 
 ## Question
 
@@ -22,24 +28,31 @@ Four annual Eurostat indicators were examined:
 3. Long-standing illness or health problem (`hlth_silc_04`).
 4. Some or severe limitation in usual activities (`hlth_silc_06`).
 
-The common model sample is 2016-2024 and 27 EU countries. Each measure is
-tested separately against the project's existing baseline:
+The common model sample is 2016–2024 and 27 EU countries (242 country-years;
+241 where activity limitation or chronic illness is missing a cell). Each
+measure is tested separately against the project's existing baseline:
 
 `reported hardship ~ AROP + year effects + health measure`
 
-Accumulation is defined as the running total of adverse percentage points
-above the same-year EU median. Unmet care begins in 2008; the three health
-status measures begin in 2016. Accumulated measures are also tested while
-controlling for their current counterpart.
+**Every measure is pre-registered as `higher_is_worse`**: more unmet care, worse
+health, more illness and more limitation should all predict *more* hardship. A
+positive coefficient is the only sign that can support the hypothesis. This is
+stated before any result because it is what makes a negative coefficient a
+contradiction rather than a quiet null.
 
-Inference uses country-clustered standard errors, FDR within each four-test
-stage, 999-draw restricted wild-cluster bootstrap checks for the level and
-accumulation tests, and leave-one-country-out stability where a result might
-otherwise be interpreted positively.
+Accumulation is defined as the running total of adverse percentage points above
+the same-year EU median, not netted against good years. Unmet care begins in
+2008; the three health-status measures begin in 2016. Accumulated measures are
+also tested while controlling for their current counterpart.
+
+Inference uses country-clustered standard errors, Benjamini–Hochberg FDR within
+each four-test stage, 999-draw restricted wild-cluster bootstrap, and
+leave-one-country-out refits. Verdicts come from `e_rule.py`, the project's
+pre-registered decision rule, applied rather than described.
 
 ## Descriptive findings
 
-![Greece's unmet medical care compared with all EU countries](health_figures/health_01_unmet_care_eu.png)
+![Greece's unmet medical care compared with all EU countries](health_figures/health_01_unmet_care_eu.svg)
 
 *Other EU countries are shown in grey. This is descriptive evidence about
 health-care access, not evidence that unmet care explains the hardship gap.*
@@ -65,73 +78,109 @@ cross-country comparisons.
 
 ## Current-level models
 
-![Current and accumulated health estimates](health_figures/health_02_model_results.png)
+![Current and accumulated health estimates](health_figures/health_02_model_results.svg)
 
 *The intervals use country-clustered standard errors, while the displayed
 bootstrap p-values determine the robustness verdict. No estimate passes the
 full testing sequence.*
 
-None of the four current health measures survives the testing sequence.
+None of the four current health measures survives, and **three of the four point
+the wrong way**.
 
-| Measure | Standardised effect | FDR p | Bootstrap p | Greece residual, baseline -> model |
-|---|---:|---:|---:|---:|
-| Unmet medical care | 0.18 | 0.642 | 0.663 | +47.74 -> +52.63 |
-| Not-good health | 0.21 | 0.442 | 0.428 | +47.74 -> +47.41 |
-| Long-standing illness | 0.32 | 0.394 | 0.098 | +47.64 -> +45.23 |
-| Activity limitation | 0.15 | 0.442 | 0.355 | +47.57 -> +46.99 |
+| Measure | Standardised effect | FDR p | Bootstrap p | Greece residual, baseline → model | Verdict |
+|---|---:|---:|---:|---:|---|
+| Unmet medical care | **+0.18** | 0.643 | 0.660 | +47.75 → +52.65 | inconclusive under available power |
+| Not-good health | **−0.21** | 0.443 | 0.423 | +47.75 → +47.42 | unsupported, wrong sign |
+| Long-standing illness | **−0.32** | 0.395 | 0.129 | +47.65 → +45.24 | unsupported, wrong sign |
+| Activity limitation | **−0.15** | 0.443 | 0.363 | +47.58 → +47.00 | unsupported, wrong sign |
 
-The residuals here belong to the simple AROP-plus-year-effects baseline on the
-2016-2024 sample. They are not the frozen model's residual.
+The standardised effects are **signed**, in residual-SD units of the baseline.
+This matters: read as magnitudes, long-standing illness at 0.32 with a bootstrap
+p of 0.129 looks like the closest thing here to a finding. It is in fact the
+strongest *wrong-signed* result — worse health associated with *less* reported
+hardship. Sections below explain why.
 
-Unmet care does not behave as an explanatory predictor. Its coefficient is
-imprecise, changes sign across leave-one-country-out fits, and makes Greece's
-out-of-sample residual larger.
+Residuals belong to the simple AROP-plus-year-effects baseline on the 2016–2024
+sample. They are not the frozen model's residual.
+
+Unmet medical care is the one correctly signed measure, and it is also the
+weakest. Its coefficient is imprecise (+0.77, SE 1.65), it is the only measure
+whose leave-one-out refits change sign (−0.76 to +2.64 across the 27 drops), and
+adding it makes Greece's out-of-sample residual *larger*, from +47.75 to +52.65.
 
 ## Accumulated measures
 
-No accumulated measure survives FDR or the bootstrap, either alone or after
-its current counterpart is controlled.
+No accumulated measure survives FDR or the bootstrap, either alone or after its
+current counterpart is controlled. The same three measures remain wrong-signed.
 
-| Accumulated measure | FDR p alone | Bootstrap p alone | FDR p given current | Bootstrap p given current |
-|---|---:|---:|---:|---:|
-| Unmet care | 0.372 | 0.518 | 0.296 | 0.104 |
-| Not-good health | 0.296 | 0.275 | 0.789 | 0.629 |
-| Long-standing illness | 0.223 | 0.108 | 0.789 | 0.789 |
-| Activity limitation | 0.229 | 0.129 | 0.296 | 0.141 |
+| Accumulated measure | Effect alone | FDR alone | Boot alone | FDR given current | Boot given current |
+|---|---:|---:|---:|---:|---:|
+| Unmet care | +0.30 | 0.372 | 0.494 | 0.296 | 0.081 |
+| Not-good health | −0.20 | 0.295 | 0.288 | 0.789 | 0.619 |
+| Long-standing illness | −0.25 | 0.225 | 0.109 | 0.789 | 0.795 |
+| Activity limitation | −0.24 | 0.230 | 0.131 | 0.296 | 0.140 |
 
-The accumulated-health block reduces the simple baseline residual from +47.47
-to +43.29, but Greece remains the most under-predicted country and no component
-has robust individual support. The combined current-plus-accumulated block is
-not interpretable: its maximum VIF is 54.9. Even the current-only health block
-has a maximum VIF of 24.6 because the three broad health-status measures overlap
-heavily.
+The accumulated-health block reduces the simple baseline residual from +47.49 to
++43.32, and Greece remains the most under-predicted country by a wide margin. No
+component has robust individual support.
 
-## Within-country evidence
+**The blocks are not collinear.** With an intercept in the design matrix the
+maximum VIF is 1.7 for the current block, 2.0 for the accumulated block, and 4.0
+for the two combined — all well inside any conventional threshold. The three
+health-status measures correlate 0.47 to 0.58 with each other, which is
+moderate, not severe. Collinearity is therefore *not* a reason to reject these
+models; the lack of individual support is.
 
-Two exploratory within-country signals appear after country means are
-separated from annual deviations:
+## Within-country evidence, and a sign reversal
 
-| Measure | Within coefficient | Cluster p | Wild-bootstrap p | LOO sign stable |
-|---|---:|---:|---:|---:|
-| Not-good health | +0.565 | 0.014 | 0.037 | yes |
-| Activity limitation | +0.405 | 0.020 | 0.031 | yes |
+Separating country means from annual deviations changes the sign for every
+health-status measure:
 
-Within Greece, their simple correlations with hardship are 0.84 and 0.71.
-This says that years when people report worse health or more limitation also
-tend to be years when they report more hardship.
+| Measure | Between countries | Within countries | Within cluster p | Within bootstrap p | Reversal |
+|---|---:|---:|---:|---:|:--:|
+| Unmet medical care | +0.803 (p 0.670) | +0.500 | 0.198 | 0.185 | no |
+| Not-good health | −0.350 (p 0.269) | **+0.567** | 0.014 | 0.034 | **yes** |
+| Long-standing illness | −0.559 (p 0.087) | +0.332 | 0.351 | 0.379 | **yes** |
+| Activity limitation | −0.427 (p 0.237) | **+0.406** | 0.020 | 0.031 | **yes** |
 
-It does not establish a dynamic mechanism. In first differences, none of the
-four health coefficients survives FDR; the adjusted p-values are 0.284 or
-higher. The health variables and hardship are also collected through EU-SILC,
-so common survey method and general response consistency remain possible.
+This is the single most important result in the extension, and the earlier draft
+missed it by reporting the two halves in separate sections. It is the same
+between/within reversal the main report treats as a headline limitation.
+
+The reading is that the negative pooled coefficients are cross-country
+composition, not a health effect. Richer countries report worse health *and*
+less hardship, so pooling the two comparisons produces a coefficient with the
+wrong sign that describes neither. Within a country, years of worse reported
+health are years of more reported hardship — the expected direction. Both within
+coefficients that clear the bootstrap are leave-one-country-out sign-stable.
+
+The first-difference stage points the same way and reaches the same limit: all
+four coefficients are correctly signed (+0.11 to +0.19), and none survives FDR
+(adjusted p 0.275 or higher).
+
+Within Greece specifically, the simple correlations with hardship over 2016–2024
+are +0.84 for not-good health and +0.70 for activity limitation — **and −0.70
+for long-standing illness**, which runs the other way on the same nine years.
+The earlier draft reported the two positive correlations and omitted the
+negative one. With nine observations none of the three should carry weight.
+
+None of this establishes a mechanism. The health variables and hardship are both
+collected through EU-SILC, so common survey method and general response
+consistency remain live explanations for the within-country co-movement.
 
 ## Incremental checks against the proximity-clean companion
 
 No health measure adds robust, directionally coherent information to the
-existing five-predictor companion model. Current and accumulated chronic
-illness clear conventional FDR at 0.047, but both coefficients have the wrong
-substantive sign and fail the wild bootstrap (0.087 and 0.088). They should be
-treated as cross-country suppression or construct mismatch, not findings.
+report's five-predictor companion model (P3 with the same-instrument deprivation
+measure removed).
+
+Current and accumulated long-standing illness clear conventional FDR at 0.049,
+but both coefficients have the wrong sign (−0.34 and −0.08) and neither comes
+close to the bootstrap (0.439 and 0.308). Under the pre-registered rule, a
+wrong-signed result that clears FDR is recorded as a contradiction, not filed as
+a quiet null — and here it does not clear the bootstrap either. Seven of the
+eight tests are wrong-signed; the eighth, accumulated unmet care, is +0.017 with
+a bootstrap p of 0.922.
 
 ## Preliminary conclusion
 
@@ -143,16 +192,18 @@ of what hardship means in practice, ideally split into cost, waiting-time, and
 distance barriers and by income group.
 
 The within-country co-movement of hardship with not-good health and activity
-limitation is useful as same-instrument corroboration. It suggests hardship is
-not entirely detached from broader reported wellbeing, but it is not
-independent validation.
+limitation is useful as same-instrument corroboration, and the between/within
+reversal is itself worth reporting: it is a clean second instance of the
+limitation the main report already documents. Neither is independent validation.
 
 ### Does not add value to the models
 
 The four health measures should not be added to the headline explanatory
-models. Current levels are unsupported, accumulated versions add no robust
-information, the block models are collinear, and the broad health measures can
-be consequences of hardship rather than causes.
+models. Current levels are unsupported and three of four are wrong-signed;
+accumulated versions add no robust information; the pooled estimates are
+contaminated by cross-country composition; and health may be a consequence of
+hardship rather than a cause. Note that collinearity is *not* among the reasons
+— that argument, made in the first draft, does not hold.
 
 ### Best next extension
 
@@ -161,7 +212,25 @@ age-specific rates and add independent sources: out-of-pocket health spending,
 catastrophic health expenditure, prescribed-medicine access, and avoidable or
 treatable mortality. Those data can test whether the survey signals align with
 administrative or expenditure evidence without creating another EU-SILC
-restatement.
+restatement. Age standardisation is the highest-value single fix: the negative
+between-country coefficients are exactly what an age-composition artefact would
+produce.
+
+## What changed from the first draft
+
+| Claim in the first draft | Status |
+|---|---|
+| All descriptive numbers, ranks, medians | **Confirmed**, reproduce exactly |
+| Current-level FDR and bootstrap p-values | **Confirmed** to within bootstrap noise |
+| Accumulated "alone" p-values | **Confirmed** |
+| Within coefficients +0.565, +0.405 | **Confirmed** (+0.567, +0.406) |
+| Standardised effects 0.21 / 0.32 / 0.15 | **Corrected** — they are −0.21 / −0.32 / −0.15 |
+| "Maximum VIF is 54.9 … 24.6" | **Wrong.** Those are VIFs computed without an intercept in the design matrix, which measures distance from the origin rather than collinearity. Correct values are 4.0 and 1.7 |
+| "The combined block is not interpretable" | **Withdrawn**, as it rested on the VIF error |
+| Within-Greece correlations 0.84, 0.71 | **Confirmed** (0.84, 0.70); chronic illness at −0.70 added |
+| Companion bootstrap 0.087, 0.088 | **Not reproduced**; this specification gives 0.439 and 0.308, further from significance |
+| Between/within sign reversal | **New** — not in the first draft |
+| First differences correctly signed | **New** — the first draft reported only that they fail FDR |
 
 ## Main limitations
 
@@ -169,6 +238,17 @@ restatement.
 - Twenty-seven country clusters.
 - EU-SILC self-reporting and common-method dependence.
 - Health may be an outcome or mediator of hardship, not an antecedent cause.
-- Broad health rates are not age-standardised.
+- Broad health rates are not age-standardised, which is the most likely source
+  of the negative between-country coefficients.
 - Health-status accumulation begins only in 2016 and is not a crisis-era
   exposure measure.
+- Within-Greece correlations rest on nine observations.
+
+## Reproducing
+
+```bash
+python3 scripts/93_health_extension.py
+```
+
+Offline by default, reading `data/raw/health_panel.csv`. Pass `--fetch` to
+re-acquire the panel from Eurostat, which moves the data vintage.
