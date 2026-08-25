@@ -634,8 +634,14 @@ then collapse under the bootstrap, to 0.40 and 0.55.</p>
     // that is the same key twice, and it makes the reader look away from the
     // data to learn something already written beside it. Where every series is
     // labelled directly, there is no legend at all.
+    // All or nothing. Listing only the series the chart could not label
+    // directly produced a legend naming two lines out of six, which reads as an
+    // omission rather than a key. If ANY named series lacks an end label, the
+    // legend carries them all; if every one is labelled, there is no legend.
     const ended=new Set(ends.map(e=>e.s));
-    const unlabelled=d.series.filter(s=>s.label&&!ended.has(s));
+    const named=d.series.filter(s=>s.label);
+    const anyUnlabelled=named.some(s=>!ended.has(s));
+    const unlabelled=anyUnlabelled?named:[];
     if(unlabelled.length||d.contextLabel){
       const lg=document.createElement('div');lg.className='legend';
       if(d.contextLabel){

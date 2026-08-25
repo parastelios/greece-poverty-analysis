@@ -52,9 +52,10 @@ for lbl, src, tone, style, weight in [
         ("Greece: income poverty", gr.arop, "series-3", "solid", "normal"),
         ("EU median: income poverty", med.arop, "series-3", "dashed", "light")]:
     f1.add(lbl, [float(src.get(y)) for y in yrs], tone=tone, style=style, weight=weight)
-# Every other country's hardship series, drawn faintly behind. The median alone
-# says where the middle is; the spread says whether Greece is the end of a
-# distribution or detached from it, which is the question of this stage.
+# Two views. The first is the comparison alone: four lines, nothing else, so
+# the distance between the two measures reads without competition. The second
+# puts every other country's hardship behind it, which answers a different
+# question -- is Greece the end of a distribution, or outside it?
 ctx1 = []
 for g, sub in panel.groupby("geo"):
     if g == "EL":
@@ -65,20 +66,43 @@ for g, sub in panel.groupby("geo"):
     if sum(v is not None for v in vals) >= 2:
         ctx1.append({"label": NAMES.get(g, g), "values": vals})
 
+_series1 = [{"label": l, "tone": m["tone"], "style": m["style"],
+             "weight": m["weight"], "values": [round(v, 1) for v in vs]}
+            for l, vs, m in f1.rows]
+
+v1a = {"years": [int(y) for y in yrs], "dp": 1, "yLabel": "% of households",
+       "alt": "Greek reported hardship against income poverty, 2015 to 2024, "
+              "with the EU median of each for comparison",
+       "series": _series1}
+
+# The second view drops the EU median for hardship: with every country drawn,
+# the median is one line among twenty-seven and adds nothing the spread does
+# not already say. Income poverty stays, because the gap is the subject.
+f1b = ce.Series([str(int(y)) for y in yrs], dp=1)
+for lbl, src, tone, style, weight in [
+        ("Greece: reported hardship", gr.subjective_poverty, "gr", "solid", "strong"),
+        ("Greece: income poverty", gr.arop, "series-3", "solid", "normal"),
+        ("EU median: income poverty", med.arop, "series-3", "dashed", "light")]:
+    f1b.add(lbl, [float(src.get(y)) for y in yrs], tone=tone, style=style,
+            weight=weight)
+
+v1b = {"years": [int(y) for y in yrs], "dp": 1, "yLabel": "% of households",
+       "context": ctx1,
+       "contextLabel": "Each other EU country: reported hardship",
+       "alt": "Greek reported hardship against every other EU country's, with "
+              "Greek and EU-median income poverty for scale. Greece sits clear "
+              "above the whole spread",
+       "series": [{"label": l, "tone": m["tone"], "style": m["style"],
+                   "weight": m["weight"], "values": [round(v, 1) for v in vs]}
+                  for l, vs, m in f1b.rows]}
+
 FIGS["F1"] = dict(
     caption="Reported hardship and income poverty remain far apart, despite "
             "some narrowing",
-    kind="panel", series=f1,
-    payload={"years": [int(y) for y in yrs], "dp": 1,
-             "yLabel": "% of households",
-             "context": ctx1,
-             "contextLabel": "Each other EU country: reported hardship",
-             "alt": "Greek reported hardship against income poverty, 2015 to "
-                    "2024, with every other EU country's hardship series drawn "
-                    "faintly behind. Greece sits clear above the whole spread",
-             "series": [{"label": l, "tone": m["tone"], "style": m["style"],
-                         "weight": m["weight"], "values": [round(v, 1) for v in vs]}
-                        for l, vs, m in f1.rows]},
+    kind="panel", series=f1, payload=v1a,
+    views=[("Greece against the EU median", v1a),
+           ("Greece against every country", v1b)],
+    view_series=[f1, f1b],
     first="Series")
 
 # ---- F2 ladder -----------------------------------------------------------
@@ -146,47 +170,20 @@ v3b = {"years": ay, "dp": 1, "yLabel": "% of people",
                    "weight": m["weight"], "values": [round(v, 1) for v in vs]}
                   for l, vs, m in f3b.rows]}
 
-# Greek income poverty against every other country, so the flatness of the
-# official line is visible as a fact about Greece rather than asserted.
-ctx3 = []
-for g, sub in panel.dropna(subset=["arop"]).groupby("geo"):
-    if g == "EL":
-        continue
-    s2 = sub.set_index("time").arop
-    vals = [float(s2.get(y)) if y in s2.index and pd.notna(s2.get(y)) else None
-            for y in yrs]
-    if sum(v is not None for v in vals) >= 2:
-        ctx3.append({"label": NAMES.get(g, g), "values": vals})
-
-f3c = ce.Series([str(int(y)) for y in yrs], dp=1)
-f3c.add("Greece: income poverty", [float(gr.arop.get(y)) for y in yrs],
-        tone="gr", style="solid", weight="strong")
-f3c.add("EU median: income poverty", [float(med.arop.get(y)) for y in yrs],
-        tone="eu", style="dashed", weight="normal")
-v3c = {"years": [int(y) for y in yrs], "dp": 1, "yLabel": "% of people",
-       "context": ctx3, "contextLabel": "Each other EU country: income poverty",
-       "alt": "Greek income poverty against every other EU country: Greece "
-              "sits inside the European range and barely moves",
-       "series": [{"label": l, "tone": m["tone"], "style": m["style"],
-                   "weight": m["weight"], "values": [round(v, 1) for v in vs]}
-                  for l, vs, m in f3c.rows]}
-
 FIGS["F3"] = dict(
     caption="Who counts as poor barely moved; what the poverty line buys fell "
             "by a fifth",
     kind="panel", series=f3b, payload=v3b,
     views=[("Who falls below a fixed line", v3b),
-           ("Greece against every other country", v3c),
            ("What the line itself is worth", v3a)],
-    view_series=[f3b, f3c, f3],
+    view_series=[f3b, f3],
     extra_caveat=(
-        "The first two views count PEOPLE; the third counts EUROS. In the "
-        "third, both lines are the same official threshold: one as published "
-        "in each year's own money, the other converted into what it could buy "
-        "in 2008. The cash line recovers and the purchasing-power line does "
-        "not, and that difference is why the first view's two counts diverge. "
-        "The first and third views are Greece only and support no "
-        "cross-country statement."),
+        "The first view counts PEOPLE, the second counts EUROS. In the second, "
+        "both lines are the same official threshold: one as published in each "
+        "year's own money, the other converted into what it could buy in 2008. "
+        "The cash line recovers and the purchasing-power line does not, and "
+        "that difference is why the first view's two counts diverge. Both "
+        "views are Greece only and support no cross-country statement."),
     first="Series")
 
 # ---- F4 the bridge -------------------------------------------------------
@@ -305,23 +302,30 @@ ay2 = sorted(age.time.unique())
 f5b = ce.Series([str(int(y)) for y in ay2], dp=1)
 # Age groups are not a Greece/EU comparison, so neither reserved colour is
 # used. Neutral series colours throughout, with 65+ emphasised by weight.
-for g, tone, w in [("TOTAL", "text-muted", "light"), ("Y_LT18", "series-4", "normal"),
-                   ("Y18-24", "series-5", "normal"), ("Y25-49", "series-3", "normal"),
-                   ("Y50-64", "text-muted", "normal"), ("Y_GE65", "gr", "strong")]:
+# Each age band is a PAIR: Greece solid, the EU median for the same band
+# dashed, in the SAME colour. Drawing every European line in the reserved EU
+# orange said only "these are Europe" and left the reader to work out which
+# Greek line each belonged to. Colour now encodes the age group and dash
+# encodes the country, so a pair reads as one comparison.
+AGE_TONE = [("TOTAL", "chart-neutral", "light"), ("Y_LT18", "series-4", "normal"),
+            ("Y18-24", "series-5", "normal"), ("Y25-49", "series-3", "normal"),
+            ("Y50-64", "eu", "normal"), ("Y_GE65", "gr", "strong")]
+for g, tone, w in AGE_TONE:
     s = age[age.age == g].set_index("time").arope_rate
     if s.empty:
         continue
     f5b.add(AGEL[g], [float(s.get(y)) if y in s.index else None for y in ay2],
             tone=tone, style="solid", weight=w)
-for g, lbl in [("Y_GE65", "EU median: 65 and over"), ("TOTAL", "EU median: all ages")]:
+for g, tone, w in AGE_TONE:
     s = age_eu[age_eu.age == g].set_index("time").arope_rate
     if s.empty:
         continue
-    f5b.add(lbl, [float(s.get(y)) if y in s.index else None for y in ay2],
-            tone="eu", style="dashed", weight="light" if g == "TOTAL" else "normal")
+    f5b.add(f"EU: {AGEL[g].lower()}",
+            [float(s.get(y)) if y in s.index else None for y in ay2],
+            tone=tone, style="dashed", weight="light")
 v5b = {"years": [int(y) for y in ay2], "dp": 1, "yLabel": "% of age group",
-       "alt": "Greek AROPE by age group with 65 and over emphasised, against "
-              "the EU median for the same band and for all ages",
+       "alt": "Greek AROPE by age group, each paired with the EU median for "
+              "the same band in the same colour: Greece solid, Europe dashed",
        "series": [{"label": l, "tone": m["tone"], "style": m["style"],
                    "weight": m["weight"],
                    "values": [None if v is None else round(v, 1) for v in vs]}
@@ -353,23 +357,26 @@ sx = pd.read_csv(PROC / "arope_by_sex.csv")
 SEXL = {"T": "All", "F": "Women", "M": "Men"}
 sy = sorted(sx.time.unique())
 f5d = ce.Series([str(int(y)) for y in sy], dp=1)
-for g, tone, w in [("T", "chart-neutral", "light"), ("F", "gr", "strong"),
-                   ("M", "series-5", "normal")]:
+# Paired like the age view: colour encodes the group, dash encodes the country.
+SEX_TONE = [("T", "chart-neutral", "light"), ("F", "gr", "strong"),
+            ("M", "series-5", "normal")]
+for g, tone, w in SEX_TONE:
     s = sx[(sx.geo == "EL") & (sx.sex == g)].set_index("time").arope_rate
     if s.empty:
         continue
     f5d.add(SEXL[g], [float(s.get(y)) if y in s.index else None for y in sy],
             tone=tone, style="solid", weight=w)
-for g, lbl in [("F", "EU median: women"), ("M", "EU median: men")]:
+for g, tone, w in SEX_TONE:
     s = sx[(sx.geo == "EU27_2020") & (sx.sex == g)].set_index("time").arope_rate
     if s.empty:
         continue
-    f5d.add(lbl, [float(s.get(y)) if y in s.index else None for y in sy],
-            tone="eu", style="dashed", weight="normal" if g == "F" else "light")
+    f5d.add(f"EU: {SEXL[g].lower()}",
+            [float(s.get(y)) if y in s.index else None for y in sy],
+            tone=tone, style="dashed", weight="light")
 v5d = {"years": [int(y) for y in sy], "dp": 1, "yLabel": "% of people",
-       "alt": "Greek AROPE by sex against the EU median for the same sex: "
-              "Greek women above Greek men in every year, both far above their "
-              "European counterparts",
+       "alt": "Greek AROPE by sex, each paired with the EU median for the same "
+              "sex in the same colour: Greece solid, Europe dashed. Greek women "
+              "sit above Greek men throughout, and both far above Europe",
        "series": [{"label": l, "tone": m["tone"], "style": m["style"],
                    "weight": m["weight"],
                    "values": [None if v is None else round(v, 1) for v in vs]}
@@ -395,12 +402,11 @@ FIGS["F5"] = dict(
     extra_caveat=(
         "Very low work intensity is part of AROPE, but the project does not "
         "hold a comparable national-total series for this view; its available "
-        "age coverage uses a different population base. And aggregate component "
-        "rates cannot reconstruct the AROPE union in any case. In the last "
-        "view the two bars are EXACT decomposition terms, not estimates: they "
-        "carry no uncertainty and no interval is drawn. Within-group means the "
-        "rate changed inside an age group; composition means the size of the "
-        "group changed."),
+        "age coverage uses a different population base, and aggregate "
+        "component rates cannot reconstruct the AROPE union in any case. In "
+        "the age and sex views, colour marks the group and dash marks the "
+        "country: each Greek line is paired with the EU median for the same "
+        "group in the same colour."),
     first="Series")
 
 

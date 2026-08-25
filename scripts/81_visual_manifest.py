@@ -33,7 +33,7 @@ M = [
       question="How far apart are reported hardship and official income "
                "poverty for Greece, and does the distance close over time?",
       artifact="e0_extended_panel.csv",
-      series="subjective_poverty and arop for Greece, with the EU median of each",
+      series="VIEW A: Greek hardship and income poverty against the EU median of each. VIEW B: Greek hardship against every other member state, with Greek and EU-median income poverty for scale",
       interaction="hover reads both values and the gap for the year",
       fallback="year x subjective hardship, AROP, gap; Greece and EU median",
       caveat="AROPE is deliberately absent here. It enters at Stage 2 as the "
@@ -52,13 +52,11 @@ M = [
       artifact="e0_extended_panel.csv, anchored_poverty.csv, "
                "analysis_dataset.csv",
       series="VIEW A: anchored against current-year poverty rates. "
-             "VIEW B: Greek income poverty against every other country. "
-             "VIEW C: the threshold itself, cash against 2008 purchasing power",
+             "VIEW B: the threshold itself, cash against 2008 purchasing power",
       interaction="switch between the three views; hover reads the rates or "
                   "the two threshold values, and names any faint country line",
-      fallback="year x anchored and current-year rates; year x Greek and EU "
-               "median income poverty; year x threshold in cash and in 2008 "
-               "purchasing power",
+      fallback="year x anchored and current-year rates; year x threshold in "
+               "cash and in 2008 purchasing power",
       caveat="The anchored series is an approximation built in this project "
              "and is labelled as such wherever it appears.",
       status_label="descriptive"),

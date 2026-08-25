@@ -44,7 +44,7 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `p6-rewrite` |
-| HEAD | `597b1ac` Redesign the reporting-style figure as distribution strips |
+| HEAD | `2b01db8` Redesign the affordability figure as small multiples |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-25 |
 | Frozen V1 reference | `v1-final` |
@@ -3346,6 +3346,9 @@ Deviations must be disclosed in the stage that made them, not only here.
 | C-65 | 2026-08-23 | The affordability figure asked the reader to compare four tabs from memory | The comparison between items IS the finding, and switching tabs makes it an act of recall | Replaced with small multiples, four panels side by side, each carrying its own within-country correlation. New `multiples` chart type |
 | C-66 | 2026-08-23 | The checksum routine unescaped table CELLS but not HEADERS | Any column name containing an apostrophe or ampersand hashed differently from the builder's own. Latent since the check was written; it fired the first time a header contained one, 'Greece's position' | Headers unescaped identically to cells; the checksum still catches a tampered value |
 | C-67 | 2026-08-23 | Three figures shipped stating the same caveat twice | The caveat is assembled from the manifest text plus whatever the builder adds, and builders restated what the manifest already carried | Manifest caveats shortened; a check now compares the two halves for a repeated opening and fails on it |
+| C-68 | 2026-08-23 | The threshold figure and the AROPE breakdown plotted the SAME chart | A view added to the threshold figure reproduced the AROPE breakdown's income-poverty view exactly: same series, same 26 context countries, same values. Every check passed because each was individually well formed | The duplicate view removed from the threshold figure, where income poverty is not the subject; a check now fails when any two views plot identical data |
+| C-69 | 2026-08-23 | The legend named some series and the chart named others | Listing only the series the chart could not label directly produced a legend naming two lines out of six, which reads as an omission rather than a key | All or nothing: if any named series lacks an end label the legend carries them all, and if every one is labelled there is no legend |
+| C-70 | 2026-08-23 | Every European line in the age and sex views drew in the reserved EU colour | That said only 'these are Europe' and left the reader to work out which Greek line each belonged to | Colour now encodes the group and dash encodes the country, so each Greek band is paired with its own European counterpart |
 
 ## Artifact Index
 

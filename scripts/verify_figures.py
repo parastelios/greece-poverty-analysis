@@ -17,8 +17,11 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import chart_engine as ce
 
 ROOT = Path(__file__).resolve().parents[1]
-TARGETS = [p for p in [ROOT / "output" / "prototype.html",
-                       ROOT / "output" / "batch1.html",
+# output/prototype.html is the original two-figure preview, built before the
+# batch pages existed and superseded by them. It carries its own copies of two
+# figures that have since been redesigned, so checking it against the current
+# manifest measures a scaffold rather than a deliverable.
+TARGETS = [p for p in [ROOT / "output" / "batch1.html",
                        ROOT / "output" / "batch2.html",
                        ROOT / "output" / "batch3.html",
                        ROOT / "output" / "batch4.html",
@@ -294,6 +297,34 @@ for path in TARGETS:
                 dupes.append(f"{fid}: caveat repeats \"{k}...\"")
             heads[k] = True
     check("no figure states the same caveat twice", not dupes, "; ".join(dupes))
+
+    # Two views plotting identical data. This happened twice: a view added to
+    # the threshold figure reproduced the income-poverty view of the AROPE
+    # breakdown exactly -- same series, same 26 context countries, same values
+    # -- and every check passed, because each was individually well formed.
+    seen_views, same = {}, []
+    for b in blocks:
+        fid = re.search(r'id="([^"]+)"', b).group(1)
+        for attrs, body in re.findall(
+                r'<script type="application/json"([^>]*)>(.*?)</script>', b, re.S):
+            try:
+                d = json.loads(body.replace("<\\/", "</"))
+            except Exception:
+                continue
+            core = json.dumps({k: d.get(k) for k in
+                               ("series", "context", "rows", "strips", "panels")},
+                              sort_keys=True)
+            if len(core) < 80:
+                continue
+            key = hashlib.sha256(core.encode()).hexdigest()[:12]
+            lbl = (re.search(r'data-label="([^"]*)"', attrs) or [None, ""])[1] \
+                if "data-label" in attrs else ""
+            here = f"{fid}{'/' + lbl if lbl else ''}"
+            if key in seen_views:
+                same.append(f"{seen_views[key]} and {here} plot identical data")
+            else:
+                seen_views[key] = here
+    check("no two views plot identical data", not same, "; ".join(same))
 
     check("no chart colour bypasses the tone alias",
           not raw_tone_use,

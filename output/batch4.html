@@ -418,7 +418,7 @@ whether closely related deprivation measures are admitted.</p>
 <p>Nothing in that table is new. Every row points at a result reached in an
 earlier stage, and this section introduces no estimate and no interpretation
 that was not already established and bounded where it was produced.</p>
-<footer class="stamp">Built 2026-08-25 09:49 from commit <code>597b1ac</code> + uncommitted changes. If this does not match the current commit, the page is stale &mdash; reopen the file rather than refreshing.</footer>
+<footer class="stamp">Built 2026-08-25 10:02 from commit <code>2b01db8</code> + uncommitted changes. If this does not match the current commit, the page is stale &mdash; reopen the file rather than refreshing.</footer>
 <script>
 (function(){
   const NS='http://www.w3.org/2000/svg';
@@ -661,8 +661,14 @@ that was not already established and bounded where it was produced.</p>
     // that is the same key twice, and it makes the reader look away from the
     // data to learn something already written beside it. Where every series is
     // labelled directly, there is no legend at all.
+    // All or nothing. Listing only the series the chart could not label
+    // directly produced a legend naming two lines out of six, which reads as an
+    // omission rather than a key. If ANY named series lacks an end label, the
+    // legend carries them all; if every one is labelled, there is no legend.
     const ended=new Set(ends.map(e=>e.s));
-    const unlabelled=d.series.filter(s=>s.label&&!ended.has(s));
+    const named=d.series.filter(s=>s.label);
+    const anyUnlabelled=named.some(s=>!ended.has(s));
+    const unlabelled=anyUnlabelled?named:[];
     if(unlabelled.length||d.contextLabel){
       const lg=document.createElement('div');lg.className='legend';
       if(d.contextLabel){
