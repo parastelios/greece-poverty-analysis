@@ -604,6 +604,7 @@ JS = r"""
   // holds across items.
   function multiples(host,d){
     const W=widthFor(host);
+    const ms2=measurer(host);
     const cols=W<560?1:2, n=d.panels.length, rows=Math.ceil(n/cols);
     const gapX=W<560?0:18, gapY=34;
     const cw=(W-gapX*(cols-1))/cols, ch=W<560?150:132;
@@ -613,7 +614,7 @@ JS = r"""
     d.panels.forEach((p,i)=>{
       const cx=(i%cols)*(cw+gapX), cy=Math.floor(i/cols)*(ch+gapY);
       const isLines=!!p.series;
-      const padL=44,padR=isLines?86:12,padT=22,padB=26;
+      const padL=44,padR=isLines?104:12,padT=22,padB=26;
       const pw=cw-padL-padR, ph=ch-padT-padB;
       // A panel is either a cloud of points or a set of lines over a shared
       // x. Lines are what show two quantities MOVING together, which a
@@ -621,8 +622,10 @@ JS = r"""
       const xs2=isLines?p.x:p.points.map(q=>q.x);
       const ys2=isLines?p.series.flatMap(s=>s.values.filter(v=>v!=null))
                        :p.points.map(q=>q.y);
-      const xlo=Math.min(...xs2),xhi=Math.max(...xs2);
-      const ylo=Math.min(...ys2),yhi=Math.max(...ys2);
+      const xlo=d.xMin!=null?d.xMin:Math.min(...xs2);
+      const xhi=d.xMax!=null?d.xMax:Math.max(...xs2);
+      const ylo=d.yMin!=null?d.yMin:Math.min(...ys2);
+      const yhi=d.yMax!=null?d.yMax:Math.max(...ys2);
       const X=v=>cx+padL+(v-xlo)/((xhi-xlo)||1)*pw;
       const Y=v=>cy+padT+ph-(v-ylo)/((yhi-ylo)||1)*ph;
       const ttl=el('text',{x:cx+padL,y:cy+12,class:'axis-label',
@@ -631,12 +634,26 @@ JS = r"""
       // Each panel names its item and its within-country correlation, so the
       // number travels with the picture instead of sitting in a caption.
       ttl.textContent=p.r==null?p.label:`${p.label}   r = ${fmt(p.r,2)}`;
-      // Zero lines: these are deviations from a country mean, so the origin is
-      // the country's own average and quadrants carry meaning.
+      // Zero lines: these are deviations from an average, so the origin is
+      // that average, and being above or below it is the whole point.
       if(xlo<0&&xhi>0)svg.appendChild(el('line',{x1:X(0),x2:X(0),y1:cy+padT,
-        y2:cy+padT+ph,class:'gridline'}));
+        y2:cy+padT+ph,class:'zero-line'}));
       if(ylo<0&&yhi>0)svg.appendChild(el('line',{x1:cx+padL,x2:cx+padL+pw,
-        y1:Y(0),y2:Y(0),class:'gridline'}));
+        y1:Y(0),y2:Y(0),class:'zero-line'}));
+      // Labelled ticks. Without them a reader sees a shape and cannot say how
+      // large it is, and with per-panel scales cannot compare two shapes at all.
+      (d.yTicks||[]).forEach(v=>{
+        if(v<ylo||v>yhi)return;
+        if(v!==0)svg.appendChild(el('line',{x1:cx+padL,x2:cx+padL+pw,
+          y1:Y(v),y2:Y(v),class:'gridline'}));
+        const tk=el('text',{x:cx+padL-5,y:Y(v)+3,'text-anchor':'end',
+          class:'axis-label',style:'opacity:.85'});
+        tk.textContent=fmt(v,d.tickDp==null?0:d.tickDp);svg.appendChild(tk);});
+      (d.xTicks||[]).forEach(v=>{
+        if(v<xlo||v>xhi)return;
+        const tk=el('text',{x:X(v),y:cy+ch-6,'text-anchor':'middle',
+          class:'axis-label',style:'opacity:.85'});
+        tk.textContent=fmt(v,d.tickDp==null?0:d.tickDp);svg.appendChild(tk);});
       if(isLines){
         p.series.forEach(s=>{
           let dd='',pen=false;
@@ -656,7 +673,8 @@ JS = r"""
             p._lys.push(ly);
             const lt=el('text',{x:X(p.x[li])+5,y:ly,class:'axis-label',
               style:`font-weight:700;fill:${toneVar(s.tone)}`});
-            lt.textContent=s.label||'';svg.appendChild(lt);}
+            svg.appendChild(lt);
+            fitLabel(lt,s.label||'',cx+cw-(X(p.x[li])+7),ms2,true);}
         });
       } else {
         p.points.forEach(q=>{
@@ -687,6 +705,7 @@ JS = r"""
     const yl=el('text',{x:12,y:H/2,class:'axis-label',
       transform:`rotate(-90 12 ${H/2})`,'text-anchor':'middle'});
     yl.textContent=d.yLabel||'';svg.appendChild(yl);
+    ms2.done();
     host.insertBefore(svg,host.firstChild);
   }
 
@@ -1017,10 +1036,27 @@ JS = r"""
     const n=fitPts.length||1;
     const mx=fitPts.reduce((a,b)=>a+b.x,0)/n,my=fitPts.reduce((a,b)=>a+b.y,0)/n;
     let sxy=0,sxx=0;fitPts.forEach(p=>{sxy+=(p.x-mx)*(p.y-my);sxx+=(p.x-mx)**2;});
+    (d.guides||[]).forEach(g=>{
+      const isX=g.axis==='x';
+      svg.appendChild(el('line',{
+        x1:isX?xs(g.value):padL, x2:isX?xs(g.value):W-padR,
+        y1:isX?padT:ys(g.value), y2:isX?padT+ph:ys(g.value),
+        stroke:'var(--chart-eu)','stroke-width':1.2,
+        'stroke-dasharray':'4 4',opacity:.8}));
+      const gt=el('text',{x:isX?xs(g.value)+4:W-padR,
+        y:isX?padT+11:ys(g.value)-5,
+        'text-anchor':isX?'start':'end',class:'axis-label',
+        style:'fill:var(--chart-eu)'});
+      gt.textContent=g.label||'';svg.appendChild(gt);});
     if(sxx>0){const b1=sxy/sxx,b0=my-b1*mx;
       svg.appendChild(el('line',{x1:xs(xlo-px),y1:ys(b0+b1*(xlo-px)),
-        x2:xs(xhi+px),y2:ys(b0+b1*(xhi+px)),stroke:'var(--text-secondary)',
-        'stroke-width':1.6,'stroke-dasharray':'5 3',opacity:.8}));}
+        x2:xs(xhi+px),y2:ys(b0+b1*(xhi+px)),stroke:'var(--chart-label)',
+        'stroke-width':1.6,'stroke-dasharray':'5 3',opacity:.85}));
+      if(d.fitLabel){
+        const fx=xlo+(xhi-xlo)*0.62;
+        const ft=el('text',{x:xs(fx),y:ys(b0+b1*fx)-7,class:'axis-label',
+          style:'fill:var(--chart-label);font-weight:600'});
+        ft.textContent=d.fitLabel;svg.appendChild(ft);}}
     const marks=[];
     d.points.forEach(p=>{
       const c=p.reference
@@ -1033,7 +1069,11 @@ JS = r"""
       svg.appendChild(c);marks.push({x:xs(p.x),y:ys(p.y),p:p});});
     // Name the highlighted case and the reference on the chart itself.
     d.points.filter(p=>p.highlight||p.reference).forEach(p=>{
-      const lb=el('text',{x:xs(p.x)+9,y:ys(p.y)+4,class:'axis-label',
+      // A long label on a point near the right edge runs off the chart. Put it
+      // on whichever side has room.
+      const right=xs(p.x)>padL+pw*0.55;
+      const lb=el('text',{x:xs(p.x)+(right?-9:9),y:ys(p.y)+4,
+        'text-anchor':right?'end':'start',class:'axis-label',
         style:`font-weight:700;fill:${p.reference?'var(--chart-eu)':'var(--chart-gr)'}`});
       lb.textContent=p.label||'';svg.appendChild(lb);});
     if(d.frameLabel){

@@ -130,7 +130,7 @@ FIGS["F6"] = dict(
         "are partly mechanical and must not be interpreted as independent "
         "relationships; the affected cells are outlined. This view carries the "
         f"outcomes and the {len(reps)} construct representatives only. "
-        "The full 31-variable matrix is in the statistical appendix: at that "
+        "The full 31-variable matrix is not shown anywhere: at that "
         "size it contains everything and shows almost nothing."))
 
 # ---- F7 diverging: share of the 2015 gap closed --------------------------
@@ -230,10 +230,10 @@ for col, label in ITEMS:
         "x": [int(y) for y in sub.time],
         "xLabel": "",
         "series": [
-            {"label": "hardship", "tone": "chart-gr",
+            {"label": "Reported hardship", "tone": "chart-gr",
              "values": [round(float(v - sub.subjective_poverty.mean()), 1)
                         for v in sub.subjective_poverty]},
-            {"label": "this item", "tone": "chart-s3",
+            {"label": label, "tone": "chart-s3",
              "values": [round(float(v - m), 1) for v in sub[col]]}]})
 
 # The European relationship, binned so it can be seen rather than inferred.
@@ -243,25 +243,28 @@ for col, label in ITEMS:
     for c in [col, "subjective_poverty"]:
         d[c + "_w"] = d[c] - d.groupby("geo")[c].transform("mean")
     r = float(d["subjective_poverty_w"].corr(d[col + "_w"]))
-    d["_bin"] = pd.qcut(d[col + "_w"], 9, labels=False, duplicates="drop")
-    b = d.groupby("_bin").agg(x=(col + "_w", "mean"),
-                              y=("subjective_poverty_w", "mean")).reset_index()
+    d[col + "_z"] = d[col + "_w"] / d[col + "_w"].std()
+    d["hard_z"] = d["subjective_poverty_w"] / d["subjective_poverty_w"].std()
+    d["_bin"] = pd.qcut(d[col + "_z"], 9, labels=False, duplicates="drop")
+    b = d.groupby("_bin").agg(x=(col + "_z", "mean"),
+                              y=("hard_z", "mean")).reset_index()
     sxx = ((b.x - b.x.mean()) ** 2).sum()
     b1 = (((b.x - b.x.mean()) * (b.y - b.y.mean())).sum() / sxx) if sxx else 0.0
     f8b.add(label, [float(len(b)), float(len(d)), r])
     panels_eu.append({
         "label": label, "r": round(r, 3),
-        "xLabel": "item, vs country's own average",
+        "xLabel": "",
         "points": [{"x": round(float(x), 2), "y": round(float(y), 2)}
                    for x, y in zip(b.x, b.y)],
         "fit": {"b1": round(b1, 4),
                 "b0": round(float(b.y.mean() - b1 * b.x.mean()), 4)}})
 
 FIGS["F8"] = dict(
-    caption="In Greece three concrete affordability problems move closely with "
-            "reported hardship; falling behind on bills does not",
+    caption="Three affordability measures closely track hardship in Greece; "
+            "falling behind on bills tracks it much less closely",
     kind="multiples",
     payload={"panels": panels_gr,
+             "yMin": -9, "yMax": 9, "yTicks": [-8, -4, 0, 4, 8],
              "yLabel": "Percentage points from each series' own 2015-2024 average",
              "alt": "Four panels, one per affordability measure, each showing "
                     "Greek reported hardship and that measure as deviations "
@@ -270,12 +273,16 @@ FIGS["F8"] = dict(
     series=f8, first="Measure",
     views=[("In Greece, year by year",
             {"panels": panels_gr,
+             "yMin": -9, "yMax": 9, "yTicks": [-8, -4, 0, 4, 8],
              "yLabel": "Percentage points from each series' own average",
              "alt": "Greek reported hardship and each affordability measure as "
                     "deviations from their own averages"}, "multiples"),
            ("Across Europe, binned",
             {"panels": panels_eu,
-             "yLabel": "Reported hardship, vs country's own average",
+             "xMin": -2.2, "xMax": 2.2, "yMin": -2.2, "yMax": 2.2,
+             "xTicks": [-1, 0, 1], "yTicks": [-1, 0, 1],
+             "yLabel": "Reported hardship, standard deviations from the "
+                       "country's own average",
              "alt": "Binned averages of country-years, each point grouping "
                     "country-years where the measure was similarly above or "
                     "below that country's normal level"}, "multiples")],
@@ -284,57 +291,56 @@ FIGS["F8"] = dict(
         "Both series in the first view are drawn as distances from their own "
         "2015-2024 average, so they share an axis without one dwarfing the "
         "other; the shapes may be compared, the levels may not. In the second "
-        "view each point groups country-years in which an affordability "
-        "problem was similarly above or below that country's normal level, and "
-        "the raw observations are in the statistical appendix. Same-survey "
-        "corroboration throughout: not independent validation, and not causal "
-        "evidence."))
+        "view both axes are in standard deviations from each country's own "
+        "average, so one step means the same thing in all four panels, and "
+        "each point groups country-years in which a problem sat similarly "
+        "above or below that country's normal level. The line there is fitted "
+        "through the nine plotted bins while the correlation in the title is "
+        "computed from all country-years: they are not the same calculation."))
 
-# ---- F20: what the four items absorb -------------------------------------
-# The country-correlation strip that stood here repeated the previous figure in
-# another statistical layer. This carries the next substantive result instead:
-# the four items take most of Greece's unexplained excess with them, and cannot
-# be treated as an explanation because they share the outcome's instrument.
+# ---- F20: what the model predicts against what Greece reports --------------
+# A one-row dumbbell was too little for a figure, and its grammar implied a
+# before-and-after process. What changed is the SPECIFICATION. Three points on
+# one axis -- two predictions and the observed value -- let a reader see what
+# "absorbed" means without translating residuals in their head.
 _res = pd.read_csv(PROC / "e3_restatement.csv").iloc[0]
-_base = float(_res.greece_resid_baseline)
-_with = float(_res.greece_resid_with_p1)
-f20 = ce.Series(["Before", "After", "Absorbed"], dp=2)
-f20.add("Greece's unexplained hardship", [_base, _with, _base - _with])
-f20.add("How much the model explains (R2 x 100)",
-        [float(_res.r2_baseline) * 100, float(_res.r2_with_p1) * 100,
-         (float(_res.r2_with_p1) - float(_res.r2_baseline)) * 100])
+_base_r, _with_r = float(_res.greece_resid_baseline), float(_res.greece_resid_with_p1)
+_items = ["arrears", "unexpected_expenses", "warm", "severe_mat_soc_deprivation"]
+_obs = float(panel.dropna(subset=["subjective_poverty", "arop"] + _items)
+             .query("geo == 'EL'").subjective_poverty.mean())
+
+f20 = ce.Series(["Percent of households"], dp=2)
+_rows20 = [
+    ("Income poverty and year alone", _obs - _base_r, False),
+    ("After adding four related survey items", _obs - _with_r, False),
+    ("What Greek households actually report", _obs, True),
+]
+for lbl, val, _ in _rows20:
+    f20.add(lbl, [val])
 
 FIGS["F20"] = dict(
-    caption="The four items take most of Greece's unexplained hardship with "
-            "them, but they come from the same survey",
-    kind="dumbbell",
-    payload={"rows": [
-        {"label": "Greece's unexplained hardship",
-         "a": round(_base, 1), "b": round(_with, 1),
-         "tone": "chart-warn", "strong": True,
-         "right": f"{(1 - _with / _base) * 100:.0f}% absorbed",
-         "detail": (f"before: <b>+{_base:.2f}</b> percentage points more "
-                    f"hardship than the model predicts<br>after adding the four "
-                    f"items: <b>+{_with:.2f}</b><br>the gap does not disappear, "
-                    f"it stops being statistically distinguishable"
-                    f"<br><span style='opacity:.65'>the share of variation the "
-                    f"model accounts for rises from "
-                    f"{float(_res.r2_baseline) * 100:.0f}% to "
-                    f"{float(_res.r2_with_p1) * 100:.0f}% across "
-                    f"{int(_res.n)} country-years</span>")}],
-        "dp": 1, "toneA": "chart-eu", "toneB": "chart-gr",
-        "legendA": "without the four items", "legendB": "with them",
-        "xLabel": "percentage points of reported hardship",
-        "alt": "Greece's unexplained hardship falls from +46.9 to +13.7 "
-               "percentage points when the four affordability items enter the "
-               "model"},
-    series=f20, first="Quantity",
+    caption=f"The baseline model expects Greece to report "
+            f"{_obs - _base_r:.0f}% hardship; Greek households report "
+            f"{_obs:.0f}%",
+    kind="ladder",
+    payload={"rows": [{"label": lbl, "name": lbl, "value": round(v, 1),
+                       "highlight": hl} for lbl, v, hl in _rows20],
+             "dp": 1, "unit": "%", "labelAll": True,
+             "xLabel": "percent of households reporting difficulty",
+             "alt": f"Three values on one scale: the baseline model predicts "
+                    f"{_obs - _base_r:.1f}%, adding four related survey items "
+                    f"raises the prediction to {_obs - _with_r:.1f}%, and "
+                    f"Greek households report {_obs:.1f}%"},
+    series=f20, first="Model",
     extra_caveat=(
-        "These four items are answered by the same households in the same "
-        "interview as the outcome, so part of what they absorb is the "
-        "interview rather than the world. The residual does not disappear: it "
-        "stops being statistically distinguishable, which is a fact about "
-        "shared variance and not about cause."))
+        f"The distance from a prediction to what Greece reports is the part the "
+        f"model does not account for: {_base_r:.2f} points on income poverty and "
+        f"year alone, {_with_r:.2f} after the four items enter, so "
+        f"{_base_r - _with_r:.2f} points, or {(1 - _with_r / _base_r) * 100:.0f}%, "
+        f"is absorbed. Absorption is not explanation: these four items are "
+        f"answered by the same households in the same interview as the outcome, "
+        f"so part of what they take with them is the interview rather than the "
+        f"world."))
 
 # ---- F9 coefficient (as prototyped) --------------------------------------
 TONE9 = {"supported": "series-3", "inconclusive_under_available_power": "text-muted",

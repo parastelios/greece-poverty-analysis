@@ -44,7 +44,7 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `p6-rewrite` |
-| HEAD | `6edcc71` Replace the affordability scatter with a correlation comparison |
+| HEAD | `961bd7e` Show the affordability relationship moving; give Figure 8 a new result |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-25 |
 | Frozen V1 reference | `v1-final` |
@@ -3356,6 +3356,9 @@ Deviations must be disclosed in the stage that made them, not only here.
 | C-75 | 2026-08-23 | The country-correlation strip repeated the previous figure in another statistical layer | Correlations from ten annual observations are unstable, and the view showed neither hardship nor affordability changing | Replaced with the next substantive result: the residual falling from +46.92 to +13.74 with 71% absorbed |
 | C-76 | 2026-08-23 | The absorption figure put percentage points of hardship and percent of variation on one axis | The two rows moved in opposite directions in different units, reading as one quantity improving while another worsened -- the defect corrected in the conditional figures | Model fit moved to the tooltip and the table; the axis carries one unit |
 | C-77 | 2026-08-23 | The duplicate-caveat check skipped short sentences | 'Absorption is not explanation.' repeated verbatim and passed, because the check ignored sentences under 45 characters | Threshold lowered and short sentences compared whole |
+| C-78 | 2026-08-23 | Two caveats claimed the statistical appendix contains raw scatter observations and the full 31-variable matrix | The appendix contains 65 TABLES and no figures at all, and no such matrix. These were assertions about another document's contents made without opening it | Both claims removed; the numbers behind each figure are in its own fallback table, which is true |
+| C-79 | 2026-08-23 | Small-multiple panels each chose their own scale | Similar-looking slopes were not comparable across panels and a small change could occupy as much height as a large one; the panels also carried almost no numerical axis | One scale across all panels, labelled ticks and a zero line; the European view standardised so one step means the same thing in every panel |
+| C-80 | 2026-08-23 | The absorption figure was a one-row dumbbell implying a before-and-after process | What changed is the SPECIFICATION, not time, and the figure asked the reader to translate residuals mentally | Rebuilt as three values on one axis: the baseline prediction at 25.1%, the prediction after four related items at 58.2%, and the 72.0% Greek households actually report. The claim that the residual 'stops being statistically distinguishable' is removed from the figure, since no interval is drawn |
 
 ## Artifact Index
 

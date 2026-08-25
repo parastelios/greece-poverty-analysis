@@ -77,7 +77,7 @@ f1.add("Greece: income poverty", [float(gr.arop.get(y)) for y in yrs],
        tone="series-3", style="solid", weight="strong")
 f1.add("EU median: income poverty", [float(med.arop.get(y)) for y in yrs],
        tone="series-3", style="dashed", weight="normal")
-v1a = {"years": [int(y) for y in yrs], "dp": 1, "yLabel": "% of households",
+v1a = {"years": [int(y) for y in yrs], "dp": 1, "yLabel": "Percent",
        "context": ctx1,
        "contextLabel": "Each other EU country: reported hardship",
        "alt": "Greek reported hardship and income poverty against the EU median "
@@ -87,53 +87,56 @@ v1a = {"years": [int(y) for y in yrs], "dp": 1, "yLabel": "% of households",
                    "weight": m["weight"], "values": [round(v, 1) for v in vs]}
                   for l, vs, m in f1.rows]}
 
-# One frame per year: pooling every country-year would recreate the
-# overplotting the affordability figure was redesigned to escape.
+# One year. The temporal story belongs to the first view; a year selector here
+# would add controls without changing the conclusion. The year-by-year version
+# is kept out of the report.
 both = panel.dropna(subset=["subjective_poverty", "arop"])
-sc_years = [int(y) for y in sorted(both.time.unique())
-            if both[both.time == y].geo.nunique() >= 25]
-frames = []
-for y in sc_years:
-    s = both[both.time == y]
-    pts = [{"x": round(float(r.arop), 1), "y": round(float(r.subjective_poverty), 1),
-            "label": NAMES.get(r.geo, r.geo), "highlight": r.geo == "EL"}
-           for r in s.itertuples()]
-    # A reference point, not an observed country: the median of each measure.
-    pts.append({"x": round(float(s.arop.median()), 1),
-                "y": round(float(s.subjective_poverty.median()), 1),
-                "label": "Median EU country", "reference": True})
-    frames.append({"label": str(y), "points": pts})
-
-_lastyr = sc_years[-1]
+_lastyr = int(max(y for y in both.time.unique()
+                  if both[both.time == y].geo.nunique() >= 25))
 _last = both[both.time == _lastyr]
 _lel = _last[_last.geo == "EL"].iloc[0]
+_medx, _medy = float(_last.arop.median()), float(_last.subjective_poverty.median())
+
+pts1 = [{"x": round(float(r.arop), 1), "y": round(float(r.subjective_poverty), 1),
+         "label": (f"Greece: income poverty {r.arop:.1f}%, hardship "
+                   f"{r.subjective_poverty:.1f}%" if r.geo == "EL"
+                   else NAMES.get(r.geo, r.geo)),
+         "highlight": r.geo == "EL"} for r in _last.itertuples()]
+
 f1b = ce.Series(["Income poverty (%)", "Reported hardship (%)"], dp=1)
 for r in _last.sort_values("arop").itertuples():
     f1b.add(NAMES.get(r.geo, r.geo), [float(r.arop), float(r.subjective_poverty)])
-v1b = {"frames": frames, "dp": 1,
-       "xLabel": "Income poverty, % of people",
-       "yLabel": "Reported hardship, % of households",
+
+v1b = {"points": pts1, "dp": 1,
+       "xLabel": "Income poverty, percent of people",
+       "yLabel": "Reported hardship, percent of households",
        "fitExcludesHighlight": True,
+       "fitLabel": "Peer relationship, Greece excluded",
+       # Guide lines rather than a synthetic point: a square at the two medians
+       # is not a country and needs explaining before it can be read.
+       "guides": [{"axis": "x", "value": round(_medx, 1),
+                   "label": f"median country: {_medx:.1f}%"},
+                  {"axis": "y", "value": round(_medy, 1),
+                   "label": f"median country: {_medy:.1f}%"}],
+       "frameLabel": str(_lastyr),
        "alt": f"Every EU country in {_lastyr} placed by income poverty and "
-              "reported hardship. Greece sits far above countries with similar "
-              "income poverty, and the cross-country relationship is only "
-              "moderately positive",
-       "points": frames[-1]["points"]}
+              "reported hardship. Greece has an ordinary income-poverty rate "
+              "and an extraordinary hardship rate, far above the peer line"}
 
 FIGS["F1"] = dict(
-    caption="Income poverty does not account for the hardship Greek households "
-            "report",
+    caption="Greece reports far more hardship than countries with similar "
+            "income poverty",
     kind="panel", series=f1, payload=v1a,
     views=[("How Greece's hardship gap developed", v1a),
-           ("Hardship against income poverty", v1b, "scatter")],
+           (f"Where countries stood in {_lastyr}", v1b, "scatter")],
     view_series=[f1, f1b],
     extra_caveat=(
-        "In the second view the dashed line is fitted to the other 26 countries, "
-        "EXCLUDING Greece, so it describes the European pattern Greece is being "
-        "judged against rather than one Greece helped set. The square is not a "
-        "country: it is the median of each measure taken separately. Income "
-        "poverty counts PEOPLE and reported hardship is answered by HOUSEHOLDS, "
-        "and this is a country-level comparison that says nothing about any "
+        "Reported hardship is answered by HOUSEHOLDS and income poverty counts "
+        "PEOPLE, so the axis is labelled percent rather than either. In the "
+        "second view the fitted line excludes Greece, describing the European "
+        "pattern Greece is being judged against rather than one Greece helped "
+        "set, and the dashed guides mark the median country on each measure "
+        "separately. Both views are country-level and say nothing about any "
         "individual household."),
     first="Series")
 

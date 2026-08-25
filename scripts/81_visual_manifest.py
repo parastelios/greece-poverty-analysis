@@ -270,14 +270,13 @@ dict(id="F16", stage=7, chart_type="panel",
              "NOT select variables, and a reversal is a fact about the two "
              "scopes rather than evidence about mechanism.",
       status_label="descriptive"),
- dict(id="F20", stage=3, chart_type="dumbbell",
-      question="How much of Greece's unexplained hardship do these four items "
-               "absorb, and what does that establish?",
-      artifact="e3_restatement.csv",
-      series="Greece's residual before and after the four items enter the "
-             "model, with the share of variation explained",
-      interaction="hover reads both values and the change",
-      fallback="quantity, before, after, absorbed",
+ dict(id="F20", stage=3, chart_type="ladder",
+      question="What does the model predict Greek households should report, "
+               "and what do they report?",
+      artifact="e3_restatement.csv, e0_extended_panel.csv",
+      series="two model predictions and the observed Greek value, on one scale",
+      interaction="hover reads each value",
+      fallback="model, percent of households",
       caveat="Absorption is not explanation.",
       status_label="descriptive corroboration"),
 ]
