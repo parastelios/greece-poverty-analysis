@@ -236,6 +236,9 @@ transition:opacity .1s}
 max-width:100%;
 font:.76rem/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--text-secondary)}
 .viewbar{display:flex;flex-wrap:wrap;gap:.3rem;padding:0 1.1rem .6rem}
+.stack+.stack{margin-top:1.4rem}
+.stack-h{font:600 .8rem/1.3 ui-sans-serif,system-ui,sans-serif;margin:0 0 .35rem;
+color:var(--chart-label);letter-spacing:.01em}
 .viewbtn{font:600 .74rem/1 ui-sans-serif,system-ui,sans-serif;padding:.35rem .6rem;
 border:1px solid var(--border);background:transparent;color:var(--text-secondary);
 border-radius:4px;cursor:pointer}
@@ -279,6 +282,12 @@ color:var(--text-secondary);margin:.5rem 0 0;max-width:44rem}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 @media print{
   .chart-live{display:none}
+  /* Stacked figures are the deliberate exception. The rule above exists
+     because a tabbed chart prints as one arbitrary view plus a row of dead
+     buttons, so the table is the honest artefact. A stacked figure has no tabs
+     and has already drawn every view, so it prints as what it is. Its table
+     still prints beneath it: the fallback guarantee is not traded away. */
+  .chart-live[data-views="stacked"]{display:block}
   .fallback{border-top:0}
   .fallback > summary{display:none}
   .fallback[open],.fallback{display:block}
@@ -357,7 +366,7 @@ hardship gap itself did neither &mdash; it is flat.</p>
 <div class="chart-live" data-chart="heatmap" tabindex="0"
      data-checksum="d848e562e5293829" aria-describedby="F6-fb">
 <script type="application/json" data-kind="heatmap" data-label="Between countries">{"flags": [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], "flagLabel": "partly mechanical", "flagExplain": "AROPE CONTAINS this measure, so the correlation is partly mechanical and is not an independent relationship.", "cols": ["Reported hardship", "Income poverty (AROP)", "AROPE", "Material resources", "Long-term unemployment", "Real wages", "Real household income", "Real poverty threshold", "Share below own GDP peak", "Wage-adjusted affordability", "Inflation", "Housing-cost overburden", "Material deprivation"], "rows": [{"label": "Reported hardship", "values": [null, 0.446, 0.617, -0.587, 0.788, 0.005, -0.197, 0.095, 0.645, 0.709, -0.047, 0.573, 0.679]}, {"label": "Income poverty (AROP)", "values": [0.446, null, 0.882, -0.368, 0.393, 0.279, 0.104, 0.396, 0.153, 0.45, 0.151, 0.178, 0.587]}, {"label": "AROPE", "values": [0.617, 0.882, null, -0.423, 0.441, 0.276, 0.153, 0.442, 0.219, 0.538, 0.145, 0.364, 0.879]}, {"label": "Material resources", "values": [-0.587, -0.368, -0.423, null, -0.285, -0.259, -0.398, -0.496, -0.017, -0.887, -0.507, -0.035, -0.536]}, {"label": "Long-term unemployment", "values": [0.788, 0.393, 0.441, -0.285, null, -0.228, -0.572, -0.364, 0.797, 0.335, -0.323, 0.611, 0.358]}, {"label": "Real wages", "values": [0.005, 0.279, 0.276, -0.259, -0.228, null, 0.475, 0.521, -0.416, 0.286, 0.175, -0.127, 0.315]}, {"label": "Real household income", "values": [-0.197, 0.104, 0.153, -0.398, -0.572, 0.475, null, 0.744, -0.639, 0.399, 0.648, -0.349, 0.294]}, {"label": "Real poverty threshold", "values": [0.095, 0.396, 0.442, -0.496, -0.364, 0.521, 0.744, null, -0.452, 0.531, 0.545, -0.295, 0.5]}, {"label": "Share below own GDP peak", "values": [0.645, 0.153, 0.219, -0.017, 0.797, -0.416, -0.639, -0.452, null, 0.177, -0.379, 0.765, 0.165]}, {"label": "Wage-adjusted affordability", "values": [0.709, 0.45, 0.538, -0.887, 0.335, 0.286, 0.399, 0.531, 0.177, null, 0.48, 0.218, 0.644]}, {"label": "Inflation", "values": [-0.047, 0.151, 0.145, -0.507, -0.323, 0.175, 0.648, 0.545, -0.379, 0.48, null, -0.172, 0.263]}, {"label": "Housing-cost overburden", "values": [0.573, 0.178, 0.364, -0.035, 0.611, -0.127, -0.349, -0.295, 0.765, 0.218, -0.172, null, 0.41]}, {"label": "Material deprivation", "values": [0.679, 0.587, 0.879, -0.536, 0.358, 0.315, 0.294, 0.5, 0.165, 0.644, 0.263, 0.41, null]}], "alt": "Correlations between countries, outcomes and construct representatives only; the diagonal is blank because a variable always correlates perfectly with itself"}</script><script type="application/json" data-kind="heatmap" data-label="Within countries">{"flags": [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], "flagLabel": "partly mechanical", "flagExplain": "AROPE CONTAINS this measure, so the correlation is partly mechanical and is not an independent relationship.", "cols": ["Reported hardship", "Income poverty (AROP)", "AROPE", "Material resources", "Long-term unemployment", "Real wages", "Real household income", "Real poverty threshold", "Share below own GDP peak", "Wage-adjusted affordability", "Inflation", "Housing-cost overburden", "Material deprivation"], "rows": [{"label": "Reported hardship", "values": [null, 0.427, 0.772, -0.593, 0.689, -0.654, -0.755, -0.699, 0.231, 0.525, -0.439, 0.491, 0.786]}, {"label": "Income poverty (AROP)", "values": [0.427, null, 0.668, -0.304, 0.361, -0.314, -0.374, -0.491, 0.091, 0.277, -0.15, 0.386, 0.423]}, {"label": "AROPE", "values": [0.772, 0.668, null, -0.497, 0.586, -0.625, -0.738, -0.778, 0.175, 0.573, -0.365, 0.577, 0.912]}, {"label": "Material resources", "values": [-0.593, -0.304, -0.497, null, -0.565, 0.488, 0.724, 0.54, -0.217, -0.397, 0.602, -0.3, -0.478]}, {"label": "Long-term unemployment", "values": [0.689, 0.361, 0.586, -0.565, null, -0.385, -0.56, -0.391, 0.362, 0.143, -0.377, 0.602, 0.51]}, {"label": "Real wages", "values": [-0.654, -0.314, -0.625, 0.488, -0.385, null, 0.715, 0.761, 0.007, -0.818, 0.273, -0.415, -0.734]}, {"label": "Real household income", "values": [-0.755, -0.374, -0.738, 0.724, -0.56, 0.715, null, 0.813, -0.132, -0.626, 0.512, -0.413, -0.763]}, {"label": "Real poverty threshold", "values": [-0.699, -0.491, -0.778, 0.54, -0.391, 0.761, 0.813, null, -0.009, -0.771, 0.33, -0.519, -0.787]}, {"label": "Share below own GDP peak", "values": [0.231, 0.091, 0.175, -0.217, 0.362, 0.007, -0.132, -0.009, null, -0.085, -0.22, 0.211, 0.134]}, {"label": "Wage-adjusted affordability", "values": [0.525, 0.277, 0.573, -0.397, 0.143, -0.818, -0.626, -0.771, -0.085, null, -0.285, 0.292, 0.678]}, {"label": "Inflation", "values": [-0.439, -0.15, -0.365, 0.602, -0.377, 0.273, 0.512, 0.33, -0.22, -0.285, null, -0.252, -0.392]}, {"label": "Housing-cost overburden", "values": [0.491, 0.386, 0.577, -0.3, 0.602, -0.415, -0.413, -0.519, 0.211, 0.292, -0.252, null, 0.53]}, {"label": "Material deprivation", "values": [0.786, 0.423, 0.912, -0.478, 0.51, -0.734, -0.763, -0.787, 0.134, 0.678, -0.392, 0.53, null]}], "alt": "Correlations within countries, outcomes and construct representatives only; the diagonal is blank because a variable always correlates perfectly with itself"}</script><script type="application/json" data-kind="heatmap" data-label="All country-years">{"flags": [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]], "flagLabel": "partly mechanical", "flagExplain": "AROPE CONTAINS this measure, so the correlation is partly mechanical and is not an independent relationship.", "cols": ["Reported hardship", "Income poverty (AROP)", "AROPE", "Material resources", "Long-term unemployment", "Real wages", "Real household income", "Real poverty threshold", "Share below own GDP peak", "Wage-adjusted affordability", "Inflation", "Housing-cost overburden", "Material deprivation"], "rows": [{"label": "Reported hardship", "values": [null, 0.439, 0.636, -0.585, 0.758, -0.093, -0.312, -0.053, 0.553, 0.684, -0.176, 0.561, 0.694]}, {"label": "Income poverty (AROP)", "values": [0.439, null, 0.859, -0.35, 0.37, 0.22, 0.029, 0.272, 0.138, 0.438, 0.006, 0.193, 0.567]}, {"label": "AROPE", "values": [0.636, 0.859, null, -0.431, 0.458, 0.157, -0.015, 0.228, 0.207, 0.54, -0.081, 0.387, 0.883]}, {"label": "Material resources", "values": [-0.585, -0.35, -0.431, null, -0.354, -0.123, -0.127, -0.254, -0.066, -0.805, 0.145, -0.073, -0.522]}, {"label": "Long-term unemployment", "values": [0.758, 0.37, 0.458, -0.354, null, -0.257, -0.569, -0.371, 0.676, 0.295, -0.268, 0.592, 0.382]}, {"label": "Real wages", "values": [-0.093, 0.22, 0.157, -0.123, -0.257, null, 0.525, 0.563, -0.326, 0.172, 0.147, -0.162, 0.164]}, {"label": "Real household income", "values": [-0.312, 0.029, -0.015, -0.127, -0.569, 0.525, null, 0.758, -0.502, 0.243, 0.404, -0.353, 0.081]}, {"label": "Real poverty threshold", "values": [-0.053, 0.272, 0.228, -0.254, -0.371, 0.563, 0.758, null, -0.337, 0.341, 0.293, -0.326, 0.257]}, {"label": "Share below own GDP peak", "values": [0.553, 0.138, 0.207, -0.066, 0.676, -0.326, -0.502, -0.337, null, 0.133, -0.202, 0.653, 0.156]}, {"label": "Wage-adjusted affordability", "values": [0.684, 0.438, 0.54, -0.805, 0.295, 0.172, 0.243, 0.341, 0.133, null, 0.058, 0.223, 0.643]}, {"label": "Inflation", "values": [-0.176, 0.006, -0.081, 0.145, -0.268, 0.147, 0.404, 0.293, -0.202, 0.058, null, -0.122, -0.071]}, {"label": "Housing-cost overburden", "values": [0.561, 0.193, 0.387, -0.073, 0.592, -0.162, -0.353, -0.326, 0.653, 0.223, -0.122, null, 0.423]}, {"label": "Material deprivation", "values": [0.694, 0.567, 0.883, -0.522, 0.382, 0.164, 0.081, 0.257, 0.156, 0.643, -0.071, 0.423, null]}], "alt": "Correlations all country-years, outcomes and construct representatives only; the diagonal is blank because a variable always correlates perfectly with itself"}</script>
-</div><p class="fig-caveat"><strong>Read with this.</strong> Correlations identify duplication and sign reversals. They do NOT select variables. AROPE contains AROP and material deprivation, so those correlations are partly mechanical and must not be interpreted as independent relationships; the affected cells are outlined. This view carries the outcomes and the 10 construct representatives only. The full 31-variable matrix is not shown anywhere: at that size it contains everything and shows almost nothing.</p>
+</div><p class="fig-caveat"><strong>Read with this.</strong> Correlations identify duplication and sign reversals. They do NOT select variables. AROPE contains AROP and material deprivation, so those correlations are partly mechanical and must not be interpreted as independent relationships; the affected cells are outlined. This view carries the outcomes and the 10 construct representatives only, because at full size a matrix contains everything and shows almost nothing. The complete 35-variable matrix IS available: the statistical appendix carries it three times, within countries, between countries and pooled.</p>
 <details class="fallback" id="F6-fb"><summary>Show the numbers <a href="statistical_appendix.html#F6">This figure in the appendix</a>, with the detail the report leaves out.</summary>
 <table data-checksum="d848e562e5293829" data-view="0"><caption>Between countries</caption><thead><tr><th>Measure</th><th class="num">Reported hardship</th><th class="num">Income poverty (AROP)</th><th class="num">AROPE</th><th class="num">Material resources</th><th class="num">Long-term unemployment</th><th class="num">Real wages</th><th class="num">Real household income</th><th class="num">Real poverty threshold</th><th class="num">Share below own GDP peak</th><th class="num">Wage-adjusted affordability</th><th class="num">Inflation</th><th class="num">Housing-cost overburden</th><th class="num">Material deprivation</th></tr></thead><tbody><tr><td>Reported hardship</td><td class="num">1.000</td><td class="num">0.446</td><td class="num">0.617</td><td class="num">-0.587</td><td class="num">0.788</td><td class="num">0.005</td><td class="num">-0.197</td><td class="num">0.095</td><td class="num">0.645</td><td class="num">0.709</td><td class="num">-0.047</td><td class="num">0.573</td><td class="num">0.679</td></tr><tr><td>Income poverty (AROP)</td><td class="num">0.446</td><td class="num">1.000</td><td class="num">0.882</td><td class="num">-0.368</td><td class="num">0.393</td><td class="num">0.279</td><td class="num">0.104</td><td class="num">0.396</td><td class="num">0.153</td><td class="num">0.450</td><td class="num">0.151</td><td class="num">0.178</td><td class="num">0.587</td></tr><tr><td>AROPE</td><td class="num">0.617</td><td class="num">0.882</td><td class="num">1.000</td><td class="num">-0.423</td><td class="num">0.441</td><td class="num">0.276</td><td class="num">0.153</td><td class="num">0.442</td><td class="num">0.219</td><td class="num">0.538</td><td class="num">0.145</td><td class="num">0.364</td><td class="num">0.879</td></tr><tr><td>Material resources</td><td class="num">-0.587</td><td class="num">-0.368</td><td class="num">-0.423</td><td class="num">1.000</td><td class="num">-0.285</td><td class="num">-0.259</td><td class="num">-0.398</td><td class="num">-0.496</td><td class="num">-0.017</td><td class="num">-0.887</td><td class="num">-0.507</td><td class="num">-0.035</td><td class="num">-0.536</td></tr><tr><td>Long-term unemployment</td><td class="num">0.788</td><td class="num">0.393</td><td class="num">0.441</td><td class="num">-0.285</td><td class="num">1.000</td><td class="num">-0.228</td><td class="num">-0.572</td><td class="num">-0.364</td><td class="num">0.797</td><td class="num">0.335</td><td class="num">-0.323</td><td class="num">0.611</td><td class="num">0.358</td></tr><tr><td>Real wages</td><td class="num">0.005</td><td class="num">0.279</td><td class="num">0.276</td><td class="num">-0.259</td><td class="num">-0.228</td><td class="num">1.000</td><td class="num">0.475</td><td class="num">0.521</td><td class="num">-0.416</td><td class="num">0.286</td><td class="num">0.175</td><td class="num">-0.127</td><td class="num">0.315</td></tr><tr><td>Real household income</td><td class="num">-0.197</td><td class="num">0.104</td><td class="num">0.153</td><td class="num">-0.398</td><td class="num">-0.572</td><td class="num">0.475</td><td class="num">1.000</td><td class="num">0.744</td><td class="num">-0.639</td><td class="num">0.399</td><td class="num">0.648</td><td class="num">-0.349</td><td class="num">0.294</td></tr><tr><td>Real poverty threshold</td><td class="num">0.095</td><td class="num">0.396</td><td class="num">0.442</td><td class="num">-0.496</td><td class="num">-0.364</td><td class="num">0.521</td><td class="num">0.744</td><td class="num">1.000</td><td class="num">-0.452</td><td class="num">0.531</td><td class="num">0.545</td><td class="num">-0.295</td><td class="num">0.500</td></tr><tr><td>Share below own GDP peak</td><td class="num">0.645</td><td class="num">0.153</td><td class="num">0.219</td><td class="num">-0.017</td><td class="num">0.797</td><td class="num">-0.416</td><td class="num">-0.639</td><td class="num">-0.452</td><td class="num">1.000</td><td class="num">0.177</td><td class="num">-0.379</td><td class="num">0.765</td><td class="num">0.165</td></tr><tr><td>Wage-adjusted affordability</td><td class="num">0.709</td><td class="num">0.450</td><td class="num">0.538</td><td class="num">-0.887</td><td class="num">0.335</td><td class="num">0.286</td><td class="num">0.399</td><td class="num">0.531</td><td class="num">0.177</td><td class="num">1.000</td><td class="num">0.480</td><td class="num">0.218</td><td class="num">0.644</td></tr><tr><td>Inflation</td><td class="num">-0.047</td><td class="num">0.151</td><td class="num">0.145</td><td class="num">-0.507</td><td class="num">-0.323</td><td class="num">0.175</td><td class="num">0.648</td><td class="num">0.545</td><td class="num">-0.379</td><td class="num">0.480</td><td class="num">1.000</td><td class="num">-0.172</td><td class="num">0.263</td></tr><tr><td>Housing-cost overburden</td><td class="num">0.573</td><td class="num">0.178</td><td class="num">0.364</td><td class="num">-0.035</td><td class="num">0.611</td><td class="num">-0.127</td><td class="num">-0.349</td><td class="num">-0.295</td><td class="num">0.765</td><td class="num">0.218</td><td class="num">-0.172</td><td class="num">1.000</td><td class="num">0.410</td></tr><tr><td>Material deprivation</td><td class="num">0.679</td><td class="num">0.587</td><td class="num">0.879</td><td class="num">-0.536</td><td class="num">0.358</td><td class="num">0.315</td><td class="num">0.294</td><td class="num">0.500</td><td class="num">0.165</td><td class="num">0.644</td><td class="num">0.263</td><td class="num">0.410</td><td class="num">1.000</td></tr></tbody></table><table data-checksum="89e10cddb2586d22" data-view="1"><caption>Within countries</caption><thead><tr><th>Measure</th><th class="num">Reported hardship</th><th class="num">Income poverty (AROP)</th><th class="num">AROPE</th><th class="num">Material resources</th><th class="num">Long-term unemployment</th><th class="num">Real wages</th><th class="num">Real household income</th><th class="num">Real poverty threshold</th><th class="num">Share below own GDP peak</th><th class="num">Wage-adjusted affordability</th><th class="num">Inflation</th><th class="num">Housing-cost overburden</th><th class="num">Material deprivation</th></tr></thead><tbody><tr><td>Reported hardship</td><td class="num">1.000</td><td class="num">0.427</td><td class="num">0.772</td><td class="num">-0.593</td><td class="num">0.689</td><td class="num">-0.654</td><td class="num">-0.755</td><td class="num">-0.699</td><td class="num">0.231</td><td class="num">0.525</td><td class="num">-0.439</td><td class="num">0.491</td><td class="num">0.786</td></tr><tr><td>Income poverty (AROP)</td><td class="num">0.427</td><td class="num">1.000</td><td class="num">0.668</td><td class="num">-0.304</td><td class="num">0.361</td><td class="num">-0.314</td><td class="num">-0.374</td><td class="num">-0.491</td><td class="num">0.091</td><td class="num">0.277</td><td class="num">-0.150</td><td class="num">0.386</td><td class="num">0.423</td></tr><tr><td>AROPE</td><td class="num">0.772</td><td class="num">0.668</td><td class="num">1.000</td><td class="num">-0.497</td><td class="num">0.586</td><td class="num">-0.625</td><td class="num">-0.738</td><td class="num">-0.778</td><td class="num">0.175</td><td class="num">0.573</td><td class="num">-0.365</td><td class="num">0.577</td><td class="num">0.912</td></tr><tr><td>Material resources</td><td class="num">-0.593</td><td class="num">-0.304</td><td class="num">-0.497</td><td class="num">1.000</td><td class="num">-0.565</td><td class="num">0.488</td><td class="num">0.724</td><td class="num">0.540</td><td class="num">-0.217</td><td class="num">-0.397</td><td class="num">0.602</td><td class="num">-0.300</td><td class="num">-0.478</td></tr><tr><td>Long-term unemployment</td><td class="num">0.689</td><td class="num">0.361</td><td class="num">0.586</td><td class="num">-0.565</td><td class="num">1.000</td><td class="num">-0.385</td><td class="num">-0.560</td><td class="num">-0.391</td><td class="num">0.362</td><td class="num">0.143</td><td class="num">-0.377</td><td class="num">0.602</td><td class="num">0.510</td></tr><tr><td>Real wages</td><td class="num">-0.654</td><td class="num">-0.314</td><td class="num">-0.625</td><td class="num">0.488</td><td class="num">-0.385</td><td class="num">1.000</td><td class="num">0.715</td><td class="num">0.761</td><td class="num">0.007</td><td class="num">-0.818</td><td class="num">0.273</td><td class="num">-0.415</td><td class="num">-0.734</td></tr><tr><td>Real household income</td><td class="num">-0.755</td><td class="num">-0.374</td><td class="num">-0.738</td><td class="num">0.724</td><td class="num">-0.560</td><td class="num">0.715</td><td class="num">1.000</td><td class="num">0.813</td><td class="num">-0.132</td><td class="num">-0.626</td><td class="num">0.512</td><td class="num">-0.413</td><td class="num">-0.763</td></tr><tr><td>Real poverty threshold</td><td class="num">-0.699</td><td class="num">-0.491</td><td class="num">-0.778</td><td class="num">0.540</td><td class="num">-0.391</td><td class="num">0.761</td><td class="num">0.813</td><td class="num">1.000</td><td class="num">-0.009</td><td class="num">-0.771</td><td class="num">0.330</td><td class="num">-0.519</td><td class="num">-0.787</td></tr><tr><td>Share below own GDP peak</td><td class="num">0.231</td><td class="num">0.091</td><td class="num">0.175</td><td class="num">-0.217</td><td class="num">0.362</td><td class="num">0.007</td><td class="num">-0.132</td><td class="num">-0.009</td><td class="num">1.000</td><td class="num">-0.085</td><td class="num">-0.220</td><td class="num">0.211</td><td class="num">0.134</td></tr><tr><td>Wage-adjusted affordability</td><td class="num">0.525</td><td class="num">0.277</td><td class="num">0.573</td><td class="num">-0.397</td><td class="num">0.143</td><td class="num">-0.818</td><td class="num">-0.626</td><td class="num">-0.771</td><td class="num">-0.085</td><td class="num">1.000</td><td class="num">-0.285</td><td class="num">0.292</td><td class="num">0.678</td></tr><tr><td>Inflation</td><td class="num">-0.439</td><td class="num">-0.150</td><td class="num">-0.365</td><td class="num">0.602</td><td class="num">-0.377</td><td class="num">0.273</td><td class="num">0.512</td><td class="num">0.330</td><td class="num">-0.220</td><td class="num">-0.285</td><td class="num">1.000</td><td class="num">-0.252</td><td class="num">-0.392</td></tr><tr><td>Housing-cost overburden</td><td class="num">0.491</td><td class="num">0.386</td><td class="num">0.577</td><td class="num">-0.300</td><td class="num">0.602</td><td class="num">-0.415</td><td class="num">-0.413</td><td class="num">-0.519</td><td class="num">0.211</td><td class="num">0.292</td><td class="num">-0.252</td><td class="num">1.000</td><td class="num">0.530</td></tr><tr><td>Material deprivation</td><td class="num">0.786</td><td class="num">0.423</td><td class="num">0.912</td><td class="num">-0.478</td><td class="num">0.510</td><td class="num">-0.734</td><td class="num">-0.763</td><td class="num">-0.787</td><td class="num">0.134</td><td class="num">0.678</td><td class="num">-0.392</td><td class="num">0.530</td><td class="num">1.000</td></tr></tbody></table><table data-checksum="e4f32edf76b472da" data-view="2"><caption>All country-years</caption><thead><tr><th>Measure</th><th class="num">Reported hardship</th><th class="num">Income poverty (AROP)</th><th class="num">AROPE</th><th class="num">Material resources</th><th class="num">Long-term unemployment</th><th class="num">Real wages</th><th class="num">Real household income</th><th class="num">Real poverty threshold</th><th class="num">Share below own GDP peak</th><th class="num">Wage-adjusted affordability</th><th class="num">Inflation</th><th class="num">Housing-cost overburden</th><th class="num">Material deprivation</th></tr></thead><tbody><tr><td>Reported hardship</td><td class="num">1.000</td><td class="num">0.439</td><td class="num">0.636</td><td class="num">-0.585</td><td class="num">0.758</td><td class="num">-0.093</td><td class="num">-0.312</td><td class="num">-0.053</td><td class="num">0.553</td><td class="num">0.684</td><td class="num">-0.176</td><td class="num">0.561</td><td class="num">0.694</td></tr><tr><td>Income poverty (AROP)</td><td class="num">0.439</td><td class="num">1.000</td><td class="num">0.859</td><td class="num">-0.350</td><td class="num">0.370</td><td class="num">0.220</td><td class="num">0.029</td><td class="num">0.272</td><td class="num">0.138</td><td class="num">0.438</td><td class="num">0.006</td><td class="num">0.193</td><td class="num">0.567</td></tr><tr><td>AROPE</td><td class="num">0.636</td><td class="num">0.859</td><td class="num">1.000</td><td class="num">-0.431</td><td class="num">0.458</td><td class="num">0.157</td><td class="num">-0.015</td><td class="num">0.228</td><td class="num">0.207</td><td class="num">0.540</td><td class="num">-0.081</td><td class="num">0.387</td><td class="num">0.883</td></tr><tr><td>Material resources</td><td class="num">-0.585</td><td class="num">-0.350</td><td class="num">-0.431</td><td class="num">1.000</td><td class="num">-0.354</td><td class="num">-0.123</td><td class="num">-0.127</td><td class="num">-0.254</td><td class="num">-0.066</td><td class="num">-0.805</td><td class="num">0.145</td><td class="num">-0.073</td><td class="num">-0.522</td></tr><tr><td>Long-term unemployment</td><td class="num">0.758</td><td class="num">0.370</td><td class="num">0.458</td><td class="num">-0.354</td><td class="num">1.000</td><td class="num">-0.257</td><td class="num">-0.569</td><td class="num">-0.371</td><td class="num">0.676</td><td class="num">0.295</td><td class="num">-0.268</td><td class="num">0.592</td><td class="num">0.382</td></tr><tr><td>Real wages</td><td class="num">-0.093</td><td class="num">0.220</td><td class="num">0.157</td><td class="num">-0.123</td><td class="num">-0.257</td><td class="num">1.000</td><td class="num">0.525</td><td class="num">0.563</td><td class="num">-0.326</td><td class="num">0.172</td><td class="num">0.147</td><td class="num">-0.162</td><td class="num">0.164</td></tr><tr><td>Real household income</td><td class="num">-0.312</td><td class="num">0.029</td><td class="num">-0.015</td><td class="num">-0.127</td><td class="num">-0.569</td><td class="num">0.525</td><td class="num">1.000</td><td class="num">0.758</td><td class="num">-0.502</td><td class="num">0.243</td><td class="num">0.404</td><td class="num">-0.353</td><td class="num">0.081</td></tr><tr><td>Real poverty threshold</td><td class="num">-0.053</td><td class="num">0.272</td><td class="num">0.228</td><td class="num">-0.254</td><td class="num">-0.371</td><td class="num">0.563</td><td class="num">0.758</td><td class="num">1.000</td><td class="num">-0.337</td><td class="num">0.341</td><td class="num">0.293</td><td class="num">-0.326</td><td class="num">0.257</td></tr><tr><td>Share below own GDP peak</td><td class="num">0.553</td><td class="num">0.138</td><td class="num">0.207</td><td class="num">-0.066</td><td class="num">0.676</td><td class="num">-0.326</td><td class="num">-0.502</td><td class="num">-0.337</td><td class="num">1.000</td><td class="num">0.133</td><td class="num">-0.202</td><td class="num">0.653</td><td class="num">0.156</td></tr><tr><td>Wage-adjusted affordability</td><td class="num">0.684</td><td class="num">0.438</td><td class="num">0.540</td><td class="num">-0.805</td><td class="num">0.295</td><td class="num">0.172</td><td class="num">0.243</td><td class="num">0.341</td><td class="num">0.133</td><td class="num">1.000</td><td class="num">0.058</td><td class="num">0.223</td><td class="num">0.643</td></tr><tr><td>Inflation</td><td class="num">-0.176</td><td class="num">0.006</td><td class="num">-0.081</td><td class="num">0.145</td><td class="num">-0.268</td><td class="num">0.147</td><td class="num">0.404</td><td class="num">0.293</td><td class="num">-0.202</td><td class="num">0.058</td><td class="num">1.000</td><td class="num">-0.122</td><td class="num">-0.071</td></tr><tr><td>Housing-cost overburden</td><td class="num">0.561</td><td class="num">0.193</td><td class="num">0.387</td><td class="num">-0.073</td><td class="num">0.592</td><td class="num">-0.162</td><td class="num">-0.353</td><td class="num">-0.326</td><td class="num">0.653</td><td class="num">0.223</td><td class="num">-0.122</td><td class="num">1.000</td><td class="num">0.423</td></tr><tr><td>Material deprivation</td><td class="num">0.694</td><td class="num">0.567</td><td class="num">0.883</td><td class="num">-0.522</td><td class="num">0.382</td><td class="num">0.164</td><td class="num">0.081</td><td class="num">0.257</td><td class="num">0.156</td><td class="num">0.643</td><td class="num">-0.071</td><td class="num">0.423</td><td class="num">1.000</td></tr></tbody></table></details>
 </figure>
@@ -1224,6 +1233,7 @@ then collapse under the bootstrap, to 0.40 and 0.55.</p>
       host.appendChild(bar);draw();return;
     }
     const W=widthFor(host), H=Math.round(W*(d.aspect||0.62));
+    const ms=measurer(host);
     const padL=56,padR=18,padT=16,padB=46;
     const pw=W-padL-padR, ph=H-padT-padB;
     const scope=d.fixedFrom||d.points;
@@ -1262,34 +1272,126 @@ then collapse under the bootstrap, to 0.40 and 0.55.</p>
         'text-anchor':isX?'start':'end',class:'axis-label',
         style:'fill:var(--chart-neutral);opacity:.9'});
       gt.textContent=g.label||'';svg.appendChild(gt);});
+    let keyRight=padL, FIT=null;
     if(sxx>0){const b1=sxy/sxx,b0=my-b1*mx;
+      FIT={b0:b0,b1:b1};
       svg.appendChild(el('line',{x1:xs(xlo-px),y1:ys(b0+b1*(xlo-px)),
         x2:xs(xhi+px),y2:ys(b0+b1*(xhi+px)),stroke:'var(--chart-label)',
         'stroke-width':1.6,'stroke-dasharray':'5 3',opacity:.85}));
       if(d.fitLabel){
-        const fx=xlo+(xhi-xlo)*0.62;
-        const ft=el('text',{x:xs(fx),y:ys(b0+b1*fx)-7,class:'axis-label',
+        // Sitting on the line, this collided with the line, the guides and the
+        // highlighted point's own label. As a corner key with a swatch it
+        // still says which line it names and stops fighting the data.
+        const ky=padT+11;
+        svg.appendChild(el('line',{x1:padL+4,x2:padL+26,y1:ky-4,y2:ky-4,
+          stroke:'var(--chart-label)','stroke-width':1.6,
+          'stroke-dasharray':'5 3',opacity:.85}));
+        // On a phone the full phrase collides with the highlighted point's
+        // own label. The short form is not a summary of the long one: the
+        // exclusion it drops is stated verbatim in the figure's caveat.
+        const room=pw*0.52;
+        const full=d.fitLabel;
+        const txt=(d.fitLabelShort && ms(full,true)>room) ? d.fitLabelShort : full;
+        // Remember where the key actually ends so a point label in the same
+        // top strip can be measured against the real obstruction rather than
+        // a guessed fraction of the plot.
+        keyRight=padL+32+ms(txt,true);
+        const ft=el('text',{x:padL+32,y:ky,class:'axis-label',
           style:'fill:var(--chart-label);font-weight:600'});
-        ft.textContent=d.fitLabel;svg.appendChild(ft);}}
+        ft.textContent=txt;
+        if(txt!==full){const ti=el('title',{});ti.textContent=full;ft.appendChild(ti);}
+        svg.appendChild(ft);}}
+    if(d.crosshair){
+      // A cross drawn at the median sat directly on the fitted line -- the
+      // median country is ON the peer relationship, which is the point, but
+      // visually the two marks merged and the label landed among the dots.
+      // It is now an EU-coloured point with a short leader to text placed in
+      // clear space, so the reference reads as a reference.
+      const cx=xs(d.crosshair.x), cy=ys(d.crosshair.y);
+      svg.appendChild(el('circle',{cx:cx,cy:cy,r:5,fill:'var(--chart-eu)',
+        stroke:'var(--surface-1)','stroke-width':1.5}));
+      if(d.crosshair.label){
+        const below=d.crosshair.place!=='above';
+        const cfull0=d.crosshair.label;
+        const w0=ms((d.crosshair.shortLabel&&ms(cfull0,false)>pw*0.6)
+                    ?d.crosshair.shortLabel:cfull0,false);
+        // Pick the side that actually has room for the measured text, not the
+        // side implied by the point's position. At phone widths the callout
+        // ran past the right edge because the point sat left of centre while
+        // the label was wider than the space beyond it.
+        const fitsR=cx+16+w0<=W-padR, fitsL=cx-16-w0>=padL;
+        // Three cases, not two. When the label fits on neither side -- a wide
+        // callout on a narrow chart -- neither anchor works and the old code
+        // silently ran off the edge. Centre it under the point and clamp.
+        const mode=fitsR?'start':(fitsL?'end':'middle');
+        const right=(mode==='end');
+        let lx=cx+(right?-16:mode==='start'?16:0);
+        if(mode==='middle')lx=Math.max(padL+w0/2,Math.min(W-padR-w0/2,cx));
+        const ly=cy+(below?26:-22);
+        svg.appendChild(el('line',{x1:cx,y1:cy+(below?6:-6),
+          x2:mode==='middle'?lx:lx+(right?4:-4),y2:ly+(below?-9:5),
+          stroke:'var(--chart-eu)','stroke-width':1,opacity:.7}));
+        const cfull=d.crosshair.label;
+        const ctxt=(d.crosshair.shortLabel && ms(cfull,false)>pw*0.6)
+                   ? d.crosshair.shortLabel : cfull;
+        const ct=el('text',{x:lx,y:ly,'text-anchor':mode,
+          class:'axis-label',
+          style:'fill:var(--chart-eu);font-weight:600'});
+        ct.textContent=ctxt;
+        if(ctxt!==cfull){const ti=el('title',{});ti.textContent=cfull;ct.appendChild(ti);}
+        svg.appendChild(ct);}}
+    // How far the highlighted case sits above what the peer relationship
+    // predicts for it. Drawn from FIT, the same b0/b1 plotted above, so the
+    // number and the picture cannot disagree.
+    if(d.residualTo&&FIT){
+      const hp=d.points.find(p=>p.highlight);
+      if(hp){
+        const pred=FIT.b0+FIT.b1*hp.x, gap=hp.y-pred;
+        const gx=xs(hp.x);
+        svg.appendChild(el('line',{x1:gx,x2:gx,y1:ys(pred),y2:ys(hp.y),
+          stroke:'var(--chart-gr)','stroke-width':1.6,
+          'stroke-dasharray':'2 3',opacity:.85}));
+        [ys(pred),ys(hp.y)].forEach(yy=>svg.appendChild(el('line',
+          {x1:gx-4,x2:gx+4,y1:yy,y2:yy,stroke:'var(--chart-gr)',
+           'stroke-width':1.6,opacity:.85})));
+        const gt=el('text',{x:gx-9,y:(ys(pred)+ys(hp.y))/2+4,
+          'text-anchor':'end',class:'axis-label',
+          style:'fill:var(--chart-gr);font-weight:600'});
+        const gfull=d.residualTo.replace('{gap}',fmt(gap,d.dp==null?1:d.dp));
+        const gshort=(d.residualToShort||'').replace('{gap}',fmt(gap,d.dp==null?1:d.dp));
+        const groom=gx-9-padL;
+        gt.textContent=(gshort&&ms(gfull,true)>groom)?gshort:gfull;
+        if(gt.textContent!==gfull){const ti=el('title',{});ti.textContent=gfull;
+          gt.appendChild(ti);}
+        svg.appendChild(gt);}}
     const marks=[];
     d.points.forEach(p=>{
       const c=p.reference
         ? el('rect',{x:xs(p.x)-4.5,y:ys(p.y)-4.5,width:9,height:9,
             fill:'none',stroke:'var(--chart-eu)','stroke-width':2})
-        : el('circle',{cx:xs(p.x),cy:ys(p.y),r:p.highlight?5.5:3,
+        : el('circle',{cx:xs(p.x),cy:ys(p.y),r:p.highlight?6:4.2,
             fill:toneVar(p.highlight?'gr':'chart-neutral'),
             stroke:p.highlight?'none':'var(--chart-neutral-edge)',
-            'stroke-width':p.highlight?0:1,opacity:p.highlight?1:.6});
+            'stroke-width':p.highlight?0:1,opacity:p.highlight?1:.88});
       svg.appendChild(c);marks.push({x:xs(p.x),y:ys(p.y),p:p});});
     // Name the highlighted case and the reference on the chart itself.
     d.points.filter(p=>p.highlight||p.reference).forEach(p=>{
       // A long label on a point near the right edge runs off the chart. Put it
       // on whichever side has room.
       const right=xs(p.x)>padL+pw*0.55;
+      // Room on the chosen side, minus the corner key's band when the label
+      // sits in the top strip where that key lives.
+      const nearTop=ys(p.y)<padT+26;
+      const left0=(nearTop&&right)?keyRight+10:padL;
+      const room=right?xs(p.x)-9-left0:W-padR-xs(p.x)-9;
+      const full=p.label||'';
+      const txt=(p.shortLabel && ms(full,true)>room) ? p.shortLabel : full;
       const lb=el('text',{x:xs(p.x)+(right?-9:9),y:ys(p.y)+4,
         'text-anchor':right?'end':'start',class:'axis-label',
         style:`font-weight:700;fill:${p.reference?'var(--chart-eu)':'var(--chart-gr)'}`});
-      lb.textContent=p.label||'';svg.appendChild(lb);});
+      lb.textContent=txt;
+      if(txt!==full){const ti=el('title',{});ti.textContent=full;lb.appendChild(ti);}
+      svg.appendChild(lb);});
     if(d.frameLabel){
       const fl=el('text',{x:W-padR,y:padT+12,'text-anchor':'end',
         class:'axis-label',style:'font-weight:700;opacity:.9'});
@@ -1329,7 +1431,33 @@ then collapse under the bootstrap, to 0.40 and 0.55.</p>
   // threshold and the anchored comparison, or AROPE by component, age,
   // household and shift-share. Views live in one figure so the reader does not
   // lose the question while changing the picture.
+  // STACKED MODE. Tabs are right for a reader following an argument on screen
+  // and wrong for print, where a tab bar is a row of dead buttons and only the
+  // first view survives. A figure marked data-views="stacked" draws every view
+  // at once as labelled sub-panels, with every fallback table visible.
+  function mountStacked(host){
+    const payloads=[...host.querySelectorAll('script[type="application/json"]')];
+    if(payloads.length<2)return false;
+    host.querySelectorAll(':scope > svg, :scope > .legend, :scope > .stack')
+        .forEach(n=>n.remove());
+    payloads.forEach((pl,i)=>{
+      const wrap=document.createElement('div');wrap.className='stack';
+      const h=document.createElement('p');h.className='stack-h';
+      h.textContent=String.fromCharCode(97+i)+'. '+(pl.dataset.label||('View '+(i+1)));
+      wrap.appendChild(h);
+      const sub=document.createElement('div');
+      // The sub-host carries the width the chart functions measure against, and
+      // must be in the document before they run or every label measures zero.
+      sub.className='stack-body';wrap.appendChild(sub);host.appendChild(wrap);
+      (KINDS[pl.dataset.kind||host.dataset.chart]||panel)(sub,JSON.parse(pl.textContent));
+    });
+    const fig=host.closest('figure')||document;
+    fig.querySelectorAll('table[data-view]').forEach(tb=>{tb.hidden=false;});
+    return true;
+  }
+
   function mountViews(host){
+    if(host.dataset.views==='stacked')return mountStacked(host);
     const payloads=[...host.querySelectorAll('script[type="application/json"]')];
     if(payloads.length<2)return false;
     const bar=document.createElement('div');bar.className='viewbar';
@@ -1380,6 +1508,7 @@ then collapse under the bootstrap, to 0.40 and 0.55.</p>
     });
   }
   function redraw(){document.querySelectorAll('.viewbar').forEach(b=>b.remove());
+    document.querySelectorAll('[data-views="stacked"] > .stack').forEach(s=>s.remove());
     document.querySelectorAll('[data-chart]').forEach(h=>h.dataset.drawn='');mount();}
   document.addEventListener('DOMContentLoaded',mount);
   if(document.readyState!=='loading')mount();

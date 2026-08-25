@@ -129,9 +129,11 @@ FIGS["F6"] = dict(
         "AROPE contains AROP and material deprivation, so those correlations "
         "are partly mechanical and must not be interpreted as independent "
         "relationships; the affected cells are outlined. This view carries the "
-        f"outcomes and the {len(reps)} construct representatives only. "
-        "The full 31-variable matrix is not shown anywhere: at that "
-        "size it contains everything and shows almost nothing."))
+        f"outcomes and the {len(reps)} construct representatives only, "
+        "because at full size a matrix contains everything and shows almost "
+        "nothing. The complete 35-variable matrix IS available: the "
+        "statistical appendix carries it three times, within countries, "
+        "between countries and pooled."))
 
 # ---- F7 diverging: share of the 2015 gap closed --------------------------
 #

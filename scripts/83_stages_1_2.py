@@ -178,8 +178,19 @@ _bs = _blob["series"]["breadth_worst_quintile"]
 _byrs = [int(y) for y in _bs["years"]]
 _gr_b = _bs["countries"]["EL"]
 
+# The denominator MOVES: 13 indicators reported in 2005, 25 by 2018, and only
+# 17 in 2025. A share plotted without its base invites two misreadings -- that
+# the 2005 baseline and the 2024 value count the same things, and that the 2025
+# dip is improvement rather than thinner coverage. The count travels with the
+# series so the table always shows what each percentage is a percentage of.
+_comp = pd.read_csv(PROC / "persistence_share_composite.csv")
+_nind = (_comp[_comp.geo == "EL"].set_index("time")["n_ind"].to_dict())
+_gr_n = [_nind.get(y) for y in _byrs]
+
 f21 = ce.Series([str(y) for y in _byrs], dp=1)
 f21.add("Greece", [None if v is None else float(v) for v in _gr_b])
+f21.add("Indicators available for Greece",
+        [None if v is None else float(v) for v in _gr_n])
 _eu_b = _bs.get("eu") or []
 if any(v is not None for v in _eu_b):
     f21.add("EU", [None if v is None else float(v) for v in _eu_b])
@@ -191,17 +202,21 @@ for _c, _v in _bs["countries"].items():
     _ctx_b.append({"label": NAMES.get(_c, _c),
                    "values": [None if x is None else round(float(x), 1) for x in _v]})
 
-v21a = {"years": _byrs, "dp": 1, "yLabel": "% of indicators",
+v21a = {"years": _byrs, "dp": 1, "yLabel": "% of available indicators",
         "context": _ctx_b,
         "contextLabel": "Each other EU country",
         "alt": "The share of indicators placing each country in the EU's worst "
                "fifth. Greece rises from roughly a quarter before the crisis to "
                "around two thirds",
+        # The count is carried in the table, not drawn: it is a number of
+        # indicators, and putting it on a percentage axis would be the
+        # mixed-units defect this project has corrected twice already.
         "series": [{"label": l, "tone": "gr" if l == "Greece" else "eu",
                     "style": "solid" if l == "Greece" else "dashed",
                     "weight": "strong" if l == "Greece" else "normal",
                     "values": [None if v is None else round(v, 1) for v in vs]}
-                   for l, vs, m in f21.rows]}
+                   for l, vs, m in f21.rows
+                   if l in ("Greece", "EU")]}
 
 # The audit trail: which indicators, and where Greece moved on each.
 #

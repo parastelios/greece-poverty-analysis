@@ -637,7 +637,12 @@ question: is this country in the worst fifth of the Union? Then count.</p>
 {fig('F21')}
 
 <p>Before the crisis Greece was in Europe's worst fifth on roughly a quarter of
-these indicators. It is now in the worst fifth on around two thirds of them. The
+the indicators then available &mdash; four of sixteen in 2008. It is now in the
+worst fifth on around two thirds of them: seventeen of twenty-five in 2024. The
+basket grows over the period as more indicators begin reporting, so the two
+shares are not taken from the same set; the count for each year is in the
+figure's table, and the apparent dip in the final year is coverage falling to
+seventeen indicators rather than any improvement. The
 second view shows where each indicator moved. Sixteen of the twenty-five now
 place Greece at or near the bottom of the Union, and they are not variations on
 one theme: pay per hour, hours worked, the real value of the poverty line
