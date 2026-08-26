@@ -864,13 +864,13 @@ from the EU's worst fifth on four in 2008 to eleven in 2024 &mdash; 25.0% to
 68.8% &mdash; and because the set is identical at both ends and in every year
 between, the rise cannot be an artefact of a growing denominator.</p>
 
-<p>The second view separates what changed from what was already true. Four
-indicators were in the worst fifth before the crisis and remain there; seven
-more entered it over the period; none left. Greece was not uniformly weak in
-2008 and is not uniformly weak now &mdash; five of the sixteen sit outside the
-worst fifth at both ends. What happened is that seven further dimensions joined
-the four that were already there. The
-second view shows where each indicator moved. Sixteen of the twenty-five now
+<p>The "Which measures" view separates what changed from what was already true.
+Four indicators were in the worst fifth before the crisis and remain there;
+seven more entered it over the period; none left. Greece was not uniformly weak
+in 2008 and is not uniformly weak now &mdash; five of the sixteen sit outside
+the worst fifth at both ends. What happened is that seven further dimensions
+joined the four that were already there, and that is what the view shows: where
+each indicator moved. Sixteen of the twenty-five now
 place Greece at or near the bottom of the Union, and they are not variations on
 one theme: pay per hour, hours worked, the real value of the poverty line
 itself, household saving, what households expect of the coming year, and the

@@ -441,6 +441,12 @@ JS = r"""
     if(d.yLabel){const yl=el('text',{x:16,y:padT+ph/2,class:'axis-label',
       'text-anchor':'middle',transform:`rotate(-90 16 ${padT+ph/2})`});
       yl.textContent=d.yLabel;svg.appendChild(yl);}
+    // A per-panel annotation (e.g. a correlation coefficient) that used to live
+    // in the tab name itself, crowding the tab bar. Drawn inside the plot so it
+    // travels with its own panel rather than the navigation.
+    if(d.corner){const ct=el('text',{x:W-padR-4,y:padT+12,'text-anchor':'end',
+      class:'axis-label',style:'font-weight:650'});
+      ct.textContent=d.corner;svg.appendChild(ct);}
     const cur=el('line',{class:'cursor-line',y1:padT,y2:padT+ph,x1:-9,x2:-9});
     svg.appendChild(cur);
     // Context layer: all other countries, faint, behind everything. Passing
@@ -463,6 +469,7 @@ JS = r"""
     const DASH={solid:'',dashed:'6 3',dotted:'2 3'};
     const WT={strong:2.8,normal:1.8,light:1.4};
     const ends=[];
+    const seriesNodes=[];
     d.series.forEach(s=>{let p='',pen=false;
       s.values.forEach((v,i)=>{if(v==null){pen=false;return;}
         p+=(pen?' L ':' M ')+xs(yrs[i])+','+ys(v);pen=true;});
@@ -471,11 +478,14 @@ JS = r"""
       // "income poverty" series drew as identical grey while their labels were
       // blue and orange -- unreadable, and the reader could not tell which line
       // was which.
-      if(p)svg.appendChild(el('path',{d:p,fill:'none',
+      let pnode=null;
+      if(p){pnode=el('path',{d:p,fill:'none',
         stroke:toneVar(s.tone),
         'stroke-width':WT[s.weight||'normal'],
         'stroke-dasharray':DASH[s.style||'solid'],
-        opacity:s.weight==='light'?0.75:1}));
+        opacity:s.weight==='light'?0.75:1});
+        svg.appendChild(pnode);}
+      seriesNodes.push({node:pnode,s});
       const li=(()=>{for(let i=s.values.length-1;i>=0;i--)if(s.values[i]!=null)return i;return -1;})();
       // With a legend present, end-labelling every series just crowds the right
       // margin. Only the emphasised series get an end label; the legend carries
@@ -568,9 +578,34 @@ JS = r"""
     });
     const tp=tip(host);
     let idx=-1;
-    const show=i=>{ if(i<0||i>=yrs.length)return; idx=i;
+    // pairedHover is opt-in: a figure with many series (each Greece line paired
+    // with a same-tone EU comparator) showed every one of them on every hover,
+    // which is unreadable once there are more than two or three pairs -- an age
+    // breakdown put a dozen labelled values in one tooltip. With it set, the
+    // tooltip and the highlight both narrow to whichever line the pointer is
+    // actually nearest, plus its same-tone partner, since tone is how this
+    // engine already pairs a Greek series with its European comparator.
+    const resetHighlight=()=>seriesNodes.forEach(({node,s})=>{if(!node)return;
+      node.setAttribute('opacity',s.weight==='light'?0.75:1);
+      node.setAttribute('stroke-width',WT[s.weight||'normal']);});
+    const show=(i,my)=>{ if(i<0||i>=yrs.length)return; idx=i;
       cur.setAttribute('x1',xs(yrs[i]));cur.setAttribute('x2',xs(yrs[i]));
-      const rows=d.series.filter(s=>s.label).map(s=>`${s.label}: <b>${fmt(s.values[i],d.dp)}</b>`).join('<br>');
+      let rows;
+      if(d.pairedHover&&my!=null){
+        let nearest=null,bd=1e9;
+        d.series.forEach(s=>{if(s.values[i]==null)return;
+          const dd=Math.abs(ys(s.values[i])-my); if(dd<bd){bd=dd;nearest=s;}});
+        const tone=nearest?nearest.tone:null;
+        const group=tone!=null?d.series.filter(s=>s.tone===tone&&s.label):[];
+        rows=(group.length?group:d.series.filter(s=>s.label))
+          .map(s=>`${s.label}: <b>${fmt(s.values[i],d.dp)}</b>`).join('<br>');
+        seriesNodes.forEach(({node,s})=>{if(!node)return;
+          const inGroup=tone==null||s.tone===tone;
+          node.setAttribute('opacity',inGroup?1:0.15);
+          node.setAttribute('stroke-width',inGroup?WT[s.weight||'normal']+0.6:WT[s.weight||'normal']);});
+      } else {
+        rows=d.series.filter(s=>s.label).map(s=>`${s.label}: <b>${fmt(s.values[i],d.dp)}</b>`).join('<br>');
+      }
       const ctxRow=hoveredCtx
         ?`<br>${hoveredCtx.name}: <b>${fmt(hoveredCtx.values[i],d.dp)}</b>`:'';
       // Extra rows carry quantities the chart does not plot -- ranks hide the
@@ -586,10 +621,12 @@ JS = r"""
     };
     const near=e=>{const r=svg.getBoundingClientRect();
       const x=(e.clientX-r.left)/r.width*W;
+      const my=(e.clientY-r.top)/r.height*H;
       let best=0,bd=1e9;yrs.forEach((y,i)=>{const dd=Math.abs(xs(y)-x);if(dd<bd){bd=dd;best=i;}});
-      show(best);};
+      show(best,my);};
     svg.addEventListener('mousemove',near);
-    svg.addEventListener('mouseleave',()=>{tp.classList.remove('on');cur.setAttribute('x1',-9);cur.setAttribute('x2',-9);});
+    svg.addEventListener('mouseleave',()=>{tp.classList.remove('on');cur.setAttribute('x1',-9);cur.setAttribute('x2',-9);
+      if(d.pairedHover)resetHighlight();});
     host.addEventListener('keydown',e=>{
       if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();
         show(Math.max(0,Math.min(yrs.length-1,(idx<0?yrs.length-1:idx)+(e.key==='ArrowRight'?1:-1))));}

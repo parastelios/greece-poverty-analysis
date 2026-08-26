@@ -364,9 +364,9 @@ FIGS["F21"] = dict(
     caption=f"On the same {_N} indicators, Greece went from the EU's worst "
             f"fifth on {_C['worst_2008']} in 2008 to {_C['worst_2024']} in 2024",
     kind="panel", series=f21, payload=v21a,
-    views=[("How many measures", v21a),
-           ("Which measures", v21b, "dumbbell")],
-    view_series=[f21, f21b],
+    views=[("Which measures", v21b, "dumbbell"),
+           ("How many measures", v21a)],
+    view_series=[f21b, f21],
     extra_caveat=(
         f"DESCRIPTIVE ONLY. Breadth was tested as a predictor of reported "
         f"hardship in P3a and does not survive: on its own it is not "
@@ -386,10 +386,10 @@ FIGS["F21"] = dict(
         f"countries, not Eurostat's population-weighted EU aggregate -- named "
         f"accordingly rather than simply 'EU'. Croatia never reaches full "
         f"{_N}-indicator coverage in any basket year and does not appear as a "
-        f"line for that reason. The second view's axis is POSITION, not "
-        f"value: the indicators have no common unit, so 0 is the best place in "
-        f"the Union to be on that indicator and 100 the worst, whichever "
-        f"direction 'worse' runs in."),
+        f"line for that reason. The 'Which measures' view's axis is POSITION, "
+        f"not value: the indicators have no common unit, so 0 is the best "
+        f"place in the Union to be on that indicator and 100 the worst, "
+        f"whichever direction 'worse' runs in."),
     lede=_SUMMARY21,
     first="Series")
 
@@ -619,6 +619,7 @@ for _lbl, _s, _tone in _COMPONENTS:
                       "values": [None if v is None else round(float(v), 1)
                                  for v in _vs]})
 v5comp = {"years": _cyrs, "dp": 1, "yLabel": "% of people", "series": _cser,
+       "pairedHover": True,
        "alt": "The three AROPE components for Greece against the EU median, "
               "colour marking the measure and dash marking the country. "
               "Greece is above the EU median on all three"}
@@ -657,6 +658,7 @@ for g, tone, w in AGE_TONE:
             [float(s.get(y)) if y in s.index else None for y in ay2],
             tone=tone, style="dashed", weight="light")
 v5b = {"years": [int(y) for y in ay2], "dp": 1, "yLabel": "% of age group",
+       "pairedHover": True,
        "alt": "Greek AROPE by age group, each paired with the EU median for "
               "the same band in the same colour: Greece solid, Europe dashed",
        "series": [{"label": l, "tone": m["tone"], "style": m["style"],
@@ -707,6 +709,7 @@ for g, tone, w in SEX_TONE:
             [float(s.get(y)) if y in s.index else None for y in sy],
             tone=tone, style="dashed", weight="light")
 v5d = {"years": [int(y) for y in sy], "dp": 1, "yLabel": "% of people",
+       "pairedHover": True,
        "alt": "Greek AROPE by sex, each paired with the EU median for the same "
               "sex in the same colour: Greece solid, Europe dashed. Greek women "
               "sit above Greek men throughout, and both far above Europe",

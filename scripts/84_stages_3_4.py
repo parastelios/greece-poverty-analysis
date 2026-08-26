@@ -263,9 +263,10 @@ for col, label in ITEMS:
     s.add(f"EU median: {label.lower()}", ez)
     series8.append(s)
     summary.append(f"{label.lower()} {r:.2f}")
-    views8.append((f"{label}  r = {r:.2f}", {
+    views8.append((label, {
         "years": yy, "dp": 1, "aspect": 0.44,
         "yMin": -9, "yMax": 9,
+        "corner": f"r = {r:.2f}",
         "yLabel": "Percentage-point deviation from each series' "
                   "2015-2024 average",
         "alt": f"Greek reported hardship, Greek {label.lower()} and the EU "

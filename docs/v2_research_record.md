@@ -44,7 +44,7 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `p6-rewrite` |
-| HEAD | `f91a2b0` Visual sign-off, round 2: F21 confirmed, glossary contrast fixed, real defects found |
+| HEAD | `6e5f7db` Rebuild F21 tab 1 as a comparative trajectory; add engine-wide context-hover values |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-26 |
 | Frozen V1 reference | `v1-final` |
