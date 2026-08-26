@@ -44,7 +44,7 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `p6-rewrite` |
-| HEAD | `67faeac` Add CTX-8: independent descriptive corroboration from Greece in Figures |
+| HEAD | `c7116d4` Fix Figure 8's headline: real wages also reverses sign, just negligibly |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-26 |
 | Frozen V1 reference | `v1-final` |

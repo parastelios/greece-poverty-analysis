@@ -339,8 +339,14 @@ else:
     print("PARITY OK: every claim required in a document was found in it.")
 
 import os as _os
+# The appendix is not one of the three claim-bearing documents in DOCS (it
+# carries no claim_matrix column of its own), but it IS one of the four
+# places context_register.csv promises to place every entry -- see
+# PLACEMENT in 79_context_register.py. It is added here, to this one check
+# only, rather than to DOCS itself.
+_CTX_DOCS = dict(DOCS, appendix="../output/statistical_appendix.html")
 _un, _inc = check_context_parity({k: _strip(open(v).read())
-                                  for k, v in DOCS.items() if _os.path.exists(v)})
+                                  for k, v in _CTX_DOCS.items() if _os.path.exists(v)})
 if _un or _inc:
     print("\nCONTEXT PARITY:")
     for _s in _un:

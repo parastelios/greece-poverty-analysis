@@ -6,6 +6,7 @@ value, and the value of whichever country's line the cursor is nearest -- which
 is the point of the appendix: the reports use these variables, but a reader
 could not previously look up what any of them actually was.
 """
+import html
 import json
 from pathlib import Path
 
@@ -218,6 +219,22 @@ color:var(--text-muted);white-space:nowrap}
 letter-spacing:.07em;text-transform:uppercase;color:var(--text-muted);
 border:1px solid var(--border);border-radius:4px;padding:.28rem .45rem;
 margin-right:.5rem;vertical-align:.08em}
+/* Context-register cards, matching the report's own .ctx rendering so a
+   reader who has seen one recognises the other. Same class names and the
+   same token names (--border, --text-secondary, --surface-2), so no new
+   palette to define here. */
+.ctx{border:1px dashed var(--border);border-radius:6px;padding:1.1rem 1.3rem;
+  margin:1.4rem 0;background:transparent}
+.ctx-head{display:flex;gap:.7rem;align-items:center;margin-bottom:.3rem}
+.ctx .status{font:.7rem ui-sans-serif,system-ui,sans-serif;text-transform:uppercase;
+  letter-spacing:.08em;color:var(--text-secondary)}
+.ctx h4{margin:.2rem 0 .6rem;font-size:1.02rem}
+.ctx p{font-size:.95rem}
+.ctx .permitted,.ctx .limitation,.ctx .cite{font:.88rem/1.55 ui-sans-serif,
+  system-ui,sans-serif;margin:.6rem 0 0}
+.ctx .limitation{color:var(--text-secondary)}
+.ctx .cite{color:var(--text-secondary);font-size:.82rem;padding-top:.5rem;
+  border-top:1px solid var(--border)}
 @media print{
   /* Nothing may be hidden behind a disclosure control on paper: a closed
      <details> prints as missing content, not as a closed block. */
@@ -1834,8 +1851,9 @@ toc[:0] = [f'<a href="#{sid}">{title}</a>' for sid, title in [
     ("appx-descriptive", "Additional descriptive evidence"),
     ("appx-diagnostic", "Technical diagnostics"),
     ("appx-context", "Contextual extensions"),
+    ("appx-context-register", "The context register in full"),
 ]]
-toc.insert(5, '<span class="toc-break">Variable atlas</span>')
+toc.insert(6, '<span class="toc-break">Variable atlas</span>')
 toc.append('<a href="#glossary"><b>&#167;</b> Abbreviations</a>')
 body.append('<h2 class="group" id="glossary"><span class="secnum">&#167;</span>'
             'Abbreviations and terms</h2>')
@@ -1967,6 +1985,106 @@ def _named(key):
 # it showed and then simplified, what it described in prose instead, what
 # qualifies its results, what sits outside its evidentiary reach, and finally
 # the atlas of every variable.
+# ---------------------------------------------------------------------------
+# THE CONTEXT REGISTER, IN FULL. The report, the paper and the narrative each
+# place every one of these entries somewhere in their own prose -- that is
+# enforced, not optional (90_build_paper.py and 91_build_narrative.py both
+# raise if one is missing). The appendix's own "Contextual extensions" lede
+# above already promises this register; until now nothing here actually
+# rendered it, which is exactly the gap that promise created. This section is
+# the appendix's placement: not narrative framing, but what PLACEMENT in
+# 79_context_register.py calls for here specifically -- the source, the exact
+# indicator, its coverage, and whether a test was run.
+ctx = pd.read_csv(OUT / "context_register.csv").set_index("id")
+
+
+def _ctx_card(cid, prose):
+    """One context-register entry. Same markup as the report's context(), so
+    the status pill, the permitted/limitation wording and the citation are
+    never re-typed here -- they come from the one register both documents
+    read, and can never drift between the two renderings."""
+    e = ctx.loc[cid]
+    cite = ""
+    if str(e.source_status) != "not applicable":
+        url = (f' <a href="{e.source_url}">source</a>'
+               if isinstance(e.source_url, str) and e.source_url else "")
+        det = f" {e.source_detail}" if isinstance(e.source_detail, str) and e.source_detail else ""
+        cite = f'<p class="cite"><strong>Source.</strong> {html.escape(str(e.source))}{det}{url}</p>'
+    return (f'<div class="ctx" data-context-id="{cid}">'
+            f'<div class="ctx-head">'
+            f'<span class="status">{html.escape(str(e.status))}</span></div>'
+            f"<h4>{html.escape(str(e.topic))}</h4>{prose}"
+            f'<p class="permitted"><strong>What may be concluded.</strong> '
+            f"{html.escape(str(e.permitted))}</p>"
+            f'<p class="limitation"><strong>Limitation.</strong> '
+            f"{html.escape(str(e.forbidden))}</p>{cite}</div>")
+
+
+# Appendix-specific prose: the source's exact form, its coverage, and whether
+# this project ran a test on it -- most did not, and saying so plainly is the
+# point of putting the register here rather than repeating the report's
+# narrative framing a fourth time.
+_CTX_APPENDIX_PROSE = {
+    "CTX-1": '''
+<p>Built from this project's own <code>reporting_style_cross_indicator.csv</code>:
+two financial questions and one general-wellbeing question, EU-SILC 2024, 27
+member states. No inferential test is run on the cross-domain comparison
+itself -- it is a description, not an estimate -- and the frozen claim it
+corroborates is V2-7.1.</p>''',
+    "CTX-2": '''
+<p>OECD Survey on Drivers of Trust in Public Institutions, 2024 Country Notes:
+Greece. Fieldwork October-November 2023, 30 OECD countries. External to this
+project: no project data feeds this entry, and no test was run or is
+possible on it here.</p>''',
+    "CTX-3": '''
+<p>Andriopoulou, Kanavitsa &amp; Tsakloglou (2020), LSE GreeSE Paper No. 149.
+EU-SILC microdata via ELSTAT, 2007-2017 waves, analysed in the cited paper,
+not by this project. No test was run here; the accumulated measures in
+Stage 5 record what was absorbed, not what any programme caused.</p>''',
+    "CTX-4": '''
+<p>Migration <em>was</em> tested in this project: E3, an aggregate
+net-migration predictor on the same 27-country panel as every other
+present-day construct, p&nbsp;=&nbsp;0.4006 -- inconclusive under the power
+available, not a demonstrated null. The Bank of Greece departure count
+(427,000 residents aged 15-64, 2008-2013) is external descriptive context,
+untested by this project's own protocol.</p>''',
+    "CTX-5": '''
+<p>Kaplanoglou (2015), Public Finance Review 43(4). Household Expenditure
+Survey microsimulation, 1988-2011, external to this project. This project
+holds no tax-incidence data of its own and ran no test linking tax burden to
+the hardship gap; the entry exists so a reader does not conclude the
+omission was accidental.</p>''',
+    "CTX-6": '''
+<p>Not applicable in the sense the other entries use the word: this is an
+interpretive recommendation built on three already-established results
+(V2-1.2, V2-2.1 and V2-5.*), not a sourced external claim, so it carries no
+separate coverage, dataset or test to report here.</p>''',
+    "CTX-7": '''
+<p>European Social Survey Data Portal, public Analysis tab, <code>stflife</code>
+(0-10 scale), Greek rounds 1, 2, 4, 5, 10 and 11 (2002 to 2023/24). Coverage
+is a balanced set of 12 countries present in every Greek round; the full ESS
+country set ranges from 22 to 30 across rounds and is deliberately not used
+for ranking here. Country means are the authors' own reconstruction from the
+portal's displayed weighted percentages, at the portal's rounding, so no
+standard error is computable and none is reported. Per-round source URLs are
+recorded in <code>data/raw/ess/ess_life_satisfaction_round_summary.csv</code>.</p>''',
+    "CTX-8": '''
+<p>Greece in Figures analysis article, drawing on Eurostat's 2025 AIC
+release, Eurostat's 2025 price-level release, the Eurostat working-week
+comparison and a 2026 ELSTAT resident-travel bulletin -- four external
+releases, none fetched or checked by this project's own pipeline. The
+article's central figures were checked by hand against those four releases
+and reproduce; two of its claims (a vehicle-stock figure read as new-car
+purchases, and resident trip growth generalised to "all Greeks") do not, and
+are named here rather than repeated. No test was run by this project on any
+of the article's own comparisons.</p>''',
+}
+_ctx_register_html = "".join(_ctx_card(cid, _CTX_APPENDIX_PROSE[cid])
+                             for cid in ctx.index)
+_missing_ctx_prose = [cid for cid in ctx.index if cid not in _CTX_APPENDIX_PROSE]
+if _missing_ctx_prose:
+    raise SystemExit(f"context entries with no appendix prose: {_missing_ctx_prose}")
+
 _fig_section = (
     _sec("figures", "Figures used in the report",
          "Each one is the same object the report carries, with the same "
@@ -1999,7 +2117,13 @@ _fig_section = (
            "across instruments that share no scale, and the post-freeze "
            "health analysis.", _named("context"))
     + '<section id="appx-context-detail">'
-    + "".join(_tag(_detail_figs[i]) for i in _CTX_DETAIL) + "</section>")
+    + "".join(_tag(_detail_figs[i]) for i in _CTX_DETAIL) + "</section>"
+    + '<section id="appx-context-register"><h2>The context register in full</h2>'
+    + '<p class="lede">What the report, the paper and the narrative each place '
+    'somewhere in their own prose, gathered here with the sources, the exact '
+    'indicators, their coverage, and whether this project ran a test on '
+    'them -- for most entries, it did not.</p>'
+    + _ctx_register_html + "</section>")
 
 ATLAS_JS = r'''<script>
 // DEEP LINKS INTO A CLOSED GROUP.
