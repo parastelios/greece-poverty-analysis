@@ -1071,11 +1071,13 @@ from between countries to within them.</p>
 {fig('F19')}
 
 <p>Most relationships survive the change with their sign intact and their
-strength reduced. One does not: the real poverty threshold correlates weakly and
-positively across countries and strongly negatively within them. A reversal like
-that is a fact about the two scopes rather than evidence about mechanism, and it
-is the clearest illustration of why the within figures are the ones reported in
-the claim above.</p>
+strength reduced. The real poverty threshold shows the only material reversal:
+it correlates weakly and positively across countries and strongly negatively
+within them. Real wages technically changes sign too, but its between-country
+correlation is +0.01, too close to zero for the reversal to mean anything. A
+reversal like that is a fact about the two scopes rather than evidence about
+mechanism, and it is the clearest illustration of why the within figures are
+the ones reported in the claim above.</p>
 
 <p class="signpost"><strong>Where this leaves us.</strong> The reported
 hardship corresponds to concrete affordability failure, so the puzzle is not

@@ -142,8 +142,10 @@ v6h = {"rows": rows6h, "dp": 3, "legendA": "within countries",
               "countries against within countries, ordered by how much the "
               "two differ; reversals are marked"}
 FIGS["F19"] = dict(
-    caption="Only the real poverty threshold reverses sign between countries "
-            "and within them; the rest change in magnitude, not direction",
+    caption="The real poverty threshold shows the only material sign reversal "
+            "when the comparison moves within countries; the rest either hold "
+            "their sign or start from a between-country correlation too close "
+            "to zero for a reversal to be meaningful",
     kind="dumbbell", payload=v6h, series=f6h, first="Measure")
 
 FIGS["F6"] = dict(

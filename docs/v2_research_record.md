@@ -44,7 +44,7 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `p6-rewrite` |
-| HEAD | `c500518` Figure 3 hover isolation, Figure 5 tab reorder, Figure 6 corner annotation |
+| HEAD | `67faeac` Add CTX-8: independent descriptive corroboration from Greece in Figures |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-26 |
 | Frozen V1 reference | `v1-final` |
