@@ -84,6 +84,27 @@ def fig(fid):
         f'<figcaption><span class="fignum">Figure {len(_used)}</span> ', 1)
 
 
+def fig_with_extra_fallback(fid, extra_html):
+    """Place a figure, with extra content inside its OWN "Show the numbers"
+    disclosure rather than as a second, separate block after it.
+
+    A figure's native fallback table is required -- it is what a screen
+    reader or a printed page sees in place of the chart, and its checksum is
+    load-bearing. It is not always the most readable table for a sighted
+    reader following the argument, though: F7's fourteen measures share one
+    dimensionless axis and lose their own units and the EU-country median to
+    do it. Rather than surface a second table in the main reading path (which
+    a reader has no reason to expect and would have to notice is related),
+    the more readable version goes inside the SAME disclosure, after the
+    table the chart requires.
+    """
+    built = fig(fid)
+    marker = "</details>\n</figure>"
+    if marker not in built:
+        raise SystemExit(f"{fid}: fallback closing tag not found for extra_fallback")
+    return built.replace(marker, extra_html + marker, 1)
+
+
 # Presentation only. The claim set is frozen and is NOT edited here: this
 # rewrites how a frozen wording is DISPLAYED, never what it says. Two kinds of
 # substitution are allowed, both content-free:
@@ -1062,17 +1083,19 @@ affordability either recovered more slowly than the rest of Europe or
 deteriorated further. That matters because a falling unemployment rate alone
 cannot describe what households actually faced.</p>
 
-{fig('F7')}
-
-{artifact_table('T-RECOVERY', 'e_f7_recovery_table.csv',
-                ['measure', 'greece_range', 'eu_median_range', 'distance_range',
-                 'plain_reading'],
-                ['Measure', 'Greece, 2015 → 2024',
-                 'EU-country median, 2015 → 2024',
-                 "Greece's distance from median", 'Plain reading'],
-                "Distances retain each measure's original unit and are "
-                "comparable over time within a row, not across rows.",
-                text_cols=['plain_reading'])}
+{fig_with_extra_fallback('F7',
+    '<p class="table-note">Ten of the fourteen measures above, restated with '
+    "the EU-country median spelled out in each measure's own unit and a "
+    'plain-language reading.</p>'
+    + artifact_table('T-RECOVERY', 'e_f7_recovery_table.csv',
+        ['measure', 'greece_range', 'eu_median_range', 'distance_range',
+         'plain_reading'],
+        ['Measure', 'Greece, 2015 → 2024',
+         'EU-country median, 2015 → 2024',
+         "Greece's distance from median", 'Plain reading'],
+        "Distances retain each measure's original unit and are "
+        "comparable over time within a row, not across rows.",
+        text_cols=['plain_reading']))}
 
 <p>The clearest improvement is long-term unemployment: Greece's rate fell from
 16.4% to 5.4%, cutting its distance from the EU-country median from 12.8 to

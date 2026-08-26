@@ -44,7 +44,7 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `p6-rewrite` |
-| HEAD | `9efe2ce` Build the appendix's promised context-register treatment (all 8 entries) |
+| HEAD | `eb37f07` Add a companion recovery table to Figure 7, and rewrite its interpretation |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-26 |
 | Frozen V1 reference | `v1-final` |
