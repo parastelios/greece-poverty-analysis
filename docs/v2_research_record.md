@@ -44,7 +44,7 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `p6-rewrite` |
-| HEAD | `6e5f7db` Rebuild F21 tab 1 as a comparative trajectory; add engine-wide context-hover values |
+| HEAD | `c500518` Figure 3 hover isolation, Figure 5 tab reorder, Figure 6 corner annotation |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-26 |
 | Frozen V1 reference | `v1-final` |
@@ -3424,7 +3424,7 @@ Deviations must be disclosed in the stage that made them, not only here.
 | E7 | `e7_results.csv` | 16 conditional coefficients, BH family 4 | present |
 | E7 | `e7_verdicts.csv` | Per-pair verdict across the six possible outcomes | present |
 | FINAL | `context_anchor.json` | The context anchor, statuses and placement | present |
-| FINAL | `context_register.csv` | Stage 7 context: 6 entries, none headline-eligible | present |
+| FINAL | `context_register.csv` | Stage 7 context: 8 entries, none headline-eligible | present |
 | FINAL | `e_final_claims.csv` | The frozen claim set with placement and caveats | present |
 | FINAL | `final_freeze.json` | The eight locked items; model searching closed | present |
 | FINAL | `report_visual_manifest.csv` | 15 figures specified before any was built | present |

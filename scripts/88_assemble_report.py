@@ -1164,6 +1164,29 @@ that the official income-poverty rate does not.</p>
 
 {fig('F10')}
 
+{context('CTX-8', '''
+<p>An independently published analysis on the Greece in Figures site reaches a
+similar descriptive picture from Eurostat and ELSTAT releases published in
+2025 and 2026, without access to this project's panel or its testing
+protocol: Greece is not the EU's poorest country on actual consumption per
+head, but Greek employees work among the longest hours in the Union for
+comparatively low hourly reward, and everyday categories such as food and
+information and communication are expensive relative to what that pay buys.
+That is the same shape as material resources and wage-adjusted affordability
+above, reached by a different route and a different, more recent, vintage of
+data.</p>
+<p>The article's central numbers reproduce against the primary releases they
+draw on, with two exceptions worth flagging on their own terms rather than
+folded into this project's findings: a stock of registered vehicles is
+presented as evidence of new-car purchases, which it cannot support, and a
+rise in resident trip-taking is generalised to "all Greeks travelled," which
+the underlying survey does not say. Three of its comparisons sit close to but
+not exactly on this project's own numbers &mdash; an AIC rank, an
+annual-hours measure against this report's weekly-hours one, and an overall
+price-level index &mdash; and each gap traces to a different year vintage or
+a different aggregate, not to a disagreement about the underlying facts.</p>
+''')}
+
 <h3>The six that did not, and why that is not a null result</h3>
 
 <p>Six of the nine did not clear the gates. It would be convenient to describe

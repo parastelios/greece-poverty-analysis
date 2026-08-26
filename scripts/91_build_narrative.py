@@ -480,6 +480,15 @@ people expect their earnings to rise.</p>
 unemployment rate came back. The paycheck did not. A household looking at a
 labour market that has genuinely improved is also looking at a wage that has
 been below where it started for a decade and a half.</p>
+
+{context('CTX-8', '''
+<p>An outside analysis (Greece in Figures, working from newer Eurostat and
+ELSTAT numbers than the ones used here) lands on the same shape from a
+different direction and without running any of the tests in this report:
+Greece is not last in the EU on what people actually consume, but Greek
+employees put in some of the longest hours in the Union for comparatively
+low pay per hour, and everyday things like food cost more than that pay would
+suggest. Same picture, different route, no formal test behind it.</p>''')}
 """))
 
 CH.append(chapter("unsettled", "The things we couldn't settle", f"""

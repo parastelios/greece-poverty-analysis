@@ -749,6 +749,15 @@ affordability from 0.25 to 0.33 against 0.31. Housing pressure, which does not
 clear the conditions, ranges from &minus;0.10 to 1.27 and therefore changes
 sign when one country is dropped.</p>
 
+{context('CTX-8', '''
+<p>An independently published analysis (Greece in Figures, drawing on
+2025/2026-vintage Eurostat and ELSTAT releases) reaches a similar descriptive
+picture by a different route and with no formal test: Greece is not the EU's
+poorest country on actual consumption, but works among the longest hours in
+the Union for comparatively low hourly reward, facing high relative prices in
+several everyday categories. That is the same shape as material resources and
+wage-adjusted affordability above.</p>''')}
+
 <h3>6.2 The six that did not, and what that does and does not mean</h3>
 
 <p>Six constructs did not satisfy the conditions. Describing these as ruled out

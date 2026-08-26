@@ -217,6 +217,66 @@ ENTRIES = [
                         "stated percentiles recomputed from stated ranks and "
                         "country counts, all six agree",
     },
+    {
+        # An independently published piece reaching a similar descriptive
+        # picture by a different route: no access to this project's panel, no
+        # bootstrap, no FDR, no within/between split, no model comparison. It
+        # corroborates the SHAPE of V2-4.C1/V2-4.C4, not the inference behind
+        # them, and its own numbers are a different (2025/2026) vintage from
+        # this project's frozen 2015-2024 panel.
+        "id": "CTX-8", "topic": "Independent descriptive corroboration (Greece in Figures)",
+        "status": "descriptive corroboration",
+        "permitted": "The independent picture -- Greece not last on actual "
+                     "consumption, long hours for comparatively low hourly "
+                     "reward, high relative prices in food and information/"
+                     "communication -- is consistent with and external "
+                     "corroboration for this project's own material-resources "
+                     "and wage-adjusted-affordability findings. Its central "
+                     "descriptive numbers reproduce against the primary "
+                     "Eurostat and ELSTAT releases they draw on.",
+        "forbidden": "Treating the article's own comparisons, or its "
+                     "constructed AIC-per-hour ratio, as inferential evidence: "
+                     "it applies no bootstrap, no FDR correction, no "
+                     "within/between decomposition and no model comparison, "
+                     "and it does not test whether these factors account for "
+                     "reported hardship. Merging its 2025/2026-vintage figures "
+                     "into this project's frozen 2015-2024 panel. Repeating "
+                     "its car-ownership sentence, which cites a vehicle-STOCK "
+                     "figure as evidence of new purchases, or its 'all Greeks "
+                     "travelled' generalisation, which the underlying ELSTAT "
+                     "survey does not support. Reading its AIC rank, hours "
+                     "rank or price-level figure as contradicting this "
+                     "project's own numbers without first noting the "
+                     "different vintage or aggregate behind each.",
+        "relates_to_claim": "V2-4.C4",
+        "evidence": "external analysis; not evaluated by this project's "
+                    "statistical protocol",
+        "detect": "Greece in Figures|greeceinfigures|niothoun toso ptokhoi|"
+                  "AIC per hour worked",
+        "source": "Greece in Figures, \"Γιατί οι "
+                  "Έλληνες νιώθουν "
+                  "τόσο φτωχοί\" "
+                  "[Why Greeks feel so poor].",
+        "source_url": "https://www.greeceinfigures.com/analyses/giati-oi-ellenes-niothoun-toso-phtokhoi/",
+        "source_detail": "Constructs an AIC-per-hour ratio from aggregate "
+                         "actual individual consumption and aggregate annual "
+                         "hours worked; cites 2025-vintage Eurostat AIC and "
+                         "price-level releases and a 2026 ELSTAT resident "
+                         "travel bulletin.",
+        "source_status": "verified",
+        "review_date": "2026-08-26",
+        "verified_how": "the article's headline figures (AIC per capita rank, "
+                        "annual hours worked, the constructed AIC-per-hour "
+                        "figure, overall and category price-level indices, "
+                        "resident trip counts) were checked one by one "
+                        "against the primary Eurostat AIC 2025 release, the "
+                        "Eurostat 2025 price-level release, the Eurostat "
+                        "working-week comparison and the ELSTAT resident "
+                        "travel survey; all reproduce. Two claims in the "
+                        "article do not hold up: its car-purchase sentence "
+                        "cites a vehicle-stock number, and its travel "
+                        "sentence over-generalises to all residents.",
+    },
 ]
 
 PLACEMENT = {
