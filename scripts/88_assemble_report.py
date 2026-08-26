@@ -115,16 +115,25 @@ def _num(v):
     return str(v)
 
 
-def artifact_table(tid, path, cols, headers, note=""):
+def artifact_table(tid, path, cols, headers, note="", text_cols=()):
     """A results table generated from its artifact, never transcribed.
 
-    Two figures became tables: three numbers on one axis is a table wearing a
-    chart's clothes, and three indicators on three unrelated scales -- a
-    percentage, a net balance and a 0-10 rating -- cannot be compared across a
-    shared axis. A table is the honest form for both, but only if it is
-    GENERATED. A hand-typed table is a figure's numbers copied once and then
-    left behind to drift. Release condition 17 compares every cell rendered
-    here against the CSV it came from.
+    Two figures became tables outright: three numbers on one axis is a table
+    wearing a chart's clothes, and three indicators on three unrelated scales
+    -- a percentage, a net balance and a 0-10 rating -- cannot be compared
+    across a shared axis. A third case, T-RECOVERY, sits beside a chart that
+    was kept rather than replaced: the dimensionless axis it shares is honest
+    for the comparison it makes, but a reader also wants each measure's own
+    units and the EU-country median written out, which that axis cannot
+    carry. All three are honest only if GENERATED. A hand-typed table is a
+    figure's numbers copied once and then left behind to drift. Release
+    condition 17 compares every cell rendered here against the CSV it came
+    from.
+
+    text_cols names any non-first column that is prose rather than a number
+    or a short code -- T-RECOVERY's "plain reading" is a sentence, and every
+    other column so far has been short enough that right-aligning it read
+    fine. Right-aligning a sentence does not.
     """
     d = pd.read_csv(PROC / path)
     head = "".join(f"<th>{html.escape(h)}</th>" for h in headers)
@@ -134,8 +143,12 @@ def artifact_table(tid, path, cols, headers, note=""):
         for i, c in enumerate(cols):
             v = getattr(r, c)
             txt = v if isinstance(v, str) else _num(v)
-            cells += (f"<th scope='row'>{html.escape(str(txt))}</th>" if i == 0
-                      else f"<td class='num'>{html.escape(str(txt))}</td>")
+            if i == 0:
+                cells += f"<th scope='row'>{html.escape(str(txt))}</th>"
+            elif c in text_cols:
+                cells += f"<td>{html.escape(str(txt))}</td>"
+            else:
+                cells += f"<td class='num'>{html.escape(str(txt))}</td>"
         body += f"<tr>{cells}</tr>"
     n = f'<p class="table-note">{note}</p>' if note else ""
     return (f'<div class="table-wrap" data-table-id="{tid}">'
@@ -1042,24 +1055,52 @@ figure does not do and which the caption states explicitly.</p>
 
 <h3>Convergence, and what it does and does not mean</h3>
 
-<p>Stage 1 noted that the gap narrows after 2016 without closing. That
-narrowing is worth examining directly, because a narrowing gap is easy to read
-as recovery and that reading is not automatically correct.</p>
+<p>Stage 1 noted that the gap narrows after 2016 without closing. Greece did
+not move in one direction across every measure behind it: some crisis-era
+conditions improved substantially, while household resources and
+affordability either recovered more slowly than the rest of Europe or
+deteriorated further. That matters because a falling unemployment rate alone
+cannot describe what households actually faced.</p>
 
 {fig('F7')}
 
-<p>The measures did not converge uniformly: some closed a substantial share of
-their 2015 distance to the EU, others closed little, and the spread across
-measures is wide. A single summary statement about Greek convergence would
-misrepresent this.</p>
+{artifact_table('T-RECOVERY', 'e_f7_recovery_table.csv',
+                ['measure', 'greece_range', 'eu_median_range', 'distance_range',
+                 'plain_reading'],
+                ['Measure', 'Greece, 2015 → 2024',
+                 'EU-country median, 2015 → 2024',
+                 "Greece's distance from median", 'Plain reading'],
+                "Distances retain each measure's original unit and are "
+                "comparable over time within a row, not across rows.",
+                text_cols=['plain_reading'])}
 
-<p class="caution"><strong>A narrowing gap does not establish Greek
-improvement.</strong> The distance between Greece and the EU average can shrink
-because Greece improved, because the EU average deteriorated, or because both
-moved in the same direction at different speeds. This figure shows the share of
-each gap that closed; it does not decompose that closure into the two
-countries' contributions, and it should not be read as evidence of Greek
-recovery on its own.</p>
+<p>The clearest improvement is long-term unemployment: Greece's rate fell from
+16.4% to 5.4%, cutting its distance from the EU-country median from 12.8 to
+3.7 percentage points. Housing-cost overburden also fell substantially. Both
+are genuine improvements, even though Greece did not fully close either
+gap.</p>
+
+<p>The household-resource picture runs the other way. Real wages fell further
+below their 2008 level while the EU median rose over the same years. Material
+resources grew in Greece, but more slowly than the median, widening the PPS
+gap. Wage-adjusted affordability deteriorated sharply. Reported hardship
+itself fell, but the EU median fell by almost exactly as much, leaving
+Greece's distance from it essentially unchanged.</p>
+
+<p>The pattern is not that Greece failed to recover on every measure.
+Labour-market and housing conditions improved substantially, but those gains
+were not matched by comparable recovery in wages, resources and purchasing
+power. This uneven recovery motivates the next stage's tests of which
+conditions remain associated with the hardship gap.</p>
+
+<p class="caution"><strong>Limits.</strong> This comparison is descriptive and
+does not identify a mechanism. A narrowing distance can reflect movement in
+Greece, movement in the EU-country median, or both; the endpoints show those
+movements but do not establish their causes. Distances retain each measure's
+original unit and should be compared over time within a row, not across rows.
+The appendix retains all fourteen measures, including real household income,
+the real poverty threshold and the two derived hardship-gap measures omitted
+here for space.</p>
 
 <p>Whether these relationships hold across countries and within them is the
 question the correlation structure answers directly. The full matrices &mdash;

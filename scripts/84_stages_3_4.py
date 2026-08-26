@@ -210,6 +210,61 @@ for r in d7.itertuples():
                    f"<br>EU median {eu_first:,.1f} &rarr; {eu_last:,.1f}"
                    f"<br>gap {r.gap_first:+,.1f} &rarr; {r.gap_last:+,.1f}"
                    f"<br><span style='opacity:.6'>{unit}</span>")})
+# The report's own compact companion table for this figure: ten of the
+# fourteen measures behind it, chosen for readability, with the EU-country
+# median spelled out rather than left inside a signed gap. Generated here
+# from the same d7 the chart itself reads, so the two cannot disagree -- the
+# "plain reading" column is the one judgement call in this table, hand-written
+# and nowhere else derived from data.
+_RT_VARS = ["ltu_rate", "pct_below_peak", "housing_cost_overburden", "arope",
+            "arop", "severe_mat_soc_deprivation", "subjective_poverty",
+            "real_wages_idx", "aic_pps_pc", "wadj_a01"]
+_RT_LABEL = {
+    "ltu_rate": "Long-term unemployment", "pct_below_peak": "Share below own GDP peak",
+    "housing_cost_overburden": "Housing-cost overburden", "arope": "AROPE",
+    "arop": "Income poverty", "severe_mat_soc_deprivation": "Material deprivation",
+    "subjective_poverty": "Reported hardship", "real_wages_idx": "Real wages, 2008 = 100",
+    "aic_pps_pc": "Material resources", "wadj_a01": "Wage-adjusted affordability"}
+# "each": the unit reads naturally on both numbers ("16.4% -> 5.4%"). "once":
+# it reads naturally only at the end of the range ("14,770 -> 21,310 PPS").
+# "none": the value is already an index and carries no unit of its own.
+_RT_SUFFIX = {"ltu_rate": ("%", "each"), "pct_below_peak": ("%", "each"),
+              "housing_cost_overburden": ("%", "each"), "arope": ("%", "each"),
+              "arop": ("%", "each"), "severe_mat_soc_deprivation": ("%", "each"),
+              "subjective_poverty": ("%", "each"), "real_wages_idx": ("", "none"),
+              "aic_pps_pc": (" PPS", "once"), "wadj_a01": ("", "none")}
+_RT_DIST_UNIT = {"ltu_rate": "pp", "pct_below_peak": "pp", "housing_cost_overburden": "pp",
+                 "arope": "pp", "arop": "pp", "severe_mat_soc_deprivation": "pp",
+                 "subjective_poverty": "pp", "real_wages_idx": "points",
+                 "aic_pps_pc": "PPS", "wadj_a01": "points"}
+_RT_DP = {"aic_pps_pc": 0}
+_rows_rt = []
+for _v in _RT_VARS:
+    _r = d7[d7.variable == _v].iloc[0]
+    _dp = _RT_DP.get(_v, 1)
+    _sfx, _mode = _RT_SUFFIX[_v]
+    _s1, _s2 = (_sfx, _sfx) if _mode == "each" else (("", _sfx) if _mode == "once" else ("", ""))
+    _eu_first, _eu_last = float(_r.gr_first) - float(_r.gap_first), float(_r.gr_last) - float(_r.gap_last)
+    _rows_rt.append({
+        "measure": _RT_LABEL[_v],
+        "greece_range": f"{_r.gr_first:,.{_dp}f}{_s1} → {_r.gr_last:,.{_dp}f}{_s2}",
+        "eu_median_range": f"{_eu_first:,.{_dp}f}{_s1} → {_eu_last:,.{_dp}f}{_s2}",
+        "distance_range": (f"{abs(float(_r.gap_first)):,.{_dp}f} → "
+                           f"{abs(float(_r.gap_last)):,.{_dp}f} {_RT_DIST_UNIT[_v]}"),
+        "plain_reading": {
+            "ltu_rate": "Large improvement; Greece remained above the median",
+            "pct_below_peak": "Substantial but incomplete recovery",
+            "housing_cost_overburden": "Improved, but the remaining disadvantage was large",
+            "arope": "Modest relative improvement",
+            "arop": "Small relative improvement",
+            "severe_mat_soc_deprivation": "Both improved; Greece's relative disadvantage barely changed",
+            "subjective_poverty": "Both fell; Greece's exceptional distance remained",
+            "real_wages_idx": "Greece fell further behind",
+            "aic_pps_pc": "Resources rose in Greece, but more slowly than the median",
+            "wadj_a01": "Affordability pressure deteriorated sharply relative to Europe",
+        }[_v]})
+pd.DataFrame(_rows_rt).to_csv(PROC / "e_f7_recovery_table.csv", index=False)
+
 FIGS["F7"] = dict(
     caption="Some gaps narrowed, especially long-term unemployment; wage, "
             "resource and affordability gaps widened",

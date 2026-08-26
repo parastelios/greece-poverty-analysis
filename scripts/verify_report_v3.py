@@ -161,13 +161,17 @@ for tid, cs in [("T1", t1), ("T2", t2)]:
 check("14. summary tables agree with their source artifacts", not bad,
       "; ".join(bad[:6]))
 
-# 17. THE REPLACEMENT TABLES. Two figures became tables when the main path was
-# cut to fifteen: the same-survey absorption ladder (three numbers on one axis)
-# and the three-domain comparison (a percentage, a net balance and a 0-10
-# rating, which share no axis). A table is the honest form for both -- but a
-# table is also the easiest thing in the document to type by hand and leave
-# behind. Both are generated from artifacts, and every rendered cell is
-# compared back to the CSV here, the same way T1 and T2 are.
+# 17. GENERATED COMPANION TABLES. Two figures became tables when the main path
+# was cut to fifteen: the same-survey absorption ladder (three numbers on one
+# axis) and the three-domain comparison (a percentage, a net balance and a 0-10
+# rating, which share no axis). A table is the honest form for both. T-RECOVERY
+# is a third case with a different shape: the ladder chart it sits beside
+# (F7) was kept, not replaced, because ten measures on one dimensionless axis
+# is still a legitimate chart -- the table exists because the reader also
+# needs each measure's own units and the EU-country median spelled out, which
+# a shared dimensionless axis cannot carry. All three are the easiest thing in
+# the document to type by hand and leave behind if not generated, so every
+# rendered cell is compared back to its CSV here, the same way T1 and T2 are.
 tbad = []
 
 
@@ -195,7 +199,10 @@ for tid, csv, cols in [
         ("T-ABSORB", "e_f20_absorption.csv", ["row", "percent_of_households"]),
         ("T-DOMAIN", "e_f15_domains.csv",
          ["indicator", "unit", "greece", "eu_median",
-          "greece_position_worst_first", "countries"])]:
+          "greece_position_worst_first", "countries"]),
+        ("T-RECOVERY", "e_f7_recovery_table.csv",
+         ["measure", "greece_range", "eu_median_range", "distance_range",
+          "plain_reading"])]:
     got = _gen_cells(tid)
     src = pd.read_csv(ROOT / "data" / "processed" / csv)
     if got is None:
