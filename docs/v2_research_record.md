@@ -44,9 +44,9 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `p6-rewrite` |
-| HEAD | `efaf265` Fixed 2008-2024 basket for the breadth figure, with transition status |
+| HEAD | `f91a2b0` Visual sign-off, round 2: F21 confirmed, glossary contrast fixed, real defects found |
 | Uncommitted changes | yes |
-| Last refreshed | 2026-08-25 |
+| Last refreshed | 2026-08-26 |
 | Frozen V1 reference | `v1-final` |
 | Frozen V2 analytical reference | `p5f-frozen` |
 <!-- AUTO:END document-control -->

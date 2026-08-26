@@ -702,16 +702,21 @@ except Exception as e:
 BASKET_FIRST, BASKET_LAST = 2008, 2024
 
 
-def _greek_position(v, hi, year):
-    """Greece's position in the EU distribution that year, 100 = worst."""
+def _country_position(v, hi, year, geo="EL"):
+    """geo's position in the EU distribution that year, 100 = worst."""
     if year not in v["years"]:
         return None
     i = v["years"].index(year)
     vals = {c: sv[i] for c, sv in v["countries"].items() if sv[i] is not None}
-    if len(vals) < MIN_REPORTERS or "EL" not in vals:
+    if len(vals) < MIN_REPORTERS or geo not in vals:
         return None
     signed = pd.Series(vals) if hi else -pd.Series(vals)
-    return 100 * float(signed.rank(pct=True)["EL"]), float(vals["EL"]), len(vals)
+    return 100 * float(signed.rank(pct=True)[geo]), float(vals[geo]), len(vals)
+
+
+def _greek_position(v, hi, year):
+    """Greece's position in the EU distribution that year, 100 = worst."""
+    return _country_position(v, hi, year, "EL")
 
 
 WORST_LINE = 100 * (1 - WORST_Q)      # a position at or above this is worst-fifth
@@ -767,6 +772,34 @@ try:
         raise ValueError(f"fixed basket has gaps in {holes}; the constant "
                          f"denominator would be a fiction")
     pd.DataFrame(traj).to_csv(OUT / "breadth_fixed_trajectory.csv", index=False)
+
+    # The SAME basket, EVERY country, so the "how many measures" view can
+    # answer the question its own tab name asks -- is Greece's trajectory
+    # unusual, compared with what? -- rather than showing Greece alone a
+    # second time. Coverage is not uniform across all 27: a country-year is
+    # plotted only where every one of the 16 indicators is present for that
+    # country that year, everything else is a genuine gap (null), the same
+    # convention the rest of this project uses for missing data rather than
+    # inventing a reading for it. One country (Croatia) is absent in nearly
+    # every year on this account; that is reported, not hidden.
+    all_countries = sorted(SERIES[fixed[0]["key"]]["countries"].keys())
+    traj_all = []
+    for geo in all_countries:
+        for y in byears:
+            ps = [_country_position(SERIES[r["key"]], WORSE_HIGH[r["key"]], y, geo)
+                  for r in fixed]
+            if any(p is None for p in ps):
+                continue
+            traj_all.append(dict(
+                geo=geo, time=y, n_ind=len(ps),
+                n_worst=sum(1 for p in ps if p[0] >= WORST_LINE)))
+    _tall = pd.DataFrame(traj_all)
+    _tall.to_csv(OUT / "breadth_fixed_trajectory_all.csv", index=False)
+    _coverage = _tall.groupby("geo").size()
+    _thin = sorted(_coverage[_coverage < len(byears) // 2].index)
+    print(f"  fixed basket, all countries: {len(all_countries)} countries, "
+          f"{len(_tall)} country-years with full 16-indicator coverage"
+          + (f"; sparse coverage (<50% of years): {_thin}" if _thin else ""))
 
     PANELS["breadth_fixed_basket"] = dict(
         label=f"The same {len(fixed)} indicators in {BASKET_FIRST} and {BASKET_LAST}",

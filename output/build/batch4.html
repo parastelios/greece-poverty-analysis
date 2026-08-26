@@ -462,7 +462,7 @@ whether closely related deprivation measures are admitted.</p>
 <p>Nothing in that table is new. Every row points at a result reached in an
 earlier stage, and this section introduces no estimate and no interpretation
 that was not already established and bounded where it was produced.</p>
-<footer class="stamp">Built 2026-08-25 18:44 from commit <code>efaf265</code> + uncommitted changes. If this does not match the current commit, the page is stale &mdash; reopen the file rather than refreshing.</footer>
+<footer class="stamp">Built 2026-08-26 10:19 from commit <code>f91a2b0</code> + uncommitted changes. If this does not match the current commit, the page is stale &mdash; reopen the file rather than refreshing.</footer>
 <script>
 (function(){
   const NS='http://www.w3.org/2000/svg';
@@ -756,6 +756,14 @@ that was not already established and bounded where it was produced.</p>
     }
     // Hovering a faint line names it. Without this the layer is decorative:
     // the reader can see a distribution but cannot ask what any part of it is.
+    // Hovering a context line named it in a corner label but the main tooltip
+    // -- the thing a reader actually reads the value from -- stayed limited to
+    // the named series (Greece, EU median). A reader hovering Poland's line
+    // could see THAT it was Poland but not what Poland's value was without a
+    // second, separate reading. hoveredCtx is tracked here and folded into the
+    // tooltip build below, for every panel chart with a context layer at once
+    // (F1, F16, F21 and any figure built the same way) rather than per figure.
+    let hoveredCtx=null;
     ctxHits.forEach(h=>{
       h.node.style.pointerEvents='stroke';
       h.node.addEventListener('mouseenter',()=>{
@@ -766,12 +774,14 @@ that was not already established and bounded where it was produced.</p>
           style:'font-weight:700;fill:var(--chart-label)'});
         lbl.textContent=h.name; lbl.setAttribute('data-ctx-name','1');
         svg.appendChild(lbl);
+        hoveredCtx=h; if(idx>=0)show(idx);
       });
       h.node.addEventListener('mouseleave',()=>{
         h.node.setAttribute('opacity','.22');
         h.node.setAttribute('stroke','var(--chart-neutral)');
         h.node.setAttribute('stroke-width','1');
         svg.querySelectorAll('[data-ctx-name]').forEach(n=>n.remove());
+        hoveredCtx=null; if(idx>=0)show(idx);
       });
     });
     const tp=tip(host);
@@ -779,15 +789,18 @@ that was not already established and bounded where it was produced.</p>
     const show=i=>{ if(i<0||i>=yrs.length)return; idx=i;
       cur.setAttribute('x1',xs(yrs[i]));cur.setAttribute('x2',xs(yrs[i]));
       const rows=d.series.filter(s=>s.label).map(s=>`${s.label}: <b>${fmt(s.values[i],d.dp)}</b>`).join('<br>');
+      const ctxRow=hoveredCtx
+        ?`<br>${hoveredCtx.name}: <b>${fmt(hoveredCtx.values[i],d.dp)}</b>`:'';
       // Extra rows carry quantities the chart does not plot -- ranks hide the
       // size of the differences, so the underlying values travel with them.
       const extra=(d.extraRows&&d.extraRows[i])?`<br><span style="opacity:.65">
         ${d.extraRows[i]}</span>`:'';
-      tp.innerHTML=`<strong>${yrs[i]}</strong><br>${rows}${extra}`;tp.classList.add('on');
+      tp.innerHTML=`<strong>${yrs[i]}</strong><br>${rows}${ctxRow}${extra}`;tp.classList.add('on');
       const r=svg.getBoundingClientRect(),hr=host.getBoundingClientRect();
       tp.style.left=Math.min(hr.width-tp.offsetWidth-8,(xs(yrs[i])/W)*r.width+8)+'px';
       tp.style.top='8px';
-      say(host,`${yrs[i]}. `+d.series.filter(s=>s.label).map(s=>`${s.label} ${fmt(s.values[i],d.dp)}`).join(', '));
+      const ctxSay=hoveredCtx?`, ${hoveredCtx.name} ${fmt(hoveredCtx.values[i],d.dp)}`:'';
+      say(host,`${yrs[i]}. `+d.series.filter(s=>s.label).map(s=>`${s.label} ${fmt(s.values[i],d.dp)}`).join(', ')+ctxSay);
     };
     const near=e=>{const r=svg.getBoundingClientRect();
       const x=(e.clientX-r.left)/r.width*W;

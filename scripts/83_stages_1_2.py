@@ -252,21 +252,55 @@ _LADDER_LABEL = {
 _missing = [r for r in _basket.label if r not in _LADDER_LABEL]
 assert not _missing, f"basket labels without a reader name: {_missing}"
 
-# ---- view A: the trajectory, constant denominator -------------------------
+# ---- view A: comparative trajectory, same fixed basket for every country --
+# The tab is titled "how many measures" -- the question it exists to answer is
+# whether Greece's trajectory is unusual compared with other countries, which
+# a Greece-only line cannot show. Rebuilt on the identical fixed 2008-2024
+# basket used everywhere else in this figure, not the earlier varying-basket
+# breadth measure the appendix separately carries (breadth_worst_quintile,
+# 2005-2025, each indicator counted from its own start year) -- that measure
+# answers a different question and predates the fixed-basket correction.
 _byrs = [int(y) for y in _btraj.time]
+_tall = pd.read_csv(PROC / "breadth_fixed_trajectory_all.csv")
+_tall["pct"] = 100 * _tall.n_worst / _tall.n_ind
+
+_gr_by_year = _tall[_tall.geo == "EL"].set_index("time")["pct"]
+_median_by_year = _tall.groupby("time")["pct"].median()
+assert list(_gr_by_year.index) == _byrs, "Greece's rows must cover every basket year"
+
 f21 = ce.Series([str(y) for y in _byrs], dp=1)
-f21.add("Greece", [float(v) for v in _btraj.value])
-f21.add(f"Indicators in the worst fifth (of {_N})",
-        [float(v) for v in _btraj.n_worst])
+f21.add("Greece", [round(float(_gr_by_year[y]), 1) for y in _byrs])
+f21.add("EU-country median", [round(float(_median_by_year.get(y, float("nan"))), 1)
+                              if y in _median_by_year.index else None
+                              for y in _byrs])
+
+# Every other reporting country, thin and faint, named on hover -- the
+# established pattern this report already uses for context layers (F1, F16).
+# One member (Croatia) never reaches full 16-indicator coverage in any basket
+# year and is absent from the chart for that reason, stated in the caveat
+# rather than silently missing.
+_others = sorted(c for c in _tall.geo.unique() if c != "EL")
+_ctx21 = []
+for _c in _others:
+    _row = _tall[_tall.geo == _c].set_index("time")["pct"]
+    _vals = [round(float(_row[y]), 1) if y in _row.index else None for y in _byrs]
+    if sum(v is not None for v in _vals) >= 2:
+        _ctx21.append({"label": NAMES.get(_c, _c), "values": _vals})
 
 v21a = {"years": _byrs, "dp": 1,
         "yLabel": f"% of the same {_N} indicators",
         "yMin": 0, "yMax": 100,
-        "alt": f"The share of a fixed basket of {_N} indicators placing Greece "
-               f"in the EU's worst fifth, every year from 2008 to 2024. The "
-               f"same {_N} indicators are counted every year",
+        "context": _ctx21, "contextLabel": "Each other EU country",
+        "alt": f"The share of the same fixed basket of {_N} indicators placing "
+               f"each country in the EU's worst fifth, every year from 2008 to "
+               f"2024. Greece against the EU-country median and every other "
+               f"reporting member state",
         "series": [{"label": "Greece", "tone": "gr", "weight": "strong",
-                    "values": [round(float(v), 1) for v in _btraj.value]}]}
+                    "values": [round(float(_gr_by_year[y]), 1) for y in _byrs]},
+                   {"label": "EU-country median", "tone": "eu", "style": "dashed",
+                    "values": [round(float(_median_by_year.get(y, float("nan"))), 1)
+                               if y in _median_by_year.index else None
+                               for y in _byrs]}]}
 
 # ---- view B: the same basket, then and now --------------------------------
 # Colour alone cannot carry "was it already there". Four derived statuses do,
@@ -347,7 +381,12 @@ FIGS["F21"] = dict(
         f"for them begins in 2009; hours worked, pay per hour, the work-effort "
         f"squeeze and real wages are all present, so this is not a basket "
         f"without labour-market information. The outcome and every model "
-        f"covariate are excluded. The second view's axis is POSITION, not "
+        f"covariate are excluded. THE EU-COUNTRY MEDIAN is the median of the "
+        f"27 member states' own shares on this basket -- a median across "
+        f"countries, not Eurostat's population-weighted EU aggregate -- named "
+        f"accordingly rather than simply 'EU'. Croatia never reaches full "
+        f"{_N}-indicator coverage in any basket year and does not appear as a "
+        f"line for that reason. The second view's axis is POSITION, not "
         f"value: the indicators have no common unit, so 0 is the best place in "
         f"the Union to be on that indicator and 100 the worst, whichever "
         f"direction 'worse' runs in."),
