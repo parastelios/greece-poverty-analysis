@@ -57,19 +57,32 @@ for n in (1, 2, 3, 4):
 # A general reader needs fewer charts than the technical report carries, and
 # each has to earn its place in the story rather than complete the record.
 # Selected by purpose, not by id: several ids changed meaning during the figure
-# work, so reuse by id was unsafe. Five, deliberately fewer than the report:
-#   F1  the paradox
-#   F3  the threshold that moved
-#   F21 breadth: how many separate measures put Greece in Europe's worst fifth
-#   F11 the historical scars
-#   F14 model dependence -- the central limitation, not optional detail
-#   F15 the strongest contextual figure -- where Greece sits on three indicators
+# work, so reuse by id was unsafe. Six, still fewer than the report's fifteen,
+# one per magazine act at minimum:
+#   F1  the paradox (opens the piece, before any act)
+#   F3  the threshold that moved                        -- THE MOVING RULER
+#   F21 breadth: how many separate measures put Greece   -- A MATERIAL FOOTPRINT
+#       in Europe's worst fifth
+#   F10 the three supported present-day constructs,      -- RECOVERY IN PIECES
+#       tabbed: long-term unemployment, material
+#       resources, wage-adjusted affordability
+#   F11 the historical scars                              -- THE PAST REMAINS PRESENT
+#   F14 model dependence -- the central limitation,        -- WHAT THE EVIDENCE CAN'T SETTLE
+#       not optional detail
+#
+# F15 held the last slot until it was removed: the report itself demoted it
+# out of its own main path (report_visual_manifest.csv: venue "appendix", not
+# "report") because three incompatible scales -- a percentage, a net balance,
+# a 0-10 rating -- don't share one axis, and replaced it with a generated
+# table, T-DOMAIN. The narrative was still using the chart the report had
+# already rejected; domain_table() below gives that chapter the same honest
+# table instead.
 #
 # F5 (the AROPE decomposition) previously held the slot labelled "breadth". It
 # is not breadth: it splits ONE measure by component and age group. The
 # chapter it illustrated argues that averages conceal divergence, which the
 # prose carries on its own; the decomposition stays in the technical report.
-NARRATIVE_FIGS = ["F1", "F3", "F21", "F11", "F14", "F15"]
+NARRATIVE_FIGS = ["F1", "F3", "F21", "F10", "F11", "F14"]
 
 # Non-figure blocks that travel from the batch pages. The pre-crisis comparison
 # is six rows with a decade missing from the middle, which is a table.
@@ -84,10 +97,37 @@ def block(key):
     if key not in BLOCKS:
         raise SystemExit(f"block '{key}' not found in any batch page")
     return BLOCKS[key]
+
+
+def domain_table():
+    """The three-domain comparison, as a table -- not a chart.
+
+    F15 plotted these three rows on one axis in an earlier version of this
+    project and was demoted out of the report's own main path for it: a
+    percentage, a net balance and a 0-10 rating share no scale, and the
+    report replaced it with T-DOMAIN, a generated table, for exactly that
+    reason. This reads the same e_f15_domains.csv T-DOMAIN reads, so the two
+    can never disagree, and gives this chapter the honest form of the same
+    comparison instead of a chart the report itself rejected.
+    """
+    d = pd.read_csv(PROC / "e_f15_domains.csv")
+    rows = ""
+    for r in d.itertuples():
+        gr = f"{r.greece:+.1f}" if r.indicator == "Financial expectations" else f"{r.greece:g}{'%' if r.unit == '%' else ''}"
+        eu = f"{r.eu_median:+.1f}" if r.indicator == "Financial expectations" else f"{r.eu_median:g}{'%' if r.unit == '%' else ''}"
+        ord_ = {1: "1st", 2: "2nd", 3: "3rd"}.get(r.greece_position_worst_first,
+                                                    f"{r.greece_position_worst_first}th")
+        rows += (f"<tr><td>{r.indicator}</td><td class='num'>{gr}</td>"
+                 f"<td class='num'>{eu}</td>"
+                 f"<td class='num'>{ord_} of {r.countries}, worst first</td></tr>")
+    return (f'<div class="mini-table"><table><thead><tr>'
+            f"<th>Measure</th><th>Greece</th><th>EU median</th>"
+            f"<th>Greece&rsquo;s position</th></tr></thead>"
+            f"<tbody>{rows}</tbody></table></div>")
 # The selection is FROZEN. Figure ids changed meaning during the figure work --
 # what an id pointed at was not stable -- so this list records a decision about
 # what this document argues, and any change to it has to be a decision too.
-_FROZEN = ['F1', 'F3', 'F21', 'F11', 'F14', 'F15']
+_FROZEN = ['F1', 'F3', 'F21', 'F10', 'F11', 'F14']
 if PAPER_FIGS != _FROZEN if "PAPER_FIGS" in dir() else NARRATIVE_FIGS != _FROZEN:
     raise SystemExit(
         "the narrative figure selection changed; update _FROZEN deliberately")
@@ -96,20 +136,22 @@ _used = []
 
 
 def fig(fid):
-    """Place a built figure, numbered in the order the reader meets it.
+    """Place a built figure. Numbering is NOT assigned here.
 
-    The figure's technical caveat -- the "Read with this" box, written for a
-    reader of the full report -- is tucked behind its own disclosure rather
-    than sitting open in the magazine reading path. The chart, its caption and
-    its own "Show the numbers" fallback all stay exactly as lifted; only the
-    caveat paragraph moves inside a second, clearly-labelled expandable.
+    It used to be: n = len(_used) at call time. That numbered figures in
+    DEFINITION order, which matched reading order only by accident, before
+    the five acts existed. The acts reorder chapters relative to how they're
+    defined in this file -- "company" is written before "ruler" but "ruler"'s
+    act now comes first -- so a call-time number silently went stale exactly
+    the way chapter numbers would have without the {ch:key} token system.
+    Figures get the same fix: a placeholder token, resolved once by
+    resolve_fig_nums() against the FINAL assembled document, left to right.
     """
     if fid in _used:
         raise SystemExit(f"{fid} placed twice")
     _used.append(fid)
-    n = len(_used)
     html_ = FIG_SOURCE[fid].replace(
-        "<figcaption>", f'<figcaption><span class="fignum">Figure {n}</span> ', 1)
+        "<figcaption>", f'<figcaption><span class="fignum">Figure {{fig:{fid}}}</span> ', 1)
     html_ = re.sub(
         r'(<p class="fig-caveat">.*?</p>)',
         r'<details class="fig-methods"><summary>Methods and limits</summary>\1</details>',
@@ -178,6 +220,22 @@ def resolve_refs(doc):
     left = _re.findall(r"\{ch:[a-z_]*\}", doc)
     if left:
         raise SystemExit(f"unresolved chapter references: {sorted(set(left))}")
+    return doc
+
+
+def resolve_fig_nums(doc):
+    """Number every {fig:FID} token by where it actually falls in DOC, left
+    to right -- the order a reader meets it, not the order fig() happened to
+    be called while the script was defining chapters."""
+    order = []
+    for fid in re.findall(r"\{fig:([A-Z0-9]+)\}", doc):
+        if fid not in order:
+            order.append(fid)
+    for i, fid in enumerate(order, start=1):
+        doc = doc.replace("{fig:" + fid + "}", str(i))
+    left = re.findall(r"\{fig:[A-Z0-9]*\}", doc)
+    if left:
+        raise SystemExit(f"unresolved figure references: {sorted(set(left))}")
     return doc
 
 
@@ -743,16 +801,17 @@ one survey, so it can't settle this on its own.</p>
 to answer darkly should drag everything down about equally. A pattern that is
 extreme on money and milder elsewhere points at circumstances instead.</p>
 
-{fig('F15')}
+{domain_table()}
 
 {finding('V2-7.1')}
 
-<p>Each row places every EU country on one indicator, with Greece marked. The
-pattern is specific to money, but it is a difference of degree, not of
-kind. Greece is worst in Europe on the financial questions and close to worst
-on general life satisfaction. That is not the profile of a country that is
-desperate about money and otherwise content, and an earlier version of this
-report described it that way and was wrong.</p>
+<p>Each row compares Greece with the EU-country median directly, and gives
+Greece's rank against the twenty-seven or so other member states that report
+it. The pattern is specific to money, but it is a difference of degree, not
+of kind. Greece is worst in Europe on the financial questions and close to
+worst on general life satisfaction. That is not the profile of a country
+that is desperate about money and otherwise content, and an earlier version
+of this report described it that way and was wrong.</p>
 
 <p>One more thing has to be held apart here, because getting it backwards
 inverts the finding. Greek life satisfaction <em>rose</em> over this period,
@@ -897,6 +956,14 @@ BASE = ce.base_style((OUT / "build" / "report.html").read_text())
 # argues, replacing the old flat "Chapter 1" through "Chapter 18" sequence.
 # The conclusion (landing) is deliberately outside this list: no act wraps it,
 # per the decision that it reads as a payoff, not a ninth numbered section.
+#
+# Every act carries at least one figure. RECOVERY IN PIECES was the one
+# exception -- money/jobless/paycheck had none between them -- until F10
+# (long-term unemployment, material resources, wage-adjusted affordability,
+# already tabbed three ways) was added as that act's own lead visual, placed
+# right after its kicker and before any of its three chapters' own prose.
+LEAD_FIGS = {"RECOVERY IN PIECES": fig("F10")}
+
 ACTS = [
     ("THE MOVING RULER", ["paradox", "ruler", "wider_net", "generations"]),
     ("A MATERIAL FOOTPRINT", ["real", "company"]),
@@ -917,8 +984,9 @@ if sorted(_assigned) != sorted(CH_KEYS):
 
 
 def act(kicker, keys):
+    lead = LEAD_FIGS.get(kicker, "")
     return (f'<div class="act"><p class="act-kicker">{kicker}</p></div>'
-            + "".join(CH_BY_KEY[k] for k in keys))
+            + lead + "".join(CH_BY_KEY[k] for k in keys))
 
 
 BODY = "".join(act(kicker, keys) for kicker, keys in ACTS) + CH_BY_KEY[CONCLUSION_KEY]
@@ -1018,8 +1086,35 @@ blockquote::after{{content:"\\201D"}}
   padding:.2rem 0}}
 .fig-methods[open] summary{{margin-bottom:.4rem}}
 .fig-methods .fig-caveat{{margin:0;font-size:.86rem}}
+/* An act's own lead figure, sitting between its kicker and its first
+   chapter -- more breathing room than a figure embedded mid-chapter gets,
+   since it's doing the work of a preview rather than illustrating one
+   paragraph. */
+.act + .figure{{margin-top:1.6rem}}
+/* The domain table replaces a chart the report itself rejected (three
+   incompatible scales -- a percentage, a net balance, a 0-10 rating -- on
+   one axis); styled plainly, in the body serif, rather than borrowing the
+   report's own sans-serif data-table language wholesale. */
+.mini-table{{margin:1.8rem 0;overflow-x:auto;border:1px solid var(--border);
+  border-radius:6px}}
+.mini-table table{{border-collapse:collapse;width:100%;min-width:24rem;
+  font:.95rem/1.5 ui-serif,Georgia,'Times New Roman',serif}}
+.mini-table th{{text-align:left;font:600 .72rem/1 ui-sans-serif,system-ui,
+  sans-serif;letter-spacing:.04em;text-transform:uppercase;
+  color:var(--text-secondary);padding:.6rem .9rem;
+  border-bottom:1px solid var(--border);background:var(--surface-2)}}
+.mini-table td{{padding:.55rem .9rem;border-bottom:1px solid var(--border)}}
+.mini-table td.num{{font-variant-numeric:tabular-nums;text-align:right}}
+.mini-table tr:last-child td{{border-bottom:none}}
 @media (max-width:34rem){{body{{font-size:1.04rem}}}}
 """
+
+# Both token families are resolved against this ONE combined string, in
+# final left-to-right document order -- {ch:key} against where each chapter's
+# anchor actually sits, {fig:FID} against where each figure actually appears.
+# Resolving them separately per-fragment (opening figure, then body) would
+# get the opening figure's own number right by accident and nothing else.
+_main = resolve_fig_nums(f'<div class="opening-fig">{_f1}</div>{resolve_refs(BODY)}')
 
 PAGE = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -1047,8 +1142,7 @@ and the continuing weight of unemployment, wages and housing.</p>
   </div>
 </div>
 </header>
-<div class="opening-fig">{_f1}</div>
-{resolve_refs(BODY)}
+{_main}
 <script>{ce.JS}</script>
 </body></html>
 """

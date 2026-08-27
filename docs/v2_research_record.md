@@ -44,7 +44,7 @@ This notebook is the running log. `docs/archive/pre-v2-publication/publication_s
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `main` |
-| HEAD | `b3946c5` Swap the narrative's headline and deck for a stronger combination |
+| HEAD | `32cf6da` Fix the narrative's breadth chapter: it was describing the pre-rework figure |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-27 |
 | Frozen V1 reference | `v1-final` |
