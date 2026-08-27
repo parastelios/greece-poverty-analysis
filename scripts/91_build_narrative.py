@@ -774,7 +774,7 @@ everybody wants &mdash; it is the version that sounds like an explanation. It
 is also the version this study did not produce.</p>
 """))
 
-CH.append(chapter("flip", "The result that flips", f"""
+CH.append(chapter("flip", "Third place, or twenty-fifth?", f"""
 <p>Most reports include a section showing their findings hold up. This one
 includes a section showing that one of them doesn't, and that is a result
 rather than an embarrassment.</p>
@@ -848,7 +848,7 @@ from the dead.</p>
 {finding('L-2')}
 """))
 
-CH.append(chapter("how_greeks_talk", "Is this just how Greeks talk?", f"""
+CH.append(chapter("how_greeks_talk", "Just gloomier answerers?", f"""
 <p>There is a simpler explanation for everything so far, and it deserves to be
 taken seriously rather than waved away: maybe Greeks are just gloomier
 answerers.</p>
