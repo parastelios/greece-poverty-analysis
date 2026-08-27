@@ -1,20 +1,19 @@
 name: Publish reports to GitHub Pages
 
-# Manual-trigger only, deliberately. GitHub Pages on the free tier requires a
-# public repository and this one is private, so an automatic push trigger would
-# fail on every report change. To enable publishing later: make the repository
-# public (or move the site to a separate public repo), then restore the push
-# trigger commented out below.
-#
-#   push:
-#     branches: [main]
-#     paths:
-#       - 'output/v2_report.html'
-#       - 'output/narrative.html'
-#       - 'output/academic_paper.html'
-#       - 'site/**'
-#       - '.github/workflows/pages.yml'
+# The repository is public as of 2026-08-27, so the push trigger that was
+# commented out while it was private (GitHub Pages on the free tier needs a
+# public repo) is restored: every push to main that touches one of these
+# paths deploys automatically. workflow_dispatch stays too, for a manual
+# rebuild that doesn't require a matching file change.
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'output/v2_report.html'
+      - 'output/narrative.html'
+      - 'output/academic_paper.html'
+      - 'site/**'
+      - '.github/workflows/pages.yml'
   workflow_dispatch:
 
 permissions:
