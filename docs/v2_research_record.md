@@ -44,7 +44,7 @@ This notebook is the running log. `docs/archive/pre-v2-publication/publication_s
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `main` |
-| HEAD | `7a492f9` Give every act a figure; fix a figure-numbering bug found along the way |
+| HEAD | `8bb4938` Widen the narrative's container: figures were cramped against the report's |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-27 |
 | Frozen V1 reference | `v1-final` |

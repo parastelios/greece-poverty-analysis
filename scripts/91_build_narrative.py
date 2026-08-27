@@ -57,21 +57,25 @@ for n in (1, 2, 3, 4):
 # A general reader needs fewer charts than the technical report carries, and
 # each has to earn its place in the story rather than complete the record.
 # Selected by purpose, not by id: several ids changed meaning during the figure
-# work, so reuse by id was unsafe. Six, still fewer than the report's fifteen,
-# one per magazine act at minimum:
+# work, so reuse by id was unsafe. Eight, still fewer than the report's
+# fifteen, one per magazine act at minimum:
 #   F1  the paradox (opens the piece, before any act)
 #   F3  the threshold that moved                        -- THE MOVING RULER
 #   F21 breadth: how many separate measures put Greece   -- A MATERIAL FOOTPRINT
 #       in Europe's worst fifth
-#   F10 the three supported present-day constructs,      -- RECOVERY IN PIECES
-#       tabbed: long-term unemployment, material
-#       resources, wage-adjusted affordability
+#   F10A/F10B/F10C  the three supported present-day       -- RECOVERY IN PIECES
+#       constructs, F10's three tabs lifted out as three
+#       separate figures (subfig() below) -- long-term
+#       unemployment/material resources/wage-adjusted
+#       affordability, each inside its own chapter, since
+#       a reader has no reason to connect a tab three
+#       chapters ahead to the paragraph in front of them
 #   F11 the historical scars                              -- THE PAST REMAINS PRESENT
 #   F14 model dependence -- the central limitation,        -- WHAT THE EVIDENCE CAN'T SETTLE
 #       not optional detail
 #
-# F15 held the last slot until it was removed: the report itself demoted it
-# out of its own main path (report_visual_manifest.csv: venue "appendix", not
+# F15 held a slot until it was removed: the report itself demoted it out of
+# its own main path (report_visual_manifest.csv: venue "appendix", not
 # "report") because three incompatible scales -- a percentage, a net balance,
 # a 0-10 rating -- don't share one axis, and replaced it with a generated
 # table, T-DOMAIN. The narrative was still using the chart the report had
@@ -82,7 +86,7 @@ for n in (1, 2, 3, 4):
 # is not breadth: it splits ONE measure by component and age group. The
 # chapter it illustrated argues that averages conceal divergence, which the
 # prose carries on its own; the decomposition stays in the technical report.
-NARRATIVE_FIGS = ["F1", "F3", "F21", "F10", "F11", "F14"]
+NARRATIVE_FIGS = ["F1", "F3", "F21", "F10A", "F10B", "F10C", "F11", "F14"]
 
 # Non-figure blocks that travel from the batch pages. The pre-crisis comparison
 # is six rows with a decade missing from the middle, which is a table.
@@ -127,7 +131,7 @@ def domain_table():
 # The selection is FROZEN. Figure ids changed meaning during the figure work --
 # what an id pointed at was not stable -- so this list records a decision about
 # what this document argues, and any change to it has to be a decision too.
-_FROZEN = ['F1', 'F3', 'F21', 'F10', 'F11', 'F14']
+_FROZEN = ['F1', 'F3', 'F21', 'F10A', 'F10B', 'F10C', 'F11', 'F14']
 if PAPER_FIGS != _FROZEN if "PAPER_FIGS" in dir() else NARRATIVE_FIGS != _FROZEN:
     raise SystemExit(
         "the narrative figure selection changed; update _FROZEN deliberately")
@@ -157,6 +161,45 @@ def fig(fid):
         r'<details class="fig-methods"><summary>Methods and limits</summary>\1</details>',
         html_, count=1, flags=re.S)
     return html_
+
+
+def subfig(fid, parent_fid, view_index, caption, question):
+    """One view of a multi-view report figure, lifted out as its own
+    standalone figure with a fresh caption and question -- not exposed as a
+    tab choice.
+
+    F10 has three tabs (long-term unemployment, material resources,
+    wage-adjusted affordability) and originally sat as one lead figure
+    before all three of "money"/"jobless"/"paycheck", which each cover
+    exactly one of those three constructs on its own. A reader had no reason
+    to connect a tab three chapters ahead of its own topic to the paragraph
+    in front of them. Each view's payload and fallback table are already
+    self-contained in the built HTML (chart_engine emits one <script> and
+    one checksummed <table data-view="N"> per view), so no new chart needs
+    building -- only a new figure shell and id, so fid must be unique and
+    (like every real figure id) match [A-Z0-9]+ for resolve_fig_nums().
+    """
+    if fid in _used:
+        raise SystemExit(f"{fid} placed twice")
+    _used.append(fid)
+    src = FIG_SOURCE[parent_fid]
+    scripts = re.findall(r'<script type="application/json"[^>]*>(.*?)</script>', src, re.S)
+    tables = re.findall(r'<table data-checksum="[^"]*" data-view="\d+">.*?</table>', src, re.S)
+    if view_index >= len(scripts) or view_index >= len(tables):
+        raise SystemExit(f"{parent_fid} has no view {view_index} to lift into {fid}")
+    payload, table = scripts[view_index], tables[view_index]
+    checksum = re.search(r'data-checksum="([^"]*)"', table).group(1)
+    return (f'<figure class="figure" id="{fid}">'
+            f'<figcaption><span class="fignum">Figure {{fig:{fid}}}</span> {caption}</figcaption>'
+            f'<div class="fig-meta"><span class="badge">pre-planned confirmatory</span>'
+            f'<span class="fig-q">{question}</span></div>'
+            f'<div class="chart-live" data-chart="panel" tabindex="0" '
+            f'data-checksum="{checksum}" aria-describedby="{fid}-fb">'
+            f'<script type="application/json">{payload}</script></div>'
+            f'<details class="fallback" id="{fid}-fb"><summary>Show the numbers '
+            f'<a href="statistical_appendix.html#{parent_fid}">This figure in the appendix</a>, '
+            f'with the detail the report leaves out.</summary>{table}</details>'
+            f'</figure>')
 
 
 def finding(cid):
@@ -393,7 +436,7 @@ is therefore partly comparing which conditions were even eligible to fire.</p>
 What's underneath them isn't.</p>
 """))
 
-CH.append(chapter("generations", "The average hid a reversal", f"""
+CH.append(chapter("generations", "The average hid a divide", f"""
 <p>National averages are averages of people, and people are not
 interchangeable.</p>
 
@@ -409,10 +452,11 @@ headline, exactly like a country where it eased for everybody a little. The
 household answering the survey question is not answering about the national
 average. It is answering about itself.</p>
 
-<p>It also complicates the recovery story from the previous chapters. Aggregate
-improvement in unemployment and consumption is real. Whether it reached the
-same people who absorbed the worst of the crisis is a different question, and
-the age split is the closest this data comes to an answer: not evenly.</p>
+<p>It also complicates the recovery story that <a href="#ch{{ch:jobless}}">follows</a>.
+Aggregate improvement in unemployment and consumption is real. Whether it
+reached the same people who absorbed the worst of the crisis is a different
+question, and the age split is the closest this data comes to an answer: not
+evenly.</p>
 
 <p>We stop short of the stronger version of that claim. Showing that groups
 moved differently is not the same as showing which group's experience drives
@@ -490,6 +534,11 @@ give the impression that nothing improved. A great deal improved.</p>
 been accounted for &mdash; meaning it carries information the official poverty
 rate does not.</p>
 
+{subfig('F10B', 'F10', 1,
+        "Material resources rose substantially in Greece, but the gap to "
+        "the EU median widened",
+        "How did Greece's material resources move against the EU median?")}
+
 {finding('V2-4.C1')}
 
 <p>Read that carefully: it says the measure carries information the official
@@ -526,6 +575,11 @@ surprise at all. A month of unemployment is an inconvenience for most
 households. Two years is a different category of event, and the household that
 comes out the other side is not the household that went in.</p>
 
+{subfig('F10A', 'F10', 0,
+        "Long-term unemployment fell sharply and the gap to the EU median "
+        "narrowed, though Greece remains several times higher",
+        "How did Greece's long-term unemployment move against the EU median?")}
+
 {finding('V2-4.C2')}
 
 <p>This is the clearest of the present-day results, and it survives every check
@@ -546,6 +600,11 @@ longer than any country in the EU except Hungary.</p>
 <p>What matters for households is not the wage alone but the wage against what
 things cost, and that combination also predicts reported hardship beyond income
 poverty.</p>
+
+{subfig('F10C', 'F10', 2,
+        "Wage-adjusted affordability got worse in Greece while the EU "
+        "median eased",
+        "How did Greece's wage-adjusted affordability move against the EU median?")}
 
 {finding('V2-4.C4')}
 
@@ -685,9 +744,10 @@ under which having rules means anything.</p>
 #  CHAPTERS 10-16
 # ===========================================================================
 CH.append(chapter("between_within", "Between countries, not inside one", f"""
-<p>Everything in the last chapter is a statement about how countries differ
-from each other. It is very tempting, and it is wrong, to turn it into a
-statement about how Greece changed over time.</p>
+<p>Everything in <a href="#ch{{ch:duration}}">the accumulated-history chapter</a>
+is a statement about how countries differ from each other. It is very
+tempting, and it is wrong, to turn it into a statement about how Greece
+changed over time.</p>
 
 {finding('V2-5.Y')}
 
@@ -957,15 +1017,19 @@ BASE = ce.base_style((OUT / "build" / "report.html").read_text())
 # The conclusion (landing) is deliberately outside this list: no act wraps it,
 # per the decision that it reads as a payoff, not a ninth numbered section.
 #
-# Every act carries at least one figure. RECOVERY IN PIECES was the one
-# exception -- money/jobless/paycheck had none between them -- until F10
-# (long-term unemployment, material resources, wage-adjusted affordability,
-# already tabbed three ways) was added as that act's own lead visual, placed
-# right after its kicker and before any of its three chapters' own prose.
-LEAD_FIGS = {"RECOVERY IN PIECES": fig("F10")}
-
+# Every act now carries at least one figure without needing a shared lead
+# visual: money/jobless/paycheck (RECOVERY IN PIECES) each carry their own,
+# via subfig() above, right inside the chapter they belong to.
+#
+# THE MOVING RULER named only the "ruler" chapter accurately -- wider_net
+# (AROPE, a wider definition, not a moving threshold) and generations
+# (age-group divergence hidden inside one measure) aren't about a ruler
+# moving at all. What unifies all four is narrower and more accurate: every
+# official way of counting this -- the income line, the broader AROPE
+# measure, the national average -- misses part of what's actually going on.
 ACTS = [
-    ("THE MOVING RULER", ["paradox", "ruler", "wider_net", "generations"]),
+    ("WHAT THE OFFICIAL NUMBERS MISS",
+     ["paradox", "ruler", "wider_net", "generations"]),
     ("A MATERIAL FOOTPRINT", ["real", "company"]),
     ("RECOVERY IN PIECES", ["money", "jobless", "paycheck"]),
     ("THE PAST REMAINS PRESENT", ["duration"]),
@@ -984,9 +1048,8 @@ if sorted(_assigned) != sorted(CH_KEYS):
 
 
 def act(kicker, keys):
-    lead = LEAD_FIGS.get(kicker, "")
     return (f'<div class="act"><p class="act-kicker">{kicker}</p></div>'
-            + lead + "".join(CH_BY_KEY[k] for k in keys))
+            + "".join(CH_BY_KEY[k] for k in keys))
 
 
 BODY = "".join(act(kicker, keys) for kicker, keys in ACTS) + CH_BY_KEY[CONCLUSION_KEY]
@@ -1095,11 +1158,6 @@ blockquote::after{{content:"\\201D"}}
   padding:.2rem 0}}
 .fig-methods[open] summary{{margin-bottom:.4rem}}
 .fig-methods .fig-caveat{{margin:0;font-size:.86rem}}
-/* An act's own lead figure, sitting between its kicker and its first
-   chapter -- more breathing room than a figure embedded mid-chapter gets,
-   since it's doing the work of a preview rather than illustrating one
-   paragraph. */
-.act + .figure{{margin-top:1.6rem}}
 /* The domain table replaces a chart the report itself rejected (three
    incompatible scales -- a percentage, a net balance, a 0-10 rating -- on
    one axis); styled plainly, in the body serif, rather than borrowing the
