@@ -17,7 +17,13 @@ close it; three present-day conditions and three accumulated ones each add
 real information beyond income poverty; and *most of the 52.6 points remains
 unattributed*, because the analysis could not establish where it goes. The
 V1 draft is preserved as-is in `archive/v1-final/` for comparison, not
-deleted or silently superseded.
+deleted or silently superseded. The pre-registered protocol V2 was built
+against — the brief that fixes each construct's testing conditions before
+any outcome was seen — is
+[`docs/archive/pre-v2-publication/project_description_v3.md`](docs/archive/pre-v2-publication/project_description_v3.md):
+filed alongside superseded status documents because it no longer describes
+current *status*, but still the live citation behind several pipeline
+scripts' pre-registration comments.
 
 ## The published documents
 
@@ -96,7 +102,10 @@ docs/              Methodology references (comparability_notes.md,
                    data_sources.md), the live research record
                    (v2_research_record.md), the health-extension writeup,
                    and archive/pre-v2-publication/ for superseded planning
-                   and status documents kept for provenance, not current use.
+                   and status documents kept for provenance, not current
+                   use — except project_description_v3.md there, the
+                   pre-registered protocol V2 was built against, which is
+                   still a live citation, not just historical record.
 output/            The four published documents (above), their PDF exports,
                    and the intermediate build/ pages they're assembled from.
 archive/v1-final/  The V1 draft, frozen as published, kept for comparison.
