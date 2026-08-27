@@ -227,20 +227,21 @@ CH.append(chapter("company", "One number, or a crowd", f"""
 <p>The obvious first suspicion about a number that disagrees with every other
 number is that the number is broken.</p>
 
-<p>So it is worth asking what company it keeps. Take twenty-five separate
-measures of Greek life &mdash; wages, hours worked, prices, unemployment,
-saving, debt, how many people are leaving, what households expect of next year
-&mdash; and ask a blunt question of each one: is Greece in the worst fifth of
-Europe on this? Then count how many say yes.</p>
+<p>So it is worth asking what company it keeps. Take sixteen separate measures
+of Greek life &mdash; wages, hours worked, prices, saving, what households
+expect of next year, how many people are leaving &mdash; the same sixteen
+every time, chosen only because both a 2008 and a 2024 reading exist for
+each, so growth in the count can't be explained by counting more things
+later. Then ask a blunt question of each one: is Greece in the worst fifth of
+Europe on this? Count how many say yes.</p>
 
 {fig('F21')}
 
-<p>Before the crisis, about a quarter of them did. Now about two thirds do.
-Sixteen of the twenty-five put Greece at or near the bottom of the Union, and
-they are not twenty-five ways of saying the same thing: pay per hour, hours
-worked, what households manage to save, what they expect of the coming year,
-the real value of the poverty line itself, and the number of citizens packing
-up and leaving all sit down there together.</p>
+<p>Before the crisis, four of them did &mdash; about a quarter. Now eleven
+do &mdash; about two thirds. And they are not sixteen ways of saying the same
+thing: pay per hour, hours worked, what households manage to save, what they
+expect of the coming year, the real value of the poverty line itself, and the
+number of citizens packing up and leaving all sit down there together.</p>
 
 <p>This does not explain anything. We tried to use it as an explanation and it
 failed &mdash; on its own it predicts nothing, and put alongside the other

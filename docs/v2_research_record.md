@@ -44,7 +44,7 @@ This notebook is the running log. `docs/archive/pre-v2-publication/publication_s
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `main` |
-| HEAD | `6920ed8` Rebuild the narrative companion as a magazine feature, five-act spine |
+| HEAD | `b3946c5` Swap the narrative's headline and deck for a stronger combination |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-27 |
 | Frozen V1 reference | `v1-final` |
