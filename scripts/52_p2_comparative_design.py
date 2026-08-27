@@ -1,6 +1,6 @@
 """P2: comparative-case design for Greek subjective hardship.
 
-Pre-registered in docs/project_description_v3.md §4.1, committed at 7cca9c2
+Pre-registered in docs/archive/pre-v2-publication/project_description_v3.md §4.1, committed at 7cca9c2
 BEFORE this script was written. Windows, donor rules, safeguards and every
 numeric failure threshold were fixed in that commit.
 

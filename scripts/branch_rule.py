@@ -5,7 +5,7 @@ OBJECTIVE SUPPORT" while Greece sat at rank 3, because an if/else chain ended in
 a default `else` that returned the strongest conclusion. The pre-commitment was
 correct; the implementation defeated it.
 
-The rule, from docs/project_description_v3.md §5:
+The rule, from docs/archive/pre-v2-publication/project_description_v3.md §5:
 
   1  residual <= 10 AND Greece leaves the extreme-outlier group
   2  residual 10-20 with stable improvement

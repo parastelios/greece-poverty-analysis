@@ -1,6 +1,6 @@
 """P3: the objective-only model. The v3 publication gate.
 
-Pre-committed in docs/project_description_v3.md §5. Nothing here is chosen after
+Pre-committed in docs/archive/pre-v2-publication/project_description_v3.md §5. Nothing here is chosen after
 seeing a result: the formula, the sample, the fixed effects, the weighting, the
 missing-data rule, the inference method, the decision that LTU and cumulative
 unemployment enter TOGETHER, and the four conclusion branches were all fixed in

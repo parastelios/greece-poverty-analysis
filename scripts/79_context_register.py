@@ -101,7 +101,7 @@ ENTRIES = [
         "source_detail": "EU-SILC microdata, ELSTAT waves 2008-2017. Anchored "
                          "FGT0 on a 2007 base reaches 48% at the 2013 peak.",
         "source_status": "verified", "review_date": "2026-08-23",
-        "verified_how": "read in full; recorded in publication_strategy.md",
+        "verified_how": "read in full; recorded in docs/archive/pre-v2-publication/publication_strategy.md",
     },
     {
         "id": "CTX-4", "topic": "Migration",

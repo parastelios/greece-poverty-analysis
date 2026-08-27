@@ -2,7 +2,7 @@
 relative to the rest of the EU, explain Greece's subjective-poverty gap better
 than the accumulation and duration measures already screened?
 
-Pre-registered in docs/publication_strategy.md before this script was run: the
+Pre-registered in docs/archive/pre-v2-publication/publication_strategy.md before this script was run: the
 five candidates, the construction rules, the decision to exclude second
 derivatives, and the stopping rule are all fixed there.
 

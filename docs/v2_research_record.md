@@ -22,7 +22,7 @@ The technical report, academic paper, and narrative companion are not updated
 stage by stage. They are revised only after the analytical sequence is complete
 and the claims have been frozen.
 
-This notebook is the running log. `publication_strategy.md` was closed on
+This notebook is the running log. `docs/archive/pre-v2-publication/publication_strategy.md` was closed on
 2026-08-22 and holds the pre-EA history; nothing new goes there.
 
 **Sources of truth.** This document does not restate them, it points at them:
@@ -30,8 +30,8 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Thing | Lives in | Maintained by |
 |---|---|---|
 | The 53 published claims and their disposition | `docs/claim_matrix.csv` | `scripts/build_claim_matrix.py`, audited by `audit_parity.py` |
-| Pre-EA history, literature checks, long-form stage narrative | `docs/publication_strategy.md` | **closed archive** — do not append |
-| The protocol V2 follows | `docs/project_description_v3.md` | hand-written |
+| Pre-EA history, literature checks, long-form stage narrative | `docs/archive/pre-v2-publication/publication_strategy.md` | **closed archive** — do not append |
+| The protocol V2 follows | `docs/archive/pre-v2-publication/project_description_v3.md` | hand-written |
 | Frozen P3/P5/P3a values and wording rules | `data/processed/p5f_frozen_result.json` | frozen, never edited |
 | Frozen construct map | `data/processed/construct_map_frozen.json` | frozen, never edited |
 | Frozen E pre-registration | `data/processed/e_preregistration.json` | frozen, never edited |
@@ -44,9 +44,9 @@ This notebook is the running log. `publication_strategy.md` was closed on
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `p6-rewrite` |
-| HEAD | `eb37f07` Add a companion recovery table to Figure 7, and rewrite its interpretation |
+| HEAD | `0a80bda` Rewrite README around the current V2 state |
 | Uncommitted changes | yes |
-| Last refreshed | 2026-08-26 |
+| Last refreshed | 2026-08-27 |
 | Frozen V1 reference | `v1-final` |
 | Frozen V2 analytical reference | `p5f-frozen` |
 <!-- AUTO:END document-control -->
@@ -175,7 +175,7 @@ validated against.
 
 `scripts/51_p0_outcome_reconciliation.py`, `scripts/outcome.py` ·
 `data/processed/p0_outcome_reconciliation.csv`, `p0_verdict.csv` ·
-`docs/publication_strategy.md` § "P0 complete"
+`docs/archive/pre-v2-publication/publication_strategy.md` § "P0 complete"
 
 ---
 
@@ -240,7 +240,7 @@ by someone reading quickly. One that fails the build does not.
 `scripts/52_p2_comparative_design.py` ·
 `data/processed/p2_specifications.csv`, `p2_donor_weights.csv`,
 `p2_placebo_distribution.csv` ·
-`docs/publication_strategy.md` § "P2 FAILS its pre-registered gates"
+`docs/archive/pre-v2-publication/publication_strategy.md` § "P2 FAILS its pre-registered gates"
 
 ---
 
@@ -348,7 +348,7 @@ screening. It has not been validated out of sample.
 `scripts/53_p3_objective_only.py`, `scripts/branch_rule.py`,
 `scripts/test_branch_rule.py` ·
 `data/processed/p3_objective_only.csv`, `p3_residuals.csv` ·
-`docs/publication_strategy.md` § "P3 result: BRANCH 2"
+`docs/archive/pre-v2-publication/publication_strategy.md` § "P3 result: BRANCH 2"
 
 ---
 
@@ -446,7 +446,7 @@ it was caught, and an argument for reporting test statistics alongside p-values.
 `scripts/test_mundlak_rule.py` ·
 `data/processed/p5_audit.csv`, `p5_bootstrap.csv`, `p5_influence.csv`,
 `p5f_frozen_result.json` ·
-`docs/publication_strategy.md` § "P5 result: OUTCOME B"
+`docs/archive/pre-v2-publication/publication_strategy.md` § "P5 result: OUTCOME B"
 
 ---
 
@@ -499,7 +499,7 @@ which is how null results disappear.
 `scripts/55a_p3a_freeze_universe.py`, `scripts/55b_p3a_family_d.py` ·
 `data/processed/p3a_frozen_universe.json`, `p3a_results.csv`,
 `p3a_individual_indicators.csv` ·
-`docs/publication_strategy.md` § "P3a result"
+`docs/archive/pre-v2-publication/publication_strategy.md` § "P3a result"
 
 ---
 
@@ -3281,7 +3281,7 @@ Deviations must be disclosed in the stage that made them, not only here.
 
 | ID | Date | Original statement or decision | Problem | Correction | Affected artifacts | Commit |
 |---|---|---|---|---|---|---|
-| C-01 | 2026-08-21 | Synthetic control showed a near-exact pre-crisis fit | The fit was on a degenerate two-point window; the honest 2003–2008 window gives RMSE 25.3 | Design recorded as failed; figure made non-reportable | report, narrative, paper, `project_description_v3.md` | — |
+| C-01 | 2026-08-21 | Synthetic control showed a near-exact pre-crisis fit | The fit was on a degenerate two-point window; the honest 2003–2008 window gives RMSE 25.3 | Design recorded as failed; figure made non-reportable | report, narrative, paper, `docs/archive/pre-v2-publication/project_description_v3.md` | — |
 | C-02 | 2026-08-21 | `p=0.037` attributed to synthetic-control placebo inference | It comes from the TWFE country-placebo test | Attribution corrected in all four documents | report, narrative, paper, v3 | — |
 | C-03 | 2026-08-21 | P3 reported "strong objective support" (Branch 1) | Hand-written if/else defaulted to the strongest branch; Greece was at rank 3 | Extracted to `branch_rule.py` with 17 tests | `53_p3_objective_only.py` | — |
 | C-04 | 2026-08-21 | Wild bootstrap returned p=0.82 against t=9.69 | Unrestricted residuals used instead of null-imposed | Refit under the null and resample those residuals | `54_p5_inference_audit.py` | — |

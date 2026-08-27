@@ -24,7 +24,7 @@ published.
   (families A, B and C with their FDR tables), every null, the failed
   synthetic-control design, and the descriptive work all carry forward.
 - **Framing: superseded.** V1's headline was Greece's out-of-sample residual in
-  a cross-country model. `docs/project_description_v3.md` replaces that
+  a cross-country model. `docs/archive/pre-v2-publication/project_description_v3.md` replaces that
   estimand. See its §2 for why.
 - **Not a competing live version.** When V2 is released, V2 is the sole primary
   public interpretation and this remains a clearly superseded archive.
@@ -35,7 +35,7 @@ published.
 screening record. It was developed after inspecting V1 results, its
 construction and outputs were never formally added to the V1 pipeline, and it
 was never frozen with a validated output. It is registered in
-`docs/project_description_v3.md` §6a as a declared exploratory candidate for
+`docs/archive/pre-v2-publication/project_description_v3.md` §6a as a declared exploratory candidate for
 V2, and it enters as one — not as a completed V1 family.
 
 ## Verification at freeze

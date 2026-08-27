@@ -1,7 +1,7 @@
 """P5: inference and influence audit of the frozen P3 objective-only model.
 
 Interpretation rules committed at 80001ac, BEFORE this script was written.
-See scripts/mundlak_rule.py and docs/project_description_v3.md §5b.1.
+See scripts/mundlak_rule.py and docs/archive/pre-v2-publication/project_description_v3.md §5b.1.
 
 P5 audits the accumulation coefficient. It cannot assign a P3 branch: country
 fixed effects absorb exactly the Greek intercept the leave-Greece-out

@@ -1,7 +1,7 @@
 """P0: reconcile the project's constructed subjective-hardship series against
 Eurostat's official published indicator.
 
-Protocol: docs/project_description_v3.md section 4a. Four checks, run in this
+Protocol: docs/archive/pre-v2-publication/project_description_v3.md section 4a. Four checks, run in this
 order, with the tolerance declared before any value is inspected.
 
   Constructed : ilc_mdes09, lev_diff = DIF + GRT, hhcomp TOTAL, rskpovth TOTAL

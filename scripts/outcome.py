@@ -6,7 +6,7 @@ ilc_sbjp01 IS the DIF + GRT aggregation of ilc_mdes09: across 432 overlapping
 country-years, 318 agree exactly, 114 differ by one rounding step, none by more
 than 0.1 pp, with cross-country Spearman 1.00 in every year.
 
-Rule 2 of docs/project_description_v3.md §4a.1 follows from that: where Eurostat
+Rule 2 of docs/archive/pre-v2-publication/project_description_v3.md §4a.1 follows from that: where Eurostat
 publishes the indicator, use Eurostat's figure rather than recomputing it.
 
     2010 onward  ->  ilc_sbjp01 directly (official)

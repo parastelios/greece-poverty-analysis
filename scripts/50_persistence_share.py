@@ -1,7 +1,7 @@
 """Checkpoint (family C): the worst-quintile idea rebuilt as a SHARE, and
 applied across indicators rather than to one series.
 
-Pre-registered in docs/publication_strategy.md before running. Family B counted
+Pre-registered in docs/archive/pre-v2-publication/publication_strategy.md before running. Family B counted
 years in the worst quintile; that count grows with elapsed time and is not
 comparable across series with different start years. This uses the share of
 observed years spent in the EU's worst quintile since 2008 -- bounded 0 to 1,

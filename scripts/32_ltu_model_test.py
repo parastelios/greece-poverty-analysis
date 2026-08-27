@@ -6,7 +6,7 @@ report integration decision on long-term unemployment (LTU). Mirrors
     avoids the unemployment/LTU collinearity that destabilizes the
     headline-unemployment coefficient when both are included)
   - Model C+LTU: LTU rate ADDED alongside headline unemployment (robustness
-    only, not preferred -- see publication_strategy.md for why)
+    only, not preferred -- see docs/archive/pre-v2-publication/publication_strategy.md for why)
   - Model C-LTU + scarring stock: does LTU still play well with the
     scarring-stock variable (Model F), or do they compete for the same
     signal?

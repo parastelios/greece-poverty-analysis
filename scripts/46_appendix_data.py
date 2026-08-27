@@ -603,7 +603,7 @@ print("\n=== Scatter relationships ===")
 
 # ================================================== breadth-of-disadvantage composite ====
 # Not a model variable -- family C tested it and it is null (see
-# docs/publication_strategy.md). It is a DESCRIPTIVE summary: in a given year,
+# docs/archive/pre-v2-publication/publication_strategy.md). It is a DESCRIPTIVE summary: in a given year,
 # across indicators where "worse" has an unambiguous direction, what share place
 # this country in the EU's worst quintile?
 #

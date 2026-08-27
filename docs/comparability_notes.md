@@ -88,7 +88,7 @@ lowest in 2003-2006 (see above).
   continuous line.
 - **AROP is treated as this project's primary poverty measure; AROPE is a
   secondary, motivating benchmark**, not a replacement (the "Core Reframe,"
-  agreed 2026-08-20 — see `docs/publication_strategy.md`). This distinction
+  agreed 2026-08-20 — see `docs/archive/pre-v2-publication/publication_strategy.md`). This distinction
   matters for reading any AROPE-based figure: AROPE narrows the AROP-based
   subjective-poverty gap (47.6 points) to 39.7 points, but any chart or
   number that mixes pre-2021 and post-2021 AROPE values without noting the
@@ -125,7 +125,7 @@ lowest in 2003-2006 (see above).
   external review) found a 10-year trailing window fits at least as well,
   so this project now describes the mechanism as **sustained exposure over
   roughly a decade**, not literal permanent accumulation since one fixed
-  year. Full accounting in `docs/publication_strategy.md`.
+  year. Full accounting in `docs/archive/pre-v2-publication/publication_strategy.md`.
 
 ## Pre-EU-SILC data
 

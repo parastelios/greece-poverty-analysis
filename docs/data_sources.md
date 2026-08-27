@@ -108,7 +108,7 @@ corroboration — none are merged into any model or panel.
 ## Non-Eurostat data considered and rejected or deferred
 
 - **Institutional trust (Eurobarometer/ESS/OECD)**: feasibility checked
-  directly against Eurostat's own catalogue (see `publication_strategy.md`,
+  directly against Eurostat's own catalogue (see `archive/pre-v2-publication/publication_strategy.md`,
   P1c) — Eurostat's entire institutional-trust holdings are one dataset
   (`ilc_pw03b`) covering a single year, 2013, which fails the
   comparable-years bar outright. Not modeled as a result. Added instead as
@@ -117,10 +117,10 @@ corroboration — none are merged into any model or panel.
   that expands beyond Eurostat's own API could revisit this.
 - Income inequality (Gini/S80:S20), housing tenure, real wages, long-term
   unemployment, youth unemployment, and wage-adjusted cost-of-living
-  pressure: all named in `docs/project_description.md` and have since
+  pressure: all named in `docs/archive/pre-v2-publication/project_description.md` and have since
   been fetched and integrated — see the dedicated sections below and
-  `docs/publication_strategy.md` for the full log of each. P2 is
-  complete; see `docs/todo_plan.md` for what remains outside its scope.
+  `docs/archive/pre-v2-publication/publication_strategy.md` for the full log of each. P2 is
+  complete; see `docs/archive/pre-v2-publication/todo_plan.md` for what remains outside its scope.
 
 ## P2e addition (wage-adjusted cost-of-living pressure)
 
@@ -262,7 +262,7 @@ story").
 Mirrors `22_arope_snapshot.py` exactly but for AROP instead of AROPE, producing
 `arop_subjective_snapshot_2025.csv` (27 countries + EU aggregate). Built to
 support the AROP/AROPE Core Reframe (AROP as the primary object, AROPE as a
-secondary bridge) — see `docs/publication_strategy.md` for the full framing
+secondary bridge) — see `docs/archive/pre-v2-publication/publication_strategy.md` for the full framing
 discussion and the 7-point spine it produced.
 
 ## Cumulative-hardship checkpoint addition (2026-08-20)
@@ -310,7 +310,7 @@ duration/direction battery) — cumulative excess unemployment comfortably
 
 **Two robustness rounds, run in response to external methodological
 review, materially changed how this finding is framed** (full accounting
-in `docs/publication_strategy.md`, "Second-round methodological review"):
+in `docs/archive/pre-v2-publication/publication_strategy.md`, "Second-round methodological review"):
 
 1. **Selection-leakage check.** Cumulative excess unemployment was
    originally selected using the full 27-country panel, Greece included.
