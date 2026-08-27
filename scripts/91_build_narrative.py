@@ -1010,8 +1010,17 @@ NARR_CSS = f"""
 @font-face{{font-family:'Fraunces Bundled';font-style:italic;font-weight:500;
   font-display:swap;
   src:url(data:font/woff2;base64,{_fraunces_500i}) format('woff2')}}
-body{{max-width:40rem;margin:0 auto;padding:0 1.3rem 6rem;
+/* Two widths, not one. Every figure in this piece is lifted straight from
+   the technical report, sized against ITS OWN 54rem container -- squeezed
+   into this page's old 40rem body, a dense multi-country chart had visibly
+   less room to breathe here than in the report it came from, which reads as
+   "this is the mobile layout" even on a wide monitor. Widening body gives
+   figures, the hero and the mini-table the room; a per-element cap on
+   running prose keeps paragraphs at a normal reading measure rather than
+   stretching them the same distance. */
+body{{max-width:48rem;margin:0 auto;padding:0 1.3rem 6rem;
   font:1.09rem/1.78 ui-serif,Georgia,'Times New Roman',serif}}
+.ch p,.finding p,.limits,.ctx p{{max-width:72ch}}
 .masthead{{padding:4rem 0 1.6rem}}
 .rubric{{font:600 .74rem/1 ui-sans-serif,system-ui,sans-serif;
   letter-spacing:.16em;text-transform:uppercase;color:var(--text-secondary);
