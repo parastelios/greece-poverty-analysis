@@ -44,7 +44,7 @@ This notebook is the running log. `docs/archive/pre-v2-publication/publication_s
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `main` |
-| HEAD | `680e550` Surface project_description_v3.md directly from the README |
+| HEAD | `6920ed8` Rebuild the narrative companion as a magazine feature, five-act spine |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-27 |
 | Frozen V1 reference | `v1-final` |
