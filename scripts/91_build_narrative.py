@@ -96,13 +96,25 @@ _used = []
 
 
 def fig(fid):
-    """Place a built figure, numbered in the order the reader meets it."""
+    """Place a built figure, numbered in the order the reader meets it.
+
+    The figure's technical caveat -- the "Read with this" box, written for a
+    reader of the full report -- is tucked behind its own disclosure rather
+    than sitting open in the magazine reading path. The chart, its caption and
+    its own "Show the numbers" fallback all stay exactly as lifted; only the
+    caveat paragraph moves inside a second, clearly-labelled expandable.
+    """
     if fid in _used:
         raise SystemExit(f"{fid} placed twice")
     _used.append(fid)
     n = len(_used)
-    return FIG_SOURCE[fid].replace(
+    html_ = FIG_SOURCE[fid].replace(
         "<figcaption>", f'<figcaption><span class="fignum">Figure {n}</span> ', 1)
+    html_ = re.sub(
+        r'(<p class="fig-caveat">.*?</p>)',
+        r'<details class="fig-methods"><summary>Methods and limits</summary>\1</details>',
+        html_, count=1, flags=re.S)
+    return html_
 
 
 def finding(cid):
@@ -133,24 +145,27 @@ def context(cid, prose):
 
 
 CH_KEYS = {}
+CH_BY_KEY = {}
 
 
 def chapter(key, title, body):
     """Number derives from position, never passed in.
 
-    Chapters refer to each other by KEY, not by number. Writing "Chapter 4"
-    into prose breaks the moment a chapter is inserted ahead of it, which is
-    exactly what happened when the generational chapter was added. Prose uses
-    the token {ch:key} and the numbers are resolved once, after the sequence
-    is final. Chapter bodies are f-strings, so the token is WRITTEN as
-    {{ch:key}} and arrives here single-braced -- which is the form matched
-    below. An earlier version matched the double-braced form, found nothing,
-    and reported success while leaving every reference unresolved.
+    Chapters refer to each other by KEY, not by number: prose uses the token
+    {ch:key} and it resolves to the chapter's anchor id, not a visible
+    "Chapter N" label -- the magazine restructure removed chapter numbering
+    from the reading path entirely, five editorial acts replaced it, but an
+    internal cross-reference still needs a stable anchor to link to. Chapter
+    bodies are f-strings, so the token is WRITTEN as {{ch:key}} and arrives
+    here single-braced -- which is the form matched below. An earlier version
+    matched the double-braced form, found nothing, and reported success while
+    leaving every reference unresolved.
     """
     n = len(CH) + 1
     CH_KEYS[key] = n
-    return (f'<section class="ch" id="ch{n}">'
-            f'<p class="chnum">Chapter {n}</p><h2>{title}</h2>{body}</section>')
+    rendered = f'<section class="ch" id="ch{n}"><h2>{title}</h2>{body}</section>'
+    CH_BY_KEY[key] = rendered
+    return rendered
 
 
 def resolve_refs(doc):
@@ -171,23 +186,27 @@ def resolve_refs(doc):
 # ===========================================================================
 CH = []
 
+_f1 = fig('F1')
+
 CH.append(chapter("paradox", "Two official numbers that don't agree", f"""
 <p>Europe measures poverty in two ways, and both are official.</p>
 
-<p>The first counts households whose income falls below 60% of what a typical
-household in their country earns. It is a number about position: are you far
-behind your neighbours? The second is a question put directly to households:
-are you having difficulty making ends meet? It is a number about experience.</p>
+<p>The first counts <em>people</em> whose household income falls below 60% of
+what a typical household in their country earns. It is a number about
+position: are you far behind your neighbours? The second is a question put
+directly to <em>households</em>: are you having difficulty making ends meet?
+It is a number about experience. The two count different things &mdash; people
+against households &mdash; which matters for reading them side by side, though
+it is not what makes them disagree this badly.</p>
 
 <p>In most of Europe the two roughly agree. In Greece they are 52.6 percentage
 points apart, and have been for a decade.</p>
 
-<p>Put plainly: roughly one Greek household in five is officially counted as at
-risk of poverty. Roughly two in three say they are struggling to get by. Those
-are not two attempts to measure the same thing that landed slightly apart. They
-are far enough apart that no ordinary measurement error closes them.</p>
-
-{fig('F1')}
+<p>Put plainly: roughly one Greek in five is officially counted as at risk of
+poverty. Roughly two households in three say they are struggling to get by.
+Those are not two attempts to measure the same thing that landed slightly
+apart. They are far enough apart that no ordinary measurement error, and no
+difference in who is being counted, closes them.</p>
 
 {finding('V2-1.2')}
 
@@ -226,8 +245,8 @@ up and leaving all sit down there together.</p>
 <p>This does not explain anything. We tried to use it as an explanation and it
 failed &mdash; on its own it predicts nothing, and put alongside the other
 measures of accumulated damage it flips sign, which is what a number does when
-it is describing the weather rather than causing it. Chapter {{ch:untested}}
-returns to that.</p>
+it is describing the weather rather than causing it. <a href="#ch{{ch:untested}}">What
+we didn't test</a> returns to that.</p>
 
 <p>What it does settle is smaller and worth having. The measure that put Greece
 at the top of Europe is not one strange instrument twitching on its own. It is
@@ -247,9 +266,10 @@ reasonable way to define being poor relative to your neighbours.</p>
 <p>Greece's economy, from 2010, was not ordinary. Incomes across the whole
 country fell together, hard and fast. And when the median falls, the poverty
 line falls with it. A household earning exactly what it earned five years
-earlier could find itself reclassified from poor to not poor &mdash; not
-because anything in its life had improved, but because the ruler measuring it
-had shrunk to match the collapse around it.</p>
+earlier could find itself reclassified from poor to not poor.</p>
+
+<blockquote>Not because anything in its life had improved, but because the
+ruler measuring it had shrunk to match the collapse around it.</blockquote>
 
 <p>So the official income-poverty rate barely moved through the worst years.
 Not because Greek households weren't getting poorer &mdash; they were,
@@ -285,8 +305,9 @@ CH.append(chapter("wider_net", "The wider net", f"""
 <p>Europe already knows income alone is too narrow. Its headline measure of
 social exclusion casts a wider net: it counts you if your income is low, or if
 you can't afford a list of ordinary things, or if the adults in your household
-are barely working. If the puzzle in Chapter {{ch:paradox}} is just that the income measure
-is too narrow, the wider one should mostly dissolve it.</p>
+are barely working. If <a href="#ch{{ch:paradox}}">the puzzle described at the start</a>
+is just that the income measure is too narrow, the wider one should mostly
+dissolve it.</p>
 
 {finding('V2-2.1')}
 
@@ -363,9 +384,11 @@ from poor ones.</p>
 items comes from the same survey, asked of the same household, in the same
 sitting, as the question about making ends meet. A household in a grim mood
 about its finances will answer the whole set grimly, and that alone would
-produce numbers like these. This is one instrument agreeing with itself. It is
-real evidence and it is not independent confirmation, and the difference
-between those two things runs through the rest of this report.</p>
+produce numbers like these. This is one instrument agreeing with itself.</p>
+
+<blockquote>It is real evidence and it is not independent confirmation, and
+the difference between those two things runs through the rest of this
+report.</blockquote>
 
 <p>It isn't even uniform. Falling behind on bills &mdash; the item you would
 expect to be the hardest, most factual anchor &mdash; tracks the reported
@@ -381,7 +404,8 @@ synonym for explain. Put those deprivation items into the model and most of
 Greece's unexplained excess stops being statistically visible. That tells you
 the two things share a great deal of information. It does not tell you one
 causes the other, because both are measured by the same survey of the same
-households on the same day. Chapter {{ch:flip}} shows how much rides on that.</p>
+households on the same day. <a href="#ch{{ch:flip}}">The result that flips</a>,
+later on, shows how much rides on that.</p>
 """))
 
 
@@ -476,10 +500,13 @@ their thirties, say &mdash; without the pay level they began with ever
 returning. Not a bad year. Not a bad stretch. The entire span in which most
 people expect their earnings to rise.</p>
 
-<p>Set this beside Chapter {{ch:jobless}} and you have the shape of the Greek recovery. The
-unemployment rate came back. The paycheck did not. A household looking at a
-labour market that has genuinely improved is also looking at a wage that has
-been below where it started for a decade and a half.</p>
+<p>Set this beside <a href="#ch{{ch:jobless}}">long-term unemployment's own
+recovery</a> and you have the shape of the Greek recovery as a whole. A
+household looking at a labour market that has genuinely improved is also
+looking at a wage that has been below where it started for a decade and a
+half.</p>
+
+<blockquote>The unemployment rate came back. The paycheck did not.</blockquote>
 
 {context('CTX-8', '''
 <p>An outside analysis (Greece in Figures, working from newer Eurostat and
@@ -633,7 +660,7 @@ CH.append(chapter("flip", "The result that flips", f"""
 includes a section showing that one of them doesn't, and that is a result
 rather than an embarrassment.</p>
 
-<p>Remember from Chapter {{ch:real}} that the deprivation items &mdash; can't pay bills,
+<p>Remember from <a href="#ch{{ch:real}}">earlier</a> that the deprivation items &mdash; can't pay bills,
 can't heat the home &mdash; absorbed most of Greece's unexplained excess. And
 remember that those items come from the same survey as the thing being
 explained.</p>
@@ -657,12 +684,14 @@ one &mdash; on exactly the same rows of data, with one variable added or
 removed. Third to twenty-fifth, out of twenty-seven, from a single judgement
 call.</p>
 
-<p>That is not a wobble. It is a reversal, and there is no honest way to pick
-between the two. We can't average them. We can't choose the one that looks more
-plausible, because choosing the model that gives the answer you expected is how
-this kind of check gets rendered meaningless. What can be said is this: how
-much of Greece's anomaly gets absorbed depends on a judgement call the data
-cannot settle, and any conclusion resting on that absorption inherits the
+<blockquote>That is not a wobble. It is a reversal, and there is no honest
+way to pick between the two.</blockquote>
+
+<p>We can't average them. We can't choose the one that looks more plausible,
+because choosing the model that gives the answer you expected is how this
+kind of check gets rendered meaningless. What can be said is this: how much
+of Greece's anomaly gets absorbed depends on a judgement call the data cannot
+settle, and any conclusion resting on that absorption inherits the
 uncertainty.</p>
 
 <p>Which is why the conclusion of this report does not rest on it.</p>
@@ -705,7 +734,7 @@ CH.append(chapter("how_greeks_talk", "Is this just how Greeks talk?", f"""
 taken seriously rather than waved away: maybe Greeks are just gloomier
 answerers.</p>
 
-<p>Chapter {{ch:real}} got partway to an answer &mdash; the reported difficulty does
+<p><a href="#ch{{ch:real}}">Earlier</a> got partway to an answer &mdash; the reported difficulty does
 track real material trouble &mdash; but all of that evidence came from inside
 one survey, so it can't settle this on its own.</p>
 
@@ -783,11 +812,11 @@ CH.append(chapter("untested", "What we didn't test", f"""
 not established in this report. Leaving them out silently would be misleading.
 Discussing them as though they were findings would be worse.</p>
 
-<p>Some of them were looked at. Migration was tested here directly. The
-cross-country comparison in Chapter {{ch:how_greeks_talk}} and the survey in
-Chapter {{ch:before}} are both
-analyses done for this report. What none of them can do is carry a conclusion,
-and each one below says what it permits and what it doesn't.</p>
+<p>Some of them were looked at. Migration was tested here directly.
+<a href="#ch{{ch:how_greeks_talk}}">The cross-country comparison</a> and
+<a href="#ch{{ch:before}}">the earlier survey</a> a little further back are
+both analyses done for this report. What none of them can do is carry a
+conclusion, and each one below says what it permits and what it doesn't.</p>
 
 {context('CTX-2', '''
 <p>Trust in institutions is low in Greece, and there is a plausible route by
@@ -798,7 +827,7 @@ that.</p>''')}
 {context('CTX-3', '''
 <p>The bailout programmes from 2010 reshaped incomes, job protections, pensions
 and public services at once and in a hurry. They are the backdrop to every
-accumulated measure in Chapter {{ch:duration}}.</p>''')}
+accumulated measure described earlier.</p>''')}
 
 {context('CTX-4', '''
 <p>Large numbers of working-age Greeks left during the crisis, and some have
@@ -813,7 +842,7 @@ position worsened through tax in a way income-based poverty measures capture
 badly, that would be one route to the kind of gap this report describes.</p>''')}
 """))
 
-CH.append(chapter("landing", "Landing", f"""
+CH.append(chapter("landing", "What this adds up to", f"""
 <p>Greek households report struggling at a rate far above what the official
 poverty figure predicts, and they have done so consistently for a decade. Three
 bodies of evidence make part of that distance easier to understand.</p>
@@ -861,53 +890,165 @@ reason.</p>
 # ===========================================================================
 BASE = ce.base_style((OUT / "build" / "report.html").read_text())
 
-NARR_CSS = """
-body{max-width:40rem;margin:0 auto;padding:0 1.3rem 6rem;
-  font:1.09rem/1.78 ui-serif,Georgia,'Times New Roman',serif}
-.masthead{padding:3.6rem 0 1.4rem;margin-bottom:1rem}
-.masthead h1{font-size:clamp(2rem,6vw,2.9rem);line-height:1.1;margin:0 0 1rem;
-  letter-spacing:-.02em;text-wrap:balance}
-.standfirst{font-size:1.14rem;line-height:1.6;color:var(--text-secondary);margin:0}
-.ch{margin:4rem 0 0}
-.chnum{font:600 .7rem/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--text-secondary);margin:0 0 .5rem}
-.ch h2{font-size:clamp(1.5rem,4vw,1.95rem);margin:0 0 1.2rem;
-  letter-spacing:-.015em;text-wrap:balance}
-.ch p{margin:0 0 1.05rem}
-.finding{border-left:3px solid var(--series-gr);padding:.1rem 0 .1rem 1.1rem;
-  margin:1.6rem 0}
-.finding p{margin:0 0 .5rem;font-size:1.06rem}
-.limits{font:.92rem/1.65 ui-sans-serif,system-ui,sans-serif;
-  color:var(--text-secondary);margin:0}
-.ctx{border:1px dashed var(--border);border-radius:6px;padding:1rem 1.2rem;
-  margin:1.8rem 0}
-.ctx-status{font:600 .68rem/1 ui-sans-serif,system-ui,sans-serif;
+# ---- the five editorial acts -----------------------------------------------
+# Regroups the eighteen chapters above -- none renamed, none dropped, none
+# reordered within their own act -- under the five-beat spine this companion
+# argues, replacing the old flat "Chapter 1" through "Chapter 18" sequence.
+# The conclusion (landing) is deliberately outside this list: no act wraps it,
+# per the decision that it reads as a payoff, not a ninth numbered section.
+ACTS = [
+    ("THE MOVING RULER", ["paradox", "ruler", "wider_net", "generations"]),
+    ("A MATERIAL FOOTPRINT", ["real", "company"]),
+    ("RECOVERY IN PIECES", ["money", "jobless", "paycheck"]),
+    ("THE PAST REMAINS PRESENT", ["duration"]),
+    ("WHAT THE EVIDENCE CAN'T SETTLE",
+     ["unsettled", "between_within", "flip", "what_it_wasnt",
+      "how_greeks_talk", "before", "untested"]),
+]
+CONCLUSION_KEY = "landing"
+
+_assigned = [k for _, keys in ACTS for k in keys] + [CONCLUSION_KEY]
+if sorted(_assigned) != sorted(CH_KEYS):
+    raise SystemExit(
+        "act assignment does not match the chapters actually defined -- "
+        f"missing {sorted(set(CH_KEYS) - set(_assigned))}, "
+        f"unknown {sorted(set(_assigned) - set(CH_KEYS))}")
+
+
+def act(kicker, keys):
+    return (f'<div class="act"><p class="act-kicker">{kicker}</p></div>'
+            + "".join(CH_BY_KEY[k] for k in keys))
+
+
+BODY = "".join(act(kicker, keys) for kicker, keys in ACTS) + CH_BY_KEY[CONCLUSION_KEY]
+
+# ---- headline font, bundled ------------------------------------------------
+# A live Google Fonts fetch would silently fall back to a system serif the
+# moment this page is opened offline or rendered to PDF without a network
+# connection -- exactly the two ways this project's own documents get used.
+# Bundling two static weights (regular headlines, italic pull-quotes) as
+# base64 data URIs costs about 55KB and removes that failure mode entirely.
+# See scripts/assets/FRAUNCES-LICENSE.txt (SIL OFL 1.1).
+import base64 as _b64
+_ASSETS = ROOT / "scripts" / "assets"
+_fraunces_700 = _b64.b64encode((_ASSETS / "fraunces-700.woff2").read_bytes()).decode()
+_fraunces_500i = _b64.b64encode((_ASSETS / "fraunces-500italic.woff2").read_bytes()).decode()
+
+NARR_CSS = f"""
+@font-face{{font-family:'Fraunces Bundled';font-style:normal;font-weight:700;
+  font-display:swap;
+  src:url(data:font/woff2;base64,{_fraunces_700}) format('woff2')}}
+@font-face{{font-family:'Fraunces Bundled';font-style:italic;font-weight:500;
+  font-display:swap;
+  src:url(data:font/woff2;base64,{_fraunces_500i}) format('woff2')}}
+body{{max-width:40rem;margin:0 auto;padding:0 1.3rem 6rem;
+  font:1.09rem/1.78 ui-serif,Georgia,'Times New Roman',serif}}
+.masthead{{padding:4rem 0 1.6rem}}
+.rubric{{font:600 .74rem/1 ui-sans-serif,system-ui,sans-serif;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--text-secondary);
+  margin:0 0 1.2rem;display:flex;align-items:center;gap:.6rem}}
+.rubric::before{{content:"";width:1.3rem;height:1px;background:var(--text-secondary)}}
+.masthead h1{{font-family:'Fraunces Bundled',Georgia,'Times New Roman',serif;
+  font-weight:700;font-size:clamp(2.1rem,6vw,3.1rem);line-height:1.08;
+  margin:0 0 1.2rem;letter-spacing:-.015em;text-wrap:balance}}
+.standfirst{{font-size:1.16rem;line-height:1.58;color:var(--text-secondary);
+  margin:0;max-width:38ch}}
+/* The hero pairing is a deliberate asymmetry, not a dashboard tile pair: the
+   official measure sits small and grey, the reported one large and dark,
+   because that contrast IS the argument before a reader reaches a word of
+   prose. Both labels name their own population explicitly -- people against
+   households -- so the pairing cannot be misread as one denominator. */
+.stat-pair{{display:flex;align-items:flex-end;gap:1.7rem;flex-wrap:wrap;
+  margin:2.6rem 0 1.4rem;padding:1.7rem 0;border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border)}}
+.stat{{flex:1;min-width:11rem}}
+.stat .n{{font-family:'Fraunces Bundled',Georgia,'Times New Roman',serif;
+  letter-spacing:-.02em;display:block;line-height:.95}}
+.stat--official .n{{font-size:2.5rem;font-weight:700;color:var(--text-secondary)}}
+.stat--lived .n{{font-size:4.3rem;font-weight:700;color:var(--text-primary)}}
+.stat .pct{{font:600 .8rem/1 ui-sans-serif,system-ui,sans-serif;
+  color:var(--text-secondary);margin-top:.35rem}}
+.stat .l{{font:600 .76rem/1.4 ui-sans-serif,system-ui,sans-serif;
+  letter-spacing:.02em;color:var(--text-secondary);margin:.5rem 0 0;max-width:19ch}}
+.stat .l b{{color:var(--text-primary)}}
+.opening-fig{{margin:0 0 3rem}}
+/* Act dividers: the five-beat spine. Larger and more colourful than a
+   chapter's own h2, so a reader feels the shift into a new part of the
+   argument -- no roman numerals, no "Part 3", the theme name carries it. */
+.act{{margin:5.5rem 0 2.4rem}}
+.act-kicker{{font-family:ui-sans-serif,system-ui,sans-serif;font-weight:700;
+  font-size:.86rem;letter-spacing:.11em;color:var(--series-eu);margin:0;
+  padding-bottom:.9rem;border-bottom:2px solid var(--series-eu)}}
+.ch{{margin:3rem 0 0}}
+.ch h2{{font-family:'Fraunces Bundled',Georgia,'Times New Roman',serif;
+  font-weight:700;font-size:clamp(1.4rem,3.6vw,1.8rem);margin:0 0 1.2rem;
+  letter-spacing:-.01em;text-wrap:balance}}
+.ch p{{margin:0 0 1.05rem}}
+.ch a{{color:var(--series-gr)}}
+blockquote{{margin:2.2rem -.1rem;padding:0;border:none;
+  font-family:'Fraunces Bundled',Georgia,'Times New Roman',serif;
+  font-style:italic;font-weight:500;font-size:1.4rem;line-height:1.36;
+  color:var(--text-primary);letter-spacing:-.005em;text-wrap:balance}}
+blockquote::before,blockquote::after{{color:var(--series-eu);font-style:normal}}
+blockquote::before{{content:"\\201C"}}
+blockquote::after{{content:"\\201D"}}
+.finding{{border-left:3px solid var(--series-gr);padding:.1rem 0 .1rem 1.1rem;
+  margin:1.6rem 0}}
+.finding p{{margin:0 0 .5rem;font-size:1.06rem}}
+.limits{{font:.92rem/1.65 ui-sans-serif,system-ui,sans-serif;
+  color:var(--text-secondary);margin:0}}
+.ctx{{border:1px dashed var(--border);border-radius:6px;padding:1rem 1.2rem;
+  margin:1.8rem 0}}
+.ctx-status{{font:600 .68rem/1 ui-sans-serif,system-ui,sans-serif;
   letter-spacing:.1em;text-transform:uppercase;color:var(--text-secondary);
-  margin:0 0 .45rem}
-.ctx h4{margin:0 0 .55rem;font-size:1.02rem}
-.ctx p{font-size:.98rem;margin:0 0 .7rem}
-.ctx .permitted,.ctx .limitation,.ctx .src{
-  font:.9rem/1.6 ui-sans-serif,system-ui,sans-serif;margin:.5rem 0 0}
-.ctx .limitation{color:var(--text-secondary)}
-.ctx .src{color:var(--text-secondary);font-size:.82rem;padding-top:.5rem;
-  border-top:1px solid var(--border)}
-@media (max-width:34rem){body{font-size:1.04rem}}
+  margin:0 0 .45rem}}
+.ctx h4{{margin:0 0 .55rem;font-size:1.02rem}}
+.ctx p{{font-size:.98rem;margin:0 0 .7rem}}
+.ctx .permitted,.ctx .limitation,.ctx .src{{
+  font:.9rem/1.6 ui-sans-serif,system-ui,sans-serif;margin:.5rem 0 0}}
+.ctx .limitation{{color:var(--text-secondary)}}
+.ctx .src{{color:var(--text-secondary);font-size:.82rem;padding-top:.5rem;
+  border-top:1px solid var(--border)}}
+/* A figure's technical caveat, expandable rather than open in the reading
+   path -- the chart, caption and its own number fallback are unaffected. */
+.fig-methods{{margin:0 1.1rem 1rem}}
+.fig-methods summary{{cursor:pointer;font:600 .78rem/1 ui-sans-serif,
+  system-ui,sans-serif;letter-spacing:.04em;color:var(--text-secondary);
+  padding:.2rem 0}}
+.fig-methods[open] summary{{margin-bottom:.4rem}}
+.fig-methods .fig-caveat{{margin:0;font-size:.86rem}}
+@media (max-width:34rem){{body{{font-size:1.04rem}}}}
 """
 
 PAGE = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>The Greek Poverty Paradox &mdash; a companion</title>{BASE}
+<title>Recovered on Paper, Not in One Piece</title>{BASE}
 <style>{ce.CSS}
 :root{{--gr:var(--series-gr);--eu:var(--series-eu)}}
 {NARR_CSS}</style></head><body>
 <header class="masthead">
-<h1>The Greek Poverty Paradox</h1>
-<p class="standfirst">Two official numbers say very different things about how
-Greek households are doing. This is an attempt to find out which is closer to
-the truth, and how much of the difference between them anyone can actually
-account for.</p>
+<p class="rubric">The Greek Poverty Paradox</p>
+<h1>Recovered on paper, not in one piece</h1>
+<p class="standfirst">One official measure says roughly one Greek in five is
+at risk of poverty. Two households in three say they are struggling to make
+ends meet. The gap reveals a poverty line that moved with the economy, a
+recovery that reached some parts of household life and not others, and
+damage the annual numbers still don't show.</p>
+<div class="stat-pair">
+  <div class="stat stat--official">
+    <span class="n">1 in 5</span>
+    <p class="pct">19.6%</p>
+    <p class="l"><b>People</b> at risk of poverty &mdash; the official measure</p>
+  </div>
+  <div class="stat stat--lived">
+    <span class="n">2 in 3</span>
+    <p class="pct">66.7%</p>
+    <p class="l"><b>Households</b> struggling to make ends meet</p>
+  </div>
+</div>
 </header>
-{resolve_refs(''.join(CH))}
+<div class="opening-fig">{_f1}</div>
+{resolve_refs(BODY)}
 <script>{ce.JS}</script>
 </body></html>
 """

@@ -44,8 +44,8 @@ This notebook is the running log. `docs/archive/pre-v2-publication/publication_s
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `main` |
-| HEAD | `1e1e05a` Regenerate PDF exports from the final report/paper/narrative/appendix |
-| Uncommitted changes | no |
+| HEAD | `680e550` Surface project_description_v3.md directly from the README |
+| Uncommitted changes | yes |
 | Last refreshed | 2026-08-27 |
 | Frozen V1 reference | `v1-final` |
 | Frozen V2 analytical reference | `p5f-frozen` |

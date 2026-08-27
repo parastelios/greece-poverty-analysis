@@ -1,0 +1,8 @@
+Fraunces (https://github.com/undercasetype/Fraunces), by Undercase Type.
+Licensed under the SIL Open Font License, version 1.1 (https://openfontlicense.org).
+
+fraunces-700.woff2 and fraunces-500italic.woff2 are the "latin" subset,
+weight 700/normal and 500/italic respectively, extracted from Google Fonts
+(fonts.google.com/specimen/Fraunces) and embedded as base64 data URIs by
+91_build_narrative.py so the narrative companion's headline face survives
+offline viewing and PDF export without a live network fetch.
