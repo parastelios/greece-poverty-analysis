@@ -9,9 +9,9 @@ name: Publish reports to GitHub Pages
 #   push:
 #     branches: [main]
 #     paths:
-#       - 'output/report.html'
-#       - 'output/narrative_companion.html'
-#       - 'output/academic_paper_draft.html'
+#       - 'output/v2_report.html'
+#       - 'output/narrative.html'
+#       - 'output/academic_paper.html'
 #       - 'site/**'
 #       - '.github/workflows/pages.yml'
 on:
@@ -40,10 +40,10 @@ jobs:
       - name: Assemble site
         run: |
           mkdir -p _site
-          cp site/index.html                        _site/index.html
-          cp output/report.html                     _site/report.html
-          cp output/narrative_companion.html        _site/narrative.html
-          cp output/academic_paper_draft.html       _site/paper.html
+          cp site/index.html               _site/index.html
+          cp output/v2_report.html         _site/report.html
+          cp output/narrative.html         _site/narrative.html
+          cp output/academic_paper.html    _site/paper.html
           touch _site/.nojekyll
           ls -la _site
 
