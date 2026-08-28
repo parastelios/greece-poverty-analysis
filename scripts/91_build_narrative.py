@@ -324,7 +324,7 @@ reveal: we can account for part of it, we can rule some explanations out, and
 most of it remains unexplained.</p>
 """))
 
-CH.append(chapter("company", "One number, or a crowd", f"""
+CH.append(chapter("company", "Good company for a bad number", f"""
 <p>The obvious first suspicion about a number that disagrees with every other
 number is that the number is broken.</p>
 
@@ -636,7 +636,7 @@ low pay per hour, and everyday things like food cost more than that pay would
 suggest. Same picture, different route, no formal test behind it.</p>''')}
 """))
 
-CH.append(chapter("unsettled", "The things we couldn't settle", f"""
+CH.append(chapter("unsettled", "Silence isn't a verdict", f"""
 <p>Nine present-day measures were tested. Three worked. This chapter is about
 the other six, and it is more important than it sounds.</p>
 
@@ -743,7 +743,7 @@ under which having rules means anything.</p>
 # ===========================================================================
 #  CHAPTERS 10-16
 # ===========================================================================
-CH.append(chapter("between_within", "Between countries, not inside one", f"""
+CH.append(chapter("between_within", "A photograph, not a film", f"""
 <p>Everything in <a href="#ch{{ch:duration}}">the accumulated-history chapter</a>
 is a statement about how countries differ from each other. It is very
 tempting, and it is wrong, to turn it into a statement about how Greece
@@ -816,7 +816,7 @@ uncertainty.</p>
 <p>Which is why the conclusion of this report does not rest on it.</p>
 """))
 
-CH.append(chapter("what_it_wasnt", "What it wasn't", f"""
+CH.append(chapter("what_it_wasnt", "The chart we didn't publish", f"""
 <p>Two analyses were planned in advance, meant to carry real weight, and
 neither worked. They are here because a report that shows only its successes
 gives a false impression of how much was tried.</p>
@@ -885,7 +885,7 @@ general-wellbeing question sits closer to it. That difference of degree is what
 the comparison shows, and it is description rather than a test.</p>''')}
 """))
 
-CH.append(chapter("before", "Before the crisis", f"""
+CH.append(chapter("before", "Already behind, before 2008", f"""
 <p>There is a hole in the middle of the last chapter. The European survey used
 throughout this report only starts asking about life satisfaction in 2013
 &mdash; at the bottom of the Greek crisis. So it cannot tell you whether Greece
@@ -927,7 +927,7 @@ and nothing is tested on them. There is also a decade with no Greek survey
 round at all, right through the deepest part of the adjustment.</p>
 """))
 
-CH.append(chapter("untested", "What we didn't test", f"""
+CH.append(chapter("untested", "What this report leaves out", f"""
 <p>Several things that come up in every conversation about the Greek crisis are
 not established in this report. Leaving them out silently would be misleading.
 Discussing them as though they were findings would be worse.</p>

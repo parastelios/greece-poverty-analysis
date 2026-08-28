@@ -44,9 +44,9 @@ This notebook is the running log. `docs/archive/pre-v2-publication/publication_s
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `main` |
-| HEAD | `04c2ef2` Fix inaccurate act/chapter titles and two positional references broken by act reordering; split F10 into three per-chapter figures |
+| HEAD | `81ca3d8` Fix two weak chapter titles |
 | Uncommitted changes | yes |
-| Last refreshed | 2026-08-27 |
+| Last refreshed | 2026-08-28 |
 | Frozen V1 reference | `v1-final` |
 | Frozen V2 analytical reference | `p5f-frozen` |
 <!-- AUTO:END document-control -->
