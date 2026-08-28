@@ -1772,58 +1772,108 @@ RENDER = {"series": series_card, "panel": panel_card, "scatter": scatter_card,
           "sub": sub_head}
 
 # ---------------------------------------------------------------------------
-# THE VARIABLE ATLAS, COLLAPSED BY DOMAIN.
+# THE VARIABLE ATLAS, GROUPED BY THE REPORT'S OWN EIGHT STAGES.
 #
-# Eighty-nine charts in ten flat sections is a complete record and an
-# unnavigable one. They are regrouped into eight domains, each a <details>
-# closed by default, so the page opens as a readable table of contents and the
-# evidence is one click away rather than three screens down.
+# Eighty-nine charts in ten flat topic sections were a complete record and an
+# unnavigable one; grouping them into eight topic "domains" (poverty,
+# labour-market history, and so on) fixed the navigation but left the
+# appendix organised by subject rather than by the argument the report
+# actually makes, and left the report's own figures in a SEPARATE, later,
+# differently-organised system (see FEATURED, below) rather than beside the
+# atlas detail that supports them.
 #
-# Nothing is removed and no anchor changes: every chart keeps the id its deep
-# links already use. The existing sections map onto domains; only the
-# expectations section splits, because it carried migration and transfer
-# effectiveness alongside wellbeing.
-DOMAINS = [
-    ("poverty", "Poverty and measurement", ["puzzle", "ruler"]),
-    ("labour", "Labour-market history", ["labour"]),
-    ("income", "Income, wages and output", ["income", "work"]),
-    ("prices", "Prices and purchasing power", ["prices"]),
-    ("housing", "Housing and affordability", ["strain"]),
-    ("wellbeing", "Expectations and wellbeing", ["expectations"]),
-    ("migration", "Migration and policy", []),
-    ("modeldiag", "Model diagnostics", ["diagnostics", "candidates"]),
+# Both are now the same eight groups, one per report stage, in report order.
+# A reader arriving at Stage 4 in the appendix finds the report's own current-
+# condition figures, the views the report simplified out of them, the
+# diagnostics behind them, and the underlying variables -- together, in that
+# order -- rather than the figures in one place and the variables in another
+# three screens down.
+#
+# Nothing is removed and no chart anchor changes: every chart keeps the id
+# its deep links already use. Most sections map onto one stage outright; a
+# few split, because they were organised by subject and a subject can span
+# more than one stage of the argument (labour-market LEVEL is Stage 4,
+# labour-market ACCUMULATION is Stage 5; AROPE and breadth belong to Stage 2,
+# not the Stage-1 "puzzle" section they were filed under by topic).
+STAGES = [
+    (1, "s1", "The puzzle",
+     "Are the two measures really describing different things, and is "
+     "Greece unusual or merely extreme?", ["puzzle"]),
+    (2, "s2", "A broader measure, and a moving line",
+     "Does the EU's broader poverty measure close the gap, and did the "
+     "yardstick itself move?", ["ruler"]),
+    (3, "s3", "Is the hardship real?",
+     "Does reported difficulty track concrete affordability failure, or "
+     "does it float free of material circumstances?", ["strain"]),
+    (4, "s4", "What current conditions explain",
+     "Which present-day conditions predict hardship beyond income poverty, "
+     "and which merely could not be resolved?", ["income", "work", "prices", "labour"]),
+    (5, "s5", "What accumulated history adds",
+     "Does the length of a country's difficulty carry information beyond "
+     "its present state?", ["candidates"]),
+    (6, "s6", "How much depends on the model",
+     "Would a defensible alternative specification have produced a "
+     "different answer?", ["diagnostics"]),
+    (7, "s7", "What this is not",
+     "Is this a reporting artefact, and what else might matter that this "
+     "project did not test?", ["expectations"]),
+    (8, "s8", "What the evidence supports",
+     "Stated no more strongly than the tests allow.", []),
 ]
-# Items that belong to a domain other than their section's.
-ITEM_DOMAIN = {"net_migration": "migration", "transfer_effect": "migration"}
+# Items whose stage differs from the section they were filed under by topic.
+ITEM_DOMAIN = {
+    # AROPE and breadth are Stage 2 ("A broader measure"), not Stage 1 --
+    # they were filed under the "puzzle" section by topic (poverty measures
+    # generally) rather than by which stage of the argument discusses them.
+    "arope": "s2", "arope_vs_subjective": "s2", "arope_by_age": "s2",
+    "breadth_worst_quintile": "s2", "breadth_indicator_ladder": "s2",
+    # Labour-market ACCUMULATION is Stage 5; the level/duration items above
+    # them in the same "labour" section stay at Stage 4 (their section's
+    # default) because that is where the report tests them.
+    "cum_excess_unemployment": "s5", "cum_excess_ltu": "s5",
+    "cumulative_vs_subjective": "s5",
+    # Housing-cost overburden is a Stage 4 current-level candidate; the
+    # material-hardship items in the same "strain" section (deprivation,
+    # arrears, unexpected expenses, heating) stay at Stage 3, where the
+    # report actually tracks them against reported hardship.
+    "housing_overburden": "s4", "housing_by_tenure": "s4",
+    "saving_rate": "s4", "debt_to_income": "s4", "debt_vs_saving": "s4",
+    # Most "diagnostics" items are Stage 6 (model dependence); these five are
+    # about the Stage-4/5 candidates specifically, not the Stage-6 residual
+    # reversal.
+    "model_scorecard_bars": "s4", "predictor_correlation": "s4",
+    "all_candidate_correlation": "s4", "partial_cumulative_unemployment": "s5",
+    "gap_ladder": "s8",
+    # Migration and transfer effectiveness are Stage 7 material (the report
+    # discusses both as untested context), which is already "expectations"
+    # section's default stage -- no override needed, listed here only to
+    # record that they were deliberately reviewed, not overlooked.
+}
 
 _sec_by_id = {s["id"]: s for s in SECTIONS}
-_dom_of_sec = {sid: d for d, _, sids in DOMAINS for sid in sids}
-_dom_items = {d: [] for d, _, _ in DOMAINS}
-_dom_blurbs = {d: [] for d, _, _ in DOMAINS}
+_dom_of_sec = {sid: dom for _, dom, _, _, sids in STAGES for sid in sids}
+_dom_items = {st: [] for _, st, _, _, _ in STAGES}
 
 for sec in SECTIONS:
     if not sec["items"] or sec["id"] not in _dom_of_sec:
         continue
     home = _dom_of_sec[sec["id"]]
-    _dom_blurbs[home].append((sec["title"], sec["blurb"]))
     for kind, k in sec["items"]:
         _dom_items[ITEM_DOMAIN.get(k, home) if kind != "sub" else home].append(
             (sec["id"], kind, k))
 
 body, toc = [], []
 _atlas_charts = 0
-for dom, title, _ in DOMAINS:
+_stage_atlas_html = {}
+for num, dom, title, blurb, _ in STAGES:
     items = _dom_items[dom]
-    if not items:
-        continue
-    toc.append(f'<a href="#atlas-{dom}">{title}</a>')
     n = sum(1 for _, kind, _ in items if kind != "sub")
     _atlas_charts += n
     inner = []
     _seen_sub = set()
     for sid, kind, k in items:
         # A section's own sub-headings still separate its groups inside the
-        # domain, so merging two sections does not merge their structure.
+        # stage, so merging two sections does not merge their structure.
         if kind == "sub" and k in _seen_sub:
             continue
         _seen_sub.add(k if kind == "sub" else None)
@@ -1832,35 +1882,16 @@ for dom, title, _ in DOMAINS:
             rendered = (f'<details class="candidate-detail"><summary>View candidate trajectory: '
                         f'{series[k]["label"]}</summary>{rendered}</details>')
         inner.append(rendered)
-    blurb = " ".join(b for _, b in _dom_blurbs[dom]) or (
-        "Migration of nationals and the effectiveness of welfare transfers: "
-        "two measures that describe policy and its consequences rather than "
-        "household conditions.")
-    body.append(
+    _stage_atlas_html[dom] = (
         f'<details class="atlas-domain" id="atlas-{dom}">'
-        f'<summary><span class="atlas-title">{title}</span>'
+        f'<summary><span class="atlas-title">Underlying variables and tables</span>'
         f'<span class="atlas-count">{n} charts</span></summary>'
-        f'<p class="group-blurb">{blurb}</p>' + "".join(inner) + "</details>")
-
-# The figure sections come first in the document, so they come first in the
-# contents. Without them the table of contents listed only the atlas and made
-# five sections of figures invisible to anyone navigating by it.
-toc[:0] = [f'<a href="#{sid}">{title}</a>' for sid, title in [
-    ("figures", "Figures used in the report"),
-    ("appx-shed", "Views simplified out of the report"),
-    ("appx-descriptive", "Additional descriptive evidence"),
-    ("appx-diagnostic", "Technical diagnostics"),
-    ("appx-context", "Contextual extensions"),
-    ("appx-context-register", "The context register in full"),
-]]
-toc.insert(6, '<span class="toc-break">Variable atlas</span>')
-toc.append('<a href="#glossary"><b>&#167;</b> Abbreviations</a>')
-body.append('<h2 class="group" id="glossary"><span class="secnum">&#167;</span>'
-            'Abbreviations and terms</h2>')
-body.append('<p class="group-blurb">Technical measures, methods and data codes used across the '
-            'project, collected in one searchable place. Where expanding a term is not enough '
-            'to make it usable, a plain-language explanation is included.</p>')
-body.append(glossary_html())
+        + "".join(inner) + "</details>") if inner else ""
+# body/toc are assembled below, once the featured report figures for each
+# stage are also available -- see "STAGE ASSEMBLY" -- and the glossary's own
+# heading, blurb and content are appended there too, so that everything
+# ahead of it in `body` is the evidence and everything after it is empty:
+# the footer, outside `body` entirely.
 
 # ---------------------------------------------------------------------------
 # THE APPENDIX IS A SUPERSET. Every figure in the report appears here with the
@@ -1902,60 +1933,65 @@ _missing = [i for i in _man["id"] if i not in _report_figs]
 if _missing:
     raise SystemExit(f"appendix cannot be a superset: {_missing} not built")
 
-# WHERE EACH FIGURE SITS.
-#
-# Six figures left the report's main path. They cannot stay under a heading
-# that says "every figure in the report" while no longer being in it, so the
-# manifest's venue and section fields route them into named sections here.
-# Nothing is deleted: every id, payload and fallback table is preserved, and
-# the superset gate still checks them against the report's own copies.
+# WHERE EACH FIGURE SITS. Two independent questions, both answered by the
+# manifest: what KIND of object is it (a report figure; a view a report
+# figure shed; a descriptive, diagnostic or contextual extra), and which
+# STAGE of the report's argument does it belong to. The first used to be the
+# only axis this file organised by -- "Figures used in the report", "Views
+# simplified out of the report" and so on -- which put every stage's figures
+# in a different section from that stage's own diagnostics and context. The
+# second axis, already present in report_visual_manifest.csv as `stage`, is
+# now the primary one; kind still decides the order objects appear in within
+# a stage (report figures, then shed views, then descriptive, then
+# diagnostic, then context), per the required hierarchy.
+_stage_of = _man.set_index("id")["stage"].to_dict()
+
+# Six figures left the report's main path. They cannot stay unlabelled beside
+# figures still in it, so the manifest's venue field marks them. Nothing is
+# deleted: every id, payload and fallback table is preserved, and the
+# superset gate still checks them against the report's own copies.
 _MAIN = [i for i in _man.loc[_man.venue == "report", "id"]]
 
 # Views the report's own figures no longer carry. They are built alongside
 # those figures and lifted from the same pages, so they cannot drift from
 # them -- and they keep their own ids, because a report figure and the view it
-# shed must never both answer to the same name.
+# shed must never both answer to the same name. Not in the manifest (they were
+# never report figures), so their stage is recorded here, matched to the
+# figure each was a tab on: AROPE's closed/open share and its per-country
+# breakdown belong with Stage 2's AROPE figures; the full eight-pair
+# accumulated-vs-current comparison belongs with Stage 5.
 _SHED = sorted(i for i in _report_figs
                if _re.fullmatch(r"A\d+", i) and i not in _man["id"].values)
-_SECTIONS = [
-    ("descriptive", "Additional descriptive views",
-     "Descriptions the report states in a sentence rather than a chart: the "
-     "full hardship ranking, and the decomposition of the last AROPE rise into "
-     "rates within age groups against the changing size of those groups."),
-    ("diagnostic", "Technical diagnostics",
-     "Checks that qualify a result rather than establishing one. The report "
-     "carries their conclusions; these are the objects behind them."),
-    ("context", "Contextual evidence",
-     "Evidence that cannot support a headline claim by design, and is recorded "
-     "in the report's context register instead: single-wave snapshots, and "
-     "comparisons across instruments that share no scale."),
-]
+SHED_STAGE = {"A8": 2, "A9": 2, "A10": 5}
+_unmapped_shed = [i for i in _SHED if i not in SHED_STAGE]
+if _unmapped_shed:
+    raise SystemExit(f"shed views with no stage: {_unmapped_shed}")
 
-_by_section = ""
-for _key, _title, _lede in _SECTIONS:
-    _ids = [i for i in _man.loc[_man.appendix_section == _key, "id"]]
-    if not _ids:
-        continue
-    _by_section += (
-        f"<section id='appx-{_key}'><h2>{_title}</h2>"
-        f"<p class='lede'>{_lede}</p>"
-        + "".join(_report_figs[i] for i in _ids)
-        + "</section>")
 
-# The detail figures are split between two of the six sections rather than
-# sitting in a bucket of their own: the correlation matrices and the raw
-# observation scatters are diagnostics, the health extension is context.
+def _named(key):
+    return [i for i in _man.loc[_man.appendix_section == key, "id"]]
+
+
+# The detail figures, built in-process (92_appendix_figures.py) rather than
+# lifted from a report page: the correlation matrices and raw observation
+# scatters behind Stage 3's within/between claim, and the post-freeze health
+# extension behind Stage 7.
 _detail_html = _detail_module()
 _detail_figs = {m.group(1): m.group(0) for m in _re.finditer(
     r'<figure class="figure" id="([A-Z]\d+[A-Z]?)">.*?</figure>',
     _detail_html, _re.S)}
 _DIAG_DETAIL = ["A1", "A4", "A2", "A3W", "A3B", "A3A", "A11"]
 _CTX_DETAIL = ["A5", "A6", "A7"]
+DETAIL_STAGE = {"A1": 3, "A4": 3, "A2": 1, "A3W": 3, "A3B": 3, "A3A": 3,
+                 "A11": 3, "A5": 7, "A6": 7, "A7": 7}
 _unplaced_detail = [k for k in _detail_figs
                     if k not in _DIAG_DETAIL + _CTX_DETAIL]
 if _unplaced_detail:
     raise SystemExit(
         f"detail figures with no section: {_unplaced_detail}")
+_unmapped_detail = [k for k in _detail_figs if k not in DETAIL_STAGE]
+if _unmapped_detail:
+    raise SystemExit(f"detail figures with no stage: {_unmapped_detail}")
 
 
 def _tag(fig_html, label="Appendix figure"):
@@ -1970,31 +2006,13 @@ def _tag(fig_html, label="Appendix figure"):
         "<figcaption>", f'<figcaption><span class="appx-tag">{label}</span> ', 1)
 
 
-def _sec(sid, title, lede, ids, source=None, tag="Appendix figure"):
-    src = source or _report_figs
-    figs = "".join(_tag(src[i], tag) if tag else src[i] for i in ids)
-    return (f'<section id="{sid}"><h2>{title}</h2>'
-            f'<p class="lede">{lede}</p>' + figs + "</section>")
-
-
-def _named(key):
-    return [i for i in _man.loc[_man.appendix_section == key, "id"]]
-
-
-# SIX SECTIONS, in the order a reader needs them: what the report showed, what
-# it showed and then simplified, what it described in prose instead, what
-# qualifies its results, what sits outside its evidentiary reach, and finally
-# the atlas of every variable.
-# ---------------------------------------------------------------------------
-# THE CONTEXT REGISTER, IN FULL. The report, the paper and the narrative each
-# place every one of these entries somewhere in their own prose -- that is
+# THE CONTEXT REGISTER. The report, the paper and the narrative each place
+# every one of these entries somewhere in their own prose -- that is
 # enforced, not optional (90_build_paper.py and 91_build_narrative.py both
-# raise if one is missing). The appendix's own "Contextual extensions" lede
-# above already promises this register; until now nothing here actually
-# rendered it, which is exactly the gap that promise created. This section is
-# the appendix's placement: not narrative framing, but what PLACEMENT in
-# 79_context_register.py calls for here specifically -- the source, the exact
-# indicator, its coverage, and whether a test was run.
+# raise if one is missing). Each entry is placed exactly once here too, in
+# the stage the report itself discusses it -- not gathered a second time into
+# a standalone register, which would give two elements the same
+# data-context-id and break the "appendix element ids are unique" check.
 ctx = pd.read_csv(OUT / "context_register.csv").set_index("id")
 
 
@@ -2079,51 +2097,121 @@ purchases, and resident trip growth generalised to "all Greeks") do not, and
 are named here rather than repeated. No test was run by this project on any
 of the article's own comparisons.</p>''',
 }
-_ctx_register_html = "".join(_ctx_card(cid, _CTX_APPENDIX_PROSE[cid])
-                             for cid in ctx.index)
 _missing_ctx_prose = [cid for cid in ctx.index if cid not in _CTX_APPENDIX_PROSE]
 if _missing_ctx_prose:
     raise SystemExit(f"context entries with no appendix prose: {_missing_ctx_prose}")
 
-_fig_section = (
-    _sec("figures", "Figures used in the report",
-         "Each one is the same object the report carries, with the same "
-         "numbers behind it. The report explains what they mean; this is "
-         "where the values live.", _MAIN, tag=None)
-    + (_sec("appx-shed", "Views simplified out of the report",
-            "Each of these was a tab on a report figure, removed to leave one "
-            "question per figure rather than because the numbers stopped "
-            "mattering: the distance the broader measure closes, each AROPE "
-            "component against every member state, and the full eight-pair "
-            "conditional comparison.", _SHED) if _SHED else "")
-    + _sec("appx-descriptive", "Additional descriptive evidence",
-           "Descriptions the report states in a sentence rather than a chart: "
-           "the full hardship ranking, and the decomposition of the last "
-           "AROPE rise into rates within age groups against the changing size "
-           "of those groups.", _named("descriptive"))
-    + _sec("appx-diagnostic", "Technical diagnostics",
-           "Checks that qualify a result rather than establishing one, and "
-           "the objects behind conclusions the report states in prose: every "
-           "observation behind a binned summary, every year rather than the "
-           "latest, and the complete correlation matrices rather than ten "
-           "representatives.",
-           _named("diagnostic"))
-    + '<section id="appx-diagnostic-detail">'
-    + "".join(_tag(_detail_figs[i]) for i in _DIAG_DETAIL) + "</section>"
-    + _sec("appx-context", "Contextual extensions",
-           "Evidence that cannot support a headline claim by design, and is "
-           "recorded in the report's context register or in a separately "
-           "labelled extension instead: single-wave snapshots, comparisons "
-           "across instruments that share no scale, and the post-freeze "
-           "health analysis.", _named("context"))
-    + '<section id="appx-context-detail">'
-    + "".join(_tag(_detail_figs[i]) for i in _CTX_DETAIL) + "</section>"
-    + '<section id="appx-context-register"><h2>The context register in full</h2>'
-    + '<p class="lede">What the report, the paper and the narrative each place '
-    'somewhere in their own prose, gathered here with the sources, the exact '
-    'indicators, their coverage, and whether this project ran a test on '
-    'them -- for most entries, it did not.</p>'
-    + _ctx_register_html + "</section>")
+# Context entries are placed in the stage the report itself discusses them --
+# not the "contextual extensions" catch-all every entry used to share
+# regardless of subject. CTX-8 (the independent Greece-in-Figures
+# corroboration) sits with Stage 4's material-resources figures, where the
+# report itself places it; CTX-6 (the policy-dashboard recommendation) sits
+# with Stage 8's conclusion; the rest are Stage 7's "what this is not".
+CTX_STAGE = {"CTX-1": 7, "CTX-2": 7, "CTX-3": 7, "CTX-4": 7, "CTX-5": 7,
+             "CTX-6": 8, "CTX-7": 7, "CTX-8": 4}
+_unmapped_ctx = [cid for cid in ctx.index if cid not in CTX_STAGE]
+if _unmapped_ctx:
+    raise SystemExit(f"context entries with no stage: {_unmapped_ctx}")
+
+
+def _featured_group(lede, html_parts):
+    if not html_parts:
+        return ""
+    lede_html = f'<p class="lede">{lede}</p>' if lede else ""
+    return f'<div class="featured-group">{lede_html}{"".join(html_parts)}</div>'
+
+
+def _featured_for_stage(num):
+    """Every non-atlas object belonging to stage NUM, in the required order:
+    main report figures, shed views, descriptive, diagnostic, context."""
+    parts = []
+    parts.append(_featured_group(
+        "", [_report_figs[i] for i in _MAIN if _stage_of[i] == num]))
+    parts.append(_featured_group(
+        "Views the report carried and then simplified away -- removed to "
+        "leave one question per figure, not because the numbers stopped "
+        "mattering.",
+        [_tag(_report_figs[i], "Simplified out of the report")
+         for i in _SHED if SHED_STAGE[i] == num]))
+    parts.append(_featured_group(
+        "Described in the report's prose rather than charted there.",
+        [_tag(_report_figs[i]) for i in _named("descriptive") if _stage_of[i] == num]))
+    diag_ids = [i for i in _named("diagnostic") if _stage_of[i] == num]
+    diag_detail_ids = [i for i in _DIAG_DETAIL if DETAIL_STAGE[i] == num]
+    parts.append(_featured_group(
+        "Technical diagnostics: checks that qualify a result rather than "
+        "establishing one.",
+        [_tag(_report_figs[i]) for i in diag_ids]
+        + [_tag(_detail_figs[i]) for i in diag_detail_ids]))
+    ctx_fig_ids = [i for i in _named("context") if _stage_of[i] == num]
+    ctx_detail_ids = [i for i in _CTX_DETAIL if DETAIL_STAGE[i] == num]
+    ctx_ids = [cid for cid in ctx.index if CTX_STAGE[cid] == num]
+    parts.append(_featured_group(
+        "" if not (ctx_fig_ids or ctx_detail_ids or ctx_ids) else
+        "Evidence that cannot support a headline claim by design, and is "
+        "recorded in the report's context register.",
+        [_tag(_report_figs[i]) for i in ctx_fig_ids]
+        + [_tag(_detail_figs[i]) for i in ctx_detail_ids]
+        + [_ctx_card(cid, _CTX_APPENDIX_PROSE[cid]) for cid in ctx_ids]))
+    return "".join(parts)
+
+
+# STAGE ASSEMBLY. Each of the eight sections below is the report's own stage,
+# in report order: its own figures, then the views simplified out of them,
+# then what it stated descriptively, then the diagnostics behind it, then the
+# context it discusses, then -- collapsed, since this is the appendix's own
+# audit-trail layer rather than something the report itself surfaces -- the
+# underlying variables and tables. This replaces two previously separate
+# systems (a flat six-category "featured figures" list, assembled after the
+# atlas and, by a since-fixed bug, after the page's own footer; and a
+# ten-topic atlas grouped by subject rather than argument) with one.
+for num, dom, title, blurb, _ in STAGES:
+    featured = _featured_for_stage(num)
+    atlas = _stage_atlas_html.get(dom, "")
+    if not featured and not atlas:
+        continue
+    toc.append(f'<a href="#stage-{num}">Stage {num} &mdash; {title}</a>')
+    body.append(
+        f'<section id="stage-{num}" class="appx-stage">'
+        f'<div class="appx-stage-head"><span class="stage-n">Stage {num}</span>'
+        f'<h2>{title}</h2></div>'
+        f'<p class="stage-q">{blurb}</p>'
+        + featured + atlas + "</section>")
+
+# SOURCE AND COVERAGE NOTES. Previously two paragraphs inside the intro
+# ("Two cautions") plus a line in the footer; consolidated into one section
+# so the caveats that apply across every stage above are stated once, in one
+# place, after the evidence rather than before it.
+body.append(f"""<section id="source-notes"><h2>Source and coverage notes</h2>
+<p>Every chart in this appendix draws on the same Eurostat and ELSTAT
+pipeline as the three reports, at country-year level for the EU27. Where a
+figure shows &ldquo;the EU median&rdquo; or &ldquo;the EU comparator&rdquo;,
+it is Eurostat's own population-weighted EU27 aggregate where one is
+published, and an unweighted mean of member states where it is not -- the
+two are not interchangeable, and each chart states which one it uses. A
+country line stopping early means that country stopped reporting the series,
+not that its value fell to zero.</p>
+<p>Eurostat and ELSTAT revise published figures over time, so a later pull
+from the live API will not reproduce every number here exactly; this
+project's frozen claims are estimated on a cached snapshot for that reason
+(see <code>docs/project_description.md</code>), while this appendix's own
+descriptive comparison series call the live API on every build so Eurostat's
+revisions reach it without a manual re-fetch. Every result across the three
+reports is an associational, country-level aggregate, not a household-level
+estimate &mdash; see the technical report's Methods for the full
+limitations.</p>
+<p>{len(series)} series, {len(panels)} panels and {len(scatters)} scatter
+relationships are charted here in total, across the eight stages above.</p>
+</section>""")
+toc.append('<a href="#source-notes">Source and coverage notes</a>')
+
+body.append('<h2 class="group" id="glossary"><span class="secnum">&#167;</span>'
+            'Abbreviations and terms</h2>')
+body.append('<p class="group-blurb">Technical measures, methods and data codes used across the '
+            'project, collected in one searchable place. Where expanding a term is not enough '
+            'to make it usable, a plain-language explanation is included.</p>')
+body.append(glossary_html())
+toc.append('<a href="#glossary"><b>&#167;</b> Abbreviations</a>')
 
 ATLAS_JS = r'''<script>
 // DEEP LINKS INTO A CLOSED GROUP.
@@ -2188,16 +2276,18 @@ for the EU comparator, and for each of the other 26 member states. The country s
 27 current EU members &mdash; the same panel the models are estimated on. Eurostat publishes many of
 these series for candidate and EFTA countries as well, and for the euro-area aggregates; those are
 excluded here so that what you see is the country set the analysis actually used.</p>
-<div class="howto"><b>How this is organised.</b> Five sections of figures, then the variable atlas.
-The figures come first in the order a reader needs them: the fifteen the report carries, the views
-it simplified out, the descriptions it states in prose, the diagnostics that qualify its results,
-and the contextual extensions that cannot support a headline claim by design. The atlas holds every
-variable in its own units, grouped into eight domains that follow the reports' argument rather than
-the data's categories &mdash; poverty and measurement first, then the labour market, incomes,
-prices, housing, expectations, migration and policy, and finally the model diagnostics and the full
-family of screened candidates. <b>The atlas groups start closed</b>; open one to read it, or follow
-a link straight to a chart and its group opens for you. Printing expands everything.
-Charts marked <span class="tag">relationship</span> are cross-country scatters placed in the section
+<div class="howto"><b>How this is organised.</b> Eight sections, one per stage of the technical
+report's own argument, in report order &mdash; not by subject, and not with the report's figures in
+one place and the evidence behind them in another. Open Stage 4 here and you find the report's own
+current-condition figures, the views it simplified out of them, the diagnostics that qualify them and
+the context the report discusses alongside them, together, followed by the underlying variables
+behind all of it. Inside each stage the order is always the same: the report's own figures first,
+then views it simplified away, then what it stated in prose rather than charted, then the technical
+diagnostics, then contextual evidence the report cannot use as a headline claim, and finally
+&mdash; <b>collapsed by default</b> &mdash; the underlying variables and tables in their own units.
+Open a group to read it, or follow a link straight to a chart and its group opens for you. Printing
+expands everything. Source and coverage notes, and the searchable glossary, follow the eighth stage.
+Charts marked <span class="tag">relationship</span> are cross-country scatters placed in the stage
 whose claim they illustrate. Version 2 adds the final fixed and nested model results, the complete
 multiple-testing screen, conditional diagnostics and country-level residual comparisons; detailed
 candidate trajectories are collapsed by default so the central evidence remains readable.
@@ -2264,7 +2354,6 @@ Object.entries(SCATTERS).forEach(([k, sc]) => {{
 </script>
 <style>{ce.CSS}</style>
 {ATLAS_JS}
-{_fig_section}
 <script>{ce.JS}</script>
 """
 DEST.write_text(html, encoding="utf-8")

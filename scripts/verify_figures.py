@@ -823,6 +823,66 @@ if _rep.exists() and _app.exists():
     check("every report figure appears in the appendix", not _gap, str(_gap))
     check("appendix figures carry the report's exact payloads", not _diff, str(_diff))
 
+    # -----------------------------------------------------------------------
+    # THE APPENDIX'S EIGHT-STAGE STRUCTURE. Added when the appendix was
+    # regrouped from six flat "kind of evidence" categories -- assembled
+    # separately from the variable atlas and, until a structural bug was
+    # fixed in the same change, appended after the page's own footer -- into
+    # eight sections following the report's own stage order, each holding a
+    # stage's report figures, shed views, descriptive and diagnostic detail,
+    # context and underlying variables together. These checks hold that
+    # structure in place; each was negative-tested by breaking the condition
+    # it checks and confirming the check fails before the break was reverted.
+    _stage_secs = re.findall(r'<section id="stage-(\d)" class="appx-stage">(.*?)</section>\s*(?=<section|<h2 class="group")',
+                              _at, re.S)
+    _stage_nums = [int(n) for n, _ in _stage_secs]
+    check("appendix stage sections occur in report order",
+          _stage_nums == sorted(_stage_nums) and _stage_nums == list(range(1, len(_stage_nums) + 1)),
+          str(_stage_nums))
+
+    _all_fig_ids = re.findall(r'<figure class="figure" id="([A-Z]\d+[A-Z]?)">', _at)
+    _fig_stage_count = {}
+    for _n, _body in _stage_secs:
+        for _fid in re.findall(r'<figure class="figure" id="([A-Z]\d+[A-Z]?)">', _body):
+            _fig_stage_count[_fid] = _fig_stage_count.get(_fid, 0) + 1
+    _unassigned = [f for f in _all_fig_ids if _fig_stage_count.get(f, 0) == 0]
+    _multi = [f for f, c in _fig_stage_count.items() if c > 1]
+    check("every appendix figure is assigned to exactly one stage section",
+          not _unassigned and not _multi,
+          f"unassigned: {_unassigned}; in more than one stage: {_multi}")
+
+    _order_bad = []
+    for _n, _body in _stage_secs:
+        _feat = _body.find('class="featured-group"')
+        _atlas = _body.find('class="atlas-domain"')
+        if _feat != -1 and _atlas != -1 and _feat > _atlas:
+            _order_bad.append(_n)
+    check("featured evidence appears before the variable atlas, within every stage",
+          not _order_bad, f"stages with atlas before featured content: {_order_bad}")
+
+    _i_stage8 = _at.find('<section id="stage-8"')
+    _i_source = _at.find('id="source-notes"')
+    _i_glossary = _at.find('id="glossary"')
+    _i_footer = _at.find("<footer>")
+    _i_footer_end = _at.find("</footer>")
+    check("source and coverage notes follow the eighth stage",
+          -1 < _i_stage8 < _i_source, f"{_i_stage8}, {_i_source}")
+    check("the glossary follows source and coverage notes, as the final substantive section",
+          -1 < _i_source < _i_glossary, f"{_i_source}, {_i_glossary}")
+    check("the footer is the final visible element",
+          -1 < _i_glossary < _i_footer, f"{_i_glossary}, {_i_footer}")
+    _figs_after_footer = re.findall(r'<figure class="figure" id="([A-Z]\d+[A-Z]?)">',
+                                     _at[_i_footer_end:]) if _i_footer_end != -1 else []
+    check("no figure is emitted after the footer",
+          not _figs_after_footer, str(_figs_after_footer))
+
+    _atlas_details = re.findall(r'<details class="atlas-domain" id="(atlas-s\d)"([^>]*)>', _at)
+    _open_by_default = [aid for aid, attrs in _atlas_details if " open" in attrs]
+    check("every atlas group starts closed, so a deep link has something to open",
+          bool(_atlas_details) and not _open_by_default, str(_open_by_default))
+    check("the deep-link reveal script is present for every closed atlas group",
+          "function reveal(hash)" in _at and "DOMContentLoaded" in _at)
+
 bad = [n for n, ok in F if not ok]
 print(f"\n{len(F) - len(bad)}/{len(F)} figure checks pass")
 if bad:
