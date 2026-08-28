@@ -482,13 +482,16 @@ reported as prominently as the findings.</p>
   </ol>
 </nav>
 
-<div class="howto">
-<h2>How to read this document</h2>
-<p>Findings appear as <strong>indented statements with a coloured rule</strong>,
-each followed by its limits. Those statements are fixed: they were written down
+<p class="howto-line">Findings appear as <strong>indented statements with a
+coloured rule</strong>, each followed by the limits that qualify it. Both are
+fixed &mdash; written down when the analysis finished, reproduced here word
+for word &mdash; and the limits matter as much as the findings themselves.</p>
+
+{methods("How to read this document, and the evidence vocabulary", '''
+<p>Those statements are fixed: they were written down
 when the analysis finished, before this report was drafted, and they are
 reproduced here word for word rather than paraphrased. The limits are fixed in
-the same way and matter as much as the findings &mdash; several of them exist
+the same way and matter as much as the findings -- several of them exist
 because an earlier draft of this report claimed more than the evidence
 carried.</p>
 
@@ -496,14 +499,15 @@ carried.</p>
 institutional trust, migration, the adjustment programmes, tax incidence and the
 pre-crisis wellbeing comparison. It appears in <strong>dashed boxes</strong>
 that say what may and may not be concluded from it. Parts of it were examined
-&mdash; migration was tested on this panel, and the cross-domain and ESS
-comparisons are descriptive analyses done for this report &mdash; but none of it
+-- migration was tested on this panel, and the cross-domain and ESS
+comparisons are descriptive analyses done for this report -- but none of it
 can carry a headline finding, and the boxes exist so that it is never mistaken
 for one.</p>
 
-<p>Technical material sits behind expandable <em>methods</em> panels. The main
-reading path does not depend on opening them; they are there so that every
-number can be traced to how it was produced.</p>
+<p>Technical material elsewhere in the report sits behind expandable
+<em>methods</em> panels like this one. The main reading path does not depend
+on opening them; they are there so that every number can be traced to how it
+was produced.</p>
 
 <div class="vocab">
 <h3>The evidence vocabulary</h3>
@@ -528,7 +532,7 @@ assigns each construct one of the following:</p>
 in this report, and collapsing them would misrepresent the findings
 substantially.</p>
 </div>
-</div>
+''')}
 """
 
 SUMMARY = """
@@ -1784,9 +1788,7 @@ cannot be attributed to the crisis alone, and a longstanding low-wellbeing
 pattern remains plausible. Generic pessimism or reporting culture cannot be
 dismissed on this evidence &mdash; and cannot be established by it either. It
 sharpens the caveat already attached to the claim above rather than replacing
-it: the distinction between the financial indicators and the general one is one
-of degree, not a contrast between financial hardship and general
-contentment.</p>
+it.</p>
 
 {context('CTX-7', '''
 <p>Across six ESS rounds, holding the same twelve countries fixed, Greece sat
@@ -1922,20 +1924,18 @@ satisfaction by 2024. The difference is a difference of degree, and the report
 describes it that way.</p>
 
 <h4>Rank and level are different quantities</h4>
-<p>The figure shows rank trajectories because the question is comparative. Rank
-is treacherous on its own: a country whose score improves can still fall in the
-ranking if others improve faster, which is exactly what happened to Greece on
-life satisfaction &mdash; the Greek series rose from 6.2 to 6.9 while its rank
-worsened. The figure therefore carries the underlying values alongside the
-ranks, and the axis is labelled so that the worst position is unambiguous.</p>
+<p>The figure shows rank trajectories because the question is comparative,
+and rank is treacherous on its own for the reason already noted above (a
+score can improve while its rank still worsens). The figure carries the
+underlying values alongside the ranks for that reason, and the axis is
+labelled so that the worst position is unambiguous.</p>
 
 <h4>What this cannot settle</h4>
-<p>A domain-specific pattern is consistent with genuine financial difficulty,
-and it is also consistent with genuine financial difficulty <em>plus</em> a
-general negative tendency. Separating those requires either a pre-crisis
+<p>Separating genuine financial difficulty from genuine difficulty
+<em>plus</em> a general negative tendency requires either a pre-crisis
 baseline, which this series does not have, or an external anchor on Greek
-response style, which this project does not have. The claim is worded to leave
-both possibilities open.</p>
+response style, which this project does not have. The claim is worded to
+leave both possibilities open.</p>
 
 <h4>How the ESS figures were reconstructed</h4>
 <p>The respondent-level ESS files require an account. The portal's public
