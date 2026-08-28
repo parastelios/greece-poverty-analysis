@@ -44,7 +44,7 @@ This notebook is the running log. `docs/archive/pre-v2-publication/publication_s
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `main` |
-| HEAD | `81ca3d8` Fix two weak chapter titles |
+| HEAD | `3bd189e` Editorial pass: fix six chapter titles that told the reader nothing |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-28 |
 | Frozen V1 reference | `v1-final` |
