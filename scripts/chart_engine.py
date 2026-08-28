@@ -175,8 +175,18 @@ font:.78rem/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--text-secondary)}
 .fallback > summary{padding:.6rem 1.1rem;cursor:pointer;
 font:.78rem/1 ui-sans-serif,system-ui,sans-serif;color:var(--text-secondary)}
 .fallback > summary:hover{color:var(--gr)}
-.fallback table{border-collapse:collapse;width:100%;
-font:.78rem/1.4 ui-sans-serif,system-ui,sans-serif;font-variant-numeric:tabular-nums}
+/* display:block + overflow-x:auto turns the table itself into a horizontal
+   scroll container -- the same pattern already used for .ess-table below.
+   Without it, a table with enough columns to exceed its card's width (most
+   of the wider country-ranking and candidate-family fallback tables do) was
+   silently clipped by .figure's own overflow:hidden -- needed to keep the
+   chart's rounded corners clean, not to hide half a table -- with no way to
+   reach the missing columns on a narrow screen. width:100% alone does not
+   prevent this: a table's content can force it wider than its container
+   regardless, since table-layout defaults to sizing by content. */
+.fallback table{border-collapse:collapse;width:100%;display:block;
+overflow-x:auto;font:.78rem/1.4 ui-sans-serif,system-ui,sans-serif;
+font-variant-numeric:tabular-nums}
 .fallback th,.fallback td{padding:.4rem .8rem;border-bottom:1px solid var(--border);
 text-align:left}
 .fallback td.num,.fallback th.num{text-align:right}

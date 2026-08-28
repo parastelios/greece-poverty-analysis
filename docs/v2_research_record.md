@@ -44,7 +44,7 @@ This notebook is the running log. `docs/archive/pre-v2-publication/publication_s
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `main` |
-| HEAD | `b3d4074` Trim technical-report front matter and Stage 7 repetition |
+| HEAD | `7908ecd` Reorganize the statistical appendix around the report's eight stages |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-28 |
 | Frozen V1 reference | `v1-final` |

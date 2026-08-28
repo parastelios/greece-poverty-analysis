@@ -261,8 +261,18 @@ font:.78rem/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--text-secondary)}
 .fallback > summary{padding:.6rem 1.1rem;cursor:pointer;
 font:.78rem/1 ui-sans-serif,system-ui,sans-serif;color:var(--text-secondary)}
 .fallback > summary:hover{color:var(--gr)}
-.fallback table{border-collapse:collapse;width:100%;
-font:.78rem/1.4 ui-sans-serif,system-ui,sans-serif;font-variant-numeric:tabular-nums}
+/* display:block + overflow-x:auto turns the table itself into a horizontal
+   scroll container -- the same pattern already used for .ess-table below.
+   Without it, a table with enough columns to exceed its card's width (most
+   of the wider country-ranking and candidate-family fallback tables do) was
+   silently clipped by .figure's own overflow:hidden -- needed to keep the
+   chart's rounded corners clean, not to hide half a table -- with no way to
+   reach the missing columns on a narrow screen. width:100% alone does not
+   prevent this: a table's content can force it wider than its container
+   regardless, since table-layout defaults to sizing by content. */
+.fallback table{border-collapse:collapse;width:100%;display:block;
+overflow-x:auto;font:.78rem/1.4 ui-sans-serif,system-ui,sans-serif;
+font-variant-numeric:tabular-nums}
 .fallback th,.fallback td{padding:.4rem .8rem;border-bottom:1px solid var(--border);
 text-align:left}
 .fallback td.num,.fallback th.num{text-align:right}
@@ -394,6 +404,17 @@ blockquote::after{content:"\201D"}
 .finding p{margin:0 0 .5rem;font-size:1.06rem}
 .limits{font:.92rem/1.65 ui-sans-serif,system-ui,sans-serif;
   color:var(--text-secondary);margin:0}
+/* findings_plain()'s disclosure: the plain-language lead sentence stays in
+   the reading path as an ordinary <p>; the precise wording (with its own
+   statistics and caveats) sits one click away, styled like .fig-methods
+   rather than introducing a third disclosure language on the same page. */
+details.finding-detail{margin:0 0 1.6rem}
+details.finding-detail summary{cursor:pointer;font:600 .78rem/1
+  ui-sans-serif,system-ui,sans-serif;letter-spacing:.04em;
+  color:var(--text-secondary);padding:.2rem 0}
+details.finding-detail[open] summary{margin-bottom:.6rem}
+details.finding-detail .finding{margin:0 0 .8rem}
+details.finding-detail .finding:last-child{margin-bottom:0}
 .ctx{border:1px dashed var(--border);border-radius:6px;padding:1rem 1.2rem;
   margin:1.8rem 0}
 .ctx-status{font:600 .68rem/1 ui-sans-serif,system-ui,sans-serif;
@@ -467,7 +488,7 @@ and the continuing weight of unemployment, wages and housing.</p>
 </div>
 </header>
 <div class="opening-fig"><figure class="figure" id="F1">
-<figcaption><span class="fignum">Figure 1</span> Greece reports far more hardship than countries with similar income poverty</figcaption>
+<figcaption><span class="fignum">Figure 1</span> Greece Is Far Above the Poverty-Hardship Line</figcaption>
 <div class="fig-meta"><span class="badge">descriptive</span>
 <span class="fig-q">Does official income poverty account for the hardship Greek households report?</span></div>
 <div class="chart-live" data-chart="panel" tabindex="0"
@@ -476,38 +497,47 @@ and the continuing weight of unemployment, wages and housing.</p>
 </div><details class="fig-methods"><summary>Methods and limits</summary><p class="fig-caveat"><strong>Read with this.</strong> Descriptive comparison of two official measures. Reported hardship is answered by HOUSEHOLDS and income poverty counts PEOPLE, so the axis is labelled percent rather than either. In the second view the fitted line excludes Greece, describing the European pattern Greece is being judged against rather than one Greece helped set. The cross marks the median country on each measure taken SEPARATELY, so it is a reference point rather than an actual country: no member state necessarily sits there. Both views are country-level and say nothing about any individual household.</p></details>
 <details class="fallback" id="F1-fb"><summary>Show the numbers <a href="statistical_appendix.html#F1">This figure in the appendix</a>, with the detail the report leaves out.</summary>
 <table data-checksum="ec03a01ae21a476a" data-view="0"><caption>How Greece&#x27;s hardship gap developed</caption><thead><tr><th>Series</th><th class="num">2015</th><th class="num">2016</th><th class="num">2017</th><th class="num">2018</th><th class="num">2019</th><th class="num">2020</th><th class="num">2021</th><th class="num">2022</th><th class="num">2023</th><th class="num">2024</th></tr></thead><tbody><tr><td>Greece: reported hardship</td><td class="num">77.7</td><td class="num">76.8</td><td class="num">77.2</td><td class="num">74.1</td><td class="num">71.0</td><td class="num">69.8</td><td class="num">71.0</td><td class="num">68.4</td><td class="num">67.0</td><td class="num">66.7</td></tr><tr><td>EU median: reported hardship</td><td class="num">28.9</td><td class="num">25.9</td><td class="num">22.6</td><td class="num">20.5</td><td class="num">18.5</td><td class="num">16.8</td><td class="num">15.4</td><td class="num">17.9</td><td class="num">16.6</td><td class="num">17.1</td></tr><tr><td>Greece: income poverty</td><td class="num">21.4</td><td class="num">21.2</td><td class="num">20.2</td><td class="num">18.5</td><td class="num">17.9</td><td class="num">17.7</td><td class="num">19.6</td><td class="num">18.8</td><td class="num">18.9</td><td class="num">19.6</td></tr><tr><td>EU median: income poverty</td><td class="num">16.3</td><td class="num">16.5</td><td class="num">15.9</td><td class="num">16.4</td><td class="num">15.4</td><td class="num">16.1</td><td class="num">15.7</td><td class="num">15.6</td><td class="num">15.4</td><td class="num">15.5</td></tr></tbody></table><table data-checksum="3c52ae90e921cd3a" data-view="1"><caption>Where countries stood in 2024</caption><thead><tr><th>Series</th><th class="num">Income poverty (%)</th><th class="num">Reported hardship (%)</th></tr></thead><tbody><tr><td>Czechia</td><td class="num">9.5</td><td class="num">14.2</td></tr><tr><td>Belgium</td><td class="num">11.4</td><td class="num">17.1</td></tr><tr><td>Denmark</td><td class="num">11.6</td><td class="num">12.8</td></tr><tr><td>Netherlands</td><td class="num">12.1</td><td class="num">7.3</td></tr><tr><td>Finland</td><td class="num">12.6</td><td class="num">8.9</td></tr><tr><td>Ireland</td><td class="num">12.7</td><td class="num">16.9</td></tr><tr><td>Slovenia</td><td class="num">13.2</td><td class="num">13.6</td></tr><tr><td>Poland</td><td class="num">13.8</td><td class="num">11.5</td></tr><tr><td>Austria</td><td class="num">14.3</td><td class="num">13.1</td></tr><tr><td>Hungary</td><td class="num">14.3</td><td class="num">19.8</td></tr><tr><td>Slovakia</td><td class="num">14.5</td><td class="num">28.7</td></tr><tr><td>Cyprus</td><td class="num">14.6</td><td class="num">20.8</td></tr><tr><td>Sweden</td><td class="num">14.8</td><td class="num">9.9</td></tr><tr><td>Germany</td><td class="num">15.5</td><td class="num">7.3</td></tr><tr><td>France</td><td class="num">15.9</td><td class="num">21.8</td></tr><tr><td>Portugal</td><td class="num">16.6</td><td class="num">21.8</td></tr><tr><td>Malta</td><td class="num">16.9</td><td class="num">17.3</td></tr><tr><td>Luxembourg</td><td class="num">18.1</td><td class="num">8.5</td></tr><tr><td>Italy</td><td class="num">18.9</td><td class="num">18.7</td></tr><tr><td>Romania</td><td class="num">19.0</td><td class="num">23.8</td></tr><tr><td>Greece</td><td class="num">19.6</td><td class="num">66.7</td></tr><tr><td>Spain</td><td class="num">19.7</td><td class="num">21.9</td></tr><tr><td>Estonia</td><td class="num">20.2</td><td class="num">9.9</td></tr><tr><td>Croatia</td><td class="num">20.3</td><td class="num">19.8</td></tr><tr><td>Lithuania</td><td class="num">21.5</td><td class="num">11.4</td></tr><tr><td>Latvia</td><td class="num">21.6</td><td class="num">23.3</td></tr><tr><td>Bulgaria</td><td class="num">21.7</td><td class="num">37.4</td></tr></tbody></table></details>
-</figure></div><section class="ch" id="ch1"><h2>Two numbers that should not coexist</h2>
-<p>Greece's unemployment rate has fallen, output has recovered and the
-country has left the bailout era behind. Yet in the latest European data,
-roughly two households in three still say they struggle to make ends meet.
-The official poverty rate counts about one person in five. To understand why
-both can be true, it helps to look not only at where Greece stands today, but
-at what its households carried through the recovery.</p>
+</figure></div><section class="ch" id="ch1"><h2>The Poverty Rate Says One Thing. Households Say Another.</h2>
+<p>By the official measure, Greece is not Europe's poorest country. By what
+households say about making ends meet, it is almost in a category of its
+own.</p>
 
-<p>The two Greek numbers above come from the same statistical system,
-answering different questions. The first counts <em>people</em> whose
-household income falls below 60% of what a typical household in their
-country earns &mdash; a number about position: are you far behind your
-neighbours? The second asks <em>households</em> directly: are you having
-difficulty making ends meet? &mdash; a number about experience.</p>
+<p>One number says roughly one Greek household in five is at risk of
+poverty &mdash; elevated, but not exceptional; seventh-worst in the
+twenty-seven-country European Union. A second number, drawn from the same
+surveys of the same households, says roughly two in three are struggling to
+get by &mdash; worst in the Union, and not by a little. Both numbers are
+official. Neither has moved much in a decade. And they have never
+agreed.</p>
+
+<p>Greece's unemployment rate has fallen. Output has recovered. The country
+has left the bailout era behind, by most of the measures a headline writer
+would reach for first. None of that is what the second number above is
+describing.</p>
+
+<p>The two numbers come from the same statistical system, answering
+different questions. The first counts <em>people</em> whose household income
+falls below 60% of what a typical household in their country earns &mdash; a
+number about position: are you far behind your neighbours? The second asks
+<em>households</em> directly: are you having difficulty making ends meet?
+&mdash; a number about experience.</p>
 
 <p>In most of Europe the two roughly agree. In Greece they have been 52.6
 percentage points apart, on average, for a decade.</p>
 
 <div class="finding" data-claim-id="V2-1.2"><p>Greek subjective hardship runs 52.6 points above relative income poverty on average, and Greece ranks first of 27 on hardship while ranking seventh on AROP.</p></div>
 
-<p>Greece ranks first in the European Union on the question about
-struggling, and seventh on the income measure &mdash; and it is not simply
-the last country in a long queue. The distance between Greece and the next
-country is wider than the distance covering most of the rest of Europe.
-Whatever produces this is not a stronger dose of what produces ordinary
-variation elsewhere.</p>
+<p>And Greece is not simply the last country in a long queue. The distance
+between Greece and the next country is wider than the distance covering most
+of the rest of Europe. Whatever produces this is not a stronger dose of
+whatever produces ordinary variation elsewhere &mdash; it is a different
+thing happening.</p>
 
 <p>This piece is an attempt to find out what that gap is made of. The honest
 summary, given at the start so nothing later reads as a reveal: part of it
 can be accounted for, some explanations can be ruled out, and most of it
 remains unexplained.</p>
-</section><section class="ch" id="ch2"><h2>The ruler moved</h2>
+</section><section class="ch" id="ch2"><h2>The Poverty Line Fell With the Country</h2>
 <p>The official poverty line isn't fixed. It moves with the very economy it
 is supposed to be measuring.</p>
 
@@ -530,7 +560,7 @@ poverty roughly doubles: from under 20% before the crisis to a peak above
 40% in 2014.</p>
 
 <figure class="figure" id="F3">
-<figcaption><span class="fignum">Figure 2</span> Who counts as poor barely moved; what the poverty line buys fell by a fifth</figcaption>
+<figcaption><span class="fignum">Figure 2</span> The Poverty Line Looked Stable. Its Value Did Not.</figcaption>
 <div class="fig-meta"><span class="badge">descriptive</span>
 <span class="fig-q">What happened to the line Greek poverty is measured against, and what does a fixed line show instead?</span></div>
 <div class="chart-live" data-chart="panel" tabindex="0"
@@ -541,7 +571,7 @@ poverty roughly doubles: from under 20% before the crisis to a peak above
 <table data-checksum="7306a714675cddf8" data-view="0"><caption>Who falls below a fixed line</caption><thead><tr><th>Series</th><th class="num">2003</th><th class="num">2004</th><th class="num">2005</th><th class="num">2006</th><th class="num">2007</th><th class="num">2008</th><th class="num">2009</th><th class="num">2010</th><th class="num">2011</th><th class="num">2012</th><th class="num">2013</th><th class="num">2014</th><th class="num">2015</th><th class="num">2016</th><th class="num">2017</th><th class="num">2018</th><th class="num">2019</th><th class="num">2020</th><th class="num">2021</th><th class="num">2022</th><th class="num">2023</th><th class="num">2024</th><th class="num">2025</th></tr></thead><tbody><tr><td>Greece: fixed 2008 threshold</td><td class="num">25.6</td><td class="num">22.8</td><td class="num">20.7</td><td class="num">21.5</td><td class="num">21.2</td><td class="num">19.7</td><td class="num">17.0</td><td class="num">18.0</td><td class="num">24.6</td><td class="num">33.3</td><td class="num">39.7</td><td class="num">40.6</td><td class="num">39.8</td><td class="num">39.8</td><td class="num">38.3</td><td class="num">37.3</td><td class="num">34.6</td><td class="num">30.8</td><td class="num">32.7</td><td class="num">33.6</td><td class="num">32.0</td><td class="num">30.2</td><td class="num">27.5</td></tr><tr><td>Greece: current-year threshold</td><td class="num">20.7</td><td class="num">19.9</td><td class="num">19.6</td><td class="num">20.5</td><td class="num">20.3</td><td class="num">20.1</td><td class="num">19.7</td><td class="num">20.1</td><td class="num">21.4</td><td class="num">23.1</td><td class="num">23.1</td><td class="num">22.1</td><td class="num">21.4</td><td class="num">21.2</td><td class="num">20.2</td><td class="num">18.5</td><td class="num">17.9</td><td class="num">17.7</td><td class="num">19.6</td><td class="num">18.8</td><td class="num">18.9</td><td class="num">19.6</td><td class="num">19.6</td></tr></tbody></table><table data-checksum="81f394b3fcc1fae5" data-view="1"><caption>What the line itself is worth</caption><thead><tr><th>Series</th><th class="num">2003</th><th class="num">2004</th><th class="num">2005</th><th class="num">2006</th><th class="num">2007</th><th class="num">2008</th><th class="num">2009</th><th class="num">2010</th><th class="num">2011</th><th class="num">2012</th><th class="num">2013</th><th class="num">2014</th><th class="num">2015</th><th class="num">2016</th><th class="num">2017</th><th class="num">2018</th><th class="num">2019</th><th class="num">2020</th><th class="num">2021</th><th class="num">2022</th><th class="num">2023</th><th class="num">2024</th><th class="num">2025</th></tr></thead><tbody><tr><td>Threshold in cash terms</td><td class="num">4923</td><td class="num">5306</td><td class="num">5650</td><td class="num">5910</td><td class="num">6120</td><td class="num">6480</td><td class="num">6897</td><td class="num">7178</td><td class="num">6591</td><td class="num">5708</td><td class="num">5023</td><td class="num">4608</td><td class="num">4512</td><td class="num">4500</td><td class="num">4560</td><td class="num">4718</td><td class="num">4917</td><td class="num">5269</td><td class="num">5251</td><td class="num">5712</td><td class="num">6030</td><td class="num">6510</td><td class="num">7020</td></tr><tr><td>Same threshold in 2008 purchasing power</td><td class="num">5819</td><td class="num">6089</td><td class="num">6264</td><td class="num">6343</td><td class="num">6377</td><td class="num">6480</td><td class="num">6808</td><td class="num">6768</td><td class="num">6027</td><td class="num">5168</td><td class="num">4589</td><td class="num">4270</td><td class="num">4228</td><td class="num">4216</td><td class="num">4226</td><td class="num">4338</td><td class="num">4498</td><td class="num">4884</td><td class="num">4838</td><td class="num">4815</td><td class="num">4878</td><td class="num">5113</td><td class="num">5358</td></tr></tbody></table></details>
 </figure>
 
-<div class="finding" data-claim-id="V2-1.1"><p>The outcome is Eurostat&#x27;s official subjective-hardship indicator, extended backwards before 2010 using a constructed series validated against it on 432 overlapping country-years.</p><p class="limits"><em>The limits of this.</em> pre-2010 provenance is ours, not Eurostat&#x27;s.</p></div>
+<p>That gap between the moving line and the fixed one is not this piece's own estimate. It is Eurostat's own hardship figure, run backward past 2010 using a method checked against the official series everywhere the two overlap.</p><details class="finding-detail"><summary>The precise result</summary><div class="finding" data-claim-id="V2-1.1"><p>The outcome is Eurostat&#x27;s official subjective-hardship indicator, extended backwards before 2010 using a constructed series validated against it on 432 overlapping country-years.</p><p class="limits"><em>The limits of this.</em> pre-2010 provenance is ours, not Eurostat&#x27;s.</p></div></details>
 
 <p>This is a measure of Greece against its own past, and it contains no
 other country: it cannot show that Greece's line fell further than anyone
@@ -557,7 +587,7 @@ in it are barely working. If <a href="#ch1">the puzzle
 above</a> were simply that the income measure is too narrow, this wider one
 should mostly dissolve it.</p>
 
-<div class="finding" data-claim-id="V2-2.1"><p>Switching to AROPE closes 9.8 of those 52.6 points (19%), leaving 42.8 unexplained, and its contribution shrinks from 11.0 points in 2015 to 7.3 in 2024.</p></div>
+<p>It doesn't. AROPE closes a fifth of the gap, and a shrinking fifth at that.</p><details class="finding-detail"><summary>The precise result</summary><div class="finding" data-claim-id="V2-2.1"><p>Switching to AROPE closes 9.8 of those 52.6 points (19%), leaving 42.8 unexplained, and its contribution shrinks from 11.0 points in 2015 to 7.3 in 2024.</p></div></details>
 
 <p>It helps, and it isn't enough. The wider net picks up under a quarter of
 the distance, and its contribution is shrinking &mdash; from eleven points
@@ -570,7 +600,7 @@ through the crisis. Some improved while others did not, and the combined
 figure sat placidly between them &mdash; which matters, because the
 household answering the survey question is not answering about the national
 average. It is answering about itself.</p>
-</section><section class="ch" id="ch3"><h2>The hardship leaves a material footprint</h2>
+</section><section class="ch" id="ch3"><h2>This Was Not Just a Feeling</h2>
 <p>If Greek households say they are struggling while nothing in their
 material circumstances corresponds to it, this is a story about how people
 answer questions, not about poverty. So this has to be settled before
@@ -587,10 +617,10 @@ grimly, and that alone would produce numbers like these. This is one
 instrument agreeing with itself: real evidence, and not independent
 confirmation.</p>
 
-<div class="finding" data-claim-id="V2-3.1"><p>Reported difficulty co-moves with arrears, inability to meet an unexpected expense, inadequate heating and severe deprivation at within-country correlations of 0.63 to 0.80.</p><p class="limits"><em>The limits of this.</em> same-instrument corroboration, NOT independent validation | all items and the outcome come from EU-SILC | not uniform: arrears within Greece is 0.371.</p></div>
+<p>Even holding that caveat firmly in mind, the pattern is strong and it holds within countries, not just across rich ones and poor ones.</p><details class="finding-detail"><summary>The precise result</summary><div class="finding" data-claim-id="V2-3.1"><p>Reported difficulty co-moves with arrears, inability to meet an unexpected expense, inadequate heating and severe deprivation at within-country correlations of 0.63 to 0.80.</p><p class="limits"><em>The limits of this.</em> same-instrument corroboration, NOT independent validation | all items and the outcome come from EU-SILC | not uniform: arrears within Greece is 0.371.</p></div></details>
 
 <figure class="figure" id="F8">
-<figcaption><span class="fignum">Figure 3</span> Three affordability measures closely track hardship in Greece; falling behind on bills tracks it much less closely</figcaption>
+<figcaption><span class="fignum">Figure 3</span> Hardship Moves With Concrete Financial Strain</figcaption>
 <div class="fig-meta"><span class="badge">descriptive corroboration</span>
 <span class="fig-q">Did concrete affordability difficulties rise and fall with what Greek households reported?</span></div>
 <div class="chart-live" data-chart="panel" tabindex="0"
@@ -608,15 +638,14 @@ Arrears require having credit and bills to fall behind on; a household that
 lost access to credit years ago, or never had it, can be in serious trouble
 without ever registering.</p>
 
-<div class="finding" data-claim-id="V2-3.2"><p>Those same four items statistically absorb 71% of Greece&#x27;s baseline residual (+46.92 to +13.74).</p><p class="limits"><em>The limits of this.</em> ABSORPTION, never explanation | shared instrument is not shared cause | diagnostic only; never a headline explanation.</p></div>
+<p>Put those concrete items together in the same picture as the official poverty rate, and most of what makes Greece look unexplained simply disappears.</p><details class="finding-detail"><summary>The precise result</summary><div class="finding" data-claim-id="V2-3.2"><p>Those same four items statistically absorb 71% of Greece&#x27;s baseline residual (+46.92 to +13.74).</p><p class="limits"><em>The limits of this.</em> ABSORPTION, never explanation | shared instrument is not shared cause | diagnostic only; never a headline explanation.</p></div></details>
 
 <p>That word &mdash; absorb &mdash; is doing careful work, and it is not a
-synonym for explain. Put those deprivation items into the model and most of
-Greece's unexplained excess stops being statistically visible. That tells us
-the two things share a great deal of information. It does not tell us one
-causes the other, because both are measured by the same survey of the same
-households on the same day. How much rides on that choice comes back
-later.</p>
+synonym for explain. Put those deprivation items into the picture and most
+of Greece's unexplained excess stops standing out. That tells us the two
+things share a great deal of information. It does not tell us one causes the
+other, because both are measured by the same survey of the same households
+on the same day. How much rides on that choice comes back later.</p>
 
 <p>A number this isolated invites a simpler suspicion: that it's broken. So
 it is worth asking what company it keeps. Take sixteen separate measures of
@@ -626,7 +655,7 @@ because both a 2008 and a 2024 reading exist for each. Ask a blunt question
 of each: is Greece in the worst fifth of Europe on this?</p>
 
 <figure class="figure" id="F21">
-<figcaption><span class="fignum">Figure 4</span> On the same 16 indicators, Greece went from the EU's worst fifth on 4 in 2008 to 11 in 2024</figcaption>
+<figcaption><span class="fignum">Figure 4</span> The Problem Spread Across the Dashboard</figcaption>
 <div class="fig-meta"><span class="badge">descriptive</span>
 <span class="fig-q">Did Greek disadvantage deepen on a few measures, or spread across many?</span></div>
 <div class="chart-live" data-chart="panel" tabindex="0"
@@ -646,7 +675,7 @@ own it predicts nothing, and a later section returns to why &mdash; but it
 settles something modest and real: the measure that put Greece at the top of
 Europe is not one strange instrument twitching on its own. It sits inside a
 wide field of measures that moved with it.</p>
-</section><section class="ch" id="ch4"><h2>Recovery came in pieces</h2>
+</section><section class="ch" id="ch4"><h2>Some Parts Recovered. Others Fell Further Behind</h2>
 <p>Greece's recovery is real. It just didn't arrive in every part of a
 household's life at the same time, or at the same speed &mdash; and
 averages hide that as easily as they hide anything else in this story.</p>
@@ -673,7 +702,7 @@ same years, so the distance between Greece and its neighbours widened even
 as Greece's own number climbed.</p>
 
 <figure class="figure" id="F7">
-<figcaption><span class="fignum">Figure 5</span> Some gaps narrowed, especially long-term unemployment; wage, resource and affordability gaps widened</figcaption>
+<figcaption><span class="fignum">Figure 5</span> The Recovery Was Uneven</figcaption>
 <div class="fig-meta"><span class="badge">descriptive</span>
 <span class="fig-q">Which measures converged toward the EU and which diverged?</span></div>
 <div class="chart-live" data-chart="ladder" tabindex="0"
@@ -686,29 +715,37 @@ as Greece's own number climbed.</p>
 
 <p>The shape is consistent: gaps that were mostly about jobs and housing
 narrowed considerably; gaps that were about wages, resources and what money
-can buy narrowed barely at all, or widened. And it isn't only pay. In the
-EU's most recent data, Greece is the worst country in the Union for people
-who needed medical care and didn't get it, because of cost, waiting time or
-distance &mdash; 12.1% in 2024, against a European median of 1.9%, and
-second-worst in three of the previous four rounds. That is not a statistic
-this piece can use to explain the hardship gap; nothing here tests it
-against the other findings. It is simply what &ldquo;recovery&rdquo; can
-coexist with, on the ground, in the same years the headline numbers were
-improving.</p>
+can buy narrowed barely at all, or widened. But a chart built to fit
+fourteen measures onto one axis has to abstract away units, so here is the
+same story in the numbers each measure actually reports in &mdash; and the
+plainest reading of each.</p>
 
-<p>Each of the constructs behind this &mdash; long-term unemployment,
-material resources, and the wage-against-prices measure below &mdash; also
-predicts reported hardship beyond what the official poverty rate already
-captures.</p>
+<div class="mini-table"><table><thead><tr><th>Measure</th><th>Greece, 2015&rarr;2024</th><th>EU median, 2015&rarr;2024</th><th>What actually happened</th></tr></thead><tbody><tr><td>Long-term unemployment</td><td class='num'>16.4% → 5.4%</td><td class='num'>3.6% → 1.7%</td><td>Large improvement; Greece remained above the median</td></tr><tr><td>Housing-cost overburden</td><td class='num'>45.5% → 28.9%</td><td class='num'>8.7% → 6.7%</td><td>Improved, but the remaining disadvantage was large</td></tr><tr><td>Real wages, 2008 = 100</td><td class='num'>76.9 → 68.2</td><td class='num'>101.4 → 111.8</td><td>Greece fell further behind</td></tr><tr><td>Material resources</td><td class='num'>14,770 → 21,310 PPS</td><td class='num'>16,230 → 24,129 PPS</td><td>Resources rose in Greece, but more slowly than the median</td></tr><tr><td>Wage-adjusted affordability</td><td class='num'>141.9 → 173.1</td><td class='num'>127.2 → 121.0</td><td>Affordability pressure deteriorated sharply relative to Europe</td></tr></tbody></table></div>
 
-<div class="finding" data-claim-id="V2-4.C2"><p>Labour-market exclusion predicts hardship beyond AROP and year effects (coef +4.3402, wild-cluster bootstrap p=0.0085).</p><p class="limits"><em>The limits of this.</em> cross-country association | no causal claim.</p></div>
-<div class="finding" data-claim-id="V2-4.C1"><p>Material resources predicts hardship beyond AROP and year effects (coef -0.0013, wild-cluster bootstrap p=0.0055).</p><p class="limits"><em>The limits of this.</em> cross-country association | no causal claim.</p></div>
+<p>Two things in that table are easy to misread, and both matter. An
+improving number is not the same as a closing gap: material resources rose
+by nearly half in Greece and still fell further behind, because the EU
+median rose faster. And whether a gap narrows because Greece caught up,
+because the rest of Europe slowed down, or both, is not something either
+version of this comparison can tell you. Convergence is context here, not a
+mechanism. It describes what happened, not why.</p>
+
+<p>It isn't only pay, either. In the EU's most recent data, Greece is the
+worst country in the Union for people who needed medical care and didn't
+get it, because of cost, waiting time or distance &mdash; 12.1% in 2024,
+against a European median of 1.9%, and second-worst in three of the
+previous four rounds. That is not a statistic this piece can use to explain
+the hardship gap; nothing here tests it against the other findings. It is
+simply what &ldquo;recovery&rdquo; can coexist with, on the ground, in the
+same years the headline numbers were improving.</p>
+
+<p>Two of the measures behind this uneven picture also do something more than describe: how much long-term unemployment a country carries, and how much its households can actually afford, each still predict reported hardship once the official poverty rate is already accounted for.</p><details class="finding-detail"><summary>The precise results</summary><div class="finding" data-claim-id="V2-4.C2"><p>Labour-market exclusion predicts hardship beyond AROP and year effects (coef +4.3402, wild-cluster bootstrap p=0.0085).</p><p class="limits"><em>The limits of this.</em> cross-country association | no causal claim.</p></div><div class="finding" data-claim-id="V2-4.C1"><p>Material resources predicts hardship beyond AROP and year effects (coef -0.0013, wild-cluster bootstrap p=0.0055).</p><p class="limits"><em>The limits of this.</em> cross-country association | no causal claim.</p></div></details>
 
 <p>A country can score badly on affordability two ways: by being expensive,
 or by paying poorly. Greece does both at once, and a household experiencing
 it does not much care which half is responsible.</p>
 
-<div class="finding" data-claim-id="V2-4.C4"><p>Wage-adjusted affordability predicts hardship beyond AROP and year effects (coef +0.3110, wild-cluster bootstrap p=0.0005).</p><p class="limits"><em>The limits of this.</em> cross-country association | no causal claim.</p></div>
+<p>So does the third: what a Greek wage is actually worth against Greek prices.</p><details class="finding-detail"><summary>The precise result</summary><div class="finding" data-claim-id="V2-4.C4"><p>Wage-adjusted affordability predicts hardship beyond AROP and year effects (coef +0.3110, wild-cluster bootstrap p=0.0005).</p><p class="limits"><em>The limits of this.</em> cross-country association | no causal claim.</p></div></details>
 
 <blockquote>The unemployment rate came back. The paycheck did not.</blockquote>
 
@@ -720,7 +757,7 @@ Greece is not last in the EU on what people actually consume, but Greek
 employees put in some of the longest hours in the Union for comparatively
 low pay per hour, and everyday things like food cost more than that pay
 would suggest. Same picture, different route, no formal test behind it.</p><p class="permitted"><em>What this lets us say.</em> The independent picture -- Greece not last on actual consumption, long hours for comparatively low hourly reward, high relative prices in food and information/communication -- is consistent with and external corroboration for this project&#x27;s own material-resources and wage-adjusted-affordability findings. Its central descriptive numbers reproduce against the primary Eurostat and ELSTAT releases they draw on.</p><p class="limitation"><em>What it does not.</em> Treating the article&#x27;s own comparisons, or its constructed AIC-per-hour ratio, as inferential evidence: it applies no bootstrap, no FDR correction, no within/between decomposition and no model comparison, and it does not test whether these factors account for reported hardship. Merging its 2025/2026-vintage figures into this project&#x27;s frozen 2015-2024 panel. Repeating its car-ownership sentence, which cites a vehicle-STOCK figure as evidence of new purchases, or its &#x27;all Greeks travelled&#x27; generalisation, which the underlying ELSTAT survey does not support. Reading its AIC rank, hours rank or price-level figure as contradicting this project&#x27;s own numbers without first noting the different vintage or aggregate behind each.</p><p class="src">Greece in Figures, &quot;Γιατί οι Έλληνες νιώθουν τόσο φτωχοί&quot; [Why Greeks feel so poor]. <a href="https://www.greeceinfigures.com/analyses/giati-oi-ellenes-niothoun-toso-phtokhoi/">source</a></p></div>
-</section><section class="ch" id="ch5"><h2>The past did not disappear when the rate fell</h2>
+</section><section class="ch" id="ch5"><h2>A Decade of Damage Still Counts</h2>
 <p>Two countries can look identical today and have arrived by different
 roads. One has had high long-term unemployment for a year. The other has had
 it for twelve. The intuition that these are not the same situation is
@@ -728,17 +765,17 @@ strong, and it is the intuition behind almost every account of the Greek
 crisis.</p>
 
 <p>Intuition isn't evidence, and this is where an appealing story is
-easiest to oversell. Three drafts of this report oversold it before the
-wording below was settled.</p>
+easiest to oversell. Three earlier drafts of this piece oversold it, in
+fact, before the wording below was settled.</p>
 
-<p>For each measure that worked above, a matching one was built that counts
-not the level today but the total burden a country has absorbed since before
-the crisis: how much excess unemployment it accumulated, how many
-consecutive years its wages stayed below 2008, how much its housing costs
-deteriorated.</p>
+<p>For each present-day measure in the last section, there is a matching
+one that counts not the level today but the total weight a country has
+carried since before the crisis: how much excess unemployment it
+accumulated, how many consecutive years its wages stayed below 2008, how
+much its housing costs deteriorated.</p>
 
 <figure class="figure" id="F11">
-<figcaption><span class="fignum">Figure 6</span> Greece ranks first on accumulated unemployment and housing deterioration, and second on wage non-recovery</figcaption>
+<figcaption><span class="fignum">Figure 6</span> Greece Had Among Europe&rsquo;s Largest Accumulated Burdens</figcaption>
 <div class="fig-meta"><span class="badge">post-selection robustness</span>
 <span class="fig-q">How much accumulated unemployment has each country absorbed, and where does Greece sit?</span></div>
 <div class="chart-live" data-chart="ladder" tabindex="0"
@@ -749,92 +786,80 @@ deteriorated.</p>
 <table data-checksum="a805387c55cd1571" data-view="0"><caption>Accumulated unemployment</caption><thead><tr><th>Country</th><th class="num">Accumulated unemployment (percentage-point-years above 2009)</th></tr></thead><tbody><tr><td>Greece</td><td class="num">137.5</td></tr><tr><td>Cyprus</td><td class="num">64.1</td></tr><tr><td>Croatia</td><td class="num">43.5</td></tr><tr><td>Spain</td><td class="num">33.1</td></tr><tr><td>Italy</td><td class="num">32.9</td></tr><tr><td>Bulgaria</td><td class="num">26.6</td></tr><tr><td>Portugal</td><td class="num">20.6</td></tr><tr><td>Slovenia</td><td class="num">20.6</td></tr><tr><td>Netherlands</td><td class="num">13.1</td></tr><tr><td>Luxembourg</td><td class="num">9.1</td></tr><tr><td>Ireland</td><td class="num">8.9</td></tr><tr><td>Slovakia</td><td class="num">8.9</td></tr><tr><td>Poland</td><td class="num">7.7</td></tr><tr><td>France</td><td class="num">5.9</td></tr><tr><td>Lithuania</td><td class="num">5.6</td></tr><tr><td>Denmark</td><td class="num">5.6</td></tr><tr><td>Hungary</td><td class="num">3.2</td></tr><tr><td>Estonia</td><td class="num">3.1</td></tr><tr><td>Finland</td><td class="num">2.9</td></tr><tr><td>Austria</td><td class="num">2.5</td></tr><tr><td>Belgium</td><td class="num">2.4</td></tr><tr><td>Romania</td><td class="num">2.4</td></tr><tr><td>Latvia</td><td class="num">2.0</td></tr><tr><td>Czechia</td><td class="num">1.2</td></tr><tr><td>Sweden</td><td class="num">0.6</td></tr><tr><td>Malta</td><td class="num">0.0</td></tr><tr><td>Germany</td><td class="num">0.0</td></tr></tbody></table><table data-checksum="08487a961a8f73e9" data-view="1"><caption>Years wages below 2008</caption><thead><tr><th>Country</th><th class="num">Years wages below 2008 (consecutive years below the 2008 level)</th></tr></thead><tbody><tr><td>Hungary</td><td class="num">16.0</td></tr><tr><td>Greece</td><td class="num">15.0</td></tr><tr><td>Italy</td><td class="num">14.0</td></tr><tr><td>Finland</td><td class="num">3.0</td></tr><tr><td>Sweden</td><td class="num">2.0</td></tr><tr><td>Slovenia</td><td class="num">0.0</td></tr><tr><td>Romania</td><td class="num">0.0</td></tr><tr><td>Portugal</td><td class="num">0.0</td></tr><tr><td>Poland</td><td class="num">0.0</td></tr><tr><td>Netherlands</td><td class="num">0.0</td></tr><tr><td>Malta</td><td class="num">0.0</td></tr><tr><td>Latvia</td><td class="num">0.0</td></tr><tr><td>Luxembourg</td><td class="num">0.0</td></tr><tr><td>Lithuania</td><td class="num">0.0</td></tr><tr><td>Austria</td><td class="num">0.0</td></tr><tr><td>Ireland</td><td class="num">0.0</td></tr><tr><td>Belgium</td><td class="num">0.0</td></tr><tr><td>Croatia</td><td class="num">0.0</td></tr><tr><td>France</td><td class="num">0.0</td></tr><tr><td>Spain</td><td class="num">0.0</td></tr><tr><td>Estonia</td><td class="num">0.0</td></tr><tr><td>Denmark</td><td class="num">0.0</td></tr><tr><td>Germany</td><td class="num">0.0</td></tr><tr><td>Czechia</td><td class="num">0.0</td></tr><tr><td>Cyprus</td><td class="num">0.0</td></tr><tr><td>Bulgaria</td><td class="num">0.0</td></tr><tr><td>Slovakia</td><td class="num">0.0</td></tr></tbody></table><table data-checksum="4b6e3c609d830e30" data-view="2"><caption>Housing deterioration since 2010</caption><thead><tr><th>Country</th><th class="num">Housing deterioration since 2010 (percentage-point-years above 2010)</th></tr></thead><tbody><tr><td>Greece</td><td class="num">233.2</td></tr><tr><td>Bulgaria</td><td class="num">116.3</td></tr><tr><td>Luxembourg</td><td class="num">37.8</td></tr><tr><td>Portugal</td><td class="num">35.8</td></tr><tr><td>Sweden</td><td class="num">17.1</td></tr><tr><td>Estonia</td><td class="num">11.8</td></tr><tr><td>Slovenia</td><td class="num">9.9</td></tr><tr><td>Hungary</td><td class="num">9.6</td></tr><tr><td>Germany</td><td class="num">9.4</td></tr><tr><td>Italy</td><td class="num">8.2</td></tr><tr><td>Belgium</td><td class="num">7.9</td></tr><tr><td>Finland</td><td class="num">7.0</td></tr><tr><td>France</td><td class="num">6.6</td></tr><tr><td>Slovakia</td><td class="num">6.1</td></tr><tr><td>Latvia</td><td class="num">5.7</td></tr><tr><td>Netherlands</td><td class="num">4.9</td></tr><tr><td>Ireland</td><td class="num">4.6</td></tr><tr><td>Spain</td><td class="num">4.5</td></tr><tr><td>Malta</td><td class="num">4.5</td></tr><tr><td>Austria</td><td class="num">4.3</td></tr><tr><td>Poland</td><td class="num">4.2</td></tr><tr><td>Romania</td><td class="num">4.2</td></tr><tr><td>Czechia</td><td class="num">3.8</td></tr><tr><td>Cyprus</td><td class="num">2.1</td></tr><tr><td>Lithuania</td><td class="num">0.5</td></tr><tr><td>Croatia</td><td class="num">0.0</td></tr><tr><td>Denmark</td><td class="num">0.0</td></tr></tbody></table></details>
 </figure>
 
-<p>Greece has absorbed a great deal on these measures. On one of the three
-it is not the highest &mdash; Hungary has a longer run of depressed wages
-&mdash; and the chart shows every country rather than Greece alone, so that
-this is visible rather than buried.</p>
+<p>Greece carries more of this weight than almost anywhere else in Europe.
+On one of the three measures it is not the heaviest &mdash; Hungary has a
+longer run of depressed wages &mdash; and the chart shows every country
+rather than Greece alone, so that comparison is visible rather than
+buried.</p>
 
-<p>Showing that Greece accumulated a lot is description. The real test is
-harder: does the history predict hardship <em>after</em> you already know
-the present-day situation? If you know today's unemployment rate, does the
-past decade of it still add anything?</p>
+<p>Carrying a heavy history is one thing. Whether that history still
+matters once you already know where a country stands today is a harder
+question, and a more important one: if you know this year's unemployment
+rate, does the decade behind it tell you anything more?</p>
 
 <p>For three measures, it does.</p>
 
-<div class="finding" data-claim-id="V2-5.C2"><p>Accumulated excess unemployment predicts hardship (bootstrap p=0.0025) and retains a cross-country association after its current-level counterpart is controlled (conditional bootstrap p=0.0025).</p><p class="limits"><em>The limits of this.</em> cross-country association | no demonstrated within-Greece dynamic | no causal claim | current conditions not ruled out.</p></div>
-<div class="finding" data-claim-id="V2-5.C3"><p>Duration of real wages below their 2008 level predicts hardship (bootstrap p=0.0245) and retains a cross-country association after its current-level counterpart is controlled (conditional bootstrap p=0.0060).</p><p class="limits"><em>The limits of this.</em> cross-country association | no demonstrated within-Greece dynamic | no causal claim | current conditions not ruled out | supported only as the CURRENT uninterrupted run against a fixed 2008 base; alternative constructions point the same way but do not meet the criteria.</p></div>
-<div class="finding" data-claim-id="V2-5.C6"><p>Housing-cost deterioration since 2010 predicts hardship (bootstrap p=0.0460) and retains a cross-country association after its current-level counterpart is controlled (conditional bootstrap p=0.0015).</p><p class="limits"><em>The limits of this.</em> cross-country association | no demonstrated within-Greece dynamic | no causal claim | current conditions not ruled out | BORDERLINE: bootstrap p=0.0460, 91 of 1,999 exceedances.</p></div>
+<p>How much excess unemployment a country has absorbed since before the crisis. How many years its wages have run below their 2008 level, on one specific way of counting that &mdash; other reasonable ways of counting the same idea point the same direction without quite clearing the bar, worth knowing even though they don't change the answer. And, more tentatively, how much its housing costs have deteriorated.</p><details class="finding-detail"><summary>The precise results</summary><div class="finding" data-claim-id="V2-5.C2"><p>Accumulated excess unemployment predicts hardship (bootstrap p=0.0025) and retains a cross-country association after its current-level counterpart is controlled (conditional bootstrap p=0.0025).</p><p class="limits"><em>The limits of this.</em> cross-country association | no demonstrated within-Greece dynamic | no causal claim | current conditions not ruled out.</p></div><div class="finding" data-claim-id="V2-5.C3"><p>Duration of real wages below their 2008 level predicts hardship (bootstrap p=0.0245) and retains a cross-country association after its current-level counterpart is controlled (conditional bootstrap p=0.0060).</p><p class="limits"><em>The limits of this.</em> cross-country association | no demonstrated within-Greece dynamic | no causal claim | current conditions not ruled out | supported only as the CURRENT uninterrupted run against a fixed 2008 base; alternative constructions point the same way but do not meet the criteria.</p></div><div class="finding" data-claim-id="V2-5.C6"><p>Housing-cost deterioration since 2010 predicts hardship (bootstrap p=0.0460) and retains a cross-country association after its current-level counterpart is controlled (conditional bootstrap p=0.0015).</p><p class="limits"><em>The limits of this.</em> cross-country association | no demonstrated within-Greece dynamic | no causal claim | current conditions not ruled out | BORDERLINE: bootstrap p=0.0460, 91 of 1,999 exceedances.</p></div></details>
 
-<p>The third of those is borderline and is labelled so rather than rounded
-up. The second holds only for one specific way of counting, and other
-reasonable ways of counting the same idea point the same direction without
-meeting the standard &mdash; they are not counted as support.</p>
+<p>The housing result is the shakiest of the three, and it is presented
+that way rather than rounded up to a clean yes.</p>
 
-<p>And the pattern is not universal, which is itself informative.</p>
+<p>The pattern is not universal, though, which is itself informative.</p>
 
-<div class="finding" data-claim-id="V2-5.X"><p>For wage-adjusted affordability the pattern reverses: the current measure survives conditioning (bootstrap p=0.0035) while the accumulated one remains inconclusive.</p><p class="limits"><em>The limits of this.</em> the accumulated measure is inconclusive, NOT unsupported.</p></div>
+<p>For the cost-of-living measure, it runs the other way: today's number carries the signal, and the accumulated version of it doesn't resolve.</p><details class="finding-detail"><summary>The precise result</summary><div class="finding" data-claim-id="V2-5.X"><p>For wage-adjusted affordability the pattern reverses: the current measure survives conditioning (bootstrap p=0.0035) while the accumulated one remains inconclusive.</p><p class="limits"><em>The limits of this.</em> the accumulated measure is inconclusive, NOT unsupported.</p></div></details>
 
-<p>For the cost-of-living measure it runs the other way: today's number
-survives and the accumulated one doesn't resolve. If history mattered as a
-general rule, that reversal shouldn't happen. It suggests these results are
-specific to work, wages and housing rather than reflecting some broad law
-that the past always counts.</p>
+<p>If history mattered as a general rule, that reversal shouldn't happen.
+It suggests these results are specific to work, wages and housing rather
+than some broad law that the past always counts for everything.</p>
 
-<p>One measure couldn't be tested at all, and is reported rather than
-quietly dropped.</p>
-
-<div class="finding" data-claim-id="V2-5.Z"><p>Accumulated material resources (C1) could not be tested at all: the source series begins in 2015 and no 2008 baseline exists. The baseline was not moved to make it testable.</p><p class="limits"><em>The limits of this.</em> infeasible, not null.</p></div>
-
-<p>The data for it simply starts too late. Moving the starting line to make
-it testable would have turned it into a measure of something else &mdash;
-one that couldn't see the crisis it was built to see. The starting line
-stayed where it was.</p>
+<p>One more piece of the history simply isn't there to look at. What households could actually afford, tracked back to before the crisis, can't be built at all &mdash; the source data only starts in 2015, already years into the recovery. Moving the starting line earlier would have solved the data problem and created a different one: a measure that could no longer see the crisis it exists to describe. So it stays out, and is named here rather than quietly absent.</p><details class="finding-detail"><summary>The precise result</summary><div class="finding" data-claim-id="V2-5.Z"><p>Accumulated material resources (C1) could not be tested at all: the source series begins in 2015 and no 2008 baseline exists. The baseline was not moved to make it testable.</p><p class="limits"><em>The limits of this.</em> infeasible, not null.</p></div></details>
 
 <div class="finding" data-claim-id="L-3"><p>The accumulated wage-shortfall coefficient cleared every conditional gate but its prior stage did not support it, so the pre-registered ceiling caps it. It is reported and is not a finding.</p><p class="limits"><em>The limits of this.</em> capped by the E7 ceiling: E7 may only qualify or withdraw.</p></div>
 
-<p>And one result passed every test here without being counted, because the
-measure it was paired with hadn't been supported a stage earlier, and a rule
-set in advance stops this step from promoting anything its predecessor
-didn't establish. On the face of the numbers it looks as convincing as the
-three that count. The rule held anyway, which is the only condition under
-which having rules means anything.</p>
-</section><section class="ch" id="ch6"><h2>What the evidence cannot prove</h2>
+<p>Wages are the exception worth naming for the opposite reason. The
+accumulated version of the wage story held up under every check put in
+front of it &mdash; as convincingly as the three results above. It isn't
+counted among them, because the present-day wage measure underneath it was
+never established as real in its own right, earlier in this piece. A result
+can only stand as high as its foundation, and this one's foundation was
+never poured. It's named here, not because it counts, but because
+pretending it doesn't exist would be its own kind of dishonesty.</p>
+</section><section class="ch" id="ch6"><h2>Where the Evidence Stops</h2>
 <p>Everything in <a href="#ch5">the previous section</a> is a
 statement about how countries differ from each other. It is tempting, and
 wrong, to turn it into a statement about how Greece changed over time.</p>
 
-<div class="finding" data-claim-id="V2-5.Y"><p>No accumulated measure permits dynamic wording. Across P5, E4 and E7 no within-country estimate is significant in the adverse direction and no first-difference test supports one.</p><p class="limits"><em>The limits of this.</em> three RELATED checks on one panel, not independent replications | the dynamic tests were not multiplicity-corrected.</p></div>
+<p>Look for that change happening inside Greece itself, over the years, and the evidence isn't there to find it &mdash; not because it has been ruled out, but because this kind of comparison cannot see it either way.</p><details class="finding-detail"><summary>The precise result</summary><div class="finding" data-claim-id="V2-5.Y"><p>No accumulated measure permits dynamic wording. Across P5, E4 and E7 no within-country estimate is significant in the adverse direction and no first-difference test supports one.</p><p class="limits"><em>The limits of this.</em> three RELATED checks on one panel, not independent replications | the dynamic tests were not multiplicity-corrected.</p></div></details>
 
-<figure class="figure" id="F13A"><figcaption><span class="fignum">Figure 7</span> Historical exposure separates countries far more than it separates any one country from its own past</figcaption><div class="fig-meta"><span class="badge">pre-planned confirmatory</span><span class="fig-q">Is the accumulated effect between countries, or within one over time?</span></div><div class="chart-live" data-chart="dumbbell" tabindex="0" data-checksum="97839bc484e223f0" aria-describedby="F13A-fb"><script type="application/json">{"rows": [{"label": "Accumulated unemployment", "a": 0.0296, "b": 0.5924, "tone": "series-3", "strong": true, "right": "no dynamic support", "detail": "between <b>+0.592 SD<\/b> (p 0.0000)<br>within +0.030 SD (p 0.6867)<br>raw: between +0.3214, within +0.0906<br>first difference +0.0461 (p 0.7324)"}, {"label": "Cumulative wage shortfall", "a": -0.0544, "b": 0.6584, "tone": "series-3", "strong": true, "right": "no dynamic support", "detail": "between <b>+0.658 SD<\/b> (p 0.0130)<br>within -0.054 SD (p 0.3147)<br>raw: between +0.1257, within -0.0329<br>first difference -0.0596 (p 0.0284)"}, {"label": "Years wages below 2008", "a": 0.07, "b": 0.7271, "tone": "series-3", "strong": true, "right": "no dynamic support", "detail": "between <b>+0.727 SD<\/b> (p 0.0025)<br>within +0.070 SD (p 0.0823)<br>raw: between +2.7791, within +0.4903<br>first difference +0.0721 (p 0.4952)"}, {"label": "Cumulative GDP shortfall", "a": 0.0674, "b": 0.389, "tone": "series-3", "strong": true, "right": "no dynamic support", "detail": "between <b>+0.389 SD<\/b> (p 0.0289)<br>within +0.067 SD (p 0.0600)<br>raw: between +0.1144, within +0.0737<br>first difference +0.0273 (p 0.1442)"}, {"label": "Cumulative threshold shortfall", "a": 0.0123, "b": 0.8271, "tone": "series-3", "strong": true, "right": "no dynamic support", "detail": "between <b>+0.827 SD<\/b> (p 0.0000)<br>within +0.012 SD (p 0.5599)<br>raw: between +0.2083, within +0.0101<br>first difference -0.0148 (p 0.3917)"}, {"label": "Accumulated affordability pressure", "a": -0.0764, "b": -0.3953, "tone": "text-muted", "strong": false, "right": "no dynamic support", "detail": "between <b>-0.395 SD<\/b> (p 0.3639)<br>within -0.076 SD (p 0.2825)<br>raw: between -0.0127, within -0.0108<br>first difference -0.0298 (p 0.0000)"}, {"label": "Compounded inflation since 2008", "a": -0.1228, "b": -0.1718, "tone": "text-muted", "strong": false, "right": "no dynamic support", "detail": "between <b>-0.172 SD<\/b> (p 0.4947)<br>within -0.123 SD (p 0.3738)<br>raw: between -0.1810, within -0.1050<br>first difference -0.0314 (p 0.5766)"}, {"label": "Housing deterioration since 2010", "a": -0.0658, "b": 0.9282, "tone": "series-3", "strong": true, "right": "no dynamic support", "detail": "between <b>+0.928 SD<\/b> (p 0.0000)<br>within -0.066 SD (p 0.2343)<br>raw: between +0.3514, within -0.0855<br>first difference -0.0090 (p 0.8679)"}], "dp": 3, "legendA": "within countries", "legendB": "between countries", "zeroLabel": "no effect", "xLabel": "Standardised effect (SD of hardship)", "alt": "Standardised between-country against within-country estimates for every accumulated measure"}</script></div><details class="fallback" id="F13A-fb"><summary>Show the numbers <a href="statistical_appendix.html#F13">This figure in the appendix</a>, with the detail the report leaves out.</summary><table data-checksum="97839bc484e223f0" data-view="0"><caption>Between vs within</caption><thead><tr><th>Accumulated measure</th><th class="num">Between (SD)</th><th class="num">Within (SD)</th><th class="num">Between p</th><th class="num">Within p</th><th class="num">First difference (raw)</th><th class="num">First difference p</th></tr></thead><tbody><tr><td>Accumulated unemployment</td><td class="num">0.5924</td><td class="num">0.0296</td><td class="num">0.0000</td><td class="num">0.6867</td><td class="num">0.0461</td><td class="num">0.7324</td></tr><tr><td>Cumulative wage shortfall</td><td class="num">0.6584</td><td class="num">-0.0544</td><td class="num">0.0130</td><td class="num">0.3147</td><td class="num">-0.0596</td><td class="num">0.0284</td></tr><tr><td>Years wages below 2008</td><td class="num">0.7271</td><td class="num">0.0700</td><td class="num">0.0025</td><td class="num">0.0823</td><td class="num">0.0721</td><td class="num">0.4952</td></tr><tr><td>Cumulative GDP shortfall</td><td class="num">0.3890</td><td class="num">0.0674</td><td class="num">0.0289</td><td class="num">0.0600</td><td class="num">0.0273</td><td class="num">0.1442</td></tr><tr><td>Cumulative threshold shortfall</td><td class="num">0.8271</td><td class="num">0.0123</td><td class="num">0.0000</td><td class="num">0.5599</td><td class="num">-0.0148</td><td class="num">0.3917</td></tr><tr><td>Accumulated affordability pressure</td><td class="num">-0.3953</td><td class="num">-0.0764</td><td class="num">0.3639</td><td class="num">0.2825</td><td class="num">-0.0298</td><td class="num">0.0000</td></tr><tr><td>Compounded inflation since 2008</td><td class="num">-0.1718</td><td class="num">-0.1228</td><td class="num">0.4947</td><td class="num">0.3738</td><td class="num">-0.0314</td><td class="num">0.5766</td></tr><tr><td>Housing deterioration since 2010</td><td class="num">0.9282</td><td class="num">-0.0658</td><td class="num">0.0000</td><td class="num">0.2343</td><td class="num">-0.0090</td><td class="num">0.8679</td></tr></tbody></table></details></figure>
+<figure class="figure" id="F13A"><figcaption><span class="fignum">Figure 7</span> The Evidence Is Mostly Between Countries</figcaption><div class="fig-meta"><span class="badge">pre-planned confirmatory</span><span class="fig-q">Is the accumulated effect between countries, or within one over time?</span></div><div class="chart-live" data-chart="dumbbell" tabindex="0" data-checksum="97839bc484e223f0" aria-describedby="F13A-fb"><script type="application/json">{"rows": [{"label": "Accumulated unemployment", "a": 0.0296, "b": 0.5924, "tone": "series-3", "strong": true, "right": "no dynamic support", "detail": "between <b>+0.592 SD<\/b> (p 0.0000)<br>within +0.030 SD (p 0.6867)<br>raw: between +0.3214, within +0.0906<br>first difference +0.0461 (p 0.7324)"}, {"label": "Cumulative wage shortfall", "a": -0.0544, "b": 0.6584, "tone": "series-3", "strong": true, "right": "no dynamic support", "detail": "between <b>+0.658 SD<\/b> (p 0.0130)<br>within -0.054 SD (p 0.3147)<br>raw: between +0.1257, within -0.0329<br>first difference -0.0596 (p 0.0284)"}, {"label": "Years wages below 2008", "a": 0.07, "b": 0.7271, "tone": "series-3", "strong": true, "right": "no dynamic support", "detail": "between <b>+0.727 SD<\/b> (p 0.0025)<br>within +0.070 SD (p 0.0823)<br>raw: between +2.7791, within +0.4903<br>first difference +0.0721 (p 0.4952)"}, {"label": "Cumulative GDP shortfall", "a": 0.0674, "b": 0.389, "tone": "series-3", "strong": true, "right": "no dynamic support", "detail": "between <b>+0.389 SD<\/b> (p 0.0289)<br>within +0.067 SD (p 0.0600)<br>raw: between +0.1144, within +0.0737<br>first difference +0.0273 (p 0.1442)"}, {"label": "Cumulative threshold shortfall", "a": 0.0123, "b": 0.8271, "tone": "series-3", "strong": true, "right": "no dynamic support", "detail": "between <b>+0.827 SD<\/b> (p 0.0000)<br>within +0.012 SD (p 0.5599)<br>raw: between +0.2083, within +0.0101<br>first difference -0.0148 (p 0.3917)"}, {"label": "Accumulated affordability pressure", "a": -0.0764, "b": -0.3953, "tone": "text-muted", "strong": false, "right": "no dynamic support", "detail": "between <b>-0.395 SD<\/b> (p 0.3639)<br>within -0.076 SD (p 0.2825)<br>raw: between -0.0127, within -0.0108<br>first difference -0.0298 (p 0.0000)"}, {"label": "Compounded inflation since 2008", "a": -0.1228, "b": -0.1718, "tone": "text-muted", "strong": false, "right": "no dynamic support", "detail": "between <b>-0.172 SD<\/b> (p 0.4947)<br>within -0.123 SD (p 0.3738)<br>raw: between -0.1810, within -0.1050<br>first difference -0.0314 (p 0.5766)"}, {"label": "Housing deterioration since 2010", "a": -0.0658, "b": 0.9282, "tone": "series-3", "strong": true, "right": "no dynamic support", "detail": "between <b>+0.928 SD<\/b> (p 0.0000)<br>within -0.066 SD (p 0.2343)<br>raw: between +0.3514, within -0.0855<br>first difference -0.0090 (p 0.8679)"}], "dp": 3, "legendA": "within countries", "legendB": "between countries", "zeroLabel": "no effect", "xLabel": "Standardised effect (SD of hardship)", "alt": "Standardised between-country against within-country estimates for every accumulated measure"}</script></div><details class="fallback" id="F13A-fb"><summary>Show the numbers <a href="statistical_appendix.html#F13">This figure in the appendix</a>, with the detail the report leaves out.</summary><table data-checksum="97839bc484e223f0" data-view="0"><caption>Between vs within</caption><thead><tr><th>Accumulated measure</th><th class="num">Between (SD)</th><th class="num">Within (SD)</th><th class="num">Between p</th><th class="num">Within p</th><th class="num">First difference (raw)</th><th class="num">First difference p</th></tr></thead><tbody><tr><td>Accumulated unemployment</td><td class="num">0.5924</td><td class="num">0.0296</td><td class="num">0.0000</td><td class="num">0.6867</td><td class="num">0.0461</td><td class="num">0.7324</td></tr><tr><td>Cumulative wage shortfall</td><td class="num">0.6584</td><td class="num">-0.0544</td><td class="num">0.0130</td><td class="num">0.3147</td><td class="num">-0.0596</td><td class="num">0.0284</td></tr><tr><td>Years wages below 2008</td><td class="num">0.7271</td><td class="num">0.0700</td><td class="num">0.0025</td><td class="num">0.0823</td><td class="num">0.0721</td><td class="num">0.4952</td></tr><tr><td>Cumulative GDP shortfall</td><td class="num">0.3890</td><td class="num">0.0674</td><td class="num">0.0289</td><td class="num">0.0600</td><td class="num">0.0273</td><td class="num">0.1442</td></tr><tr><td>Cumulative threshold shortfall</td><td class="num">0.8271</td><td class="num">0.0123</td><td class="num">0.0000</td><td class="num">0.5599</td><td class="num">-0.0148</td><td class="num">0.3917</td></tr><tr><td>Accumulated affordability pressure</td><td class="num">-0.3953</td><td class="num">-0.0764</td><td class="num">0.3639</td><td class="num">0.2825</td><td class="num">-0.0298</td><td class="num">0.0000</td></tr><tr><td>Compounded inflation since 2008</td><td class="num">-0.1718</td><td class="num">-0.1228</td><td class="num">0.4947</td><td class="num">0.3738</td><td class="num">-0.0314</td><td class="num">0.5766</td></tr><tr><td>Housing deterioration since 2010</td><td class="num">0.9282</td><td class="num">-0.0658</td><td class="num">0.0000</td><td class="num">0.2343</td><td class="num">-0.0090</td><td class="num">0.8679</td></tr></tbody></table></details></figure>
 
 <p>&ldquo;Countries that accumulated more hardship report more
 difficulty&rdquo; is a claim about a group photograph. &ldquo;As Greece
 accumulated more hardship, Greek households reported more difficulty&rdquo;
 is a claim about a film. This piece has the photograph. It does not have the
-film &mdash; not because the film doesn't exist, but because testing for it
-means throwing away the comparison between countries, and what's left isn't
-precise enough to say either way.</p>
+film &mdash; not because the film doesn't exist, but because seeing it would
+mean giving up the comparison between countries, and what's left on its own
+isn't sharp enough to say either way.</p>
 
-<p>Not every present-day measure that was tested made it into the story so
-far, either. Nine were tried; three worked. The other six are mostly
-unresolved rather than ruled out &mdash; with twenty-seven countries and a
-decade of data, most of them could only have detected an effect larger than
-any effect worth caring about, so their silence isn't a verdict.</p>
+<p>Not every present-day measure earned a place in the story so far,
+either. Nine were tried; three worked. The other six mostly went quiet
+rather than failed outright &mdash; with twenty-seven countries and a
+decade of data, most of them could only have caught an effect bigger than
+any effect worth caring about. Silence isn't a verdict.</p>
 
-<div class="finding" data-claim-id="V2-4.X"><p>Six of nine current-level constructs are inconclusive under available power, not unsupported; two cleared FDR and collapsed under the bootstrap (p=0.40 and 0.55).</p><p class="limits"><em>The limits of this.</em> inconclusive is not evidence of absence.</p></div>
-<div class="finding" data-claim-id="L-4"><p>Annual food and housing inflation are unsupported with adequate power at 0.70 SD; annual headline inflation is unsupported at its detectable conditional magnitude; compounded inflation since 2008 remains inconclusive.</p><p class="limits"><em>The limits of this.</em> the exclusions are narrow and magnitude-specific | compounded inflation is INCONCLUSIVE, not ruled out.</p></div>
+<p>A couple of them can be set aside for real, at least at the size this design could catch &mdash; both measures of price inflation among them. The rest simply weren't put under enough pressure to say either way.</p><details class="finding-detail"><summary>The precise results</summary><div class="finding" data-claim-id="V2-4.X"><p>Six of nine current-level constructs are inconclusive under available power, not unsupported; two cleared FDR and collapsed under the bootstrap (p=0.40 and 0.55).</p><p class="limits"><em>The limits of this.</em> inconclusive is not evidence of absence.</p></div><div class="finding" data-claim-id="L-4"><p>Annual food and housing inflation are unsupported with adequate power at 0.70 SD; annual headline inflation is unsupported at its detectable conditional magnitude; compounded inflation since 2008 remains inconclusive.</p><p class="limits"><em>The limits of this.</em> the exclusions are narrow and magnitude-specific | compounded inflation is INCONCLUSIVE, not ruled out.</p></div></details>
 
 <p>The biggest complication is a genuine reversal, and it concerns the
 deprivation items <a href="#ch3">from earlier</a> &mdash;
 can't pay bills, can't heat the home &mdash; which absorbed most of Greece's
 unexplained excess. Those items come from the same survey as the thing
-they're explaining, and whether to let a measure like that into the model is
-a real, defensible choice either way. So both versions were run.</p>
+they're explaining, and whether to let a measure like that into the picture
+is a real, defensible choice either way. So both versions were built.</p>
 
-<div class="finding" data-claim-id="V2-6.1"><p>Greece&#x27;s residual is +6.93 (rank 3/27) in the main model and -9.39 (rank 25/27) when the same-instrument deprivation predictor is removed, on identical rows. Neither specification is definitive.</p><p class="limits"><em>The limits of this.</em> NEITHER specification is definitive | the two may not be merged or averaged | selection between them may not be made on residual size | conclusions about absorption depend materially on whether same-instrument deprivation is admitted.</p></div>
+<p>Choose differently, and Greece's whole position in Europe flips.</p><details class="finding-detail"><summary>The precise result</summary><div class="finding" data-claim-id="V2-6.1"><p>Greece&#x27;s residual is +6.93 (rank 3/27) in the main model and -9.39 (rank 25/27) when the same-instrument deprivation predictor is removed, on identical rows. Neither specification is definitive.</p><p class="limits"><em>The limits of this.</em> NEITHER specification is definitive | the two may not be merged or averaged | selection between them may not be made on residual size | conclusions about absorption depend materially on whether same-instrument deprivation is admitted.</p></div></details>
 
 <figure class="figure" id="F14">
-<figcaption><span class="fignum">Figure 8</span> Removing the same-instrument deprivation measure moves Greece from under-predicted to over-predicted</figcaption>
+<figcaption><span class="fignum">Figure 8</span> What the Recovery Story Still Misses</figcaption>
 <div class="fig-meta"><span class="badge">post-selection robustness</span>
 <span class="fig-q">Does the answer depend on which model is chosen?</span></div>
 <div class="chart-live" data-chart="dumbbell" tabindex="0"
@@ -851,28 +876,28 @@ way to pick between the two.</blockquote>
 <p>Greece moves from the third-worst country in Europe on unexplained
 hardship to the twenty-fifth &mdash; from a stark positive outlier to a
 stark negative one &mdash; on exactly the same rows of data, with one
-variable added or removed. The two results can't be averaged, and can't be
-chosen between by which looks more plausible; that is exactly the practice
-that makes a check like this meaningless. Which is why the conclusion ahead
-does not rest on it.</p>
+measure added or removed. The two results can't be averaged, and can't be
+chosen between by which looks more plausible; doing that is exactly what
+would make a check like this meaningless. Which is why nothing later in
+this piece leans on it.</p>
 
-<p>Two further analyses were planned to carry real weight, and neither
-worked &mdash; worth naming rather than quietly dropping. A synthetic
-Greece, built to track the real one before 2008 and read the divergence
-after as the crisis effect, collapsed into a blend of essentially two
-countries and missed four of its six pre-registered conditions; its chart is
-not shown, because a dramatic picture built on a counterfactual that thin
-would persuade readers of something the evidence can't support. And the
-sixteen-measure breadth count from earlier made Greece's position worse, not
-better, once it was tested as a predictor rather than a description, and its
-direction flipped once other measures were held constant &mdash; a result
-left deliberately uninterpreted, since inventing a story for a strange
-result in a design that already failed is how failed analyses come back from
-the dead.</p>
+<p>Two further ideas were meant to carry real weight here, and neither
+survived contact with the data &mdash; worth naming rather than quietly
+dropping. A synthetic Greece, built to track the real one before 2008 and
+read the divergence after as the crisis effect, collapsed into a blend of
+essentially two countries and missed four of the six conditions it had been
+required to meet before anyone looked at the result. Its chart is not
+shown here, because a dramatic picture built on a counterfactual that thin
+would persuade readers of something the evidence can't actually support.
+And the sixteen-measure spread <a href="#ch3">from
+earlier</a> made Greece's position worse, not better, once it was asked to
+predict rather than just describe, and its direction flipped once other
+measures were held steady &mdash; left deliberately unexplained here, since
+inventing a story for a strange result in a design that already failed is
+how failed ideas come back from the dead.</p>
 
-<div class="finding" data-claim-id="L-1"><p>The synthetic-control comparative design failed four of six pre-registered gates and is not a usable comparison. Its divergence figure is kept out of every document.</p><p class="limits"><em>The limits of this.</em> donor weights collapse to Hungary 0.55 and Bulgaria 0.45 | the divergence figure is NON-REPORTABLE.</p></div>
-<div class="finding" data-claim-id="L-2"><p>Multi-domain breadth failed the incremental criterion: adding it to the main model worsened Greece&#x27;s residual from 6.93 to 10.39 and reversed its sign conditionally. The reversal is left uninterpreted.</p><p class="limits"><em>The limits of this.</em> a result about the specification, not about power | the sign reversal is deliberately left uninterpreted.</p></div>
-</section><section class="ch" id="ch7"><h2>What Greece's recovery leaves out</h2>
+<p>Both are recorded for what they are: attempts that didn't work, kept visible rather than erased.</p><details class="finding-detail"><summary>The precise results</summary><div class="finding" data-claim-id="L-1"><p>The synthetic-control comparative design failed four of six pre-registered gates and is not a usable comparison. Its divergence figure is kept out of every document.</p><p class="limits"><em>The limits of this.</em> donor weights collapse to Hungary 0.55 and Bulgaria 0.45 | the divergence figure is NON-REPORTABLE.</p></div><div class="finding" data-claim-id="L-2"><p>Multi-domain breadth failed the incremental criterion: adding it to the main model worsened Greece&#x27;s residual from 6.93 to 10.39 and reversed its sign conditionally. The reversal is left uninterpreted.</p><p class="limits"><em>The limits of this.</em> a result about the specification, not about power | the sign reversal is deliberately left uninterpreted.</p></div></details>
+</section><section class="ch" id="ch7"><h2>What Greece's Recovery Leaves Out</h2>
 <p>There is a simpler explanation for everything above, and it deserves to
 be taken seriously rather than waved away: maybe Greeks are just gloomier
 answerers. The evidence so far can't settle that on its own &mdash; it all
@@ -883,12 +908,13 @@ at circumstances instead.</p>
 
 <div class="mini-table"><table><thead><tr><th>Measure</th><th>Greece</th><th>EU median</th><th>Greece&rsquo;s position</th></tr></thead><tbody><tr><td>Reported hardship</td><td class='num'>66.7%</td><td class='num'>17.1%</td><td class='num'>1st of 27, worst first</td></tr><tr><td>Financial expectations</td><td class='num'>-43.2</td><td class='num'>-1.8</td><td class='num'>1st of 27, worst first</td></tr><tr><td>Life satisfaction</td><td class='num'>6.7</td><td class='num'>7.3</td><td class='num'>2nd of 28, worst first</td></tr></tbody></table></div>
 
-<div class="finding" data-claim-id="V2-7.1"><p>Greece is consistently among Europe&#x27;s worst countries on life satisfaction and consistently worst on financial hardship and expectations. The greater extremity of the financial indicators suggests domain specificity, but does not rule out a broader negative reporting tendency.</p><p class="limits"><em>The limits of this.</em> Greece is second-WORST on life satisfaction by 2024, not middling | a broader negative reporting tendency is NOT ruled out | Greek life satisfaction ROSE over the observed period, 6.2 to 6.9; only its rank worsened, because other countries improved faster | the series begins in 2013, at the crisis trough, with no pre-crisis baseline.</p></div>
+<p>Greece is worst in Europe on the two money questions and close to worst on general life satisfaction &mdash; a difference of degree, not of kind, which points toward circumstance rather than temperament, though it doesn't prove it.</p><details class="finding-detail"><summary>The precise result</summary><div class="finding" data-claim-id="V2-7.1"><p>Greece is consistently among Europe&#x27;s worst countries on life satisfaction and consistently worst on financial hardship and expectations. The greater extremity of the financial indicators suggests domain specificity, but does not rule out a broader negative reporting tendency.</p><p class="limits"><em>The limits of this.</em> Greece is second-WORST on life satisfaction by 2024, not middling | a broader negative reporting tendency is NOT ruled out | Greek life satisfaction ROSE over the observed period, 6.2 to 6.9; only its rank worsened, because other countries improved faster | the series begins in 2013, at the crisis trough, with no pre-crisis baseline.</p></div></details>
 
-<p>The pattern is specific to money, but it is a difference of degree, not
-of kind &mdash; Greece is worst in Europe on the financial questions and
-close to worst on general life satisfaction, which rose over the period even
-as Greece's rank against faster-improving neighbours fell.</p>
+<p>One thing about that life-satisfaction number is worth holding onto,
+because it's easy to get backwards: it actually <em>rose</em> over the
+period. Greece's rank against it fell anyway, because its faster-improving
+neighbours pulled further ahead. A falling rank is not the same thing as a
+falling number.</p>
 
 <div class="ctx" data-context-id="CTX-1"><p class="ctx-status">descriptive corroboration</p><h4>Financial expectations and life satisfaction</h4>
 <p>Greece's money questions sit at the far edge of the European range while
@@ -920,8 +946,8 @@ findings would be worse.</p>
 <div class="ctx" data-context-id="CTX-2"><p class="ctx-status">contextual evidence</p><h4>Institutional trust</h4>
 <p>Trust in institutions is low in Greece, and there is a plausible route by
 which it could matter: a household that doesn't expect help to arrive may
-experience the same circumstances as more frightening. Nothing here tested
-that.</p><p class="permitted"><em>What this lets us say.</em> May affect how households interpret insecurity; available evidence does not identify an independent effect.</p><p class="limitation"><em>What it does not.</em> Presenting trust as an explanation of the residual, or implying it was tested and found to matter.</p><p class="src">OECD (2024), OECD Survey on Drivers of Trust in Public Institutions - 2024 Results, Country Notes: Greece. OECD Publishing, Paris. <a href="https://www.oecd.org/en/publications/oecd-survey-on-drivers-of-trust-in-public-institutions-2024-results-country-notes_a8004759-en/greece_56edc018-en.html">source</a></p></div>
+experience the same circumstances as more frightening. This piece has no
+check on that either way.</p><p class="permitted"><em>What this lets us say.</em> May affect how households interpret insecurity; available evidence does not identify an independent effect.</p><p class="limitation"><em>What it does not.</em> Presenting trust as an explanation of the residual, or implying it was tested and found to matter.</p><p class="src">OECD (2024), OECD Survey on Drivers of Trust in Public Institutions - 2024 Results, Country Notes: Greece. OECD Publishing, Paris. <a href="https://www.oecd.org/en/publications/oecd-survey-on-drivers-of-trust-in-public-institutions-2024-results-country-notes_a8004759-en/greece_56edc018-en.html">source</a></p></div>
 
 <div class="ctx" data-context-id="CTX-3"><p class="ctx-status">literature-grounded context</p><h4>Crisis and adjustment policies</h4>
 <p>The bailout programmes from 2010 reshaped incomes, job protections,
@@ -949,12 +975,14 @@ that distance is now easier to understand: official measures are narrower
 than the experience they are used to summarise; what households report
 corresponds to real material trouble, even if that agreement comes from
 inside a single survey; and both the present and the accumulated past carry
-information the official rate does not. What the evidence does not support
-is just as much part of the answer &mdash; nothing here shows what causes
-what, nothing shows Greece changing over time, most of what didn't work is
-unresolved rather than ruled out, one central result reverses on a judgement
-call, and a general tendency to answer darkly cannot be excluded. Most of
-the 52.6-point gap remains unexplained.</p>
+information the official rate does not.</p>
+
+<p>What the evidence stops short of is just as much part of the answer.
+Nothing here says what causes what. Nothing here shows Greece changing over
+time. Most of what didn't work is unresolved, not ruled out. One central
+result flips on a judgement call the data cannot settle. And a plainer
+explanation &mdash; that Greeks simply answer more darkly &mdash; cannot be
+fully excluded. Most of the 52.6-point gap is still unexplained.</p>
 
 <div class="ctx" data-context-id="CTX-6"><p class="ctx-status">author interpretation</p><h4>Policy implications</h4>
 <p>What runs through all of this is that no single official number captures

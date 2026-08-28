@@ -129,18 +129,33 @@ if PAPER_FIGS != _FROZEN if "PAPER_FIGS" in dir() else NARRATIVE_FIGS != _FROZEN
 _used = []
 
 
-def fig(fid):
+def fig(fid, caption=None):
     """Place a built figure. Numbering is NOT assigned here.
 
     A placeholder token is resolved once by resolve_fig_nums() against the
     FINAL assembled document, left to right -- the order a reader meets it,
     not the order fig() happened to be called while this file was defining
     sections.
+
+    CAPTION, if given, replaces the report's own caption text for this
+    figure IN THE NARRATIVE ONLY -- the report's copy (and the appendix's
+    superset copy of it) is untouched, since this only rewrites the
+    <figcaption> text after lifting the figure, not the source it was
+    lifted from. The report's caption states the finding precisely; a
+    magazine reader meets the finding in the surrounding prose first and
+    needs the caption to pull them toward it, not restate it -- the
+    editorial split this project settled on is "section title: narrative
+    pull, figure caption: clear finding, question: technical precision",
+    and only the caption moves.
     """
     if fid in _used:
         raise SystemExit(f"{fid} placed twice")
     _used.append(fid)
-    html_ = FIG_SOURCE[fid].replace(
+    html_ = FIG_SOURCE[fid]
+    if caption is not None:
+        html_ = re.sub(r"<figcaption>.*?</figcaption>",
+                        f"<figcaption>{caption}</figcaption>", html_, count=1, flags=re.S)
+    html_ = html_.replace(
         "<figcaption>", f'<figcaption><span class="fignum">Figure {{fig:{fid}}}</span> ', 1)
     html_ = re.sub(
         r'(<p class="fig-caveat">.*?</p>)',
@@ -198,6 +213,55 @@ def finding(cid):
         cav = f'<p class="limits"><em>The limits of this.</em> {items}.</p>'
     return (f'<div class="finding" data-claim-id="{cid}">'
             f"<p>{html.escape(reader_text(c.canonical_wording))}</p>{cav}</div>")
+
+
+def findings_plain(lead, *cids):
+    """A finding (or several, sharing one lead), stated in plain language
+    first, with the precise wording and its statistical caveats available on
+    demand rather than sitting in the reading path.
+
+    The exact finding still carries its required data-claim-id -- the
+    parity check that enforces every claim's presence only checks that the
+    id is IN the document, not where, so collapsing it here doesn't weaken
+    that requirement. What changes is what a reader meets by default: a
+    sentence written for them, not "coef +4.34, wild-cluster bootstrap
+    p=0.0085" in the middle of a paragraph they're trying to read for the
+    story.
+    """
+    label = "The precise result" if len(cids) == 1 else "The precise results"
+    return (f'<p>{lead}</p>'
+            f'<details class="finding-detail"><summary>{label}</summary>'
+            + "".join(finding(c) for c in cids) + '</details>')
+
+
+def recovery_table():
+    """A plain reading of Figure 7's convergence-share chart, one row per
+    measure, in the units each is actually reported in.
+
+    F7 plots a single dimensionless "share of the 2015 gap closed" so
+    fourteen measures on incompatible scales can share one axis -- which is
+    exactly the number a reader is most likely to misread, since "0.71"
+    reads as a fraction of nothing in particular. This reads the report's
+    own e_f7_recovery_table.csv (T-RECOVERY in the technical report) for a
+    subset of rows this piece's own story actually uses, so the numbers can
+    never drift from the chart above them, and states in words what the
+    chart's dimensionless axis cannot: an improving number is not the same
+    as a closing gap, and whether Greece moved or the EU median moved is a
+    different question from how far apart they ended up.
+    """
+    d = pd.read_csv(PROC / "e_f7_recovery_table.csv").set_index("measure")
+    keep = ["Long-term unemployment", "Housing-cost overburden",
+            "Real wages, 2008 = 100", "Material resources",
+            "Wage-adjusted affordability"]
+    rows = "".join(
+        f"<tr><td>{m}</td><td class='num'>{d.loc[m, 'greece_range']}</td>"
+        f"<td class='num'>{d.loc[m, 'eu_median_range']}</td>"
+        f"<td>{d.loc[m, 'plain_reading']}</td></tr>"
+        for m in keep)
+    return (f'<div class="mini-table"><table><thead><tr>'
+            f"<th>Measure</th><th>Greece, 2015&rarr;2024</th>"
+            f"<th>EU median, 2015&rarr;2024</th><th>What actually happened</th>"
+            f"</tr></thead><tbody>{rows}</tbody></table></div>")
 
 
 def context(cid, prose):
@@ -270,35 +334,44 @@ def resolve_fig_nums(doc):
 # ===========================================================================
 CH = []
 
-_f1 = fig('F1')
+_f1 = fig('F1', caption="Greece Is Far Above the Poverty-Hardship Line")
 
-# ---- 1. Two numbers that should not coexist --------------------------------
-CH.append(chapter("paradox", "Two numbers that should not coexist", f"""
-<p>Greece's unemployment rate has fallen, output has recovered and the
-country has left the bailout era behind. Yet in the latest European data,
-roughly two households in three still say they struggle to make ends meet.
-The official poverty rate counts about one person in five. To understand why
-both can be true, it helps to look not only at where Greece stands today, but
-at what its households carried through the recovery.</p>
+# ---- 1. The Poverty Rate Says One Thing. Households Say Another. ----------
+CH.append(chapter("paradox", "The Poverty Rate Says One Thing. Households Say Another.", f"""
+<p>By the official measure, Greece is not Europe's poorest country. By what
+households say about making ends meet, it is almost in a category of its
+own.</p>
 
-<p>The two Greek numbers above come from the same statistical system,
-answering different questions. The first counts <em>people</em> whose
-household income falls below 60% of what a typical household in their
-country earns &mdash; a number about position: are you far behind your
-neighbours? The second asks <em>households</em> directly: are you having
-difficulty making ends meet? &mdash; a number about experience.</p>
+<p>One number says roughly one Greek household in five is at risk of
+poverty &mdash; elevated, but not exceptional; seventh-worst in the
+twenty-seven-country European Union. A second number, drawn from the same
+surveys of the same households, says roughly two in three are struggling to
+get by &mdash; worst in the Union, and not by a little. Both numbers are
+official. Neither has moved much in a decade. And they have never
+agreed.</p>
+
+<p>Greece's unemployment rate has fallen. Output has recovered. The country
+has left the bailout era behind, by most of the measures a headline writer
+would reach for first. None of that is what the second number above is
+describing.</p>
+
+<p>The two numbers come from the same statistical system, answering
+different questions. The first counts <em>people</em> whose household income
+falls below 60% of what a typical household in their country earns &mdash; a
+number about position: are you far behind your neighbours? The second asks
+<em>households</em> directly: are you having difficulty making ends meet?
+&mdash; a number about experience.</p>
 
 <p>In most of Europe the two roughly agree. In Greece they have been 52.6
 percentage points apart, on average, for a decade.</p>
 
 {finding('V2-1.2')}
 
-<p>Greece ranks first in the European Union on the question about
-struggling, and seventh on the income measure &mdash; and it is not simply
-the last country in a long queue. The distance between Greece and the next
-country is wider than the distance covering most of the rest of Europe.
-Whatever produces this is not a stronger dose of what produces ordinary
-variation elsewhere.</p>
+<p>And Greece is not simply the last country in a long queue. The distance
+between Greece and the next country is wider than the distance covering most
+of the rest of Europe. Whatever produces this is not a stronger dose of
+whatever produces ordinary variation elsewhere &mdash; it is a different
+thing happening.</p>
 
 <p>This piece is an attempt to find out what that gap is made of. The honest
 summary, given at the start so nothing later reads as a reveal: part of it
@@ -306,8 +379,8 @@ can be accounted for, some explanations can be ruled out, and most of it
 remains unexplained.</p>
 """))
 
-# ---- 2. The ruler moved (ruler + AROPE + the averages-hide-divides beat) ---
-CH.append(chapter("ruler", "The ruler moved", f"""
+# ---- 2. The Poverty Line Fell With the Country (ruler + AROPE + divides) ---
+CH.append(chapter("ruler", "The Poverty Line Fell With the Country", f"""
 <p>The official poverty line isn't fixed. It moves with the very economy it
 is supposed to be measuring.</p>
 
@@ -329,9 +402,14 @@ where it stood in 2008 instead, adjusted only for inflation, and measured
 poverty roughly doubles: from under 20% before the crisis to a peak above
 40% in 2014.</p>
 
-{fig('F3')}
+{fig('F3', caption="The Poverty Line Looked Stable. Its Value Did Not.")}
 
-{finding('V2-1.1')}
+{findings_plain(
+    "That gap between the moving line and the fixed one is not this "
+    "piece's own estimate. It is Eurostat's own hardship figure, run "
+    "backward past 2010 using a method checked against the official series "
+    "everywhere the two overlap.",
+    'V2-1.1')}
 
 <p>This is a measure of Greece against its own past, and it contains no
 other country: it cannot show that Greece's line fell further than anyone
@@ -347,7 +425,10 @@ in it are barely working. If <a href="#ch{{ch:paradox}}">the puzzle
 above</a> were simply that the income measure is too narrow, this wider one
 should mostly dissolve it.</p>
 
-{finding('V2-2.1')}
+{findings_plain(
+    "It doesn't. AROPE closes a fifth of the gap, and a shrinking fifth at "
+    "that.",
+    'V2-2.1')}
 
 <p>It helps, and it isn't enough. The wider net picks up under a quarter of
 the distance, and its contribution is shrinking &mdash; from eleven points
@@ -362,8 +443,8 @@ household answering the survey question is not answering about the national
 average. It is answering about itself.</p>
 """))
 
-# ---- 3. The hardship leaves a material footprint (real + company) ---------
-CH.append(chapter("footprint", "The hardship leaves a material footprint", f"""
+# ---- 3. This Was Not Just a Feeling (real + company) -----------------------
+CH.append(chapter("footprint", "This Was Not Just a Feeling", f"""
 <p>If Greek households say they are struggling while nothing in their
 material circumstances corresponds to it, this is a story about how people
 answer questions, not about poverty. So this has to be settled before
@@ -380,9 +461,12 @@ grimly, and that alone would produce numbers like these. This is one
 instrument agreeing with itself: real evidence, and not independent
 confirmation.</p>
 
-{finding('V2-3.1')}
+{findings_plain(
+    "Even holding that caveat firmly in mind, the pattern is strong and it "
+    "holds within countries, not just across rich ones and poor ones.",
+    'V2-3.1')}
 
-{fig('F8')}
+{fig('F8', caption="Hardship Moves With Concrete Financial Strain")}
 
 <p>It isn't even uniform across items. Falling behind on bills &mdash; the
 one you'd expect to be the hardest, most factual anchor &mdash; tracks the
@@ -391,15 +475,18 @@ Arrears require having credit and bills to fall behind on; a household that
 lost access to credit years ago, or never had it, can be in serious trouble
 without ever registering.</p>
 
-{finding('V2-3.2')}
+{findings_plain(
+    "Put those concrete items together in the same picture as the official "
+    "poverty rate, and most of what makes Greece look unexplained simply "
+    "disappears.",
+    'V2-3.2')}
 
 <p>That word &mdash; absorb &mdash; is doing careful work, and it is not a
-synonym for explain. Put those deprivation items into the model and most of
-Greece's unexplained excess stops being statistically visible. That tells us
-the two things share a great deal of information. It does not tell us one
-causes the other, because both are measured by the same survey of the same
-households on the same day. How much rides on that choice comes back
-later.</p>
+synonym for explain. Put those deprivation items into the picture and most
+of Greece's unexplained excess stops standing out. That tells us the two
+things share a great deal of information. It does not tell us one causes the
+other, because both are measured by the same survey of the same households
+on the same day. How much rides on that choice comes back later.</p>
 
 <p>A number this isolated invites a simpler suspicion: that it's broken. So
 it is worth asking what company it keeps. Take sixteen separate measures of
@@ -408,7 +495,7 @@ expect of next year, how many people are leaving &mdash; chosen only
 because both a 2008 and a 2024 reading exist for each. Ask a blunt question
 of each: is Greece in the worst fifth of Europe on this?</p>
 
-{fig('F21')}
+{fig('F21', caption="The Problem Spread Across the Dashboard")}
 
 <p>Before the crisis, four of sixteen did &mdash; about a quarter. Now
 eleven do &mdash; about two thirds. They are not sixteen ways of saying the
@@ -421,8 +508,8 @@ Europe is not one strange instrument twitching on its own. It sits inside a
 wide field of measures that moved with it.</p>
 """))
 
-# ---- 4. Recovery came in pieces (money + jobless + paycheck) --------------
-CH.append(chapter("recovery", "Recovery came in pieces", f"""
+# ---- 4. Some Parts Recovered. Others Fell Further Behind ------------------
+CH.append(chapter("recovery", "Some Parts Recovered. Others Fell Further Behind", f"""
 <p>Greece's recovery is real. It just didn't arrive in every part of a
 household's life at the same time, or at the same speed &mdash; and
 averages hide that as easily as they hide anything else in this story.</p>
@@ -448,33 +535,50 @@ impression that nothing improved. But the EU median rose faster over the
 same years, so the distance between Greece and its neighbours widened even
 as Greece's own number climbed.</p>
 
-{fig('F7')}
+{fig('F7', caption="The Recovery Was Uneven")}
 
 <p>The shape is consistent: gaps that were mostly about jobs and housing
 narrowed considerably; gaps that were about wages, resources and what money
-can buy narrowed barely at all, or widened. And it isn't only pay. In the
-EU's most recent data, Greece is the worst country in the Union for people
-who needed medical care and didn't get it, because of cost, waiting time or
-distance &mdash; 12.1% in 2024, against a European median of 1.9%, and
-second-worst in three of the previous four rounds. That is not a statistic
-this piece can use to explain the hardship gap; nothing here tests it
-against the other findings. It is simply what &ldquo;recovery&rdquo; can
-coexist with, on the ground, in the same years the headline numbers were
-improving.</p>
+can buy narrowed barely at all, or widened. But a chart built to fit
+fourteen measures onto one axis has to abstract away units, so here is the
+same story in the numbers each measure actually reports in &mdash; and the
+plainest reading of each.</p>
 
-<p>Each of the constructs behind this &mdash; long-term unemployment,
-material resources, and the wage-against-prices measure below &mdash; also
-predicts reported hardship beyond what the official poverty rate already
-captures.</p>
+{recovery_table()}
 
-{finding('V2-4.C2')}
-{finding('V2-4.C1')}
+<p>Two things in that table are easy to misread, and both matter. An
+improving number is not the same as a closing gap: material resources rose
+by nearly half in Greece and still fell further behind, because the EU
+median rose faster. And whether a gap narrows because Greece caught up,
+because the rest of Europe slowed down, or both, is not something either
+version of this comparison can tell you. Convergence is context here, not a
+mechanism. It describes what happened, not why.</p>
+
+<p>It isn't only pay, either. In the EU's most recent data, Greece is the
+worst country in the Union for people who needed medical care and didn't
+get it, because of cost, waiting time or distance &mdash; 12.1% in 2024,
+against a European median of 1.9%, and second-worst in three of the
+previous four rounds. That is not a statistic this piece can use to explain
+the hardship gap; nothing here tests it against the other findings. It is
+simply what &ldquo;recovery&rdquo; can coexist with, on the ground, in the
+same years the headline numbers were improving.</p>
+
+{findings_plain(
+    "Two of the measures behind this uneven picture also do something more "
+    "than describe: how much long-term unemployment a country carries, and "
+    "how much its households can actually afford, each still predict "
+    "reported hardship once the official poverty rate is already accounted "
+    "for.",
+    'V2-4.C2', 'V2-4.C1')}
 
 <p>A country can score badly on affordability two ways: by being expensive,
 or by paying poorly. Greece does both at once, and a household experiencing
 it does not much care which half is responsible.</p>
 
-{finding('V2-4.C4')}
+{findings_plain(
+    "So does the third: what a Greek wage is actually worth against Greek "
+    "prices.",
+    'V2-4.C4')}
 
 <blockquote>The unemployment rate came back. The paycheck did not.</blockquote>
 
@@ -488,8 +592,8 @@ low pay per hour, and everyday things like food cost more than that pay
 would suggest. Same picture, different route, no formal test behind it.</p>''')}
 """))
 
-# ---- 5. The past did not disappear when the rate fell (duration) ----------
-CH.append(chapter("duration", "The past did not disappear when the rate fell", f"""
+# ---- 5. A Decade of Damage Still Counts (duration) -------------------------
+CH.append(chapter("duration", "A Decade of Damage Still Counts", f"""
 <p>Two countries can look identical today and have arrived by different
 roads. One has had high long-term unemployment for a year. The other has had
 it for twelve. The intuition that these are not the same situation is
@@ -497,109 +601,128 @@ strong, and it is the intuition behind almost every account of the Greek
 crisis.</p>
 
 <p>Intuition isn't evidence, and this is where an appealing story is
-easiest to oversell. Three drafts of this report oversold it before the
-wording below was settled.</p>
+easiest to oversell. Three earlier drafts of this piece oversold it, in
+fact, before the wording below was settled.</p>
 
-<p>For each measure that worked above, a matching one was built that counts
-not the level today but the total burden a country has absorbed since before
-the crisis: how much excess unemployment it accumulated, how many
-consecutive years its wages stayed below 2008, how much its housing costs
-deteriorated.</p>
+<p>For each present-day measure in the last section, there is a matching
+one that counts not the level today but the total weight a country has
+carried since before the crisis: how much excess unemployment it
+accumulated, how many consecutive years its wages stayed below 2008, how
+much its housing costs deteriorated.</p>
 
-{fig('F11')}
+{fig('F11', caption="Greece Had Among Europe&rsquo;s Largest Accumulated Burdens")}
 
-<p>Greece has absorbed a great deal on these measures. On one of the three
-it is not the highest &mdash; Hungary has a longer run of depressed wages
-&mdash; and the chart shows every country rather than Greece alone, so that
-this is visible rather than buried.</p>
+<p>Greece carries more of this weight than almost anywhere else in Europe.
+On one of the three measures it is not the heaviest &mdash; Hungary has a
+longer run of depressed wages &mdash; and the chart shows every country
+rather than Greece alone, so that comparison is visible rather than
+buried.</p>
 
-<p>Showing that Greece accumulated a lot is description. The real test is
-harder: does the history predict hardship <em>after</em> you already know
-the present-day situation? If you know today's unemployment rate, does the
-past decade of it still add anything?</p>
+<p>Carrying a heavy history is one thing. Whether that history still
+matters once you already know where a country stands today is a harder
+question, and a more important one: if you know this year's unemployment
+rate, does the decade behind it tell you anything more?</p>
 
 <p>For three measures, it does.</p>
 
-{finding('V2-5.C2')}
-{finding('V2-5.C3')}
-{finding('V2-5.C6')}
+{findings_plain(
+    "How much excess unemployment a country has absorbed since before the "
+    "crisis. How many years its wages have run below their 2008 level, on "
+    "one specific way of counting that &mdash; other reasonable ways of "
+    "counting the same idea point the same direction without quite "
+    "clearing the bar, worth knowing even though they don't change the "
+    "answer. And, more tentatively, how much its housing costs have "
+    "deteriorated.",
+    'V2-5.C2', 'V2-5.C3', 'V2-5.C6')}
 
-<p>The third of those is borderline and is labelled so rather than rounded
-up. The second holds only for one specific way of counting, and other
-reasonable ways of counting the same idea point the same direction without
-meeting the standard &mdash; they are not counted as support.</p>
+<p>The housing result is the shakiest of the three, and it is presented
+that way rather than rounded up to a clean yes.</p>
 
-<p>And the pattern is not universal, which is itself informative.</p>
+<p>The pattern is not universal, though, which is itself informative.</p>
 
-{finding('V2-5.X')}
+{findings_plain(
+    "For the cost-of-living measure, it runs the other way: today's number "
+    "carries the signal, and the accumulated version of it doesn't "
+    "resolve.",
+    'V2-5.X')}
 
-<p>For the cost-of-living measure it runs the other way: today's number
-survives and the accumulated one doesn't resolve. If history mattered as a
-general rule, that reversal shouldn't happen. It suggests these results are
-specific to work, wages and housing rather than reflecting some broad law
-that the past always counts.</p>
+<p>If history mattered as a general rule, that reversal shouldn't happen.
+It suggests these results are specific to work, wages and housing rather
+than some broad law that the past always counts for everything.</p>
 
-<p>One measure couldn't be tested at all, and is reported rather than
-quietly dropped.</p>
-
-{finding('V2-5.Z')}
-
-<p>The data for it simply starts too late. Moving the starting line to make
-it testable would have turned it into a measure of something else &mdash;
-one that couldn't see the crisis it was built to see. The starting line
-stayed where it was.</p>
+{findings_plain(
+    "One more piece of the history simply isn't there to look at. What "
+    "households could actually afford, tracked back to before the crisis, "
+    "can't be built at all &mdash; the source data only starts in 2015, "
+    "already years into the recovery. Moving the starting line earlier "
+    "would have solved the data problem and created a different one: a "
+    "measure that could no longer see the crisis it exists to describe. So "
+    "it stays out, and is named here rather than quietly absent.",
+    'V2-5.Z')}
 
 {finding('L-3')}
 
-<p>And one result passed every test here without being counted, because the
-measure it was paired with hadn't been supported a stage earlier, and a rule
-set in advance stops this step from promoting anything its predecessor
-didn't establish. On the face of the numbers it looks as convincing as the
-three that count. The rule held anyway, which is the only condition under
-which having rules means anything.</p>
+<p>Wages are the exception worth naming for the opposite reason. The
+accumulated version of the wage story held up under every check put in
+front of it &mdash; as convincingly as the three results above. It isn't
+counted among them, because the present-day wage measure underneath it was
+never established as real in its own right, earlier in this piece. A result
+can only stand as high as its foundation, and this one's foundation was
+never poured. It's named here, not because it counts, but because
+pretending it doesn't exist would be its own kind of dishonesty.</p>
 """))
 
-# ---- 6. What the evidence cannot prove (between/within + unsettled + flip
+# ---- 6. Where the Evidence Stops (between/within + unsettled + flip
 #         + the two failed designs) -----------------------------------------
-CH.append(chapter("limits", "What the evidence cannot prove", f"""
+CH.append(chapter("limits", "Where the Evidence Stops", f"""
 <p>Everything in <a href="#ch{{ch:duration}}">the previous section</a> is a
 statement about how countries differ from each other. It is tempting, and
 wrong, to turn it into a statement about how Greece changed over time.</p>
 
-{finding('V2-5.Y')}
+{findings_plain(
+    "Look for that change happening inside Greece itself, over the years, "
+    "and the evidence isn't there to find it &mdash; not because it has "
+    "been ruled out, but because this kind of comparison cannot see it "
+    "either way.",
+    'V2-5.Y')}
 
 {subfig('F13A', 'F13', 0,
-        "Historical exposure separates countries far more than it separates "
-        "any one country from its own past",
+        "The Evidence Is Mostly Between Countries",
         "Is the accumulated effect between countries, or within one over time?")}
 
 <p>&ldquo;Countries that accumulated more hardship report more
 difficulty&rdquo; is a claim about a group photograph. &ldquo;As Greece
 accumulated more hardship, Greek households reported more difficulty&rdquo;
 is a claim about a film. This piece has the photograph. It does not have the
-film &mdash; not because the film doesn't exist, but because testing for it
-means throwing away the comparison between countries, and what's left isn't
-precise enough to say either way.</p>
+film &mdash; not because the film doesn't exist, but because seeing it would
+mean giving up the comparison between countries, and what's left on its own
+isn't sharp enough to say either way.</p>
 
-<p>Not every present-day measure that was tested made it into the story so
-far, either. Nine were tried; three worked. The other six are mostly
-unresolved rather than ruled out &mdash; with twenty-seven countries and a
-decade of data, most of them could only have detected an effect larger than
-any effect worth caring about, so their silence isn't a verdict.</p>
+<p>Not every present-day measure earned a place in the story so far,
+either. Nine were tried; three worked. The other six mostly went quiet
+rather than failed outright &mdash; with twenty-seven countries and a
+decade of data, most of them could only have caught an effect bigger than
+any effect worth caring about. Silence isn't a verdict.</p>
 
-{finding('V2-4.X')}
-{finding('L-4')}
+{findings_plain(
+    "A couple of them can be set aside for real, at least at the size this "
+    "design could catch &mdash; both measures of price inflation among "
+    "them. The rest simply weren't put under enough pressure to say either "
+    "way.",
+    'V2-4.X', 'L-4')}
 
 <p>The biggest complication is a genuine reversal, and it concerns the
 deprivation items <a href="#ch{{ch:footprint}}">from earlier</a> &mdash;
 can't pay bills, can't heat the home &mdash; which absorbed most of Greece's
 unexplained excess. Those items come from the same survey as the thing
-they're explaining, and whether to let a measure like that into the model is
-a real, defensible choice either way. So both versions were run.</p>
+they're explaining, and whether to let a measure like that into the picture
+is a real, defensible choice either way. So both versions were built.</p>
 
-{finding('V2-6.1')}
+{findings_plain(
+    "Choose differently, and Greece's whole position in Europe flips.",
+    'V2-6.1')}
 
-{fig('F14')}
+{fig('F14', caption="What the Recovery Story Still Misses")}
 
 <blockquote>That is not a wobble. It is a reversal, and there is no honest
 way to pick between the two.</blockquote>
@@ -607,32 +730,35 @@ way to pick between the two.</blockquote>
 <p>Greece moves from the third-worst country in Europe on unexplained
 hardship to the twenty-fifth &mdash; from a stark positive outlier to a
 stark negative one &mdash; on exactly the same rows of data, with one
-variable added or removed. The two results can't be averaged, and can't be
-chosen between by which looks more plausible; that is exactly the practice
-that makes a check like this meaningless. Which is why the conclusion ahead
-does not rest on it.</p>
+measure added or removed. The two results can't be averaged, and can't be
+chosen between by which looks more plausible; doing that is exactly what
+would make a check like this meaningless. Which is why nothing later in
+this piece leans on it.</p>
 
-<p>Two further analyses were planned to carry real weight, and neither
-worked &mdash; worth naming rather than quietly dropping. A synthetic
-Greece, built to track the real one before 2008 and read the divergence
-after as the crisis effect, collapsed into a blend of essentially two
-countries and missed four of its six pre-registered conditions; its chart is
-not shown, because a dramatic picture built on a counterfactual that thin
-would persuade readers of something the evidence can't support. And the
-sixteen-measure breadth count from earlier made Greece's position worse, not
-better, once it was tested as a predictor rather than a description, and its
-direction flipped once other measures were held constant &mdash; a result
-left deliberately uninterpreted, since inventing a story for a strange
-result in a design that already failed is how failed analyses come back from
-the dead.</p>
+<p>Two further ideas were meant to carry real weight here, and neither
+survived contact with the data &mdash; worth naming rather than quietly
+dropping. A synthetic Greece, built to track the real one before 2008 and
+read the divergence after as the crisis effect, collapsed into a blend of
+essentially two countries and missed four of the six conditions it had been
+required to meet before anyone looked at the result. Its chart is not
+shown here, because a dramatic picture built on a counterfactual that thin
+would persuade readers of something the evidence can't actually support.
+And the sixteen-measure spread <a href="#ch{{ch:footprint}}">from
+earlier</a> made Greece's position worse, not better, once it was asked to
+predict rather than just describe, and its direction flipped once other
+measures were held steady &mdash; left deliberately unexplained here, since
+inventing a story for a strange result in a design that already failed is
+how failed ideas come back from the dead.</p>
 
-{finding('L-1')}
-{finding('L-2')}
+{findings_plain(
+    "Both are recorded for what they are: attempts that didn't work, kept "
+    "visible rather than erased.",
+    'L-1', 'L-2')}
 """))
 
 # ---- 7. What Greece's recovery leaves out (reporting style + ESS + context
 #         register + the close) ---------------------------------------------
-CH.append(chapter("leftover", "What Greece's recovery leaves out", f"""
+CH.append(chapter("leftover", "What Greece's Recovery Leaves Out", f"""
 <p>There is a simpler explanation for everything above, and it deserves to
 be taken seriously rather than waved away: maybe Greeks are just gloomier
 answerers. The evidence so far can't settle that on its own &mdash; it all
@@ -643,12 +769,18 @@ at circumstances instead.</p>
 
 {domain_table()}
 
-{finding('V2-7.1')}
+{findings_plain(
+    "Greece is worst in Europe on the two money questions and close to "
+    "worst on general life satisfaction &mdash; a difference of degree, "
+    "not of kind, which points toward circumstance rather than "
+    "temperament, though it doesn't prove it.",
+    'V2-7.1')}
 
-<p>The pattern is specific to money, but it is a difference of degree, not
-of kind &mdash; Greece is worst in Europe on the financial questions and
-close to worst on general life satisfaction, which rose over the period even
-as Greece's rank against faster-improving neighbours fell.</p>
+<p>One thing about that life-satisfaction number is worth holding onto,
+because it's easy to get backwards: it actually <em>rose</em> over the
+period. Greece's rank against it fell anyway, because its faster-improving
+neighbours pulled further ahead. A falling rank is not the same thing as a
+falling number.</p>
 
 {context('CTX-1', '''
 <p>Greece's money questions sit at the far edge of the European range while
@@ -680,8 +812,8 @@ findings would be worse.</p>
 {context('CTX-2', '''
 <p>Trust in institutions is low in Greece, and there is a plausible route by
 which it could matter: a household that doesn't expect help to arrive may
-experience the same circumstances as more frightening. Nothing here tested
-that.</p>''')}
+experience the same circumstances as more frightening. This piece has no
+check on that either way.</p>''')}
 
 {context('CTX-3', '''
 <p>The bailout programmes from 2010 reshaped incomes, job protections,
@@ -709,12 +841,14 @@ that distance is now easier to understand: official measures are narrower
 than the experience they are used to summarise; what households report
 corresponds to real material trouble, even if that agreement comes from
 inside a single survey; and both the present and the accumulated past carry
-information the official rate does not. What the evidence does not support
-is just as much part of the answer &mdash; nothing here shows what causes
-what, nothing shows Greece changing over time, most of what didn't work is
-unresolved rather than ruled out, one central result reverses on a judgement
-call, and a general tendency to answer darkly cannot be excluded. Most of
-the 52.6-point gap remains unexplained.</p>
+information the official rate does not.</p>
+
+<p>What the evidence stops short of is just as much part of the answer.
+Nothing here says what causes what. Nothing here shows Greece changing over
+time. Most of what didn't work is unresolved, not ruled out. One central
+result flips on a judgement call the data cannot settle. And a plainer
+explanation &mdash; that Greeks simply answer more darkly &mdash; cannot be
+fully excluded. Most of the 52.6-point gap is still unexplained.</p>
 
 {context('CTX-6', '''
 <p>What runs through all of this is that no single official number captures
@@ -823,6 +957,17 @@ blockquote::after{{content:"\\201D"}}
 .finding p{{margin:0 0 .5rem;font-size:1.06rem}}
 .limits{{font:.92rem/1.65 ui-sans-serif,system-ui,sans-serif;
   color:var(--text-secondary);margin:0}}
+/* findings_plain()'s disclosure: the plain-language lead sentence stays in
+   the reading path as an ordinary <p>; the precise wording (with its own
+   statistics and caveats) sits one click away, styled like .fig-methods
+   rather than introducing a third disclosure language on the same page. */
+details.finding-detail{{margin:0 0 1.6rem}}
+details.finding-detail summary{{cursor:pointer;font:600 .78rem/1
+  ui-sans-serif,system-ui,sans-serif;letter-spacing:.04em;
+  color:var(--text-secondary);padding:.2rem 0}}
+details.finding-detail[open] summary{{margin-bottom:.6rem}}
+details.finding-detail .finding{{margin:0 0 .8rem}}
+details.finding-detail .finding:last-child{{margin-bottom:0}}
 .ctx{{border:1px dashed var(--border);border-radius:6px;padding:1rem 1.2rem;
   margin:1.8rem 0}}
 .ctx-status{{font:600 .68rem/1 ui-sans-serif,system-ui,sans-serif;
