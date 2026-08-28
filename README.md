@@ -6,9 +6,16 @@ between the share reporting difficulty making ends meet (1st of 27) and the
 official income-poverty rate, AROP (7th of 27) — and how much of that gap the
 available evidence can actually account for.
 
-**This is the V2 rewrite**, on branch `p6-rewrite`. It replaces an earlier,
-more confident V1 draft after review found several of its claims overstated;
-V2 is built around a pre-registered testing protocol (declared conditions,
+**Read [`docs/project_description.md`](docs/project_description.md) first.**
+It is the current, complete description of the finished project — the two
+questions it answers, every subquestion under them, the evidence hierarchy,
+and what remains unexplained — written for a reader who wants the completed
+argument, not the chronological process that produced it.
+
+**This is the V2 rewrite**, developed on `p6-rewrite` and now merged to
+`main`, which both branches track in lockstep. It replaces an earlier, more
+confident V1 draft after review found several of its claims overstated; V2
+is built around a pre-registered testing protocol (declared conditions,
 multiplicity correction, wild-cluster bootstrap, minimum-detectable-effect
 reporting) so a verdict is the output of a fixed procedure rather than a
 judgement made after seeing the numbers. It answers with the same discipline
@@ -17,13 +24,18 @@ close it; three present-day conditions and three accumulated ones each add
 real information beyond income poverty; and *most of the 52.6 points remains
 unattributed*, because the analysis could not establish where it goes. The
 V1 draft is preserved as-is in `archive/v1-final/` for comparison, not
-deleted or silently superseded. The pre-registered protocol V2 was built
-against — the brief that fixes each construct's testing conditions before
-any outcome was seen — is
-[`docs/archive/pre-v2-publication/project_description_v3.md`](docs/archive/pre-v2-publication/project_description_v3.md):
-filed alongside superseded status documents because it no longer describes
-current *status*, but still the live citation behind several pipeline
-scripts' pre-registration comments.
+deleted or silently superseded.
+
+Two documents both describe "the project" and answer different questions.
+[`docs/project_description.md`](docs/project_description.md) describes what
+V2 *is*, as completed — read this first.
+[`docs/archive/pre-v2-publication/project_description_v3.md`](docs/archive/pre-v2-publication/project_description_v3.md)
+is the pre-registered *protocol* V2 was built against — the brief that fixed
+each construct's testing conditions before any outcome was seen. It is filed
+alongside superseded status documents because it no longer describes current
+status, but it is still the live citation behind several pipeline scripts'
+pre-registration comments, and is kept in place rather than rewritten for
+that reason.
 
 ## The published documents
 
@@ -98,13 +110,14 @@ data/raw/          Cached raw Eurostat/ELSTAT pulls, one file per dataset/query.
 data/processed/    Every derived artifact: merged panels, per-figure CSVs,
                    the frozen claim set (e_final_claims.csv) and the context
                    register (context_register.csv).
-docs/              Methodology references (comparability_notes.md,
-                   data_sources.md), the live research record
-                   (v2_research_record.md), the health-extension writeup,
-                   and archive/pre-v2-publication/ for superseded planning
-                   and status documents kept for provenance, not current
-                   use — except project_description_v3.md there, the
-                   pre-registered protocol V2 was built against, which is
+docs/              project_description.md (the current, completed-project
+                   description — read this first), methodology references
+                   (comparability_notes.md, data_sources.md), the live
+                   research record (v2_research_record.md), the
+                   health-extension writeup, and archive/pre-v2-publication/
+                   for superseded planning and status documents kept for
+                   provenance, not current use — except project_description_v3.md
+                   there, the pre-registered protocol V2 was built against, which is
                    still a live citation, not just historical record.
 output/            The four published documents (above), their PDF exports,
                    and the intermediate build/ pages they're assembled from.
