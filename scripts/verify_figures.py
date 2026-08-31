@@ -489,12 +489,18 @@ for path in TARGETS:
 # Positional PHRASES are banned everywhere: they name a position, and a
 # position is not a fact about the figure.
 #
-# A numbered reference is different. In the report and the narrative it is
-# banned too, because neither builds one deliberately. The paper needs them --
-# academic convention -- and builds them from {fig:Fxx} tokens resolved against
-# its own placement map, with 90_build_paper.py refusing to build if a number
-# was typed instead. So numbers are checked at their source, not here, where a
-# typed number and a resolved one are the same characters.
+# A numbered reference is different. In the report it is banned outright: the
+# report has no {fig:Fxx}-token mechanism for prose citations (only each
+# figure's own caption self-numbers, at call time), so any number typed into
+# report prose is unverifiable and stays banned here. The paper and the
+# narrative both cite figures by number deliberately -- academic convention
+# for the paper, direct wayfinding ("Figure 1's first tab") for the narrative
+# -- and both build every such reference from a {fig:Fxx} token resolved
+# against the document's own final placement, with the build script itself
+# refusing to build if a number was typed instead (90_build_paper.py;
+# 91_build_narrative.py). So for those two, numbers are checked at their
+# source, not here, where a typed number and a resolved one are the same
+# characters.
 _POSITIONAL = [
     r"\bthe (?:figure|chart|plot|panel) (?:below|above)\b",
     r"\bthe (?:next|previous|preceding|following) (?:figure|chart)\b",
@@ -592,7 +598,7 @@ if _rep.exists() and _app.exists():
         _f = ROOT / "output" / _doc
         if _f.exists():
             _pos += [f"{_doc}: {h}" for h in positional_hits(_f.read_text())]
-            if _doc != "academic_paper.html":
+            if _doc not in ("academic_paper.html", "narrative.html"):
                 _pos += [f"{_doc}: {h}"
                          for h in positional_hits(_f.read_text(), [_NUMBERED])]
     check("no positional figure references in prose",

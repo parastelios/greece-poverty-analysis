@@ -251,7 +251,7 @@ def section_notes(*cids):
 
 
 def recovery_table():
-    """A plain reading of Figure 7's convergence-share chart, one row per
+    """A plain reading of F7's convergence-share chart, one row per
     measure, in the units each is actually reported in.
 
     F7 plots a single dimensionless "share of the 2015 gap closed" so
@@ -369,16 +369,17 @@ it is read alone, without context.</p>
 
 {fig('F1', caption="Greece Is Far Above the Poverty-Hardship Line")}
 
-<p>The first tab, &ldquo;How Greece's hardship gap developed,&rdquo;
-shows why. Since 2015, Greece's reported hardship has never dropped below
+<p><a class="fig-jump" href="#F1" data-view="0">Figure {{fig:F1}}'s first
+tab</a>, &ldquo;How Greece's hardship gap developed&rdquo;, shows why. Since
+2015, Greece's reported hardship has never dropped below
 two-thirds of households &mdash; it opens near 78% and eases only
 gradually. Its income-poverty rate spends the same decade hovering near a
 fifth, barely moving at all. Both EU medians sit far beneath Greece's line
 for reported hardship, the whole way through. This isn't a single bad year
 showing up once. It's been the shape of an entire decade.</p>
 
-<p>Switch to the second tab, &ldquo;Where countries stood in 2024,&rdquo;
-and the gap turns from a Greek pattern into a European outlier. Each grey
+<p>Switch to the <a class="fig-jump" href="#F1" data-view="1">second
+tab</a>, &ldquo;Where countries stood in 2024&rdquo;, and the gap turns from a Greek pattern into a European outlier. Each grey
 dot is an EU country. The horizontal axis is income poverty; the vertical
 is reported hardship. The dotted line is the relationship the other
 twenty-six countries actually follow. Greece is the blue point far above
@@ -471,67 +472,99 @@ average. It is answering about itself.</p>
 
 # ---- 3. This Was Not Just a Feeling (real + company) -----------------------
 CH.append(chapter("footprint", "This Was Not Just a Feeling", f"""
-<p>If Greek households say they are struggling while nothing in their
-material circumstances corresponds to it, this is a story about how people
-answer questions, not about poverty. So this has to be settled before
-anything else: does reported difficulty move together with things that name
-events rather than feelings &mdash; falling behind on bills, being unable to
-handle an unexpected expense, being unable to heat the home, going without
-several basic things at once?</p>
+<p>If Greek households are simply answering a subjective question more
+darkly than everyone else, then this is a story about how people talk about
+their lives, not about poverty. Everything the rest of this piece does next
+would be measuring an echo, not an economy. That has to be settled first,
+and settled seriously, not waved off as an obvious no.</p>
 
-<p>It does, and the honest caveat has to come first, not as a footnote.
-Every one of those items comes from the same survey, asked of the same
-household, in the same sitting, as the question about making ends meet. A
-household in a grim mood about its finances will answer the whole set
-grimly, and that alone would produce numbers like these. This is one
-instrument agreeing with itself: real evidence, and not independent
-confirmation.</p>
-
-{findings_plain(
-    "Even holding that caveat firmly in mind, the pattern is strong and it "
-    "holds within countries, not just across rich ones and poor ones.",
-    'V2-3.1')}
+<p>The test isn't whether a household <em>feels</em> like it's struggling.
+It's whether that feeling moves together with things that name actual
+events, not moods: falling behind on bills, being unable to cover a surprise
+expense, being unable to heat the home properly, going without several
+ordinary things at once. A vague question can be coloured by a bad mood.
+Four specific, concrete facts agreeing with it at once is a much harder
+thing for mood alone to produce.</p>
 
 {fig('F8', caption="Hardship Moves With Concrete Financial Strain")}
 
-<p>It isn't even uniform across items. Falling behind on bills &mdash; the
-one you'd expect to be the hardest, most factual anchor &mdash; tracks the
-reported difficulty far more weakly within Greece than the others do.
-Arrears require having credit and bills to fall behind on; a household that
-lost access to credit years ago, or never had it, can be in serious trouble
-without ever registering.</p>
+<p><a class="fig-jump" href="#F8">Figure {{fig:F8}}</a>: three of the four
+tabs tell the same story. In Greece's own year-by-year data, reported
+hardship tracks an inability to cover a surprise expense almost exactly
+(<a class="fig-jump" href="#F8" data-view="0">Unexpected expenses</a>)
+&mdash; a correlation of 0.92. It tracks going without several ordinary
+things at once even more closely (<a class="fig-jump" href="#F8"
+data-view="1">Material deprivation</a>), at 0.94. It tracks struggling to
+keep the home warm at 0.87 (<a class="fig-jump" href="#F8"
+data-view="2">Keeping the home warm</a>). When one line moves, the others
+move with it, year after year. And this isn't a Greek peculiarity: pooled
+across all twenty-seven EU countries, once each country's own average is
+set aside, the same relationships hold, at 0.63 to 0.80.</p>
 
-{findings_plain(
-    "Put those concrete items together in the same picture as the official "
-    "poverty rate, and most of what makes Greece look unexplained simply "
-    "disappears.",
-    'V2-3.2')}
+<p>The fourth tab (<a class="fig-jump" href="#F8" data-view="3">Falling
+behind on bills</a>) tells a
+different story, and it's worth sitting with why.
+Falling behind on bills &mdash; the one item that sounds like the hardest,
+most factual anchor of the four &mdash; tracks reported hardship at only
+0.37, by far the weakest of the set. Falling behind requires having had
+credit and obligations to fall behind on in the first place. A household
+that lost access to credit years ago, or never had any to lose, can be in
+real difficulty without that difficulty ever showing up as an unpaid bill.
+The weakest link in the evidence turns out to have an ordinary explanation,
+not a suspicious one.</p>
 
-<p>That word &mdash; absorb &mdash; is doing careful work, and it is not a
-synonym for explain. Put those deprivation items into the picture and most
-of Greece's unexplained excess stops standing out. That tells us the two
-things share a great deal of information. It does not tell us one causes the
-other, because both are measured by the same survey of the same households
-on the same day. How much rides on that choice comes back later.</p>
+<p>None of this is independent proof, and that has to be said plainly
+rather than buried. Every one of these items comes from the same interview
+as the question about making ends meet &mdash; the same household, the same
+sitting. A household in a genuinely grim mood could rate the whole set
+grimly, and that alone would produce numbers like these. What's been shown
+is that reported hardship is coherent with concrete circumstances. It
+hasn't been shown, and can't be shown this way, that it's confirmed by
+something entirely outside the survey.</p>
 
-<p>A number this isolated invites a simpler suspicion: that it's broken. So
-it is worth asking what company it keeps. Take sixteen separate measures of
-Greek life &mdash; wages, hours worked, prices, saving, what households
-expect of next year, how many people are leaving &mdash; chosen only
-because both a 2008 and a 2024 reading exist for each. Ask a blunt question
-of each: is Greece in the worst fifth of Europe on this?</p>
+<p>There is a second, different kind of check, and it does not depend on
+the same hardship questions. If this one number were an isolated fluke
+&mdash; one instrument twitching on its own &mdash; it should stand apart
+from everything else describing Greek life. It doesn't.</p>
 
 {fig('F21', caption="The Problem Spread Across the Dashboard")}
 
-<p>Before the crisis, four of sixteen did &mdash; about a quarter. Now
-eleven do &mdash; about two thirds. They are not sixteen ways of saying the
-same thing: pay per hour, hours worked, household saving, the real value of
-the poverty line itself, and the number of citizens leaving all sit down
-there together. This breadth is description, not explanation &mdash; on its
-own it predicts nothing, and a later section returns to why &mdash; but it
-settles something modest and real: the measure that put Greece at the top of
-Europe is not one strange instrument twitching on its own. It sits inside a
-wide field of measures that moved with it.</p>
+<p>Take sixteen separate measures of Greek life (see
+<a class="fig-jump" href="#F21">Figure {{fig:F21}}</a>) &mdash; wages, hours
+worked, prices, saving, what households expect of the coming year, how many
+people are leaving &mdash; chosen only because both a 2008 and a 2024
+reading exist for each, so the count can't grow just because more things got
+measured later. The first tab (<a class="fig-jump" href="#F21"
+data-view="0">Which measures</a>) lays out where Greece sat on each one, in
+each year, and whether it crossed into the EU's worst fifth or was already
+there. The point isn't that every one of them moved identically &mdash; it's
+that disadvantage spread across the dashboard, not just in one place.</p>
+
+<p>Switch to the second tab (<a class="fig-jump" href="#F21"
+data-view="1">How many measures</a>) and that spread turns into a single
+line. Before the crisis, Greece sat in the worst fifth of the EU on four of
+the sixteen &mdash; a quarter. Now it sits there on eleven &mdash; two
+thirds of the whole set. Plotted alongside it, the EU-country median barely
+moves over the same seventeen years. This isn't a general European drift.
+Most of these measures don't come from the same interview as the hardship
+question, either.</p>
+
+<p>One more thing is worth mentioning here, carefully. Put the closest
+hardship items into the same statistical picture as the official poverty
+rate, and much of Greece's excess stops standing apart. That matters. But
+it also carries the same-survey problem all over again, in a sharper form
+&mdash; and it returns later in this piece, because it turns out to be
+exactly the point where the explanation looks strongest and least
+independent.</p>
+
+<p>So the hardship signal is too materially connected to dismiss as mood.
+It is also too close to the same survey instrument to call independently
+proven. Both of those are true at once, and the honest version of this
+section holds them together rather than picking one. What it does settle is
+enough to move forward on: if the difficulty is real, why doesn't the
+official poverty rate register it?</p>
+
+{section_notes('V2-3.1', 'V2-3.2')}
 """))
 
 # ---- 4. Some Parts Recovered. Others Fell Further Behind ------------------
@@ -897,7 +930,7 @@ BASE = ce.base_style((OUT / "build" / "report.html").read_text())
 # Seven sections, argued in sequence, no grouping layer above them. The old
 # five-act structure grouped eighteen chapters; regrouping seven substantial
 # sections under acts would just be relabelling the same reset.
-SECTION_ORDER = ["paradox", "ruler", "footprint", "recovery", "duration",
+SECTION_ORDER = ["paradox", "footprint", "ruler", "recovery", "duration",
                   "limits", "leftover"]
 if sorted(SECTION_ORDER) != sorted(CH_KEYS):
     raise SystemExit(
@@ -969,7 +1002,20 @@ body{{max-width:48rem;margin:0 auto;padding:0 1.3rem 6rem;
   font-weight:700;font-size:clamp(1.6rem,4.2vw,2.1rem);margin:0 0 1.3rem;
   letter-spacing:-.01em;text-wrap:balance}}
 .ch p{{margin:0 0 1.05rem}}
-.ch a{{color:var(--series-gr)}}
+.ch a{{color:var(--series-gr);font-variant-numeric:lining-nums}}
+/* fig-jump: a prose reference that both scrolls to its figure and (if it
+   names one) switches to a specific tab, rather than sitting there as
+   dead text next to a chart the reader has to go find. Georgia's BODY
+   serif uses old-style figures by default -- digits sized and placed to
+   blend with lowercase letters, so "1" sits at x-height with no cap-height
+   reach. That reads as merely quirky in a price or a year; right after
+   "Figure" it reads as visibly low, since "Figure" ends in a cap-height
+   letter and the reader's eye expects the number to match it. The figure's
+   OWN caption never has this problem, because it renders in a different,
+   sans-serif face. lining-nums (inherited from .ch a above) forces the
+   modern, cap-height digit forms for every in-prose link, figure references
+   included, without changing how digits render anywhere else in the piece. */
+.fig-jump{{border-bottom:1px dotted var(--series-gr)}}
 blockquote{{margin:2.2rem -.1rem;padding:0;border:none;
   font-family:'Fraunces Bundled',Georgia,'Times New Roman',serif;
   font-style:italic;font-weight:500;font-size:1.4rem;line-height:1.36;
@@ -1051,6 +1097,24 @@ details.disclosure .ctx:last-child{{margin-bottom:1.2rem}}
 # anchor actually sits, {fig:FID} against where each figure actually appears.
 # Resolving them separately per-fragment (opening figure, then body) would
 # get the opening figure's own number right by accident and nothing else.
+#
+# A typed number is indistinguishable from a resolved one once rendered, so
+# the ban on hardcoded figure numbers has to live here, over this file's own
+# source -- the same pattern 90_build_paper.py already uses for the same
+# reason. Comments and docstrings are not prose a reader sees, so they're
+# stripped before the check, same as there.
+_src = Path(__file__).read_text()
+_src_prose = re.sub(r"^.*?_FROZEN", "", _src, flags=re.S)
+_src_prose = "\n".join(l for l in _src_prose.splitlines()
+                       if not l.lstrip().startswith("#"))
+_typed = [" ".join(m.group(0).split())
+          for m in re.finditer(r".{0,40}\bFigure \d+\b.{0,25}", _src_prose)
+          if "{fig:" not in m.group(0) and "fignum" not in m.group(0)]
+if _typed:
+    raise SystemExit(
+        "figure numbers typed into prose instead of {fig:FID} tokens: "
+        + "; ".join(_typed[:3]))
+
 _main = resolve_fig_nums(resolve_refs(BODY))
 
 PAGE = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
@@ -1081,6 +1145,34 @@ and the continuing weight of unemployment, wages and housing.</p>
 </header>
 {_main}
 <script>{ce.JS}</script>
+<script>
+// FIG-JUMP: a prose reference naming a figure and one of its tabs is a
+// dead pointer unless clicking it actually takes the reader there. This
+// finds the figure by the link's own #id, switches it to the named tab (if
+// the link names one, via data-view -- the same viewbar buttons a reader
+// would click by hand, so it reuses chart_engine's own state instead of
+// duplicating it), then scrolls to it. ce.JS mounts every chart on
+// DOMContentLoaded with no lazy loading, so the tab buttons this depends on
+// already exist by the time a reader can click anything.
+document.addEventListener('click', function (e) {{
+  var a = e.target.closest('a.fig-jump');
+  if (!a) return;
+  var id = a.getAttribute('href').slice(1);
+  var target = document.getElementById(id);
+  if (!target) return;
+  e.preventDefault();
+  var view = a.dataset.view;
+  if (view !== undefined) {{
+    var host = target.querySelector('.chart-live');
+    var bar = host && host.previousElementSibling;
+    if (bar && bar.classList.contains('viewbar')) {{
+      var btn = bar.children[Number(view)];
+      if (btn) btn.click();
+    }}
+  }}
+  target.scrollIntoView({{block: 'start', behavior: 'smooth'}});
+}});
+</script>
 </body></html>
 """
 

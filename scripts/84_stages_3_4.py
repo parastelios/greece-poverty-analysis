@@ -292,8 +292,8 @@ FIGS["F7"] = dict(
 # what Greek households reported, and was it moving the same way elsewhere?
 ITEMS = [("unexpected_expenses", "Unexpected expenses"),
          ("severe_mat_soc_deprivation", "Material deprivation"),
-         ("arrears", "Falling behind on bills"),
-         ("warm", "Keeping the home warm")]
+         ("warm", "Keeping the home warm"),
+         ("arrears", "Falling behind on bills")]
 
 el = panel[panel.geo == "EL"].dropna(subset=["subjective_poverty"]).sort_values("time")
 views8, series8, summary = [], [], []
@@ -324,8 +324,7 @@ for col, label in ITEMS:
         "years": yy, "dp": 1, "aspect": 0.44,
         "yMin": -9, "yMax": 9,
         "corner": f"r = {r:.2f}",
-        "yLabel": "Percentage-point deviation from each series' "
-                  "2015-2024 average",
+        "yLabel": "Points from own 2015-2024 average",
         "alt": f"Greek reported hardship, Greek {label.lower()} and the EU "
                f"median for {label.lower()}, each as distances from its own "
                f"average. Greek correlation {r:.2f}",

@@ -44,7 +44,7 @@ This notebook is the running log. `docs/archive/pre-v2-publication/publication_s
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `main` |
-| HEAD | `b22bef0` Fix stale "cross" caveat text on Figure 1; narrative Section 1 rewrite (in progress) |
+| HEAD | `7135567` Narrative: sharpen one phrase in Section 1's opening |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-31 |
 | Frozen V1 reference | `v1-final` |
