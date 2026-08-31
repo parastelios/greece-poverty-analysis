@@ -374,6 +374,13 @@ understand.</p>
 
 {finding('V2-1.2')}
 
+<p>The chart only shows 2015 onward because that's where Greece's own
+hardship gap is clearest, not because the underlying series is that young.
+Eurostat's hardship indicator has been reconstructed back past 2010 as
+well, checked against the official numbers everywhere the two overlap.</p>
+
+{finding('V2-1.1')}
+
 <p>The two numbers are not rival opinions. They come from the same European
 system, from surveys of the same households, but they ask different
 questions. Income poverty asks whether a household sits below 60% of its
@@ -390,8 +397,8 @@ describes itself. Is that fair? Or is the hardship signal telling us
 something material that income poverty alone cannot see?</p>
 """))
 
-# ---- 2. The Poverty Line Fell With the Country (ruler + AROPE + divides) ---
-CH.append(chapter("ruler", "The Poverty Line Fell With the Country", f"""
+# ---- 2. The Ruler Moved With the Fall (ruler + AROPE + divides) -----------
+CH.append(chapter("ruler", "The Ruler Moved With the Fall", f"""
 <p>One answer starts with the ruler itself: the official poverty line isn't
 fixed. It moves with the very economy it is supposed to be measuring.</p>
 
@@ -408,50 +415,55 @@ itself reclassified from poor to not poor &mdash; not because anything in
 its life had improved, but because the ruler measuring it had shrunk to
 match the collapse around it.</p>
 
-<p>So the official rate barely moved through the worst years. Hold the line
-where it stood in 2008 instead, adjusted only for inflation, and measured
-poverty roughly doubles: from under 20% before the crisis to a peak above
-40% in 2014.</p>
-
 {fig('F3', caption="The Poverty Line Looked Stable. Its Value Did Not.")}
 
-{findings_plain(
-    "That gap between the moving line and the fixed one is not this "
-    "piece's own estimate. It is Eurostat's own hardship figure, run "
-    "backward past 2010 using a method checked against the official series "
-    "everywhere the two overlap.",
-    'V2-1.1')}
+<p>Figure {{fig:F3}}'s first tab (<a class="fig-jump" href="#F3"
+data-view="0">Who falls below a fixed line</a>) makes the moving-ruler
+problem visible: the official poverty rate barely moves because the line is
+allowed to fall with the national median. Hold the 2008 line fixed in real
+terms instead, and measured poverty roughly doubles, peaking above 40% in
+2014. The second tab (<a class="fig-jump" href="#F3" data-view="1">What the
+line itself is worth</a>) shows the mechanism more plainly still: the
+threshold may look stable in cash terms, but what it can actually buy
+collapsed, and has only partly recovered.</p>
 
-<p>This is a measure of Greece against its own past, and it contains no
-other country: it cannot show that Greece's line fell further than anyone
-else's. Nor is the fixed line the &ldquo;correct&rdquo; one &mdash; the
-relative measure is doing exactly what it was designed to do, measuring
-position. When a whole country falls together, those two questions come
-apart, and that separation is the point.</p>
+<p>That doesn't make the fixed line the &ldquo;correct&rdquo; one, and it
+says nothing about how Greece compares to any other country &mdash; this is
+Greece against its own past, not against Europe. It asks a different
+question: the official rate measures who is far below the middle of
+<em>today's</em> Greece; the fixed line asks how many people are below a
+pre-crisis standard. When a whole country falls together, those two
+questions split apart.</p>
 
-<p>Europe already knows income alone is too narrow, for exactly this reason.
-Its broader measure, AROPE, casts a wider net: a household counts if its
-income is low, or it can't afford a list of ordinary things, or the adults
-in it are barely working. If <a href="#ch{{ch:paradox}}">the puzzle
-above</a> were simply that the income measure is too narrow, this wider one
-should mostly dissolve it.</p>
+<p>Europe's broader measure, AROPE &mdash; at risk of poverty or social
+exclusion &mdash; tries to widen the lens. It adds deprivation and low work
+intensity to income poverty, so it should close the gap if the problem is
+only that income poverty is too narrow. It does close some of it: 9.8 of
+the 52.6 points, under a fifth. But it leaves most of the distance
+untouched, and its contribution shrinks over the decade.</p>
 
-{findings_plain(
-    "It doesn't. AROPE closes a fifth of the gap, and a shrinking fifth at "
-    "that.",
-    'V2-2.1')}
+{finding('V2-2.1')}
 
-<p>It helps, and it isn't enough. The wider net picks up under a quarter of
-the distance, and its contribution is shrinking &mdash; from eleven points
-at the start of the decade to seven by the end. As an explanation of the
-gap, it is weakening rather than strengthening.</p>
+{fig('F5', caption="Where AROPE Sits, What It's Made Of, and Who Carries It")}
 
-<p>Underneath both headline rates sits a further complication: national
-averages are averages of people, and Greek age groups did not move together
-through the crisis. Some improved while others did not, and the combined
-figure sat placidly between them &mdash; which matters, because the
-household answering the survey question is not answering about the national
-average. It is answering about itself.</p>
+<p>Figure {{fig:F5}} shows both sides of that result. The first tab
+(<a class="fig-jump" href="#F5" data-view="0">Headline measures</a>) places
+income poverty, AROPE and reported hardship together: AROPE sits between
+them, but much closer to income poverty than to hardship. The other tabs
+show why one national number is still too smooth. Greece sits above the EU
+median on the two components with a comparable national series &mdash;
+income poverty and material deprivation; the third, very low work
+intensity, has no comparable national series and isn't shown. Older people
+move in the opposite direction from everyone younger; women remain above
+men throughout. The point isn't any one split on its own. It's that the
+national average compresses very different household positions into one
+line.</p>
+
+<p>The official measures are not wrong. They are doing exactly what they
+were built to do. But they measure position, broadened risk and national
+averages. The household answering the hardship question is answering
+something narrower and more immediate: what daily life costs against its
+own budget. That is where the next part of the story has to go.</p>
 """))
 
 # ---- 3. This Was Not Just a Feeling (real + company) -----------------------

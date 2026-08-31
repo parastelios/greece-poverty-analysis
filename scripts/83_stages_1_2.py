@@ -589,6 +589,38 @@ f5m, v5m = _component_view("severe_mat_soc_deprivation", "Material deprivation",
 f5e, v5e = _component_view("arope", "AROPE",
                            "Each other EU country: AROPE", shown="AROPE")
 
+# THE THREE HEADLINE MEASURES, GREECE AGAINST THE EU MEDIAN OF EACH. This is
+# deliberately the first tab: before the panel breaks AROPE into its own
+# parts, the reader should see where AROPE actually sits relative to the two
+# measures the rest of the piece is built on -- income poverty (Section 2's
+# ruler) and reported hardship (the whole piece's starting gap). Built
+# straight from gr/med rather than _component_view, since all three columns
+# share one panel and one index -- no risk of the three series disagreeing on
+# which years they cover.
+_LEVELS = [("Income poverty", "arop", "series-5"),
+           ("AROPE", "arope", "series-3"),
+           ("Reported hardship", "subjective_poverty", "gr")]
+f5lvl = ce.Series([str(int(y)) for y in yrs], dp=1)
+for _lbl, _col, _tone in _LEVELS:
+    f5lvl.add(f"{_lbl}: Greece",
+              [float(gr[_col].get(y)) if y in gr.index and pd.notna(gr[_col].get(y)) else None
+               for y in yrs],
+              tone=_tone, style="solid", weight="strong")
+    f5lvl.add(f"{_lbl}: EU median",
+              [float(med[_col].get(y)) if y in med.index and pd.notna(med[_col].get(y)) else None
+               for y in yrs],
+              tone=_tone, style="dashed", weight="normal")
+v5lvl = {"years": [int(y) for y in yrs], "dp": 1, "yLabel": "% of people",
+         "pairedHover": True,
+         "series": [{"label": l, "tone": m["tone"], "style": m["style"],
+                     "weight": m["weight"],
+                     "values": [None if v is None else round(v, 1) for v in vs]}
+                    for l, vs, m in f5lvl.rows],
+         "alt": "Income poverty, AROPE and reported hardship for Greece "
+                "against the EU median of each, colour marking the measure "
+                "and dash marking the country. Reported hardship sits far "
+                "above the other two, AROPE between them"}
+
 # THREE COMPONENT TABS BECOME ONE VIEW. Five tabs on one figure is a menu, not
 # a figure, and the reader had to hold three charts in their head to compare
 # them. Merged, the comparison is on the page.
@@ -724,25 +756,28 @@ FIGS["F18"] = dict(
     kind="dumbbell", payload=v5shift, series=f5shift, first="Age group")
 
 FIGS["F5"] = dict(
-    caption="What sits behind AROPE, and which groups moved",
-    kind="panel", series=f5comp,
-    payload=v5comp,
+    caption="Where AROPE sits against the headline measures, what it's made "
+            "of, and which groups moved",
+    kind="panel", series=f5lvl,
+    payload=v5lvl,
     # 3. Reader-facing tab labels. "Floating poverty" and "shift-share" are
     # methods vocabulary and do not belong in navigation.
-    views=[("Components", v5comp), ("By age", v5b), ("By sex", v5d)],
-    view_series=[f5comp, f5b, f5d],
+    views=[("Headline measures", v5lvl), ("Components", v5comp),
+           ("By age", v5b), ("By sex", v5d)],
+    view_series=[f5lvl, f5comp, f5b, f5d],
     # Naming the first view "AROPE components" while showing two of three would
     # let a reader take it for a complete decomposition. The absence is stated
     # rather than implied.
     extra_caveat=(
         "Very low work intensity is part of AROPE, but the project does not "
-        "hold a comparable national-total series for this view; its available "
-        "age coverage uses a different population base, and aggregate "
-        "component rates cannot reconstruct the AROPE union in any case. In "
-        "all three views colour marks the measure or group and dash marks the "
-        "country, so each Greek line is paired with the EU median for the same "
-        "thing in the same colour. The per-component views with every other "
-        "member state drawn behind are in the statistical appendix."),
+        "hold a comparable national-total series for the Components view; "
+        "its available age coverage uses a different population base, and "
+        "aggregate component rates cannot reconstruct the AROPE union in "
+        "any case. In all four views colour marks the measure or group and "
+        "dash marks the country, so each Greek line is paired with the EU "
+        "median for the same thing in the same colour. The per-component "
+        "views with every other member state drawn behind are in the "
+        "statistical appendix."),
     first="Series")
 
 
