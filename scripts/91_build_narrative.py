@@ -361,7 +361,8 @@ fact most economic summaries reach for.</p>
 looks.</p>
 
 <p>By the official income-poverty measure, Greece is in difficulty, but not
-exceptional. By what households report, it is close to unmatched. That is
+exceptional. By what households report, it is almost in a category of its
+own. That is
 the paradox this piece unfolds: income poverty and reported hardship are
 telling two different stories, and the poverty rate becomes misleading when
 it is read alone, without context.</p>

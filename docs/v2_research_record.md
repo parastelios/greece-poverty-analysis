@@ -44,7 +44,7 @@ This notebook is the running log. `docs/archive/pre-v2-publication/publication_s
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `main` |
-| HEAD | `caa64c6` Narrative editorial pass; fix a wide-table overflow bug found while checking mobile responsiveness across all four documents |
+| HEAD | `b22bef0` Fix stale "cross" caveat text on Figure 1; narrative Section 1 rewrite (in progress) |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-31 |
 | Frozen V1 reference | `v1-final` |
