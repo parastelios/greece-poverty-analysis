@@ -44,7 +44,7 @@ This notebook is the running log. `docs/archive/pre-v2-publication/publication_s
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `main` |
-| HEAD | `7135567` Narrative: sharpen one phrase in Section 1's opening |
+| HEAD | `2212bac` Narrative: rewrite Section 3 (poverty line, AROPE, national averages), add a fourth tab to Figure 5 |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-08-31 |
 | Frozen V1 reference | `v1-final` |

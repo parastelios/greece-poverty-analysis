@@ -359,7 +359,8 @@ tab</a>, &ldquo;How Greece's hardship gap developed&rdquo;, shows why. Since
 two-thirds of households &mdash; it opens near 78% and eases only
 gradually. Its income-poverty rate spends the same decade hovering near a
 fifth, barely moving at all. Both EU medians sit far beneath Greece's line
-for reported hardship, the whole way through. This isn't a single bad year
+for reported hardship, the whole way through &mdash; the EU median being
+the middle EU country on that measure, not an EU-wide average. This isn't a single bad year
 showing up once. It's been the shape of an entire decade.</p>
 
 <p>Switch to the <a class="fig-jump" href="#F1" data-view="1">second
@@ -369,8 +370,8 @@ is reported hardship. The dotted line is the relationship the other
 twenty-six countries actually follow. Greece is the blue point far above
 it. At Greece's income-poverty rate, that relationship predicts about 20%
 of households struggling to make ends meet. Greece reports about 67%. The
-47-point distance between those two numbers is the gap this piece tries to
-understand.</p>
+47-percentage-point distance between those two numbers is the gap this
+piece tries to understand.</p>
 
 {finding('V2-1.2')}
 
@@ -485,17 +486,19 @@ thing for mood alone to produce.</p>
 {fig('F8', caption="Hardship Moves With Concrete Financial Strain")}
 
 <p><a class="fig-jump" href="#F8">Figure {{fig:F8}}</a>: three of the four
-tabs tell the same story. In Greece's own year-by-year data, reported
-hardship tracks an inability to cover a surprise expense almost exactly
-(<a class="fig-jump" href="#F8" data-view="0">Unexpected expenses</a>)
-&mdash; a correlation of 0.92. It tracks going without several ordinary
-things at once even more closely (<a class="fig-jump" href="#F8"
-data-view="1">Material deprivation</a>), at 0.94. It tracks struggling to
-keep the home warm at 0.87 (<a class="fig-jump" href="#F8"
-data-view="2">Keeping the home warm</a>). When one line moves, the others
-move with it, year after year. And this isn't a Greek peculiarity: pooled
-across all twenty-seven EU countries, once each country's own average is
-set aside, the same relationships hold, at 0.63 to 0.80.</p>
+tabs tell the same story, each as a correlation, where close to 1 means
+two measures rise and fall together and close to 0 means they move
+independently. In Greece's own year-by-year data, reported hardship tracks
+an inability to cover a surprise expense almost exactly (<a
+class="fig-jump" href="#F8" data-view="0">Unexpected expenses</a>) at 0.92.
+It tracks going without several ordinary things at once even more closely
+(<a class="fig-jump" href="#F8" data-view="1">Material deprivation</a>), at
+0.94. It tracks struggling to keep the home warm at 0.87 (<a
+class="fig-jump" href="#F8" data-view="2">Keeping the home warm</a>). When
+one line moves, the others move with it, year after year. And this isn't a
+Greek peculiarity: pooled across all twenty-seven EU countries &mdash;
+comparing each country with itself over time, not just rich countries with
+poor ones &mdash; the same relationships hold, at 0.63 to 0.80.</p>
 
 {finding('V2-3.1')}
 
@@ -534,7 +537,8 @@ people are leaving &mdash; chosen only because both a 2008 and a 2024
 reading exist for each, so the count can't grow just because more things got
 measured later. The first tab (<a class="fig-jump" href="#F21"
 data-view="0">Which measures</a>) lays out where Greece sat on each one, in
-each year, and whether it crossed into the EU's worst fifth or was already
+each year, and whether it crossed into the EU's worst fifth &mdash; the
+bottom 20% of member states on that measure &mdash; or was already
 there. The point isn't that every one of them moved identically &mdash; it's
 that disadvantage spread across the dashboard, not just in one place.</p>
 
@@ -565,11 +569,10 @@ enough to move forward on: if the difficulty is real, why doesn't the
 official poverty rate register it?</p>
 """))
 
-# ---- 4. Some Parts Recovered. Others Fell Further Behind ------------------
-CH.append(chapter("recovery", "Some Parts Recovered. Others Fell Further Behind", f"""
-<p>Greece's recovery is real. It just didn't arrive in every part of a
-household's life at the same time, or at the same speed &mdash; and
-averages hide that as easily as they hide anything else in this story.</p>
+# ---- 4. Greece Did Not Recover in One Piece -------------------------------
+CH.append(chapter("recovery", "Greece Did Not Recover in One Piece", f"""
+<p>Once the ruler problem is clear, the next question is what it smoothed
+away. Greece did recover. But it did not recover in one piece.</p>
 
 <p>Start with what genuinely improved. Long-term unemployment &mdash; out of
 work for twelve months or more, a different and slower-moving thing than the
@@ -594,9 +597,9 @@ as Greece's own number climbed.</p>
 
 {fig('F7', caption="The Recovery Was Uneven")}
 
-<p>The shape is consistent: gaps that were mostly about jobs and housing
-narrowed considerably; gaps that were about wages, resources and what money
-can buy narrowed barely at all, or widened. But a chart built to fit
+<p>Figure {{fig:F7}} shows the shape: gaps that were mostly about jobs and
+housing narrowed considerably; gaps that were about wages, resources and
+what money can buy narrowed barely at all, or widened. But a chart built to fit
 fourteen measures onto one axis has to abstract away units, so here is the
 same story in the numbers each measure actually reports in &mdash; and the
 plainest reading of each.</p>
@@ -611,31 +614,33 @@ because the rest of Europe slowed down, or both, is not something either
 version of this comparison can tell you. Convergence is context here, not a
 mechanism. It describes what happened, not why.</p>
 
-<p>It isn't only pay, either. In the EU's most recent data, Greece is the
-worst country in the Union for people who needed medical care and didn't
-get it, because of cost, waiting time or distance &mdash; 12.1% in 2024,
-against a European median of 1.9%, and second-worst in three of the
-previous four rounds. That is not a statistic this piece can use to explain
-the hardship gap; nothing here tests it against the other findings. It is
-simply what &ldquo;recovery&rdquo; can coexist with, on the ground, in the
-same years the headline numbers were improving.</p>
+{fig('F10', caption="Recovery Looks Weaker From the Household Budget")}
 
-{findings_plain(
-    "Two of the measures behind this uneven picture also do something more "
-    "than describe: how much long-term unemployment a country carries, and "
-    "how much its households can actually afford, each still predict "
-    "reported hardship once the official poverty rate is already accounted "
-    "for.",
-    'V2-4.C2', 'V2-4.C1')}
+<p>The same pattern appears in Figure {{fig:F10}}, when the section turns
+from gaps to levels. Long-term unemployment, material resources and
+wage-adjusted affordability
+each place Greece on the wrong side of the European middle. They are also
+the three current conditions that carry information beyond the official
+poverty rate &mdash; but the point here is simpler: household recovery
+looks weaker than headline recovery.</p>
+
+<div class="finding compact" data-claim-id="V2-4.C2 V2-4.C1">
+<p><em>Precise result.</em> Long-term unemployment and material resources
+each predict reported hardship beyond income poverty and year effects.</p>
+<p class="limits"><em>Limits.</em> Cross-country association, not causal
+evidence.</p>
+</div>
 
 <p>A country can score badly on affordability two ways: by being expensive,
 or by paying poorly. Greece does both at once, and a household experiencing
 it does not much care which half is responsible.</p>
 
-{findings_plain(
-    "So does the third: what a Greek wage is actually worth against Greek "
-    "prices.",
-    'V2-4.C4')}
+<div class="finding compact" data-claim-id="V2-4.C4">
+<p><em>Precise result.</em> Wage-adjusted affordability also predicts
+reported hardship beyond income poverty and year effects.</p>
+<p class="limits"><em>Limits.</em> Cross-country association, not causal
+evidence; never read together with the work-effort squeeze measure.</p>
+</div>
 
 <blockquote>The unemployment rate came back. The paycheck did not.</blockquote>
 
@@ -1183,7 +1188,12 @@ required = [i for i in claims.index
             if str(claims.loc[i, "narrative"]).strip().lower() == "body"]
 if not required:
     raise SystemExit("no claims required in the narrative -- the check is vacuous")
-absent = [i for i in required if f'data-claim-id="{i}"' not in PAGE]
+# A data-claim-id attribute may hold several space-separated ids at once (one
+# compact disclosure covering more than one claim), so check membership in
+# any attribute's token list rather than requiring an exact one-id match.
+_placed_ids = {tok for m in re.finditer(r'data-claim-id="([^"]*)"', PAGE)
+               for tok in m.group(1).split()}
+absent = [i for i in required if i not in _placed_ids]
 if absent:
     raise SystemExit(f"claims required in the narrative but absent: {absent}")
 
