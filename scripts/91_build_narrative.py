@@ -234,22 +234,6 @@ def findings_plain(lead, *cids):
             + "".join(finding(c) for c in cids) + '</details>')
 
 
-def section_notes(*cids):
-    """One disclosure per SECTION, not per finding: every exact result a
-    section's prose draws on, collected once at the end rather than as a
-    string of individual pop-ups down the page. This is the successor to
-    findings_plain() -- as sections are rewritten, the plain-language
-    statement of each finding moves directly into the flowing prose (no
-    separate lead sentence bolted in front of a box), and this holds only
-    the precise wording and caveats, gathered at the point a section is
-    done arguing rather than interrupting it partway through.
-    """
-    label = "The precise numbers behind this section" if len(cids) > 1 \
-        else "The precise number behind this section"
-    return (f'<details class="finding-detail"><summary>{label}</summary>'
-            + "".join(finding(c) for c in cids) + '</details>')
-
-
 def recovery_table():
     """A plain reading of F7's convergence-share chart, one row per
     measure, in the units each is actually reported in.
@@ -408,8 +392,8 @@ something material that income poverty alone cannot see?</p>
 
 # ---- 2. The Poverty Line Fell With the Country (ruler + AROPE + divides) ---
 CH.append(chapter("ruler", "The Poverty Line Fell With the Country", f"""
-<p>The official poverty line isn't fixed. It moves with the very economy it
-is supposed to be measuring.</p>
+<p>One answer starts with the ruler itself: the official poverty line isn't
+fixed. It moves with the very economy it is supposed to be measuring.</p>
 
 <p>The EU's headline poverty measure, at-risk-of-poverty, is not an income
 level. It is a percentage &mdash; 60% of whatever the national median income
@@ -501,6 +485,8 @@ move with it, year after year. And this isn't a Greek peculiarity: pooled
 across all twenty-seven EU countries, once each country's own average is
 set aside, the same relationships hold, at 0.63 to 0.80.</p>
 
+{finding('V2-3.1')}
+
 <p>The fourth tab (<a class="fig-jump" href="#F8" data-view="3">Falling
 behind on bills</a>) tells a
 different story, and it's worth sitting with why.
@@ -557,14 +543,14 @@ it also carries the same-survey problem all over again, in a sharper form
 exactly the point where the explanation looks strongest and least
 independent.</p>
 
+{finding('V2-3.2')}
+
 <p>So the hardship signal is too materially connected to dismiss as mood.
 It is also too close to the same survey instrument to call independently
 proven. Both of those are true at once, and the honest version of this
 section holds them together rather than picking one. What it does settle is
 enough to move forward on: if the difficulty is real, why doesn't the
 official poverty rate register it?</p>
-
-{section_notes('V2-3.1', 'V2-3.2')}
 """))
 
 # ---- 4. Some Parts Recovered. Others Fell Further Behind ------------------
