@@ -172,10 +172,10 @@ FIGS["F1"] = dict(
         "PEOPLE, so the axis is labelled percent rather than either. In the "
         "second view the fitted line excludes Greece, describing the European "
         "pattern Greece is being judged against rather than one Greece helped "
-        "set. The cross marks the median country on each measure taken "
-        "SEPARATELY, so it is a reference point rather than an actual country: "
-        "no member state necessarily sits there. Both views are country-level "
-        "and say nothing about any individual household."),
+        "set. The labelled point marks the median country on each measure "
+        "taken SEPARATELY, so it is a reference point rather than an actual "
+        "country: no member state necessarily sits there. Both views are "
+        "country-level and say nothing about any individual household."),
     first="Series")
 
 # ---- F21: breadth of disadvantage, on a FIXED 2008-2024 basket ------------

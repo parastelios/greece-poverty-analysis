@@ -234,6 +234,22 @@ def findings_plain(lead, *cids):
             + "".join(finding(c) for c in cids) + '</details>')
 
 
+def section_notes(*cids):
+    """One disclosure per SECTION, not per finding: every exact result a
+    section's prose draws on, collected once at the end rather than as a
+    string of individual pop-ups down the page. This is the successor to
+    findings_plain() -- as sections are rewritten, the plain-language
+    statement of each finding moves directly into the flowing prose (no
+    separate lead sentence bolted in front of a box), and this holds only
+    the precise wording and caveats, gathered at the point a section is
+    done arguing rather than interrupting it partway through.
+    """
+    label = "The precise numbers behind this section" if len(cids) > 1 \
+        else "The precise number behind this section"
+    return (f'<details class="finding-detail"><summary>{label}</summary>'
+            + "".join(finding(c) for c in cids) + '</details>')
+
+
 def recovery_table():
     """A plain reading of Figure 7's convergence-share chart, one row per
     measure, in the units each is actually reported in.
@@ -334,49 +350,58 @@ def resolve_fig_nums(doc):
 # ===========================================================================
 CH = []
 
-_f1 = fig('F1', caption="Greece Is Far Above the Poverty-Hardship Line")
-
 # ---- 1. The Poverty Rate Says One Thing. Households Say Another. ----------
 CH.append(chapter("paradox", "The Poverty Rate Says One Thing. Households Say Another.", f"""
-<p>By the official measure, Greece is not Europe's poorest country. By what
-households say about making ends meet, it is almost in a category of its
-own.</p>
+<p>Looking at the labour market and some headline economic indicators,
+Greece appears to have recovered from the crisis. Unemployment has fallen
+sharply. Output has returned. The bailout years are no longer the first
+fact most economic summaries reach for.</p>
 
-<p>One number says roughly one Greek household in five is at risk of
-poverty &mdash; elevated, but not exceptional; seventh-worst in the
-twenty-seven-country European Union. A second number, drawn from the same
-surveys of the same households, says roughly two in three are struggling to
-get by &mdash; worst in the Union, and not by a little. Both numbers are
-official. Neither has moved much in a decade. And they have never
-agreed.</p>
+<p>But the closer we move to households, the less complete that recovery
+looks.</p>
 
-<p>Greece's unemployment rate has fallen. Output has recovered. The country
-has left the bailout era behind, by most of the measures a headline writer
-would reach for first. None of that is what the second number above is
-describing.</p>
+<p>By the official income-poverty measure, Greece is in difficulty, but not
+exceptional. By what households report, it is close to unmatched. That is
+the paradox this piece unfolds: income poverty and reported hardship are
+telling two different stories, and the poverty rate becomes misleading when
+it is read alone, without context.</p>
 
-<p>The two numbers come from the same statistical system, answering
-different questions. The first counts <em>people</em> whose household income
-falls below 60% of what a typical household in their country earns &mdash; a
-number about position: are you far behind your neighbours? The second asks
-<em>households</em> directly: are you having difficulty making ends meet?
-&mdash; a number about experience.</p>
+{fig('F1', caption="Greece Is Far Above the Poverty-Hardship Line")}
 
-<p>In most of Europe the two roughly agree. In Greece they have been 52.6
-percentage points apart, on average, for a decade.</p>
+<p>The first tab, &ldquo;How Greece's hardship gap developed,&rdquo;
+shows why. Since 2015, Greece's reported hardship has never dropped below
+two-thirds of households &mdash; it opens near 78% and eases only
+gradually. Its income-poverty rate spends the same decade hovering near a
+fifth, barely moving at all. Both EU medians sit far beneath Greece's line
+for reported hardship, the whole way through. This isn't a single bad year
+showing up once. It's been the shape of an entire decade.</p>
+
+<p>Switch to the second tab, &ldquo;Where countries stood in 2024,&rdquo;
+and the gap turns from a Greek pattern into a European outlier. Each grey
+dot is an EU country. The horizontal axis is income poverty; the vertical
+is reported hardship. The dotted line is the relationship the other
+twenty-six countries actually follow. Greece is the blue point far above
+it. At Greece's income-poverty rate, that relationship predicts about 20%
+of households struggling to make ends meet. Greece reports about 67%. The
+47-point distance between those two numbers is the gap this piece tries to
+understand.</p>
 
 {finding('V2-1.2')}
 
-<p>And Greece is not simply the last country in a long queue. The distance
-between Greece and the next country is wider than the distance covering most
-of the rest of Europe. Whatever produces this is not a stronger dose of
-whatever produces ordinary variation elsewhere &mdash; it is a different
-thing happening.</p>
+<p>The two numbers are not rival opinions. They come from the same European
+system, from surveys of the same households, but they ask different
+questions. Income poverty asks whether a household sits below 60% of its
+country's median income, a measure of relative position. Reported hardship
+asks something more direct: can the household make ends meet? In most of
+Europe, those two answers move together. In Greece, they have stayed far
+apart, year after year.</p>
 
-<p>This piece is an attempt to find out what that gap is made of. The honest
-summary, given at the start so nothing later reads as a reveal: part of it
-can be accounted for, some explanations can be ruled out, and most of it
-remains unexplained.</p>
+<p>But once a gap like that appears, the two numbers are not usually read
+with equal trust. Income poverty feels firmer: a number built from income,
+thresholds and ranks. Reported hardship feels softer: not necessarily a
+fact about a household's circumstances, but the way that household
+describes itself. Is that fair? Or is the hardship signal telling us
+something material that income poverty alone cannot see?</p>
 """))
 
 # ---- 2. The Poverty Line Fell With the Country (ruler + AROPE + divides) ---
@@ -938,7 +963,6 @@ body{{max-width:48rem;margin:0 auto;padding:0 1.3rem 6rem;
 .stat .l{{font:600 .76rem/1.4 ui-sans-serif,system-ui,sans-serif;
   letter-spacing:.02em;color:var(--text-secondary);margin:.5rem 0 0;max-width:19ch}}
 .stat .l b{{color:var(--text-primary)}}
-.opening-fig{{margin:0 0 3rem}}
 .ch{{margin:5rem 0 0}}
 .ch h2{{font-family:'Fraunces Bundled',Georgia,'Times New Roman',serif;
   font-weight:700;font-size:clamp(1.6rem,4.2vw,2.1rem);margin:0 0 1.3rem;
@@ -1026,7 +1050,7 @@ details.disclosure .ctx:last-child{{margin-bottom:1.2rem}}
 # anchor actually sits, {fig:FID} against where each figure actually appears.
 # Resolving them separately per-fragment (opening figure, then body) would
 # get the opening figure's own number right by accident and nothing else.
-_main = resolve_fig_nums(f'<div class="opening-fig">{_f1}</div>{resolve_refs(BODY)}')
+_main = resolve_fig_nums(resolve_refs(BODY))
 
 PAGE = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
