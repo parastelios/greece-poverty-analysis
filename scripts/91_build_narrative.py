@@ -578,6 +578,14 @@ moves over the same seventeen years. This isn't a general European drift.
 Most of these measures don't come from the same interview as the hardship
 question, either.</p>
 
+<p>The list is not hand-picked. It includes every indicator in the project
+with a valid EU position in both 2008 and 2024, selected before looking at
+whether Greece improved or worsened. That is why some obvious
+labour-market measures are absent here: their comparable EU series begin
+in 2009, one year too late for the fixed 2008 basket. <a
+href="statistical_appendix.html#p_breadth_fixed_basket">The appendix
+shows</a> the fixed basket and the wider candidate set.</p>
+
 <p>One more thing is worth mentioning here, carefully. Put the closest
 hardship items into the same statistical picture as the official poverty
 rate, and much of Greece's excess stops standing apart. That matters. But
@@ -635,9 +643,9 @@ housing narrowed considerably; the output gap narrowed too, but only by
 about half; gaps that were about wages, resources and what money can buy
 narrowed barely at all, or widened. But a chart built to fit
 fourteen measures onto one axis has to abstract away units, so <a
-class="fig-jump" href="#recovery-table">here</a> is the same story in the
-numbers each measure actually reports in, and the plainest reading of
-each.</p>
+class="fig-jump" href="#recovery-table">the table below</a> gives the same
+story in the numbers each measure actually reports in, and the plainest
+reading of each.</p>
 
 {recovery_table()}
 
@@ -752,6 +760,9 @@ reverses: the current measure survives conditioning while the accumulated
 one remains inconclusive.</p>
 <p class="limits"><em>Limits.</em> Inconclusive, not unsupported.</p>
 </div>
+
+<p>Compounded inflation was also tested as an accumulated measure, but the
+result remained inconclusive under the available statistical power.</p>
 
 <p>If history mattered as a general rule, that reversal shouldn't happen.
 It suggests these results are specific to work, wages and housing rather

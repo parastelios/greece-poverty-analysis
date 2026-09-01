@@ -42,7 +42,8 @@ SECTIONS = [
                 ("panel", "arope_by_age"),
                 ("sub", "How wide the disadvantage is \u2014 descriptive, not a model input"),
                 ("series", "breadth_worst_quintile"),
-                ("panel", "breadth_indicator_ladder")]),
+                ("panel", "breadth_indicator_ladder"),
+                ("panel", "breadth_fixed_basket")]),
 
     dict(id="ruler", num="2", title="Why the official ruler understates the crisis",
          blurb="AROP's threshold is 60% of each year's national median, so when incomes collapse "
@@ -1390,7 +1391,18 @@ placed_x = {k for sec in SECTIONS for kind, k in sec["items"] if kind == "scatte
 missing = ([f"panel:{k}" for k in panels if k not in placed_p]
            + [f"scatter:{k}" for k in scatters if k not in placed_x])
 if missing:
-    print("WARNING: not placed in any section ->", missing)
+    # Series have an automatic fallback (leftover series land in the
+    # candidate-family section), so they can never silently disappear.
+    # Panels and scatters have no such fallback -- an unplaced one is built,
+    # counted in the summary printout, and then never rendered anywhere a
+    # reader can see it. That happened here: breadth_fixed_basket sat in the
+    # appendix's own data for the life of this project without a home,
+    # surfaced only when the narrative went looking for it. A warning a
+    # human has to notice and act on is exactly how that kept not
+    # happening, so this is now a hard failure instead.
+    raise SystemExit(
+        "orphaned appendix panels/scatters, built but placed in no "
+        f"section: {missing}")
 
 n_items = sum(1 for sec in SECTIONS for kind, _ in sec["items"] if kind != "sub")
 print(f"placing {n_items} charts across {len(SECTIONS)} source sections "
@@ -2225,7 +2237,7 @@ toc.append('<a href="#glossary"><b>&#167;</b> Abbreviations</a>')
 ATLAS_JS = r'''<script>
 // DEEP LINKS INTO A CLOSED GROUP.
 //
-// Every one of the 89 atlas charts keeps the anchor its existing links use,
+// Every one of the 90 atlas charts keeps the anchor its existing links use,
 // but those anchors now sit inside a <details> that is closed by default. A
 // browser will not scroll to a target it cannot lay out, so the link would
 // land at the top of the page and look broken. Opening every ancestor

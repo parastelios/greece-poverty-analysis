@@ -722,8 +722,8 @@ if _rep.exists() and _app.exists():
     _atlas = (len(re.findall(r'\sid="s_[a-z0-9_]+"', _at))
               + len(re.findall(r'\sid="p_[a-z0-9_]+"', _at))
               + len(re.findall(r'\sid="x_[a-z0-9_]+"', _at)))
-    check("the variable atlas still carries all 89 charts",
-          _atlas == 89, f"found {_atlas}")
+    check("the variable atlas still carries all 90 charts",
+          _atlas == 90, f"found {_atlas}")
 
     # 4. PRINT VISIBILITY. A closed <details> prints as missing content, not as
     #    a closed block, so the appendix would lose most of the atlas on paper.
