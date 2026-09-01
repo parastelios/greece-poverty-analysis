@@ -250,9 +250,9 @@ def recovery_table():
     different question from how far apart they ended up.
     """
     d = pd.read_csv(PROC / "e_f7_recovery_table.csv").set_index("measure")
-    keep = ["Long-term unemployment", "Housing-cost overburden",
-            "Real wages, 2008 = 100", "Material resources",
-            "Wage-adjusted affordability"]
+    keep = ["Long-term unemployment", "Share below own GDP peak",
+            "Housing-cost overburden", "Real wages, 2008 = 100",
+            "Material resources", "Wage-adjusted affordability"]
     rows = "".join(
         f"<tr><td>{m}</td><td class='num'>{d.loc[m, 'greece_range']}</td>"
         f"<td class='num'>{d.loc[m, 'eu_median_range']}</td>"
@@ -338,7 +338,7 @@ CH = []
 CH.append(chapter("paradox", "The Poverty Rate Says One Thing. Households Say Another.", f"""
 <p>Looking at the labour market and some headline economic indicators,
 Greece appears to have recovered from the crisis. Unemployment has fallen
-sharply. Output has returned. The bailout years are no longer the first
+sharply. Output has grown for most of the last decade. The bailout years are no longer the first
 fact most economic summaries reach for.</p>
 
 <p>But the closer we move to households, the less complete that recovery
@@ -579,10 +579,14 @@ enough to move forward on: if the difficulty is real, why doesn't the
 official poverty rate register it?</p>
 """))
 
-# ---- 4. Greece Did Not Recover in One Piece -------------------------------
-CH.append(chapter("recovery", "Greece Did Not Recover in One Piece", f"""
-<p>Once the ruler problem is clear, the next question is what it smoothed
-away. Greece did recover. But it did not recover in one piece.</p>
+# ---- 4. The Jobs Came Back. The Household Economy Did Not. ----------------
+CH.append(chapter("recovery", "The Jobs Came Back. The Household Economy Did Not.", f"""
+<p>The clearest recovery was in jobs. Unemployment fell sharply from its
+crisis peak, and long-term unemployment fell with it. But the recovery
+story weakens as soon as we move from employment to household living
+standards. Output per person remained below its pre-crisis peak. Real
+wages stayed far below their 2008 level. And the hardship gap, the problem
+this piece began with, never reset.</p>
 
 <p>Start with what genuinely improved. Long-term unemployment, out of
 work for twelve months or more and a different, slower-moving thing than the
@@ -597,19 +601,21 @@ genuinely different, less corrosive thing than a long one.</p>
 of their 2008 level in 2015; by 2024, about 68%. Not recovering slowly.
 Not recovering. Greek wages have now been below their pre-crisis
 level for fifteen consecutive years, longer than any EU country except
-Hungary. What people can actually buy for that money, consumption
-adjusted for local prices, did rise substantially, from roughly
-14,800 to 21,300 in the units used for these comparisons. That is real, and
-worth saying plainly, because a piece about hardship can leave the
-impression that nothing improved. But the EU median rose faster over the
-same years, so the distance between Greece and its neighbours widened even
-as Greece's own number climbed.</p>
+Hungary. Output per person sits between the two stories: the shortfall
+against Greece's own 2008 peak roughly halved, but it did not close. What
+people can actually buy for that money, consumption adjusted for local
+prices, did rise substantially, from roughly 14,800 to 21,300 in the units
+used for these comparisons. That is real, and worth saying plainly, because
+a piece about hardship can leave the impression that nothing improved. But
+the EU median rose faster over the same years, so the distance between
+Greece and its neighbours widened even as Greece's own number climbed.</p>
 
 {fig('F7', caption="The Recovery Was Uneven")}
 
 <p>Figure {{fig:F7}} shows the shape: gaps that were mostly about jobs and
-housing narrowed considerably; gaps that were about wages, resources and
-what money can buy narrowed barely at all, or widened. But a chart built to fit
+housing narrowed considerably; the output gap narrowed too, but only by
+about half; gaps that were about wages, resources and what money can buy
+narrowed barely at all, or widened. But a chart built to fit
 fourteen measures onto one axis has to abstract away units, so here is the
 same story in the numbers each measure actually reports in, and the
 plainest reading of each.</p>
@@ -666,8 +672,9 @@ would suggest. Same picture, different route, no formal test behind it.</p>''')}
 
 # ---- 5. A Decade of Damage Still Counts (duration) -------------------------
 CH.append(chapter("duration", "A Decade of Damage Still Counts", f"""
-<p>Greece did not recover in one piece. But even that still looks mostly at
-where things stand now. For households, duration matters: one year of
+<p>The jobs came back. The household economy did not. But even that
+distinction still looks mostly at where things stand now. For households,
+duration matters: one year of
 unemployment is not the same as ten. A wage cut that lasts one year is not
 the same as one that lasts fifteen. Housing pressure that spikes and
 disappears is not the same as pressure that accumulates.</p>
