@@ -717,7 +717,8 @@ wages stayed below 2008, how much its housing costs deteriorated since
 
 {fig('F11', caption="Greece Had Among Europe&rsquo;s Largest Accumulated Burdens")}
 
-<p>Figure {{fig:F11}} is the balance sheet the crisis left behind. Greece
+<p><a class="fig-jump" href="#F11">Figure {{fig:F11}}</a> is the balance
+sheet the crisis left behind. Greece
 carries the heaviest accumulated unemployment burden in the EU, and the
 worst housing-cost deterioration since 2010; both rank first of 27.
 On wage duration it's not the heaviest: Hungary has gone slightly longer,
@@ -794,85 +795,131 @@ enough to say how that mark moved inside Greece year by year.</p>
 # ---- 6. Where the Evidence Stops (between/within + unsettled + flip
 #         + the two failed designs) -----------------------------------------
 CH.append(chapter("limits", "Where the Evidence Stops", f"""
-<p>Everything in <a href="#ch{{ch:duration}}">the previous section</a> is a
-statement about how countries differ from each other. It is tempting, and
-wrong, to turn it into a statement about how Greece changed over time.</p>
+<p>Not every question this piece asked got a clean answer. Some hit a wall
+the evidence was not built to see past. Some were tested, but not hard
+enough to say yes or no. One depended on a single defensible modelling
+choice, and flipped completely depending on which way that choice went.
+Two ideas that might have mattered simply failed. This section walks
+through those limits because the boundary of the evidence is part of the
+story too.</p>
 
-{findings_plain(
-    "Look for that change happening inside Greece itself, over the years, "
-    "and the evidence isn't there to find it &mdash; not because it has "
-    "been ruled out, but because this kind of comparison cannot see it "
-    "either way.",
-    'V2-5.Y')}
+<p>The first limit is time. Everything in <a
+href="#ch{{ch:duration}}">the previous section</a> is a statement about
+how countries differ from each other. It is tempting, and wrong, to turn
+it into a statement about how Greece changed over time. Look for that
+change happening inside Greece itself, over the years, and the evidence
+isn't there to find it: not because it has been ruled out, but because
+this kind of comparison cannot see it either way.</p>
+
+<div class="finding compact" data-claim-id="V2-5.Y">
+<p><em>Precise result.</em> None of three separate checks found change
+happening inside Greece over time: no within-country estimate came back
+significant in the expected direction, and no year-to-year test
+supported one either.</p>
+<p class="limits"><em>Limits.</em> These are three related checks on the
+same data, not three independent confirmations, and they weren't
+adjusted for running several checks at once.</p>
+</div>
 
 {subfig('F13A', 'F13', 0,
         "The Evidence Is Mostly Between Countries",
         "Is the accumulated effect between countries, or within one over time?")}
 
-<p>&ldquo;Countries that accumulated more hardship report more
-difficulty&rdquo; is a claim about a group photograph. &ldquo;As Greece
-accumulated more hardship, Greek households reported more difficulty&rdquo;
-is a claim about a film. This piece has the photograph. It does not have the
-film &mdash; not because the film doesn't exist, but because seeing it would
-mean giving up the comparison between countries, and what's left on its own
-isn't sharp enough to say either way.</p>
+<p><a class="fig-jump" href="#F13A">Figure {{fig:F13A}}</a> shows why. This
+piece can show that countries carrying more accumulated hardship also
+report more difficulty, compared side by side in one snapshot across many
+countries. It cannot show that Greece's own reported difficulty grew as
+Greece's own accumulated hardship grew, year by year. The first compares
+many countries at once. The second would mean watching one country change
+over time, and that isn't what this kind of comparison can see.</p>
 
-<p>Not every present-day measure earned a place in the story so far,
-either. Nine were tried; three worked. The other six mostly went quiet
-rather than failed outright &mdash; with twenty-seven countries and a
-decade of data, most of them could only have caught an effect bigger than
-any effect worth caring about. Silence isn't a verdict.</p>
+<p>The second limit is statistical power. Not every present-day measure
+earned a place in the story so far. Nine were tried; three worked. The other six mostly went quiet
+rather than failed outright: with twenty-seven countries and a decade of
+data, most of them could only have caught an effect bigger than any
+effect worth caring about. Silence isn't a verdict. A couple can be set
+aside for real, at least at the size this design could catch, both
+measures of price inflation among them. The rest simply weren't put under
+enough pressure to say either way.</p>
 
-{findings_plain(
-    "A couple of them can be set aside for real, at least at the size this "
-    "design could catch &mdash; both measures of price inflation among "
-    "them. The rest simply weren't put under enough pressure to say either "
-    "way.",
-    'V2-4.X', 'L-4')}
+<div class="finding compact" data-claim-id="V2-4.X L-4">
+<p><em>Precise result.</em> Six of nine current-level measures are
+inconclusive under the available statistical power, not unsupported.
+Annual food, housing and headline inflation are the two that can be set
+aside with confidence; compounded inflation since 2008 remains
+inconclusive.</p>
+<p class="limits"><em>Limits.</em> Inconclusive is not evidence of
+absence; the exclusions that do hold are narrow and specific to the size
+this design could detect.</p>
+</div>
 
-<p>The biggest complication is a genuine reversal, and it concerns the
-deprivation items <a href="#ch{{ch:footprint}}">from earlier</a> &mdash;
-can't pay bills, can't heat the home &mdash; which absorbed most of Greece's
+<p>The third limit is model dependence. The biggest complication is a
+genuine reversal, and it concerns the deprivation items <a
+href="#ch{{ch:footprint}}">from earlier</a>, can't
+pay bills, can't heat the home, which absorbed most of Greece's
 unexplained excess. Those items come from the same survey as the thing
-they're explaining, and whether to let a measure like that into the picture
-is a real, defensible choice either way. So both versions were built.</p>
+they're explaining, and whether to let a measure like that into the
+picture is a real, defensible choice either way. So both versions were
+built. Choose differently, and Greece's whole position in Europe
+flips.</p>
 
-{findings_plain(
-    "Choose differently, and Greece's whole position in Europe flips.",
-    'V2-6.1')}
+<div class="finding compact" data-claim-id="V2-6.1">
+<p><em>Precise result.</em> Greece's residual reverses from positive to
+negative, and its rank from 3rd of 27 to 25th of 27, depending on whether
+the same-instrument deprivation predictor is included.</p>
+<p class="limits"><em>Limits.</em> Neither specification is definitive;
+the two may not be merged or averaged, and selection between them may not
+be made on residual size.</p>
+</div>
 
 {fig('F14', caption="What the Recovery Story Still Misses")}
 
 <blockquote>That is not a wobble. It is a reversal, and there is no honest
 way to pick between the two.</blockquote>
 
-<p>Greece moves from the third-worst country in Europe on unexplained
-hardship to the twenty-fifth &mdash; from a stark positive outlier to a
-stark negative one &mdash; on exactly the same rows of data, with one
-measure added or removed. The two results can't be averaged, and can't be
-chosen between by which looks more plausible; doing that is exactly what
-would make a check like this meaningless. Which is why nothing later in
-this piece leans on it.</p>
+<p><a class="fig-jump" href="#F14">Figure {{fig:F14}}</a> shows it: Greece
+moves from the third-worst country
+in Europe on unexplained hardship to the twenty-fifth, from a stark
+positive outlier to a stark negative one, on exactly the same rows of
+data, with one measure added or removed. The two results can't be
+averaged, and can't be chosen between by which looks more plausible;
+doing that is exactly what would make a check like this meaningless.
+Which is why nothing later in this piece leans on it.</p>
 
-<p>Two further ideas were meant to carry real weight here, and neither
-survived contact with the data &mdash; worth naming rather than quietly
-dropping. A synthetic Greece, built to track the real one before 2008 and
+<p>The fourth limit is failed designs. Two further ideas were meant to
+carry real weight here, and neither survived contact with the data,
+worth naming rather than quietly dropping. A synthetic Greece, built to track the real one before 2008 and
 read the divergence after as the crisis effect, collapsed into a blend of
-essentially two countries and missed four of the six conditions it had been
-required to meet before anyone looked at the result. Its chart is not
-shown here, because a dramatic picture built on a counterfactual that thin
-would persuade readers of something the evidence can't actually support.
-And the sixteen-measure spread <a href="#ch{{ch:footprint}}">from
-earlier</a> made Greece's position worse, not better, once it was asked to
-predict rather than just describe, and its direction flipped once other
-measures were held steady &mdash; left deliberately unexplained here, since
-inventing a story for a strange result in a design that already failed is
-how failed ideas come back from the dead.</p>
+essentially two countries and missed four of the six conditions it had
+been required to meet before anyone looked at the result. Its chart is
+not shown here, because a dramatic picture built on a counterfactual that
+thin would persuade readers of something the evidence can't actually
+support. And the sixteen-measure spread <a
+href="#ch{{ch:footprint}}">from earlier</a> made Greece's position worse,
+not better, once it was asked to predict rather than just describe, and
+its direction flipped once other measures were held steady, left
+deliberately unexplained here, since inventing a story for a strange
+result in a design that already failed is how failed ideas come back
+from the dead. Both are recorded for what they are: attempts that didn't
+work, kept visible rather than erased.</p>
 
-{findings_plain(
-    "Both are recorded for what they are: attempts that didn't work, kept "
-    "visible rather than erased.",
-    'L-1', 'L-2')}
+<div class="finding compact" data-claim-id="L-1 L-2">
+<p><em>Precise result.</em> The synthetic-control comparison failed four
+of six pre-registered gates and is not usable; its own chart is withheld
+for that reason. Adding the sixteen-measure spread to the frozen model
+worsened Greece's residual and reversed its sign.</p>
+<p class="limits"><em>Limits.</em> Both are attempts that did not work,
+not findings; the sign reversal in the second is deliberately left
+uninterpreted.</p>
+</div>
+
+<p>The models stop there. But a model is not the whole recovery story.
+Some things that may shape how Greek households read their lives sit
+mostly outside this design: trust in institutions, the terms of
+adjustment, migration, taxes, health, and the way people answer
+subjective questions. They cannot be turned into findings here. They
+still matter for understanding why the recovery story feels
+incomplete.</p>
 """))
 
 # ---- 7. What Greece's recovery leaves out (reporting style + ESS + context
@@ -1282,7 +1329,7 @@ if leaked:
 # companion's job is to explain each one in plain words alongside it, which is
 # what the surrounding prose does. So figures are excluded here too.
 prose = re.sub(r"<figure class=\"figure\".*?</figure>", " ", stripped, flags=re.S)
-prose = re.sub(r'<div class="(?:finding|ctx)".*?</div>', " ", prose, flags=re.S)
+prose = re.sub(r'<div class="(?:finding|ctx)(?:\s[^"]*)?".*?</div>', " ", prose, flags=re.S)
 prose = html.unescape(re.sub(r"<[^>]+>", " ", prose))
 JARGON = ["bootstrap", "p-value", "coefficient", "specification", "estimator",
           "fixed effects", "statistically significant", "confidence interval",
