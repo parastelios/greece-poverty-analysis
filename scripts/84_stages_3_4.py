@@ -348,9 +348,7 @@ FIGS["F8"] = dict(
         "can share one axis: the shapes may be compared, the levels may not. "
         "The scale is the same in all four tabs. European median hardship is "
         "deliberately absent, since the question here is whether the concrete "
-        "difficulty moved with Greek reports, not how Greece compares. "
-        "Same-survey corroboration: not independent validation, and not "
-        "causal evidence."))
+        "difficulty moved with Greek reports, not how Greece compares."))
 
 # ---- F20: what the model predicts against what Greece reports --------------
 # A one-row dumbbell was too little for a figure, and its grammar implied a

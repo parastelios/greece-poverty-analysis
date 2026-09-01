@@ -337,8 +337,8 @@ CH = []
 # ---- 1. The Poverty Rate Says One Thing. Households Say Another. ----------
 CH.append(chapter("paradox", "The Poverty Rate Says One Thing. Households Say Another.", f"""
 <p>Looking at the labour market and some headline economic indicators,
-Greece appears to have recovered from the crisis. Unemployment has fallen
-sharply. Output has grown for most of the last decade. The bailout years are no longer the first
+Greece appears to have recovered in part. Unemployment has
+fallen sharply. Output has grown for most of the last decade. The bailout years are no longer the first
 fact most economic summaries reach for.</p>
 
 <p>But the closer we move to households, the less complete that recovery
@@ -610,7 +610,7 @@ a piece about hardship can leave the impression that nothing improved. But
 the EU median rose faster over the same years, so the distance between
 Greece and its neighbours widened even as Greece's own number climbed.</p>
 
-{fig('F7', caption="The Recovery Was Uneven")}
+{fig('F7', caption="Some Gaps Closed. Others Widened.")}
 
 <p>Figure {{fig:F7}} shows the shape: gaps that were mostly about jobs and
 housing narrowed considerably; the output gap narrowed too, but only by
