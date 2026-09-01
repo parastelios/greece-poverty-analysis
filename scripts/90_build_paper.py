@@ -129,7 +129,7 @@ def claim(cid):
     c = claims.loc[cid]
     cav = ""
     if str(c.caveats) not in ("nan", ""):
-        items = "; ".join(html.escape(x.strip()) for x in str(c.caveats).split("||"))
+        items = "; ".join(html.escape(x.strip()) for x in str(c.caveats).split(" | "))
         cav = f'<p class="limits"><em>Limits.</em> {items}.</p>'
     return (f'<div class="finding" data-claim-id="{cid}">'
             f"<p>{html.escape(reader_text(c.canonical_wording))}</p>{cav}</div>")

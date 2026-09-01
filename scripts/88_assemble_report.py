@@ -193,7 +193,7 @@ def claim(cid, *, show_caveats=True):
     cav = ""
     if show_caveats and str(c.caveats) not in ("nan", ""):
         items = "; ".join(html.escape(x.strip())
-                          for x in str(c.caveats).split("||"))
+                          for x in str(c.caveats).split(" | "))
         cav = f'<p class="caveats"><strong>Limits.</strong> {items}.</p>'
     return (f'<div class="claim" data-claim-id="{cid}" '
             f'title="{html.escape(str(c.tier))}">'
