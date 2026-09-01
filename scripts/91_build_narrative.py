@@ -588,12 +588,13 @@ official poverty rate register it?</p>
 
 # ---- 4. The Jobs Came Back. The Household Economy Did Not. ----------------
 CH.append(chapter("recovery", "The Jobs Came Back. The Household Economy Did Not.", f"""
-<p>The clearest recovery was in jobs. Unemployment fell sharply from its
-crisis peak, and long-term unemployment fell with it. But the recovery
-story weakens as soon as we move from employment to household living
-standards. Output per person remained below its pre-crisis peak. Real
-wages stayed far below their 2008 level. And the hardship gap, the problem
-this piece began with, never reset.</p>
+<p>That budget starts with work, and the clearest recovery was in jobs.
+Unemployment fell sharply from its crisis peak, and long-term unemployment
+fell with it. But the recovery story weakens as soon as the budget moves
+past having work to what that work pays, what prices do to it, and what
+housing still costs. Output per person remained below its pre-crisis peak.
+Real wages stayed far below their 2008 level. And the hardship gap, the
+problem this piece began with, never reset.</p>
 
 <p>Start with what genuinely improved. Long-term unemployment, out of
 work for twelve months or more and a different, slower-moving thing than the
