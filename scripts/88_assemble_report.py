@@ -883,6 +883,19 @@ recommendation in Stage 8 follows directly from that.</p>
 inferential test in this report, and no finding rests on it.</p>
 ''')}
 
+{context('CTX-3B', '''
+<p>An independent study using Greek household microdata reaches a
+compatible estimate. Andriopoulou, Kanavitsa and Tsakloglou (2020)
+construct an anchored poverty rate on a 2007 base and find it reaches 48%
+at the 2013 income-year peak. This project's own anchored series, on a
+2008 base, puts the comparable income year at 40.6%.</p>
+<p>The two are not the same measurement. They differ in microdata source,
+anchor year, price-adjustment method and publication vintage, and neither
+was constructed with the other in mind. What they share is direction and
+rough scale: both find that holding the poverty line fixed reveals
+substantially more crisis-era deterioration than the relative rate
+shows.</p>''')}
+
 <h3>One measure, or many?</h3>
 
 <p>A single detached measure invites a single explanation, and the most

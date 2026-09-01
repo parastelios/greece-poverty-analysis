@@ -657,10 +657,12 @@ different questions, neither of which is the correct one in general. Where a
 whole distribution declines together, they diverge sharply, and that divergence
 is the substantive point rather than a defect.</p>
 
-<p>Our reconstruction is coarser than the household-level anchored series
-computed by Andriopoulou, Kanavitsa and Tsakloglou, and we use their
-income-year-2013 figure as an external benchmark rather than as a replication
-target.</p>
+{context('CTX-3B', '''
+<p>An independent household-level anchored series exists for Greece:
+Andriopoulou, Kanavitsa and Tsakloglou (2020) reach 48% at the
+income-year-2013 peak, on a 2007 base. Our reconstruction is coarser and
+uses a 2008 base, putting the comparable income year at 40.6%. We treat
+their figure as an external benchmark, not a replication target.</p>''')}
 
 <h3>5.6 Convergence, and what it does not show</h3>
 

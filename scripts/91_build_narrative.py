@@ -384,10 +384,11 @@ piece tries to understand.</p>
 
 {finding('V2-1.2')}
 
-<p>The chart only shows 2015 onward because that's where Greece's own
-hardship gap is clearest, not because the underlying series is that young.
-Eurostat's hardship indicator has been reconstructed back past 2010 as
-well, checked against the official numbers everywhere the two overlap.</p>
+<p>The chart starts in 2015 because that's where Greece's own hardship gap
+is clearest, not because Eurostat's data is that young. The indicator can
+be reconstructed back past 2010 too, and this project checked that
+reconstruction against the official series everywhere the two overlap,
+but nothing later in this piece relies on it.</p>
 
 {finding('V2-1.1')}
 
@@ -434,6 +435,12 @@ terms instead, and measured poverty roughly doubles, peaking above 40% in
 line itself is worth</a>) shows the mechanism more plainly still: the
 threshold may look stable in cash terms, but what it can actually buy
 collapsed, and has only partly recovered.</p>
+
+{context('CTX-3B', '''
+<p>Independent microdata points the same way. A separate study, using
+Greek household microdata, estimates that 48% of the population was poor
+under a poverty line anchored before the crisis, for the same income year
+this project's own reconstruction puts at 40.6%.</p>''')}
 
 <p>That doesn't make the fixed line the &ldquo;correct&rdquo; one, and it
 says nothing about how Greece compares to any other country. This is

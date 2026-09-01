@@ -2059,6 +2059,15 @@ possible on it here.</p>''',
 EU-SILC microdata via ELSTAT, 2007-2017 waves, analysed in the cited paper,
 not by this project. No test was run here; the accumulated measures in
 Stage 5 record what was absorbed, not what any programme caused.</p>''',
+    "CTX-3B": '''
+<p>Same paper cited above for the crisis and adjustment-policy background,
+read here for a different figure. Andriopoulou, Kanavitsa
+&amp; Tsakloglou (2020) construct an anchored FGT0 poverty rate on a 2007
+base from EU-SILC/ELSTAT microdata and reach 48% at the 2013 income-year
+peak. This project's own anchored series, built independently on a 2008
+base from country-level EU-SILC releases rather than household microdata,
+puts the comparable income year at 40.6%. No test links the two figures;
+the comparison is descriptive only.</p>''',
     "CTX-4": '''
 <p>Migration <em>was</em> tested in this project: E3, an aggregate
 net-migration predictor on the same 27-country panel as every other
@@ -2107,8 +2116,8 @@ if _missing_ctx_prose:
 # corroboration) sits with Stage 4's material-resources figures, where the
 # report itself places it; CTX-6 (the policy-dashboard recommendation) sits
 # with Stage 8's conclusion; the rest are Stage 7's "what this is not".
-CTX_STAGE = {"CTX-1": 7, "CTX-2": 7, "CTX-3": 7, "CTX-4": 7, "CTX-5": 7,
-             "CTX-6": 8, "CTX-7": 7, "CTX-8": 4}
+CTX_STAGE = {"CTX-1": 7, "CTX-2": 7, "CTX-3": 7, "CTX-3B": 2, "CTX-4": 7,
+             "CTX-5": 7, "CTX-6": 8, "CTX-7": 7, "CTX-8": 4}
 _unmapped_ctx = [cid for cid in ctx.index if cid not in CTX_STAGE]
 if _unmapped_ctx:
     raise SystemExit(f"context entries with no stage: {_unmapped_ctx}")

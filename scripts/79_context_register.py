@@ -104,6 +104,43 @@ ENTRIES = [
         "verified_how": "read in full; recorded in docs/archive/pre-v2-publication/publication_strategy.md",
     },
     {
+        # SAME SOURCE AS CTX-3, a different reading of it. CTX-3 uses this
+        # paper for historical backdrop (the adjustment programmes); this
+        # entry uses its anchored-poverty estimate specifically, as
+        # corroboration for this project's own fixed-line reconstruction
+        # (F3). Kept as a separate entry rather than folded into CTX-3
+        # because the two readings need different permitted/forbidden
+        # framing -- one entry cannot honestly carry both at once -- but the
+        # source fields below are the same citation, not an independent one.
+        "id": "CTX-3B", "topic": "Anchored poverty, corroborated by independent microdata",
+        "status": "descriptive corroboration",
+        "permitted": "Independent microdata evidence points in the same "
+                     "direction: a fixed pre-crisis poverty line shows much "
+                     "larger crisis-era poverty than contemporaneous AROP.",
+        "forbidden": "Treating 48% against 40.6% as a direct validation "
+                     "test, a bias estimate, or proof that this project's "
+                     "reconstruction is too low by seven to eight points -- "
+                     "the two differ in data, anchor year, price adjustment "
+                     "and vintage.",
+        "relates_to_claim": "V2-2.1", "evidence": "external analysis; not "
+                     "evaluated by this project's own tests",
+        "detect": "Andriopoulou|Kanavitsa|Tsakloglou|anchored FGT0",
+        "source": "Andriopoulou, E., Kanavitsa, E. & Tsakloglou, P. (2020), "
+                  "Decomposing Poverty in Hard Times: Greece 2007-2016. LSE "
+                  "GreeSE Paper No. 149.",
+        "source_url": "https://www.lse.ac.uk/Hellenic-Observatory/Publications/GreeSE-Papers",
+        "source_detail": "EU-SILC microdata via ELSTAT, analysed "
+                         "independently of this project. Anchored FGT0 "
+                         "poverty on a 2007 base reaches 48% at the 2013 "
+                         "income-year peak, against this project's own "
+                         "40.6% for the same income year.",
+        "source_status": "verified", "review_date": "2026-09-01",
+        "verified_how": "same source already verified for CTX-3; this "
+                        "project's own comparable anchored-poverty figure "
+                        "(40.6%, survey year 2014, income year 2013) read "
+                        "directly from anchored_poverty.csv",
+    },
+    {
         "id": "CTX-4", "topic": "Migration",
         "status": "contextual consequence",
         # BIDIRECTIONAL. Migration is both a plausible consequence of prolonged
