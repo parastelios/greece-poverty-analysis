@@ -258,7 +258,7 @@ def recovery_table():
         f"<td class='num'>{d.loc[m, 'eu_median_range']}</td>"
         f"<td>{d.loc[m, 'plain_reading']}</td></tr>"
         for m in keep)
-    return (f'<div class="mini-table"><table><thead><tr>'
+    return (f'<div class="mini-table" id="recovery-table"><table><thead><tr>'
             f"<th>Measure</th><th>Greece, 2015&rarr;2024</th>"
             f"<th>EU median, 2015&rarr;2024</th><th>What actually happened</th>"
             f"</tr></thead><tbody>{rows}</tbody></table></div>")
@@ -598,25 +598,23 @@ official poverty rate register it?</p>
 
 # ---- 4. The Jobs Came Back. The Household Economy Did Not. ----------------
 CH.append(chapter("recovery", "The Jobs Came Back. The Household Economy Did Not.", f"""
-<p>That budget starts with work, and the clearest recovery was in jobs.
-Unemployment fell sharply from its crisis peak, and long-term unemployment
-fell with it. But the recovery story weakens as soon as the budget moves
-past having work to what that work pays, what prices do to it, and what
-housing still costs. Output per person remained below its pre-crisis peak.
-Real wages stayed far below their 2008 level. And the hardship gap, the
-problem this piece began with, never reset.</p>
+<p>The strongest case for Greece's recovery is the labour market.
+Unemployment fell from its crisis peak to under 9%, and long-term
+unemployment fell with it. That is real recovery. But a household does
+not live on the unemployment rate. It lives on the wage that arrives, the
+prices facing that wage, what it costs to keep a roof over its head, and
+what is left when the month runs out. On that test, Greece's recovery
+looks much less complete.</p>
 
-<p>Start with what genuinely improved. Long-term unemployment, out of
-work for twelve months or more and a different, slower-moving thing than the
-headline rate, stood at 16.4% of the labour force in 2015. By 2024 it
-had fallen to 5.4%. That is substantial, real progress. Housing-cost
-pressure eased too. Duration matters because time does something specific
-to a household: savings go
-first, then whatever can be sold, then the goodwill of relatives, then the
-ability to absorb any surprise at all. A shorter spell of joblessness is a
-genuinely different, less corrosive thing than a long one.</p>
+<p>Start with the part that clearly improved: long-term unemployment,
+meaning worklessness lasting twelve months or more. It stood at 16.4% of
+the labour force in 2015. By 2024 it had fallen to 5.4%. That is
+substantial progress. It means fewer households spent years outside work,
+and fewer had to run through savings, sell what they could, or lean on
+relatives just to absorb the next shock.</p>
 
-<p>Now the part that didn't keep pace. Greek real wages stood at about 77%
+<p>But employment was the exception, not the full household story. Greek
+real wages stood at about 77%
 of their 2008 level in 2015; by 2024, about 68%. Not recovering slowly.
 Not recovering. Greek wages have now been below their pre-crisis
 level for fifteen consecutive years, longer than any EU country except
@@ -631,50 +629,51 @@ Greece and its neighbours widened even as Greece's own number climbed.</p>
 
 {fig('F7', caption="Some Gaps Closed. Others Widened.")}
 
-<p>Figure {{fig:F7}} shows the shape: gaps that were mostly about jobs and
+<p><a class="fig-jump" href="#F7">Figure {{fig:F7}}</a> shows the shape:
+gaps that were mostly about jobs and
 housing narrowed considerably; the output gap narrowed too, but only by
 about half; gaps that were about wages, resources and what money can buy
 narrowed barely at all, or widened. But a chart built to fit
-fourteen measures onto one axis has to abstract away units, so here is the
-same story in the numbers each measure actually reports in, and the
-plainest reading of each.</p>
+fourteen measures onto one axis has to abstract away units, so <a
+class="fig-jump" href="#recovery-table">here</a> is the same story in the
+numbers each measure actually reports in, and the plainest reading of
+each.</p>
 
 {recovery_table()}
 
-<p>Two things in that table are easy to misread, and both matter. An
-improving number is not the same as a closing gap: material resources rose
-by nearly half in Greece and still fell further behind, because the EU
-median rose faster. And whether a gap narrows because Greece caught up,
-because the rest of Europe slowed down, or both, is not something either
-version of this comparison can tell you. Convergence is context here, not a
-mechanism. It describes what happened, not why.</p>
+<p class="table-legend">The table gives the same comparison in each
+measure's own units: percentages for unemployment, output and housing
+costs; purchasing-power-adjusted euros for material resources; index
+points for wages and affordability. It also keeps the main caution
+visible: an improving Greek number is not always a closing gap. Material
+resources rose sharply in Greece but fell further behind, because the EU
+median rose faster. And a narrowing gap does not tell us why it narrowed.
+It only shows the shape of recovery: employment improved most clearly,
+while wages, resources and purchasing power remained much more
+damaged.</p>
 
 {fig('F10', caption="Recovery Looks Weaker From the Household Budget")}
 
-<p>The same pattern appears in Figure {{fig:F10}}, when the section turns
-from gaps to levels. Long-term unemployment, material resources and
+<p>That same split appears when we stop looking at gaps and look at
+today's levels, in <a class="fig-jump" href="#F10">Figure
+{{fig:F10}}</a>. Long-term unemployment, material resources and
 wage-adjusted affordability
 each place Greece on the wrong side of the European middle. They are also
 the three current conditions that carry information beyond the official
 poverty rate. But the point here is simpler: household recovery
 looks weaker than headline recovery.</p>
 
-<div class="finding compact" data-claim-id="V2-4.C2 V2-4.C1">
-<p><em>Precise result.</em> Long-term unemployment and material resources
-each predict reported hardship beyond income poverty and year effects.</p>
-<p class="limits"><em>Limits.</em> Cross-country association, not causal
-evidence.</p>
-</div>
-
 <p>A country can score badly on affordability two ways: by being expensive,
 or by paying poorly. Greece does both at once, and a household experiencing
 it does not much care which half is responsible.</p>
 
-<div class="finding compact" data-claim-id="V2-4.C4">
-<p><em>Precise result.</em> Wage-adjusted affordability also predicts
-reported hardship beyond income poverty and year effects.</p>
+<div class="finding compact" data-claim-id="V2-4.C2 V2-4.C1 V2-4.C4">
+<p><em>Precise result.</em> Long-term unemployment, material resources and
+wage-adjusted affordability each predict reported hardship beyond income
+poverty and year effects.</p>
 <p class="limits"><em>Limits.</em> Cross-country association, not causal
-evidence; never read together with the work-effort squeeze measure.</p>
+evidence; wage-adjusted affordability should not be read together with the
+work-effort-squeeze measure.</p>
 </div>
 
 {context('CTX-8', '''
@@ -1136,6 +1135,8 @@ details.ctx-detail .permitted{{margin-top:0}}
 .mini-table td{{padding:.55rem .9rem;border-bottom:1px solid var(--border)}}
 .mini-table td.num{{font-variant-numeric:tabular-nums;text-align:right}}
 .mini-table tr:last-child td{{border-bottom:none}}
+.table-legend{{margin:-1.1rem 0 1.6rem;font-size:.86rem;
+  color:var(--text-secondary)}}
 /* Grouped context boxes a general reader can skip without losing the
    argument -- the individual boxes inside keep their own dashed border and
    status label, this wrapper just gives them one collapsed entry point. */
