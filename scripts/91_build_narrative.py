@@ -264,20 +264,30 @@ def recovery_table():
             f"</tr></thead><tbody>{rows}</tbody></table></div>")
 
 
-def context(cid, prose):
+def context(cid, prose, expand=False):
+    """EXPAND, when true, tucks the permitted/forbidden/citation block into a
+    collapsed <details> instead of showing it inline. The anchor and the full
+    text are still present -- context_completeness() reads DOM text, not
+    visibility -- so this changes what a reader meets by default, not what's
+    required to be there. Used where the section's own closing beat needs to
+    land right after the topic sentence rather than after a full caveat
+    block; everywhere else the full block stays inline, as before.
+    """
     e = ctx.loc[cid]
     cite = ""
     if str(e.source_status) != "not applicable":
         url = (f' <a href="{e.source_url}">source</a>'
                if isinstance(e.source_url, str) and e.source_url else "")
         cite = f'<p class="src">{html.escape(str(e.source))}{url}</p>'
-    return (f'<div class="ctx" data-context-id="{cid}">'
-            f'<p class="ctx-status">{html.escape(str(e.status))}</p>'
-            f"<h4>{html.escape(str(e.topic))}</h4>{prose}"
-            f'<p class="permitted"><em>What this lets us say.</em> '
+    body = (f'<p class="permitted"><em>What this lets us say.</em> '
             f"{html.escape(str(e.permitted))}</p>"
             f'<p class="limitation"><em>What it does not.</em> '
-            f"{html.escape(str(e.forbidden))}</p>{cite}</div>")
+            f"{html.escape(str(e.forbidden))}</p>{cite}")
+    if expand:
+        body = f'<details class="ctx-detail"><summary>The full caveat</summary>{body}</details>'
+    return (f'<div class="ctx" data-context-id="{cid}">'
+            f'<p class="ctx-status">{html.escape(str(e.status))}</p>'
+            f"<h4>{html.escape(str(e.topic))}</h4>{prose}{body}</div>")
 
 
 CH_KEYS = {}
@@ -600,7 +610,8 @@ problem this piece began with, never reset.</p>
 work for twelve months or more and a different, slower-moving thing than the
 headline rate, stood at 16.4% of the labour force in 2015. By 2024 it
 had fallen to 5.4%. That is substantial, real progress. Housing-cost
-pressure eased too. Time does something specific to a household: savings go
+pressure eased too. Duration matters because time does something specific
+to a household: savings go
 first, then whatever can be sold, then the goodwill of relatives, then the
 ability to absorb any surprise at all. A shorter spell of joblessness is a
 genuinely different, less corrosive thing than a long one.</p>
@@ -666,16 +677,18 @@ reported hardship beyond income poverty and year effects.</p>
 evidence; never read together with the work-effort squeeze measure.</p>
 </div>
 
-<blockquote>The unemployment rate came back. The paycheck did not.</blockquote>
-
 {context('CTX-8', '''
-<p>An outside analysis (Greece in Figures, working from newer Eurostat and
-ELSTAT numbers than the ones used here) lands on the same shape from a
-different direction and without running any of the tests in this report:
-Greece is not last in the EU on what people actually consume, but Greek
-employees put in some of the longest hours in the Union for comparatively
-low pay per hour, and everyday things like food cost more than that pay
-would suggest. Same picture, different route, no formal test behind it.</p>''')}
+<p>A newer Greece in Figures analysis reaches a similar descriptive
+picture from outside this project's models: Greece is not last in Europe
+on actual consumption, but it combines long working hours, low hourly
+reward and high everyday prices. That does not test this report's
+explanation, and it uses a newer data vintage, but it independently
+points to the same household-budget pressure.</p>''', expand=True)}
+
+<p>Put simply: the labour market improved, but the household budget did
+not recover with it.</p>
+
+<blockquote>The unemployment rate came back. The paycheck did not.</blockquote>
 """))
 
 # ---- 5. A Decade of Damage Still Counts (duration) -------------------------
@@ -1088,6 +1101,12 @@ details.finding-detail .finding:last-child{{margin-bottom:0}}
 .ctx .limitation{{color:var(--text-secondary)}}
 .ctx .src{{color:var(--text-secondary);font-size:.82rem;padding-top:.5rem;
   border-top:1px solid var(--border)}}
+details.ctx-detail{{margin:.6rem 0 0}}
+details.ctx-detail summary{{cursor:pointer;font:600 .78rem/1
+  ui-sans-serif,system-ui,sans-serif;letter-spacing:.04em;
+  color:var(--text-secondary);padding:.2rem 0}}
+details.ctx-detail[open] summary{{margin-bottom:.4rem}}
+details.ctx-detail .permitted{{margin-top:0}}
 /* A figure's technical caveat, expandable rather than open in the reading
    path -- the chart, caption and its own number fallback are unaffected.
    The evidence-tier badge (e.g. "pre-planned confirmatory") is report
