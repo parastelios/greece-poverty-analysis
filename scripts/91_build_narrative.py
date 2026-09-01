@@ -452,9 +452,10 @@ Greek household microdata, estimates that 48% of the population was poor
 under a poverty line anchored before the crisis, for the same income year
 this project's own reconstruction puts at 40.6%.</p>''')}
 
-<p>That doesn't make the fixed line the &ldquo;correct&rdquo; one, and it
-says nothing about how Greece compares to any other country. This is
-Greece against its own past, not against Europe. It asks a different
+<p>That doesn't make the fixed line the &ldquo;correct&rdquo; one, and
+this project's own reconstruction of it says nothing about how Greece
+compares to any other country: it measures Greece against its own past,
+not against Europe. It asks a different
 question: the official rate measures who is far below the middle of
 <em>today's</em> Greece; the fixed line asks how many people are below a
 pre-crisis standard. When a whole country falls together, those two
@@ -1066,7 +1067,46 @@ if sorted(SECTION_ORDER) != sorted(CH_KEYS):
         f"missing {sorted(set(CH_KEYS) - set(SECTION_ORDER))}, "
         f"unknown {sorted(set(SECTION_ORDER) - set(CH_KEYS))}")
 
-BODY = "".join(CH_BY_KEY[k] for k in SECTION_ORDER)
+# ---- table of contents -------------------------------------------------
+# One line per section: title plus a plain-language gloss of the section's
+# job, doubling as both a map of the argument's shape and the "in this
+# piece" summary a reader gets before committing to several thousand
+# words. Keyed against SECTION_ORDER's keys, not the rendered titles, so a
+# renamed or reordered section forces this table to be touched too rather
+# than silently drifting out of sync with what the piece actually says.
+TOC_GLOSS = {
+    "paradox": ("The Poverty Rate Says One Thing. Households Say Another.",
+                "The paradox: two official measures, one gap this piece "
+                "tries to explain."),
+    "footprint": ("This Was Not Just a Feeling",
+                  "Testing whether reported hardship is mood, or "
+                  "something real."),
+    "ruler": ("The Ruler Moved With the Fall",
+              "Why the official poverty rate barely registered the "
+              "crisis."),
+    "recovery": ("The Jobs Came Back. The Household Economy Did Not.",
+                 "What recovered, and what didn't."),
+    "duration": ("A Decade of Damage Still Counts",
+                 "Whether the length of the crisis still matters today."),
+    "limits": ("Where the Evidence Stops",
+               "The four ways this analysis reaches its limits."),
+    "leftover": ("What the Numbers Still Miss",
+                 "What sits outside any model, and how the story ends."),
+}
+if set(TOC_GLOSS) != set(SECTION_ORDER):
+    raise SystemExit(
+        "the table of contents doesn't match SECTION_ORDER -- "
+        f"missing {sorted(set(SECTION_ORDER) - set(TOC_GLOSS))}, "
+        f"unknown {sorted(set(TOC_GLOSS) - set(SECTION_ORDER))}")
+TOC = ('<nav class="narr-toc" aria-label="In this piece">'
+       '<p class="narr-toc-label">In this piece</p><ol>' +
+       "".join(f'<li><a href="#ch{{ch:{k}}}">'
+               f'<span class="narr-toc-title">{TOC_GLOSS[k][0]}</span>'
+               f'<span class="narr-toc-gloss">{TOC_GLOSS[k][1]}</span></a></li>'
+               for k in SECTION_ORDER) +
+       "</ol></nav>")
+
+BODY = TOC + "".join(CH_BY_KEY[k] for k in SECTION_ORDER)
 
 # ---- headline font, bundled ------------------------------------------------
 # A live Google Fonts fetch would silently fall back to a system serif the
@@ -1125,6 +1165,24 @@ body{{max-width:48rem;margin:0 auto;padding:0 1.3rem 6rem;
 .stat .l{{font:600 .76rem/1.4 ui-sans-serif,system-ui,sans-serif;
   letter-spacing:.02em;color:var(--text-secondary);margin:.5rem 0 0;max-width:19ch}}
 .stat .l b{{color:var(--text-primary)}}
+/* Named narr-toc, not toc: chart_engine's own CSS already defines a .toc
+   class (the appendix's navigation), and reusing the name here collided
+   with it -- this container inherited display:flex with no width or
+   flex-basis from that other rule and collapsed to zero width. */
+.narr-toc{{margin:0 0 3rem;padding-top:.4rem}}
+.narr-toc-label{{font:600 .74rem/1 ui-sans-serif,system-ui,sans-serif;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--text-secondary);
+  margin:0 0 .9rem}}
+.narr-toc ol{{list-style:decimal;margin:0;padding-left:1.4rem;
+  display:flex;flex-direction:column;gap:.85rem}}
+.narr-toc li::marker{{font:600 1rem/1 ui-sans-serif,system-ui,sans-serif;
+  color:var(--text-secondary)}}
+.narr-toc a{{display:block;text-decoration:none;color:inherit}}
+.narr-toc a:hover .narr-toc-title{{color:var(--series-gr)}}
+.narr-toc-title{{display:block;font-weight:700;font-size:1.02rem;
+  letter-spacing:-.005em;transition:color .15s}}
+.narr-toc-gloss{{display:block;font-size:.92rem;line-height:1.4;
+  color:var(--text-secondary);margin-top:.15rem}}
 .ch{{margin:5rem 0 0}}
 .ch h2{{font-family:'Fraunces Bundled',Georgia,'Times New Roman',serif;
   font-weight:700;font-size:clamp(1.6rem,4.2vw,2.1rem);margin:0 0 1.3rem;

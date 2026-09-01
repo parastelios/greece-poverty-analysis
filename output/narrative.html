@@ -385,6 +385,24 @@ body{max-width:48rem;margin:0 auto;padding:0 1.3rem 6rem;
 .stat .l{font:600 .76rem/1.4 ui-sans-serif,system-ui,sans-serif;
   letter-spacing:.02em;color:var(--text-secondary);margin:.5rem 0 0;max-width:19ch}
 .stat .l b{color:var(--text-primary)}
+/* Named narr-toc, not toc: chart_engine's own CSS already defines a .toc
+   class (the appendix's navigation), and reusing the name here collided
+   with it -- this container inherited display:flex with no width or
+   flex-basis from that other rule and collapsed to zero width. */
+.narr-toc{margin:0 0 3rem;padding-top:.4rem}
+.narr-toc-label{font:600 .74rem/1 ui-sans-serif,system-ui,sans-serif;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--text-secondary);
+  margin:0 0 .9rem}
+.narr-toc ol{list-style:decimal;margin:0;padding-left:1.4rem;
+  display:flex;flex-direction:column;gap:.85rem}
+.narr-toc li::marker{font:600 1rem/1 ui-sans-serif,system-ui,sans-serif;
+  color:var(--text-secondary)}
+.narr-toc a{display:block;text-decoration:none;color:inherit}
+.narr-toc a:hover .narr-toc-title{color:var(--series-gr)}
+.narr-toc-title{display:block;font-weight:700;font-size:1.02rem;
+  letter-spacing:-.005em;transition:color .15s}
+.narr-toc-gloss{display:block;font-size:.92rem;line-height:1.4;
+  color:var(--text-secondary);margin-top:.15rem}
 .ch{margin:5rem 0 0}
 .ch h2{font-family:'Fraunces Bundled',Georgia,'Times New Roman',serif;
   font-weight:700;font-size:clamp(1.6rem,4.2vw,2.1rem);margin:0 0 1.3rem;
@@ -507,7 +525,7 @@ and the continuing weight of unemployment, wages and housing.</p>
   </div>
 </div>
 </header>
-<section class="ch" id="ch1"><h2>The Poverty Rate Says One Thing. Households Say Another.</h2>
+<nav class="narr-toc" aria-label="In this piece"><p class="narr-toc-label">In this piece</p><ol><li><a href="#ch1"><span class="narr-toc-title">The Poverty Rate Says One Thing. Households Say Another.</span><span class="narr-toc-gloss">The paradox: two official measures, one gap this piece tries to explain.</span></a></li><li><a href="#ch3"><span class="narr-toc-title">This Was Not Just a Feeling</span><span class="narr-toc-gloss">Testing whether reported hardship is mood, or something real.</span></a></li><li><a href="#ch2"><span class="narr-toc-title">The Ruler Moved With the Fall</span><span class="narr-toc-gloss">Why the official poverty rate barely registered the crisis.</span></a></li><li><a href="#ch4"><span class="narr-toc-title">The Jobs Came Back. The Household Economy Did Not.</span><span class="narr-toc-gloss">What recovered, and what didn't.</span></a></li><li><a href="#ch5"><span class="narr-toc-title">A Decade of Damage Still Counts</span><span class="narr-toc-gloss">Whether the length of the crisis still matters today.</span></a></li><li><a href="#ch6"><span class="narr-toc-title">Where the Evidence Stops</span><span class="narr-toc-gloss">The four ways this analysis reaches its limits.</span></a></li><li><a href="#ch7"><span class="narr-toc-title">What the Numbers Still Miss</span><span class="narr-toc-gloss">What sits outside any model, and how the story ends.</span></a></li></ol></nav><section class="ch" id="ch1"><h2>The Poverty Rate Says One Thing. Households Say Another.</h2>
 <p>Looking at the labour market and some headline economic indicators,
 Greece appears to have recovered in part. Unemployment has
 fallen sharply. Output has grown for most of the last decade. The bailout years are no longer the first
@@ -761,9 +779,10 @@ Greek household microdata, estimates that 48% of the population was poor
 under a poverty line anchored before the crisis, for the same income year
 this project's own reconstruction puts at 40.6%.</p><p class="permitted"><em>What this lets us say.</em> Independent microdata evidence points in the same direction: a fixed pre-crisis poverty line shows much larger crisis-era poverty than contemporaneous AROP.</p><p class="limitation"><em>What it does not.</em> Treating 48% against 40.6% as a direct validation test, a bias estimate, or proof that this project&#x27;s reconstruction is too low by seven to eight points -- the two differ in data, anchor year, price adjustment and vintage.</p><p class="src">Andriopoulou, E., Kanavitsa, E. &amp; Tsakloglou, P. (2020), Decomposing Poverty in Hard Times: Greece 2007-2016. LSE GreeSE Paper No. 149. <a href="https://www.lse.ac.uk/Hellenic-Observatory/Publications/GreeSE-Papers">source</a></p></div>
 
-<p>That doesn't make the fixed line the &ldquo;correct&rdquo; one, and it
-says nothing about how Greece compares to any other country. This is
-Greece against its own past, not against Europe. It asks a different
+<p>That doesn't make the fixed line the &ldquo;correct&rdquo; one, and
+this project's own reconstruction of it says nothing about how Greece
+compares to any other country: it measures Greece against its own past,
+not against Europe. It asks a different
 question: the official rate measures who is far below the middle of
 <em>today's</em> Greece; the fixed line asks how many people are below a
 pre-crisis standard. When a whole country falls together, those two
