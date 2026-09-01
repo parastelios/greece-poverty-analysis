@@ -922,25 +922,27 @@ still matter for understanding why the recovery story feels
 incomplete.</p>
 """))
 
-# ---- 7. What Greece's recovery leaves out (reporting style + ESS + context
+# ---- 7. What the numbers still miss (reporting style + ESS + context
 #         register + the close) ---------------------------------------------
-CH.append(chapter("leftover", "What Greece's Recovery Leaves Out", f"""
+CH.append(chapter("leftover", "What the Numbers Still Miss", f"""
 <p>There is a simpler explanation for everything above, and it deserves to
 be taken seriously rather than waved away: maybe Greeks are just gloomier
-answerers. The evidence so far can't settle that on its own &mdash; it all
-comes from inside one survey. A better test looks across different subjects
+answerers. The evidence so far can't settle that on its own: it all comes
+from inside one survey. A better test looks across different subjects
 entirely. A general tendency to answer darkly should drag everything down
 about equally; a pattern that's extreme on money and milder elsewhere points
-at circumstances instead.</p>
+at circumstances instead. The table below makes that comparison directly:
+Greece against the EU on three different kinds of question, not just the
+one this piece has leaned on so far.</p>
 
 {domain_table()}
 
-{findings_plain(
-    "Greece is worst in Europe on the two money questions and close to "
-    "worst on general life satisfaction &mdash; a difference of degree, "
-    "not of kind, which points toward circumstance rather than "
-    "temperament, though it doesn't prove it.",
-    'V2-7.1')}
+<p>Greece is worst in Europe on the two money questions and close to
+worst on general life satisfaction: a difference of degree, not of kind,
+which makes a purely temperamental explanation harder to sustain, though
+it does not rule one out.</p>
+
+{finding('V2-7.1')}
 
 <p>One thing about that life-satisfaction number is worth holding onto,
 because it's easy to get backwards: it actually <em>rose</em> over the
@@ -957,8 +959,7 @@ test.</p>''')}
 <p>One further check reaches back before the Eurostat series begins. A
 separate European survey shows Greece already sitting about 0.8 points below
 its comparison group before the crisis, falling further during it, and
-recovering its level &mdash; but not its relative position &mdash; by the
-2020s. A long-standing pattern of lower reported wellbeing remains plausible
+recovering its level, but not its relative position, by the 2020s. A long-standing pattern of lower reported wellbeing remains plausible
 on this evidence. It also cannot be established by it.</p>
 
 {context('CTX-7', '''
@@ -968,7 +969,7 @@ position relative to the others did not. This is descriptive corroboration
 and not a test.</p>''')}
 
 <p>Several other factors that come up in every account of the Greek crisis
-were not established here &mdash; institutional trust, the design of the
+were not established here: institutional trust, the design of the
 adjustment programmes, migration, and the incidence of indirect taxes among
 them. Leaving them out silently would be misleading; treating them as
 findings would be worse.</p>
@@ -1001,6 +1002,11 @@ report describes.</p>''')}
 
 </details>
 
+<p>Health belongs here too. Greece has one of the EU&rsquo;s highest rates
+of unmet medical need. But this piece cannot use that fact to explain the
+hardship gap: nothing here tests it against the other findings. It
+belongs in the recovery context, not in the model&rsquo;s main claims.</p>
+
 <p>Greek households report struggling at a rate far above what the official
 poverty figure predicts, and have done so consistently for a decade. Part of
 that distance is now easier to understand: official measures are narrower
@@ -1009,22 +1015,37 @@ corresponds to real material trouble, even if that agreement comes from
 inside a single survey; and both the present and the accumulated past carry
 information the official rate does not.</p>
 
-<p>What the evidence stops short of is just as much part of the answer.
-Nothing here says what causes what. Nothing here shows Greece changing over
-time. Most of what didn't work is unresolved, not ruled out. One central
-result flips on a judgement call the data cannot settle. And a plainer
-explanation &mdash; that Greeks simply answer more darkly &mdash; cannot be
-fully excluded. Most of the 52.6-point gap is still unexplained.</p>
-
 {context('CTX-6', '''
 <p>What runs through all of this is that no single official number captures
 what Greek households are reporting. Each one misses something different,
 and the ones that catch what the others miss are not the headline.</p>''')}
 
-<p>Greece's recovery was real. So was the hardship that remained. The
-official poverty rate is not wrong; it answers a narrower question than the
-one Greek households have been living. A country can recover in its
-averages while its households continue to carry the history.</p>
+<p>What actually recovered is narrower than &ldquo;recovery&rdquo;
+implies. Unemployment fell substantially and genuinely. GDP&rsquo;s
+shortfall against 2008 halved but never closed. Housing pressure eased,
+though the remaining disadvantage was large. Wages didn&rsquo;t just
+stall: they got worse relative to 2008, for longer than any EU country
+but Hungary. Affordability deteriorated sharply. And the thing the whole
+piece exists to explain, the 52.6-point hardship gap, is still mostly
+unexplained by anything tested.</p>
+
+<p>Every alternative explanation that would make the hardship look less
+real was tested and didn&rsquo;t hold up. Mood can&rsquo;t be fully
+excluded, but the pattern is domain-specific, extreme on money, not on
+general wellbeing, and long-standing, predating the crisis on the ESS
+data, which argues against pure temperament. The correlation with
+concrete circumstances is strong. The disadvantage spreads across the
+whole dashboard, not just one measure. None of that adds up to
+&ldquo;Greeks are just answering darkly.&rdquo; It adds up to something
+that looks like real, material hardship that the official rate simply
+isn&rsquo;t built to register.</p>
+
+<p>So &ldquo;unexplained&rdquo; doesn&rsquo;t mean &ldquo;not
+real.&rdquo; It means no economic mechanism this piece could test
+accounts for the size of it. That&rsquo;s a different, and honestly
+stronger, claim than &ldquo;recovery was real but incomplete.&rdquo; The
+official poverty rate is not wrong. It is answering a narrower question
+than the one Greek households have been living.</p>
 """))
 
 
