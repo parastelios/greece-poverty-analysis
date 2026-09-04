@@ -314,6 +314,68 @@ ENTRIES = [
                         "cites a vehicle-stock number, and its travel "
                         "sentence over-generalises to all residents.",
     },
+    {
+        # Raised during editorial review against a viral social-media post
+        # making similar claims with several wrong headline numbers (34% not
+        # 32.2%, 52% not 51.0%, 19th of 38 not 20th of 36). Every figure below
+        # was recomputed from the ECB's own API, not taken from the post or
+        # from this project's own panel -- the wealth accounts have no
+        # relationship to the 2015-2024 hardship model and are not read as
+        # one.
+        "id": "CTX-9", "topic": "Wealth concentration since 2019",
+        "status": "contextual evidence",
+        "permitted": "Independent ECB distributional wealth accounts show "
+                     "that of the €224.8bn increase in Greek household "
+                     "net wealth between mid-2019 and early 2026 (+32.2%), "
+                     "about 72.6% accrued to the wealthiest fifth of "
+                     "households while the bottom half accounted for about "
+                     "9.2%; the bottom half's own share of total wealth "
+                     "slipped slightly, from roughly 9.5% to 9.4%. This "
+                     "offers one plausible mechanism for how aggregate "
+                     "recovery and persistent reported hardship can "
+                     "coexist: a rising net-wealth total does not evenly "
+                     "reach the households reporting the most difficulty.",
+        "forbidden": "Treating this as tested against this project's "
+                     "reported-hardship findings, or as an established "
+                     "explanation for the 52.6-point gap: it sits partly "
+                     "outside the 2015-2024 window and was never checked "
+                     "against any model here. Reading a rising net-wealth "
+                     "figure as equivalent to rising disposable income or "
+                     "an improved ability to pay bills: these changes are "
+                     "driven mostly by property and financial-asset "
+                     "valuations, not household cash flow. Treating the "
+                     "ECB's distributional wealth accounts as final: the "
+                     "ECB itself labels them experimental, combining "
+                     "household survey data with quarterly national "
+                     "accounts and extrapolating between survey waves.",
+        "relates_to_claim": "",
+        "evidence": "ECB Statistical Data Warehouse API, queried directly "
+                    "during editorial review; not this project's own panel",
+        "detect": "distributional wealth accounts|wealth concentration since|"
+                  "top fifth of households|wealthiest fifth",
+        "source": "European Central Bank, Distributional Wealth Accounts "
+                  "(DWA), Greece, household sector (S14), 2019 Q2–2026 Q1.",
+        "source_url": "https://data.ecb.europa.eu/data/datasets/DWA",
+        "source_detail": "Net wealth rose from €698.4bn (2019 Q2) to "
+                         "€923.2bn (2026 Q1), +32.2%. Of the "
+                         "€224.8bn increase, the top decile alone "
+                         "gained €133.4bn; the top two deciles "
+                         "combined gained 72.6% of the total increase, the "
+                         "6th-7th deciles 9.7%, and the bottom half 9.2%. "
+                         "A companion Eurostat check over the same window "
+                         "(namq_10_gdp) puts Greek real GDP growth at "
+                         "+11.7%, ranking 20th of 36 countries with both "
+                         "observations.",
+        "source_status": "verified", "review_date": "2026-09-04",
+        "verified_how": "recomputed directly from the ECB Statistical Data "
+                        "Warehouse API (data-api.ecb.europa.eu) for the "
+                        "total, D6, D7, D9, D10 and B50 net-wealth series, "
+                        "Greece household sector, 2019 Q2 vs 2026 Q1, and "
+                        "from the Eurostat API (namq_10_gdp) for nominal "
+                        "and real GDP across all 36 countries with both "
+                        "quarters available; every headline figure "
+                        "reproduces to two decimal places",
+    },
 ]
 
 PLACEMENT = {

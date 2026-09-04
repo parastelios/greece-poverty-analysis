@@ -1001,6 +1001,14 @@ household's position worsened through tax in a way income-based poverty
 measures capture badly, that would be one route to the kind of gap this
 report describes.</p>''')}
 
+{context('CTX-9', '''
+<p>Independent ECB data show that of the &euro;224.8bn increase in Greek
+household net wealth between 2019 and early 2026, about 72.6% went to the
+wealthiest fifth of households, while the bottom half accounted for about
+9.2% and saw its own share of total wealth slip slightly. Rising wealth at
+the top while reported hardship stays high at the bottom is one plausible
+piece of the picture.</p>''')}
+
 </details>
 
 <p>Health belongs here too. Greece has one of the EU&rsquo;s highest rates

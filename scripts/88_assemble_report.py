@@ -1923,6 +1923,21 @@ tax; and no quantitative link between tax burden and the hardship gap is
 asserted or implied.</p>
 ''')}
 
+{context('CTX-9', '''
+<p>ECB distributional wealth accounts show that of the &euro;224.8bn increase
+in Greek household net wealth between 2019 Q2 and 2026 Q1 (+32.2%), about
+72.6% accrued to the wealthiest fifth of households, while the bottom half
+accounted for about 9.2% and its own wealth share slipped from roughly 9.5%
+to 9.4%. This is one plausible mechanism for how aggregate recovery and
+persistent reported hardship coexist.</p>
+<p>This project ran no test linking wealth concentration to reported
+hardship, and the wealth accounts sit partly outside the 2015-2024 window
+used elsewhere in this report. A rising net-wealth total also does not mean
+rising disposable income: these changes are driven mostly by property and
+financial-asset valuations, not household cash flow, and the ECB itself
+labels the underlying accounts experimental.</p>
+''')}
+
 {methods("How the cross-domain comparison works, and what it cannot settle", '''
 <h4>The comparison</h4>
 <p>Three Eurostat indicators are compared for Greece against the other EU

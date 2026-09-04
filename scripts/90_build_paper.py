@@ -1012,6 +1012,15 @@ positions worsened through taxation in ways income-based poverty measures
 capture poorly, that would be one route to a gap of the kind documented
 here.</p>''')}
 
+{context('CTX-9', '''
+<p>ECB distributional wealth accounts show that of the &euro;224.8bn increase
+in Greek household net wealth from 2019 Q2 to 2026 Q1 (+32.2%), about 72.6%
+accrued to the wealthiest fifth of households, while the bottom half
+accounted for about 9.2%. This project ran no test linking wealth
+concentration to reported hardship, and the accounts are partly outside the
+2015-2024 window used elsewhere in this paper; the ECB itself labels them
+experimental.</p>''')}
+
 <h3>7.4 Implications for measurement</h3>
 
 {context('CTX-6', '''
