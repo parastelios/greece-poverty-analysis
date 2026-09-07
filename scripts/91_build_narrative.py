@@ -372,8 +372,9 @@ answering, or whether it captures a material reality that the first measure
 cannot see on its own.</p>
 
 <p>Two measures carry this whole piece. Income poverty, officially
-at-risk-of-poverty or AROP, is an income test: a household counts
-as poor if its income sits below 60% of its country's median, recalculated
+at-risk-of-poverty or AROP, is an income test: a person counts
+as poor if the income shared across their household, adjusted for household
+size, sits below 60% of the country's median, recalculated
 every year. Reported hardship is different and more direct: in an EU-wide
 survey, households are asked whether they can make ends meet, and those who
 say they manage only &ldquo;with difficulty&rdquo; or &ldquo;with great
@@ -404,11 +405,12 @@ piece tries to understand.</p>
 
 {finding('V2-1.2')}
 
-<p>The chart starts in 2015 because that's where Greece's own hardship gap
-is clearest, not because Eurostat's data is that young. The indicator can
-be reconstructed back past 2010 too, and this project checked that
-reconstruction against the official series everywhere the two overlap,
-but nothing later in this piece relies on it.</p>
+<details class="fig-methods"><summary>Why the chart starts in 2015</summary>
+<p class="fig-caveat">Not because Eurostat's data is that young: it's where
+Greece's own hardship gap is clearest. The indicator can be reconstructed
+back past 2010 too, and this project checked that reconstruction against
+the official series everywhere the two overlap, but nothing later in this
+piece relies on it.</p></details>
 
 {finding('V2-1.1')}
 
@@ -431,11 +433,12 @@ CH.append(chapter("ruler", "The Ruler Moved With the Fall", f"""
 <p>One answer starts with the ruler itself: the official poverty line isn't
 fixed. It moves with the very economy it is supposed to be measuring.</p>
 
-<p>The EU's headline poverty measure, at-risk-of-poverty, is not an income
-level. It is a percentage: 60% of whatever the national median income
-happens to be, <em>that year</em>. In an ordinary economy, where incomes
-drift up slowly and roughly together, that is a reasonable way to define
-being poor relative to your neighbours.</p>
+<p>The EU's headline poverty measure, at-risk-of-poverty, rests on a line
+that isn't fixed in money terms. That line is set at 60% of whatever the
+national median income happens to be, <em>that year</em>, and AROP itself is
+the share of people whose income falls below it. In an ordinary economy,
+where incomes drift up slowly and roughly together, that is a reasonable
+way to define being poor relative to your neighbours.</p>
 
 <p>Greece's economy, from 2010, was not ordinary. Incomes fell together,
 hard and fast, and when the median falls, the poverty line falls with it. A
@@ -472,11 +475,13 @@ pre-crisis standard. When a whole country falls together, those two
 questions split apart.</p>
 
 <p>Europe's broader measure, AROPE (at risk of poverty or social
-exclusion), tries to widen the lens. It adds deprivation and low work
-intensity to income poverty, so it should close the gap if the problem is
-only that income poverty is too narrow. It does close some of it: 9.8 of
-the 52.6 points, under a fifth. But it leaves most of the distance
-untouched, and its contribution shrinks over the decade.</p>
+exclusion), tries to widen the lens. It counts anyone who meets at least one
+of three conditions &mdash; income poverty, severe material deprivation, or
+very low work intensity &mdash; rather than income poverty alone, so it
+should close the gap if the problem is only that income poverty is too
+narrow. It does close some of it: 9.8 of the 52.6 points, under a fifth.
+But it leaves most of the distance untouched, and its contribution shrinks
+over the decade.</p>
 
 {finding('V2-2.1')}
 
@@ -510,20 +515,23 @@ their lives, not about poverty. Everything the rest of this piece does next
 would be measuring an echo, not an economy. That has to be settled first,
 and settled seriously, not waved off as an obvious no.</p>
 
-<p>The test isn't whether a household <em>feels</em> like it's struggling.
-It's whether that feeling moves together with things that name actual
+<p>The test isn't whether one household's answer feels convincing on its
+own. It's whether the national annual rate of that feeling moves together,
+year after year, with the national annual rates of things that name actual
 events, not moods: falling behind on bills, being unable to cover a surprise
 expense, being unable to heat the home properly, going without several
-ordinary things at once. A vague question can be coloured by a bad mood.
-Four specific, concrete facts agreeing with it at once is a much harder
-thing for mood alone to produce.</p>
+ordinary things at once. A vague question can drift with a bad national
+mood. A national mood drifting in step with four separate, concrete annual
+rates, year after year, is a much harder thing for mood alone to
+produce.</p>
 
 {fig('F8', caption="Hardship Moves With Concrete Financial Strain")}
 
 <p><a class="fig-jump" href="#F8">Figure {{fig:F8}}</a>: three of the four
 tabs tell the same story, each as a correlation, where close to 1 means
-two measures rise and fall together and close to 0 means they move
-independently. In Greece's own year-by-year data, reported hardship tracks
+two measures rise and fall together and close to 0 means no strong
+straight-line relationship shows up between them. In Greece's own
+year-by-year data, reported hardship tracks
 an inability to cover a surprise expense almost exactly (<a
 class="fig-jump" href="#F8" data-view="0">Unexpected expenses</a>) at 0.92.
 It tracks going without several ordinary things at once even more closely
@@ -546,8 +554,9 @@ most factual anchor of the four, tracks reported hardship at only
 credit and obligations to fall behind on in the first place. A household
 that lost access to credit years ago, or never had any to lose, can be in
 real difficulty without that difficulty ever showing up as an unpaid bill.
-The weakest link in the evidence turns out to have an ordinary explanation,
-not a suspicious one.</p>
+The weakest link in the evidence has a plausible, ordinary explanation,
+not a suspicious one &mdash; though this project did not test that
+explanation directly.</p>
 
 <p>None of this is independent proof, and that has to be said plainly
 rather than buried. Every one of these items comes from the same interview
@@ -575,7 +584,7 @@ later, and selected without regard to whether each one improved or
 worsened, so there was no room to cherry-pick which sixteen made the
 basket. The first tab (<a class="fig-jump" href="#F21"
 data-view="0">Which measures</a>) lays out where Greece sat on each one, in
-each year, and whether it crossed into the EU's worst fifth, the
+2008 and again in 2024, and whether it crossed into the EU's worst fifth, the
 bottom 20% of member states on that measure, or was already
 there. The point isn't that every one of them moved identically. It's
 that disadvantage spread across the dashboard, not just in one place.</p>
@@ -628,20 +637,23 @@ looks much less complete.</p>
 <p>Start with the part that clearly improved: long-term unemployment,
 meaning worklessness lasting twelve months or more. It stood at 16.4% of
 the labour force in 2015. By 2024 it had fallen to 5.4%. That is
-substantial progress. It means fewer households spent years outside work,
-and fewer had to run through savings, sell what they could, or lean on
-relatives just to absorb the next shock.</p>
+substantial progress. It means fewer households spent years outside
+work &mdash; the kind of prolonged spell that often forces a household to
+run through savings, sell what it can, or lean on relatives, even though
+this project did not track those responses directly.</p>
 
-<p>But employment was the exception, not the full household story. Greek
-real wages stood at about 77%
+<p>But employment recovered furthest, and it was not the whole household
+story. Greek real wages stood at about 77%
 of their 2008 level in 2015; by 2024, about 68%. Not recovering slowly.
 Not recovering. Greek wages have now been below their pre-crisis
 level for fifteen consecutive years, longer than any EU country except
 Hungary. Output per person sits between the two stories: the shortfall
-against Greece's own 2008 peak roughly halved, but it did not close. What
-people can actually buy for that money, consumption adjusted for local
-prices, did rise substantially, from roughly 14,800 to 21,300 in the units
-used for these comparisons. That is real, and worth saying plainly, because
+against Greece's own 2008 peak roughly halved, but it did not close. Actual
+individual consumption &mdash; the volume of goods and services households
+actually consume, measured in a common purchasing-power unit that strips out
+price-level differences between countries, not literal euros &mdash; did
+rise substantially, from roughly 14,800 to 21,300 in that unit. That is
+real, and worth saying plainly, because
 a piece about hardship can leave the impression that nothing improved. But
 the EU median rose faster over the same years, so the distance between
 Greece and its neighbours widened even as Greece's own number climbed.</p>
@@ -662,7 +674,7 @@ reading of each.</p>
 
 <p class="table-legend">The table gives the same comparison in each
 measure's own units: percentages for unemployment, output and housing
-costs; purchasing-power-adjusted euros for material resources; index
+costs; a common purchasing-power unit for material resources; index
 points for wages and affordability. It also keeps the main caution
 visible: an improving Greek number is not always a closing gap. Material
 resources rose sharply in Greece but fell further behind, because the EU
@@ -783,10 +795,11 @@ than some broad law that the past always counts for everything.</p>
 <p>One more piece of the history simply isn't there to look at. What
 households could actually afford, tracked back to before the crisis, can't
 be built at all: the source data only starts in 2015, already years
-into the recovery. Moving the starting line earlier would have solved the
-data problem and created a different one: a measure that could no longer
-see the crisis it exists to describe. So it stays out, and is named here
-rather than quietly absent.</p>
+into the recovery. Moving the starting line later, to when the data
+actually begins, would have solved the data problem and created a
+different one: a measure that could no longer see the crisis it exists to
+describe. So it stays out, and is named here rather than quietly
+absent.</p>
 
 {finding('V2-5.Z')}
 
@@ -802,19 +815,14 @@ pretending it doesn't exist would be its own kind of dishonesty.</p>
 <p>That is enough to say the crisis left a measurable mark. It is not yet
 enough to say how that mark moved inside Greece year by year.</p>
 
-<p>Which is far enough to answer the question this piece opened with, and
-the answer is worth putting in one place. Greece's recovery was real where
-it was about work: unemployment fell sharply, and long-term unemployment
-fell with it. It was not real where a household actually lives, because
-wages sit further below their 2008 level than they did in 2015, what money
-buys has slipped further behind Europe, and housing still takes more than it
-did before the crisis. The official poverty rate measures relative income
-position, which is a different thing, and so registers almost none of that.
-And the length of the crisis still counts: countries carrying more
+<p>Put together with the rest of this piece, that leaves duration as a real
+part of the picture, not the whole of it: countries carrying more
 accumulated unemployment, more years of lost wages and more housing
 deterioration report more hardship even once today's conditions are
 accounted for, though that is an association across countries and not a
-demonstrated cause.</p>
+demonstrated cause inside Greece. How much of the story that still leaves
+unaccounted for, and where this piece's evidence runs out, is what the next
+two sections settle.</p>
 """))
 
 # ---- 6. Where the Evidence Stops (between/within + unsettled + flip
@@ -828,11 +836,12 @@ evidence is part of the story too.</p>
 
 <p>The first limit is time. Everything in <a
 href="#ch{{ch:duration}}">the previous section</a> is a statement about
-how countries differ from each other. It is tempting, and wrong, to turn
-it into a statement about how Greece changed over time. Look for that
-change happening inside Greece itself, over the years, and the evidence
-isn't there to find it: not because it has been ruled out, but because
-this kind of comparison cannot see it either way.</p>
+how countries differ from each other. It is tempting, and wrong, to read it
+as a statement about how Greece changed over time: a between-country
+comparison, on its own, cannot speak to that. This project went further and
+ran within-country tests directly, and they did not settle the question
+either &mdash; not because change was ruled out, but because the available
+data could not pin it down either way.</p>
 
 <div class="finding compact" data-claim-id="V2-5.Y">
 <p><em>Precise result.</em> None of three separate checks found change
@@ -854,12 +863,14 @@ report more difficulty, compared side by side in one snapshot across many
 countries. It cannot show that Greece's own reported difficulty grew as
 Greece's own accumulated hardship grew, year by year. The first compares
 many countries at once. The second would mean watching one country change
-over time, and that isn't what this kind of comparison can see.</p>
+over time, and this project measured that too, directly &mdash; the
+within-country estimates are in this same figure &mdash; but on a decade of
+annual data they are too imprecise to establish or rule out a change.</p>
 
 <p>The second limit is model dependence. The biggest complication is a
 genuine reversal, and it concerns the deprivation items <a
-href="#ch{{ch:footprint}}">from earlier</a>, can't
-pay bills, can't heat the home, which absorbed most of Greece's
+href="#ch{{ch:footprint}}">from earlier</a> &mdash; can't
+pay bills, can't heat the home &mdash; which absorbed most of Greece's
 unexplained excess. Those items come from the same survey as the thing
 they're explaining, and whether to let a measure like that into the
 picture is a real, defensible choice either way. So both versions were
@@ -875,7 +886,7 @@ the two may not be merged or averaged, and selection between them may not
 be made on residual size.</p>
 </div>
 
-{fig('F14', caption="What the Recovery Story Still Misses")}
+{fig('F14', caption="One Predictor Flips Greece From Third-Worst to Twenty-Fifth")}
 
 <blockquote>That is not a wobble. It is a reversal, and there is no honest
 way to pick between the two.</blockquote>
@@ -953,8 +964,13 @@ incomplete.</p>
 CH.append(chapter("leftover", "What the Numbers Still Miss", f"""
 <p>There is a simpler explanation for everything above, and it deserves to
 be taken seriously rather than waved away: maybe Greeks are just gloomier
-answerers. The evidence so far can't settle that on its own: it all comes
-from inside one survey. A better test looks across different subjects
+answerers. The evidence so far can't fully settle that: the strongest
+corroboration for reported hardship, the concrete deprivation items from
+earlier, comes from inside the same survey as the hardship question
+itself. The external evidence elsewhere in this piece &mdash; wages,
+employment, what households can actually buy, the sixteen-measure spread
+&mdash; doesn't share that problem, but none of it was built to test
+reporting style directly. A better test looks across different subjects
 entirely. A general tendency to answer darkly should drag everything down
 about equally; a pattern that's extreme on money and milder elsewhere points
 at circumstances instead. The table below makes that comparison directly:
@@ -994,16 +1010,25 @@ countries fixed each time, Greece's level fell and then recovered while its
 position relative to the others did not. This is descriptive corroboration
 and not a test.</p>''')}
 
+<p>Health is different from the factors that follow: it was tested, not
+skipped. Greece has one of the EU's highest rates of unmet medical
+need &mdash; worst in the Union by 2024, several times the typical member
+state &mdash; and that is a real, troubling fact about Greek life in its
+own right. But four separate health measures, tested against the same
+baseline used elsewhere, do not explain the hardship gap: none of them
+clears it, and most carry a puzzling sign at the country level, where worse
+reported health goes with <em>less</em> reported hardship. That flips once
+countries are compared with their own past rather than with each other:
+within a country, years of worse health are years of more hardship, the
+expected direction. So the health fact stands as real, without becoming
+part of this piece's explanation for the gap.</p>
+
 <p>Other factors come up in every account of the Greek crisis, and none of
 them was established here. Leaving them out silently would be misleading;
 treating them as findings would be worse, so they are recorded for what they
 are.</p>
 
 <details class="disclosure"><summary>What this piece did not test</summary>
-
-<p>Health belongs in this list too. Greece has one of the EU's highest
-rates of unmet medical need, and nothing here tests it against the other
-findings.</p>
 
 {context('CTX-2', '''
 <p>Trust in institutions is low in Greece, and there is a plausible route by
@@ -1033,9 +1058,12 @@ report describes.</p>''')}
 <p>Independent ECB data show that of the &euro;224.8bn increase in Greek
 household net wealth between 2019 and early 2026, about 72.6% went to the
 wealthiest fifth of households, while the bottom half accounted for about
-9.2% and saw its own share of total wealth slip slightly. Rising wealth at
-the top while reported hardship stays high at the bottom is one plausible
-piece of the picture.</p>''')}
+9.2% and saw its own share of total wealth slip slightly. A national wealth
+total climbing while most of the gain bypasses the households least able to
+absorb a shock is one plausible way that recovery and persistent hardship
+can sit side by side &mdash; this project never tested wealth against its
+own hardship measure directly, so it is offered as a plausible mechanism,
+not a demonstrated one.</p>''')}
 
 </details>
 
@@ -1063,8 +1091,9 @@ across a much wider range of indicators.</p>
 <p>The 52.6-point gap remains largely unexplained. That does not make it any
 less real. It means that none of the independently measured mechanisms
 tested here can, robustly and on its own, account for its size. The official
-poverty rate is not wrong: it measures who falls behind today&rsquo;s
-national median income. But on its own, it cannot tell us whether Greek
+poverty rate is not wrong: it measures who falls below a threshold set
+relative to today&rsquo;s national median income. But on its own, it cannot
+tell us whether Greek
 households have regained the economic security they had before the crisis.
 Perhaps, then, the problem is not that Greek households failed to recognize
 the recovery. It is that the public story treated the recovery as complete

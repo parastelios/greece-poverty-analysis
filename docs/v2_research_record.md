@@ -44,7 +44,7 @@ This notebook is the running log. `docs/archive/pre-v2-publication/publication_s
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `main` |
-| HEAD | `e44cf41` Report-alignment pass: synthesis, F7 relocation, governance-diary cleanup |
+| HEAD | `08cc11c` Editorial cleanup: remove unexplained internal codes from reader-facing text |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-09-07 |
 | Frozen V1 reference | `v1-final` |
