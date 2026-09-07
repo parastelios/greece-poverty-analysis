@@ -30,7 +30,22 @@ SPEC_WORDS = {
     "the frozen P3 specification": "the main model",
     "the frozen model": "the main model",
     "machine-blocked from every output document": "kept out of every document",
+    # Stage and construct labels. They are the right names in the technical
+    # report, where a reader can look them up, and meaningless in a magazine
+    # piece: "capped by the E7 ceiling" tells a general reader nothing at all.
+    "capped by the E7 ceiling: E7 may only qualify or withdraw":
+        "capped by the analysis it rests on, which may only qualify or "
+        "withdraw it, never strengthen it",
+    "E3 tested it on this panel and found nothing":
+        "Migration was tested as an aggregate predictor on this panel and "
+        "found nothing",
+    "was tested as a predictor of reported hardship in P3a and does not "
+    "survive": "was tested as a predictor of reported hardship and does not "
+                "survive",
 }
+# Construct ids appear parenthetically after the thing they label, where the
+# label alone already reads correctly: "Accumulated material resources (C1)".
+_CONSTRUCT_ID = re.compile(r" \((?:[A-Z]\d[a-z]?)\)")
 
 
 def reader_text(s):
@@ -39,7 +54,7 @@ def reader_text(s):
         s = s.replace(f" ({code})", "")
     for a, b in SPEC_WORDS.items():
         s = s.replace(a, b)
-    return s
+    return _CONSTRUCT_ID.sub("", s)
 
 
 FIG_SOURCE = {}
@@ -157,6 +172,12 @@ def fig(fid, caption=None):
                         f"<figcaption>{caption}</figcaption>", html_, count=1, flags=re.S)
     html_ = html_.replace(
         "<figcaption>", f'<figcaption><span class="fignum">Figure {{fig:{fid}}}</span> ', 1)
+    # The figure's caveat is the report's own text, written for a reader who
+    # can look a stage id up. Here it is rewritten on the way in, exactly as
+    # the frozen wording is.
+    html_ = re.sub(r'(<p class="fig-caveat">)(.*?)(</p>)',
+                    lambda m: m.group(1) + reader_text(m.group(2)) + m.group(3),
+                    html_, count=1, flags=re.S)
     html_ = re.sub(
         r'(<p class="fig-caveat">.*?</p>)',
         r'<details class="fig-methods"><summary>Methods and limits</summary>\1</details>',
@@ -209,7 +230,8 @@ def finding(cid):
     c = claims.loc[cid]
     cav = ""
     if str(c.caveats) not in ("nan", ""):
-        items = "; ".join(html.escape(x.strip()) for x in str(c.caveats).split(" | "))
+        items = "; ".join(html.escape(reader_text(x.strip()))
+                          for x in str(c.caveats).split(" | "))
         cav = f'<p class="limits"><em>The limits of this.</em> {items}.</p>'
     return (f'<div class="finding" data-claim-id="{cid}">'
             f"<p>{html.escape(reader_text(c.canonical_wording))}</p>{cav}</div>")
@@ -280,9 +302,9 @@ def context(cid, prose, expand=False):
                if isinstance(e.source_url, str) and e.source_url else "")
         cite = f'<p class="src">{html.escape(str(e.source))}{url}</p>'
     body = (f'<p class="permitted"><em>What this lets us say.</em> '
-            f"{html.escape(str(e.permitted))}</p>"
+            f"{html.escape(reader_text(e.permitted))}</p>"
             f'<p class="limitation"><em>What it does not.</em> '
-            f"{html.escape(str(e.forbidden))}</p>{cite}")
+            f"{html.escape(reader_text(e.forbidden))}</p>{cite}")
     if expand:
         body = f'<details class="ctx-detail"><summary>The full caveat</summary>{body}</details>'
     return (f'<div class="ctx" data-context-id="{cid}">'
@@ -1042,32 +1064,21 @@ information the official rate does not.</p>
 what Greek households are reporting. Each one misses something different,
 and the ones that catch what the others miss are not the headline.</p>''')}
 
-<p>What actually recovered is narrower than &ldquo;recovery&rdquo;
-implies. Unemployment fell substantially and genuinely. GDP&rsquo;s
-shortfall against 2008 halved but never closed. Housing pressure eased,
-though the remaining disadvantage was large. Wages didn&rsquo;t just
-stall: they got worse relative to 2008, for longer than any EU country
-but Hungary. Affordability deteriorated sharply. And the thing the whole
-piece exists to explain, the 52.6-point hardship gap, is still mostly
-unexplained by anything tested.</p>
+<p>What recovered was narrower than the word &ldquo;recovery&rdquo;
+suggests. Employment improved substantially, and housing pressure eased. But
+GDP per person never returned to its 2008 level, real wages remained far
+below it, and purchasing power fell further behind the European median. The
+checks that could be run did not reduce reported hardship to pessimism or
+measurement error. It moves with concrete material difficulties and appears
+across a much wider range of indicators.</p>
 
-<p>The checks that could be run did not reduce the result to mood or to a
-measurement artefact. Mood cannot be excluded
-outright, but the pattern is domain-specific, extreme on money, not on
-general wellbeing, and long-standing, predating the crisis on the ESS
-data, which argues against pure temperament. The correlation with
-concrete circumstances is strong. The disadvantage spreads across the
-whole dashboard, not just one measure. None of that adds up to
-&ldquo;Greeks are just answering darkly.&rdquo; It adds up to something
-that looks like real, material hardship that the official rate simply
-isn&rsquo;t built to register.</p>
-
-<p>So &ldquo;unexplained&rdquo; doesn&rsquo;t mean &ldquo;not
-real.&rdquo; It means that no independently measured mechanism
-tested here accounts, robustly and on its own, for the size of the gap. That&rsquo;s a different, and honestly
-stronger, claim than &ldquo;recovery was real but incomplete.&rdquo; The
-official poverty rate is not wrong. It is answering a narrower question
-than the one Greek households have been living.</p>
+<p>The 52.6-point gap remains largely unexplained. That does not make it any
+less real. It means that none of the independently measured mechanisms
+tested here can, robustly and on its own, account for its size. The official
+poverty rate is not wrong: it measures who falls behind today&rsquo;s
+national median income. But on its own, it cannot tell us whether Greek
+households have regained the economic security they had before the
+crisis.</p>
 """))
 
 
@@ -1420,6 +1431,15 @@ BANNED = ["V2-", "CTX-", "L-1", "L-2", "L-3", "L-4", "frozen claim", "aic_pps_pc
 leaked = [b for b in BANNED if b in visible]
 if leaked:
     raise SystemExit(f"internal vocabulary visible in the narrative: {leaked}")
+
+# Stage and construct labels (E7, P3a, C1) are how this project names its own
+# machinery. They belong in the technical report, and reached readers here
+# through three routes at once: claim caveats, context-register fields and a
+# figure's own caveat, none of which passed through reader_text().
+_stage_codes = sorted(set(re.findall(r"\b(?:E\d|P\d[a-z]?|C\d)\b", visible)))
+if _stage_codes:
+    raise SystemExit(
+        f"internal stage labels visible in the narrative: {_stage_codes}")
 
 # The findings carry their own statistics and those stay as established. The
 # companion's OWN prose is what has to stay clear of jargon, so it is checked
