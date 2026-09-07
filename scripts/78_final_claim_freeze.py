@@ -178,9 +178,10 @@ claim("V2-5.X", "5. Accumulated history",
       ["the accumulated measure is inconclusive, NOT unsupported"],
       narrative="For affordability it is today's prices against today's wages that tracks hardship.")
 claim("V2-5.Y", "5. Accumulated history",
-      "No accumulated measure permits dynamic wording. Across P5, E4 and E7 no "
-      "within-country estimate is significant in the adverse direction and no "
-      "first-difference test supports one.",
+      "No accumulated measure permits dynamic wording. Across the three "
+      "related accumulated-history checks no within-country estimate is "
+      "significant in the adverse direction and no first-difference test "
+      "supports one.",
       "retained", "p5f_frozen_result.json, e4_results.csv, e7_dynamic.csv",
       "pre-planned confirmatory", True,
       ["three RELATED checks on one panel, not independent replications",
@@ -188,7 +189,7 @@ claim("V2-5.Y", "5. Accumulated history",
       narrative="We cannot say hardship rose inside Greece as the damage piled up. "
                 "Only that countries carrying more damage report more hardship.")
 claim("V2-5.Z", "5. Accumulated history",
-      "Accumulated material resources (C1) could not be tested at all: the "
+      "Accumulated material resources could not be tested at all: the "
       "source series begins in 2015 and no 2008 baseline exists. The baseline "
       "was not moved to make it testable.",
       "retained", "e4_feasibility.csv", "descriptive corroboration", False,
@@ -266,7 +267,8 @@ claim("L-3", "Legacy",
       "gate but its prior stage did not support it, so the pre-registered "
       "ceiling caps it. It is reported and is not a finding.",
       "descriptive_only", "e7_results.csv", "post-selection robustness", False,
-      ["capped by the E7 ceiling: E7 may only qualify or withdraw"],
+      ["capped by the no-promotion rule: it may only qualify or withdraw "
+       "support"],
       legacy=True,
       narrative="One result looked good but arrived by a route we had closed in advance.")
 claim("L-4", "Legacy",

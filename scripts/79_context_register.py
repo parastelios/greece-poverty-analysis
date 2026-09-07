@@ -59,7 +59,7 @@ ENTRIES = [
         "relates_to_claim": "V2-7.1",
         "evidence": "reporting_style_cross_indicator.csv",
         "detect": "generic pessimism|reporting style|reporting culture",
-        "source": "reporting_style_cross_indicator.csv, this project",
+        "source": "reporting_style_cross_indicator.csv, this project.",
         "source_url": "", "source_detail": "Greece ranks 1st of 27 on hardship "
                         "and financial expectations, 2nd-6th on life satisfaction.",
         "source_status": "verified", "review_date": "2026-08-23",
@@ -150,9 +150,10 @@ ENTRIES = [
         "permitted": "A plausible consequence of prolonged labour-market damage "
                      "and a possible contributor to it. It is UNSUPPORTED as an "
                      "independent aggregate predictor here.",
-        "forbidden": "Reading it as a driver, or as ruled out. E3 tested it on "
-                     "this panel and found nothing (p=0.4006), which speaks to "
-                     "aggregate prediction and not to either causal direction.",
+        "forbidden": "Reading it as a driver, or as ruled out. The aggregate "
+                     "migration test on this panel returned nothing (p=0.4006), "
+                     "which speaks to aggregate prediction and not to either "
+                     "causal direction.",
         "relates_to_claim": "", "evidence": "e3_results.csv (null), external literature",
         "detect": "net migration|emigration|brain drain",
         "source": "Lazaretou, S. (2016), The Greek brain drain: the new "
@@ -160,8 +161,8 @@ ENTRIES = [
                   "Economic Bulletin, Bank of Greece, issue 43, pp. 31-53.",
         "source_url": "https://www.bankofgreece.gr/BogEkdoseis/econbull201607.pdf",
         "source_detail": "427,000 residents aged 15-64 left permanently "
-                         "2008-2013; ~223,000 of them aged 25-39. The E3 null "
-                         "(p=0.4006) is this project's own evidence.",
+                         "2008-2013; ~223,000 of them aged 25-39. That null "
+                         "result (p=0.4006) is this project's own evidence.",
         "source_status": "verified", "review_date": "2026-08-23",
         "verified_how": "RePEc record confirmed: bog:econbl:y:2016:i:43:p:31",
     },

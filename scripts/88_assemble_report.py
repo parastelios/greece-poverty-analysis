@@ -1156,15 +1156,6 @@ Decomposing that would require attributing movement to each side, which this
 figure does not do and which the caption states explicitly.</p>
 ''')}
 
-<h3>Convergence, and what it does and does not mean</h3>
-
-<p>Stage 1 noted that the gap narrows after 2016 without closing. Greece did
-not move in one direction across every measure behind it: some crisis-era
-conditions improved substantially, while household resources and
-affordability either recovered more slowly than the rest of Europe or
-deteriorated further. That matters because a falling unemployment rate alone
-cannot describe what households actually faced.</p>
-
 {fig_with_extra_fallback('F7',
     '<p class="table-note">Ten of the fourteen measures above, restated with '
     "the EU-country median spelled out in each measure's own unit and a "
@@ -1523,7 +1514,7 @@ anyway is that conditional tests run after seeing which measures succeeded are
 selected tests, and a rule that can be set aside when its result is inconvenient
 is not a rule.</p>
 
-{methods("Accumulation, conditioning, the Mundlak decomposition, and the E7 ceiling", '''
+{methods("Accumulation, conditioning, the Mundlak decomposition, and the Stage 5 no-promotion rule", '''
 <h4>How accumulation is computed</h4>
 <p>Each accumulated series is a cumulative sum of annual excess over a fixed
 baseline. The property that matters is that no accumulated value at year
@@ -1565,7 +1556,7 @@ data &mdash; roughly a decade of annual observations per country, with slow-movi
 series &mdash; and not a finding. The figure shows both estimates with their
 intervals so that the imprecision is visible.</p>
 
-<h4>The E7 ceiling</h4>
+<h4>The Stage 5 no-promotion rule</h4>
 <p>This stage may only qualify or withdraw support that Stage 4 established. It
 may never create support. The reason is that these conditional tests are run
 after seeing which measures succeeded, which makes them selected tests: a

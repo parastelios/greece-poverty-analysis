@@ -368,9 +368,10 @@ FIGS["F21"] = dict(
            ("How many measures", v21a)],
     view_series=[f21b, f21],
     extra_caveat=(
-        f"DESCRIPTIVE ONLY. Breadth was tested as a predictor of reported "
-        f"hardship in P3a and does not survive: on its own it is not "
-        f"significant (p = {_P3A_ALONE:.2f}), and once the other accumulated "
+        f"DESCRIPTIVE ONLY. Breadth was tested as an incremental predictor of "
+        f"reported hardship in the reference model and does not survive: on "
+        f"its own it is not significant (p = {_P3A_ALONE:.2f}), and once the "
+        f"other accumulated "
         f"measures enter the model its coefficient reverses sign. It "
         f"summarises the condition rather than explaining it. THE BASKET IS "
         f"FIXED: these are the {_N} indicators with a valid EU position in "

@@ -637,12 +637,13 @@ def _breadth_test_note():
     """
     f = OUT / "p3a_results.csv"
     if not f.exists():
-        return ("the predictive test (P3a) has not been run in this build, so "
-                "treat this purely as a description of the condition.")
+        return ("the incremental breadth test has not been run in this build, "
+                "so treat this purely as a description of the condition.")
     r = pd.read_csv(f)
     alone = r[r.step == "alone"].iloc[0]
     with_ctl = r[r.step == "P3_plus_famD"]
-    s = (f"tested as a predictor of reported hardship in P3a. On its own it is "
+    s = (f"tested as an incremental predictor of reported hardship in the "
+         f"reference model. On its own it is "
          f"not significant (coefficient {alone.coef:+.2f}, p = {alone.p:.2f})")
     if len(with_ctl):
         w = with_ctl.iloc[0]

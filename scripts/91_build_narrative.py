@@ -30,18 +30,6 @@ SPEC_WORDS = {
     "the frozen P3 specification": "the main model",
     "the frozen model": "the main model",
     "machine-blocked from every output document": "kept out of every document",
-    # Stage and construct labels. They are the right names in the technical
-    # report, where a reader can look them up, and meaningless in a magazine
-    # piece: "capped by the E7 ceiling" tells a general reader nothing at all.
-    "capped by the E7 ceiling: E7 may only qualify or withdraw":
-        "capped by the analysis it rests on, which may only qualify or "
-        "withdraw it, never strengthen it",
-    "E3 tested it on this panel and found nothing":
-        "Migration was tested as an aggregate predictor on this panel and "
-        "found nothing",
-    "was tested as a predictor of reported hardship in P3a and does not "
-    "survive": "was tested as a predictor of reported hardship and does not "
-                "survive",
 }
 # Construct ids appear parenthetically after the thing they label, where the
 # label alone already reads correctly: "Accumulated material resources (C1)".

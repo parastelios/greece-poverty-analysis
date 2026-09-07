@@ -2081,7 +2081,7 @@ base from country-level EU-SILC releases rather than household microdata,
 puts the comparable income year at 40.6%. No test links the two figures;
 the comparison is descriptive only.</p>''',
     "CTX-4": '''
-<p>Migration <em>was</em> tested in this project: E3, an aggregate
+<p>Migration <em>was</em> tested in this project: an aggregate
 net-migration predictor on the same 27-country panel as every other
 present-day construct, p&nbsp;=&nbsp;0.4006 -- inconclusive under the power
 available, not a demonstrated null. The Bank of Greece departure count

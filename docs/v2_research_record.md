@@ -44,7 +44,7 @@ This notebook is the running log. `docs/archive/pre-v2-publication/publication_s
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `main` |
-| HEAD | `d1ef60a` Report: AROP counts people, not households |
+| HEAD | `e44cf41` Report-alignment pass: synthesis, F7 relocation, governance-diary cleanup |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-09-07 |
 | Frozen V1 reference | `v1-final` |
