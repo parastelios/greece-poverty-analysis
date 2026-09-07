@@ -1,4 +1,4 @@
-"""Render the three published HTML reports to print-ready PDFs.
+"""Render the published HTML documents to print-ready PDFs.
 
 Uses headless Chrome, which is required rather than incidental: report.html
 draws every chart from an embedded JSON blob at runtime, and both report.html
@@ -34,6 +34,7 @@ OUT = ROOT / "output" / "pdf"
 DOCS = [
     ("v2_report.html", "Greek-Poverty-Paradox-technical-report.pdf"),
     ("narrative.html", "Greek-Poverty-Paradox-narrative.pdf"),
+    ("narrative_el.html", "Greek-Poverty-Paradox-narrative-EL.pdf"),
     ("academic_paper.html", "Greek-Poverty-Paradox-working-paper.pdf"),
     # The appendix now hides most of its content behind collapsed groups, so it
     # is exactly the document where a print path has to be proved rather than

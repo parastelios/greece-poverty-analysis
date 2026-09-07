@@ -34,8 +34,7 @@ COUNTRIES = {
 # have to agree: a reader told to open «Πόσοι δείκτες» must find that tab.
 # ---------------------------------------------------------------------------
 TABS = {
-    "How Greece's hardship gap developed":
-        "Πώς εξελίχθηκε το χάσμα οικονομικής δυσκολίας της Ελλάδας",
+    "How Greece's hardship gap developed": "Πώς εξελίχθηκε το χάσμα",
     "Where countries stood in 2024": "Πού βρίσκονταν οι χώρες το 2024",
     "Unexpected expenses": "Απρόοπτα έξοδα",
     "Material deprivation": "Υλική στέρηση",
@@ -43,7 +42,7 @@ TABS = {
     "Falling behind on bills": "Καθυστερήσεις σε λογαριασμούς",
     "Which measures": "Ποιοι δείκτες",
     "How many measures": "Πόσοι δείκτες",
-    "Who falls below a fixed line": "Ποιοι βρίσκονται κάτω από ένα σταθερό όριο",
+    "Who falls below a fixed line": "Ποιοι είναι κάτω από σταθερό όριο",
     "What the line itself is worth": "Πόσο αξίζει το ίδιο το όριο",
     "Headline measures": "Βασικοί δείκτες",
     "Components": "Συστατικά",
@@ -53,9 +52,9 @@ TABS = {
     "Material resources": "Υλικοί πόροι",
     "Wage-adjusted affordability": "Αγοραστική πίεση",
     "Accumulated unemployment": "Συσσωρευμένη ανεργία",
-    "Years wages below 2008": "Χρόνια με μισθούς κάτω από το 2008",
-    "Housing deterioration since 2010": "Επιδείνωση στέγασης από το 2010",
-    "Between vs within": "Μεταξύ χωρών ή εντός χωρών",
+    "Years wages below 2008": "Χρόνια μισθών κάτω από το 2008",
+    "Housing deterioration since 2010": "Συσσωρευμένη επιβάρυνση στέγασης",
+    "Between vs within": "Μεταξύ ή εντός χωρών",
 }
 
 # ---------------------------------------------------------------------------
@@ -73,23 +72,23 @@ LABELS = {
     "EU: under 18": "ΕΕ: κάτω των 18",
     # medians
     "EU median": "Διάμεση τιμή ΕΕ",
-    "EU-country median": "Διάμεση τιμή των χωρών της ΕΕ",
+    "EU-country median": "Διάμεσος των χωρών της ΕΕ",
     # paired measure/country series
-    "AROPE: EU median": "AROPE: διάμεση τιμή ΕΕ",
+    "AROPE: EU median": "AROPE: διάμεσος ΕΕ",
     "AROPE: Greece": "AROPE: Ελλάδα",
-    "Income poverty: EU median": "Εισοδηματική φτώχεια: διάμεση τιμή ΕΕ",
+    "Income poverty: EU median": "Εισοδηματική φτώχεια: διάμεσος ΕΕ",
     "Income poverty: Greece": "Εισοδηματική φτώχεια: Ελλάδα",
-    "Material deprivation: EU median": "Υλική στέρηση: διάμεση τιμή ΕΕ",
+    "Material deprivation: EU median": "Υλική στέρηση: διάμεσος ΕΕ",
     "Material deprivation: Greece": "Υλική στέρηση: Ελλάδα",
-    "Reported hardship: EU median": "Οικονομική δυσκολία: διάμεση τιμή ΕΕ",
+    "Reported hardship: EU median": "Οικονομική δυσκολία: διάμεσος ΕΕ",
     "Reported hardship: Greece": "Οικονομική δυσκολία: Ελλάδα",
     "EU median: falling behind on bills":
-        "Διάμεση τιμή ΕΕ: καθυστερήσεις σε λογαριασμούς",
-    "EU median: income poverty": "Διάμεση τιμή ΕΕ: εισοδηματική φτώχεια",
-    "EU median: keeping the home warm": "Διάμεση τιμή ΕΕ: θέρμανση του σπιτιού",
-    "EU median: material deprivation": "Διάμεση τιμή ΕΕ: υλική στέρηση",
-    "EU median: reported hardship": "Διάμεση τιμή ΕΕ: οικονομική δυσκολία",
-    "EU median: unexpected expenses": "Διάμεση τιμή ΕΕ: απρόοπτα έξοδα",
+        "Διάμεσος ΕΕ: καθυστερήσεις σε λογαριασμούς",
+    "EU median: income poverty": "Διάμεσος ΕΕ: εισοδηματική φτώχεια",
+    "EU median: keeping the home warm": "Διάμεσος ΕΕ: θέρμανση του σπιτιού",
+    "EU median: material deprivation": "Διάμεσος ΕΕ: υλική στέρηση",
+    "EU median: reported hardship": "Διάμεσος ΕΕ: οικονομική δυσκολία",
+    "EU median: unexpected expenses": "Διάμεσος ΕΕ: απρόοπτα έξοδα",
     "Greece: current-year threshold": "Ελλάδα: όριο της χρονιάς",
     "Greece: falling behind on bills": "Ελλάδα: καθυστερήσεις σε λογαριασμούς",
     "Greece: fixed 2008 threshold": "Ελλάδα: σταθερό όριο του 2008",
@@ -113,20 +112,19 @@ LABELS = {
     "Citizens leaving the country": "Πολίτες που φεύγουν από τη χώρα",
     "Compounded inflation since 2008": "Σύνθετος πληθωρισμός από το 2008",
     "Cumulative GDP shortfall": "Σωρευτικό έλλειμμα ΑΕΠ",
-    "Cumulative threshold shortfall": "Σωρευτικό έλλειμμα του ορίου φτώχειας",
+    "Cumulative threshold shortfall": "Σωρευτικό έλλειμμα ορίου",
     "Cumulative wage shortfall": "Σωρευτικό μισθολογικό έλλειμμα",
     "Economic output per person": "Οικονομικό προϊόν ανά άτομο",
     "Food prices": "Τιμές τροφίμων",
     "Hardship gap against AROPE": "Χάσμα δυσκολίας έναντι AROPE",
     "Hardship gap against income poverty":
-        "Χάσμα δυσκολίας έναντι εισοδηματικής φτώχειας",
-    "Hours worked against hourly pay": "Ώρες εργασίας έναντι ωριαίας αμοιβής",
+        "Χάσμα έναντι εισοδηματικής φτώχειας",
+    "Hours worked against hourly pay": "Ώρες έναντι ωριαίας αμοιβής",
     "Hours worked each week": "Ώρες εργασίας την εβδομάδα",
-    "Household income after inflation":
-        "Εισόδημα νοικοκυριού μετά τον πληθωρισμό",
+    "Household income after inflation": "Εισόδημα μετά τον πληθωρισμό",
     "Housing and energy prices": "Τιμές στέγασης και ενέργειας",
-    "Housing deterioration since 2010": "Επιδείνωση στέγασης από το 2010",
-    "Housing-cost overburden": "Υπερβολική επιβάρυνση από το κόστος στέγασης",
+    "Housing deterioration since 2010": "Συσσωρευμένη επιβάρυνση στέγασης",
+    "Housing-cost overburden": "Επιβάρυνση κόστους στέγασης",
     "Income inequality": "Εισοδηματική ανισότητα",
     "Income poverty (AROP)": "Εισοδηματική φτώχεια (AROP)",
     "Keeping the home warm": "Θέρμανση του σπιτιού",
@@ -136,18 +134,18 @@ LABELS = {
     "Pay per hour worked": "Αμοιβή ανά ώρα εργασίας",
     "Prices measured against wages": "Τιμές σε σχέση με τους μισθούς",
     "Prices overall": "Γενικό επίπεδο τιμών",
-    "Real household income": "Πραγματικό εισόδημα νοικοκυριού",
+    "Real household income": "Πραγματικό εισόδημα",
     "Real poverty threshold": "Πραγματικό όριο φτώχειας",
     "Real wages": "Πραγματικοί μισθοί",
-    "Reported hardship": "Δηλωμένη οικονομική δυσκολία",
-    "Share below own GDP peak": "Απόσταση από τη δική της κορύφωση ΑΕΠ",
+    "Reported hardship": "Οικονομική δυσκολία",
+    "Share below own GDP peak": "Απόσταση από την κορύφωση ΑΕΠ",
     "The poverty line after inflation": "Το όριο φτώχειας μετά τον πληθωρισμό",
     "Wage-adjusted affordability": "Αγοραστική πίεση",
     "Wages after inflation": "Μισθοί μετά τον πληθωρισμό",
-    "What households actually spend": "Τι ξοδεύουν πραγματικά τα νοικοκυριά",
+    "What households actually spend": "Τι ξοδεύουν τα νοικοκυριά",
     "What households expect of the year ahead":
-        "Τι περιμένουν τα νοικοκυριά για τον επόμενο χρόνο",
-    "Years wages below 2008": "Χρόνια με μισθούς κάτω από το 2008",
+        "Προσδοκίες νοικοκυριών για τον χρόνο",
+    "Years wages below 2008": "Χρόνια μισθών κάτω από το 2008",
     # categorical cell values in the breadth table
     "entered worst fifth": "μπήκε στο χειρότερο πέμπτο",
     "already worst fifth": "ήδη στο χειρότερο πέμπτο",
@@ -261,7 +259,7 @@ HEADERS = {
         "Χρόνια με μισθούς κάτω από το 2008 (συνεχόμενα χρόνια κάτω από το "
         "επίπεδο του 2008)",
     "Housing deterioration since 2010 (percentage-point-years above 2010)":
-        "Επιδείνωση στέγασης από το 2010 (μονάδες-έτη πάνω από το 2010)",
+        "Συσσωρευμένη επιβάρυνση από το κόστος στέγασης (μονάδες-έτη πάνω από το 2010)",
 }
 
 # ---------------------------------------------------------------------------
@@ -420,7 +418,7 @@ ALT = {
         "έτος, σε συνεχόμενα χρόνια κάτω από το επίπεδο του 2008",
     "Housing deterioration since 2010 for all 27 countries, latest year, in "
     "percentage-point-years above 2010":
-        "Η επιδείνωση της στέγασης από το 2010 και για τις 27 χώρες, τελευταίο "
+        "Η συσσωρευμένη επιβάρυνση από το κόστος στέγασης από το 2010, και για τις 27 χώρες, τελευταίο "
         "έτος, σε μονάδες-έτη πάνω από το 2010",
     "Standardised between-country against within-country estimates for every "
     "accumulated measure":
@@ -597,7 +595,7 @@ DETAIL_NAMES = {
     "index, 2008=100": "δείκτης, 2008=100",
     "index points, 2008 = 100": "μονάδες δείκτη, 2008 = 100",
     # right-hand row labels and band shading
-    "no dynamic support": "καμία ένδειξη μεταβολής στον χρόνο",
+    "no dynamic support": "χωρίς μεταβολή",
     "EU's worst fifth": "χειρότερο πέμπτο της ΕΕ",
 }
 STRINGS.update(DETAIL_NAMES)
