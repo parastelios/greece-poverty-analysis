@@ -44,7 +44,7 @@ This notebook is the running log. `docs/archive/pre-v2-publication/publication_s
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `main` |
-| HEAD | `a9dfb7c` Add verify_editions.py to the verify and release gates |
+| HEAD | `ce4cc19` English edition: strip internal stage labels, and a sharper close |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-09-07 |
 | Frozen V1 reference | `v1-final` |

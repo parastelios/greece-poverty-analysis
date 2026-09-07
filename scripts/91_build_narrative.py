@@ -368,20 +368,20 @@ CH = []
 
 # ---- 1. The Poverty Rate Says One Thing. Households Say Another. ----------
 CH.append(chapter("paradox", "The Poverty Rate Says One Thing. Households Say Another.", f"""
-<p>Looking at the labour market and some headline economic indicators,
-Greece appears to have recovered in part. Unemployment has
-fallen sharply. Output has grown for most of the last decade. The bailout years are no longer the first
-fact most economic summaries reach for.</p>
+<p>There is a strange reversal in the public debate about Greece's economy.
+When unemployment falls or GDP grows, the indicators are treated as the final
+proof of recovery. But when two in three households say they struggle to make
+ends meet, attention shifts away from the indicators and towards household
+behaviour: coffee, takeaway food, travel, &ldquo;exaggeration&rdquo;, or
+Greek pessimism.</p>
 
-<p>But the closer we move to households, the less complete that recovery
-looks.</p>
-
-<p>By the official income-poverty measure, Greece is in difficulty, but not
-exceptional. By what households report, it is almost in a category of its
-own. That is
-the paradox this piece unfolds: income poverty and reported hardship are
-telling two different stories, and the poverty rate becomes misleading when
-it is read alone, without context.</p>
+<p>Is that shift justified? By the official income-poverty measure, Greece is
+in difficulty but not outside the European range. By what households report,
+it is almost in a category of its own. That is the paradox this piece
+unfolds: income poverty and reported hardship are telling two different
+stories. The question is whether the second is merely a darker way of
+answering, or whether it captures a material reality that the first measure
+cannot see on its own.</p>
 
 <p>Two measures carry this whole piece. Income poverty, officially
 at-risk-of-poverty or AROP, is an income test: a household counts
@@ -1077,8 +1077,10 @@ less real. It means that none of the independently measured mechanisms
 tested here can, robustly and on its own, account for its size. The official
 poverty rate is not wrong: it measures who falls behind today&rsquo;s
 national median income. But on its own, it cannot tell us whether Greek
-households have regained the economic security they had before the
-crisis.</p>
+households have regained the economic security they had before the crisis.
+Perhaps, then, the problem is not that Greek households failed to recognize
+the recovery. It is that the public story treated the recovery as complete
+before it had fully reached them.</p>
 """))
 
 
@@ -1352,10 +1354,10 @@ PAGE = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
 <header class="masthead">
 <p class="rubric">The Greek Poverty Paradox</p>
 <h1>If Greece Has Recovered, Why Do So Many Households Still Struggle?</h1>
-<p class="standfirst">Official income poverty affects roughly one person in
-five. Yet about two households in three report difficulty making ends meet.
-The distance between them reveals a moving poverty line, an uneven recovery
-and the continuing weight of unemployment, wages and housing.</p>
+<p class="standfirst">Greece&rsquo;s labour market recovered faster than its
+households. The distance between income poverty and reported hardship shows
+what the recovery headlines leave out: a moving poverty line, damaged wages,
+pressure on purchasing power and the long shadow of the crisis.</p>
 <div class="stat-pair">
   <div class="stat stat--official">
     <span class="n">1 in 5</span>
