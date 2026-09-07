@@ -791,18 +791,30 @@ pretending it doesn't exist would be its own kind of dishonesty.</p>
 
 <p>That is enough to say the crisis left a measurable mark. It is not yet
 enough to say how that mark moved inside Greece year by year.</p>
+
+<p>Which is far enough to answer the question this piece opened with, and
+the answer is worth putting in one place. Greece's recovery was real where
+it was about work: unemployment fell sharply, and long-term unemployment
+fell with it. It was not real where a household actually lives, because
+wages sit further below their 2008 level than they did in 2015, what money
+buys has slipped further behind Europe, and housing still takes more than it
+did before the crisis. The official poverty rate measures relative income
+position, which is a different thing, and so registers almost none of that.
+And the length of the crisis still counts: countries carrying more
+accumulated unemployment, more years of lost wages and more housing
+deterioration report more hardship even once today's conditions are
+accounted for, though that is an association across countries and not a
+demonstrated cause.</p>
 """))
 
 # ---- 6. Where the Evidence Stops (between/within + unsettled + flip
 #         + the two failed designs) -----------------------------------------
 CH.append(chapter("limits", "Where the Evidence Stops", f"""
-<p>Not every question this piece asked got a clean answer. Some hit a wall
-the evidence was not built to see past. Some were tested, but not hard
-enough to say yes or no. One depended on a single defensible modelling
-choice, and flipped completely depending on which way that choice went.
-Two ideas that might have mattered simply failed. This section walks
-through those limits because the boundary of the evidence is part of the
-story too.</p>
+<p>Not every question this piece asked got a clean answer. Two of those
+limits change how everything above should be read, and they belong in the
+open. The rest, measures the data was too thin to judge and two designs
+that failed outright, are recorded in full below. The boundary of the
+evidence is part of the story too.</p>
 
 <p>The first limit is time. Everything in <a
 href="#ch{{ch:duration}}">the previous section</a> is a statement about
@@ -834,27 +846,7 @@ Greece's own accumulated hardship grew, year by year. The first compares
 many countries at once. The second would mean watching one country change
 over time, and that isn't what this kind of comparison can see.</p>
 
-<p>The second limit is statistical power. Not every present-day measure
-earned a place in the story so far. Nine were tried; three worked. The other six mostly went quiet
-rather than failed outright: with twenty-seven countries and a decade of
-data, most of them could only have caught an effect bigger than any
-effect worth caring about. Silence isn't a verdict. A couple can be set
-aside for real, at least at the size this design could catch, both
-measures of price inflation among them. The rest simply weren't put under
-enough pressure to say either way.</p>
-
-<div class="finding compact" data-claim-id="V2-4.X L-4">
-<p><em>Precise result.</em> Six of nine current-level measures are
-inconclusive under the available statistical power, not unsupported.
-Annual food, housing and headline inflation are the two that can be set
-aside with confidence; compounded inflation since 2008 remains
-inconclusive.</p>
-<p class="limits"><em>Limits.</em> Inconclusive is not evidence of
-absence; the exclusions that do hold are narrow and specific to the size
-this design could detect.</p>
-</div>
-
-<p>The third limit is model dependence. The biggest complication is a
+<p>The second limit is model dependence. The biggest complication is a
 genuine reversal, and it concerns the deprivation items <a
 href="#ch{{ch:footprint}}">from earlier</a>, can't
 pay bills, can't heat the home, which absorbed most of Greece's
@@ -887,9 +879,30 @@ averaged, and can't be chosen between by which looks more plausible;
 doing that is exactly what would make a check like this meaningless.
 Which is why nothing later in this piece leans on it.</p>
 
-<p>The fourth limit is failed designs. Two further ideas were meant to
-carry real weight here, and neither survived contact with the data,
-worth naming rather than quietly dropping. A synthetic Greece, built to track the real one before 2008 and
+<details class="disclosure"><summary>The measures that went quiet, and the designs that failed</summary>
+
+<p>Not every present-day measure earned a place in the story so far, and
+the reason is statistical power rather than a verdict against them. Nine were tried; three worked. The other six mostly went quiet
+rather than failed outright: with twenty-seven countries and a decade of
+data, most of them could only have caught an effect bigger than any
+effect worth caring about. Silence isn't a verdict. A few can be set
+aside for real, at least at the size this design could catch, and they are
+all measures of price inflation. The rest simply weren't put under
+enough pressure to say either way.</p>
+
+<div class="finding compact" data-claim-id="V2-4.X L-4">
+<p><em>Precise result.</em> Six of nine current-level measures are
+inconclusive under the available statistical power, not unsupported.
+Annual food and housing inflation can be set aside with adequate power,
+and annual headline inflation at the magnitude this design could detect;
+compounded inflation since 2008 remains inconclusive.</p>
+<p class="limits"><em>Limits.</em> Inconclusive is not evidence of
+absence; the exclusions that do hold are narrow and specific to the size
+this design could detect.</p>
+</div>
+
+<p>Two further ideas were meant to carry real weight here, and neither
+survived contact with the data. They are named rather than quietly dropped. A synthetic Greece, built to track the real one before 2008 and
 read the divergence after as the crisis effect, collapsed into a blend of
 essentially two countries and missed four of the six conditions it had
 been required to meet before anyone looked at the result. Its chart is
@@ -913,6 +926,8 @@ worsened Greece's residual and reversed its sign.</p>
 not findings; the sign reversal in the second is deliberately left
 uninterpreted.</p>
 </div>
+
+</details>
 
 <p>The models stop there. But a model is not the whole recovery story.
 Some things that may shape how Greek households read their lives sit
@@ -969,13 +984,16 @@ countries fixed each time, Greece's level fell and then recovered while its
 position relative to the others did not. This is descriptive corroboration
 and not a test.</p>''')}
 
-<p>Several other factors that come up in every account of the Greek crisis
-were not established here: institutional trust, the design of the
-adjustment programmes, migration, and the incidence of indirect taxes among
-them. Leaving them out silently would be misleading; treating them as
-findings would be worse.</p>
+<p>Other factors come up in every account of the Greek crisis, and none of
+them was established here. Leaving them out silently would be misleading;
+treating them as findings would be worse, so they are recorded for what they
+are.</p>
 
 <details class="disclosure"><summary>What this piece did not test</summary>
+
+<p>Health belongs in this list too. Greece has one of the EU's highest
+rates of unmet medical need, and nothing here tests it against the other
+findings.</p>
 
 {context('CTX-2', '''
 <p>Trust in institutions is low in Greece, and there is a plausible route by
@@ -1011,11 +1029,6 @@ piece of the picture.</p>''')}
 
 </details>
 
-<p>Health belongs here too. Greece has one of the EU&rsquo;s highest rates
-of unmet medical need. But this piece cannot use that fact to explain the
-hardship gap: nothing here tests it against the other findings. It
-belongs in the recovery context, not in the model&rsquo;s main claims.</p>
-
 <p>Greek households report struggling at a rate far above what the official
 poverty figure predicts, and have done so consistently for a decade. Part of
 that distance is now easier to understand: official measures are narrower
@@ -1038,9 +1051,9 @@ but Hungary. Affordability deteriorated sharply. And the thing the whole
 piece exists to explain, the 52.6-point hardship gap, is still mostly
 unexplained by anything tested.</p>
 
-<p>Every alternative explanation that would make the hardship look less
-real was tested and didn&rsquo;t hold up. Mood can&rsquo;t be fully
-excluded, but the pattern is domain-specific, extreme on money, not on
+<p>The checks that could be run did not reduce the result to mood or to a
+measurement artefact. Mood cannot be excluded
+outright, but the pattern is domain-specific, extreme on money, not on
 general wellbeing, and long-standing, predating the crisis on the ESS
 data, which argues against pure temperament. The correlation with
 concrete circumstances is strong. The disadvantage spreads across the
@@ -1050,8 +1063,8 @@ that looks like real, material hardship that the official rate simply
 isn&rsquo;t built to register.</p>
 
 <p>So &ldquo;unexplained&rdquo; doesn&rsquo;t mean &ldquo;not
-real.&rdquo; It means no economic mechanism this piece could test
-accounts for the size of it. That&rsquo;s a different, and honestly
+real.&rdquo; It means that no independently measured mechanism
+tested here accounts, robustly and on its own, for the size of the gap. That&rsquo;s a different, and honestly
 stronger, claim than &ldquo;recovery was real but incomplete.&rdquo; The
 official poverty rate is not wrong. It is answering a narrower question
 than the one Greek households have been living.</p>
