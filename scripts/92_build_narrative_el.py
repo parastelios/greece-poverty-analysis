@@ -18,13 +18,16 @@ narrative are authored rather than templated. The data-claim-id and
 data-context-id attributes are kept identical to the English document, so the
 same ids can be cross-checked against the same registries.
 """
+import hashlib
 import html
+import json
 import re
 from pathlib import Path
 
 import pandas as pd
 
 import chart_engine as ce
+import el_figure_strings as ELF
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT, PROC = ROOT / "output", ROOT / "data" / "processed"
@@ -69,7 +72,7 @@ def fig(fid, caption=None):
         r'(<p class="fig-caveat">.*?</p>)',
         r'<details class="fig-methods"><summary>Μέθοδος και περιορισμοί</summary>\1</details>',
         html_, count=1, flags=re.S)
-    return html_
+    return localize_figure(fid, html_)
 
 
 def subfig(fid, parent_fid, view_index, caption, question):
@@ -87,17 +90,21 @@ def subfig(fid, parent_fid, view_index, caption, question):
     payload, table = scripts[view_index], tables[view_index]
     checksum = re.search(r'data-checksum="([^"]*)"', table).group(1)
     chart_type = chart_types[view_index]
-    return (f'<figure class="figure" id="{fid}">'
-            f'<figcaption><span class="fignum">Σχήμα {{fig:{fid}}}</span> {caption}</figcaption>'
-            f'<div class="fig-meta"><span class="badge">προσχεδιασμένη επιβεβαιωτική ανάλυση</span>'
-            f'<span class="fig-q">{question}</span></div>'
-            f'<div class="chart-live" data-chart="{chart_type}" tabindex="0" '
-            f'data-checksum="{checksum}" aria-describedby="{fid}-fb">'
-            f'<script type="application/json">{payload}</script></div>'
-            f'<details class="fallback" id="{fid}-fb"><summary>Δείτε τους αριθμούς '
-            f'<a href="statistical_appendix.html#{parent_fid}">Αυτό το σχήμα στο παράρτημα</a>, '
-            f'με τη λεπτομέρεια που παραλείπει η αναφορά (στα αγγλικά).</summary>{table}</details>'
-            f'</figure>')
+    # The shell is written in Greek here; the payload and the table are lifted
+    # from the English parent figure, so the whole thing still goes through the
+    # localizer below.
+    shell = (f'<figure class="figure" id="{fid}">'
+             f'<figcaption><span class="fignum">Σχήμα {{fig:{fid}}}</span> {caption}</figcaption>'
+             f'<div class="fig-meta"><span class="badge">προσχεδιασμένη επιβεβαιωτική ανάλυση</span>'
+             f'<span class="fig-q">{question}</span></div>'
+             f'<div class="chart-live" data-chart="{chart_type}" tabindex="0" '
+             f'data-checksum="{checksum}" aria-describedby="{fid}-fb">'
+             f'<script type="application/json">{payload}</script></div>'
+             f'<details class="fallback" id="{fid}-fb"><summary>Δείτε τους αριθμούς '
+             f'<a href="statistical_appendix.html#{parent_fid}">Αυτό το σχήμα στο παράρτημα</a>, '
+             f'με τη λεπτομέρεια που παραλείπει η αναφορά (στα αγγλικά).</summary>{table}</details>'
+             f'</figure>')
+    return localize_figure(fid, shell)
 
 
 def finding_el(cid, wording_el, caveats_el=None):
@@ -123,6 +130,212 @@ def gr_num(text):
     """
     return (str(text).replace(",", "\x00").replace(".", ",")
             .replace("\x00", ".").replace("PPS", "ΜΑΔ"))
+
+
+# ---------------------------------------------------------------------------
+#  FIGURE LOCALIZATION
+#
+#  The figures are lifted from the English batch pages, so everything a reader
+#  sees inside them arrives in English: tab names, axes, legends, series and
+#  country names, the fallback table, the accessibility description and the
+#  methods note. This translates the presentation layer and NOTHING else. Data
+#  values, series order, figure ids, claim anchors and the chart tone names
+#  (chart-gr and friends, which the JS reads as CSS class fragments) are left
+#  exactly as they are.
+#
+#  Every reader-facing string is looked up in el_figure_strings. A miss is
+#  collected and fails the build at the end, so a renamed English label cannot
+#  reach a Greek reader untranslated.
+# ---------------------------------------------------------------------------
+_fig_missing = set()
+# Anything that is only digits and punctuation is not a translation problem,
+# it is a number: send it through the Greek formatter instead of the lookup.
+_NUMERIC_ONLY = re.compile(r"^[\d\s.,%+\-–—:=/()]*$")
+
+
+_GREEK = re.compile(r"[Α-Ωα-ωΆ-Ώά-ώΐΰ]")
+
+
+def _tr(s, where):
+    t = s.strip()
+    if not t or t in ELF.KEEP_AS_IS:
+        return s
+    # subfig() writes its own shell in Greek; those strings are already done.
+    if _GREEK.search(t):
+        return s
+    if _NUMERIC_ONLY.match(t):
+        return gr_num(s)
+    if t in ELF.STRINGS:
+        return s.replace(t, ELF.STRINGS[t], 1)
+    _fig_missing.add(f"{where}  |  {t[:100]}")
+    return s
+
+
+# Keys whose values are rendering instructions, not text: CSS tone fragments,
+# line weights, dash styles, chart kinds. Translating any of them would stop
+# the chart drawing rather than change a word.
+_NOT_TEXT = {"tone", "toneA", "toneB", "weight", "style", "kind", "colour",
+             "color", "dash", "class", "id", "href", "series-tone", "place"}
+
+
+def _gr_numbers_in_text(s):
+    """Greek separators, applied only between digits.
+
+    Blunt replacement is unsafe here: tooltip HTML carries things like
+    style='opacity:.6', where swapping the dot breaks the attribute.
+    """
+    s = re.sub(r"(?<=\d),(?=\d{3}\b)", "\x00", s)
+    s = re.sub(r"(?<=\d)\.(?=\d)", ",", s)
+    return s.replace("\x00", ".")
+
+
+def _tr_detail(text, where):
+    """Tooltip text, translated as parts: chart_engine composes these from a
+    template, so the sentences are patterns with numbers in them."""
+    out = text
+    for pat, rep in ELF.DETAIL_RULES:
+        out = re.sub(pat, rep, out)
+    stripped = out.strip()
+    if stripped in ELF.STRINGS:
+        out = out.replace(stripped, ELF.STRINGS[stripped], 1)
+    out = _gr_numbers_in_text(out)
+    # &rarr; and friends are entities, not words the reader sees in Latin.
+    probe = re.sub(r"&\w+;", " ", out)
+    leftover = [w for w in re.findall(r"[A-Za-z][A-Za-z'-]{3,}", probe)
+                if w not in ELF.DETAIL_ALLOWED]
+    if leftover:
+        _fig_missing.add(f"{where}  |  {stripped[:100]}")
+    return out
+
+
+def _localize_html_text(frag, where):
+    """Translate the text nodes of a small HTML fragment, leaving tags alone."""
+    parts = re.split(r"(<[^>]+>)", frag)
+    return "".join(p if p.startswith("<") else _tr_detail(p, where)
+                   for p in parts)
+
+
+def _localize_payload(node, fid, key=""):
+    """Walk the whole payload. Every string is either translated, recognised
+    as a number, protected as a rendering instruction, or reported missing --
+    so a field nobody thought about cannot quietly stay English."""
+    if isinstance(node, dict):
+        return {k: (v if k in _NOT_TEXT else _localize_payload(v, fid, k))
+                for k, v in node.items()}
+    if isinstance(node, list):
+        return [_localize_payload(v, fid, key) for v in node]
+    if not isinstance(node, str) or not node.strip():
+        return node
+    if key in ("detail", "legendExtra"):
+        return _localize_html_text(node, f"{fid}.{key}")
+    if key == "corner":
+        return gr_num(node)
+    return _tr(node, f"{fid}.{key}")
+
+
+def _table_checksum(cols, rows):
+    """chart_engine.Series.checksum(), recomputed from rendered table text.
+
+    Verified against the untranslated tables before anything is translated
+    (see the assertion in _localize_tables), so this is a reproduction of the
+    original hash rather than a new convention invented here.
+    """
+    blob = json.dumps({"cols": cols, "rows": rows}, sort_keys=True)
+    return hashlib.sha256(blob.encode()).hexdigest()[:16]
+
+
+def _cells(fragment, tag):
+    return re.findall(rf"<{tag}(?=[\s>])[^>]*>(.*?)</{tag}>", fragment, re.S)
+
+
+def _read_table(tbl):
+    head = re.search(r"<thead>.*?<tr>(.*?)</tr>.*?</thead>", tbl, re.S).group(1)
+    cols = [html.unescape(re.sub("<[^>]+>", "", c)) for c in _cells(head, "th")]
+    body = re.search(r"<tbody>(.*?)</tbody>", tbl, re.S).group(1)
+    rows = []
+    for tr in re.findall(r"<tr>(.*?)</tr>", body, re.S):
+        cs = [html.unescape(re.sub("<[^>]+>", "", c)) for c in _cells(tr, "td")]
+        rows.append(["" if c == "—" else c for c in cs])
+    return cols, rows
+
+
+def _localize_tables(fid, fig_html):
+    """Translate every fallback table, then recompute its checksum.
+
+    The checksum covers the column headers, the row labels and the formatted
+    values, so translating a label or a decimal separator legitimately changes
+    it. Recomputing keeps the guarantee it exists for -- that the chart and its
+    table came from the same data -- instead of leaving a stale hash that
+    silently no longer matches. The old value is then swapped for the new one
+    across the whole figure, which updates the chart host too, since host and
+    table carry the same string.
+    """
+    swaps = {}
+    for m in re.finditer(r'<table data-checksum="([^"]+)"[^>]*>.*?</table>',
+                         fig_html, re.S):
+        tbl, stored = m.group(0), m.group(1)
+        cols, rows = _read_table(tbl)
+        if _table_checksum(cols[1:], rows) != stored:
+            raise SystemExit(
+                f"{fid}: cannot reproduce the original table checksum, so it "
+                "cannot honestly be recomputed after translation")
+        new_tbl = re.sub(r"(<caption>)(.*?)(</caption>)",
+                          lambda x: x.group(1) + _tr(html.unescape(x.group(2)),
+                                                     f"{fid}.caption") + x.group(3),
+                          tbl, flags=re.S)
+        new_tbl = re.sub(r"(<th(?=[\s>])[^>]*>)(.*?)(</th>)",
+                          lambda x: x.group(1) + _tr(html.unescape(x.group(2)),
+                                                     f"{fid}.header") + x.group(3),
+                          new_tbl, flags=re.S)
+        new_tbl = re.sub(r"(<td[^>]*>)(.*?)(</td>)",
+                          lambda x: x.group(1) + _tr(html.unescape(x.group(2)),
+                                                     f"{fid}.cell") + x.group(3),
+                          new_tbl, flags=re.S)
+        new_cols, new_rows = _read_table(new_tbl)
+        swaps[stored] = _table_checksum(new_cols[1:], new_rows)
+        fig_html = fig_html.replace(tbl, new_tbl)
+    for old, new in swaps.items():
+        fig_html = fig_html.replace(old, new)
+    return fig_html
+
+
+def localize_figure(fid, fig_html):
+    # tab names, carried on the payload script tag
+    fig_html = re.sub(
+        r'data-label="([^"]*)"',
+        lambda m: f'data-label="{html.escape(_tr(html.unescape(m.group(1)), f"{fid}.tab"))}"',
+        fig_html)
+    # chart payloads
+    def _payload(m):
+        d = json.loads(m.group(2).replace("<\\/", "</"))
+        data = json.dumps(_localize_payload(d, fid), ensure_ascii=False).replace("</", "<\\/")
+        return f"{m.group(1)}{data}</script>"
+    fig_html = re.sub(r'(<script type="application/json"[^>]*>)(.*?)</script>',
+                       _payload, fig_html, flags=re.S)
+    # the question and the evidence-tier badge
+    fig_html = re.sub(
+        r'(<span class="fig-q">)(.*?)(</span>)',
+        lambda m: m.group(1) + _tr(html.unescape(m.group(2)), f"{fid}.question") + m.group(3),
+        fig_html, flags=re.S)
+    fig_html = re.sub(
+        r'(<span class="badge">)(.*?)(</span>)',
+        lambda m: m.group(1) + _tr(html.unescape(m.group(2)), f"{fid}.badge") + m.group(3),
+        fig_html, flags=re.S)
+    # the methods note, replaced wholesale rather than phrase by phrase
+    if fid in ELF.CAVEATS:
+        fig_html = re.sub(
+            r'<p class="fig-caveat">.*?</p>',
+            '<p class="fig-caveat"><strong>Διαβάστε το μαζί με αυτό.</strong> '
+            + ELF.CAVEATS[fid] + "</p>",
+            fig_html, count=1, flags=re.S)
+    # the fallback disclosure's own wording
+    fig_html = fig_html.replace(
+        "<summary>Show the numbers", "<summary>Δείτε τους αριθμούς")
+    fig_html = fig_html.replace(
+        "This figure in the appendix</a>, with the detail the report leaves out.",
+        "Αυτό το σχήμα στο παράρτημα</a>, με τη λεπτομέρεια που παραλείπει η "
+        "αναφορά (στα αγγλικά).")
+    return _localize_tables(fid, fig_html)
 
 
 def recovery_table_el():
@@ -1347,6 +1560,25 @@ details.disclosure .ctx:last-child{{margin-bottom:1.2rem}}
 @media (max-width:34rem){{body{{font-size:1.04rem}}}}
 """
 
+# ---- chart numbers, in Greek ---------------------------------------------
+# chart_engine formats every number the charts draw in one place: fmt() for
+# axis ticks and tooltips, and two toFixed(3) calls for correlation readouts.
+# The shared module stays untouched, since the other three documents are in
+# English; this rewrites only the copy of the script embedded in THIS page.
+_JS_EL = ce.JS
+_JS_SWAPS = [
+    ("v.toLocaleString(undefined,{maximumFractionDigits:0})",
+     "v.toLocaleString('el-GR',{maximumFractionDigits:0})"),
+    ("v.toFixed(d==null?1:d)", "v.toFixed(d==null?1:d).replace('.',',')"),
+    ("m.v.toFixed(3)", "m.v.toFixed(3).replace('.',',')"),
+]
+for _a, _b in _JS_SWAPS:
+    if _a not in _JS_EL:
+        raise SystemExit(
+            "chart_engine's number formatting changed shape; the Greek "
+            f"locale patch no longer applies to: {_a}")
+    _JS_EL = _JS_EL.replace(_a, _b)
+
 _main = resolve_fig_nums(resolve_refs(BODY))
 
 _TITLE_EL = "Αν η Ελλάδα ανέκαμψε, γιατί τόσα νοικοκυριά εξακολουθούν να δυσκολεύονται;"
@@ -1367,7 +1599,7 @@ PAGE = f"""<!doctype html><html lang="el"><head><meta charset="utf-8">
 το συνεχιζόμενο βάρος της ανεργίας, των μισθών και της στέγης.</p>
 <div class="stat-pair">
   <div class="stat stat--official">
-    <span class="n">1 στους 5</span>
+    <span class="n">1 στα 5</span>
     <p class="pct">19,6%</p>
     <p class="l"><b>Άτομα</b> σε κίνδυνο φτώχειας, ο επίσημος δείκτης</p>
   </div>
@@ -1377,13 +1609,13 @@ PAGE = f"""<!doctype html><html lang="el"><head><meta charset="utf-8">
     <p class="l"><b>Νοικοκυριά</b> που δυσκολεύονται να τα βγάλουν πέρα</p>
   </div>
 </div>
-<p class="table-legend">Αυτή είναι η ελληνική μετάφραση του κειμένου. Τα
-σχήματα παραμένουν στα αγγλικά, όπως δημιουργήθηκαν για την αρχική
-αναφορά· δείτε την <a href="narrative.html">αγγλική έκδοση</a> για το πλήρες
-κείμενο στην πρωτότυπη γλώσσα.</p>
+<p class="table-legend">Αυτή είναι η ελληνική έκδοση του κειμένου. Τα
+δεδομένα, οι υπολογισμοί και τα ευρήματα είναι τα ίδια με την <a
+href="narrative.html">αγγλική έκδοση</a>· το στατιστικό παράρτημα, στο οποίο
+παραπέμπουν τα σχήματα, παραμένει στα αγγλικά.</p>
 </header>
 {_main}
-<script>{ce.JS}</script>
+<script>{_JS_EL}</script>
 <script>
 document.addEventListener('click', function (e) {{
   var a = e.target.closest('a.fig-jump');
@@ -1466,6 +1698,14 @@ found = [j for j in JARGON if j in prose.lower()]
 if found:
     raise SystemExit(f"jargon in the companion's own prose: {found}")
 
+# An untranslated reader-facing string in a figure is a missing translation,
+# not a default. The localizer collects them all rather than stopping at the
+# first, so one build reports the whole list.
+if _fig_missing:
+    raise SystemExit(
+        "untranslated figure strings (add them to el_figure_strings.py):\n  "
+        + "\n  ".join(sorted(_fig_missing)))
+
 # ---- the Greek editorial standard, enforced -------------------------------
 # Reader-visible text only. `visible` above strips <script> but not <style>,
 # which is harmless for the id checks and fatal for the decimal one: a CSS
@@ -1500,13 +1740,10 @@ if calq:
 # English formatting that survived a copy from the source CSVs. Thousands
 # separators are full stops, so only digit.digit with one or two decimals is
 # the giveaway; four-digit groups (14.770) are legitimate.
-# Scoped to the article's own prose, not the figures: the charts and their
-# fallback tables are still the English originals by design (see "Figure
-# localization" in docs/greek_editorial_standard.md), so they still carry
-# English decimals. When that phase lands, drop the figure exclusion here and
-# this check covers the whole page.
-readable_prose = re.sub(r"<figure class=\"figure\".*?</figure>", " ", stripped, flags=re.S)
-readable_prose = re.sub(r"<style.*?</style>", " ", readable_prose, flags=re.S)
+# Now that the figures are localized too, this covers the whole page rather
+# than the article's prose alone: a decimal point in a chart label or a
+# fallback table is as wrong as one in a paragraph.
+readable_prose = re.sub(r"<style.*?</style>", " ", stripped, flags=re.S)
 readable_prose = html.unescape(re.sub(r"<[^>]+>", " ", readable_prose))
 en_decimals = re.findall(r"\d+\.\d{1,2}(?!\d)", readable_prose)
 if en_decimals:

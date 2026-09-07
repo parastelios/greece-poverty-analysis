@@ -140,9 +140,12 @@ however well it reads.
 
 ## Figure localization
 
-The Greek edition is incomplete while the figures remain in English. Translate
-the presentation layer without changing data, calculations, series order, IDs
-or claim anchors:
+Done. `el_figure_strings.py` holds every Greek string a figure shows, and
+`92_build_narrative_el.py` translates the presentation layer at build time.
+The rules below are what it implements, and what any future figure must obey.
+
+Translate the presentation layer without changing data, calculations, series
+order, IDs or claim anchors:
 
 - titles and questions;
 - tabs;
@@ -168,7 +171,24 @@ Two mechanics matter, and both were confirmed against `chart_engine.py`:
 
 Untranslated reader-facing strings must fail the build rather than ship. A
 label the translation map does not cover is a missing translation, not a
-default.
+default. The localizer walks the whole chart payload rather than a list of
+known fields, so a field nobody anticipated is reported instead of shipping in
+English; the only strings it passes over are rendering instructions (tone
+names, line weights, dash styles, label placement), which are not text.
+
+Two things resist a dictionary and are handled as parts instead:
+
+- **Tooltips** are composed by `chart_engine` from a template, so they are
+  translated by pattern (`DETAIL_RULES`) plus a map of indicator names and
+  units. Numbers are captured and put back rather than retyped.
+- **Numbers drawn by the chart script** are formatted in JavaScript, not in
+  the payload. The Greek page embeds its own patched copy of that script; the
+  shared module is untouched, since the other three documents are English. If
+  `chart_engine`'s formatting changes shape, the patch fails loudly rather
+  than silently reverting the page to English decimals.
+
+Acronyms stay in Latin inside figures for the same reason as in prose: AROP,
+AROPE, PPS, HICP, SD.
 
 ## Translation workflow
 
@@ -187,7 +207,7 @@ as build failures rather than review notes:
 
 - no internal identifier or governance vocabulary in visible text;
 - no English statistical jargon in the article's own prose;
-- no decimal points in numbers in visible Greek text;
+- no decimal points in numbers anywhere on the page, figures included;
 - no em dashes;
 - none of the banned translationese phrases listed above;
 - every figure's translated table agrees with its recomputed checksum.
