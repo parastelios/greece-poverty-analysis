@@ -53,7 +53,7 @@ TABS = {
     "Wage-adjusted affordability": "Αγοραστική πίεση",
     "Accumulated unemployment": "Συσσωρευμένη ανεργία",
     "Years wages below 2008": "Χρόνια μισθών κάτω από το 2008",
-    "Housing deterioration since 2010": "Συσσωρευμένη επιβάρυνση στέγασης",
+    "Housing deterioration since 2010": "Επιδείνωση κόστους στέγασης",
     "Between vs within": "Μεταξύ ή εντός χωρών",
 }
 
@@ -123,7 +123,7 @@ LABELS = {
     "Hours worked each week": "Ώρες εργασίας την εβδομάδα",
     "Household income after inflation": "Εισόδημα μετά τον πληθωρισμό",
     "Housing and energy prices": "Τιμές στέγασης και ενέργειας",
-    "Housing deterioration since 2010": "Συσσωρευμένη επιβάρυνση στέγασης",
+    "Housing deterioration since 2010": "Επιδείνωση κόστους στέγασης",
     "Housing-cost overburden": "Επιβάρυνση κόστους στέγασης",
     "Income inequality": "Εισοδηματική ανισότητα",
     "Income poverty (AROP)": "Εισοδηματική φτώχεια (AROP)",
@@ -259,7 +259,7 @@ HEADERS = {
         "Χρόνια με μισθούς κάτω από το 2008 (συνεχόμενα χρόνια κάτω από το "
         "επίπεδο του 2008)",
     "Housing deterioration since 2010 (percentage-point-years above 2010)":
-        "Συσσωρευμένη επιβάρυνση από το κόστος στέγασης (μονάδες-έτη πάνω από το 2010)",
+        "Επιδείνωση κόστους στέγασης (μονάδες-έτη πάνω από το 2010)",
 }
 
 # ---------------------------------------------------------------------------
@@ -594,6 +594,13 @@ DETAIL_NAMES = {
     "index points, EU = 100": "μονάδες δείκτη, ΕΕ = 100",
     "index, 2008=100": "δείκτης, 2008=100",
     "index points, 2008 = 100": "μονάδες δείκτη, 2008 = 100",
+    # the lede sentence some figures print above their table
+    # split by a <b> mid-sentence, so it arrives as two text nodes
+    "Of 16 indicators,": "Από τους 16 δείκτες,",
+    "4 were already in the EU's worst fifth in 2008, 7 entered it by 2024, "
+    "and none left":
+        "οι 4 ήταν ήδη στο χειρότερο πέμπτο της ΕΕ το 2008, οι 7 μπήκαν ως "
+        "το 2024, και κανένας δεν βγήκε",
     # right-hand row labels and band shading
     "no dynamic support": "χωρίς μεταβολή",
     "EU's worst fifth": "χειρότερο πέμπτο της ΕΕ",
