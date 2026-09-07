@@ -44,9 +44,9 @@ This notebook is the running log. `docs/archive/pre-v2-publication/publication_s
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `main` |
-| HEAD | `320337b` Narrative: fix an unproven claim in Section 4's frame, retitle it, and correct the Section 5 bridge left stale by that retitle |
+| HEAD | `ac881eb` Greek edition: language pass over the restructured text |
 | Uncommitted changes | yes |
-| Last refreshed | 2026-09-01 |
+| Last refreshed | 2026-09-07 |
 | Frozen V1 reference | `v1-final` |
 | Frozen V2 analytical reference | `p5f-frozen` |
 <!-- AUTO:END document-control -->

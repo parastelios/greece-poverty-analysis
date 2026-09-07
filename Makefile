@@ -53,6 +53,11 @@ STAGE_REST := $(filter-out $(STAGE_CORE) $(STAGE_WRITEBACK) $(STAGE_HEALTH) \
                 00_fetch_missing_raw.py, \
                 $(notdir $(wildcard $(SCRIPTS)/[0-9][0-9]_*.py)))
 
+# verify_editions.py is in both gates because the Greek narrative is authored,
+# not generated: nothing else in the build would notice if the two editions
+# started saying different things, and once they already did -- an overclaim
+# fixed in one and left standing in the other.
+#
 # `verify` runs all three gates. The branch-rule tests are included because a
 # test file nothing invokes is documentation, not enforcement -- and the P3
 # branch bug (a default `else` returning the strongest conclusion) is exactly
@@ -68,6 +73,7 @@ verify:
 	cd $(SCRIPTS) && $(PY) test_claim_containers.py
 	cd $(SCRIPTS) && $(PY) test_context_anchors.py
 	cd $(SCRIPTS) && $(PY) verify_figures.py
+	cd $(SCRIPTS) && $(PY) verify_editions.py
 	cd $(SCRIPTS) && $(PY) audit_reported_outputs.py
 	cd $(SCRIPTS) && $(PY) verify_build.py
 	cd $(SCRIPTS) && $(PY) 78_final_claim_freeze.py > /dev/null
@@ -97,6 +103,7 @@ release-verify:
 	cd $(SCRIPTS) && $(PY) test_claim_containers.py
 	cd $(SCRIPTS) && $(PY) test_context_anchors.py
 	cd $(SCRIPTS) && $(PY) verify_figures.py
+	cd $(SCRIPTS) && $(PY) verify_editions.py
 	cd $(SCRIPTS) && $(PY) audit_reported_outputs.py
 	cd $(SCRIPTS) && $(PY) verify_build.py
 	cd $(SCRIPTS) && $(PY) audit_parity.py --release
