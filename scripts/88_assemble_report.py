@@ -580,7 +580,7 @@ should still come away with an accurate picture.</p>
   <li><strong>Nothing here shows what causes what.</strong> Every result is a
   cross-country association across twenty-seven countries.</li>
 
-  <li><strong>Nothing here shows Greece changing over time.</strong> The
+  <li><strong>No inferential result establishes that accumulated exposure drove changes in hardship within Greece over time.</strong> The
   accumulated measures separate countries; the within-country tests are too
   imprecise either to establish a trend or to rule one out.</li>
 
@@ -616,9 +616,11 @@ S1 = f"""
 is Greece unusual or merely extreme?</p>
 
 <p>The European Union measures poverty in two quite different ways, and both
-are official. The first, <em>at-risk-of-poverty</em> (AROP), counts households
-below 60% of their own country's median equivalised income. The second asks
-households directly whether they have difficulty making ends meet. The first is
+are official. The first, <em>at-risk-of-poverty</em> (AROP), counts people
+living below 60% of their own country's median equivalised income. The second
+asks households directly whether they have difficulty making ends meet. The
+denominators therefore differ, and the report keeps them apart: AROP and
+AROPE are shares of people, reported hardship is a share of households. The first is
 a position in a national income distribution; the second is a report about
 lived experience. There is no reason they must agree, and across most of Europe
 they broadly do.</p>
@@ -636,7 +638,7 @@ called agreement. This is the finding the rest of the report is about.</p>
 {claim('V2-1.2')}
 
 <p>It is worth pausing on what a gap of this size means. Roughly one Greek
-household in five is counted as at risk of poverty. Roughly two in three report
+person in five is counted as at risk of poverty. Roughly two in three households report
 difficulty making ends meet. These are not two estimates of the same quantity
 that happen to differ; they are far enough apart that no plausible measurement
 error reconciles them. Either the official rate is missing most of what Greek

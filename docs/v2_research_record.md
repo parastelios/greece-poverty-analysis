@@ -44,7 +44,7 @@ This notebook is the running log. `docs/archive/pre-v2-publication/publication_s
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `main` |
-| HEAD | `ce4cc19` English edition: strip internal stage labels, and a sharper close |
+| HEAD | `45c5b1d` Both editions: open on the argument the piece is actually answering |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-09-07 |
 | Frozen V1 reference | `v1-final` |

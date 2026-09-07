@@ -497,10 +497,14 @@ f4c.add("Points closed by AROPE", contrib)
 f4c.add("Gap still open after AROPE", [float(v) for v in desc.gap_vs_arope])
 
 v4a = {"years": [int(y) for y in desc.time], "dp": 1,
-       "yLabel": "% of households",
-       "alt": "Greek reported hardship, AROPE and income poverty as shares of "
-              "households; AROPE sits between the other two and closes only "
-              "part of the distance",
+       # AROP and AROPE count PEOPLE; reported hardship is answered by
+       # HOUSEHOLDS. The axis carried one denominator for all three, which
+       # is wrong for two of them, so it states neither.
+       "yLabel": "Percent",
+       "alt": "Greek reported hardship, AROPE and income poverty; AROPE "
+              "sits between the other two and closes only part of the "
+              "distance. Hardship is a share of households, AROP and "
+              "AROPE shares of people",
        "series": [{"label": l, "tone": m["tone"], "style": m["style"],
                    "weight": m["weight"], "values": [round(v, 1) for v in vs]}
                   for l, vs, m in f4.rows]}
