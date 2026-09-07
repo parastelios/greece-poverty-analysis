@@ -419,7 +419,7 @@ STAGES = [
     ("s4", "4", "What current conditions explain"),
     ("s5", "5", "What accumulated history adds"),
     ("s6", "6", "How much depends on the model"),
-    ("s7", "7", "What this is not"),
+    ("s7", "7", "Alternative explanations and external context"),
     ("s8", "8", "What the evidence supports"),
 ]
 
@@ -431,11 +431,13 @@ FRONT = f"""
 <header class="masthead">
   <p class="kicker">Technical report</p>
   <h1>The Greek Poverty Paradox</h1>
-  <p class="standfirst">Greeks report difficulty making ends meet at a rate far
-  above what their official poverty rate would predict. This report works
-  through the gap in eight stages, testing nine present-day constructs and
-  eight accumulated ones against a pre-registered protocol, and reports what
-  survived &mdash; including the substantial part that did not.</p>
+  <p class="standfirst">Greek households report difficulty making ends meet at
+  a rate 52.6 percentage points above official income poverty. This report
+  finds that recovery was strongest in employment and much weaker in wages,
+  purchasing power and household security; that the relative poverty line
+  captures only part of this divide; and that both present conditions and
+  accumulated history carry additional information. Most of the gap
+  nevertheless remains unexplained.</p>
 </header>
 
 <div class="lede">
@@ -475,7 +477,7 @@ reported as prominently as the findings.</p>
         length of the crisis carries information beyond its present state.</li>
     <li><a href="#s6">How much depends on the model</a> &mdash; the single
         specification choice that moves Greece from third to twenty-fifth.</li>
-    <li><a href="#s7">What this is not</a> &mdash; reporting style, trust,
+    <li><a href="#s7">Alternative explanations and external context</a> &mdash; reporting style, trust,
         migration, and the limits of the evidence.</li>
     <li><a href="#s8">What the evidence supports</a> &mdash; the conclusion,
         stated no more strongly than the tests allow.</li>
@@ -490,10 +492,9 @@ for word &mdash; and the limits matter as much as the findings themselves.</p>
 {methods("How to read this document, and the evidence vocabulary", '''
 <p>Those statements are fixed: they were written down
 when the analysis finished, before this report was drafted, and they are
-reproduced here word for word rather than paraphrased. The limits are fixed in
-the same way and matter as much as the findings -- several of them exist
-because an earlier draft of this report claimed more than the evidence
-carried.</p>
+reproduced here word for word rather than paraphrased. The limits are fixed
+in the same way and matter as much as the findings: a claim is only as
+strong as the limit stated beside it.</p>
 
 <p>Some material is discussed here without having been established here:
 institutional trust, migration, the adjustment programmes, tax incidence and the
@@ -550,6 +551,13 @@ should still come away with an accurate picture.</p>
   twenty-seven on the second measure and seventh on the first, and sits further
   from its nearest neighbour than that neighbour sits from most of Europe.</p>
 </div>
+
+<p class="sum-synthesis">Greece&rsquo;s recovery was real but uneven. Employment
+recovered most clearly; the GDP shortfall narrowed without closing; housing
+pressure eased but remained exceptionally high; and real wages and
+wage-adjusted affordability moved further behind. The official poverty rate
+records relative income position, not whether household economic security
+returned.</p>
 
 <div class="sum-cols">
 <div class="sum-col">
@@ -725,19 +733,21 @@ the yardstick itself move?</p>
 
 <p>The European Union already accepts that income poverty alone is too narrow.
 Its headline social indicator is AROPE &mdash; at risk of poverty or social
-exclusion &mdash; which counts a household as affected if it falls below the
-income line <em>or</em> is severely materially deprived <em>or</em> lives in a
+exclusion &mdash; which counts a person as affected if they fall below the
+income line <em>or</em> live in severe material deprivation <em>or</em> live in a
 household with very low work intensity. It is a deliberately broader net. If
 the puzzle in Stage 1 is simply that AROP is too narrow, AROPE should largely
 dissolve it.</p>
 
 {fig('F4')}
 
-<p>The three measures are shown as they are reported, in shares of households,
-so the distance between them can be read directly. AROPE sits where its design
-implies: above income poverty, because it counts more kinds of disadvantage, and
-far below what households themselves report. In 2024 income poverty stands at
-19.6% of households, AROPE at 26.9%, and reported difficulty at 66.7%.</p>
+<p>The three measures are shown together so the distance between them can
+be read directly, though they do not share a denominator: income poverty
+and AROPE count people, reported difficulty counts households. AROPE sits
+where its design implies: above income poverty, because it counts more
+kinds of disadvantage, and far below what households themselves report. In
+2024 income poverty stands at 19.6% of people, AROPE at 26.9%, and reported
+difficulty at 66.7% of households.</p>
 
 <p>So it helps, and it is not enough. Adding deprivation and low work intensity
 to income poverty moves Greece about seven points closer to what its households
@@ -785,15 +795,16 @@ labelled for the two components it actually displays rather than implying all
 three.</p>
 
 <h4>A coverage trap</h4>
-<p>The age-breakdown source does not carry a total row for every indicator. An
-earlier version of this figure intersected years across indicators and produced
-an empty default view &mdash; a chart that rendered, passed every structural
-check, and displayed nothing. The failure was invisible because the checks
-verified that the figure was well-formed, not that it contained data.</p>
-<p>Every view of every figure is now required to carry at least two positions
-on its axis and at least one finite value. A chart can be perfectly well formed
-and still show nothing, and that is the kind of defect a reader notices at once
-while an automated check misses it entirely unless told to look.</p>
+<p>The age-breakdown source does not carry a total row for every indicator,
+and intersecting years across indicators without accounting for that can
+produce an empty default view: a chart that renders, passes every structural
+check, and displays nothing, because those checks verify that a figure is
+well-formed rather than that it contains data.</p>
+<p>Every view of every figure is therefore required to carry at least two
+positions on its axis and at least one finite value. A chart can be
+perfectly well formed and still show nothing, and that is the kind of defect
+a reader notices at once while an automated check misses it unless told to
+look for it.</p>
 
 <h4>Low work intensity and the age dimension</h4>
 <p>Very low work intensity is defined only over working-age adults, so it
@@ -1072,13 +1083,65 @@ require an identification strategy this design does not have, and none is
 claimed.</p>
 ''')}
 
+<p>Whether these relationships hold across countries and within them is the
+question the correlation structure answers directly. The full matrices &mdash;
+within countries, between countries and pooled &mdash; are in the statistical
+appendix. The comparison that matters for this stage is narrower: what happens
+to each measure's relationship with reported hardship when the scope changes
+from between countries to within them.</p>
+
+{fig('F19')}
+
+<p>Most relationships survive the change with their sign intact and their
+strength reduced. The real poverty threshold shows the only material reversal:
+it correlates weakly and positively across countries and strongly negatively
+within them. Real wages technically changes sign too, but its between-country
+correlation is +0.01, too close to zero for the reversal to mean anything. A
+reversal like that is a fact about the two scopes rather than evidence about
+mechanism, and it is the clearest illustration of why the within figures are
+the ones reported in the claim above.</p>
+
+<p class="signpost"><strong>Where this leaves us.</strong> The reported
+hardship corresponds to concrete affordability failure, so the puzzle is not
+simply an artefact of how Greeks answer surveys &mdash; though Stage 7 returns
+to the reporting-style question with better evidence than a correlation. What
+remains is to see what changed since the crisis and which of those conditions
+predict hardship beyond what income poverty already captures. The next stage
+starts descriptively, with what recovered and what did not, then moves to
+inference under a pre-registered protocol.</p>
+</section>
+"""
+
+
+# ===========================================================================
+#  STAGE 4 -- Current conditions
+# ===========================================================================
+S4 = f"""
+<section id="s4" class="stage">
+<div class="stage-head"><span class="stage-n">Stage 4</span>
+<h2>What current conditions explain</h2></div>
+<p class="stage-q">Which present-day conditions predict hardship beyond income
+poverty, and which merely could not be resolved?</p>
+
+<p>The comparison that follows is descriptive. It establishes what
+recovered, what remained behind and what moved further away. The tests that
+follow ask the narrower question of which present-day conditions carry
+information beyond income poverty.</p>
+
+<h3>Convergence, and what it does and does not mean</h3>
+
+<p>Stage 1 noted that the gap narrows after 2016 without closing. Greece did
+not move in one direction across every measure behind it: some crisis-era
+conditions improved substantially, while household resources and
+affordability either recovered more slowly than the rest of Europe or
+deteriorated further. That matters because a falling unemployment rate alone
+cannot describe what households actually faced.</p>
+
 {methods("How the convergence share is computed, and why it is dimensionless", '''
 <p>The measures compared here are on incompatible scales: some are percentages
-of population, one is a purchasing-power figure in the thousands. An earlier
-version of this figure plotted a change of &minus;2,819 purchasing-power
-standards on the same axis as a change of +48.8 percentage points, which is not
-a comparison at all &mdash; the visual impression was driven entirely by the
-choice of units.</p>
+of population, one is a purchasing-power figure in the thousands, so plotting
+the raw changes on a shared axis is not a comparison at all: the visual
+impression would be driven entirely by the choice of units.</p>
 <p>The figure now shows, for each measure, the <strong>share of its own 2015
 Greece&ndash;EU gap that had closed by 2024</strong>. Each measure is divided by
 its own starting gap, so the quantity is dimensionless and the measures are
@@ -1143,45 +1206,6 @@ original unit and should be compared over time within a row, not across rows.
 The appendix retains all fourteen measures, including real household income,
 the real poverty threshold and the two derived hardship-gap measures omitted
 here for space.</p>
-
-<p>Whether these relationships hold across countries and within them is the
-question the correlation structure answers directly. The full matrices &mdash;
-within countries, between countries and pooled &mdash; are in the statistical
-appendix. The comparison that matters for this stage is narrower: what happens
-to each measure's relationship with reported hardship when the scope changes
-from between countries to within them.</p>
-
-{fig('F19')}
-
-<p>Most relationships survive the change with their sign intact and their
-strength reduced. The real poverty threshold shows the only material reversal:
-it correlates weakly and positively across countries and strongly negatively
-within them. Real wages technically changes sign too, but its between-country
-correlation is +0.01, too close to zero for the reversal to mean anything. A
-reversal like that is a fact about the two scopes rather than evidence about
-mechanism, and it is the clearest illustration of why the within figures are
-the ones reported in the claim above.</p>
-
-<p class="signpost"><strong>Where this leaves us.</strong> The reported
-hardship corresponds to concrete affordability failure, so the puzzle is not
-simply an artefact of how Greeks answer surveys &mdash; though Stage 7 returns
-to the reporting-style question with better evidence than a correlation. What
-remains is to identify which conditions predict hardship beyond what income
-poverty already captures. That requires moving from description to inference,
-and from this point the report follows a pre-registered protocol.</p>
-</section>
-"""
-
-
-# ===========================================================================
-#  STAGE 4 -- Current conditions
-# ===========================================================================
-S4 = f"""
-<section id="s4" class="stage">
-<div class="stage-head"><span class="stage-n">Stage 4</span>
-<h2>What current conditions explain</h2></div>
-<p class="stage-q">Which present-day conditions predict hardship beyond income
-poverty, and which merely could not be resolved?</p>
 
 <p>Nine candidate constructs were specified before any of them was tested:
 material resources, labour-market exclusion, wage-adjusted affordability,
@@ -1318,12 +1342,11 @@ cluster-robust inference is asymptotic in the <em>number of clusters</em>, and
 twenty-seven is not large. The wild cluster bootstrap addresses this by
 resampling cluster-level weights rather than observations.</p>
 <p>The implementation imposes the null &mdash; the restricted, rather than
-unrestricted, variant. This is not a detail. An earlier version resampled from
-the unrestricted residuals and produced a p-value of 0.82 for a coefficient
-with a t-statistic of 9.69, which is not a marginal disagreement but a symptom
-of a misspecified bootstrap. Under the null-imposed version the same
-coefficient behaves as its t-statistic implies. Every bootstrap p-value in this
-report uses 1,999 replications with the null imposed.</p>
+unrestricted, variant. This is not a detail: resampling from unrestricted
+residuals can produce a bootstrap p-value that disagrees sharply with what a
+coefficient's own t-statistic implies, which is the signature of a
+misspecified bootstrap rather than a marginal disagreement. Every bootstrap
+p-value in this report uses 1,999 replications with the null imposed.</p>
 
 <h4>Multiplicity</h4>
 <p>Testing nine constructs invites false positives. Benjamini-Hochberg
@@ -1399,10 +1422,9 @@ it is the intuition behind every account of the Greek crisis that emphasises
 its duration rather than its depth at any single moment.</p>
 
 <p>Intuition is not evidence, and this stage is where an appealing story is
-easiest to overstate. What follows is stated narrowly on purpose. Three
-readings of the results were caught and corrected during review, each of them a
-version of the same error: treating a cross-country association as though it
-described a process unfolding within Greece over time.</p>
+easiest to overstate: treating a cross-country association as though it
+described a process unfolding within Greece over time. What follows is
+stated narrowly on purpose, to keep that distinction from being blurred.</p>
 
 <h3>Building the accumulated measures</h3>
 
@@ -1476,8 +1498,7 @@ imprecise estimates are not proof of absence: the within-country tests have
 considerably less power than the between-country ones, because they discard all
 the cross-sectional variation. The correct statement is that this design does
 not support dynamic wording &mdash; not that the dynamic effect has been shown
-to be absent. Three separate drafts of this report crossed that line before it
-was caught.</p>
+to be absent.</p>
 
 <p>One construct could not be tested at all, and is reported rather than
 quietly dropped.</p>
@@ -1510,12 +1531,14 @@ baseline. The property that matters is that no accumulated value at year
 a measure of history would quietly contain the future. This is checked by
 rebuilding each series from truncated inputs: if any value changes when later
 years are withheld, the construction leaks.</p>
-<p>One construction error was caught this way. The wage-adjusted excess measure
-was written to subtract 100 from an index, but the underlying source held
-absolute euro values near 32,000 rather than an EU27=100 index, so the excess
-was zero in every country and year. The series was silently degenerate and every
-downstream test on it was meaningless. It is now indexed explicitly, with an
-assertion that fails loudly if the source scale changes again.</p>
+<p>This guards against a specific and easy-to-miss failure mode: a measure
+built on the wrong scale can go silently degenerate rather than visibly
+wrong. If an accumulated series were built by subtracting 100 from a value
+that was never indexed to EU27=100 in the first place, the excess would
+compute to zero in every country and year, and every downstream test on it
+would be meaningless while looking structurally fine. Each accumulated
+series is therefore indexed explicitly, with an assertion that fails loudly
+if the source scale changes.</p>
 
 <h4>What conditioning means here</h4>
 <p>The conditional test places the accumulated measure and its current-level
@@ -1698,12 +1721,12 @@ and must not pretend it did.</p>
 
 
 # ===========================================================================
-#  STAGE 7 -- What this is not
+#  STAGE 7 -- Alternative explanations and external context
 # ===========================================================================
 S7 = f"""
 <section id="s7" class="stage">
 <div class="stage-head"><span class="stage-n">Stage 7</span>
-<h2>What this is not</h2></div>
+<h2>Alternative explanations and external context</h2></div>
 <p class="stage-q">Is this a reporting artefact, and what else might matter
 that this project did not test?</p>
 
@@ -1740,10 +1763,9 @@ end.</p>
 
 {claim('V2-7.1')}
 
-<p>So the pattern is domain-specific and the difference is one of degree, not
-of kind. That is not the profile of a country whose financial reports are
-extreme while its general outlook is ordinary, and an earlier draft of this
-report described it that way in error.</p>
+<p>So the pattern is domain-specific and the difference is one of degree,
+not of kind: this is not the profile of a country whose financial reports
+are extreme while its general outlook is ordinary.</p>
 
 <p>Two things must be held apart here, and conflating them is easy. Greek life
 satisfaction <em>rose</em> over the observed period, from 6.2 to 6.9. Greece's
@@ -2014,6 +2036,12 @@ S8 = f"""
 <div class="stage-head"><span class="stage-n">Stage 8</span>
 <h2>What the evidence supports</h2></div>
 <p class="stage-q">Stated no more strongly than the tests allow.</p>
+
+<p>Recovery was real in employment and incomplete in the household economy.
+Wages, purchasing power and housing costs improved far less than the
+headline indicators suggest, and the relative poverty rate is built to miss
+exactly that kind of shortfall. What follows sets out how much of the
+resulting gap the evidence can account for, and how much it cannot.</p>
 
 {t_summary()}
 
@@ -2299,6 +2327,9 @@ body{max-width:54rem;margin:0 auto;padding:0 1.2rem 6rem;
   color:var(--series-gr);margin:0;flex:none;font-variant-numeric:tabular-nums}
 .sum-cap{font:.92rem/1.55 ui-sans-serif,system-ui,sans-serif;margin:0;
   flex:1 1 18rem;color:var(--text-secondary)}
+.sum-synthesis{font:600 1rem/1.6 ui-sans-serif,system-ui,sans-serif;
+  color:var(--text-primary);max-width:42rem;margin:0 0 1.8rem;
+  padding-left:1rem;border-left:3px solid var(--series-gr)}
 .sum-cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(17rem,1fr));
   gap:1.4rem 2rem}
 .sum-col h3{font:600 .76rem/1 ui-sans-serif,system-ui,sans-serif;

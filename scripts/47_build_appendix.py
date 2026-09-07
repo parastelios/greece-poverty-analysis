@@ -1826,7 +1826,7 @@ STAGES = [
     (6, "s6", "How much depends on the model",
      "Would a defensible alternative specification have produced a "
      "different answer?", ["diagnostics"]),
-    (7, "s7", "What this is not",
+    (7, "s7", "Alternative explanations and external context",
      "Is this a reporting artefact, and what else might matter that this "
      "project did not test?", ["expectations"]),
     (8, "s8", "What the evidence supports",

@@ -81,12 +81,14 @@ M = [
       artifact="age_breakdown_arope.csv, age_breakdown_arop.csv, "
                "age_breakdown_deprivation.csv, age_breakdown_low_work_intensity.csv, "
                "arope_by_sex.csv, e0_extended_panel.csv",
-      series="VIEW A: the three components together, Greece against the EU "
-             "median, colour marking the measure and dash the country. "
-             "VIEW B: AROPE by age group with the 65+ series emphasised. "
-             "VIEW C: AROPE by sex, whole population",
-      interaction="switch components/age/sex; hover reads the rate for the "
-                  "group and year",
+      series="VIEW A: income poverty, AROPE and reported hardship together, "
+             "Greece against the EU median of each. VIEW B: the three "
+             "components apart, Greece against the EU median, colour "
+             "marking the measure and dash the country. VIEW C: AROPE by "
+             "age group with the 65+ series emphasised. VIEW D: AROPE by "
+             "sex, whole population",
+      interaction="switch headline/components/age/sex; hover reads the "
+                  "rate for the group and year",
       fallback="component x year; age group x year; sex x year; and "
                "the shift-share contributions",
       caveat="These are changes in group-level rates, not evidence about the "
@@ -109,7 +111,7 @@ M = [
       caveat="Correlations identify duplication and sign reversals. They do "
              "NOT select variables.",
       status_label="descriptive"),
- dict(id="F7", stage=3, chart_type="ladder",
+ dict(id="F7", stage=4, chart_type="ladder",
       question="Which measures converged toward the EU and which diverged?",
       artifact="e_descriptive_recovery.csv",
       # CHANGED from dumbbell to a diverging ladder: the 2015 gaps run from
