@@ -44,7 +44,7 @@ This notebook is the running log. `docs/archive/pre-v2-publication/publication_s
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `main` |
-| HEAD | `08cc11c` Editorial cleanup: remove unexplained internal codes from reader-facing text |
+| HEAD | `62e1c2a` Narrative: editorial pass on both editions, English substance and Greek voice |
 | Uncommitted changes | yes |
 | Last refreshed | 2026-09-07 |
 | Frozen V1 reference | `v1-final` |

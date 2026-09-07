@@ -559,9 +559,9 @@ not a suspicious one &mdash; though this project did not test that
 explanation directly.</p>
 
 <p>None of this is independent proof, and that has to be said plainly
-rather than buried. Every one of these items comes from the same interview
-as the question about making ends meet: the same household, the same
-sitting. A household in a genuinely grim mood could rate the whole set
+rather than buried. Every one of these items comes from the same survey
+as the question about making ends meet, and may share a common way of
+answering it. A household in a genuinely grim mood could rate the whole set
 grimly, and that alone would produce numbers like these. What's been shown
 is that reported hardship is coherent with concrete circumstances. It
 hasn't been shown, and can't be shown this way, that it's confirmed by
@@ -656,7 +656,7 @@ rise substantially, from roughly 14,800 to 21,300 in that unit. That is
 real, and worth saying plainly, because
 a piece about hardship can leave the impression that nothing improved. But
 the EU median rose faster over the same years, so the distance between
-Greece and its neighbours widened even as Greece's own number climbed.</p>
+Greece and other EU countries widened even as Greece's own number climbed.</p>
 
 {fig('F7', caption="Some Gaps Closed. Others Widened.")}
 
@@ -788,9 +788,9 @@ one remains inconclusive.</p>
 <p>Compounded inflation was also tested as an accumulated measure, but the
 result remained inconclusive under the available statistical power.</p>
 
-<p>If history mattered as a general rule, that reversal shouldn't happen.
-It suggests these results are specific to work, wages and housing rather
-than some broad law that the past always counts for everything.</p>
+<p>The contrast argues against treating accumulated history as a universal
+rule. It suggests these results are specific to work, wages and housing
+rather than some broad law that the past always counts for everything.</p>
 
 <p>One more piece of the history simply isn't there to look at. What
 households could actually afford, tracked back to before the crisis, can't
@@ -830,8 +830,8 @@ two sections settle.</p>
 CH.append(chapter("limits", "Where the Evidence Stops", f"""
 <p>Not every question this piece asked got a clean answer. Two of those
 limits change how everything above should be read, and they belong in the
-open. The rest, measures the data was too thin to judge and two designs
-that failed outright, are recorded in full below. The boundary of the
+open. The rest &mdash; measures the data was too thin to judge, and two designs
+that failed outright &mdash; are recorded in full below. The boundary of the
 evidence is part of the story too.</p>
 
 <p>The first limit is time. Everything in <a
@@ -844,10 +844,10 @@ either &mdash; not because change was ruled out, but because the available
 data could not pin it down either way.</p>
 
 <div class="finding compact" data-claim-id="V2-5.Y">
-<p><em>Precise result.</em> None of three separate checks found change
-happening inside Greece over time: no within-country estimate came back
-significant in the expected direction, and no year-to-year test
-supported one either.</p>
+<p><em>Precise result.</em> Across three related tests, no within-country
+estimate across the panel clearly supported the expected direction. The
+evidence therefore cannot show that hardship rose inside Greece as the
+damage accumulated.</p>
 <p class="limits"><em>Limits.</em> These are three related checks on the
 same data, not three independent confirmations, and they weren't
 adjusted for running several checks at once.</p>
@@ -970,7 +970,9 @@ earlier, comes from inside the same survey as the hardship question
 itself. The external evidence elsewhere in this piece &mdash; wages,
 employment, what households can actually buy, the sixteen-measure spread
 &mdash; doesn't share that problem, but none of it was built to test
-reporting style directly. A better test looks across different subjects
+reporting style directly.</p>
+
+<p>A better test looks across different subjects
 entirely. A general tendency to answer darkly should drag everything down
 about equally; a pattern that's extreme on money and milder elsewhere points
 at circumstances instead. The table below makes that comparison directly:
@@ -988,8 +990,8 @@ it does not rule one out.</p>
 
 <p>One thing about that life-satisfaction number is worth holding onto,
 because it's easy to get backwards: it actually <em>rose</em> over the
-period. Greece's rank against it fell anyway, because its faster-improving
-neighbours pulled further ahead. A falling rank is not the same thing as a
+period. Greece's rank against it fell anyway, because other, faster-improving
+EU countries pulled further ahead. A falling rank is not the same thing as a
 falling number.</p>
 
 {context('CTX-1', '''
@@ -1014,16 +1016,23 @@ and not a test.</p>''')}
 skipped. Greece has one of the EU's highest rates of unmet medical
 need &mdash; worst in the Union by 2024, several times the typical member
 state &mdash; and that is a real, troubling fact about Greek life in its
-own right. But four separate health measures, tested against the same
-baseline used elsewhere, do not explain the hardship gap: none of them
-clears it, and most carry a puzzling sign at the country level, where worse
-reported health goes with <em>less</em> reported hardship. That flips once
-countries are compared with their own past rather than with each other:
-within a country, years of worse health are years of more hardship, the
-expected direction. So the health fact stands as real, without becoming
-part of this piece's explanation for the gap.</p>
+own right.</p>
 
-<p>Other factors come up in every account of the Greek crisis, and none of
+<p>But four separate health measures, tested against the same baseline
+used elsewhere, do not explain the hardship gap: none of them clears the
+bar this project sets. Three of them &mdash; self-rated health, long-standing
+illness and activity limitation &mdash; carry a puzzling sign at the country
+level, where worse reported health goes with <em>less</em> reported
+hardship, and that flips once countries are compared with their own past
+rather than with each other: within a country, years of worse health are
+years of more hardship, the expected direction. The fourth, unmet medical
+care, doesn't have that problem &mdash; it points the expected way in both
+comparisons &mdash; but its result changes if any single country is
+dropped, which is why it doesn't clear the bar either. So the health fact
+stands as real, without becoming part of this piece's explanation for the
+gap.</p>
+
+<p>Other factors often appear in accounts of the Greek crisis, and none of
 them was established here. Leaving them out silently would be misleading;
 treating them as findings would be worse, so they are recorded for what they
 are.</p>
@@ -1059,8 +1068,8 @@ report describes.</p>''')}
 household net wealth between 2019 and early 2026, about 72.6% went to the
 wealthiest fifth of households, while the bottom half accounted for about
 9.2% and saw its own share of total wealth slip slightly. A national wealth
-total climbing while most of the gain bypasses the households least able to
-absorb a shock is one plausible way that recovery and persistent hardship
+total climbing while most of the gain bypasses the bottom half of the
+distribution is one plausible way that recovery and persistent hardship
 can sit side by side &mdash; this project never tested wealth against its
 own hardship measure directly, so it is offered as a plausible mechanism,
 not a demonstrated one.</p>''')}
