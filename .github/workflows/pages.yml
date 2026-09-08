@@ -52,7 +52,12 @@ jobs:
         run: python3 scripts/verify_site.py
 
       # Assemble the site from the canonical outputs -- the reports are never
-      # duplicated in the repo, only copied at deploy time under shorter names.
+      # duplicated in the repo, only copied at deploy time. Most get a
+      # shorter name, but the appendix keeps its own filename: every figure
+      # in every document links to it internally as
+      # "statistical_appendix.html#F1" and so on (dozens of hardcoded
+      # cross-references baked into the generated HTML), so renaming it here
+      # 404s all of them -- this filename is not cosmetic.
       - name: Assemble site
         run: |
           mkdir -p _site
@@ -62,7 +67,7 @@ jobs:
           cp output/narrative.html         _site/narrative.html
           cp output/narrative_el.html      _site/narrative_el.html
           cp output/academic_paper.html    _site/paper.html
-          cp output/statistical_appendix.html _site/appendix.html
+          cp output/statistical_appendix.html _site/statistical_appendix.html
           touch _site/.nojekyll
           ls -la _site
 

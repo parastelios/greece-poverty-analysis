@@ -16,6 +16,14 @@ landing page it checks two things:
     will actually publish -- read from pages.yml's own copy list, not a
     second hardcoded list that could drift from the first.
 
+It also checks something broader than the two landing pages: every
+filename pages.yml renames at deploy time (report.html for v2_report.html,
+for instance) must not still be referenced by its pre-rename name anywhere
+in the canonical documents themselves -- the appendix was once renamed to
+appendix.html for a shorter URL while every figure in every document still
+linked to it internally as statistical_appendix.html#F1, and none of that
+showed up until a reader hit the 404 on a phone.
+
 This does not replace editorial judgement about what a page should say. It
 only catches numbers and links that stop matching their source.
 """
@@ -125,6 +133,33 @@ def check_page(path, lang):
           not missing_links,
           f"linked but not in pages.yml's copy list: {missing_links}")
 
+
+# ---------------------------------------------------------------------------
+#  Cross-document links: every hardcoded output/*.html -> output/*.html
+#  reference (the "Show the numbers" links every figure carries to the
+#  statistical appendix, for instance) has to survive whatever renaming
+#  pages.yml does at deploy time. This is the actual bug this check exists
+#  for: the appendix was deployed as appendix.html for a shorter URL, but
+#  every document links to it internally as statistical_appendix.html#F1,
+#  a name baked into dozens of cross-references across four generated
+#  documents -- and none of that showed up in the two checks above, which
+#  only look at the landing pages. Catch it generally: for every rename
+#  pages.yml performs (source name != deployed name), no canonical
+#  document may still reference the source name.
+# ---------------------------------------------------------------------------
+renames = [(m.group(1), m.group(2))
+           for m in re.finditer(r"cp\s+output/(\S+\.html)\s+_site/(\S+\.html)", workflow)
+           if m.group(1) != m.group(2)]
+canonical_docs = sorted((ROOT / "output").glob("*.html"))
+for old_name, new_name in renames:
+    offenders = []
+    for doc in canonical_docs:
+        text = doc.read_text(encoding="utf-8")
+        if f'"{old_name}#' in text or f'"{old_name}"' in text:
+            offenders.append(doc.relative_to(ROOT).as_posix())
+    check(f'no canonical document still links to "{old_name}" '
+          f'(deployed as "{new_name}")',
+          not offenders, f"found in: {offenders}")
 
 check_page(ROOT / "site" / "index.html", "en")
 check_page(ROOT / "site" / "el.html", "el")
