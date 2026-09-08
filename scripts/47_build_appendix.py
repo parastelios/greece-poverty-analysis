@@ -250,6 +250,9 @@ text-transform:uppercase;color:var(--text-muted);padding:.35rem 0;align-self:cen
 .howto{background:var(--surface-2);border-radius:10px;padding:16px 18px;margin:22px 0 8px;
   font-size:13.5px;color:var(--text-secondary);max-width:78ch}
 .howto b{color:var(--text-primary)}
+.howto summary{cursor:pointer;font:600 13.5px/1 ui-sans-serif,system-ui,sans-serif;
+  color:var(--text-primary)}
+.howto[open] summary{margin-bottom:12px}
 nav.toc{background:var(--surface-1);border:1px solid var(--border);border-radius:10px;
   padding:16px 18px;margin:22px 0 34px}
 nav.toc a{display:inline-block;margin:3px 14px 3px 0;font-size:13.5px;color:var(--ink-gr);
@@ -277,6 +280,10 @@ dl.gloss{margin:0}
 .gloss-row dd{margin:0;font-size:13.5px;line-height:1.55;color:var(--text-secondary)}
 .gloss-full{display:block;color:var(--text-primary);font-weight:550}
 .gloss-def{display:block;margin-top:3px}
+.gloss-status{display:inline-block;font:600 10.5px/1 ui-sans-serif,system-ui,sans-serif;
+  letter-spacing:.03em;padding:2px 7px;border-radius:4px;margin-left:2px;white-space:nowrap}
+.gloss-status-survivor{background:rgba(29,122,79,.14);color:var(--ink-ok)}
+.gloss-status-null{background:var(--surface-2);color:var(--text-muted)}
 .gloss-row[hidden]{display:none}
 .gloss-none{padding:14px 0;color:var(--text-secondary);font-size:13.5px}
 @media(max-width:640px){.gloss-row{grid-template-columns:1fr;gap:2px}}
@@ -328,6 +335,15 @@ table.mini th:first-child,table.mini td:first-child{text-align:left}
 table.mini th{font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-muted);font-weight:600}
 table.mini td.gr{color:var(--ink-gr);font-weight:650}
 .scroll{overflow-x:auto}
+.synthesis-wrap{overflow-x:auto;margin:18px 0 28px}
+table.synthesis{border-collapse:collapse;width:100%;min-width:720px;font-size:13px}
+table.synthesis th,table.synthesis td{padding:10px 14px;text-align:left;
+  vertical-align:top;border-bottom:1px solid var(--gridline)}
+table.synthesis th{font-size:11px;text-transform:uppercase;letter-spacing:.04em;
+  color:var(--text-muted);font-weight:600}
+table.synthesis td:first-child{color:var(--text-primary);font-weight:550}
+table.synthesis td:nth-child(2){white-space:nowrap;color:var(--ink-accent);font-weight:600}
+table.synthesis td:nth-child(3),table.synthesis td:nth-child(4){color:var(--text-secondary)}
 footer{margin-top:64px;padding-top:20px;border-top:1px solid var(--gridline);
   font-size:12.5px;color:var(--text-muted);max-width:80ch}
 @media(max-width:760px){
@@ -1664,22 +1680,22 @@ VAR_GLOSS = {
     "arrears": ("Share in arrears on mortgage, rent, utilities or hire-purchase."),
     "unexpected_expenses": ("Share unable to meet an unexpected required expense from own "
         "resources."),
-    "cum_excess_unemployment": ("THE HEADLINE MECHANISM. Unemployment above each country's own "
+    "cum_excess_unemployment": ("Unemployment above each country's own "
         "2009 rate, floored at zero and summed year over year since 2009, in accumulated "
-        "percentage-point-years. Survives FDR at q=0.002; Greece 138 against an EU median of 6."),
-    "cum_excess_ltu": ("The same accumulation applied to long-term unemployment. Null."),
-    "wage_years_below_2008": ("SECOND FDR SURVIVOR. Consecutive years real wages have been "
+        "percentage-point-years. Greece 138 against an EU median of 6 (FDR q=0.002)."),
+    "cum_excess_ltu": ("The same accumulation applied to long-term unemployment."),
+    "wage_years_below_2008": ("Consecutive years real wages have been "
         "below their own 2008 level \u2014 a current run that resets on recovery, not a total. "
-        "Greece 15 years. Survives FDR at q=0.041."),
+        "Greece 15 years (FDR q=0.041)."),
     "cum_threshold_shortfall": ("Accumulated shortfall of the real AROP threshold against its "
-        "own 2008 level. The most narratively anticipated candidate; null (p=0.291)."),
+        "own 2008 level. The most narratively anticipated candidate (p=0.291)."),
     "pct_below_peak": ("How far current GDP per capita sits below the country's own historical "
-        "peak. A stock measure of scarring. Null."),
+        "peak. A stock measure of scarring."),
     "share_worst_composite": ("Share of independent indicators placing the country in the EU's "
-        "worst quintile that year. Descriptive only \u2014 tested and null (FDR 0.287)."),
+        "worst quintile that year. Descriptive only (FDR 0.287)."),
     "years_worst_quintile_wage": ("Cumulative years in the EU's bottom quintile on real wages "
         "indexed to own 2008. The family-B near-miss; redundant with the wage family "
-        "(r=+0.948) and rejected."),
+        "(r=+0.948)."),
 }
 VAR_PREFIX = [
     ("cum_gdp_shortfall", "Accumulated GDP shortfall against a baseline, summed since 2008."),
@@ -1730,9 +1746,9 @@ def variable_glossary():
                     desc += " Baseline: the country's own rolling historical peak."
             tag = ""
             if v in survivors:
-                tag = " <b>Survives FDR correction.</b>"
+                tag = ' <span class="gloss-status gloss-status-survivor">FDR survivor</span>'
             elif v in set(famA.variable) | set(famB) | set(famC):
-                tag = " Tested and null."
+                tag = ' <span class="gloss-status gloss-status-null">Tested, null</span>'
             entries.append((v, "", (desc + tag).strip()))
         if entries:
             out.append((title, entries))
@@ -1939,7 +1955,22 @@ def _detail_module():
     return mod.cards()
 
 
-_report_figs = _lift([ROOT / "output" / "build" / f"batch{n}.html" for n in (1, 2, 3, 4)])
+# Every lifted figure carries a "This figure in the appendix" link, baked in
+# by the batch builders for readers of the report and the narratives. Inside
+# the appendix itself that link points at the page the reader is already on
+# -- so it is stripped here, in this document's own copy of the figures only
+# (the dict lifted for the report keeps it; the two are independent).
+_SELF_APPENDIX_LINK = _re.compile(
+    r' <a href="statistical_appendix\.html#[A-Z]\d+[A-Z]?">'
+    r'This figure in the appendix</a>, with the detail the report leaves out\.')
+
+
+def _lift_for_appendix(paths):
+    return {fid: _SELF_APPENDIX_LINK.sub("", html)
+            for fid, html in _lift(paths).items()}
+
+
+_report_figs = _lift_for_appendix([ROOT / "output" / "build" / f"batch{n}.html" for n in (1, 2, 3, 4)])
 _man = pd.read_csv(OUT / "report_visual_manifest.csv")
 _missing = [i for i in _man["id"] if i not in _report_figs]
 if _missing:
@@ -2188,6 +2219,78 @@ def _featured_for_stage(num):
     return "".join(parts)
 
 
+# STAGE 8 SYNTHESIS TABLE. Every earlier stage ends in a chart; Stage 8 was
+# the exception, closing on policy context (CTX-6) with no map of what the
+# seven stages before it actually settled. One row per stage question, each
+# claim id traceable to e_final_claims.csv so the summary cannot drift from
+# the frozen wording it summarises.
+_SYNTHESIS_ROWS = [
+    ("Are the two measures really describing different things, and is "
+     "Greece unusual or merely extreme?", "Both",
+     "Reported hardship runs 52.6 points above income poverty on average; "
+     "Greece ranks 1st of 27 on hardship, 7th on income poverty "
+     "(claim V2-1.2).",
+     "What accounts for a gap this specific size, beyond the fact that one "
+     "exists."),
+    ("Does the EU's broader poverty measure close the gap, and did the "
+     "yardstick itself move?", "Only partly",
+     "AROPE closes 9.8 of the 52.6 points, about 19%, leaving 42.8 open "
+     "(claim V2-2.1).",
+     "The remaining 81% of the gap."),
+    ("Does reported difficulty track concrete affordability failure, or "
+     "does it float free of material circumstances?", "Corroborated, not "
+     "independently proven",
+     "Reported hardship co-moves with arrears, an unexpected expense, "
+     "heating and severe deprivation, which together absorb 71% of "
+     "Greece's baseline residual (claims V2-3.1, V2-3.2).",
+     "All four items come from the same survey as the outcome, so this "
+     "cannot rule out a shared response style on its own."),
+    ("Which present-day conditions predict hardship beyond income poverty, "
+     "and which merely could not be resolved?", "Three hold, six "
+     "inconclusive",
+     "Material resources, labour-market exclusion and wage-adjusted "
+     "affordability each predict hardship beyond AROP "
+     "(claims V2-4.C1, C2, C4).",
+     "Six of nine current-level candidates are inconclusive under "
+     "available power, not ruled out (claim V2-4.X)."),
+    ("Does the length of a country's difficulty carry information beyond "
+     "its present state?", "Three mechanisms survive",
+     "Accumulated excess unemployment, wage-years below 2008 and "
+     "housing-cost deterioration since 2010 each predict hardship "
+     "(claims V2-5.C2, C3, C6).",
+     "No accumulated measure supports genuinely dynamic wording "
+     "(claim V2-5.Y); accumulated material resources could not be tested "
+     "at all (claim V2-5.Z)."),
+    ("Would a defensible alternative specification have produced a "
+     "different answer?", "Yes, materially",
+     "Greece's residual is +6.93 (rank 3 of 27) in the frozen "
+     "specification and &minus;9.39 (rank 25 of 27) once the "
+     "same-instrument deprivation predictors are added (claim V2-6.1).",
+     "Which specification is the right one to report is a judgement this "
+     "project states rather than one the data can settle."),
+    ("Is this a reporting artefact, and what else might matter that this "
+     "project did not test?", "Not directly tested",
+     "Greece is also worst in Europe on financial expectations and "
+     "consistently near the bottom on life satisfaction (claim V2-7.1); "
+     "independent external sources point the same direction "
+     "(context CTX-7, CTX-8, CTX-9).",
+     "Institutional trust, tax burden and wealth concentration are "
+     "flagged as open questions here, not tested by this project."),
+]
+
+
+def _synthesis_table_html():
+    rows = "".join(
+        f"<tr><td>{q}</td><td>{status}</td><td>{evidence}</td>"
+        f"<td>{unresolved}</td></tr>"
+        for q, status, evidence, unresolved in _SYNTHESIS_ROWS)
+    return (
+        '<div class="synthesis-wrap"><table class="synthesis">'
+        '<thead><tr><th>Question</th><th>Status</th>'
+        '<th>Main evidence</th><th>What remains unresolved</th></tr></thead>'
+        f'<tbody>{rows}</tbody></table></div>')
+
+
 # STAGE ASSEMBLY. Each of the eight sections below is the report's own stage,
 # in report order: its own figures, then the views simplified out of them,
 # then what it stated descriptively, then the diagnostics behind it, then the
@@ -2200,7 +2303,8 @@ def _featured_for_stage(num):
 for num, dom, title, blurb, _ in STAGES:
     featured = _featured_for_stage(num)
     atlas = _stage_atlas_html.get(dom, "")
-    if not featured and not atlas:
+    synthesis = _synthesis_table_html() if num == 8 else ""
+    if not featured and not atlas and not synthesis:
         continue
     toc.append(f'<a href="#stage-{num}">Stage {num} &mdash; {title}</a>')
     body.append(
@@ -2208,7 +2312,7 @@ for num, dom, title, blurb, _ in STAGES:
         f'<div class="appx-stage-head"><span class="stage-n">Stage {num}</span>'
         f'<h2>{title}</h2></div>'
         f'<p class="stage-q">{blurb}</p>'
-        + featured + atlas + "</section>")
+        + synthesis + featured + atlas + "</section>")
 
 # SOURCE AND COVERAGE NOTES. Previously two paragraphs inside the intro
 # ("Two cautions") plus a line in the footer; consolidated into one section
@@ -2216,7 +2320,7 @@ for num, dom, title, blurb, _ in STAGES:
 # place, after the evidence rather than before it.
 body.append(f"""<section id="source-notes"><h2>Source and coverage notes</h2>
 <p>Every chart in this appendix draws on the same Eurostat and ELSTAT
-pipeline as the three reports, at country-year level for the EU27. Where a
+pipeline as the project's reports and articles, at country-year level for the EU27. Where a
 figure shows &ldquo;the EU median&rdquo; or &ldquo;the EU comparator&rdquo;,
 it is Eurostat's own population-weighted EU27 aggregate where one is
 published, and an unweighted mean of member states where it is not -- the
@@ -2228,10 +2332,10 @@ from the live API will not reproduce every number here exactly; this
 project's frozen claims are estimated on a cached snapshot for that reason
 (see <code>docs/project_description.md</code>), while this appendix's own
 descriptive comparison series call the live API on every build so Eurostat's
-revisions reach it without a manual re-fetch. Every result across the three
-reports is an associational, country-level aggregate, not a household-level
-estimate &mdash; see the technical report's Methods for the full
-limitations.</p>
+revisions reach it without a manual re-fetch. Every result across the
+project's reports and articles is an associational, country-level
+aggregate, not a household-level estimate &mdash; see the technical
+report's Methods for the full limitations.</p>
 <p>{len(series)} series, {len(panels)} panels and {len(scatters)} scatter
 relationships are charted here in total, across the eight stages above.</p>
 </section>""")
@@ -2302,13 +2406,15 @@ html = f"""{HEAD}
 <div class="wrap">
 <p class="eyebrow">Statistical appendix &middot; EU-SILC / Eurostat</p>
 <h1>Every variable, in its own units</h1>
-<p class="dek">The three reports use these variables as model inputs, coefficients and residuals.
-This appendix shows what each one actually <em>is</em>: the real value, every year, for Greece,
-for the EU comparator, and for each of the other 26 member states. The country set is the
-27 current EU members &mdash; the same panel the models are estimated on. Eurostat publishes many of
-these series for candidate and EFTA countries as well, and for the euro-area aggregates; those are
-excluded here so that what you see is the country set the analysis actually used.</p>
-<div class="howto"><b>How this is organised.</b> Eight sections, one per stage of the technical
+<p class="dek">This appendix contains the figures, model checks and underlying series behind the
+project's reports and articles, arranged in the same eight-stage order as the technical report's
+argument. Each stage opens with the evidence used in the report, followed by additional views,
+technical diagnostics, related context and finally the source variables in their own units,
+collapsed by default. The country set is the 27 current EU member states &mdash; the same panel the
+models are estimated on &mdash; with <b style="color:var(--ink-gr)">Greece</b> in blue and the
+<b style="color:var(--ink-eu)">EU comparator</b> as an orange dashed line throughout.</p>
+<details class="howto"><summary>How to use this appendix</summary>
+<b>How this is organised.</b> Eight sections, one per stage of the technical
 report's own argument, in report order &mdash; not by subject, and not with the report's figures in
 one place and the evidence behind them in another. Open Stage 4 here and you find the report's own
 current-condition figures, the views it simplified out of them, the diagnostics that qualify them and
@@ -2333,7 +2439,19 @@ the plot divides into quadrants relative to the EU.
 <br><br><b>Two cautions.</b> The EU line is Eurostat's own population-weighted EU27 aggregate where
 one is published, and an unweighted mean of member states where it is not; the difference is stated
 under every chart, and the two are not interchangeable. And a country line stopping early means that
-country stopped reporting, not that its value fell to zero.</div>
+country stopped reporting, not that its value fell to zero.
+<br><br>The country set covers the 27 current EU members. Eurostat publishes many of these series
+for candidate and EFTA countries as well, and for the euro-area aggregates; those are excluded here
+so that what you see is the country set the analysis actually used.
+<br><br><b>What the badges mean.</b> Each figure carries one status, and the distinctions are
+methodological, not cosmetic &mdash; a badge is not renamed for readability, because the difference
+it marks is the point. <b>Pre-planned confirmatory</b>: specified in advance and tested as planned.
+<b>Pre-registered conditional robustness</b>: a robustness check specified in advance, conditional
+on the main result. <b>Post-selection robustness</b>: a robustness check chosen after seeing the
+data, so it corroborates rather than confirms. <b>Descriptive</b>: an observed pattern, not a formal
+test. <b>Descriptive corroboration</b>: an independent description pointing the same way.
+<b>Contextual evidence</b>: background the report cannot use as a headline claim.
+<b>Contextual consequence</b>: a likely downstream effect, not directly tested.</details>
 <nav class="toc">{"".join(toc)}</nav>
 {"".join(body)}
 <footer>

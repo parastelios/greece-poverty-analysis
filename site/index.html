@@ -4,7 +4,20 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The Greek Poverty Paradox</title>
-<meta name="description" content="Why Greek households report the EU's highest financial strain while official income poverty looks unremarkable — a reproducible Eurostat analysis.">
+<meta name="description" content="Why Greek households report the EU's highest financial strain while the official income-poverty rate looks far less exceptional — a reproducible Eurostat analysis.">
+<link rel="canonical" href="https://parastelios.github.io/greece-poverty-analysis/index.html">
+<link rel="alternate" hreflang="en" href="https://parastelios.github.io/greece-poverty-analysis/index.html">
+<link rel="alternate" hreflang="el" href="https://parastelios.github.io/greece-poverty-analysis/el.html">
+<link rel="alternate" hreflang="x-default" href="https://parastelios.github.io/greece-poverty-analysis/index.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="The Greek Poverty Paradox">
+<meta property="og:description" content="Why Greek households report the EU's highest financial strain while the official income-poverty rate looks far less exceptional.">
+<meta property="og:url" content="https://parastelios.github.io/greece-poverty-analysis/index.html">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="el_GR">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="The Greek Poverty Paradox">
+<meta name="twitter:description" content="Why Greek households report the EU's highest financial strain while the official income-poverty rate looks far less exceptional.">
 <style>
 :root{
   color-scheme: light;
@@ -27,6 +40,7 @@ h1{font-size:46px;line-height:1.1;letter-spacing:-0.02em;margin:0 0 18px;text-wr
 .tile .l{font-size:11.5px;color:var(--text-muted);margin:0 0 6px}
 .tile .v{font-size:26px;font-weight:700;letter-spacing:-0.02em;margin:0;font-variant-numeric:tabular-nums}
 .tile .v.gr{color:var(--gr)}
+.tile .unit{font-size:13px;font-weight:500;color:var(--text-muted)}
 .tile .s{font-size:11.5px;color:var(--text-secondary);margin:5px 0 0}
 h2{font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
   color:var(--text-muted);margin:48px 0 16px}
@@ -70,38 +84,39 @@ footer a{color:var(--text-secondary)}
     <p class="lang-switch"><span class="cur">EN</span><a href="el.html">ΕΛ</a></p>
   </div>
   <h1>The Greek Poverty Paradox</h1>
-  <p class="dek">Two in three Greek households say they struggle to make ends meet — the highest share in the EU, every year since 2015. The official income-poverty rate ranks Greece a middling 7th of 27. This project investigates how much of that gap, 52.6 points on average over the decade, is real, and how much of it can be explained.</p>
+  <p class="dek">Since 2015, Greece has recorded the EU's highest rate of reported difficulty making ends meet: roughly two in three households. Yet the official income-poverty rate places Greece seventh-highest among the 27 member states, a serious but far less exceptional position. This project examines what lies behind the average 52.6-percentage-point gap between those two measures and how much of it the available evidence can explain.</p>
 
   <div class="stat-row">
-    <div class="tile"><p class="l">Subjective poverty, 2024</p><p class="v gr">66.7%</p><p class="s">vs EU 17.1% · rank 1st</p></div>
-    <div class="tile"><p class="l">AROP income poverty, 2024</p><p class="v">19.6%</p><p class="s">vs EU 15.5% · rank 7th</p></div>
-    <div class="tile"><p class="l">Average gap, 2015–2024</p><p class="v">52.6 pp</p><p class="s">largely unexplained</p></div>
+    <div class="tile"><p class="l">Reported hardship, 2024</p><p class="v gr">66.7% <span class="unit">of households</span></p><p class="s">EU-country median: 17.1% · highest of 27</p></div>
+    <div class="tile"><p class="l">Income poverty (AROP), 2024</p><p class="v">19.6% <span class="unit">of people</span></p><p class="s">EU-country median: 15.5% · 7th highest of 27</p></div>
+    <div class="tile"><p class="l">Average gap, 2015–2024</p><p class="v">52.6 <span class="unit">pp</span></p><p class="s">largely unexplained</p></div>
   </div>
 
-  <p class="note"><b>What the analysis finds, in one line.</b> Reported hardship moves with specific material deprivations and a wide range of independently measured indicators — wages, purchasing power, accumulated unemployment and housing pressure — not just with the survey's own hardship question. Even so, the 52.6-point average gap remains largely unexplained: no single mechanism tested here accounts, robustly and on its own, for its size. All results are associational, drawn from country-level Eurostat aggregates rather than household microdata.</p>
+  <p class="note"><b>What the analysis finds.</b> Reported hardship cannot be dismissed as pessimism alone. It moves with specific material difficulties and with broader pressures involving wages, purchasing power, unemployment and housing.<br><br>No single factor, however, robustly explains the full 52.6-percentage-point average gap. The results show associations between countries, not that any one factor causes hardship within individual households.</p>
 
   <h2>How to read it</h2>
   <div class="cards">
     <a class="card" href="narrative.html">
       <h3>The story →</h3>
-      <p>What happened and why, in plain language, in eight short chapters. Start here if you want the explanation without the model tables.</p>
-      <p class="meta">~14,000 words · general audience</p>
+      <p>What happened and why, in plain language, in eight sections. Start here if you want the explanation without the model tables.</p>
+      <p class="meta">long read · general audience</p>
     </a>
     <a class="card" href="report.html">
       <h3>The technical report →</h3>
       <p>The complete evidence record: every model, robustness check, null result, and methodological caveat, with interactive charts.</p>
-      <p class="meta">full methods and data appendix</p>
+      <p class="meta">full methods · technical audience</p>
     </a>
     <a class="card" href="statistical_appendix.html">
       <h3>The statistical appendix →</h3>
       <p>Every variable used anywhere in the project, interactive, against all 27 member states — the figures the main report simplified away, and the full context register.</p>
-      <p class="meta">reference · every diagnostic, no simplification</p>
+      <p class="meta">full data atlas and diagnostics</p>
     </a>
   </div>
 
   <footer>
     Built from a reproducible Eurostat pipeline; figures reflect an API pull dated 2026-08-19 (work-effort series 2026-08-20).
     Eurostat revises published figures over time, so a later pull will not reproduce these numbers exactly.
+    <br><br>Page last updated: <time datetime="2026-09-08">8 September 2026</time>.
   </footer>
 </div>
 </body>

@@ -94,8 +94,14 @@ def check_page(path, lang):
     rel = path.relative_to(ROOT)
 
     pct = (lambda v: f"{v:.1f}%") if lang == "en" else (lambda v: el_decimal(f"{v:.1f}%"))
-    rank_text = ((lambda n: f"rank {n}") if lang == "en"
-                 else (lambda n: f"{n}η θέση"))
+
+    def _ordinal_en(n):
+        if n == 1:
+            return "highest of 27"
+        suffix = "th" if 11 <= n % 100 <= 13 else {1: "st", 2: "nd", 3: "rd"}.get(n % 10, "th")
+        return f"{n}{suffix} highest of 27"
+
+    rank_text = (_ordinal_en if lang == "en" else (lambda n: f"{n}η θέση"))
     avg_gap = avg_gap_en if lang == "en" else el_decimal(avg_gap_en)
     unexplained_word = "unexplained" if lang == "en" else "ανεξήγητο"
 

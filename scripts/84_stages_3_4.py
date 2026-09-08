@@ -142,11 +142,12 @@ v6h = {"rows": rows6h, "dp": 3, "legendA": "within countries",
               "countries against within countries, ordered by how much the "
               "two differ; reversals are marked"}
 FIGS["F19"] = dict(
-    caption="The real poverty threshold shows the only material sign reversal "
-            "when the comparison moves within countries; the rest either hold "
-            "their sign or start from a between-country correlation too close "
-            "to zero for a reversal to be meaningful",
-    kind="dumbbell", payload=v6h, series=f6h, first="Measure")
+    caption="Only the real poverty threshold clearly reverses direction",
+    kind="dumbbell", payload=v6h, series=f6h, first="Measure",
+    extra_caveat=(
+        "The rest either hold their sign moving from between-country to "
+        "within-country comparisons, or start from a between-country "
+        "correlation too close to zero for a reversal to be meaningful."))
 
 FIGS["F6"] = dict(
     caption="The same pair can point one way across countries and the other "
@@ -523,6 +524,11 @@ def build(fid, spec):
         stamp = spec["series"].checksum()
     cav = m.caveat
     if spec.get("extra_caveat"):
+        # See 83_stages_1_2.py's build(): join two sentences with a period,
+        # not a bare space, when the manifest caveat doesn't already end in
+        # sentence-ending punctuation.
+        if cav == cav and str(cav).strip() and not str(cav).rstrip().endswith((".", "!", "?")):
+            cav = str(cav).rstrip() + "."
         cav = ("" if cav != cav else str(cav) + " ") + spec["extra_caveat"]
     shell = ce.figure(fid, spec["caption"], m.question, m.status_label,
                       spec["kind"], {}, body, caveat=cav,

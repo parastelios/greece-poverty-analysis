@@ -344,6 +344,11 @@ def build(fid, spec):
         body = spec["series"].fallback_table(spec.get("first", ""))
     cav = m.caveat
     if spec.get("extra_caveat"):
+        # See 83_stages_1_2.py's build(): join two sentences with a period,
+        # not a bare space, when the manifest caveat doesn't already end in
+        # sentence-ending punctuation.
+        if cav == cav and str(cav).strip() and not str(cav).rstrip().endswith((".", "!", "?")):
+            cav = str(cav).rstrip() + "."
         cav = ("" if cav != cav else str(cav) + " ") + spec["extra_caveat"]
     shell = ce.figure(fid, spec["caption"], m.question, m.status_label,
                       spec["kind"], {}, body, caveat=cav,

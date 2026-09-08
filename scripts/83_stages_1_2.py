@@ -527,10 +527,11 @@ FIGS["F4"] = dict(
             "closes only about a fifth of the distance",
     kind="panel", series=f4, payload=v4a,
     extra_caveat=(
-        "The three measures are shown as they are reported, in shares of "
-        "households, so the distance between them can be read directly. That "
-        "distance is plotted on its own in the statistical appendix, where the "
-        "points AROPE closes fall from 11.0 in 2015 to 7.3 in 2024."),
+        "Reported hardship is a percentage of households; AROP and AROPE are "
+        "percentages of people. They share a percentage axis for comparison, "
+        "but not the same denominator. That distance is plotted on its own "
+        "in the statistical appendix, where the points AROPE closes fall "
+        "from 11.0 in 2015 to 7.3 in 2024."),
     first="Series")
 
 # The view the report no longer carries, under its own appendix id.
@@ -615,7 +616,7 @@ for _lbl, _col, _tone in _LEVELS:
               [float(med[_col].get(y)) if y in med.index and pd.notna(med[_col].get(y)) else None
                for y in yrs],
               tone=_tone, style="dashed", weight="normal")
-v5lvl = {"years": [int(y) for y in yrs], "dp": 1, "yLabel": "% of people",
+v5lvl = {"years": [int(y) for y in yrs], "dp": 1, "yLabel": "Percent",
          "pairedHover": True,
          "series": [{"label": l, "tone": m["tone"], "style": m["style"],
                      "weight": m["weight"],
@@ -833,6 +834,12 @@ def build(fid, spec):
         stamp = spec["series"].checksum()
     cav = caveat0
     if spec.get("extra_caveat"):
+        # The manifest caveat and a figure's own extra_caveat are two
+        # separate sentences joined with a bare space -- without this, a
+        # manifest caveat that doesn't already end in punctuation runs
+        # straight into the next sentence with no period between them.
+        if cav == cav and str(cav).strip() and not str(cav).rstrip().endswith((".", "!", "?")):
+            cav = str(cav).rstrip() + "."
         cav = ("" if cav != cav else str(cav) + " ") + spec["extra_caveat"]
     if spec.get("lede"):
         body = f'<p class="fig-lede">{spec["lede"]}</p>' + body

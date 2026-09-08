@@ -287,11 +287,9 @@ QUESTIONS = {
     "does a fixed line show instead?":
         "Τι απέγινε το όριο με το οποίο μετριέται η ελληνική φτώχεια, και τι "
         "δείχνει ένα σταθερό όριο στη θέση του;",
-    "Where does AROPE sit against income poverty and reported hardship, what "
-    "is AROPE made of, and did every age and sex group move the same way?":
-        "Πού στέκεται ο AROPE ανάμεσα στην εισοδηματική φτώχεια και στην "
-        "οικονομική δυσκολία, από τι αποτελείται, και κινήθηκαν το ίδιο όλες "
-        "οι ηλικίες και τα δύο φύλα;",
+    "What sits behind AROPE, and did every age group move the same way?":
+        "Τι κρύβεται πίσω από τον AROPE, και κινήθηκαν το ίδιο όλες οι "
+        "ηλικιακές ομάδες;",
     "Which measures converged toward the EU and which diverged?":
         "Ποιοι δείκτες πλησίασαν την ΕΕ και ποιοι απομακρύνθηκαν;",
     "What do the three supported constructs actually look like for Greece "
