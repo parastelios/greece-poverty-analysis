@@ -401,12 +401,18 @@ def domain_table_el():
 
 
 def context_el(cid, status_el, topic_el, prose_el, permitted_el, forbidden_el,
-                source_el, source_url=None, expand=False):
+                source_el, source_url=None, expand=False, collapse=False):
     """Hand-translated reading of a context_register.csv row. The registry
     entry (status/topic/permitted/forbidden/source) is authored in English
     for the other three documents; this authors the same entry's content in
     Greek rather than templating the English text, and keeps the same
-    data-context-id so the id can be cross-checked against the registry."""
+    data-context-id so the id can be cross-checked against the registry.
+    `collapse` tucks the whole entry -- topic, prose and the permitted/
+    limitation/citation trailer -- behind a <summary> naming the status and
+    topic, for entries (external corroborating sources) that are worth
+    linking to but would otherwise crowd the reading flow. The outer <div
+    data-context-id> stays put either way: verify_editions.py's box-parity
+    check matches that exact `<div class="X" attr="Y">...</div>` shape."""
     if cid not in ctx.index:
         raise SystemExit(f"context_el: unknown context id {cid}")
     cite = f'<p class="src">{source_el}</p>' if source_el else ""
@@ -416,6 +422,11 @@ def context_el(cid, status_el, topic_el, prose_el, permitted_el, forbidden_el,
             f"{forbidden_el}</p>{cite}")
     if expand:
         body = f'<details class="ctx-detail"><summary>Πλήρης σημείωση</summary>{body}</details>'
+    if collapse:
+        return (f'<div class="ctx ctx-collapse" data-context-id="{cid}">'
+                f'<details><summary><span class="ctx-status">{status_el}</span>'
+                f'<span class="ctx-summary-topic">{topic_el}</span></summary>'
+                f"{prose_el}{body}</details></div>")
     return (f'<div class="ctx" data-context-id="{cid}">'
             f'<p class="ctx-status">{status_el}</p>'
             f"<h4>{topic_el}</h4>{prose_el}{body}</div>")
@@ -641,7 +652,8 @@ data-view="1">Πόσο αξίζει το ίδιο το όριο</a>) δείχν�
     "Andriopoulou, E., Kanavitsa, E. &amp; Tsakloglou, P. (2020), "
     "Decomposing Poverty in Hard Times: Greece 2007-2016. LSE GreeSE Paper "
     'No. 149. <a href="https://www.lse.ac.uk/Hellenic-Observatory/'
-    'Publications/GreeSE-Papers">πηγή</a>')}
+    'Publications/GreeSE-Papers">πηγή</a>',
+    collapse=True)}
 
 <p>Αυτό δεν σημαίνει ότι το σταθερό όριο είναι το «σωστό» και ο <em>AROP</em>
 το «λάθος». Οι δύο δείκτες απαντούν σε διαφορετικά ερωτήματα. Ο επίσημος
@@ -995,7 +1007,7 @@ class="fig-jump" href="#recovery-table">ο συνοδευτικός πίνακα
     "Greece in Figures, «Γιατί οι Έλληνες νιώθουν τόσο φτωχοί». "
     '<a href="https://www.greeceinfigures.com/analyses/'
     'giati-oi-ellenes-niothoun-toso-phtokhoi/">πηγή</a>',
-    expand=True)}
+    collapse=True)}
 
 <p>Με απλά λόγια: η αγορά εργασίας βελτιώθηκε, αλλά ο προϋπολογισμός του
 νοικοκυριού δεν ανέκαμψε μαζί της.</p>
@@ -1407,7 +1419,8 @@ Eurostat. Μια διαφορετική ευρωπαϊκή έρευνα δείχ
     "συγκριθούν άμεσα μεταξύ γύρων, επειδή ο αριθμός συμμετεχουσών χωρών "
     "μεταβάλλεται από 22 έως 30. Η δεκαετία μετά το 2010/11 δεν "
     "παρατηρείται συνεχώς.",
-    'European Social Survey Data Portal. <a href="https://ess.sikt.no/en/">πηγή</a>')}
+    'European Social Survey Data Portal. <a href="https://ess.sikt.no/en/">πηγή</a>',
+    collapse=True)}
 
 <h3>Υγεία</h3>
 
@@ -1779,6 +1792,16 @@ details.ctx-detail summary{{cursor:pointer;font:600 .78rem/1
   color:var(--text-secondary);padding:.2rem 0}}
 details.ctx-detail[open] summary{{margin-bottom:.4rem}}
 details.ctx-detail .permitted{{margin-top:0}}
+.ctx-collapse{{padding:.7rem 1.2rem}}
+.ctx-collapse summary{{cursor:pointer;list-style:none;display:flex;
+  flex-wrap:wrap;align-items:baseline;gap:.5rem;padding:.3rem 0}}
+.ctx-collapse summary::-webkit-details-marker{{display:none}}
+.ctx-collapse summary::before{{content:"+";color:var(--text-secondary);
+  font-weight:700;width:1em}}
+.ctx-collapse details[open] summary::before{{content:"−"}}
+.ctx-collapse .ctx-status{{margin:0}}
+.ctx-collapse .ctx-summary-topic{{font-size:.92rem;color:var(--text-primary)}}
+.ctx-collapse details>p,.ctx-collapse details>div{{margin-top:.6rem}}
 .fig-meta .badge{{display:none}}
 .fig-methods{{margin:0 1.1rem 1rem}}
 .fig-methods summary{{cursor:pointer;font:600 .78rem/1 ui-sans-serif,
