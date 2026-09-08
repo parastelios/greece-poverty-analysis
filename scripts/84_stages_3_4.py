@@ -462,9 +462,9 @@ views10, series10 = [], []
 # Each tab shows a different quantity in a different unit, so the unit belongs
 # on the axis itself rather than in the caption the reader has already scrolled
 # past.
-UNIT10 = {"ltu_rate": "% of labour force",
-          "aic_pps_pc": "PPS per head",
-          "wadj_a01": "Index, EU27 = 100"}
+UNIT10 = {"ltu_rate": "% of labour force, higher = worse",
+          "aic_pps_pc": "PPS per head, lower = worse",
+          "wadj_a01": "Index, EU27 = 100, higher = worse"}
 for v, dp in [("ltu_rate", 1), ("aic_pps_pc", 0), ("wadj_a01", 1)]:
     s = ce.Series([str(int(y)) for y in yrs], dp=dp, title=ce.name(v))
     s.add("Greece", [float(gr[v].get(y)) for y in yrs])

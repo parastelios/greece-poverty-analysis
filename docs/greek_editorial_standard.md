@@ -50,6 +50,62 @@ to `αγοραστική πίεση`.
 - Prefer short, active sentences.
 - State the point plainly before presenting statistical detail.
 - Use only metaphors that organize an entire section.
+- Italicize a tested indicator or parameter at its first substantive
+  introduction in each chapter, not at every later occurrence. The two
+  official short-form variable names, AROP and AROPE, are italicized every
+  time they appear, since they function as terms of art rather than
+  ordinary prose. This rule applies to both editions; `91_build_narrative.py`
+  carries the English side of it.
+- A chapter may carry `<h3>` subheadings when it covers more than one
+  distinct question (currently `limits` and `leftover`). Keep the Greek
+  and English editions' subheading count and order identical; the wording
+  need not be a literal translation.
+
+**Rule for what stays visible vs. collapsed in "leftover".** A candidate
+explanatory factor gets its own visible prose (an H3 subsection, or a real
+`context_el`/`context` box in the main flow) when this project ran any
+direct, dedicated check connecting it to the hardship gap, however small.
+Health (four tested measures), the ESS pre-crisis baseline (a six-round
+balanced-panel check), and migration (one aggregate predictor test,
+p = 0.4006 — a single check, but a real one, with its own short section)
+all meet that bar. A factor goes in the collapsed "Άλλοι πιθανοί
+παράγοντες" / "Other possible factors" disclosure when this project never
+tested it against the hardship model at all, only background, a
+hypothesis, or independent/literature evidence is offered (trust, crisis
+and adjustment policy, tax burden, wealth concentration). The line is
+whether a check was run, not how much it found or how much prose it
+earned — migration's null result gets one short paragraph, not a long
+one, but it stays out of the collapsed section because it was tested.
+
+CTX-6 (policy implications) is neither tested nor untested — it is
+explicitly labeled a recommendation, not a finding, in
+`context_register.csv`, and it belongs with the "conclusion" chapter
+rather than either the visible test sections or the collapsed disclosure,
+since that whole chapter is already the authors' own synthesis. It is not
+a separate box there either; see the CTX-1 pattern below.
+
+CTX-1 (financial expectations and life satisfaction) and CTX-6 (policy
+implications) are both special cases: their content already belongs, in
+full, to prose that exists anywhere for other reasons — CTX-1 to the
+visible domain-table discussion and the V2-7.1 finding box, CTX-6 to the
+closing "conclusion" chapter, which is inherently authorial synthesis —
+so rendering either a second time as its own separate box would just
+repeat a point already made. But every `data-context-id` container is
+checked for completeness by `audit_parity.py --release` (via
+`context_containers`/`context_completeness` in `claim_anchors.py`), which
+requires the container's own text to carry the status label, the
+permitted interpretation, the limitation, and the citation, together. A
+zero-content marker (an empty tag carrying only the id) satisfies the
+narrative build's own naive substring check but fails that stricter
+audit — it is not a legitimate way to anchor an entry and must not be
+used. The correct pattern, used for both CTX-1 and CTX-6, is to wrap the
+existing visible prose itself in `<div class="ctx-inline"
+data-context-id="CTX-n">...</div>` and, if the surrounding prose does not
+already contain the status phrase and enough of the permitted/forbidden/
+citation wording, add the missing words into the prose (naturally, not as
+a bolted-on sentence) rather than duplicating the whole box. Verify any
+such container against `context_completeness()` directly before
+committing it, the way a new context box's wording would be checked.
 - Avoid expressions such as «κουβαλά πληροφορία», «δείχνει προς», «επέζησε στα
   δεδομένα» and «δεν δοκιμάστηκε αρκετά σκληρά».
 - Do not personify indicators unless the phrasing sounds natural in Greek.
@@ -72,7 +128,7 @@ to `αγοραστική πίεση`.
   EU-SILC, ESS.
 - Bibliographic citations keep the original language and script of the work
   cited. The link label is `πηγή`.
-- Figures are `Σχήμα N`; a view within a figure is a `καρτέλα`.
+- Figures are `Γράφημα N`; a view within a figure is a `καρτέλα`.
 
 ## Public-facing statistical language
 
@@ -108,9 +164,15 @@ reject it. Distinguish:
 2. Δεν είναι απλώς μια αίσθηση
 3. Χαμήλωσε ο πήχης, όχι η φτώχεια
 4. Η απασχόληση ανέκαμψε. Τα νοικοκυριά όχι.
-5. Το βάρος μιας χαμένης δεκαετίας παραμένει
-6. Εκεί που τελειώνουν τα στοιχεία
+5. Το συσσωρευμένο βάρος της κρίσης
+6. Τι μένει ακόμη ανοιχτό
 7. Τι δεν μας λένε ακόμη οι αριθμοί
+
+Sections 6 and 7 each carry two or three `<h3>` subheadings; see the
+editorial rule above. The section title (in the chapter body) and the
+matching `TOC_GLOSS` entry (in the table of contents) are separate strings
+in `92_build_narrative_el.py` and must be updated together whenever a
+heading changes.
 
 Article title:
 
@@ -118,21 +180,20 @@ Article title:
 
 **Resolved from the draft.** Section 4's heading went through two rounds. The
 draft's «Η οικονομία των νοικοκυριών όχι.» was a calque of "the household
-economy" rather than Greek, and the heading is now «Οι δουλειές ανέκαμψαν. Τα
+economy" rather than Greek, and the heading is now «Η απασχόληση ανέκαμψε. Τα
 νοικοκυριά όχι.»
 
-Its closing pull-quote is «Η ανεργία υποχώρησε. Ο μισθός επίσης.», and how it
-got there is the general lesson. An elliptical second clause inherits the
-first clause's verb, so it inherits its direction too. «Η ανεργία υποχώρησε.
-Ο μισθός όχι.» therefore reads literally as "wages did not fall", while wages
-fell from 76,9 to 68,2 against 2008: the line contradicts the table printed a
-few paragraphs above it. The English edition avoids the same trap by putting a
-recovery verb on both halves ("came back" / "did not"), which Greek cannot
-copy here without repeating the heading.
+Its closing pull-quote is «Η ανεργία επανήλθε. Ο μισθός όχι.», and how it got
+there is the general lesson. An elliptical second clause inherits the first
+clause's verb, so it inherits its direction too. An earlier draft used «Η
+ανεργία υποχώρησε. Ο μισθός όχι.», which reads literally as "wages did not
+fall", while wages fell from 76,9 to 68,2 against 2008: the line contradicted
+the table printed a few paragraphs above it.
 
-The fix keeps the rhythm and turns the ellipsis into the point: the reader
-expects «όχι» and gets «επίσης». Both halves are then true, and the paradox
-lands harder than the negation did.
+The fix was not to change «όχι» but to change the verb it inherits from:
+«επανήλθε» (came back) instead of «υποχώρησε» (fell). «Ο μισθός όχι» then
+correctly means "the paycheck did not come back", matching the English
+pull-quote's own construction ("came back" / "did not") exactly.
 
 **Rule.** Before writing an elliptical «όχι», complete the sentence out loud
 with the previous verb. If the completed sentence is false, the line is wrong

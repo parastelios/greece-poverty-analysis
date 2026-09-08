@@ -31,6 +31,8 @@ import re
 import sys
 from pathlib import Path
 
+import pandas as pd
+
 ROOT = Path(__file__).resolve().parents[1]
 EN = ROOT / "output" / "narrative.html"
 EL = ROOT / "output" / "narrative_el.html"
@@ -55,7 +57,7 @@ def anchors(doc):
     the words, which must not.
     """
     out = []
-    pattern = (r'<h2>|<figure class="figure" id="(\w+)"|data-claim-id="([^"]*)"'
+    pattern = (r'<h2>|<h3>|<figure class="figure" id="(\w+)"|data-claim-id="([^"]*)"'
                r'|data-context-id="([^"]+)"|<details class="disclosure">|<blockquote>')
     for m in re.finditer(pattern, doc):
         if m.group(1):
@@ -66,6 +68,8 @@ def anchors(doc):
             out.append("context:" + m.group(3))
         elif m.group(0).startswith("<h2"):
             out.append("section")
+        elif m.group(0).startswith("<h3"):
+            out.append("subsection")
         elif m.group(0).startswith("<details"):
             out.append("disclosure")
         else:
@@ -158,6 +162,21 @@ for kind, attr in (("claim", "data-claim-id"), ("context", "data-context-id")):
           set(b_en) == set(b_el),
           f"EN-only {sorted(set(b_en) - set(b_el))}, "
           f"EL-only {sorted(set(b_el) - set(b_en))}")
+    if kind == "context":
+        # boxes() only matches <div class="..." data-context-id="...">, so an
+        # id anchored on a bare <span> or a classless tag -- an empty
+        # zero-content marker used only to satisfy a naive substring check --
+        # is not picked up at all. That alone does not fail the set-equality
+        # check above if BOTH editions omit the same id: two empty markers
+        # still look identical to each other. Every register entry must
+        # therefore also be present, in a real box, in each edition on its
+        # own, not just consistently absent from both.
+        registered = set(pd.read_csv(ROOT / "data" / "processed"
+                                      / "context_register.csv")["id"])
+        for doc_name, b in (("EN", b_en), ("EL", b_el)):
+            missing_ctx = sorted(registered - set(b))
+            check(f"every registered context id is a real box in {doc_name}",
+                  not missing_ctx, f"missing or unanchored: {missing_ctx}")
     drift = [k for k in sorted(set(b_en) & set(b_el))
              if statistics(b_en[k]) != statistics(b_el[k])]
     check(f"every {kind} box states the same statistics in both editions",

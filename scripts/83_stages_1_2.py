@@ -288,7 +288,7 @@ for _c in _others:
         _ctx21.append({"label": NAMES.get(_c, _c), "values": _vals})
 
 v21a = {"years": _byrs, "dp": 1,
-        "yLabel": f"% of the same {_N} indicators",
+        "yLabel": f"% of the same {_N} indicators, higher = worse",
         "yMin": 0, "yMax": 100,
         "context": _ctx21, "contextLabel": "Each other EU country",
         "alt": f"The share of the same fixed basket of {_N} indicators placing "

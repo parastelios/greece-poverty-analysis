@@ -366,13 +366,13 @@ Greek pessimism.</p>
 <p>Is that shift justified? By the official income-poverty measure, Greece is
 in difficulty but not outside the European range. By what households report,
 it is almost in a category of its own. That is the paradox this piece
-unfolds: income poverty and reported hardship are telling two different
+unfolds: <em>income poverty</em> and <em>reported hardship</em> are telling two different
 stories. The question is whether the second is merely a darker way of
 answering, or whether it captures a material reality that the first measure
 cannot see on its own.</p>
 
 <p>Two measures carry this whole piece. Income poverty, officially
-at-risk-of-poverty or AROP, is an income test: a person counts
+at-risk-of-poverty or <em>AROP</em>, is an income test: a person counts
 as poor if the income shared across their household, adjusted for household
 size, sits below 60% of the country's median, recalculated
 every year. Reported hardship is different and more direct: in an EU-wide
@@ -435,7 +435,7 @@ fixed. It moves with the very economy it is supposed to be measuring.</p>
 
 <p>The EU's headline poverty measure, at-risk-of-poverty, rests on a line
 that isn't fixed in money terms. That line is set at 60% of whatever the
-national median income happens to be, <em>that year</em>, and AROP itself is
+national median income happens to be, <em>that year</em>, and <em>AROP</em> itself is
 the share of people whose income falls below it. In an ordinary economy,
 where incomes drift up slowly and roughly together, that is a reasonable
 way to define being poor relative to your neighbours.</p>
@@ -465,7 +465,7 @@ Greek household microdata, estimates that 48% of the population was poor
 under a poverty line anchored before the crisis, for the same income year
 this project's own reconstruction puts at 40.6%.</p>''')}
 
-<p>That doesn't make the fixed line the &ldquo;correct&rdquo; one, and
+<p>That doesn't make the <em>fixed poverty line</em> the &ldquo;correct&rdquo; one, and
 this project's own reconstruction of it says nothing about how Greece
 compares to any other country: it measures Greece against its own past,
 not against Europe. It asks a different
@@ -474,10 +474,10 @@ question: the official rate measures who is far below the middle of
 pre-crisis standard. When a whole country falls together, those two
 questions split apart.</p>
 
-<p>Europe's broader measure, AROPE (at risk of poverty or social
+<p>Europe's broader measure, <em>AROPE</em> (at risk of poverty or social
 exclusion), tries to widen the lens. It counts anyone who meets at least one
 of three conditions &mdash; income poverty, severe material deprivation, or
-very low work intensity &mdash; rather than income poverty alone, so it
+<em>very low work intensity</em> &mdash; rather than income poverty alone, so it
 should close the gap if the problem is only that income poverty is too
 narrow. It does close some of it: 9.8 of the 52.6 points, under a fifth.
 But it leaves most of the distance untouched, and its contribution shrinks
@@ -489,7 +489,7 @@ over the decade.</p>
 
 <p>Figure {{fig:F5}} shows both sides of that result. The first tab
 (<a class="fig-jump" href="#F5" data-view="0">Headline measures</a>) places
-income poverty, AROPE and reported hardship together: AROPE sits between
+income poverty, <em>AROPE</em> and reported hardship together: <em>AROPE</em> sits between
 them, but much closer to income poverty than to hardship. The other tabs
 show why one national number is still too smooth. Greece sits above the EU
 median on the two components with a comparable national series,
@@ -518,9 +518,10 @@ and settled seriously, not waved off as an obvious no.</p>
 <p>The test isn't whether one household's answer feels convincing on its
 own. It's whether the national annual rate of that feeling moves together,
 year after year, with the national annual rates of things that name actual
-events, not moods: falling behind on bills, being unable to cover a surprise
-expense, being unable to heat the home properly, going without several
-ordinary things at once. A vague question can drift with a bad national
+events, not moods: <em>falling behind on bills</em>, <em>being unable to cover a surprise
+expense</em>, <em>being unable to heat the home properly</em>, and <em>material
+deprivation</em>, going without several ordinary things at once. A vague question
+can drift with a bad national
 mood. A national mood drifting in step with four separate, concrete annual
 rates, year after year, is a much harder thing for mood alone to
 produce.</p>
@@ -531,7 +532,7 @@ produce.</p>
 tabs tell the same story, each as a correlation, where close to 1 means
 two measures rise and fall together and close to 0 means no strong
 straight-line relationship shows up between them. In Greece's own
-year-by-year data, reported hardship tracks
+year-by-year data, <em>reported hardship</em> tracks
 an inability to cover a surprise expense almost exactly (<a
 class="fig-jump" href="#F8" data-view="0">Unexpected expenses</a>) at 0.92.
 It tracks going without several ordinary things at once even more closely
@@ -574,7 +575,7 @@ from everything else describing Greek life. It doesn't.</p>
 
 {fig('F21', caption="The Problem Spread Across the Dashboard")}
 
-<p>Take sixteen separate measures of Greek life (see
+<p>Take <em>sixteen separate measures</em> of Greek life (see
 <a class="fig-jump" href="#F21">Figure {{fig:F21}}</a>): wages, hours
 worked, prices, keeping the home warm, what households expect of the coming
 year, income inequality. They were filtered from a wider set of economic
@@ -627,8 +628,8 @@ official poverty rate register it?</p>
 # ---- 4. The Jobs Came Back. The Household Economy Did Not. ----------------
 CH.append(chapter("recovery", "The Jobs Came Back. The Household Economy Did Not.", f"""
 <p>The strongest case for Greece's recovery is the labour market.
-Unemployment fell from its crisis peak to under 9%, and long-term
-unemployment fell with it. That is real recovery. But a household does
+Unemployment fell from its crisis peak to under 9%, and <em>long-term
+unemployment</em> fell with it. That is real recovery. But a household does
 not live on the unemployment rate. It lives on the wage that arrives, the
 prices facing that wage, what it costs to keep a roof over its head, and
 what is left when the month runs out. On that test, Greece's recovery
@@ -643,13 +644,13 @@ run through savings, sell what it can, or lean on relatives, even though
 this project did not track those responses directly.</p>
 
 <p>But employment recovered furthest, and it was not the whole household
-story. Greek real wages stood at about 77%
+story. Greek <em>real wages</em> stood at about 77%
 of their 2008 level in 2015; by 2024, about 68%. Not recovering slowly.
 Not recovering. Greek wages have now been below their pre-crisis
 level for fifteen consecutive years, longer than any EU country except
 Hungary. Output per person sits between the two stories: the shortfall
-against Greece's own 2008 peak roughly halved, but it did not close. Actual
-individual consumption &mdash; the volume of goods and services households
+against Greece's own 2008 peak roughly halved, but it did not close. <em>Actual
+individual consumption</em> &mdash; the volume of goods and services households
 actually consume, measured in a common purchasing-power unit that strips out
 price-level differences between countries, not literal euros &mdash; did
 rise substantially, from roughly 14,800 to 21,300 in that unit. That is
@@ -688,7 +689,7 @@ damaged.</p>
 <p>That same split appears when we stop looking at gaps and look at
 today's levels, in <a class="fig-jump" href="#F10">Figure
 {{fig:F10}}</a>. Long-term unemployment, material resources and
-wage-adjusted affordability
+<em>wage-adjusted affordability</em>
 each place Greece on the wrong side of the European middle. They are also
 the three current conditions that carry information beyond the official
 poverty rate. But the point here is simpler: household recovery
@@ -722,7 +723,7 @@ not recover with it.</p>
 """))
 
 # ---- 5. A Decade of Damage Still Counts (duration) -------------------------
-CH.append(chapter("duration", "A Decade of Damage Still Counts", f"""
+CH.append(chapter("duration", "The Accumulated Weight of the Crisis", f"""
 <p>The jobs came back. The household economy did not. But even that
 distinction still looks mostly at where things stand now. For households,
 duration matters: one year of
@@ -733,10 +734,11 @@ disappears is not the same as pressure that accumulates.</p>
 <p>This is also the point where the story is easiest to overstate.</p>
 
 <p>Instead of asking only how bad a condition is today, this section asks
-how much of it a country has carried since the crisis began: how
-much excess unemployment it accumulated, how many consecutive years its
-wages stayed below 2008, how much its housing costs deteriorated since
-2010.</p>
+how much of it a country has carried since the crisis began: <em>accumulated
+excess unemployment</em>, how much a country has accumulated since the crisis began;
+<em>wage duration below 2008</em>, how many consecutive years its wages stayed
+below that level; and <em>housing-cost deterioration</em>, how much its housing
+costs have deteriorated since 2010.</p>
 
 {fig('F11', caption="Greece Had Among Europe&rsquo;s Largest Accumulated Burdens")}
 
@@ -775,7 +777,7 @@ result is the shakiest of the three, and it's presented that way rather
 than rounded up to a clean yes.</p>
 
 <p>The pattern is not universal, though, which is itself informative. For
-wage-adjusted affordability, it runs the other way: today's number carries
+<em>wage-adjusted affordability</em>, it runs the other way: today's number carries
 the signal, and the accumulated version of it doesn't resolve.</p>
 
 <div class="finding compact" data-claim-id="V2-5.X">
@@ -785,7 +787,7 @@ one remains inconclusive.</p>
 <p class="limits"><em>Limits.</em> Inconclusive, not unsupported.</p>
 </div>
 
-<p>Compounded inflation was also tested as an accumulated measure, but the
+<p><em>Compounded inflation</em> was also tested as an accumulated measure, but the
 result remained inconclusive under the available statistical power.</p>
 
 <p>The contrast argues against treating accumulated history as a universal
@@ -806,7 +808,7 @@ absent.</p>
 {finding('L-3')}
 
 <p>A related wage measure creates the opposite problem. On the face of the
-numbers, accumulated wage shortfall looks convincing. But it cannot be
+numbers, <em>accumulated wage shortfall</em> looks convincing. But it cannot be
 counted here, because the earlier stage did not establish the current
 wage-shortfall measure it depends on. A result can only stand as high as
 its foundation. It's named here, not because it counts, but because
@@ -827,21 +829,45 @@ two sections settle.</p>
 
 # ---- 6. Where the Evidence Stops (between/within + unsettled + flip
 #         + the two failed designs) -----------------------------------------
-CH.append(chapter("limits", "Where the Evidence Stops", f"""
-<p>Not every question this piece asked got a clean answer. Two of those
-limits change how everything above should be read, and they belong in the
-open. The rest &mdash; measures the data was too thin to judge, and two designs
-that failed outright &mdash; are recorded in full below. The boundary of the
-evidence is part of the story too.</p>
+CH.append(chapter("limits", "What Remains Open", f"""
+<p>Up to this point, the evidence gives a fairly clear picture for most of
+the central questions. The wide gap between <em>reported hardship</em> and <em>income
+poverty</em> in Greece is tied closely to specific material deprivations. It
+also shows up in a country where the jobs recovery was not matched by an
+equivalent recovery in wages, material resources or purchasing power.
+There is also evidence that, in some areas, what matters is not only where
+a country stands today but how much weight it accumulated over the course
+of the crisis.</p>
 
-<p>The first limit is time. Everything in <a
-href="#ch{{ch:duration}}">the previous section</a> is a statement about
-how countries differ from each other. It is tempting, and wrong, to read it
-as a statement about how Greece changed over time: a between-country
-comparison, on its own, cannot speak to that. This project went further and
-ran within-country tests directly, and they did not settle the question
-either &mdash; not because change was ruled out, but because the available
-data could not pin it down either way.</p>
+<p>That picture, though, doesn't answer everything. Two questions get a
+more limited answer from the available data. First, the relationships
+found for accumulated burden show up clearly when comparing countries with
+each other. Showing whether the same relationship played out inside
+Greece, year by year, needs more annual observations and more within-country
+change than the data can currently offer: with roughly a decade of data,
+the relevant estimates stay too uncertain.</p>
+
+<p>Second, while much of the extra hardship Greek households report can be
+explained statistically by deprivation measures, those measures come from
+the same survey as reported hardship itself, which makes the result less
+independent than it looks. There are also factors the available evidence
+simply doesn't yet cover well enough to give a clear picture.</p>
+
+<p>Take them one at a time.</p>
+
+<h3>What Can We Say About Change Within the Country Itself?</h3>
+
+<p>The previous section showed that countries carrying more accumulated
+unemployment, wage non-recovery and housing pressure tend to report more
+hardship even once today's conditions are taken into account. That is a
+substantive finding, but it is mostly a statement about differences
+between countries.</p>
+
+<p>A different question is whether the same relationship can be seen
+unfolding inside one country: whether hardship in Greece rose or fell as
+the crisis burden built up or eased. This project tested that version too,
+but roughly ten annual observations per country do not give enough
+precision for a clean answer.</p>
 
 <div class="finding compact" data-claim-id="V2-5.Y">
 <p><em>Precise result.</em> Across three related tests, no within-country
@@ -854,28 +880,32 @@ adjusted for running several checks at once.</p>
 </div>
 
 {subfig('F13A', 'F13', 0,
-        "The Evidence Is Mostly Between Countries",
-        "Is the accumulated effect between countries, or within one over time?")}
+        "The Strongest Evidence Comes From Between-Country Differences",
+        "Do we see the accumulated burden only when comparing countries, or also when tracking one country over time?")}
 
-<p><a class="fig-jump" href="#F13A">Figure {{fig:F13A}}</a> shows why. This
-piece can show that countries carrying more accumulated hardship also
-report more difficulty, compared side by side in one snapshot across many
-countries. It cannot show that Greece's own reported difficulty grew as
-Greece's own accumulated hardship grew, year by year. The first compares
-many countries at once. The second would mean watching one country change
-over time, and this project measured that too, directly &mdash; the
-within-country estimates are in this same figure &mdash; but on a decade of
-annual data they are too imprecise to establish or rule out a change.</p>
+<p><a class="fig-jump" href="#F13A">Figure {{fig:F13A}}</a> makes that
+distinction visible. Comparing countries against each other, the ones
+carrying more accumulated burden do tend to report more hardship. Trying
+to track the same relationship inside each country over time, the
+estimates become far less certain. So there is a fair amount known about
+how countries differ from one another, and less about how that specific
+mechanism played out inside Greece itself.</p>
 
-<p>The second limit is model dependence. The biggest complication is a
-genuine reversal, and it concerns the deprivation items <a
-href="#ch{{ch:footprint}}">from earlier</a> &mdash; can't
-pay bills, can't heat the home &mdash; which absorbed most of Greece's
-unexplained excess. Those items come from the same survey as the thing
-they're explaining, and whether to let a measure like that into the
-picture is a real, defensible choice either way. So both versions were
-built. Choose differently, and Greece's whole position in Europe
-flips.</p>
+<h3>How Much Does the Explanation Depend on What Goes Into the Model?</h3>
+
+<p>The second open question concerns the <em>deprivation items</em> <a
+href="#ch{{ch:footprint}}">from earlier</a>, things like being unable to
+cover an unexpected expense, inadequate heating and payment arrears. These
+items track reported hardship very closely, and when added to the model
+alongside income poverty, they absorb most of Greece's excess.</p>
+
+<p>That result matters, but it has one key catch: the deprivation items and
+reported hardship come from the same survey. That produces two equally
+defensible analytical choices. Including them draws on information very
+close to households' day-to-day economic experience. Excluding them avoids
+explaining one survey answer with other answers collected through the same
+instrument. Both versions were built, and Greece's position changes
+sharply depending on which one is used.</p>
 
 <div class="finding compact" data-claim-id="V2-6.1">
 <p><em>Precise result.</em> Greece's residual reverses from positive to
@@ -888,12 +918,9 @@ be made on residual size.</p>
 
 {fig('F14', caption="One Predictor Flips Greece From Third-Worst to Twenty-Fifth")}
 
-<blockquote>That is not a wobble. It is a reversal, and there is no honest
-way to pick between the two.</blockquote>
-
 <p><a class="fig-jump" href="#F14">Figure {{fig:F14}}</a> shows it: Greece
 moves from the third-worst country
-in Europe on unexplained hardship to the twenty-fifth, from a stark
+in Europe on <em>unexplained hardship</em> to the twenty-fifth, from a stark
 positive outlier to a stark negative one, on exactly the same rows of
 data, with one measure added or removed. The two results can't be
 averaged, and can't be chosen between by which looks more plausible;
@@ -950,13 +977,18 @@ uninterpreted.</p>
 
 </details>
 
-<p>The models stop there. But a model is not the whole recovery story.
-Some things that may shape how Greek households read their lives sit
-mostly outside this design: trust in institutions, the terms of
-adjustment, migration, taxes, health, and the way people answer
-subjective questions. They cannot be turned into findings here. They
-still matter for understanding why the recovery story feels
-incomplete.</p>
+<p>That is as far as the quantitative analysis goes. It has answered a
+substantial part of the original question, but not every possible
+mechanism behind Greece's particular pattern. Factors such as trust in
+institutions, adjustment policies, migration, taxation, health, and the
+way people answer subjective questions may also be part of the picture.
+Some of these are examined next with the available evidence; for others,
+all that can be done is describe what is known and what remains
+open.</p>
+
+<p>This does not leave the earlier picture hanging. Instead, it leaves one
+last layer of questions: factors that may round out the picture but were
+not measured well enough, or cannot be tested the same way.</p>
 """))
 
 # ---- 7. What the numbers still miss (reporting style + ESS + context
@@ -965,40 +997,46 @@ CH.append(chapter("leftover", "What the Numbers Still Miss", f"""
 <p>There is a simpler explanation for everything above, and it deserves to
 be taken seriously rather than waved away: maybe Greeks are just gloomier
 answerers. The evidence so far can't fully settle that: the strongest
-corroboration for reported hardship, the concrete deprivation items from
+corroboration for <em>reported hardship</em>, the concrete deprivation items from
 earlier, comes from inside the same survey as the hardship question
 itself. The external evidence elsewhere in this piece &mdash; wages,
-employment, what households can actually buy, the sixteen-measure spread
-&mdash; doesn't share that problem, but none of it was built to test
+employment, what households can actually buy, the <em>sixteen-measure
+spread</em> &mdash; doesn't share that problem, but none of it was built to test
 reporting style directly.</p>
 
-<p>A better test looks across different subjects
-entirely. A general tendency to answer darkly should drag everything down
-about equally; a pattern that's extreme on money and milder elsewhere points
-at circumstances instead. The table below makes that comparison directly:
-Greece against the EU on three different kinds of question, not just the
-one this piece has leaned on so far.</p>
+<h3>Financial Expectations and Life Satisfaction</h3>
+
+<div class="ctx-inline" data-context-id="CTX-1">
+
+<p>A better test looks across different subjects entirely, drawing on a
+separate reporting-style comparison built for this project
+(reporting_style_cross_indicator.csv). A general tendency to answer darkly
+should drag everything down about equally; a pattern that is extreme on
+money and milder elsewhere points at circumstances instead. Read as
+descriptive corroboration rather than an independent test, the table below
+makes that comparison directly: Greece against the EU on three different
+kinds of question, not just the one this piece has leaned on so far.</p>
 
 {domain_table()}
 
 <p>Greece is worst in Europe on the two money questions and close to
-worst on general life satisfaction: a difference of degree, not of kind,
-which makes a purely temperamental explanation harder to sustain, though
-it does not rule one out.</p>
+worst on general <em>life satisfaction</em>: a difference of degree, not of kind,
+which suggests some domain specificity, though a broader negative reporting
+tendency is not ruled out.</p>
 
 {finding('V2-7.1')}
 
 <p>One thing about that life-satisfaction number is worth holding onto,
 because it's easy to get backwards: it actually <em>rose</em> over the
-period. Greece's rank against it fell anyway, because other, faster-improving
-EU countries pulled further ahead. A falling rank is not the same thing as a
-falling number.</p>
+period. Describing Greece as merely ordinary or middling here would be
+wrong: it is second-worst in the EU by 2024. Its rank fell anyway, because
+other, faster-improving EU countries pulled further ahead, so reading that
+worsening rank as a falling level would be its own mistake. A falling rank
+is not the same thing as a falling number.</p>
 
-{context('CTX-1', '''
-<p>Greece's money questions sit at the far edge of the European range while
-its general-wellbeing question sits closer to it. That difference of degree
-is what the comparison shows, and it is description rather than a
-test.</p>''')}
+</div>
+
+<h3>Pre-Crisis Wellbeing Baseline</h3>
 
 <p>One further check reaches back before the Eurostat series begins. A
 separate European survey shows Greece already sitting about 0.8 points below
@@ -1012,6 +1050,8 @@ countries fixed each time, Greece's level fell and then recovered while its
 position relative to the others did not. This is descriptive corroboration
 and not a test.</p>''')}
 
+<h3>Health</h3>
+
 <p>Health is different from the factors that follow: it was tested, not
 skipped. Greece has one of the EU's highest rates of unmet medical
 need &mdash; worst in the Union by 2024, several times the typical member
@@ -1020,24 +1060,36 @@ own right.</p>
 
 <p>But four separate health measures, tested against the same baseline
 used elsewhere, do not explain the hardship gap: none of them clears the
-bar this project sets. Three of them &mdash; self-rated health, long-standing
-illness and activity limitation &mdash; carry a puzzling sign at the country
+bar this project sets. Three of them &mdash; <em>self-rated health</em>,
+<em>long-standing illness</em> and <em>activity limitation</em> &mdash; carry a puzzling sign at the country
 level, where worse reported health goes with <em>less</em> reported
 hardship, and that flips once countries are compared with their own past
 rather than with each other: within a country, years of worse health are
-years of more hardship, the expected direction. The fourth, unmet medical
-care, doesn't have that problem &mdash; it points the expected way in both
+years of more hardship, the expected direction. The fourth, <em>unmet medical
+care</em>, doesn't have that problem &mdash; it points the expected way in both
 comparisons &mdash; but its result changes if any single country is
 dropped, which is why it doesn't clear the bar either. So the health fact
 stands as real, without becoming part of this piece's explanation for the
 gap.</p>
+
+<h3>Migration</h3>
+
+<p>Large numbers of working-age Greeks left during the crisis, and some
+have returned. This cuts both ways: plausibly a consequence of a broken
+labour market, and plausibly part of why the people who stayed look the
+way they do. Unlike most of the factors that follow, this one was tested
+directly, as an aggregate predictor of hardship across countries.</p>
+
+{context('CTX-4', '''
+<p>When migration was tested as an aggregate predictor of hardship across
+countries, no clear statistical relationship emerged.</p>''')}
 
 <p>Other factors often appear in accounts of the Greek crisis, and none of
 them was established here. Leaving them out silently would be misleading;
 treating them as findings would be worse, so they are recorded for what they
 are.</p>
 
-<details class="disclosure"><summary>What this piece did not test</summary>
+<details class="disclosure"><summary>Other possible factors</summary>
 
 {context('CTX-2', '''
 <p>Trust in institutions is low in Greece, and there is a plausible route by
@@ -1049,12 +1101,6 @@ check on that either way.</p>''')}
 <p>The bailout programmes from 2010 reshaped incomes, job protections,
 pensions and public services at once and in a hurry. They are the backdrop
 to every accumulated measure described earlier.</p>''')}
-
-{context('CTX-4', '''
-<p>Large numbers of working-age Greeks left during the crisis, and some have
-returned. This cuts both ways: plausibly a consequence of a broken labour
-market, and plausibly part of why the people who stayed look the way they
-do.</p>''')}
 
 {context('CTX-5', '''
 <p>Published research establishes that Greece's system of indirect taxes
@@ -1075,19 +1121,28 @@ own hardship measure directly, so it is offered as a plausible mechanism,
 not a demonstrated one.</p>''')}
 
 </details>
+"""))
+
+# ---- 8. What It Adds Up To (the close) -------------------------------------
+CH.append(chapter("conclusion", "What It Adds Up To", f"""
+<div class="ctx-inline" data-context-id="CTX-6">
 
 <p>Greek households report struggling at a rate far above what the official
-poverty figure predicts, and have done so consistently for a decade. Part of
-that distance is now easier to understand: official measures are narrower
-than the experience they are used to summarise; what households report
-corresponds to real material trouble, even if that agreement comes from
-inside a single survey; and both the present and the accumulated past carry
-information the official rate does not.</p>
+poverty figure predicts, and have done so consistently for a decade. What
+runs through the whole of this piece is that no single official number
+captures what Greek households are reporting: each one misses something
+different, and the measure that catches what the others miss is not the
+headline figure. Part of that distance is now easier to understand.</p>
 
-{context('CTX-6', '''
-<p>What runs through all of this is that no single official number captures
-what Greek households are reporting. Each one misses something different,
-and the ones that catch what the others miss are not the headline.</p>''')}
+<p><em>AROP</em> measures something narrower than the economic experience it is often
+asked to summarise. Because the poverty line moves with national income, it
+can stay relatively stable even as living standards fall substantially.
+<em>AROPE</em> widens the picture, but covers only part of the gap. Reported hardship,
+meanwhile, moves with specific material deprivations, and conditions in
+work, material resources and purchasing power add information <em>AROP</em> alone
+does not capture. There is also evidence that, in some areas, what matters
+is not only today's conditions but the weight accumulated over the course of
+the crisis.</p>
 
 <p>What recovered was narrower than the word &ldquo;recovery&rdquo;
 suggests. Employment improved substantially, and housing pressure eased. But
@@ -1106,7 +1161,12 @@ tell us whether Greek
 households have regained the economic security they had before the crisis.
 Perhaps, then, the problem is not that Greek households failed to recognize
 the recovery. It is that the public story treated the recovery as complete
-before it had fully reached them.</p>
+before it had fully reached them. This closing synthesis is author
+interpretation rather than a new empirical result: it follows directly from
+what the analysis showed AROP alone misses, not from an additional test
+that itself produced this finding.</p>
+
+</div>
 """))
 
 
@@ -1120,7 +1180,7 @@ BASE = ce.base_style((OUT / "build" / "report.html").read_text())
 # five-act structure grouped eighteen chapters; regrouping seven substantial
 # sections under acts would just be relabelling the same reset.
 SECTION_ORDER = ["paradox", "footprint", "ruler", "recovery", "duration",
-                  "limits", "leftover"]
+                  "limits", "leftover", "conclusion"]
 if sorted(SECTION_ORDER) != sorted(CH_KEYS):
     raise SystemExit(
         "section order does not match the sections actually defined -- "
@@ -1146,12 +1206,15 @@ TOC_GLOSS = {
               "crisis."),
     "recovery": ("The Jobs Came Back. The Household Economy Did Not.",
                  "What recovered, and what didn't."),
-    "duration": ("A Decade of Damage Still Counts",
+    "duration": ("The Accumulated Weight of the Crisis",
                  "Whether the length of the crisis still matters today."),
-    "limits": ("Where the Evidence Stops",
-               "The four ways this analysis reaches its limits."),
+    "limits": ("What Remains Open",
+               "Two questions where the available data give a more "
+               "limited answer."),
     "leftover": ("What the Numbers Still Miss",
-                 "What sits outside any model, and how the story ends."),
+                 "Factors that were tested, and factors that were not."),
+    "conclusion": ("What It Adds Up To",
+                   "How the story ends."),
 }
 if set(TOC_GLOSS) != set(SECTION_ORDER):
     raise SystemExit(
@@ -1218,8 +1281,8 @@ body{{max-width:48rem;margin:0 auto;padding:0 1.3rem 6rem;
 .stat{{flex:1;min-width:11rem}}
 .stat .n{{font-family:'Fraunces Bundled',Georgia,'Times New Roman',serif;
   letter-spacing:-.02em;display:block;line-height:.95}}
-.stat--official .n{{font-size:2.5rem;font-weight:700;color:var(--text-secondary)}}
-.stat--lived .n{{font-size:4.3rem;font-weight:700;color:var(--text-primary)}}
+.stat--official .n{{font-size:3.4rem;font-weight:700;color:var(--text-secondary)}}
+.stat--lived .n{{font-size:3.4rem;font-weight:700;color:var(--text-primary)}}
 .stat .pct{{font:600 .8rem/1 ui-sans-serif,system-ui,sans-serif;
   color:var(--text-secondary);margin-top:.35rem}}
 .stat .l{{font:600 .76rem/1.4 ui-sans-serif,system-ui,sans-serif;
@@ -1448,9 +1511,25 @@ absent = [i for i in required if i not in _placed_ids]
 if absent:
     raise SystemExit(f"claims required in the narrative but absent: {absent}")
 
+# A substring check only proves the id string appears somewhere on the
+# page -- an empty tag carrying just the attribute would pass it. What the
+# register actually requires is a container whose own text carries the
+# status label, the permitted interpretation, the limitation and the
+# citation together, the same test audit_parity.py --release runs at
+# release time. Running it here means a hollow container fails the build
+# immediately instead of only at release-verify.
+from claim_anchors import context_containers, context_completeness
 for cid in ctx.index:
-    if f'data-context-id="{cid}"' not in PAGE:
+    found = context_containers(PAGE, cid)
+    if not found:
         raise SystemExit(f"context entry {cid} never placed")
+    entry = {"status": ctx.loc[cid, "status"], "permitted": ctx.loc[cid, "permitted"],
+             "forbidden": ctx.loc[cid, "forbidden"],
+             "source": "" if str(ctx.loc[cid, "source_status"]) == "not applicable"
+                       else ctx.loc[cid, "source"]}
+    miss = context_completeness(found[0], entry)
+    if miss:
+        raise SystemExit(f"context entry {cid} container is missing {', '.join(miss)}")
 
 stripped = re.sub(r"<script.*?</script>", " ", PAGE, flags=re.S)
 visible = html.unescape(re.sub(r"<[^>]+>", " ", stripped))

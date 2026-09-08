@@ -158,8 +158,9 @@ M = [
       fallback="latest values and ranks for the three",
       caveat="", status_label="pre-planned confirmatory"),
  dict(id="F11", stage=5, chart_type="ladder",
-      question="How much accumulated unemployment has each country absorbed, "
-               "and where does Greece sit?",
+      question="How much accumulated unemployment, wage non-recovery and "
+               "housing-cost deterioration has each country absorbed, and "
+               "where does Greece sit?",
       artifact="e4_accumulated_panel.csv",
       # CHANGED from panel to ladder: the question is where Greece sits among
       # 27 countries, which a ranked comparison answers and a time series does
