@@ -11,6 +11,7 @@ on:
     paths:
       - 'output/v2_report.html'
       - 'output/narrative.html'
+      - 'output/narrative_el.html'
       - 'output/academic_paper.html'
       - 'site/**'
       - '.github/workflows/pages.yml'
@@ -42,6 +43,7 @@ jobs:
           cp site/index.html               _site/index.html
           cp output/v2_report.html         _site/report.html
           cp output/narrative.html         _site/narrative.html
+          cp output/narrative_el.html      _site/narrative_el.html
           cp output/academic_paper.html    _site/paper.html
           touch _site/.nojekyll
           ls -la _site
