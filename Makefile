@@ -108,6 +108,7 @@ release-verify:
 	cd $(SCRIPTS) && $(PY) verify_build.py
 	cd $(SCRIPTS) && $(PY) audit_parity.py --release
 	$(PY) $(SCRIPTS)/verify_report_v3.py
+	$(PY) $(SCRIPTS)/verify_site.py
 	@echo "RELEASE VERIFICATION PASSED"
 
 fetch:

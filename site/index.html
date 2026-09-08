@@ -39,6 +39,8 @@ a.card:focus-visible{outline:2px solid var(--gr);outline-offset:2px}
 .card h3{margin:0 0 6px;font-size:19px;letter-spacing:-0.01em}
 .card p{margin:0;font-size:14px;color:var(--text-secondary);max-width:58ch}
 .card .meta{margin-top:10px;font-size:12px;color:var(--text-muted)}
+.lang-alt{margin:-8px 0 0;font-size:12px}
+.lang-alt a{color:var(--gr)}
 .note{font-size:13px;color:var(--text-secondary);background:var(--surface-2);
   border-radius:10px;padding:16px 18px;margin:34px 0 0;max-width:66ch}
 footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--gridline);
@@ -60,36 +62,42 @@ footer a{color:var(--text-secondary)}
 </head>
 <body>
 <div class="wrap">
-  <p class="eyebrow">EU-SILC · Eurostat · 2003–2025</p>
+  <p class="eyebrow">EU-SILC · Eurostat · 2015–2024</p>
   <h1>The Greek Poverty Paradox</h1>
-  <p class="dek">Two in three Greek households say they struggle to make ends meet — the highest share in the EU, every year since 2011. The official income-poverty rate ranks Greece a fairly ordinary 4th of 27. This project investigates how much of that 47.6-point gap is real, and what explains it.</p>
+  <p class="dek">Two in three Greek households say they struggle to make ends meet — the highest share in the EU, every year since 2015. The official income-poverty rate ranks Greece a middling 7th of 27. This project investigates how much of that gap, 52.6 points on average over the decade, is real, and how much of it can be explained.</p>
 
   <div class="stat-row">
-    <div class="tile"><p class="l">Subjective poverty, 2025</p><p class="v gr">67.2%</p><p class="s">vs EU 17.6% · rank 1st</p></div>
-    <div class="tile"><p class="l">AROP income poverty, 2025</p><p class="v">19.6%</p><p class="s">vs EU 16.3% · rank 4th</p></div>
-    <div class="tile"><p class="l">Fully nested prediction</p><p class="v">+2.7 pp</p><p class="s">rank 19th of 27</p></div>
+    <div class="tile"><p class="l">Subjective poverty, 2024</p><p class="v gr">66.7%</p><p class="s">vs EU 17.1% · rank 1st</p></div>
+    <div class="tile"><p class="l">AROP income poverty, 2024</p><p class="v">19.6%</p><p class="s">vs EU 15.5% · rank 7th</p></div>
+    <div class="tile"><p class="l">Average gap, 2015–2024</p><p class="v">52.6 pp</p><p class="s">largely unexplained</p></div>
   </div>
 
-  <h2>Three ways to read it</h2>
+  <h2>How to read it</h2>
   <div class="cards">
     <a class="card" href="narrative.html">
       <h3>The narrative companion →</h3>
-      <p>The story in plain language, in fifteen short chapters. Start here if you want to understand what happened and why, without the model tables.</p>
-      <p class="meta">~10,000 words · general audience</p>
+      <p>The story in plain language, in eight short chapters. Start here if you want to understand what happened and why, without the model tables.</p>
+      <p class="meta">~14,000 words · general audience</p>
     </a>
+    <p class="lang-alt"><a href="narrative_el.html">Read the narrative in Greek →</a></p>
     <a class="card" href="report.html">
       <h3>The technical report →</h3>
       <p>The complete evidence record: every model, robustness check, null result, and methodological caveat, with interactive charts.</p>
-      <p class="meta">~38,000 words · full methods and data appendix</p>
+      <p class="meta">full methods and data appendix</p>
     </a>
     <a class="card" href="paper.html">
       <h3>The working paper →</h3>
       <p>The formal academic version: research questions, nested model specifications, validation strategy, limitations, and references.</p>
-      <p class="meta">~15,000 words · preprint, not peer reviewed</p>
+      <p class="meta">~16,000 words · preprint, not peer reviewed</p>
+    </a>
+    <a class="card" href="appendix.html">
+      <h3>The statistical appendix →</h3>
+      <p>Every variable used anywhere in the project, interactive, against all 27 member states — the figures the main report simplified away, and the full context register.</p>
+      <p class="meta">reference · every diagnostic, no simplification</p>
     </a>
   </div>
 
-  <p class="note"><b>What the analysis finds, in one line.</b> Part of the gap is arithmetic — a relative poverty line that fell along with collapsing incomes. Most of the rest is duration: not how deep the crisis was, but how long Greek households have carried it. Once accumulated labour-market exposure is in the model, Greece stops being a cross-country outlier. All results are associational, drawn from country-level Eurostat aggregates rather than household microdata.</p>
+  <p class="note"><b>What the analysis finds, in one line.</b> Reported hardship moves with specific material deprivations and a wide range of independently measured indicators — wages, purchasing power, accumulated unemployment and housing pressure — not just with the survey's own hardship question. Even so, the 52.6-point average gap remains largely unexplained: no single mechanism tested here accounts, robustly and on its own, for its size. All results are associational, drawn from country-level Eurostat aggregates rather than household microdata.</p>
 
   <footer>
     Built from a reproducible Eurostat pipeline; figures reflect an API pull dated 2026-08-19 (work-effort series 2026-08-20).

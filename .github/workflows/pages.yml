@@ -13,6 +13,7 @@ on:
       - 'output/narrative.html'
       - 'output/narrative_el.html'
       - 'output/academic_paper.html'
+      - 'output/statistical_appendix.html'
       - 'site/**'
       - '.github/workflows/pages.yml'
   workflow_dispatch:
@@ -35,6 +36,21 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install verification dependencies
+        run: pip install pandas
+
+      # The landing page sits outside the claim/parity system that keeps the
+      # four canonical documents in sync, which is how its headline numbers
+      # and links went stale before. This checks it against the same
+      # canonical data and against pages.yml's own copy list below, and
+      # fails the deploy rather than publishing a page that contradicts the
+      # documents it links to.
+      - name: Verify landing page
+        run: python3 scripts/verify_site.py
+
       # Assemble the site from the canonical outputs -- the reports are never
       # duplicated in the repo, only copied at deploy time under shorter names.
       - name: Assemble site
@@ -45,6 +61,7 @@ jobs:
           cp output/narrative.html         _site/narrative.html
           cp output/narrative_el.html      _site/narrative_el.html
           cp output/academic_paper.html    _site/paper.html
+          cp output/statistical_appendix.html _site/appendix.html
           touch _site/.nojekyll
           ls -la _site
 
