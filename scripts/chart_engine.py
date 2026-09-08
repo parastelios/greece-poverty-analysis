@@ -1615,3 +1615,43 @@ def build_stamp():
 STAMP_CSS = """.stamp{margin-top:3rem;padding-top:1rem;border-top:1px solid var(--border);
 font:.72rem/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--text-muted)}
 .stamp code{background:var(--surface-2);padding:.1em .35em;border-radius:3px}"""
+
+
+def apply_glossary(html_text, gloss):
+    """Bold the first mention of each glossary term and attach its plain-
+    language definition as a CSS-only hover/tap tooltip (no script, so it
+    cannot trip the "only the chart engine is scripted" release check).
+    `gloss` maps the exact <em>...</em> text -- as it already appears in the
+    narrative's first-mention-per-chapter italics -- to a short definition.
+    Only the first occurrence in document order is touched; every later
+    re-mention of the same term stays plain italic, unchanged."""
+    import re as _re
+    for term, definition in gloss.items():
+        # The source wraps prose at ~78 columns, so a multi-word term's
+        # <em> span can itself contain a line break. Match on whitespace
+        # generically rather than the term's own spacing, and rebuild the
+        # replacement from the clean `term` string (harmless -- the browser
+        # collapses whitespace either way).
+        loose = r"\s+".join(_re.escape(w) for w in term.split())
+        pattern = _re.compile(r"<em>\s*" + loose + r"\s*</em>")
+        safe_def = (definition.replace("&", "&amp;").replace('"', "&quot;")
+                    .replace("<", "&lt;").replace(">", "&gt;"))
+        replacement = (f'<em class="term" tabindex="0" data-def="{safe_def}">'
+                       f'<strong>{term}</strong></em>')
+        html_text, n = pattern.subn(replacement, html_text, count=1)
+        if n == 0:
+            raise SystemExit(f"glossary term not found in document: {term!r}")
+    return html_text
+
+
+TERM_CSS = """.term{border-bottom:1px dotted var(--text-secondary);cursor:help;
+position:relative}
+.term::after{content:attr(data-def);position:absolute;left:50%;
+bottom:calc(100% + 8px);transform:translateX(-50%);width:max-content;
+max-width:min(82vw,340px);background:var(--surface-1);color:var(--text-primary);
+border:1px solid var(--border);border-radius:8px;padding:.55rem .75rem;
+font:.82rem/1.42 ui-sans-serif,system-ui,sans-serif;font-style:normal;
+font-weight:400;text-align:left;box-shadow:0 4px 16px rgba(0,0,0,.16);
+opacity:0;pointer-events:none;transition:opacity .12s ease;z-index:20}
+.term:hover::after,.term:focus::after{opacity:1}
+.term:focus{outline:none}"""

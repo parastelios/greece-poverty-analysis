@@ -1432,12 +1432,69 @@ if _typed:
         "figure numbers typed into prose instead of {fig:FID} tokens: "
         + "; ".join(_typed[:3]))
 
-_main = resolve_fig_nums(resolve_refs(BODY))
+# ---- glossary: bold + hover definition on each term's first mention ------
+EN_GLOSS = {
+    "AROP": "The EU's official income-poverty measure: the share of people "
+        "with income below 60% of the national median.",
+    "AROPE": "The EU's broader measure: anyone meeting at least one of three "
+        "conditions -- income poverty, severe material deprivation, or very "
+        "low work intensity.",
+    "income poverty": "Also called AROP, defined just below.",
+    "reported hardship": "The share of households telling the EU-wide survey "
+        "they make ends meet ‘with difficulty’ or ‘with great "
+        "difficulty’.",
+    "fixed poverty line": "Poverty measured against the poverty line's own "
+        "2008 real value held constant, instead of a line that moves with "
+        "the current median every year.",
+    "very low work intensity": "Living in a household where working-age "
+        "members worked less than 20% of their combined potential working "
+        "time over the past year.",
+    "falling behind on bills": "Share of households unable to pay a "
+        "scheduled housing, utility or loan payment on time in the past 12 "
+        "months.",
+    "being unable to cover a surprise expense": "Share of households that "
+        "could not cover an unexpected expense equal to the national "
+        "poverty line from their own resources.",
+    "being unable to heat the home properly": "Share of households "
+        "reporting they cannot keep their home adequately warm.",
+    "material deprivation": "Share of households unable to afford several "
+        "ordinary items or activities at once, out of a fixed EU-wide list.",
+    "real wages": "Wages adjusted for inflation, so they reflect actual "
+        "purchasing power rather than just a nominal rise.",
+    "wage-adjusted affordability": "How far prices have risen relative to "
+        "wages -- how much purchasing power households have actually lost.",
+    "accumulated excess unemployment": "Unemployment above a country's own "
+        "pre-crisis rate, summed year over year since the crisis began.",
+    "wage duration below 2008": "How many consecutive years a country's real "
+        "wages have stayed below their own 2008 level.",
+    "housing-cost deterioration": "How much, and for how long, housing-cost "
+        "burden has worsened, accumulated over time since 2010.",
+    "Compounded inflation": "Inflation summed year over year from a "
+        "reference point, rather than measured only annually.",
+    "accumulated wage shortfall": "The cumulative gap between a country's "
+        "real wages and their 2008 level, summed year over year.",
+    "deprivation items": "The individual material-deprivation indicators -- "
+        "arrears, a surprise expense, heating -- that together make up the "
+        "hardship picture.",
+    "unexplained hardship": "The share of reported hardship a statistical "
+        "model cannot account for using the mechanisms this project tested.",
+    "life satisfaction": "People's self-reported overall satisfaction with "
+        "their life, on a 0-10 scale, as recorded in the EU-wide survey.",
+    "long-standing illness": "Share of people reporting a chronic health "
+        "problem lasting six months or more.",
+    "self-rated health": "How a person rates their own general health, from "
+        "very good to very bad.",
+    "activity limitation": "Share of people reporting they are limited in "
+        "daily activities because of a health problem.",
+}
+
+_main = ce.apply_glossary(resolve_fig_nums(resolve_refs(BODY)), EN_GLOSS)
 
 PAGE = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>If Greece Has Recovered, Why Do So Many Households Still Struggle?</title>{BASE}
 <style>{ce.CSS}
+{ce.TERM_CSS}
 :root{{--gr:var(--series-gr);--eu:var(--series-eu)}}
 {NARR_CSS}</style></head><body>
 <header class="masthead">
