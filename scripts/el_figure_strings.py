@@ -193,7 +193,7 @@ CHROME = {
     "Each other EU country: long-term unemployment":
         "Κάθε άλλη χώρα της ΕΕ: μακροχρόνια ανεργία",
     "Each other EU country: material resources":
-        "Κάθε άλλη χώρα της ΕΕ: υλικοί πόροι",
+        "Κάθε άλλη χώρα της ΕΕ: πραγματική κατανάλωση",
     "Each other EU country: reported hardship":
         "Κάθε άλλη χώρα της ΕΕ: οικονομική δυσκολία",
     "Each other EU country: wage-adjusted affordability":
@@ -414,11 +414,11 @@ ALT = {
         "τόσο χειρότερα",
     "Material resources for Greece against the EU median and every other "
     "country, in PPS per head":
-        "Οι υλικοί πόροι για την Ελλάδα έναντι της διάμεσης τιμής της ΕΕ και "
+        "Η πραγματική κατανάλωση για την Ελλάδα έναντι της διάμεσης τιμής της ΕΕ και "
         "κάθε άλλης χώρας, σε ΜΑΔ ανά άτομο",
     "Material resources for Greece against the EU median and every other "
     "country, in PPS per head, lower = worse":
-        "Οι υλικοί πόροι για την Ελλάδα έναντι της διάμεσης τιμής της ΕΕ και "
+        "Η πραγματική κατανάλωση για την Ελλάδα έναντι της διάμεσης τιμής της ΕΕ και "
         "κάθε άλλης χώρας, σε ΜΑΔ ανά άτομο, όσο πιο χαμηλά τόσο χειρότερα",
     "Wage-adjusted affordability for Greece against the EU median and every "
     "other country, in Index, EU27 = 100":

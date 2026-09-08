@@ -26,7 +26,7 @@ analysis found.
 | Between-country | σύγκριση μεταξύ χωρών |
 | Correlation | συσχέτιση; never συγκίνηση |
 | Housing-cost overburden | υπερβολική επιβάρυνση από το κόστος στέγασης |
-| Actual individual consumption | πραγματική ατομική κατανάλωση, προσαρμοσμένη για τις διαφορές τιμών |
+| Material resources / actual individual consumption | πραγματική κατανάλωση; first use πραγματική ατομική κατανάλωση, προσαρμοσμένη για τις διαφορές τιμών |
 | Wage-adjusted affordability | πίεση τιμών σε σχέση με τις αμοιβές; subsequently αγοραστική πίεση |
 | Long-term unemployment | μακροχρόνια ανεργία |
 | Accumulated exposure | συσσωρευμένο βάρος |
@@ -43,6 +43,16 @@ different wording (`σε σχέση με τους μισθούς` and `σε σχ
 αμοιβές`). The measure combines price levels with hourly pay, so the honest
 short form is `πίεση τιμών σε σχέση με τις αμοιβές`, shortened after first use
 to `αγοραστική πίεση`.
+
+**Resolved from the draft.** Material resources was rendered `υλικοί πόροι`
+throughout, a stiff calque of the English that reads as translated rather
+than written in Greek. The construct is Eurostat's actual individual
+consumption in PPS terms, already introduced in full once as `πραγματική
+ατομική κατανάλωση`; every later mention is now the natural short form,
+`πραγματική κατανάλωση`, matching how `αγοραστική πίεση` already works as
+the short form for wage-adjusted affordability. Applies throughout
+`92_build_narrative_el.py` and the `el_figure_strings.py` chart labels
+built from it.
 
 ## Editorial rules
 
