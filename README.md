@@ -12,20 +12,6 @@ questions it answers, every subquestion under them, the evidence hierarchy,
 and what remains unexplained — written for a reader who wants the completed
 argument, not the chronological process that produced it.
 
-**This is the V2 rewrite**, developed on `p6-rewrite` and now merged to
-`main`, which both branches track in lockstep. It replaces an earlier, more
-confident V1 draft after review found several of its claims overstated; V2
-is built around a pre-registered testing protocol (declared conditions,
-multiplicity correction, wild-cluster bootstrap, minimum-detectable-effect
-reporting) so a verdict is the output of a fixed procedure rather than a
-judgement made after seeing the numbers. It answers with the same discipline
-the V1 draft lacked: a broader official measure narrows the gap but doesn't
-close it; three present-day conditions and three accumulated ones each add
-real information beyond income poverty; and *most of the 52.6 points remains
-unattributed*, because the analysis could not establish where it goes. The
-V1 draft is preserved as-is in `archive/v1-final/` for comparison, not
-deleted or silently superseded.
-
 Two documents both describe "the project" and answer different questions.
 [`docs/project_description.md`](docs/project_description.md) describes what
 V2 *is*, as completed — read this first.
@@ -135,3 +121,18 @@ archive/v1-final/  The V1 draft, frozen as published, kept for comparison.
   null, and every correction made during review, with its reasoning. Treat
   it as the first place to look for "what is the current state of this
   project," not this file.
+
+
+**This is the V2 rewrite**, developed on `p6-rewrite` and now merged to
+`main`, which both branches track in lockstep. It replaces an earlier, more
+confident V1 draft after review found several of its claims overstated; V2
+is built around a pre-registered testing protocol (declared conditions,
+multiplicity correction, wild-cluster bootstrap, minimum-detectable-effect
+reporting) so a verdict is the output of a fixed procedure rather than a
+judgement made after seeing the numbers. It answers with the same discipline
+the V1 draft lacked: a broader official measure narrows the gap but doesn't
+close it; three present-day conditions and three accumulated ones each add
+real information beyond income poverty; and *most of the 52.6 points remains
+unattributed*, because the analysis could not establish where it goes. The
+V1 draft is preserved as-is in `archive/v1-final/` for comparison, not
+deleted or silently superseded.
