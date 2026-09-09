@@ -988,10 +988,6 @@ way people answer subjective questions may also be part of the picture.
 Some of these are examined next with the available evidence; for others,
 all that can be done is describe what is known and what remains
 open.</p>
-
-<p>This does not leave the earlier picture hanging. Instead, it leaves one
-last layer of questions: factors that may round out the picture but were
-not measured well enough, or cannot be tested the same way.</p>
 """))
 
 # ---- 7. What the numbers still miss (reporting style + ESS + context
