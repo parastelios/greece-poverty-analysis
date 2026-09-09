@@ -77,6 +77,20 @@ published = set(re.findall(r"_site/([\w.-]+\.html)", workflow))
 if not published:
     raise SystemExit(f"no 'cp ... _site/*.html' lines found in {PAGES_WORKFLOW}")
 
+# Carousel card image and alt text come from two different places -- the
+# image from scripts/render2.py's own render, the alt text hand-authored in
+# this HTML -- and that split is exactly how alt text once went stale: a
+# card's visible content changed (a lede line added, a closing card
+# rewritten) without its alt text following. titles.json is written by the
+# same render step that draws the cards, so checking every alt against it
+# catches that drift at its source instead of trusting the two copies to
+# stay in sync.
+import json as _json
+TITLES_PATH = ROOT / "site" / "assets" / "carousel" / "titles.json"
+if not TITLES_PATH.exists():
+    raise SystemExit(f"missing {TITLES_PATH}")
+CAROUSEL_TITLES = _json.loads(TITLES_PATH.read_text(encoding="utf-8"))
+
 
 def el_decimal(text):
     """1.234 -> 1,234, the only decimal convention the Greek page uses."""
@@ -149,6 +163,20 @@ def check_page(path, lang):
     missing_imgs = [i for i in local_imgs if not (ROOT / "site" / i).exists()]
     check(f"[{lang}] every referenced local image exists under site/",
           not missing_imgs, f"referenced but missing: {missing_imgs}")
+
+    titles = CAROUSEL_TITLES[lang]
+    stale_alts = []
+    for m in re.finditer(r'src="assets/carousel/(el|en)-(\d+)\.png"[^>]*alt="([^"]*)"', page):
+        card_lang, n, alt = m.group(1), int(m.group(2)), m.group(3)
+        if card_lang != lang:
+            continue
+        if n < 1 or n > len(titles):
+            stale_alts.append(f"card {n}: no such title (only {len(titles)} cards)")
+            continue
+        if titles[n - 1] not in alt:
+            stale_alts.append(f"card {n}: alt does not contain current title {titles[n - 1]!r}")
+    check(f"[{lang}] every carousel alt text matches its card's current title",
+          not stale_alts, "; ".join(stale_alts))
 
 
 # ---------------------------------------------------------------------------
