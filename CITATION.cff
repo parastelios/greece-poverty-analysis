@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it as below."
+title: "The Greek Poverty Paradox"
+abstract: >-
+  A data-driven investigation into why Greek households report the EU's
+  highest subjective financial strain — a 52.6-point gap, averaged over
+  2015-2024, between the share reporting difficulty making ends meet
+  (highest of 27 EU member states) and the official income-poverty rate,
+  AROP (7th of 27) — and how much of that gap the available evidence can
+  actually account for.
+authors:
+  - given-names: Stelios
+type: software
+repository-code: "https://github.com/parastelios/greece-poverty-analysis"
+url: "https://parastelios.github.io/greece-poverty-analysis/"
+license:
+  - MIT
+  - CC-BY-4.0
+date-released: "2026-09-09"
+keywords:
+  - poverty
+  - Greece
+  - subjective poverty
+  - AROP
+  - EU-SILC
+  - Eurostat
+  - income poverty
+  - material deprivation

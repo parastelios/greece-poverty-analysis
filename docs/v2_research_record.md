@@ -44,9 +44,9 @@ This notebook is the running log. `docs/archive/pre-v2-publication/publication_s
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `main` |
-| HEAD | `399b629` Narrative: second read-through pass, precision fixes and Greek line edit |
+| HEAD | `d37d5ad` Rewrite README as a proper entry point |
 | Uncommitted changes | yes |
-| Last refreshed | 2026-09-08 |
+| Last refreshed | 2026-09-09 |
 | Frozen V1 reference | `v1-final` |
 | Frozen V2 analytical reference | `p5f-frozen` |
 <!-- AUTO:END document-control -->

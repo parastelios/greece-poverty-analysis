@@ -154,3 +154,13 @@ For the full methodology, evidence hierarchy, exclusions, and unresolved
 questions, see [`docs/project_description.md`](docs/project_description.md).
 For the chronological audit trail, see
 [`docs/v2_research_record.md`](docs/v2_research_record.md).
+
+## License
+
+Code (`scripts/`, `eurostat.py`, build tooling) is licensed under
+[MIT](LICENSE). The written analysis, narrative text, figures, and
+published documents (`docs/`, `output/`, `site/`) are licensed under
+[CC BY 4.0](LICENSE-CONTENT.md). Third-party source data (Eurostat,
+ELSTAT) remains subject to its own providers' terms — see
+[`docs/data_sources.md`](docs/data_sources.md). See
+[`CITATION.cff`](CITATION.cff) for how to cite this work.
