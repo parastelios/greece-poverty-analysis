@@ -166,7 +166,7 @@ footer a{color:var(--text-secondary)}
     </div>
     <div class="carousel-meta">
       <ul class="carousel-dots" data-dots-for="car-en"></ul>
-      <p class="carousel-count" data-count-for="car-en">1 / 8</p>
+      <p class="carousel-count" data-count-for="car-en" aria-live="polite">1 / 8</p>
     </div>
   </div>
   <p class="carousel-cta"><a class="cta" href="narrative.html">Read the full analysis →</a></p>
@@ -195,7 +195,7 @@ footer a{color:var(--text-secondary)}
   <footer>
     Built from a reproducible Eurostat pipeline; figures reflect an API pull dated 2026-08-19 (work-effort series 2026-08-20).
     Eurostat revises published figures over time, so a later pull will not reproduce these numbers exactly.
-    <br><br>Page last updated: <time datetime="2026-09-08">8 September 2026</time>.
+    <br><br>Page last updated: <time datetime="2026-09-09">9 September 2026</time>.
   </footer>
 </div>
 <script>
@@ -226,7 +226,11 @@ footer a{color:var(--text-secondary)}
     }
     function update(){
       var idx = currentIndex();
-      dots.forEach(function(d, i){ d.classList.toggle('active', i === idx); });
+      dots.forEach(function(d, i){
+        d.classList.toggle('active', i === idx);
+        if (i === idx) { d.setAttribute('aria-current', 'true'); }
+        else { d.removeAttribute('aria-current'); }
+      });
       countEl.textContent = (idx + 1) + ' / ' + total;
       prev.disabled = idx === 0;
       next.disabled = idx === total - 1;

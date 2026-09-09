@@ -143,7 +143,7 @@ footer a{color:var(--text-secondary)}
     <h2 style="margin:0 0 12px">Τι εξετάζει η έρευνα</h2>
     <ol>
       <li><b>Είναι πραγματικά διαφορετικά τα δύο μεγέθη</b> — ο επίσημος δείκτης εισοδηματικής φτώχειας και η δηλωμένη οικονομική δυσκολία — ή περιγράφουν το ίδιο πράγμα με διαφορετικό τρόπο;</li>
-      <li><b>Τι εξηγεί το χάσμα ανάμεσά τους</b> — ποιοι παράγοντες, τρέχοντες ή συσσωρευμένοι, το αναλαμβάνουν, και πόσο από αυτό παραμένει, τελικά, ανεξήγητο;</li>
+      <li><b>Τι εξηγεί το χάσμα ανάμεσά τους</b> — ποιοι τρέχοντες ή συσσωρευμένοι παράγοντες συμβάλλουν στην εξήγησή του και πόσο, τελικά, παραμένει ανεξήγητο;</li>
     </ol>
     <a href="https://github.com/parastelios/greece-poverty-analysis/blob/main/docs/project_description.md">Πλήρης περιγραφή του έργου, στο GitHub →</a>
   </div>
@@ -166,7 +166,7 @@ footer a{color:var(--text-secondary)}
     </div>
     <div class="carousel-meta">
       <ul class="carousel-dots" data-dots-for="car-el"></ul>
-      <p class="carousel-count" data-count-for="car-el">1 / 8</p>
+      <p class="carousel-count" data-count-for="car-el" aria-live="polite">1 / 8</p>
     </div>
   </div>
   <p class="carousel-cta"><a class="cta" href="narrative_el.html">Διαβάστε ολόκληρη την ανάλυση →</a></p>
@@ -195,7 +195,7 @@ footer a{color:var(--text-secondary)}
   <footer>
     Βασισμένο σε αναπαραγώγιμο pipeline δεδομένων της Eurostat· τα στοιχεία αντιστοιχούν σε άντληση μέσω API με ημερομηνία 19/8/2026 (η άντληση για την ένταση εργασίας έγινε στις 20/8/2026).
     Η Eurostat αναθεωρεί τα δημοσιευμένα στοιχεία με την πάροδο του χρόνου, οπότε μια μεταγενέστερη άντληση δεν θα αναπαράγει ακριβώς αυτούς τους αριθμούς.
-    <br><br>Τελευταία ενημέρωση της σελίδας: <time datetime="2026-09-08">8 Σεπτεμβρίου 2026</time>.
+    <br><br>Τελευταία ενημέρωση της σελίδας: <time datetime="2026-09-09">9 Σεπτεμβρίου 2026</time>.
   </footer>
 </div>
 <script>
@@ -226,7 +226,11 @@ footer a{color:var(--text-secondary)}
     }
     function update(){
       var idx = currentIndex();
-      dots.forEach(function(d, i){ d.classList.toggle('active', i === idx); });
+      dots.forEach(function(d, i){
+        d.classList.toggle('active', i === idx);
+        if (i === idx) { d.setAttribute('aria-current', 'true'); }
+        else { d.removeAttribute('aria-current'); }
+      });
       countEl.textContent = (idx + 1) + ' / ' + total;
       prev.disabled = idx === 0;
       next.disabled = idx === total - 1;
