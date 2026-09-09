@@ -374,14 +374,22 @@ holds: does reported hardship carry a material reality that income poverty
 alone cannot see, or is it, to a meaningful degree, a darker way of
 answering?</p>
 
-<p>Two measures carry this whole piece. Income poverty, officially
-at-risk-of-poverty or <em>AROP</em>, is an income test: a person counts
-as poor if the income shared across their household, adjusted for household
-size, sits below 60% of the country's median, recalculated
-every year. Reported hardship is different and more direct: in an EU-wide
-survey, households are asked whether they can make ends meet, and those who
-say they manage only &ldquo;with difficulty&rdquo; or &ldquo;with great
-difficulty&rdquo; count as struggling.</p>
+<p>Two measures carry this whole piece, and both come from the same source:
+<em>EU-SILC</em> (<em>European Union Statistics on Income and Living
+Conditions</em>), the annual EU-wide survey on household income and living
+conditions, run to a common methodology in every member state so results
+are comparable across countries, and carried out in Greece by ELSTAT.
+Income poverty, officially at-risk-of-poverty or <em>AROP</em>, is an income
+test: a person counts as poor if the income shared across their household,
+adjusted for household size, sits below 60% of the country's median income,
+recalculated every year. A simple, hypothetical example helps: if the
+median equivalised income were &euro;1,000 a month, the <em>AROP</em> line
+would sit at &euro;600. Because the median is recalculated every year, the
+line itself moves with it: if a country's incomes fall as a whole, the bar
+can fall with them. Reported hardship measures something different and more
+direct: in the same survey, households are asked how easily they can make
+ends meet, and those who say they manage only &ldquo;with difficulty&rdquo;
+or &ldquo;with great difficulty&rdquo; count as struggling.</p>
 
 {fig('F1', caption="Greece Is Far Above the Poverty-Hardship Line")}
 
@@ -696,7 +704,7 @@ today's levels, in <a class="fig-jump" href="#F10">Figure
 each place Greece on the wrong side of the European middle. They are also
 the three current conditions that carry information beyond the official
 poverty rate. But the point here is simpler: <strong><em>some indicators
-recovered; the household did not recover with them.</em></strong></p>
+improved; the household did not recover with them.</em></strong></p>
 
 <p>A country can score badly on affordability two ways: by being expensive,
 or by paying poorly. Greece does both at once, and a household experiencing
@@ -1145,7 +1153,7 @@ housing-cost deterioration, second on consecutive years of wages below
 their 2008 level. Today's conditions alone are not enough to explain the
 hardship; what the country went through to get here matters too.</p>
 
-<p>Some headline indicators recovered. Greek society did not recover with
+<p>Some headline indicators improved. Greek society did not recover with
 them. Employment improved substantially, and housing pressure eased from its
 most extreme levels. But GDP per person never returned to its 2008 level,
 real wages remained far below it, and on the material-resources and
@@ -1171,12 +1179,12 @@ the crisis. For that second question, <em>AROP</em> on its own is not
 enough.</p>
 
 <p>Perhaps, then, the problem is not that Greek households failed to
-recognize the recovery. It is that public discourse named &ldquo;recovery&rdquo;
-the improvement of certain indicators, before living standards, purchasing
-power and the economic security of society had been restored. The political
-point that follows is a simple one: indicators cannot be used to certify
-recovery while, when household experience disagrees, the blame is
-automatically shifted onto households&rsquo; psychology and choices. This
+recognize the recovery. It is that public discourse treated improvements in
+certain indicators as proof of recovery, before living standards, purchasing
+power and the economic security of society had actually been restored. The
+political point that follows is a simple one: we cannot use indicators to
+certify recovery, then shift responsibility onto households&rsquo;
+psychology and choices when their experience tells a different story. This
 closing synthesis is author interpretation rather than a new empirical
 result: it follows directly from what the analysis showed AROP alone
 misses, not from an additional test that itself produced this finding.</p>
