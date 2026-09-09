@@ -70,14 +70,23 @@ a.cta{display:inline-block;background:var(--gr);color:#fff;font-size:15px;font-w
   transition:transform .15s ease,opacity .15s ease}
 a.cta:hover{opacity:.92;transform:translateY(-1px)}
 a.cta:focus-visible{outline:2px solid var(--gr);outline-offset:3px}
-.about{margin:48px 0 0;padding:22px 24px;background:var(--surface-1);
-  border:1px solid var(--border);border-radius:12px}
-.about h2{margin:0 0 12px}
-.about ol{margin:0 0 12px;padding-left:20px;font-size:14.5px;color:var(--text-primary)}
-.about li{margin:0 0 8px}
-.about li b{font-weight:600}
-.about a{color:var(--gr);font-size:13.5px;text-decoration:none}
-.about a:hover{text-decoration:underline}
+.research-q{position:relative;margin:40px 0 0;padding:28px 26px 24px;
+  background:var(--surface-2);border-radius:14px;overflow:hidden}
+.research-q::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--gr)}
+.rq-title{margin:0 0 14px;font-size:15px;font-weight:700;color:var(--text-primary)}
+.research-q p.rq-body{font-size:14.5px;line-height:1.65;color:var(--text-secondary);
+  margin:0 0 14px;max-width:66ch}
+.rq-items{display:grid;gap:18px;margin:20px 0 0}
+.rq-item{display:flex;gap:16px;align-items:flex-start}
+.rq-num{font-family:ui-serif,Georgia,'Times New Roman',serif;font-size:36px;
+  font-weight:700;color:var(--gr);line-height:1;flex:0 0 auto;
+  font-variant-numeric:tabular-nums}
+.rq-item h3{margin:0 0 4px;font-size:15px;color:var(--text-primary)}
+.rq-item p{margin:0;font-size:13.5px;line-height:1.5;color:var(--text-secondary)}
+.rq-link{display:inline-block;margin-top:20px;font-size:13.5px;color:var(--gr);
+  text-decoration:none}
+.rq-link:hover{text-decoration:underline}
 footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--gridline);
   font-size:12.5px;color:var(--text-muted)}
 footer a{color:var(--text-secondary)}
@@ -139,13 +148,23 @@ footer a{color:var(--text-secondary)}
 
   <p class="cta-row"><a class="cta" href="narrative_el.html">Διαβάστε την ιστορία →</a></p>
 
-  <div class="about">
-    <h2 style="margin:0 0 12px">Τι εξετάζει η έρευνα</h2>
-    <ol>
-      <li><b>Είναι πραγματικά διαφορετικά τα δύο μεγέθη</b> — ο επίσημος δείκτης εισοδηματικής φτώχειας και η δηλωμένη οικονομική δυσκολία — ή περιγράφουν το ίδιο πράγμα με διαφορετικό τρόπο;</li>
-      <li><b>Τι εξηγεί το χάσμα ανάμεσά τους</b> — ποιοι τρέχοντες ή συσσωρευμένοι παράγοντες συμβάλλουν στην εξήγησή του και πόσο, τελικά, παραμένει ανεξήγητο;</li>
-    </ol>
-    <a href="https://github.com/parastelios/greece-poverty-analysis/blob/main/docs/project_description.md">Πλήρης περιγραφή του έργου, στο GitHub →</a>
+  <div class="research-q">
+    <p class="rq-title">Το ερώτημα πίσω από τους αριθμούς</p>
+    <p class="rq-body">Υπάρχει μια παράξενη αντιστροφή στη δημόσια συζήτηση για την ελληνική οικονομία. Όταν πέφτει η ανεργία ή αυξάνεται το ΑΕΠ, οι δείκτες παρουσιάζονται ως απόδειξη της ανάκαμψης. Όταν όμως δύο στα τρία νοικοκυριά δηλώνουν ότι δυσκολεύονται να τα βγάλουν πέρα, η προσοχή συχνά μετατοπίζεται από τους δείκτες στις συνήθειές τους: στον καφέ, στο έτοιμο φαγητό, στα ταξίδια ή στην ελληνική απαισιοδοξία.</p>
+    <p class="rq-body">Είναι δικαιολογημένη αυτή η μετατόπιση; Ο επίσημος δείκτης εισοδηματικής φτώχειας τοποθετεί την Ελλάδα σε δύσκολη, αλλά όχι εξαιρετική, θέση στην Ευρώπη. Οι απαντήσεις των νοικοκυριών τη φέρνουν σχεδόν σε δική της κατηγορία. Η έρευνα ξεκινά από αυτή την αντίφαση και εξετάζει δύο ερωτήματα:</p>
+    <div class="rq-items">
+      <div class="rq-item">
+        <span class="rq-num">01</span>
+        <div><h3>Τι μετρούν πραγματικά οι δύο δείκτες;</h3>
+        <p>Καταγράφουν το ίδιο πρόβλημα με διαφορετικό τρόπο ή διαφορετικές πλευρές της οικονομικής ζωής;</p></div>
+      </div>
+      <div class="rq-item">
+        <span class="rq-num">02</span>
+        <div><h3>Τι βρίσκεται μέσα στο χάσμα;</h3>
+        <p>Πόσο συνδέεται με τις σημερινές συνθήκες, πόσο με το συσσωρευμένο βάρος της κρίσης και πόσο παραμένει ανεξήγητο;</p></div>
+      </div>
+    </div>
+    <a class="rq-link" href="https://github.com/parastelios/greece-poverty-analysis/blob/main/docs/project_description.md">Πώς έγινε η έρευνα και ποια είναι τα όριά της →</a>
   </div>
 
   <h2>Η ιστορία σε οκτώ κάρτες</h2>

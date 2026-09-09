@@ -70,14 +70,23 @@ a.cta{display:inline-block;background:var(--gr);color:#fff;font-size:15px;font-w
   transition:transform .15s ease,opacity .15s ease}
 a.cta:hover{opacity:.92;transform:translateY(-1px)}
 a.cta:focus-visible{outline:2px solid var(--gr);outline-offset:3px}
-.about{margin:48px 0 0;padding:22px 24px;background:var(--surface-1);
-  border:1px solid var(--border);border-radius:12px}
-.about h2{margin:0 0 12px}
-.about ol{margin:0 0 12px;padding-left:20px;font-size:14.5px;color:var(--text-primary)}
-.about li{margin:0 0 8px}
-.about li b{font-weight:600}
-.about a{color:var(--gr);font-size:13.5px;text-decoration:none}
-.about a:hover{text-decoration:underline}
+.research-q{position:relative;margin:40px 0 0;padding:28px 26px 24px;
+  background:var(--surface-2);border-radius:14px;overflow:hidden}
+.research-q::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--gr)}
+.rq-title{margin:0 0 14px;font-size:15px;font-weight:700;color:var(--text-primary)}
+.research-q p.rq-body{font-size:14.5px;line-height:1.65;color:var(--text-secondary);
+  margin:0 0 14px;max-width:66ch}
+.rq-items{display:grid;gap:18px;margin:20px 0 0}
+.rq-item{display:flex;gap:16px;align-items:flex-start}
+.rq-num{font-family:ui-serif,Georgia,'Times New Roman',serif;font-size:36px;
+  font-weight:700;color:var(--gr);line-height:1;flex:0 0 auto;
+  font-variant-numeric:tabular-nums}
+.rq-item h3{margin:0 0 4px;font-size:15px;color:var(--text-primary)}
+.rq-item p{margin:0;font-size:13.5px;line-height:1.5;color:var(--text-secondary)}
+.rq-link{display:inline-block;margin-top:20px;font-size:13.5px;color:var(--gr);
+  text-decoration:none}
+.rq-link:hover{text-decoration:underline}
 footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--gridline);
   font-size:12.5px;color:var(--text-muted)}
 footer a{color:var(--text-secondary)}
@@ -139,13 +148,23 @@ footer a{color:var(--text-secondary)}
 
   <p class="cta-row"><a class="cta" href="narrative.html">Read the story →</a></p>
 
-  <div class="about">
-    <h2 style="margin:0 0 12px">What the research examines</h2>
-    <ol>
-      <li><b>Are the two measures really different</b> — the official income-poverty rate and reported hardship — or are they just two ways of describing the same thing?</li>
-      <li><b>What explains the gap between them</b> — which factors, current or accumulated, account for it, and how much of it, in the end, remains unexplained?</li>
-    </ol>
-    <a href="https://github.com/parastelios/greece-poverty-analysis/blob/main/docs/project_description.md">Full project description, on GitHub →</a>
+  <div class="research-q">
+    <p class="rq-title">The question behind the numbers</p>
+    <p class="rq-body">There's a strange inversion in Greece's public economic debate. When unemployment falls or GDP rises, the indicators are presented as proof of recovery. But when two in three households say they're struggling to make ends meet, attention often shifts from the indicators to households' own habits: coffee, takeout, travel, or Greek pessimism.</p>
+    <p class="rq-body">Is that shift justified? The official income-poverty rate places Greece in a difficult, but not exceptional, position in Europe. Households' own answers put it in a category nearly of its own. This project starts from that contradiction and examines two questions:</p>
+    <div class="rq-items">
+      <div class="rq-item">
+        <span class="rq-num">01</span>
+        <div><h3>What do the two measures actually capture?</h3>
+        <p>Are they recording the same problem in different ways, or different sides of economic life?</p></div>
+      </div>
+      <div class="rq-item">
+        <span class="rq-num">02</span>
+        <div><h3>What lies inside the gap?</h3>
+        <p>How much connects to present-day conditions, how much to the accumulated weight of the crisis, and how much remains unexplained?</p></div>
+      </div>
+    </div>
+    <a class="rq-link" href="https://github.com/parastelios/greece-poverty-analysis/blob/main/docs/project_description.md">How the research was done and where its limits are →</a>
   </div>
 
   <h2>The story in eight cards</h2>
