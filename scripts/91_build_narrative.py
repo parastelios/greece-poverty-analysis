@@ -695,8 +695,8 @@ today's levels, in <a class="fig-jump" href="#F10">Figure
 <em>wage-adjusted affordability</em>
 each place Greece on the wrong side of the European middle. They are also
 the three current conditions that carry information beyond the official
-poverty rate. But the point here is simpler: household recovery
-looks weaker than headline recovery.</p>
+poverty rate. But the point here is simpler: <strong><em>some indicators
+recovered; the household did not recover with them.</em></strong></p>
 
 <p>A country can score badly on affordability two ways: by being expensive,
 or by paying poorly. Greece does both at once, and a household experiencing
@@ -1145,28 +1145,41 @@ housing-cost deterioration, second on consecutive years of wages below
 their 2008 level. Today's conditions alone are not enough to explain the
 hardship; what the country went through to get here matters too.</p>
 
-<p>What recovered was narrower than the word &ldquo;recovery&rdquo;
-suggests. Employment improved substantially, and housing pressure eased. But
-GDP per person never returned to its 2008 level, real wages remained far
-below it, and purchasing power fell further behind the European median. A
-generally more negative way of answering cannot be fully ruled out. What
+<p>Some headline indicators recovered. Greek society did not recover with
+them. Employment improved substantially, and housing pressure eased from its
+most extreme levels. But GDP per person never returned to its 2008 level,
+real wages remained far below it, and on the material-resources and
+purchasing-power measures that matter most, Greece still lags well behind
+the European median.</p>
+
+<p>A generally more negative way of answering cannot be fully ruled out. What
 can be ruled out is the easy version of that argument: that reported
 hardship has no material basis. It moves with concrete material
-difficulties and appears across a much wider range of indicators.</p>
+difficulties and fits a wider pattern of economic disadvantage. The factors
+we were able to test help explain much of the picture, but not the whole of
+the 52.6-point gap. The part that remains unexplained by the available
+models is not evidence of Greek pessimism. Institutional trust, adjustment
+policy, tax burden, wealth distribution, migration and access to healthcare
+remain plausible parts of the explanation, but were not established here as
+causes.</p>
 
-<p>The 52.6-point gap remains largely unexplained. That does not make it any
-less real. It means that none of the independently measured mechanisms
-tested here can, robustly and on its own, account for its size. The official
-poverty rate is not wrong: it measures who falls below a threshold set
-relative to today&rsquo;s national median income. But on its own, it cannot
-tell us whether Greek
-households have regained the economic security they had before the crisis.
-Perhaps, then, the problem is not that Greek households failed to recognize
-the recovery. It is that the public story treated the recovery as complete
-before it had fully reached them. This closing synthesis is author
-interpretation rather than a new empirical result: it follows directly from
-what the analysis showed AROP alone misses, not from an additional test
-that itself produced this finding.</p>
+<p><em>AROP</em> is not wrong: it measures exactly what it was designed to
+measure, who falls below a threshold set relative to today&rsquo;s national
+median income. That is a different question from whether Greek households
+have regained the living standards and economic security they lost during
+the crisis. For that second question, <em>AROP</em> on its own is not
+enough.</p>
+
+<p>Perhaps, then, the problem is not that Greek households failed to
+recognize the recovery. It is that public discourse named &ldquo;recovery&rdquo;
+the improvement of certain indicators, before living standards, purchasing
+power and the economic security of society had been restored. The political
+point that follows is a simple one: indicators cannot be used to certify
+recovery while, when household experience disagrees, the blame is
+automatically shifted onto households&rsquo; psychology and choices. This
+closing synthesis is author interpretation rather than a new empirical
+result: it follows directly from what the analysis showed AROP alone
+misses, not from an additional test that itself produced this finding.</p>
 
 </div>
 """))
