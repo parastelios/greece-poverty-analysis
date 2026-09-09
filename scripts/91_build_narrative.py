@@ -355,7 +355,7 @@ def resolve_fig_nums(doc):
 CH = []
 
 # ---- 1. The Poverty Rate Says One Thing. Households Say Another. ----------
-CH.append(chapter("paradox", "The Poverty Rate Says One Thing. Households Say Another.", f"""
+CH.append(chapter("paradox", "Real Hardship, or Greek Pessimism?", f"""
 <p>There is a strange reversal in the public debate about Greece's economy.
 When unemployment falls or GDP grows, the indicators are treated as the final
 proof of recovery. But when two in three households say they struggle to make
@@ -365,11 +365,14 @@ Greek pessimism.</p>
 
 <p>Is that shift justified? By the official income-poverty measure, Greece is
 in difficulty but not outside the European range. By what households report,
-it is almost in a category of its own. That is the paradox this piece
-unfolds: <em>income poverty</em> and <em>reported hardship</em> are telling two different
-stories. The question is whether the second is merely a darker way of
-answering, or whether it captures a material reality that the first measure
-cannot see on its own.</p>
+it is almost in a category of its own, and the public conversation has
+often already answered: the recovery is real, so households' persistence
+is a matter of mood, not evidence. That is the paradox this piece unfolds:
+<em>income poverty</em> and <em>reported hardship</em> are telling two
+different stories. The question this piece asks is whether that dismissal
+holds: does reported hardship carry a material reality that income poverty
+alone cannot see, or is it, to a meaningful degree, a darker way of
+answering?</p>
 
 <p>Two measures carry this whole piece. Income poverty, officially
 at-risk-of-poverty or <em>AROP</em>, is an income test: a person counts
@@ -1140,17 +1143,20 @@ can stay relatively stable even as living standards fall substantially.
 <em>AROPE</em> widens the picture, but covers only part of the gap. Reported hardship,
 meanwhile, moves with specific material deprivations, and conditions in
 work, material resources and purchasing power add information <em>AROP</em> alone
-does not capture. There is also evidence that, in some areas, what matters
-is not only today's conditions but the weight accumulated over the course of
-the crisis.</p>
+does not capture. Greece also carries one of Europe's largest accumulated
+burdens: first of 27 EU countries on accumulated unemployment and on
+housing-cost deterioration, second on consecutive years of wages below
+their 2008 level. Today's conditions alone are not enough to explain the
+hardship; what the country went through to get here matters too.</p>
 
 <p>What recovered was narrower than the word &ldquo;recovery&rdquo;
 suggests. Employment improved substantially, and housing pressure eased. But
 GDP per person never returned to its 2008 level, real wages remained far
-below it, and purchasing power fell further behind the European median. The
-checks that could be run did not reduce reported hardship to pessimism or
-measurement error. It moves with concrete material difficulties and appears
-across a much wider range of indicators.</p>
+below it, and purchasing power fell further behind the European median. A
+generally more negative way of answering cannot be fully ruled out. What
+can be ruled out is the easy version of that argument: that reported
+hardship has no material basis. It moves with concrete material
+difficulties and appears across a much wider range of indicators.</p>
 
 <p>The 52.6-point gap remains largely unexplained. That does not make it any
 less real. It means that none of the independently measured mechanisms
@@ -1195,7 +1201,7 @@ if sorted(SECTION_ORDER) != sorted(CH_KEYS):
 # renamed or reordered section forces this table to be touched too rather
 # than silently drifting out of sync with what the piece actually says.
 TOC_GLOSS = {
-    "paradox": ("The Poverty Rate Says One Thing. Households Say Another.",
+    "paradox": ("Real Hardship, or Greek Pessimism?",
                 "The paradox: two official measures, one gap this piece "
                 "tries to explain."),
     "footprint": ("This Was Not Just a Feeling",
