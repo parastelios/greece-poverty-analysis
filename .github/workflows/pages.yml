@@ -63,6 +63,8 @@ jobs:
           mkdir -p _site
           cp site/index.html               _site/index.html
           cp site/el.html                  _site/el.html
+          mkdir -p _site/assets
+          cp -r site/assets/.              _site/assets/
           cp output/v2_report.html         _site/report.html
           cp output/narrative.html         _site/narrative.html
           cp output/narrative_el.html      _site/narrative_el.html

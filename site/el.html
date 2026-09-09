@@ -13,11 +13,15 @@
 <meta property="og:title" content="Το ελληνικό παράδοξο της φτώχειας">
 <meta property="og:description" content="Γιατί τα ελληνικά νοικοκυριά δηλώνουν την υψηλότερη οικονομική δυσκολία στην ΕΕ, ενώ ο επίσημος δείκτης φτώχειας κατατάσσει τη χώρα σε πολύ λιγότερο ακραία θέση.">
 <meta property="og:url" content="https://parastelios.github.io/greece-poverty-analysis/el.html">
+<meta property="og:image" content="https://parastelios.github.io/greece-poverty-analysis/assets/carousel/og-el.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:locale" content="el_GR">
 <meta property="og:locale:alternate" content="en_US">
-<meta name="twitter:card" content="summary">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Το ελληνικό παράδοξο της φτώχειας">
 <meta name="twitter:description" content="Γιατί τα ελληνικά νοικοκυριά δηλώνουν την υψηλότερη οικονομική δυσκολία στην ΕΕ, ενώ ο επίσημος δείκτης φτώχειας κατατάσσει τη χώρα σε πολύ λιγότερο ακραία θέση.">
+<meta name="twitter:image" content="https://parastelios.github.io/greece-poverty-analysis/assets/carousel/og-el.png">
 <style>
 :root{
   color-scheme: light;
@@ -60,13 +64,54 @@ a.card:focus-visible{outline:2px solid var(--gr);outline-offset:2px}
 .lang-switch a:hover{color:var(--gr)}
 .note{font-size:13px;color:var(--text-secondary);background:var(--surface-2);
   border-radius:10px;padding:16px 18px;margin:34px 0 0}
+.cta-row{margin:28px 0 0}
+a.cta{display:inline-block;background:var(--gr);color:#fff;font-size:15px;font-weight:650;
+  text-decoration:none;padding:13px 26px;border-radius:9px;letter-spacing:-.005em;
+  transition:transform .15s ease,opacity .15s ease}
+a.cta:hover{opacity:.92;transform:translateY(-1px)}
+a.cta:focus-visible{outline:2px solid var(--gr);outline-offset:3px}
+.about{margin:48px 0 0;padding:22px 24px;background:var(--surface-1);
+  border:1px solid var(--border);border-radius:12px}
+.about h2{margin:0 0 12px}
+.about ol{margin:0 0 12px;padding-left:20px;font-size:14.5px;color:var(--text-primary)}
+.about li{margin:0 0 8px}
+.about li b{font-weight:600}
+.about a{color:var(--gr);font-size:13.5px;text-decoration:none}
+.about a:hover{text-decoration:underline}
 footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--gridline);
   font-size:12.5px;color:var(--text-muted)}
 footer a{color:var(--text-secondary)}
+.carousel-wrap{margin:20px 0 0}
+.carousel{position:relative}
+.carousel-track{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none;padding:2px 2px 4px;margin:0;
+  list-style:none}
+.carousel-track::-webkit-scrollbar{display:none}
+.carousel-slide{flex:0 0 76%;scroll-snap-align:start;margin:0;border-radius:14px;
+  overflow:hidden;border:1px solid var(--border);background:var(--surface-1)}
+.carousel-slide img{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover}
+.car-arrow{position:absolute;top:50%;transform:translateY(-50%);width:38px;height:38px;
+  border-radius:50%;border:1px solid var(--border);background:var(--surface-1);
+  color:var(--text-primary);font-size:18px;line-height:1;cursor:pointer;display:flex;
+  align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(0,0,0,.1)}
+.car-prev{left:6px}
+.car-next{right:6px}
+.car-arrow:disabled{opacity:.28;cursor:default}
+.car-arrow:focus-visible{outline:2px solid var(--gr);outline-offset:2px}
+.carousel-meta{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+.carousel-dots{display:flex;gap:6px;padding:0;margin:0;list-style:none}
+.carousel-dots button{width:7px;height:7px;border-radius:50%;border:none;
+  background:var(--border);padding:0;cursor:pointer}
+.carousel-dots button.active{background:var(--gr);width:18px;border-radius:4px;
+  transition:width .2s ease}
+.carousel-count{font-size:12px;color:var(--text-muted);font-variant-numeric:tabular-nums}
+.carousel-cta{margin:18px 0 0}
 @media(max-width:680px){
   h1{font-size:32px}
   .stat-row{grid-template-columns:1fr;gap:10px}
   .wrap{padding:36px 16px 60px}
+  .carousel-slide{flex-basis:84%}
+  .car-arrow{width:34px;height:34px}
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
@@ -92,9 +137,43 @@ footer a{color:var(--text-secondary)}
     <div class="tile"><p class="l">Μέσο χάσμα, 2015–2024</p><p class="v">52,6 <span class="unit">π.μ.</span></p><p class="s">ποσοστιαίες μονάδες · σε μεγάλο βαθμό ανεξήγητο</p></div>
   </div>
 
+  <p class="cta-row"><a class="cta" href="narrative_el.html">Διαβάστε την ιστορία →</a></p>
+
+  <div class="about">
+    <h2 style="margin:0 0 12px">Τι εξετάζει η έρευνα</h2>
+    <ol>
+      <li><b>Είναι πραγματικά διαφορετικά τα δύο μεγέθη</b> — ο επίσημος δείκτης εισοδηματικής φτώχειας και η δηλωμένη οικονομική δυσκολία — ή περιγράφουν το ίδιο πράγμα με διαφορετικό τρόπο;</li>
+      <li><b>Τι εξηγεί το χάσμα ανάμεσά τους</b> — ποιοι παράγοντες, τρέχοντες ή συσσωρευμένοι, το αναλαμβάνουν, και πόσο από αυτό παραμένει, τελικά, ανεξήγητο;</li>
+    </ol>
+    <a href="https://github.com/parastelios/greece-poverty-analysis/blob/main/docs/project_description.md">Πλήρης περιγραφή του έργου, στο GitHub →</a>
+  </div>
+
+  <h2>Η ιστορία σε οκτώ κάρτες</h2>
+  <div class="carousel-wrap">
+    <div class="carousel" role="region" aria-roledescription="carousel" aria-label="Η ιστορία σε οκτώ κάρτες">
+      <ul class="carousel-track" id="car-el" tabindex="0">
+        <li class="carousel-slide"><img src="assets/carousel/el-1.png" width="1080" height="1350" loading="lazy" alt="Το παράδοξο. 2 στα 3 ελληνικά νοικοκυριά δηλώνουν οικονομική δυσκολία, η υψηλότερη τιμή στην ΕΕ. Ο επίσημος δείκτης φτώχειας καταγράφει περίπου 1 στους 5 ανθρώπους και κατατάσσει την Ελλάδα στην 7η υψηλότερη θέση από τις 27: σοβαρή, αλλά πολύ λιγότερο ακραία εικόνα."></li>
+        <li class="carousel-slide"><img src="assets/carousel/el-2.png" width="1080" height="1350" loading="lazy" alt="Ένα μετακινούμενο όριο. Το ευρύτερο μέτρο της ΕΕ, ο AROPE, κλείνει κατά μέσο όρο μόνο το 19% του χάσματος. Το όριο φτώχειας επανυπολογίζεται κάθε χρόνο στο 60% του διάμεσου εθνικού εισοδήματος. Όταν πέφτουν τα εισοδήματα, πέφτει και ο πήχης, χωρίς να ακολουθεί το κόστος ζωής."></li>
+        <li class="carousel-slide"><img src="assets/carousel/el-3.png" width="1080" height="1350" loading="lazy" alt="Η δυσκολία έχει υλικό αποτύπωμα. Η δηλωμένη δυσκολία συμβαδίζει στενά με την αδυναμία κάλυψης ενός απρόοπτου εξόδου, την υλική στέρηση και την ανεπαρκή θέρμανση, με συσχετίσεις από 0,87 έως 0,94. Επειδή όλα μετρώνται στην ίδια έρευνα, αυτό αποτελεί ισχυρή ένδειξη, όχι ανεξάρτητη απόδειξη."></li>
+        <li class="carousel-slide"><img src="assets/carousel/el-4.png" width="1080" height="1350" loading="lazy" alt="Η ανάκαμψη δεν έφτασε παντού. Η απασχόληση ανέκαμψε σημαντικά και η στεγαστική πίεση υποχώρησε, αλλά παρέμεινε υψηλή. Οι πραγματικοί μισθοί εξακολουθούν να βρίσκονται κάτω από το επίπεδο του 2008, ενώ η αγοραστική πίεση επιδεινώθηκε απότομα."></li>
+        <li class="carousel-slide"><img src="assets/carousel/el-5.png" width="1080" height="1350" loading="lazy" alt="Το συσσωρευμένο βάρος. Στις χώρες της ΕΕ, η συσσωρευμένη ανεργία, τα χρόνια μισθολογικής μη ανάκαμψης και η επιδείνωση του κόστους στέγασης προσθέτουν πληροφορία για τη σημερινή δυσκολία πέρα από τις τρέχουσες συνθήκες. Πρόκειται για συσχετίσεις μεταξύ χωρών, όχι για απόδειξη αιτίας."></li>
+        <li class="carousel-slide"><img src="assets/carousel/el-6.png" width="1080" height="1350" loading="lazy" alt="Πόσο εξαρτάται από το μοντέλο. Μία εύλογη επιλογή στο μοντέλο αλλάζει πλήρως την εικόνα: η Ελλάδα μετακινείται από την 3η στην 25η θέση μεταξύ 27 χωρών ως προς το ανεξήγητο υπόλοιπο. Το αποτέλεσμα εξαρτάται έντονα από το τι περιλαμβάνει το μοντέλο."></li>
+        <li class="carousel-slide"><img src="assets/carousel/el-7.png" width="1080" height="1350" loading="lazy" alt="Τι μένει ακόμη ανοιχτό. Ένας γενικότερα πιο αρνητικός τρόπος απάντησης δεν μπορεί να αποκλειστεί πλήρως. Παράγοντες όπως η εμπιστοσύνη, οι πολιτικές προσαρμογής, η μετανάστευση, η φορολογία, ο πλούτος και η υγεία επίσης δεν τεκμηριώθηκαν εδώ ως εξηγήσεις. Παραμένουν ανοιχτά ερωτήματα."></li>
+        <li class="carousel-slide"><img src="assets/carousel/el-8.png" width="1080" height="1350" loading="lazy" alt="Τι σημαίνουν όλα αυτά. Η ανάκαμψη ήταν πραγματική, αλλά άνιση. Η οικονομική δυσκολία είναι μετρήσιμη και υλικά θεμελιωμένη, όμως το μεγαλύτερο μέρος του μέσου χάσματος των 52,6 ποσοστιαίων μονάδων παραμένει ανεξήγητο. Ανεξήγητο δεν σημαίνει μη πραγματικό."></li>
+      </ul>
+      <button class="car-arrow car-prev" type="button" aria-label="Προηγούμενη κάρτα" data-car="car-el" data-dir="-1">‹</button>
+      <button class="car-arrow car-next" type="button" aria-label="Επόμενη κάρτα" data-car="car-el" data-dir="1">›</button>
+    </div>
+    <div class="carousel-meta">
+      <ul class="carousel-dots" data-dots-for="car-el"></ul>
+      <p class="carousel-count" data-count-for="car-el">1 / 8</p>
+    </div>
+  </div>
+  <p class="carousel-cta"><a class="cta" href="narrative_el.html">Διαβάστε ολόκληρη την ανάλυση →</a></p>
+
   <p class="note"><b>Τι δείχνει η ανάλυση.</b> Η οικονομική δυσκολία που δηλώνουν τα νοικοκυριά δεν μπορεί να απορριφθεί ως απλή απαισιοδοξία. Συμβαδίζει με συγκεκριμένες υλικές στερήσεις και με ένα ευρύτερο μοτίβο πίεσης στους μισθούς, στην αγοραστική δύναμη, στην απασχόληση και στη στέγαση.<br><br>Κανένας παράγοντας, όμως, δεν εξηγεί μόνος του το μέσο χάσμα των 52,6 ποσοστιαίων μονάδων. Τα αποτελέσματα δείχνουν σχέσεις μεταξύ χωρών, όχι τι προκαλεί τη δυσκολία μέσα σε κάθε νοικοκυριό.</p>
 
-  <h2>Πώς να το διαβάσετε</h2>
+  <h2>Επιλογές</h2>
   <div class="cards">
     <a class="card" href="narrative_el.html">
       <h3>Η ιστορία →</h3>
@@ -119,5 +198,59 @@ footer a{color:var(--text-secondary)}
     <br><br>Τελευταία ενημέρωση της σελίδας: <time datetime="2026-09-08">8 Σεπτεμβρίου 2026</time>.
   </footer>
 </div>
+<script>
+(function(){
+  document.querySelectorAll('.carousel').forEach(function(car){
+    var track = car.querySelector('.carousel-track');
+    var id = track.id;
+    var slides = Array.from(track.children);
+    var prev = car.querySelector('.car-prev');
+    var next = car.querySelector('.car-next');
+    var dotsWrap = document.querySelector('[data-dots-for="' + id + '"]');
+    var countEl = document.querySelector('[data-count-for="' + id + '"]');
+    var total = slides.length;
+    dotsWrap.innerHTML = slides.map(function(_, i){
+      return '<li><button type="button" aria-label="Κάρτα ' + (i + 1) + ' από ' + total + '"' +
+        (i === 0 ? ' class="active"' : '') + '></button></li>';
+    }).join('');
+    var dots = Array.from(dotsWrap.querySelectorAll('button'));
+
+    function currentIndex(){
+      var pos = track.scrollLeft;
+      var best = 0, bestDist = Infinity;
+      slides.forEach(function(s, i){
+        var dist = Math.abs(s.offsetLeft - slides[0].offsetLeft - pos);
+        if (dist < bestDist) { bestDist = dist; best = i; }
+      });
+      return best;
+    }
+    function update(){
+      var idx = currentIndex();
+      dots.forEach(function(d, i){ d.classList.toggle('active', i === idx); });
+      countEl.textContent = (idx + 1) + ' / ' + total;
+      prev.disabled = idx === 0;
+      next.disabled = idx === total - 1;
+    }
+    function goTo(i){
+      i = Math.max(0, Math.min(total - 1, i));
+      var target = slides[i].offsetLeft - slides[0].offsetLeft;
+      track.scrollTo({ left: target, behavior: 'smooth' });
+    }
+    prev.addEventListener('click', function(){ goTo(currentIndex() - 1); });
+    next.addEventListener('click', function(){ goTo(currentIndex() + 1); });
+    var scrollTimer;
+    track.addEventListener('scroll', function(){
+      window.clearTimeout(scrollTimer);
+      scrollTimer = window.setTimeout(update, 80);
+    }, { passive: true });
+    track.addEventListener('keydown', function(e){
+      if (e.key === 'ArrowRight') { goTo(currentIndex() + 1); e.preventDefault(); }
+      if (e.key === 'ArrowLeft') { goTo(currentIndex() - 1); e.preventDefault(); }
+    });
+    dots.forEach(function(d, i){ d.addEventListener('click', function(){ goTo(i); }); });
+    update();
+  });
+})();
+</script>
 </body>
 </html>

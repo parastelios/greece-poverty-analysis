@@ -139,6 +139,17 @@ def check_page(path, lang):
           not missing_links,
           f"linked but not in pages.yml's copy list: {missing_links}")
 
+    # Local <img src="assets/...">/og:image references have no equivalent to
+    # pages.yml's html copy list to check against -- verify_site.py checked
+    # the .html links, so it checks these the same way: the referenced file
+    # must actually exist under site/, or the image silently 404s once
+    # deployed (the same class of bug the appendix rename caught).
+    local_imgs = sorted(set(re.findall(r'(?:src|content)="(?:https://parastelios\.github\.io/'
+                                        r'greece-poverty-analysis/)?(assets/[\w./-]+)"', page)))
+    missing_imgs = [i for i in local_imgs if not (ROOT / "site" / i).exists()]
+    check(f"[{lang}] every referenced local image exists under site/",
+          not missing_imgs, f"referenced but missing: {missing_imgs}")
+
 
 # ---------------------------------------------------------------------------
 #  Cross-document links: every hardcoded output/*.html -> output/*.html
