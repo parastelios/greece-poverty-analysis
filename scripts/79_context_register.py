@@ -377,6 +377,71 @@ ENTRIES = [
                         "quarters available; every headline figure "
                         "reproduces to two decimal places",
     },
+    {
+        # Raised via a social-media post citing Eurostat's October 2025
+        # "Greece in Figures" healthcare-expenditure release. Checked
+        # independently against Eurostat's own Statistics Explained article
+        # rather than taken from the post.
+        "id": "CTX-10", "topic": "Household out-of-pocket health payments",
+        "status": "contextual evidence",
+        "permitted": "Eurostat healthcare-expenditure data (table "
+                     "hlth_sha11_hf) show that in 2023, household "
+                     "out-of-pocket payments covered 34.3% of current "
+                     "health expenditure in Greece, the third-highest share "
+                     "in the EU behind Bulgaria (35.5%) and Latvia (35.1%), "
+                     "against an EU average of about 14.9%. This offers one "
+                     "plausible mechanism by which low overall health "
+                     "financing coexists with reported hardship: an "
+                     "unusually large share of health costs lands directly "
+                     "on the household budget rather than being pooled "
+                     "through public or insurance financing.",
+        "forbidden": "Treating this as tested against this project's "
+                     "reported-hardship findings, or as an established "
+                     "explanation for the 52.6-point gap: it was never "
+                     "checked against any model here. 34.3% does not mean "
+                     "that households spend 34.3% of their income on "
+                     "health, nor that 34.3% of households pay out of "
+                     "pocket: it means that of every 100 units of current "
+                     "health expenditure in Greece, about 34 are paid "
+                     "directly by "
+                     "households. Treating the EU average as fixed at "
+                     "14.9%: Eurostat's live database has since revised "
+                     "some EU-wide figures (around 15.2% at last check, "
+                     "not independently re-verified here). Greece's own "
+                     "value and third-place rank were reported unchanged "
+                     "across both versions, but that specific claim rests "
+                     "on a single unverified source, and the precise gap "
+                     "to the EU average depends on which vintage is used.",
+        "relates_to_claim": "",
+        "evidence": "Eurostat healthcare-expenditure statistics; not this "
+                    "project's own panel",
+        # Narrower than the topic area on purpose: the report already
+        # names out-of-pocket/catastrophic health spending generically as
+        # a suggested future research direction (no numbers, no source),
+        # which is not a discussion of THIS finding and should not have to
+        # carry this box. Matching on the finding's own numbers/source
+        # catches an actual unanchored discussion of it without flagging
+        # that unrelated, already-appropriately-scoped sentence.
+        "detect": "34\\.3%|34,3%|hlth_sha11_hf",
+        "source": "Eurostat, \"Healthcare expenditure statistics by "
+                  "function, provider and financing scheme,\" data as of "
+                  "October 2025 (table hlth_sha11_hf).",
+        "source_url": "https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Healthcare_expenditure_statistics_by_function,_provider_and_financing_scheme",
+        "source_detail": "Out-of-pocket share of current health expenditure, "
+                         "2023: Greece 34.3%, Bulgaria 35.5%, Latvia 35.1%, "
+                         "EU average 14.9% (October 2025 vintage).",
+        "source_status": "verified", "review_date": "2026-09-10",
+        "verified_how": "the 34.3% Greece figure, the EU average, and "
+                        "Greece's rank behind Bulgaria and Latvia were "
+                        "cross-checked against an independent web search "
+                        "citing the same Eurostat table (hlth_sha11_hf) and "
+                        "against Eurostat's own \"Healthcare expenditure "
+                        "statistics\" Statistics Explained article; both "
+                        "reproduce the 34.3%/14.9% figures. The live-database "
+                        "revision noted above was not independently "
+                        "re-verified to the decimal against the raw SDMX "
+                        "table.",
+    },
 ]
 
 PLACEMENT = {

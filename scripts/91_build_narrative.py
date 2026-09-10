@@ -1127,6 +1127,16 @@ can sit side by side &mdash; this project never tested wealth against its
 own hardship measure directly, so it is offered as a plausible mechanism,
 not a demonstrated one.</p>''')}
 
+{context('CTX-10', '''
+<p>Eurostat data show that in 2023, out-of-pocket payments covered 34.3% of
+current health expenditure in Greece &mdash; the third-highest share in the
+EU, behind Bulgaria and Latvia, against an EU average of about 14.9%. An
+unusually large share of health costs landing directly on the household
+budget, rather than being pooled through public or insurance financing, is
+one plausible contributor to reported hardship &mdash; this project never
+tested health financing against its own hardship measure directly, so it
+is offered as a plausible mechanism, not a demonstrated one.</p>''')}
+
 </details>
 """))
 

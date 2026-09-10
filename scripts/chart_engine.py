@@ -114,6 +114,13 @@ padding:0 1.1rem .7rem}
 letter-spacing:.06em;padding:.3rem .5rem;border-radius:3px;
 background:var(--accent-soft,rgba(61,111,180,.12));color:var(--badge-ink)}
 .fig-q{font:.82rem/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--text-secondary)}
+/* Always visible, never behind a tap or hover: a screening reader who only
+   looks at one chart still meets what it measures, in what unit, over what
+   period, before reaching the chart itself. */
+.fig-def{margin:0 1.1rem .6rem;padding:.5rem .7rem;border-left:3px solid
+var(--border);font:.78rem/1.5 ui-sans-serif,system-ui,sans-serif;
+color:var(--text-secondary);background:var(--surface-2)}
+.fig-def strong{color:var(--text-primary);font-weight:600}
 /* A generated one-line reading of the figure, above the plot. It states what
    the rows add up to, which a reader should not have to count off the chart. */
 .fig-lede{margin:.1rem 1.1rem .7rem;font:.86rem/1.45 ui-sans-serif,system-ui,
@@ -1559,15 +1566,27 @@ class Series:
 
 
 def figure(fid, caption, question, badge, host_kind, payload, fallback_html,
-           caveat="", appendix_link="", checksum=""):
+           caveat="", appendix_link="", checksum="", definition=""):
     """One figure: chart, badge, caveat, and an accessible table fallback.
 
     The fallback is always in the DOM, so screen readers and print both reach
     the numbers whether or not the chart draws.
+
+    `definition` is a short, ALWAYS-VISIBLE plain-language statement of what
+    the figure measures, how, and over what period/unit -- the answer to "if
+    someone only screens this one chart, will it still make sense?" Distinct
+    from `question` (the analytical question the figure answers) and from the
+    in-prose glossary tooltips (`apply_glossary`, hover/tap, easy to miss on
+    mobile and easy to skip when skimming): this renders inline, requires no
+    interaction, and is the first thing a reader meets after the caption.
     """
     # pandas reads an empty manifest cell as NaN, a float, which html.escape
     # cannot take. Coerce before testing truthiness.
     caveat = "" if caveat is None or caveat != caveat else str(caveat).strip()
+    definition = ("" if definition is None or definition != definition
+                  else str(definition).strip())
+    defn = (f'<p class="fig-def"><strong>What this shows.</strong> '
+            f'{definition}</p>' if definition else "")
     cav = (f'<p class="fig-caveat"><strong>Read with this.</strong> '
            f'{html.escape(caveat)}</p>' if caveat else "")
     link = (f' <a href="{appendix_link}#{fid}">This figure in the appendix</a>,'
@@ -1582,7 +1601,7 @@ def figure(fid, caption, question, badge, host_kind, payload, fallback_html,
     return f"""<figure class="figure" id="{fid}">
 <figcaption>{caption}</figcaption>
 <div class="fig-meta"><span class="badge">{html.escape(badge)}</span>
-<span class="fig-q">{html.escape(question)}</span></div>
+<span class="fig-q">{html.escape(question)}</span></div>{defn}
 <div class="chart-live" data-chart="{host_kind}" tabindex="0"
      data-checksum="{checksum}" aria-describedby="{fid}-fb">
 <script type="application/json">{data}</script>
@@ -1654,4 +1673,14 @@ font:.82rem/1.42 ui-sans-serif,system-ui,sans-serif;font-style:normal;
 font-weight:400;text-align:left;box-shadow:0 4px 16px rgba(0,0,0,.16);
 opacity:0;pointer-events:none;transition:opacity .12s ease;z-index:20}
 .term:hover::after,.term:focus::after{opacity:1}
-.term:focus{outline:none}"""
+.term:focus{outline:none}
+/* Centering the tooltip ON THE WORD (left:50%/translateX(-50%) above) is
+   exactly the bug on a narrow screen: a term near the left or right edge
+   pushes the box, still centered on that edge, straight off the viewport.
+   Below the width where that reliably happens, anchor to the VIEWPORT
+   instead of the word -- fixed, full-width-minus-margins, pinned near the
+   bottom of the screen -- so where the term sits no longer matters. */
+@media (max-width: 480px){
+.term::after{position:fixed;left:.75rem;right:.75rem;bottom:1rem;top:auto;
+transform:none;width:auto;max-width:none;max-height:40vh;overflow-y:auto}
+}"""

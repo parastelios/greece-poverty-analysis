@@ -1953,6 +1953,24 @@ financial-asset valuations, not household cash flow, and the ECB itself
 labels the underlying accounts experimental.</p>
 ''')}
 
+{context('CTX-10', '''
+<p>Eurostat healthcare-expenditure data show that in 2023, household
+out-of-pocket payments covered 34.3% of current health expenditure in
+Greece, the third-highest share in the EU behind Bulgaria (35.5%) and
+Latvia (35.1%), against an EU average of about 14.9%. An unusually large
+share of health costs landing directly on the household budget, rather
+than being pooled through public or insurance financing, is one plausible
+contributor to reported hardship.</p>
+<p>This project ran no test linking out-of-pocket health spending to
+reported hardship. 34.3% is the share of total current health expenditure
+paid directly by households, not the share of household income spent on
+health or the share of households that pay out of pocket. Eurostat's live
+database has since revised some EU-wide figures in this table (the EU
+average now shows around 15.2%); Greece's own value and rank are reported
+unchanged across both versions, though that specific claim was not
+independently re-verified here.</p>
+''')}
+
 {methods("How the cross-domain comparison works, and what it cannot settle", '''
 <h4>The comparison</h4>
 <p>Three Eurostat indicators are compared for Greece against the other EU

@@ -481,6 +481,13 @@ CTX_PROSE = {
           "consolidation, and the poverty literature using EU-SILC microdata "
           "documents how severely measured hardship rose when judged against a "
           "fixed pre-crisis standard rather than a moving one.</p>",
+ "CTX-3B": "<p>Independent microdata analysis reaches the same direction as "
+          "this report's own anchored-poverty reconstruction: a fixed "
+          "pre-crisis poverty line shows far more crisis-era poverty than "
+          "contemporaneous AROP (48% against this project's own 40.6% for "
+          "the same income year). The two figures differ in data, anchor "
+          "year and price adjustment, so this is corroboration of "
+          "direction, not a validation test.</p>",
  "CTX-4": "<p>Large-scale emigration accompanied the same decade this report "
           "measures. It is best read as part of the same history rather than as "
           "a separate cause: net migration was tested directly at the "
@@ -493,6 +500,34 @@ CTX_PROSE = {
  "CTX-6": "<p>If relative income poverty alone understates what happened, then "
           "the practical consequence is about measurement rather than about "
           "any single policy.</p>",
+ "CTX-7": "<p>A separate European survey (ESS) shows Greece already sitting "
+          "below a balanced 12-country median before the crisis, and while "
+          "its life-satisfaction LEVEL has recovered since, its relative "
+          "position has not: Greece has ranked worst of the 12 since "
+          "2010/11. A longstanding low-wellbeing pattern is therefore "
+          "plausible, and generic pessimism cannot be ruled out on this "
+          "evidence alone.</p>",
+ "CTX-8": "<p>An independently published analysis (Greece in Figures) "
+          "reaches a similar descriptive picture by a different route -- "
+          "not last on actual consumption, but combining long working "
+          "hours, low hourly reward and high relative prices -- "
+          "corroborating this report's own material-resources and "
+          "wage-adjusted-affordability findings. It applies no bootstrap, "
+          "FDR correction or model comparison of its own, and two of its "
+          "claims (a vehicle-stock figure read as new purchases, a "
+          "travel-survey generalisation) do not hold up on inspection.</p>",
+ "CTX-9": "<p>ECB distributional wealth accounts show that of the "
+          "&euro;224.8bn increase in Greek household net wealth from 2019 "
+          "Q2 to 2026 Q1 (+32.2%), about 72.6% accrued to the wealthiest "
+          "fifth of households, while the bottom half accounted for about "
+          "9.2%. This project ran no test linking wealth concentration to "
+          "reported hardship, and the ECB itself labels these accounts "
+          "experimental.</p>",
+ "CTX-10": "<p>Eurostat data show that household out-of-pocket payments "
+          "covered 34.3% of current health expenditure in Greece in 2023, "
+          "the third-highest share in the EU (behind Bulgaria and Latvia), "
+          "against an EU average of about 14.9%. This project ran no test "
+          "linking out-of-pocket health spending to reported hardship.</p>",
 }
 S7 = stage(7, "What else might matter",
     "Which institutions and policies produced this history?",

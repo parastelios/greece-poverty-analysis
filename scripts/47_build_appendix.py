@@ -2159,6 +2159,17 @@ project's own panel. The companion GDP comparison (+11.7% real, Greece
 20th of 36 countries) was recomputed from Eurostat's <code>namq_10_gdp</code>
 across every country with both quarters available. No test was run by this
 project linking wealth concentration to reported hardship.</p>''',
+    "CTX-10": '''
+<p>Eurostat healthcare-expenditure statistics (table
+<code>hlth_sha11_hf</code>), October 2025 vintage, external to this
+project. Raised via a social-media post citing the same release; the
+headline figures (Greece 34.3%, EU average 14.9%, Greece's rank behind
+Bulgaria and Latvia) were checked against an independent source and
+against Eurostat's own "Healthcare expenditure statistics" article rather
+than taken from the post. Eurostat's live database has since revised some
+EU-wide figures in this table; that revision was not independently
+re-verified here. No test was run by this project linking out-of-pocket
+health spending to reported hardship.</p>''',
 }
 _missing_ctx_prose = [cid for cid in ctx.index if cid not in _CTX_APPENDIX_PROSE]
 if _missing_ctx_prose:
@@ -2171,7 +2182,8 @@ if _missing_ctx_prose:
 # report itself places it; CTX-6 (the policy-dashboard recommendation) sits
 # with Stage 8's conclusion; the rest are Stage 7's "what this is not".
 CTX_STAGE = {"CTX-1": 7, "CTX-2": 7, "CTX-3": 7, "CTX-3B": 2, "CTX-4": 7,
-             "CTX-5": 7, "CTX-6": 8, "CTX-7": 7, "CTX-8": 4, "CTX-9": 7}
+             "CTX-5": 7, "CTX-6": 8, "CTX-7": 7, "CTX-8": 4, "CTX-9": 7,
+             "CTX-10": 7}
 _unmapped_ctx = [cid for cid in ctx.index if cid not in CTX_STAGE]
 if _unmapped_ctx:
     raise SystemExit(f"context entries with no stage: {_unmapped_ctx}")

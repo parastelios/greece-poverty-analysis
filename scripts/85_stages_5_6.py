@@ -201,6 +201,10 @@ FIGS["A10"] = dict(
              "counterpart is in the same model, for every pair tested?",
     caption="All eight accumulated measures against their present-day "
             "counterparts",
+    definition="Standardised coefficient (SD of hardship per SD of "
+               "predictor) for all eight accumulated measures, each "
+               "paired with its present-day counterpart in the same "
+               "model — 16 estimates total.",
     kind="coefficient",
     payload={"rows": rows12, "dp": 3,
              "xLabel": "Standardised effect: SD of hardship per SD of predictor",
@@ -355,10 +359,12 @@ def build(fid, spec):
     if fid in man.index:
         m = man.loc[fid]
         question, status, caveat0 = m.question, m.status_label, m.caveat
+        defn = m.definition
     else:
         question = spec.get("question", "")
         status = spec.get("status_label", "appendix")
         caveat0 = ""
+        defn = spec.get("definition", "")
     views = spec.get("views")
     if views:
         tags, tables = [], []
@@ -383,7 +389,8 @@ def build(fid, spec):
         cav = ("" if cav != cav else str(cav) + " ") + spec["extra_caveat"]
     shell = ce.figure(fid, spec["caption"], question, status,
                       spec["kind"], {}, body, caveat=cav,
-                      appendix_link="statistical_appendix.html", checksum=stamp)
+                      appendix_link="statistical_appendix.html", checksum=stamp,
+                      definition=defn)
     return shell.replace(payload_tag({}), payload_html)
 
 

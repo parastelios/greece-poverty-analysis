@@ -539,6 +539,9 @@ FIGS["A8"] = dict(
     question="How much of the distance does the broader measure actually "
              "close, and is that share growing?",
     caption="What AROPE actually closes, and what stays open",
+    definition="The gap between reported hardship and AROP, split into "
+               "the portion AROPE additionally closes and the portion "
+               "that remains open, by year, in percentage points.",
     kind="panel", series=f4c, payload=v4b,
     extra_caveat=(
         "This is the distance the report's AROPE figure shows as three levels, "
@@ -791,6 +794,9 @@ FIGS["A9"] = dict(
     question="Where does Greece sit against every other member state on each "
              "AROPE component separately?",
     caption="Each AROPE component on its own, against every member state",
+    definition="Income poverty, material deprivation, and AROPE, each "
+               "shown separately with every EU member state faintly "
+               "behind Greece, share of people, by year.",
     kind="panel", series=f5, payload=v5a,
     views=[("Income poverty", v5a), ("Material deprivation", v5m),
            ("AROPE", v5e)],
@@ -812,10 +818,12 @@ def build(fid, spec):
     if fid in man.index:
         m = man.loc[fid]
         question, status, caveat0 = m.question, m.status_label, m.caveat
+        defn = m.definition
     else:
         question = spec.get("question", "")
         status = spec.get("status_label", "appendix")
         caveat0 = ""
+        defn = spec.get("definition", "")
     views = spec.get("views")
     if views:
         tags, tables = [], []
@@ -845,7 +853,8 @@ def build(fid, spec):
         body = f'<p class="fig-lede">{spec["lede"]}</p>' + body
     shell = ce.figure(fid, spec["caption"], question, status,
                       spec["kind"], {}, body, caveat=cav,
-                      appendix_link="statistical_appendix.html", checksum=stamp)
+                      appendix_link="statistical_appendix.html", checksum=stamp,
+                      definition=defn)
     return shell.replace(payload_tag({}), payload_html)
 
 

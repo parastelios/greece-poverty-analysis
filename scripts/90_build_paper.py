@@ -1021,6 +1021,14 @@ concentration to reported hardship, and the accounts are partly outside the
 2015-2024 window used elsewhere in this paper; the ECB itself labels them
 experimental.</p>''')}
 
+{context('CTX-10', '''
+<p>Eurostat data show that household out-of-pocket payments covered 34.3%
+of current health expenditure in Greece in 2023, the third-highest share
+in the EU (behind Bulgaria and Latvia), against an EU average of about
+14.9%. This project ran no test linking out-of-pocket health spending to
+reported hardship, and the figure is one plausible contributor among
+several, not an established explanation.</p>''')}
+
 <h3>7.4 Implications for measurement</h3>
 
 {context('CTX-6', '''

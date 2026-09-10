@@ -532,7 +532,8 @@ def build(fid, spec):
         cav = ("" if cav != cav else str(cav) + " ") + spec["extra_caveat"]
     shell = ce.figure(fid, spec["caption"], m.question, m.status_label,
                       spec["kind"], {}, body, caveat=cav,
-                      appendix_link="statistical_appendix.html", checksum=stamp)
+                      appendix_link="statistical_appendix.html", checksum=stamp,
+                      definition=m.definition)
     return shell.replace(payload_tag({}), payload_html)
 
 

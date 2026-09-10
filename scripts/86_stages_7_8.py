@@ -353,7 +353,8 @@ def build(fid, spec):
     shell = ce.figure(fid, spec["caption"], m.question, m.status_label,
                       spec["kind"], {}, body, caveat=cav,
                       appendix_link="statistical_appendix.html",
-                      checksum=spec["series"].checksum())
+                      checksum=spec["series"].checksum(),
+                      definition=m.definition)
     return shell.replace(payload_tag({}), payload_html)
 
 

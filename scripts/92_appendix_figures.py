@@ -58,6 +58,10 @@ for col, label in ITEMS:
 
 FIGS["A1"] = dict(
     caption="Every country-year behind the binned European view",
+    definition="Every country-year observation behind the report's binned "
+               "view: reported hardship against each candidate measure, "
+               "both in standard deviations from that country's own "
+               "average.",
     kind="multiples",
     payload={"panels": panels_raw,
              "xMin": -4, "xMax": 4, "yMin": -4, "yMax": 4,
@@ -100,6 +104,9 @@ for col, label in ITEMS:
 
 FIGS["A4"] = dict(
     caption="The European relationship, as binned country-year averages",
+    definition="The same relationship as A1, grouped into nine bins per "
+               "measure by how far above or below each country's own "
+               "normal level it sat, then averaged within each bin.",
     kind="multiples",
     payload={"panels": panels_eu,
              "xMin": -2.2, "xMax": 2.2, "yMin": -2.2, "yMax": 2.2,
@@ -140,6 +147,9 @@ for y in years:
 
 FIGS["A2"] = dict(
     caption="Where every country stood, year by year",
+    definition="Every EU country placed by income poverty (% of people) "
+               "and reported hardship (% of households), one frame per "
+               "year, with a selector for each available year. EU-SILC.",
     kind="scatter",
     payload={"frames": frames, "dp": 1, "aspect": 0.52,
              "xLabel": "Income poverty, percent of people",
@@ -167,6 +177,10 @@ for label, fname in [("Within countries", "e0_corr_within.csv"),
         s.add(ce.name(r), [float(m.loc[r, c]) for c in keep])
     FIGS[f"A3{label[0]}"] = dict(
         caption=f"The full {len(keep)}-variable correlation matrix, {label.lower()}",
+        definition=f"Correlation between every pair of the report's "
+                   f"{len(keep)} representative candidate variables, "
+                   f"computed {label.lower()}. Coefficients from -1 to 1; "
+                   f"the diagonal (a variable against itself) is blank.",
         kind="heatmap",
         payload={"cols": [ce.name(c) for c in keep],
                  "rows": [{"label": ce.name(r),
@@ -223,6 +237,9 @@ fA5.add("EU country median", _med_uc)
 
 FIGS["A5"] = dict(
     caption="Unmet medical care: Greece against every other member state",
+    definition="Share of people aged 16+ reporting unmet medical need due "
+               "to cost, distance or waiting time, Greece against the "
+               "EU-country median and every other member state, by year.",
     kind="panel",
     payload={"years": _hyrs, "dp": 1, "yLabel": "% of people aged 16+",
              "context": [{"label": NAMES.get(c, c),
@@ -272,6 +289,10 @@ for _src, _role in ((_hcur, "current level"), (_hacc, "accumulated")):
 
 FIGS["A6"] = dict(
     caption="No health measure supports the hypothesis, and most point against it",
+    definition="Standardised association between each of four health "
+               "measures and reported hardship, estimated both between "
+               "countries and within countries (eight estimates total), "
+               "with cluster-robust intervals.",
     kind="coefficient",
     payload={"rows": _rows6, "dp": 2,
              "xLabel": "standardised association with reported hardship, "
@@ -313,6 +334,10 @@ for _r in _hbw.itertuples():
 FIGS["A7"] = dict(
     caption="The three health-STATUS measures reverse sign between countries "
             "and within them; the access measure does not",
+    definition="Four health measures' coefficient on reported hardship, "
+               "estimated between countries and within countries, paired "
+               "to show where the two comparisons agree or disagree in "
+               "sign.",
     kind="dumbbell",
     payload={"rows": _rows7, "dp": 2,
              "toneA": "chart-neutral", "toneB": "chart-gr",
@@ -367,6 +392,9 @@ for y in _ayrs:
 
 FIGS["A11"] = dict(
     caption="Falling behind on bills against reported hardship, year by year",
+    definition="Every EU member state placed by share of households "
+               "falling behind on bills and reported hardship, one frame "
+               "per year, Greece marked.",
     kind="scatter",
     payload={"frames": _frames11, "dp": 1, "aspect": 0.55,
              "xLabel": "Households in arrears, percent",
@@ -424,7 +452,8 @@ def build(fid, spec):
     shell = ce.figure(fid, spec["caption"], spec.get("question", ""),
                       "appendix", spec["kind"], {}, body,
                       caveat=spec.get("extra_caveat", ""),
-                      checksum=spec["series"].checksum())
+                      checksum=spec["series"].checksum(),
+                      definition=spec.get("definition", ""))
     return shell.replace(payload_tag({}), payload_tag(spec["payload"]))
 
 

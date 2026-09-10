@@ -44,9 +44,9 @@ This notebook is the running log. `docs/archive/pre-v2-publication/publication_s
 | Current stage | none — sequence complete |
 | Last completed stage | FINAL |
 | Branch | `main` |
-| HEAD | `d37d5ad` Rewrite README as a proper entry point |
+| HEAD | `f67ccf2` Add licensing (MIT + CC BY 4.0) and remove a redistributed third-party PDF |
 | Uncommitted changes | yes |
-| Last refreshed | 2026-09-09 |
+| Last refreshed | 2026-09-10 |
 | Frozen V1 reference | `v1-final` |
 | Frozen V2 analytical reference | `p5f-frozen` |
 <!-- AUTO:END document-control -->
@@ -3276,6 +3276,20 @@ stage that made them.
 | PD-01 | 2026-08-23 | E2 | FDR applied **within construct** for sensitivity variants | `e_preregistration.json` declares three BH families — current primaries, accumulated primaries, secondary outcome — and no within-construct sensitivity family | **More permissive** than a pooled correction | Pooled correction reported as a post hoc display; only `unemployment_rate` and `youth_unemployment` differ, and both had already failed the bootstrap, so no reported outcome depends on it. The promotion rule independently barred every E2 sensitivity from becoming a finding | disclosed |
 
 Deviations must be disclosed in the stage that made them, not only here.
+
+## External claims checked
+
+Post-publication spot checks of outside claims against this project's own
+data. These are informational: nothing here is pre-registered, tested under
+the project's own procedure, or eligible to become a claim. An entry stays
+here even if it turns out consistent with the published findings — the point
+is a record of what was checked and how, not a running tally of things
+disproved.
+
+| ID | Date | Claim checked | What we found | Status |
+|---|---|---|---|---|
+| X-01 | 2026-09-10 | CNN.gr (9 Sep 2026), citing Eurostat: net annual earnings for four hypothetical household types rose 31–42% in nominal euros from 2019 to 2025, placing Greece 17th of 27 EU states — [archived URL](https://www.cnn.gr/oikonomia/anaptyxi/story/551635/eurostat-pano-apo-10-alles-xores-tis-ee-oi-apodoxes-ton-ellinon-alma-ano-tou-30-apo-to-2019) | Two of the article's own four examples don't reconcile with its own stated euro figures: the single/childless case claims +37.8% (€5,900) where the quoted €15,112→€21,498 is actually +42.3% (€6,386); the two-earner-with-children case claims +31.6% where the quoted figures imply +34.9%. The other two examples check out. Substantively, the article's figures are **nominal** (no inflation adjustment is mentioned or applied) and measure **net take-home pay for four defined household compositions at average wage** — a different population and methodology from this project's own real-wage series (`real_wages_panel.csv`: economy-wide compensation per employee, deflated by HICP, 2008=100). That series shows Greece's real wages FELL slightly from 2019 to 2024 (70.40 → 68.18, -3.2%), not rose — consistent with card 4 of the published carousel (68/100, from 76.9). Deflating the article's own four nominal figures by this project's verified HICP series through 2024, plus an estimated (not verified) 2.5-3.0% inflation for 2025 extrapolated from 2024's 3.0% rate, gives real growth of roughly **+9% to +19%** across the four household types (highest for the single/childless case, lowest for the two-earner childless case) — a real increase, unlike the whole-economy measure. Both can be true: Greece raised its minimum wage and cut some taxes/social contributions over this window, which shows up more in *net* pay for specific household types than in the *gross*, whole-economy compensation aggregate. Separately, the article's 2025 data point is genuinely more current than anything in this project's own wage series (confirmed via Eurostat's own "Wages and labour costs" Statistics Explained page, data extracted 2026-03-31, which already reports 2025 net-earnings figures) — Eurostat's net-earnings-by-household-type table is a rules-based calculation from known tax-benefit parameters, not an EU-SILC survey product, so it publishes faster. This project's own AROP and subjective-poverty figures for what this repository calls "2024" are actually the same SILC 2025 collection wave (income reference year 2024) and are not behind; only the compensation-per-employee real-wage series has no 2025 point yet. **The article's country ranking also doesn't survive a purchasing-power adjustment.** Its "17th of 27, just above Portugal" is a raw-euro comparison; ranking the same 27 states instead on Actual Individual Consumption per capita in PPS (this project's own `e0_extended_panel.csv`, `aic_pps_pc`, 2024 — the standard cross-country cost-of-living adjustment, and the same series behind this project's own published "Material resources" indicator) puts Greece **22nd of 27, below Portugal** (15th), a five-place drop. Romania moves the other way, 27th nominally to 18th in PPS terms — its low cost of living lifts it sharply once accounted for. This isn't a literal PPS recomputation of the same net-earnings series (Eurostat does not appear to publish that table in PPS); AIC-PPS covers all consumption, not one household type's cash wages, so it's the closest available like-for-like proxy from this project's own verified data, not an exact substitute. Two charts made for this check: [`x01_rank_shift.png`](figures/external_checks/x01_rank_shift.png) (nominal vs. PPS-adjusted rank, all 27 states) and [`x01_nominal_vs_real.png`](figures/external_checks/x01_nominal_vs_real.png) (nominal vs. inflation-adjusted growth, the four household types). | checked, not incorporated — informational only, no claim or figure affected |
+
 
 ## Corrections and Supersessions
 
