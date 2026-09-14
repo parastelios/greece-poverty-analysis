@@ -146,8 +146,22 @@ SECTIONS = [
          # remaining candidate series are appended programmatically below
 ]
 
-HEAD = """<meta name="viewport" content="width=device-width, initial-scale=1">
+HEAD = """<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Statistical Appendix — The Greek Poverty Paradox</title>
+<meta name="description" content="Every figure, model check, and underlying data series behind The Greek Poverty Paradox: 27 EU member states, EU-SILC and Eurostat, 2015-2024.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Statistical Appendix — The Greek Poverty Paradox">
+<meta property="og:description" content="Every figure, model check, and underlying data series behind The Greek Poverty Paradox.">
+<meta property="og:url" content="https://parastelios.github.io/greece-poverty-analysis/statistical_appendix.html">
+<meta property="og:image" content="https://parastelios.github.io/greece-poverty-analysis/assets/carousel/og-en.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Statistical Appendix — The Greek Poverty Paradox">
+<meta name="twitter:description" content="Every figure, model check, and underlying data series behind The Greek Poverty Paradox.">
+<meta name="twitter:image" content="https://parastelios.github.io/greece-poverty-analysis/assets/carousel/og-en.png">
 <style>
 :root{
   color-scheme: light;
@@ -350,7 +364,7 @@ footer{margin-top:64px;padding-top:20px;border-top:1px solid var(--gridline);
   .wrap{padding:28px 14px 70px} h1{font-size:29px}
   .chart-card{padding:14px 12px 10px}
 }
-</style>"""
+</style></head><body>"""
 
 
 JS = """
@@ -2170,6 +2184,18 @@ than taken from the post. Eurostat's live database has since revised some
 EU-wide figures in this table; that revision was not independently
 re-verified here. No test was run by this project linking out-of-pocket
 health spending to reported hardship.</p>''',
+    "CTX-11": '''
+<p>Ipsos for Secours Populaire Français, "Baromètre de la pauvreté et de la
+précarité", 20th edition (June 2026), European section, external to this
+project. 10,000 respondents, 1,000 per country across 10 countries (three
+of them, UK, Moldova and Serbia, not EU members), Ipsos online access
+panel, quota sampling, fieldwork 6 May-9 June 2026. Raised via a news
+article; the headline Greece figures (44% "précaire" vs. a 29%
+ten-country average) were traced to the primary PDF report rather than
+taken from the article. No public microdata was released. No test was run
+by this project linking the survey's self-rated precarity measure to
+EU-SILC subjective hardship, and the survey's own "European average" is
+not a Eurostat EU-27 aggregate.</p>''',
 }
 _missing_ctx_prose = [cid for cid in ctx.index if cid not in _CTX_APPENDIX_PROSE]
 if _missing_ctx_prose:
@@ -2183,7 +2209,7 @@ if _missing_ctx_prose:
 # with Stage 8's conclusion; the rest are Stage 7's "what this is not".
 CTX_STAGE = {"CTX-1": 7, "CTX-2": 7, "CTX-3": 7, "CTX-3B": 2, "CTX-4": 7,
              "CTX-5": 7, "CTX-6": 8, "CTX-7": 7, "CTX-8": 4, "CTX-9": 7,
-             "CTX-10": 7}
+             "CTX-10": 7, "CTX-11": 1}
 _unmapped_ctx = [cid for cid in ctx.index if cid not in CTX_STAGE]
 if _unmapped_ctx:
     raise SystemExit(f"context entries with no stage: {_unmapped_ctx}")

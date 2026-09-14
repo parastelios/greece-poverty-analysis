@@ -1,6 +1,20 @@
 <!doctype html><html lang="el"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Αν η Ελλάδα ανέκαμψε, γιατί τόσα νοικοκυριά εξακολουθούν να δυσκολεύονται;</title><style>
+<title>Αν η Ελλάδα ανέκαμψε, γιατί τόσα νοικοκυριά εξακολουθούν να δυσκολεύονται;</title>
+<meta name="description" content="Δύο στα τρία ελληνικά νοικοκυριά δηλώνουν δυσκολία στην κάλυψη των αναγκών τους, ενώ ο επίσημος δείκτης φτώχειας φαίνεται πολύ λιγότερο ακραίος. Όλη η αφήγηση πίσω από αυτό το χάσμα.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Αν η Ελλάδα ανέκαμψε, γιατί τόσα νοικοκυριά εξακολουθούν να δυσκολεύονται;">
+<meta property="og:description" content="Δύο στα τρία ελληνικά νοικοκυριά δηλώνουν δυσκολία στην κάλυψη των αναγκών τους, ενώ ο επίσημος δείκτης φτώχειας φαίνεται πολύ λιγότερο ακραίος.">
+<meta property="og:url" content="https://parastelios.github.io/greece-poverty-analysis/narrative_el.html">
+<meta property="og:image" content="https://parastelios.github.io/greece-poverty-analysis/assets/carousel/og-el.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="el_GR">
+<meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Αν η Ελλάδα ανέκαμψε, γιατί τόσα νοικοκυριά εξακολουθούν να δυσκολεύονται;">
+<meta name="twitter:description" content="Δύο στα τρία ελληνικά νοικοκυριά δηλώνουν δυσκολία στην κάλυψη των αναγκών τους, ενώ ο επίσημος δείκτης φτώχειας φαίνεται πολύ λιγότερο ακραίος.">
+<meta name="twitter:image" content="https://parastelios.github.io/greece-poverty-analysis/assets/carousel/og-el.png"><style>
 :root {
   color-scheme: light;
   --page:           #f9f9f7;
@@ -268,6 +282,13 @@ font:.78rem/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--text-secondary)}
 .fallback > summary{padding:.6rem 1.1rem;cursor:pointer;
 font:.78rem/1 ui-sans-serif,system-ui,sans-serif;color:var(--text-secondary)}
 .fallback > summary:hover{color:var(--gr)}
+/* "Show the numbers" and the appendix link ran together as one sentence
+   with no visual break between the disclosure instruction and the link's
+   own noun phrase. A pseudo-element separator fixes the reading without
+   touching the link's text, which 47_build_appendix.py's self-link-strip
+   regex and the Greek narrative's translation both pattern-match on. */
+.fallback > summary > a{color:var(--gr)}
+.fallback > summary > a::before{content:"  b7 ";color:var(--text-secondary)}
 /* display:block + overflow-x:auto turns the table itself into a horizontal
    scroll container -- the same pattern already used for .ess-table below.
    Without it, a table with enough columns to exceed its card's width (most
@@ -500,8 +521,8 @@ details.disclosure .ctx:last-child{margin-bottom:1.2rem}
 <header class="masthead">
 <p class="rubric">Το ελληνικό παράδοξο της φτώχειας</p>
 <h1>Αν η Ελλάδα ανέκαμψε, γιατί τόσα νοικοκυριά εξακολουθούν να δυσκολεύονται;</h1>
-<p class="standfirst">Η αγορά εργασίας της Ελλάδας ανέκαμψε ταχύτερα από τα
-νοικοκυριά της. Η απόσταση ανάμεσα στην εισοδηματική φτώχεια και τη δηλωμένη
+<p class="standfirst">Η αγορά εργασίας της Ελλάδας ανέκαμψε. Τα νοικοκυριά της όχι.
+Η απόσταση ανάμεσα στην εισοδηματική φτώχεια και τη δηλωμένη
 δυσκολία δείχνει τι αφήνουν έξω οι τίτλοι της ανάκαμψης: ένα μετακινούμενο
 όριο φτώχειας, τραυματισμένους μισθούς, πίεση στην αγοραστική δύναμη και τη
 μακρά σκιά της κρίσης.</p>
@@ -682,7 +703,7 @@ href="narrative.html">αγγλική έκδοση</a>· το στατιστικ�
 συγκεκριμένους δείκτες οικονομικής πίεσης.</p>
 
 <figure class="figure" id="F8">
-<figcaption><span class="fignum">Γράφημα 2</span> Κινούνταν μαζί η δηλωμένη δυσκολία και τα συγκεκριμένα οικονομικά προβλήματα;</figcaption>
+<figcaption><span class="fignum">Γράφημα 2</span> Η δηλωμένη δυσκολία κινείται μαζί με τη συγκεκριμένη οικονομική πίεση</figcaption>
 <div class="fig-meta"><span class="badge">περιγραφική επιβεβαίωση</span>
 <span class="fig-q">Ανέβαιναν και κατέβαιναν οι συγκεκριμένες οικονομικές δυσκολίες μαζί με όσα δήλωναν τα ελληνικά νοικοκυριά;</span></div><p class="fig-def"><strong>Τι δείχνει αυτό.</strong> Η δηλωμένη δυσκολία έναντι τεσσάρων δεικτών υλικής δυσκολίας (απρόοπτο έξοδο, υλική στέρηση, θέρμανση, καθυστερήσεις πληρωμών), ο καθένας ως απόκλιση από τον δικό του μέσο όρο 2015–2024. EU-SILC.</p>
 <div class="chart-live" data-chart="panel" tabindex="0"
@@ -929,13 +950,13 @@ data-view="1">Πόσο αξίζει το ίδιο το όριο</a>) δείχν�
 άμεσο: πόσο κοστίζει η καθημερινότητά του σε σχέση με τα χρήματα που
 διαθέτει.</p>
 </section><section class="ch" id="ch4"><h2>Η απασχόληση ανέκαμψε. Τα νοικοκυριά όχι.</h2>
-<p>Το ισχυρότερο επιχείρημα υπέρ της ελληνικής ανάκαμψης είναι η αγορά
+<p>Το ισχυρότερο επιχείρημα υπέρ βελτίωσης είναι η αγορά
 εργασίας. Η ανεργία υποχώρησε από τα ακραία επίπεδα της κρίσης σε κάτω από
-9%, ενώ μειώθηκε σημαντικά και η <em class="term" tabindex="0" data-def="Ποσοστό του εργατικού δυναμικού που βρίσκεται άνεργο για 12 μήνες ή περισσότερο."><strong>μακροχρόνια ανεργία</strong></em>. Αυτό είναι πραγματική
+9%, ενώ μειώθηκε σημαντικά και η <em class="term" tabindex="0" data-def="Ποσοστό του εργατικού δυναμικού που βρίσκεται άνεργο για 12 μήνες ή περισσότερο."><strong>μακροχρόνια ανεργία</strong></em>. Αυτή είναι πραγματική
 πρόοδος. Ένα νοικοκυριό, όμως, δεν ζει με το ποσοστό ανεργίας. Ζει με τον
 μισθό που μπαίνει στο σπίτι, τις τιμές που πληρώνει, το κόστος στέγασης και
-το ποσό που απομένει στο τέλος του μήνα. Με αυτά τα κριτήρια, η ανάκαμψη
-φαίνεται πολύ λιγότερο ολοκληρωμένη.</p>
+το ποσό που απομένει στο τέλος του μήνα. Με αυτά τα κριτήρια, η οικονομία
+των νοικοκυριών δεν ανέκαμψε.</p>
 
 <p>Ας ξεκινήσουμε από εκεί που υπήρξε ξεκάθαρη βελτίωση. Η μακροχρόνια
 ανεργία, η έλλειψη εργασίας για δώδεκα μήνες ή περισσότερο, βρισκόταν στο
@@ -1572,14 +1593,14 @@ Eurostat. Μια διαφορετική ευρωπαϊκή έρευνα δείχ
 <p>Ίσως, λοιπόν, το πρόβλημα δεν είναι ότι τα ελληνικά νοικοκυριά απέτυχαν
 να αναγνωρίσουν την ανάκαμψη. Είναι ότι η δημόσια συζήτηση ονόμασε
 «ανάκαμψη» τη βελτίωση ορισμένων δεικτών, πριν αποκατασταθούν το βιοτικό
-επίπεδο, η αγοραστική δύναμη και η οικονομική ασφάλεια της κοινωνίας. Το
-πολιτικό σημείο που προκύπτει από αυτά τα ευρήματα είναι απλό: δεν
-μπορούμε να επικαλούμαστε τους δείκτες για να πιστοποιούμε την ανάκαμψη
-και, όταν η εμπειρία των νοικοκυριών διαφωνεί, να μεταφέρουμε αυτόματα
-την ευθύνη στην ψυχολογία και στις επιλογές τους. Αυτή η τελική σύνθεση
-είναι ερμηνεία των συγγραφέων και όχι νέο εμπειρικό αποτέλεσμα: προκύπτει
-άμεσα από όσα έδειξε η ανάλυση ότι χάνει ο AROP από μόνος του, όχι από
-κάποιον επιπλέον έλεγχο.</p>
+επίπεδο, η αγοραστική δύναμη και η οικονομική ασφάλεια της κοινωνίας. Αυτή
+η τελική σύνθεση είναι ερμηνεία των συγγραφέων και όχι νέο εμπειρικό
+αποτέλεσμα: προκύπτει άμεσα από όσα έδειξε η ανάλυση ότι χάνει ο AROP από
+μόνος του, όχι από κάποιον επιπλέον έλεγχο. Το πολιτικό σημείο που
+προκύπτει από αυτά τα ευρήματα είναι απλό: δεν μπορούμε να επικαλούμαστε
+τους δείκτες για να πιστοποιούμε την ανάκαμψη και, όταν η εμπειρία των
+νοικοκυριών διαφωνεί, να μεταφέρουμε αυτόματα την ευθύνη στην ψυχολογία
+και στις επιλογές τους.</p>
 
 </div>
 </section>

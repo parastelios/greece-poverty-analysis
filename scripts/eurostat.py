@@ -1,6 +1,7 @@
 """Thin client for the Eurostat SDMX-JSON dissemination API."""
 import itertools
 import json
+import os
 import time
 import urllib.parse
 
@@ -9,6 +10,18 @@ import requests
 
 BASE = "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data"
 
+# 25 scripts across this pipeline call fetch() unconditionally, with no
+# cache -- every one of them contacts the live API on every run. That is
+# exactly what let `make build` silently move the data vintage on 2026-09-10
+# (see the Makefile's own top-of-file warning). This is the guard that
+# incident argued for: fetch() refuses by default, so running one of those
+# 25 scripts directly -- the natural thing to do while testing an unrelated
+# change -- fails immediately and loudly, before any file is touched,
+# instead of quietly refreshing dozens of data/raw/ and data/processed/
+# files. The Makefile's fetch/fetch-write/build targets, the only places
+# a live refresh is actually intended, set the env var themselves.
+_ALLOW = os.environ.get("GREECE_POVERTY_ALLOW_FETCH") == "1"
+
 
 def fetch(dataset: str, retries: int = 3, **params) -> pd.DataFrame:
     """Fetch a Eurostat dataset and return a tidy long-format DataFrame.
@@ -16,6 +29,13 @@ def fetch(dataset: str, retries: int = 3, **params) -> pd.DataFrame:
     params: SDMX dimension filters, e.g. geo=["EL", "EU27_2020"], time=range(2003, 2026)
     List/tuple values are repeated as multiple query params (OR filter), per Eurostat API.
     """
+    if not _ALLOW:
+        raise RuntimeError(
+            f"refusing to fetch {dataset}: this contacts the live Eurostat "
+            "API and would move the data vintage. Run via `make fetch`, "
+            "`make fetch-write` or `make build` (which set "
+            "GREECE_POVERTY_ALLOW_FETCH=1), or set that variable yourself "
+            "if you specifically intend a live refresh.")
     query = []
     for k, v in params.items():
         if isinstance(v, (list, tuple, range)):

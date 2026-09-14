@@ -3,12 +3,38 @@
 #   make verify      Check published headline numbers against pipeline outputs (fast, offline)
 #   make fetch       Re-acquire formerly-orphaned raw inputs, CHECK mode (compares, writes nothing)
 #   make fetch-write Re-acquire them for real, overwriting data/raw/ (moves the data vintage)
-#   make build       Rerun the analysis pipeline over existing data/raw/, then verify
+#   make build       CONTACTS LIVE EUROSTAT APIS AND MOVES THE DATA VINTAGE. See warning below.
 #   make reproduce   TRUE end-to-end test: fresh clone in a temp dir, fetch-write, build, verify.
 #                    Leaves this working copy completely untouched.
 #
 # Default is `verify` because it is fast, offline, and answers the day-to-day
 # question: do the published documents still match the data behind them?
+#
+# WARNING, CORRECTING THIS FILE'S OWN EARLIER CLAIM: `build` does NOT run over
+# existing data/raw/ alone. eurostat.py's fetch() has no cache layer at all --
+# every script that calls it hits the live API unconditionally, every run.
+# That is not just 01_fetch_core.py/03_fetch_supplementary.py in STAGE_CORE:
+# 25 scripts across STAGE_CORE, STAGE_WRITEBACK, STAGE_HEALTH and STAGE_REST
+# import eurostat.fetch or call requests.get/urllib directly (confirmed by
+# grep across scripts/[0-9][0-9]_*.py on 2026-09-14), and `build` runs all of
+# them. Running `build` really does move the data vintage -- this has
+# happened by accident in this project before. There is no `build-frozen`
+# target because one is not a small addition: it would mean adding
+# cache-first logic (skip fetch if the target file already exists and no
+# explicit refresh was requested) to all 25 of those scripts, which is a
+# separate engineering project, not a Makefile change.
+#
+# What DOES now exist: eurostat.fetch() itself refuses to run unless
+# GREECE_POVERTY_ALLOW_FETCH=1 is set, which only the fetch/fetch-write/build
+# targets below set. This closes the actual hole the 2026-09-10 incident
+# came through -- running one of those 25 scripts directly, the natural
+# thing to do while testing an unrelated change, now fails immediately and
+# loudly instead of silently refreshing data. It does not make `build`
+# frozen; `build` still fetches live, by design, when you actually run it.
+# The safe way to test a change is still to run the SPECIFIC downstream
+# builder script it affects directly (e.g.
+# `cd scripts && python3 88_assemble_report.py`), never `make build` or
+# `make fetch-write` for routine editing.
 
 # Prefer the pinned project environment when it exists. Command-line PY still
 # overrides this, which is useful in CI or another clean environment.
@@ -112,13 +138,14 @@ release-verify:
 	@echo "RELEASE VERIFICATION PASSED"
 
 fetch:
-	cd $(SCRIPTS) && $(PY) 00_fetch_missing_raw.py
+	cd $(SCRIPTS) && GREECE_POVERTY_ALLOW_FETCH=1 $(PY) 00_fetch_missing_raw.py
 
 fetch-write:
-	cd $(SCRIPTS) && $(PY) 00_fetch_missing_raw.py --write
+	cd $(SCRIPTS) && GREECE_POVERTY_ALLOW_FETCH=1 $(PY) 00_fetch_missing_raw.py --write
 
 build:
 	@cd $(SCRIPTS) && set -e; \
+	export GREECE_POVERTY_ALLOW_FETCH=1; \
 	for s in $(STAGE_CORE) $(STAGE_WRITEBACK) $(STAGE_HEALTH) $(sort $(STAGE_REST)); do \
 	  echo "=== $$s ==="; $(PY) $$s > /dev/null || { echo "FAILED: $$s"; exit 1; }; \
 	done; \

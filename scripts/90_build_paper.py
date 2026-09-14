@@ -1341,7 +1341,20 @@ ol.refs,.refs li{font-size:.88rem;line-height:1.55}
 
 PAGE = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Subjective Poverty and the Limits of Relative-Income Measurement</title>{BASE}
+<title>Subjective Poverty and the Limits of Relative-Income Measurement</title>
+<meta name="description" content="Working paper: why relative income poverty understates hardship in Greece, and how much of the gap current conditions and accumulated crisis history can explain.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Subjective Poverty and the Limits of Relative-Income Measurement">
+<meta property="og:description" content="Why relative income poverty understates hardship in Greece, and how much of the gap current conditions and accumulated crisis history can explain.">
+<meta property="og:url" content="https://parastelios.github.io/greece-poverty-analysis/paper.html">
+<meta property="og:image" content="https://parastelios.github.io/greece-poverty-analysis/assets/carousel/og-en.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Subjective Poverty and the Limits of Relative-Income Measurement">
+<meta name="twitter:description" content="Why relative income poverty understates hardship in Greece, and how much of the gap current conditions and accumulated crisis history can explain.">
+<meta name="twitter:image" content="https://parastelios.github.io/greece-poverty-analysis/assets/carousel/og-en.png">{BASE}
 <style>{ce.CSS}
 :root{{--gr:var(--series-gr);--eu:var(--series-eu)}}
 {PAPER_CSS}</style></head><body>

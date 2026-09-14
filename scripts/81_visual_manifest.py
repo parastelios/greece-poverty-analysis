@@ -15,6 +15,9 @@ Each entry fixes:
   fallback     the compact accessible table that must accompany it
   caveat       the required label travelling with it, or ""
   status_label the evidence-status badge shown on the figure itself
+  definition   the always-visible "what this shows" line: what is measured,
+               how, and over what period -- so a reader skimming past the
+               prose still gets the indicator's own definition
 """
 import json
 from pathlib import Path
@@ -41,6 +44,11 @@ M = [
                   "country and reads both of its values",
       fallback="year x the four series; country x income poverty and hardship "
                "in the latest year",
+      definition="AROP: share of people with income below 60% of the "
+                 "national median, recalculated yearly. Reported hardship: "
+                 "share of households saying they make ends meet "
+                 "‘with difficulty’ or ‘with great "
+                 "difficulty’. Both from EU-SILC, 2015–2024.",
       # Kept short on the face of the figure; the reading caveat is added at
       # build time and would otherwise be stated twice.
       caveat="Descriptive comparison of two official measures.",
@@ -51,6 +59,10 @@ M = [
       series="all 27 countries on subjective hardship, latest year",
       interaction="hover names the country and value; Greece highlighted",
       fallback="rank, country, value for all 27",
+      definition="Reported hardship for all 27 EU states, ranked, latest "
+                 "year. Share of households making ends meet "
+                 "‘with difficulty’ or ‘with great "
+                 "difficulty’. EU-SILC.",
       caveat="", status_label="descriptive"),
  dict(id="F3", stage=2, chart_type="panel",
       question="What happened to the line Greek poverty is measured against, "
@@ -63,6 +75,10 @@ M = [
                   "the two threshold values, and names any faint country line",
       fallback="year x anchored and current-year rates; year x threshold in "
                "cash and in 2008 purchasing power",
+      definition="AROP's poverty line, recalculated each year, against the "
+                 "same line held fixed at its 2008 real value. Share of "
+                 "people below each threshold, and the threshold's own "
+                 "value. EU-SILC, 2003–2025.",
       caveat="The anchored series is an approximation built in this project "
              "and is labelled as such wherever it appears.",
       status_label="descriptive"),
@@ -72,6 +88,10 @@ M = [
       series="gap_vs_arop and gap_vs_arope, with the closure between them shaded",
       interaction="hover reads both gaps and the closure for the year",
       fallback="year x gap vs AROP, gap vs AROPE, closure",
+      definition="AROPE: share of people meeting at least one of income "
+                 "poverty, severe material deprivation, or very low work "
+                 "intensity. Gap to reported hardship, in percentage "
+                 "points. EU-SILC, 2015–2024.",
       caveat="AROPE components overlap and MAY NOT be added together: it is a "
              "union of income poverty, deprivation and low work intensity, and "
              "aggregate data do not reveal the overlaps",
@@ -91,6 +111,9 @@ M = [
                   "rate for the group and year",
       fallback="component x year; age group x year; sex x year; and "
                "the shift-share contributions",
+      definition="AROPE and its three components (income poverty, material "
+                 "deprivation, very low work intensity), by age group and "
+                 "sex. Share of people. EU-SILC, 2015–2024.",
       caveat="These are changes in group-level rates, not evidence about the "
              "same individuals over time. The 2024-2025 national increase was "
              "driven primarily by within-group changes, especially "
@@ -105,6 +128,10 @@ M = [
       interaction="switch between pooled, between and within; hover reads the "
                   "pair and coefficient; sign reversals marked",
       fallback="the flagged pairs only, with all three views",
+      definition="Correlation coefficients between candidate variables and "
+                 "reported hardship, computed three ways: pooled across "
+                 "all country-years, between countries only, and within "
+                 "each country over time. Country-year panel, 2015–2024.",
       # The gap outcomes are NOT in this matrix, so a caveat about them
       # described data the reader could not see. What IS shown includes AROPE
       # alongside its own components.
@@ -124,6 +151,10 @@ M = [
       interaction="hover reads both endpoints and the shift; converging, flat "
                   "and diverging coloured separately",
       fallback="variable, gap 2015, gap 2024, shift, trend",
+      definition="Share of each measure's 2015 Greece-to-EU-median gap "
+                 "closed by 2024 (0 = no change, 1 = fully closed, "
+                 "negative = widened). EU-SILC and Eurostat national "
+                 "accounts.",
       caveat="", status_label="descriptive"),
  dict(id="F8", stage=3, chart_type="panel",
       question="Did concrete affordability difficulties rise and fall with "
@@ -135,6 +166,10 @@ M = [
       interaction="switch measure; each tab carries its Greek correlation, and "
                   "the four are summarised together beneath the chart",
       fallback="year x the three series, per measure",
+      definition="Reported hardship against four material-difficulty "
+                 "indicators (unexpected expense, material deprivation, "
+                 "heating, falling behind on bills), each as a deviation "
+                 "from its own 2015–2024 average. EU-SILC.",
       caveat="Same-survey corroboration, not independent validation or causal "
              "evidence.",
       status_label="descriptive corroboration"),
@@ -147,6 +182,10 @@ M = [
                   "the gate that failed, so the reader sees directly where the "
                   "cluster-robust and bootstrap verdicts part company",
       fallback="the full nine plus the blocked diagnostic",
+      definition="Standardised regression coefficient and 95% interval per "
+                 "construct, controlling for income poverty and year, "
+                 "with cluster-robust and wild-bootstrap p-values. "
+                 "Country-year panel, 2015–2024.",
       caveat="Inconclusive is not evidence of absence.",
       status_label="pre-planned confirmatory"),
  dict(id="F10", stage=4, chart_type="panel",
@@ -156,6 +195,10 @@ M = [
       series="ltu_rate, aic_pps_pc and wadj_a01, Greece against EU median",
       interaction="hover reads Greece, EU median and the gap",
       fallback="latest values and ranks for the three",
+      definition="Long-term unemployment (% of labour force), material "
+                 "resources (actual individual consumption per capita, "
+                 "PPS), and wage-adjusted affordability (index, EU=100), "
+                 "Greece against the EU-country median, latest year.",
       caveat="", status_label="pre-planned confirmatory"),
  dict(id="F11", stage=5, chart_type="ladder",
       question="How much accumulated unemployment, wage non-recovery and "
@@ -169,6 +212,9 @@ M = [
              "with Greece and the EU median marked",
       interaction="hover names the country and value; Greece always labelled",
       fallback="latest value and rank for all 27",
+      definition="Each country's cumulative excess above its own "
+                 "pre-crisis baseline, summed year over year since the "
+                 "crisis began. Point-years or years, all 27 EU states.",
       caveat="cross-country association | no demonstrated within-Greece "
              "dynamic | no causal claim | current conditions not ruled out",
       status_label="post-selection robustness"),
@@ -180,6 +226,10 @@ M = [
       interaction="hover reads both directions of the pair, the focal VIF and "
                   "the pair's own detectable effect",
       fallback="pair, direction, coefficient, bootstrap p, outcome",
+      definition="Standardised coefficient per construct pair "
+                 "(current-level vs. accumulated), both estimated in the "
+                 "same model, with bootstrap p-values. Country-year "
+                 "panel, 2015–2024.",
       caveat="cross-country association | no demonstrated within-Greece "
              "dynamic | no causal claim | current conditions not ruled out",
       status_label="post-selection robustness"),
@@ -189,6 +239,9 @@ M = [
       series="between and within estimates per pair, with first differences",
       interaction="hover reads between, within, first difference and their p-values",
       fallback="pair, between, within, first difference, dynamic permitted",
+      definition="The same coefficient estimated three ways: pooled "
+                 "between-country, within-country over time, and "
+                 "first-differenced year over year. Country-year panel.",
       caveat="This is THE central limitation: no within-country estimate is "
              "significant in the adverse direction and no first-difference "
              "test supports one.",
@@ -203,6 +256,10 @@ M = [
                   "Greece emphasised, and its crossing of zero is the visual "
                   "point of the figure",
       fallback="Greece's residual and rank in each specification",
+      definition="Greece's out-of-sample residual (reported hardship "
+                 "minus model prediction, percentage points) under two "
+                 "different, each defensible model specifications, and "
+                 "its EU rank in each.",
       caveat="NEITHER specification is definitive. They may not be merged or "
              "averaged, and selection may not be made on residual size.",
       status_label="post-selection robustness"),
@@ -216,6 +273,10 @@ M = [
       interaction="hover names any country and its value",
       fallback="indicator, Greece, EU median, number of countries, Greece's "
                "position from the worst end",
+      definition="Reported hardship, financial expectations, and life "
+                 "satisfaction, each EU country as a dot, 2024. Share of "
+                 "people/households, and a 0–10 satisfaction scale. "
+                 "EU-SILC and Eurostat.",
       # Kept short on the face of the figure; the reading caveat is added at
       # build time and would otherwise be stated twice.
       caveat="A 2024 snapshot. Contextual and not modelled.",
@@ -228,6 +289,9 @@ dict(id="F16", stage=7, chart_type="panel",
       interaction="hover reads departures, returns and the net flow for the "
                   "year; the zero line marks the turn from net exit to net return",
       fallback="year x departures, returns, net flow, rate per 1,000",
+      definition="Departures and returns of Greek nationals, and their "
+                 "net flow, 2008–2024. ELSTAT/Eurostat migration "
+                 "statistics, count and rate per 1,000.",
       caveat="CONTEXTUAL CONSEQUENCE AND POSSIBLE CONTRIBUTOR, not an "
              "independently supported predictor. Net migration was tested "
              "directly at the diagnostic stage and returned nothing "
@@ -241,6 +305,9 @@ dict(id="F16", stage=7, chart_type="panel",
              "average for central government marked",
       interaction="hover reads the share and the survey window",
       fallback="entity, share reporting high or moderately high trust",
+      definition="Share of Greeks reporting high or moderately high trust "
+                 "in nine public institutions, 2023, against the OECD "
+                 "average for central government. OECD Trust Survey.",
       # Kept short on the face of the figure. The provenance detail -- which
       # summary figures were never verified, and what obtaining the OECD
       # country table would allow -- is in the research record.
@@ -256,6 +323,9 @@ dict(id="F16", stage=7, chart_type="panel",
              "in percentage points",
       interaction="hover reads both contributions and the underlying rates",
       fallback="age group, within-group contribution, composition contribution",
+      definition="Change in AROPE decomposed into within-age-group rate "
+                 "change and population composition change, by age "
+                 "group, percentage points. EU-SILC.",
       caveat="These are exact decomposition terms, not estimates: they carry "
              "no uncertainty and no interval is drawn. Within-group means the "
              "rate changed inside an age group; composition means the size of "
@@ -270,6 +340,10 @@ dict(id="F16", stage=7, chart_type="panel",
       interaction="hover reads both correlations and the change",
       fallback="measure, between-country correlation, within-country "
                "correlation, change",
+      definition="Each measure's correlation with reported hardship, "
+                 "computed two ways: pooled across all country-years "
+                 "(between) and each country against its own average "
+                 "over time (within).",
       caveat="Correlations identify duplication and sign reversals. They do "
              "NOT select variables, and a reversal is a fact about the two "
              "scopes rather than evidence about mechanism.",
@@ -281,6 +355,9 @@ dict(id="F16", stage=7, chart_type="panel",
       series="two model predictions and the observed Greek value, on one scale",
       interaction="hover reads each value",
       fallback="model, percent of households",
+      definition="Predicted reported-hardship share under two model "
+                 "specifications, against Greece's actual reported "
+                 "hardship, latest year. Percentage points.",
       caveat="Absorption is not explanation.",
       status_label="descriptive corroboration"),
  dict(id="F21", stage=2, chart_type="panel",
@@ -293,6 +370,14 @@ dict(id="F16", stage=7, chart_type="panel",
       interaction="switch view; hover names a country or reads an indicator's "
                   "underlying values",
       fallback="year x share of indicators; indicator x position then and now",
+      # 2008-2024, not 2015-2024: this is the fixed-basket trajectory, which
+      # runs the full window the basket is defined over (BASKET_FIRST to
+      # BASKET_LAST in 46_appendix_data.py), not the report's usual 2015-2024
+      # reporting window.
+      definition="Number of measures on which Greece sits in the worst "
+                 "fifth of EU countries, by year, and which measures those "
+                 "are then and now. EU-SILC and Eurostat national "
+                 "accounts, 2008–2024.",
       # Short by design: the figure states the full version, and printing both
       # gave the reader the same sentence twice.
       caveat="Descriptive summary of the condition, not a predictor of it.",
@@ -376,6 +461,8 @@ for r in df.itertuples():
         problems.append(f"{r.id}: question must be a question")
     if not r.fallback.strip():
         problems.append(f"{r.id}: every interactive figure needs a table fallback")
+    if not r.definition.strip():
+        problems.append(f"{r.id}: every figure needs a reader-facing definition")
     for a in [x.strip() for x in r.artifact.split(",")]:
         if not (PROC / a).exists():
             problems.append(f"{r.id}: artifact {a} does not exist")

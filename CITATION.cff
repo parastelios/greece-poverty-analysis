@@ -9,7 +9,7 @@ abstract: >-
   AROP (7th of 27) — and how much of that gap the available evidence can
   actually account for.
 authors:
-  - given-names: Stelios
+  - name: "Stelios"
 type: software
 repository-code: "https://github.com/parastelios/greece-poverty-analysis"
 url: "https://parastelios.github.io/greece-poverty-analysis/"

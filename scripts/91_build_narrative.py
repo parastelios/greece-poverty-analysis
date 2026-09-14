@@ -663,13 +663,13 @@ official poverty rate register it?</p>
 
 # ---- 4. The Jobs Came Back. The Household Economy Did Not. ----------------
 CH.append(chapter("recovery", "The Jobs Came Back. The Household Economy Did Not.", f"""
-<p>The strongest case for Greece's recovery is the labour market.
+<p>The strongest case for improvement is the labour market.
 Unemployment fell from its crisis peak to under 9%, and <em>long-term
-unemployment</em> fell with it. That is real recovery. But a household does
+unemployment</em> fell with it. Those are real gains. But a household does
 not live on the unemployment rate. It lives on the wage that arrives, the
 prices facing that wage, what it costs to keep a roof over its head, and
-what is left when the month runs out. On that test, Greece's recovery
-looks much less complete.</p>
+what is left when the month runs out. On that test, the household economy
+did not recover.</p>
 
 <p>Start with the part that clearly improved: long-term unemployment,
 meaning worklessness lasting twelve months or more. It stood at 16.4% of
@@ -1216,13 +1216,13 @@ enough.</p>
 <p>Perhaps, then, the problem is not that Greek households failed to
 recognize the recovery. It is that public discourse treated improvements in
 certain indicators as proof of recovery, before living standards, purchasing
-power and the economic security of society had actually been restored. The
-political point that follows is a simple one: we cannot use indicators to
-certify recovery, then shift responsibility onto households&rsquo;
-psychology and choices when their experience tells a different story. This
+power and the economic security of society had actually been restored. This
 closing synthesis is author interpretation rather than a new empirical
 result: it follows directly from what the analysis showed AROP alone
-misses, not from an additional test that itself produced this finding.</p>
+misses, not from an additional test that itself produced this finding. The
+political point that follows is a simple one: we cannot use indicators to
+certify recovery, then shift responsibility onto households&rsquo;
+psychology and choices when their experience tells a different story.</p>
 
 </div>
 """))
@@ -1560,7 +1560,21 @@ _main = ce.apply_glossary(resolve_fig_nums(resolve_refs(BODY)), EN_GLOSS)
 
 PAGE = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>If Greece Has Recovered, Why Do So Many Households Still Struggle?</title>{BASE}
+<title>If Greece Has Recovered, Why Do So Many Households Still Struggle?</title>
+<meta name="description" content="Two in three Greek households say they struggle to make ends meet while the official poverty rate looks far less exceptional. The full narrative behind that gap, told through the evidence.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="If Greece Has Recovered, Why Do So Many Households Still Struggle?">
+<meta property="og:description" content="Two in three Greek households say they struggle to make ends meet while the official poverty rate looks far less exceptional.">
+<meta property="og:url" content="https://parastelios.github.io/greece-poverty-analysis/narrative.html">
+<meta property="og:image" content="https://parastelios.github.io/greece-poverty-analysis/assets/carousel/og-en.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="el_GR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="If Greece Has Recovered, Why Do So Many Households Still Struggle?">
+<meta name="twitter:description" content="Two in three Greek households say they struggle to make ends meet while the official poverty rate looks far less exceptional.">
+<meta name="twitter:image" content="https://parastelios.github.io/greece-poverty-analysis/assets/carousel/og-en.png">{BASE}
 <style>{ce.CSS}
 {ce.TERM_CSS}
 :root{{--gr:var(--series-gr);--eu:var(--series-eu)}}
@@ -1568,8 +1582,8 @@ PAGE = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
 <header class="masthead">
 <p class="rubric">The Greek Poverty Paradox</p>
 <h1>If Greece Has Recovered, Why Do So Many Households Still Struggle?</h1>
-<p class="standfirst">Greece&rsquo;s labour market recovered faster than its
-households. The distance between income poverty and reported hardship shows
+<p class="standfirst">Greece&rsquo;s labour market recovered. Its households did
+not. The distance between income poverty and reported hardship shows
 what the recovery headlines leave out: a moving poverty line, damaged wages,
 pressure on purchasing power and the long shadow of the crisis.</p>
 <div class="stat-pair">

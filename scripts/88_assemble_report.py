@@ -2497,7 +2497,20 @@ details.methods>summary:focus-visible{outline:2px solid var(--series-gr);
 
 PAGE = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>The Greek Poverty Paradox</title>{BASE}
+<title>The Greek Poverty Paradox</title>
+<meta name="description" content="The full technical report: methods, figures, evidence-status labels and limitations behind why Greek households report the EU's highest financial strain.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="The Greek Poverty Paradox — Technical Report">
+<meta property="og:description" content="The full technical report: methods, figures, evidence-status labels and limitations behind why Greek households report the EU's highest financial strain.">
+<meta property="og:url" content="https://parastelios.github.io/greece-poverty-analysis/report.html">
+<meta property="og:image" content="https://parastelios.github.io/greece-poverty-analysis/assets/carousel/og-en.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The Greek Poverty Paradox — Technical Report">
+<meta name="twitter:description" content="The full technical report: methods, figures, evidence-status labels and limitations behind why Greek households report the EU's highest financial strain.">
+<meta name="twitter:image" content="https://parastelios.github.io/greece-poverty-analysis/assets/carousel/og-en.png">{BASE}
 <style>{ce.CSS}
 :root{{--gr:var(--series-gr);--eu:var(--series-eu)}}
 {REPORT_CSS}</style></head><body>

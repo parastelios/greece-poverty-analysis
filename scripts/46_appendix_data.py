@@ -802,10 +802,26 @@ try:
           f"{len(_tall)} country-years with full 16-indicator coverage"
           + (f"; sparse coverage (<50% of years): {_thin}" if _thin else ""))
 
+    # No "fixed_basket" chart kind is implemented client-side -- this reuses
+    # position_ladder (the earliest/latest-year sibling panel just below),
+    # which draws exactly this shape (one row per indicator, hollow dot at
+    # the first position, solid dot at the last, shaded worst-fifth band).
+    # Field names differ from `fixed`'s own (pct_2008/pct_2024, etc., which
+    # the CSV export and F21/verify_figures.py depend on unchanged), so the
+    # panel gets its own remapped row list rather than reusing `fixed`
+    # directly.
+    ladder_rows = [dict(key=r["key"], label=r["label"], unit=r["unit"],
+                         worse_high=r["worse_high"],
+                         year_first=BASKET_FIRST, pct_first=r["pct_2008"],
+                         val_first=r["val_2008"],
+                         year_last=BASKET_LAST, pct_last=r["pct_2024"],
+                         val_last=r["val_2024"],
+                         eu_last=None, eu_pct=None)
+                    for r in fixed]
     PANELS["breadth_fixed_basket"] = dict(
         label=f"The same {len(fixed)} indicators in {BASKET_FIRST} and {BASKET_LAST}",
         group="Poverty measures", unit="position in the EU distribution",
-        kind="fixed_basket", rows=fixed,
+        kind="position_ladder", rows=ladder_rows,
         counts=dict(total=len(fixed), worst_2008=n_2008, worst_2024=n_2024,
                     already=counts["already"], entered=counts["entered"],
                     left=counts["left"], outside=counts["outside"]),
