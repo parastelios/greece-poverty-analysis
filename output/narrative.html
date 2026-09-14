@@ -491,6 +491,16 @@ details.ctx-detail summary{cursor:pointer;font:600 .78rem/1
   color:var(--text-secondary);padding:.2rem 0}
 details.ctx-detail[open] summary{margin-bottom:.4rem}
 details.ctx-detail .permitted{margin-top:0}
+.ctx-collapse{padding:.7rem 1.2rem}
+.ctx-collapse summary{cursor:pointer;list-style:none;display:flex;
+  flex-wrap:wrap;align-items:baseline;gap:.5rem;padding:.3rem 0}
+.ctx-collapse summary::-webkit-details-marker{display:none}
+.ctx-collapse summary::before{content:"+";color:var(--text-secondary);
+  font-weight:700;width:1em}
+.ctx-collapse details[open] summary::before{content:"−"}
+.ctx-collapse .ctx-status{margin:0}
+.ctx-collapse .ctx-summary-topic{font-size:.92rem;color:var(--text-primary)}
+.ctx-collapse details>p,.ctx-collapse details>div{margin-top:.6rem}
 /* A figure's technical caveat, expandable rather than open in the reading
    path -- the chart, caption and its own number fallback are unaffected.
    The evidence-tier badge (e.g. "pre-planned confirmatory") is report
