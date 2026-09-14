@@ -102,13 +102,9 @@ footer a{color:var(--text-secondary)}
   -webkit-overflow-scrolling:touch;scrollbar-width:none;padding:2px 2px 4px;margin:0;
   list-style:none}
 .carousel-track::-webkit-scrollbar{display:none}
-.carousel-slide{display:flex;flex-direction:column;flex:0 0 76%;scroll-snap-align:start;
-  margin:0;border-radius:14px;overflow:hidden;border:1px solid var(--border);
-  background:var(--surface-1)}
+.carousel-slide{flex:0 0 76%;scroll-snap-align:start;margin:0;border-radius:14px;
+  overflow:hidden;border:1px solid var(--border);background:var(--surface-1)}
 .carousel-slide img{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover}
-.card-note{padding:16px 18px 18px;font-size:17px;line-height:1.55;color:var(--text-secondary)}
-.card-note b{display:block;margin-bottom:6px;color:var(--text-primary)}
-.card-note .lfs{display:block;margin-top:8px;font-style:italic;font-size:15px;color:var(--text-muted)}
 .car-arrow{position:absolute;top:50%;transform:translateY(-50%);width:38px;height:38px;
   border-radius:50%;border:1px solid var(--border);background:var(--surface-1);
   color:var(--text-primary);font-size:18px;line-height:1;cursor:pointer;display:flex;
@@ -179,12 +175,12 @@ footer a{color:var(--text-secondary)}
   <div class="carousel-wrap">
     <div class="carousel" role="region" aria-roledescription="carousel" aria-label="The story in eight cards">
       <ul class="carousel-track" id="car-en" tabindex="0">
-        <li class="carousel-slide"><img src="assets/carousel/en-1.png" width="1080" height="1350" loading="lazy" alt="Recovery is taken as a given. Households disagree. 66.7% of households report economic hardship, the highest share in the EU, while income poverty (AROP) is 19.6%, 7th highest of 27 countries."><div class="card-note"><b>What this measures:</b>Reported hardship: households who say they make ends meet &ldquo;with difficulty&rdquo; or &ldquo;with great difficulty&rdquo; (EU-SILC survey). AROP: income below 60% of the national median equivalised income.</div></li>
-        <li class="carousel-slide"><img src="assets/carousel/en-2.png" width="1080" height="1350" loading="lazy" alt="Reported hardship cannot be dismissed as pessimism alone. Three material-hardship indicators — unexpected expense, heating, basic needs — move together with reported hardship, correlations from 0.87 to 0.94, 2015–2024."><div class="card-note"><b>What this measures:</b>A correlation near 1 means the two series move almost in lockstep over time &mdash; not that one causes the other.</div></li>
+        <li class="carousel-slide"><img src="assets/carousel/en-1.png" width="1080" height="1350" loading="lazy" alt="Recovery is taken as a given. Households disagree. 66.7% of households report economic hardship, the highest share in the EU, while income poverty (AROP) is 19.6%, 7th highest of 27 countries."></li>
+        <li class="carousel-slide"><img src="assets/carousel/en-2.png" width="1080" height="1350" loading="lazy" alt="Reported hardship cannot be dismissed as pessimism alone. Three material-hardship indicators — unexpected expense, heating, basic needs — move together with reported hardship, correlations from 0.87 to 0.94, 2015–2024."></li>
         <li class="carousel-slide"><img src="assets/carousel/en-3.png" width="1080" height="1350" loading="lazy" alt="The bar fell with the country. In 2014, official poverty was 22.1%, but with the 2008 line held fixed it would have reached 40.6% that same year."></li>
-        <li class="carousel-slide"><img src="assets/carousel/en-4.png" width="1080" height="1350" loading="lazy" alt="Employment improved. Economic security did not. From 2015 to 2024, employment improved substantially, real wages fell to 68 out of 100, and housing pressure remains at 28.9%, far above the EU-country median."><div class="card-note"><b>What this measures:</b>Real wages: an inflation-adjusted index against each country&rsquo;s own 2008 level (2008=100). Housing pressure: share of population whose housing costs exceed 40% of disposable income.</div></li>
-        <li class="carousel-slide"><img src="assets/carousel/en-5.png" width="1080" height="1350" loading="lazy" alt="The crisis didn't end when unemployment fell. Greece ranks 1st of 27 EU countries on accumulated unemployment, 2nd on years of wages below 2008, and 1st on housing-cost deterioration, 2009–2024."><div class="card-note"><b>What this measures:</b>Accumulated unemployment: the sum, from 2009 onward, of each year&rsquo;s excess above that country&rsquo;s own 2009 unemployment level.<span class="lfs">Harmonized, retrospectively corrected EU-LFS series, 2009&ndash;2024.</span></div></li>
-        <li class="carousel-slide"><img src="assets/carousel/en-6.png" width="1080" height="1350" loading="lazy" alt="The model doesn't settle everything. Greece's rank on the unexplained remainder moves from 3rd to 25th of 27 countries, depending on one reasonable modelling choice."><div class="card-note"><b>What this measures:</b>Residual = actual minus predicted hardship, in percentage points.</div></li>
+        <li class="carousel-slide"><img src="assets/carousel/en-4.png" width="1080" height="1350" loading="lazy" alt="Employment improved. Economic security did not. From 2015 to 2024, employment improved substantially, real wages fell to 68 out of 100, and housing pressure remains at 28.9%, far above the EU-country median."></li>
+        <li class="carousel-slide"><img src="assets/carousel/en-5.png" width="1080" height="1350" loading="lazy" alt="The crisis didn't end when unemployment fell. Greece ranks 1st of 27 EU countries on accumulated unemployment, 2nd on years of wages below 2008, and 1st on housing-cost deterioration, 2009–2024."></li>
+        <li class="carousel-slide"><img src="assets/carousel/en-6.png" width="1080" height="1350" loading="lazy" alt="The model doesn't settle everything. Greece's rank on the unexplained remainder moves from 3rd to 25th of 27 countries, depending on one reasonable modelling choice."></li>
         <li class="carousel-slide"><img src="assets/carousel/en-7.png" width="1080" height="1350" loading="lazy" alt="The unexplained remainder is not evidence of “pessimism.” Taxation, wealth, trust, health and migration remain possible factors, not proven causes."></li>
         <li class="carousel-slide"><img src="assets/carousel/en-8.png" width="1080" height="1350" loading="lazy" alt="Some indicators improved. Society did not recover with them. We cannot certify recovery with indicators, then shift the blame onto households' psychology when their experience disagrees."></li>
       </ul>
