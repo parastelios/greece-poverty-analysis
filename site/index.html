@@ -49,6 +49,7 @@ h1{font-size:46px;line-height:1.1;letter-spacing:-0.02em;margin:0 0 18px;text-wr
 h2{font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
   color:var(--text-muted);margin:48px 0 16px}
 .cards{display:grid;gap:14px}
+.cta-row{margin:28px 0 0}
 .cards-secondary{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
 .cards-secondary .card{padding:16px 18px}
 .cards-secondary .card h3{font-size:16px}
@@ -119,7 +120,6 @@ footer a{color:var(--text-secondary)}
 .carousel-dots button.active{background:var(--gr);width:18px;border-radius:4px;
   transition:width .2s ease}
 .carousel-count{font-size:12px;color:var(--text-muted);font-variant-numeric:tabular-nums}
-.carousel-cta{margin:18px 0 0}
 @media(max-width:680px){
   h1{font-size:34px}
   .stat-row{grid-template-columns:1fr;gap:10px}
@@ -170,6 +170,8 @@ footer a{color:var(--text-secondary)}
     <a class="rq-link" href="https://github.com/parastelios/greece-poverty-analysis/blob/main/docs/project_description.md">How the research was done and where its limits are →</a>
   </div>
 
+  <p class="cta-row"><a class="cta" href="narrative.html">Read the full story →</a></p>
+
   <h2>The story in eight cards</h2>
   <div class="carousel-wrap">
     <div class="carousel" role="region" aria-roledescription="carousel" aria-label="The story in eight cards">
@@ -191,7 +193,6 @@ footer a{color:var(--text-secondary)}
       <p class="carousel-count" data-count-for="car-en" aria-live="polite">1 / 8</p>
     </div>
   </div>
-  <p class="carousel-cta"><a class="cta" href="narrative.html">Read the full story →</a></p>
 
   <p class="note"><b>What the analysis finds.</b> Reported hardship cannot be dismissed as pessimism alone. It moves with specific material difficulties and with broader pressures involving wages, purchasing power, unemployment and housing.<br><br>No single factor, however, robustly explains the full 52.6-percentage-point average gap. The results show associations between countries, not that any one factor causes hardship within individual households.</p>
 
