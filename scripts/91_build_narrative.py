@@ -787,6 +787,15 @@ costs have deteriorated since 2010.</p>
 
 {fig('F11', caption="Greece Had Among Europe&rsquo;s Largest Accumulated Burdens")}
 
+<details class="fig-methods"><summary>A note on the 2021 unemployment-methodology revision</summary>
+<p class="fig-caveat">In 2021, an EU-wide regulation (2019/1700) harmonized how
+every member state's Labour Force Survey measures unemployment. Greece's
+statistical authority, like every other member state's, retroactively
+revised its series back through 2009 for comparability &mdash; the revised
+figures are higher than the pre-revision ones, not lower. This project uses
+that single, harmonized series throughout, so the accumulated-unemployment
+measure above carries no discontinuity from the change.</p></details>
+
 <p><a class="fig-jump" href="#F11">Figure {{fig:F11}}</a> is the balance
 sheet the crisis left behind. Greece
 carries the heaviest accumulated unemployment burden in the EU, and the

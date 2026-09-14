@@ -127,6 +127,45 @@ lowest in 2003-2006 (see above).
   roughly a decade**, not literal permanent accumulation since one fixed
   year. Full accounting in `docs/archive/pre-v2-publication/publication_strategy.md`.
 
+## Unemployment rate — 2021 EU-wide methodology harmonization (Regulation 2019/1700)
+
+- **What changed, and why.** EU Regulation 2019/1700 (the Integrated European
+  Social Statistics framework regulation) mandated a harmonized Labour Force
+  Survey methodology across all EU member states from reference year 2021
+  onward (revised definitions of employment status and active job search,
+  among other changes). This is an EU-wide regulatory requirement, not a
+  Greece-specific or politically directed change — every member state's LFS
+  series was affected, and ELSTAT implemented it because it was legally
+  required to, on the same timeline as every other national statistical
+  institute in the EU.
+- **Retroactive revision, not a splice.** Rather than leave a methodological
+  break at the 2020/2021 boundary, ELSTAT and Eurostat retroactively revised
+  the Greek LFS series back through 2009 under the new, harmonized
+  definitions, so the published `une_rt_a` series (the one this project
+  uses — see "Labour market series" above) is a single continuous,
+  harmonized vintage from 2009 onward, not a legacy series spliced onto a
+  revised one at 2021. Sources: ELSTAT's own methodological note
+  ([statistics.gr](https://www.statistics.gr/documents/20181/f32fb3c5-abf9-6380-5ef0-c3fffeb02e3e))
+  and Eurostat's correction-methodology documentation
+  ([Statistics Explained cache PDF](https://ec.europa.eu/eurostat/statistics-explained/SEPDF/cache/94764.pdf)).
+- **Direction of the revision.** The harmonized series reports HIGHER
+  historical Greek unemployment than the pre-2021 vintage did, not lower —
+  confirmed directly against this project's own `data/raw/panel_unemployment_history.csv`
+  (`geo=EL`): 2013 = 27.8% (harmonized) vs. 27.5% (pre-revision); 2020 =
+  17.6% (harmonized) vs. 16.3% (pre-revision). Both project values match the
+  harmonized figures exactly, confirming the pipeline pulls the current,
+  corrected `une_rt_a` vintage throughout, not a mix of vintages.
+- **Effect on this project's cumulative-unemployment construct.** Card 5 of
+  the carousel and `38_cumulative_hardship.py`'s `cum_excess_unemployment`
+  sum, for each country, every year's excess unemployment over that
+  country's own 2009 level (`UNEMP_BASE_YEAR = 2009`). Because the
+  harmonized series runs continuously from 2009 with no vintage change
+  partway through, this accumulation carries **no internal discontinuity**
+  from the 2021 correction — the 2009 baseline and every subsequent year it
+  is compared against are drawn from the same harmonized vintage. See
+  `docs/v2_research_record.md`, entry X-06, for the full check that
+  established this.
+
 ## Pre-EU-SILC data
 
 - The European Community Household Panel (ECHP, pre-2003) was **not** merged into
