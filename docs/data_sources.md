@@ -94,6 +94,7 @@ corroboration — none are merged into any model or panel.
 - **Mantés & Marinakis / Greekonomics.gr** (2025 report, MIT-licensed companion code at `github.com/AMantes/Greekonomics`): "Bottom-10" comparator income/housing/healthcare figures.
 - **Greece in Figures** (`greeceinfigures.com`): independently-reported AROPE/subjective-poverty headline figures, matched against this project's own Eurostat pull.
 - **Andriopoulou, Kanavitsa & Tsakloglou** (2019/2020): microdata-based anchored-poverty comparison — full citation in report Methods.
+- **Ipsos / Secours Populaire Français** (2026, 20th "Baromètre de la pauvreté et de la précarité"): 10-country self-report survey, cross-national corroboration for the subjective-hardship finding — full citation in paper §3.2/References; not incorporated as evidence, logged as external claims check X-02 and context entry CTX-11.
 - **Gourinchas, Philippon & Vayanos** (2016, VoxEU/CEPR): "compound crisis" framing for the recovery-trajectory section.
 - **European Stability Mechanism** explainer: domestic drivers of the Greek crisis (cheap euro-era borrowing, weak tax administration, 2009 data-misreporting revelation).
 - **OECD** (2026, "A Review of Greek Emigrants" / "Talent Abroad"): return-migration flow numbers and age/education profile of returnees (census-based — not this project's own Eurostat flow data).

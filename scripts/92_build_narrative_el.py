@@ -609,7 +609,8 @@ CH.append(chapter("paradox", "Πραγματική δυσκολία ή ελλη�
     'Ipsos για τον Secours Populaire Français, «Baromètre de la pauvreté '
     'et de la précarité», 20ή έκδοση (Ιούνιος 2026), ευρωπαϊκό σκέλος. '
     '<a href="https://www.secourspopulaire.fr/app/uploads/2026/09/'
-    'barometre-ipsos-pauvrete-et-precarite-20e-edition-2026.pdf">πηγή</a>')}
+    'barometre-ipsos-pauvrete-et-precarite-20e-edition-2026.pdf">πηγή</a>',
+    collapse=True)}
 
 <details class="fig-methods"><summary>Γιατί το γράφημα ξεκινά από το 2015</summary>
 <p class="fig-caveat">Όχι επειδή λείπουν παλαιότερα δεδομένα, αλλά επειδή

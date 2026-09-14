@@ -426,7 +426,7 @@ different question, a different scale and a different population from the
 EU-SILC figures above, so the two numbers cannot be read together directly.
 But it is independent evidence that Greek self-reported financial distress
 sits at an extreme among its peers, echoing without reproducing this
-project's own finding.</p>''')}
+project's own finding.</p>''', expand=True)}
 
 <details class="fig-methods"><summary>Why the chart starts in 2015</summary>
 <p class="fig-caveat">Not because Eurostat's data is that young: it's where
