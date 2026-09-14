@@ -1601,8 +1601,8 @@ PAGE = f"""<!doctype html><html lang="en"><head><meta charset="utf-8">
 <header class="masthead">
 <p class="rubric">The Greek Poverty Paradox</p>
 <h1>If Greece Has Recovered, Why Do So Many Households Still Struggle?</h1>
-<p class="standfirst">Greece&rsquo;s labour market improved. Its households did
-not recover. The distance between income poverty and reported hardship shows
+<p class="standfirst">Greece&rsquo;s labour market recovered. Its households did
+not. The distance between income poverty and reported hardship shows
 what the recovery headlines leave out: a moving poverty line, damaged wages,
 pressure on purchasing power and the long shadow of the crisis.</p>
 <div class="stat-pair">
