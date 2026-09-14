@@ -274,7 +274,7 @@ def recovery_table():
             f"</tr></thead><tbody>{rows}</tbody></table></div>")
 
 
-def context(cid, prose, expand=False):
+def context(cid, prose, expand=False, collapse=False):
     """EXPAND, when true, tucks the permitted/forbidden/citation block into a
     collapsed <details> instead of showing it inline. The anchor and the full
     text are still present -- context_completeness() reads DOM text, not
@@ -282,6 +282,12 @@ def context(cid, prose, expand=False):
     required to be there. Used where the section's own closing beat needs to
     land right after the topic sentence rather than after a full caveat
     block; everywhere else the full block stays inline, as before.
+
+    COLLAPSE, when true, tucks the whole entry -- topic, prose and the
+    permitted/limitation/citation trailer -- behind a <summary> naming the
+    status and topic, for entries (external corroborating sources) that are
+    worth linking to but would otherwise crowd the reading flow. Mirrors
+    context_el's own `collapse` in the Greek narrative.
     """
     e = ctx.loc[cid]
     cite = ""
@@ -295,6 +301,13 @@ def context(cid, prose, expand=False):
             f"{html.escape(reader_text(e.forbidden))}</p>{cite}")
     if expand:
         body = f'<details class="ctx-detail"><summary>The full caveat</summary>{body}</details>'
+    if collapse:
+        return (f'<div class="ctx ctx-collapse" data-context-id="{cid}">'
+                f'<details><summary><span class="ctx-status">'
+                f'{html.escape(str(e.status))}</span>'
+                f'<span class="ctx-summary-topic">'
+                f'{html.escape(str(e.topic))}</span></summary>'
+                f"{prose}{body}</details></div>")
     return (f'<div class="ctx" data-context-id="{cid}">'
             f'<p class="ctx-status">{html.escape(str(e.status))}</p>'
             f"<h4>{html.escape(str(e.topic))}</h4>{prose}{body}</div>")
@@ -393,6 +406,13 @@ or &ldquo;with great difficulty&rdquo; count as struggling.</p>
 
 {fig('F1', caption="Greece Is Far Above the Poverty-Hardship Line")}
 
+<details class="fig-methods"><summary>Why the chart starts in 2015</summary>
+<p class="fig-caveat">Not because Eurostat's data is that young: it's where
+Greece's own hardship gap is clearest. The indicator can be reconstructed
+back past 2010 too, and this project checked that reconstruction against
+the official series everywhere the two overlap, but nothing later in this
+piece relies on it.</p></details>
+
 <p><a class="fig-jump" href="#F1" data-view="0">Figure {{fig:F1}}'s first
 tab</a>, &ldquo;How Greece's hardship gap developed&rdquo;, puts those two
 measures side by side and shows why the paradox holds. Since 2015, Greece's
@@ -426,14 +446,7 @@ different question, a different scale and a different population from the
 EU-SILC figures above, so the two numbers cannot be read together directly.
 But it is independent evidence that Greek self-reported financial distress
 sits at an extreme among its peers, echoing without reproducing this
-project's own finding.</p>''', expand=True)}
-
-<details class="fig-methods"><summary>Why the chart starts in 2015</summary>
-<p class="fig-caveat">Not because Eurostat's data is that young: it's where
-Greece's own hardship gap is clearest. The indicator can be reconstructed
-back past 2010 too, and this project checked that reconstruction against
-the official series everywhere the two overlap, but nothing later in this
-piece relies on it.</p></details>
+project's own finding.</p>''', collapse=True)}
 
 {finding('V2-1.1')}
 
