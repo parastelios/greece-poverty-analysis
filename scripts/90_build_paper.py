@@ -697,6 +697,15 @@ material and social deprivation.</p>
 
 {claim('V2-3.1')}
 
+{context('CTX-12', '''
+<p>An independent survey reaches a finding of the same shape. The Hellenic
+Gaming Commission (ΕΕΕΠ) reports problem-gambling behaviour among 9% of
+adults describing their financial situation as difficult, against 2% of
+those describing it as comfortable. The instrument and population differ
+from the EU-SILC items above, but the result is independent corroboration
+that self-reported financial strain moves with a concrete, externally
+observed behaviour.</p>''')}
+
 <p>We report the within-country correlations because between-country
 correlation is weak evidence here: richer countries score better on essentially
 every welfare indicator, so almost any pair correlates across countries without

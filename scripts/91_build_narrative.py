@@ -582,6 +582,15 @@ poor ones, the same relationships hold, at 0.63 to 0.80.</p>
 
 {finding('V2-3.1')}
 
+{context('CTX-12', '''
+<p>An independent Greek survey finds a related behavioural pattern.
+ΕΕΕΠ, the gambling regulator, reports that 9% of adults describing
+their financial situation as difficult show problem-gambling
+behaviour, against 2% of those describing it as comfortable &mdash; a
+different population and a different instrument from the EU-SILC
+items above, pointing the same way: self-reported financial strain
+moving with a concrete, externally observed behaviour.</p>''', collapse=True)}
+
 <p>The fourth tab (<a class="fig-jump" href="#F8" data-view="3">Falling
 behind on bills</a>) tells a
 different story, and it's worth sitting with why.

@@ -1028,6 +1028,15 @@ appendix.</p>
 
 {claim('V2-3.1')}
 
+{context('CTX-12', '''
+<p>An independent Greek survey finds a related behavioural pattern.
+ΕΕΕΠ, the gambling regulator, reports that 9% of adults describing
+their financial situation as difficult show problem-gambling
+behaviour, against 2% of those describing it as comfortable &mdash; a
+different population and a different instrument from the EU-SILC
+items above, pointing the same way: self-reported financial strain
+moving with a concrete, externally observed behaviour.</p>''')}
+
 <p>The limits on that finding carry real weight. A household in a difficult
 position may answer the whole battery downbeat, and that alone would generate
 correlations of this size without any item independently confirming another.

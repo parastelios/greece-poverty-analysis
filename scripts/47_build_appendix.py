@@ -2196,6 +2196,18 @@ taken from the article. No public microdata was released. No test was run
 by this project linking the survey's self-rated precarity measure to
 EU-SILC subjective hardship, and the survey's own "European average" is
 not a Eurostat EU-27 aggregate.</p>''',
+    "CTX-12": '''
+<p>ΕΕΕΠ (Hellenic Gaming Commission), 2025 gambling participation
+survey, conducted by Pulse RC, n=2,001 adults, CATI/CASI/CAWI, early
+2025, external to this project. Raised via a news article and a
+reader-supplied follow-up analysis; the headline figures (54.5%
+participation, 2.6% high-risk on the Problem Gambling Severity Index,
+9% problem-gambling behaviour among those reporting a difficult
+financial situation vs. 2% among those reporting a comfortable one)
+were traced to the ΕΕΕΠ survey page and reproduce. No test was run by
+this project linking problem-gambling risk to reported hardship, and
+the 9%/2% split cannot establish which way, if either, causation
+runs.</p>''',
 }
 _missing_ctx_prose = [cid for cid in ctx.index if cid not in _CTX_APPENDIX_PROSE]
 if _missing_ctx_prose:
@@ -2209,7 +2221,7 @@ if _missing_ctx_prose:
 # with Stage 8's conclusion; the rest are Stage 7's "what this is not".
 CTX_STAGE = {"CTX-1": 7, "CTX-2": 7, "CTX-3": 7, "CTX-3B": 2, "CTX-4": 7,
              "CTX-5": 7, "CTX-6": 8, "CTX-7": 7, "CTX-8": 4, "CTX-9": 7,
-             "CTX-10": 7, "CTX-11": 1}
+             "CTX-10": 7, "CTX-11": 1, "CTX-12": 3}
 _unmapped_ctx = [cid for cid in ctx.index if cid not in CTX_STAGE]
 if _unmapped_ctx:
     raise SystemExit(f"context entries with no stage: {_unmapped_ctx}")

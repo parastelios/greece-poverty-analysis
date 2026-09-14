@@ -505,6 +505,74 @@ ENTRIES = [
                         "'Précaire' category share for Greece and its "
                         "ten-country average.",
     },
+    {
+        # Raised via a news article (greekonomics.gr) on Greece's gambling
+        # industry, plus a reader-supplied follow-up analysis checking its
+        # figures against ΕΕΕΠ and H2 Gambling Capital directly. Logged as
+        # external claims check X-03 in the research record before being
+        # added here as corroboration for V2-3.1.
+        "id": "CTX-12", "topic": "Independent survey corroboration "
+                                 "(ΕΕΕΠ problem gambling by financial "
+                                 "situation)",
+        "status": "descriptive corroboration",
+        "permitted": "An independent Greek survey, unconnected to EU-SILC, "
+                     "finds problem-gambling behaviour reported by 9% of "
+                     "adults describing their own financial situation as "
+                     "difficult, against 2% of those describing it as "
+                     "comfortable -- a roughly 4.5x gradient. This is a "
+                     "different population, survey instrument and "
+                     "institution from this project's own EU-SILC-based "
+                     "material-difficulty items, and it points the same "
+                     "way this project's own finding does: self-reported "
+                     "financial hardship co-moves with a concrete, "
+                     "externally observable behavioural correlate.",
+        "forbidden": "Treating this as evidence toward the CAUSE of the "
+                     "52.6-point gap, or as a test this project ran: it "
+                     "was never checked against any model here, and "
+                     "problem-gambling risk was never a candidate "
+                     "construct in this project's own confirmatory tests. "
+                     "Treating the 9%/2% split as causal in either "
+                     "direction: financial strain could drive gambling "
+                     "risk, gambling losses could worsen financial strain, "
+                     "or a third factor such as debt or unemployment could "
+                     "drive both, and this survey cannot distinguish them. "
+                     "Reading Greece's gambling-revenue figures (GGR, "
+                     "GGR/GDP) as evidence of household prosperity: GGR is "
+                     "industry revenue from aggregate player losses before "
+                     "costs and tax, not disposable income, and Greece's "
+                     "high GGR/GDP ratio is inflated by its comparatively "
+                     "small GDP. Treating the 16-country H2 Gambling "
+                     "Capital comparison as a complete EU ranking: it "
+                     "omits 11 of the 27 EU states.",
+        "relates_to_claim": "V2-3.1",
+        "evidence": "ΕΕΕΠ (Hellenic Gaming Commission) 2025 participation "
+                    "survey, conducted by Pulse RC; not this project's own "
+                    "panel, not EU-SILC",
+        "detect": "problem.gambling|Gaming Severity Index|PGSI|"
+                  "9%.*2%.*financial|ΕΕΕΠ.*τζόγο|προβληματικ.*τζόγο",
+        "source": "ΕΕΕΠ (Hellenic Gaming Commission), 2025 gambling "
+                  "participation survey, conducted by Pulse RC.",
+        "source_url": "https://hgc.gov.gr/%CF%84%CE%BF-%CE%AD%CF%81%CE%B3%CE%BF-%CE%BC%CE%B1%CF%82/%CE%AD%CF%81%CE%B5%CF%85%CE%BD%CE%B5%CF%82-%CE%BC%CE%B5%CE%BB%CE%AD%CF%84%CE%B5%CF%82/",
+        "source_detail": "n=2,001 adults, CATI/CASI/CAWI, early 2025. "
+                         "54.5% of Greek adults played some game of "
+                         "chance; 2.6% of the whole adult population "
+                         "scored high-risk on the Problem Gambling "
+                         "Severity Index; problem-gambling behaviour was "
+                         "reported by 9% of those describing their "
+                         "financial situation as difficult, against 2% of "
+                         "those describing it as comfortable.",
+        "source_status": "verified", "review_date": "2026-09-14",
+        "verified_how": "fetched the ΕΕΕΠ survey page directly and "
+                        "confirmed all three headline figures (54.5% "
+                        "participation, 2.6% high-risk PGSI, 9% vs. 2% by "
+                        "self-reported financial situation) along with "
+                        "the sample size and method; the wider "
+                        "gambling-revenue figures (GGR by year, GGR/GDP, "
+                        "GGR per adult) were checked against the reader's "
+                        "own cited sources (ΕΕΕΠ performance reports, "
+                        "OPAP's reproduction of the H2 Gambling Capital "
+                        "comparative table) and reproduce.",
+    },
 ]
 
 PLACEMENT = {

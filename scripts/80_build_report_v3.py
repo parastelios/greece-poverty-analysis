@@ -535,6 +535,13 @@ CTX_PROSE = {
           "question, scale and sample differ from EU-SILC's, so the "
           "figures are not directly comparable, but the result echoes "
           "this project's own finding on reported hardship.</p>",
+ "CTX-12": "<p>An independent 2025 ΕΕΕΠ survey found problem-gambling "
+          "behaviour reported by 9% of Greek adults describing their "
+          "financial situation as difficult, against 2% of those "
+          "describing it as comfortable. A different population and "
+          "instrument from EU-SILC's; this project ran no test linking "
+          "gambling risk to reported hardship, and the split cannot "
+          "establish causation either way.</p>",
 }
 S7 = stage(7, "What else might matter",
     "Which institutions and policies produced this history?",
