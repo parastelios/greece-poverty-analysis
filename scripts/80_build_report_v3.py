@@ -528,6 +528,13 @@ CTX_PROSE = {
           "the third-highest share in the EU (behind Bulgaria and Latvia), "
           "against an EU average of about 14.9%. This project ran no test "
           "linking out-of-pocket health spending to reported hardship.</p>",
+ "CTX-11": "<p>An independent 2026 Ipsos survey for Secours Populaire "
+          "Français found 44% of Greek respondents rated their financial "
+          "situation &ldquo;pr&eacute;caire&rdquo;, against a 29% "
+          "ten-country average, second-worst behind only Moldova. The "
+          "question, scale and sample differ from EU-SILC's, so the "
+          "figures are not directly comparable, but the result echoes "
+          "this project's own finding on reported hardship.</p>",
 }
 S7 = stage(7, "What else might matter",
     "Which institutions and policies produced this history?",

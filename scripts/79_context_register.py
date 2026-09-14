@@ -442,6 +442,69 @@ ENTRIES = [
                         "re-verified to the decimal against the raw SDMX "
                         "table.",
     },
+    {
+        # Raised via a news article (parallaximag.gr) covering the 20th
+        # Ipsos/Secours Populaire poverty barometer. Traced past the article
+        # to the primary 97-page PDF report rather than taken from the
+        # write-up; logged as external claims check X-02 in the research
+        # record before being added here as corroboration for V2-1.2.
+        "id": "CTX-11", "topic": "Independent survey corroboration "
+                                 "(Ipsos/Secours Populaire barometer)",
+        "status": "descriptive corroboration",
+        "permitted": "An independent, differently designed international "
+                     "survey reaches a finding of the same shape. On "
+                     "self-rated financial precarity, Greek respondents "
+                     "rank second-worst of the 10 countries surveyed (44% "
+                     "describe their situation as 'précaire', against a "
+                     "29% ten-country average), behind only Moldova. This "
+                     "is a different measurement from this project's own "
+                     "EU-SILC subjective-hardship item, but it is "
+                     "independent, consistent corroboration that Greek "
+                     "self-reported financial distress sits at an extreme "
+                     "relative to peer countries -- echoing, without "
+                     "reproducing, this project's own finding that Greece "
+                     "ranks first of 27 EU states on reported hardship.",
+        "forbidden": "Treating the survey's 44%/29% figures as equivalent "
+                     "to, substitutable for, or evidence toward this "
+                     "project's own 66.7%/17.1% EU-SILC subjective-hardship "
+                     "figures: they come from a different question, a "
+                     "different scale, and a different population. Reading "
+                     "the survey's 'European average' as a Eurostat EU-27 "
+                     "aggregate: it is an unweighted mean across 10 "
+                     "national panels of 1,000 each, three of which (UK, "
+                     "Moldova, Serbia) are not EU member states. Treating "
+                     "a quota-sampled online-panel survey as "
+                     "methodologically equivalent to EU-SILC's probability "
+                     "sample. Using this as evidence toward the cause of "
+                     "the 52.6-point gap: the survey measures perception "
+                     "only and was never checked against any model here.",
+        "relates_to_claim": "V2-1.2",
+        "evidence": "Ipsos/Secours Populaire omnibus perception survey; "
+                    "not this project's own panel, not EU-SILC",
+        "detect": "Secours Populaire|Ipsos.*[Bb]aromètre|44%.*Moldov|"
+                  "b?aromètre de la pauvreté",
+        "source": "Ipsos for Secours Populaire Français, \"Baromètre de "
+                  "la pauvreté et de la précarité\", 20th edition (June "
+                  "2026), European section.",
+        "source_url": "https://www.secourspopulaire.fr/app/uploads/2026/09/barometre-ipsos-pauvrete-et-precarite-20e-edition-2026.pdf",
+        "source_detail": "10,000 respondents, 1,000 per country across 10 "
+                         "countries (France, Germany, Greece, Italy, "
+                         "Poland, UK, Moldova, Portugal, Romania, Serbia), "
+                         "Ipsos online access panel, quota sampling on "
+                         "sex/age/occupation/region/agglomeration, "
+                         "fieldwork 6 May-9 June 2026. Greece: 44% "
+                         "'précaire' vs. 29% ten-country average; no "
+                         "public microdata released, only the aggregated "
+                         "PDF report.",
+        "source_status": "verified", "review_date": "2026-09-14",
+        "verified_how": "read the primary PDF report directly (not the "
+                        "news write-up): confirmed the methodology section "
+                        "(sample sizes, country list, fieldwork dates, "
+                        "quota variables, ISO 20252 compliance) and traced "
+                        "the article's 44%/29% figures to the report's own "
+                        "'Précaire' category share for Greece and its "
+                        "ten-country average.",
+    },
 ]
 
 PLACEMENT = {

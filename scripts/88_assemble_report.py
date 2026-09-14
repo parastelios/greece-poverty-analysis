@@ -645,6 +645,18 @@ called agreement. This is the finding the rest of the report is about.</p>
 
 {claim('V2-1.2')}
 
+{context('CTX-11', '''
+<p>An independent international survey points the same way. Ipsos's 2026
+barometer for the French charity Secours Populaire asked 10,000 people
+across 10 countries to rate their own financial situation: 44% of Greek
+respondents called it &ldquo;précaire&rdquo;, against a ten-country average
+of 29% &mdash; second-worst of the ten, behind only Moldova. It is a
+different question, a different scale and a different population from the
+EU-SILC figures above, so the two numbers cannot be read together directly.
+But it is independent evidence that Greek self-reported financial distress
+sits at an extreme among its peers, echoing without reproducing this
+project's own finding.</p>''')}
+
 <p>It is worth pausing on what a gap of this size means. Roughly one Greek
 person in five is counted as at risk of poverty. Roughly two in three households report
 difficulty making ends meet. These are not two estimates of the same quantity

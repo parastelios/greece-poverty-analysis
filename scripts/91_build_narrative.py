@@ -416,6 +416,18 @@ piece tries to understand.</p>
 
 {finding('V2-1.2')}
 
+{context('CTX-11', '''
+<p>An independent international survey points the same way. Ipsos's 2026
+barometer for the French charity Secours Populaire asked 10,000 people
+across 10 countries to rate their own financial situation: 44% of Greek
+respondents called it &ldquo;précaire&rdquo;, against a ten-country average
+of 29% &mdash; second-worst of the ten, behind only Moldova. It is a
+different question, a different scale and a different population from the
+EU-SILC figures above, so the two numbers cannot be read together directly.
+But it is independent evidence that Greek self-reported financial distress
+sits at an extreme among its peers, echoing without reproducing this
+project's own finding.</p>''')}
+
 <details class="fig-methods"><summary>Why the chart starts in 2015</summary>
 <p class="fig-caveat">Not because Eurostat's data is that young: it's where
 Greece's own hardship gap is clearest. The indicator can be reconstructed

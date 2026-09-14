@@ -543,6 +543,17 @@ never approaches agreement.</p>
 
 {claim('V2-1.2')}
 
+{context('CTX-11', '''
+<p>An independent survey reaches a finding of the same shape. Ipsos's 2026
+barometer for Secours Populaire Français asked 10,000 respondents across
+10 countries to self-rate their financial situation; 44% of Greek
+respondents rated it "précaire", against a ten-country average of 29%,
+second-worst of the ten behind only Moldova. The instrument differs from
+EU-SILC's in question, scale and sampled population, so the two figures are
+not directly comparable, but the result is independent corroboration that
+Greek self-reported financial distress is extreme relative to peer
+countries.</p>''')}
+
 <p>Ranking first is not by itself informative, since some country must. The
 relevant question is whether Greece lies at the end of a smooth distribution,
 in which case it is the extreme case of an ordinary pattern, or is separated
