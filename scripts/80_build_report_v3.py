@@ -542,6 +542,13 @@ CTX_PROSE = {
           "instrument from EU-SILC's; this project ran no test linking "
           "gambling risk to reported hardship, and the split cannot "
           "establish causation either way.</p>",
+ "CTX-13": "<p>EU-OSHA's 2025 OSH Pulse survey found Greek workers "
+          "reporting the highest rate of work-related stress, "
+          "depression or anxiety of 30 countries surveyed (49%, "
+          "against an EU27 average of 29%). Workplace stress is "
+          "itself a self-report measure, so this cannot settle "
+          "whether Greece's extreme financial-hardship reports "
+          "reflect circumstance, reporting style, or both.</p>",
 }
 S7 = stage(7, "What else might matter",
     "Which institutions and policies produced this history?",

@@ -1796,6 +1796,16 @@ alongside genuine financial difficulty. Both could be true at once, and this
 design cannot separate them.</p>
 ''')}
 
+{context('CTX-13', '''
+<p>A third, independent survey extends this pattern further. In EU-OSHA's
+2025 survey of employed workers across 30 European countries, Greek
+workers report the highest rate of work-related stress, depression or
+anxiety of any country surveyed, 49%, against a 29% average across the
+EU's 27 states. It does not resolve the question above; if anything, a
+third domain reporting the same kind of extreme deserves the same
+caution. But it is one more independent instrument in which Greece sits
+at the far end.</p>''')}
+
 <h3>A separately labelled descriptive extension</h3>
 
 <p>The Eurostat series used everywhere else in this report begins in 2013, at

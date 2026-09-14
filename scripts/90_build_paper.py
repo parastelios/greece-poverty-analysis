@@ -960,6 +960,14 @@ indicators sit at the extreme of the European distribution while its
 general-wellbeing indicator sits close to it, and that difference in degree is
 what the comparison shows.</p>''')}
 
+{context('CTX-13', '''
+<p>A third, independent EU-wide survey extends the cross-domain pattern
+further. On work-related stress, depression or anxiety, Greek workers
+report the highest rate of any of the 30 countries surveyed, 49%, against
+an EU27 average of 29%, a different subject, a different institution and
+a different instrument from both this project's own reporting-style
+comparison and the financial-hardship measure itself.</p>''')}
+
 <p>Two features of this test limit what it can deliver. A domain-specific
 pattern is consistent with genuine financial difficulty, and equally consistent
 with genuine financial difficulty accompanied by a general negative tendency;

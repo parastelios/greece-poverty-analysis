@@ -573,6 +573,75 @@ ENTRIES = [
                         "OPAP's reproduction of the H2 Gambling Capital "
                         "comparative table) and reproduce.",
     },
+    {
+        # Raised via a Facebook post (EESC) on EU-wide work-related mental
+        # health, which named no Greek figure. Traced to EU-OSHA's own full
+        # OSH Pulse 2025 report and its country-by-country table rather
+        # than the post, the EU-OSHA highlights page, or an infographic --
+        # none of which carry a country breakdown. Logged as external
+        # claims check X-04 in the research record before being added here
+        # alongside CTX-1, as a third independent domain for the same
+        # reporting-style question V2-7.1 leaves open.
+        "id": "CTX-13", "topic": "Independent survey corroboration "
+                                 "(EU-OSHA workplace stress, a third "
+                                 "domain)",
+        "status": "descriptive corroboration",
+        "permitted": "A third, independent EU-wide survey extends the "
+                     "cross-domain pattern further. On work-related "
+                     "stress, depression or anxiety, Greek workers report "
+                     "the highest rate of any of the 30 countries "
+                     "surveyed, 49%, against an EU27 average of 29%, a "
+                     "different subject, a different institution and a "
+                     "different instrument from both this project's own "
+                     "reporting-style comparison and the financial-"
+                     "hardship measure itself. Consistent with the "
+                     "reading above: a pattern extreme on money, close to "
+                     "extreme on general wellbeing, and now also extreme "
+                     "on workplace-specific distress does not distinguish "
+                     "domain-specific circumstance from a broader "
+                     "reporting tendency, but it is one more domain in "
+                     "which Greece sits at the European extreme.",
+        "forbidden": "Treating this as a resolution of the reporting-"
+                     "style question this section leaves open: workplace "
+                     "stress is itself a self-report measure, so a "
+                     "country-level tendency to report distress more "
+                     "readily would show up here too, exactly as it "
+                     "would in the financial and life-satisfaction "
+                     "measures already discussed. Using this as evidence "
+                     "toward the cause of the 52.6-point gap: no test was "
+                     "run linking it to reported hardship. Treating a "
+                     "single-wave 2025 EU-OSHA survey as directly "
+                     "comparable in design to this project's own "
+                     "reporting-style comparison or the ESS "
+                     "life-satisfaction series: sample, question wording, "
+                     "and population differ.",
+        "relates_to_claim": "V2-7.1",
+        "evidence": "Flash Eurobarometer \"OSH Pulse 2025\", EU-OSHA; not "
+                    "this project's own panel, not EU-SILC",
+        "detect": "OSH Pulse|EU-OSHA|highest of 30 countries|"
+                  "49%.*29%.*work|εργασιακ.*άγχο.*49",
+        "source": "EU-OSHA, Flash Eurobarometer \"OSH Pulse 2025\", "
+                  "fieldwork March-April 2025.",
+        "source_url": "https://osha.europa.eu/sites/default/files/documents/OSH-pulse-2025-climate-digital-change_EN.pdf",
+        "source_detail": "EU27 plus Iceland, Norway and Switzerland (30 "
+                         "countries), n=28,220 employed workers. Table 21 "
+                         "(Question C1): work-related stress, depression "
+                         "or anxiety reported by 49% of Greek workers, "
+                         "the highest of the 30 countries, against an "
+                         "EU27 average of 29% and a low of 19% (Denmark). "
+                         "Up from 37% in the prior wave (April-May 2022), "
+                         "the largest increase of any country.",
+        "source_status": "verified", "review_date": "2026-09-14",
+        "verified_how": "fetched EU-OSHA's own full OSH Pulse 2025 report "
+                        "PDF directly (not the Facebook post, which named "
+                        "no Greek figure, nor the EU-OSHA highlights page "
+                        "or infographic, neither of which carries a "
+                        "country breakdown) and located Table 21's "
+                        "complete 30-country breakdown for Question C1; "
+                        "Greece's 49% figure, its highest-of-30 rank, the "
+                        "EU27 29% average, and the 2022-to-2025 change "
+                        "were all read directly from that table.",
+    },
 ]
 
 PLACEMENT = {

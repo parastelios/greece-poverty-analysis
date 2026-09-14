@@ -2208,6 +2208,20 @@ were traced to the ΕΕΕΠ survey page and reproduce. No test was run by
 this project linking problem-gambling risk to reported hardship, and
 the 9%/2% split cannot establish which way, if either, causation
 runs.</p>''',
+    "CTX-13": '''
+<p>EU-OSHA, Flash Eurobarometer "OSH Pulse 2025", fieldwork March-April
+2025, external to this project. EU27 plus Iceland, Norway and
+Switzerland (30 countries), n=28,220 employed workers. Raised via a
+Facebook post that named no Greek figure; traced to EU-OSHA's own full
+report (not the post, the highlights page, or an infographic, none of
+which carry a country breakdown) and confirmed against Table 21
+(Question C1): work-related stress, depression or anxiety reported by
+49% of Greek workers, the highest of the 30 countries surveyed, against
+an EU27 average of 29%, up from 37% in the prior (2022) wave, the
+largest increase of any country. No test was run by this project
+linking workplace stress to reported hardship, and workplace stress is
+itself a self-report measure, so it cannot settle the reporting-style
+question CTX-1 leaves open.</p>''',
 }
 _missing_ctx_prose = [cid for cid in ctx.index if cid not in _CTX_APPENDIX_PROSE]
 if _missing_ctx_prose:
@@ -2221,7 +2235,7 @@ if _missing_ctx_prose:
 # with Stage 8's conclusion; the rest are Stage 7's "what this is not".
 CTX_STAGE = {"CTX-1": 7, "CTX-2": 7, "CTX-3": 7, "CTX-3B": 2, "CTX-4": 7,
              "CTX-5": 7, "CTX-6": 8, "CTX-7": 7, "CTX-8": 4, "CTX-9": 7,
-             "CTX-10": 7, "CTX-11": 1, "CTX-12": 3}
+             "CTX-10": 7, "CTX-11": 1, "CTX-12": 3, "CTX-13": 7}
 _unmapped_ctx = [cid for cid in ctx.index if cid not in CTX_STAGE]
 if _unmapped_ctx:
     raise SystemExit(f"context entries with no stage: {_unmapped_ctx}")
