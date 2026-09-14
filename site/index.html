@@ -49,6 +49,11 @@ h1{font-size:46px;line-height:1.1;letter-spacing:-0.02em;margin:0 0 18px;text-wr
 h2{font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
   color:var(--text-muted);margin:48px 0 16px}
 .cards{display:grid;gap:14px}
+.cards-secondary{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.cards-secondary .card{padding:16px 18px}
+.cards-secondary .card h3{font-size:16px}
+.cards-secondary .card p{font-size:13px}
+@media(max-width:680px){.cards-secondary{grid-template-columns:1fr}}
 a.card{display:block;background:var(--surface-1);border:1px solid var(--border);
   border-radius:12px;padding:22px 24px;text-decoration:none;color:inherit;
   transition:border-color .15s ease, transform .15s ease}
@@ -60,11 +65,11 @@ a.card:focus-visible{outline:2px solid var(--gr);outline-offset:2px}
 .top-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
 .lang-switch{font-size:12px;font-weight:600;letter-spacing:.04em;white-space:nowrap}
 .lang-switch .cur{color:var(--text-primary)}
-.lang-switch a{color:var(--text-muted);text-decoration:none;margin-left:8px}
+.lang-switch a{color:var(--text-muted);text-decoration:none}
 .lang-switch a:hover{color:var(--gr)}
+.lang-switch > :last-child{margin-left:8px}
 .note{font-size:13px;color:var(--text-secondary);background:var(--surface-2);
   border-radius:10px;padding:16px 18px;margin:34px 0 0}
-.cta-row{margin:28px 0 0}
 a.cta{display:inline-block;background:var(--gr);color:#fff;font-size:15px;font-weight:650;
   text-decoration:none;padding:13px 26px;border-radius:9px;letter-spacing:-.005em;
   transition:transform .15s ease,opacity .15s ease}
@@ -138,15 +143,13 @@ footer a{color:var(--text-secondary)}
     <p class="lang-switch"><span class="cur">EN</span><a href="el.html">ΕΛ</a></p>
   </div>
   <h1>The Greek Poverty Paradox</h1>
-  <p class="dek">Since 2015, Greece has recorded the EU's highest rate of reported difficulty making ends meet: roughly two in three households. Yet the official income-poverty rate places Greece seventh-highest among the 27 member states, a serious but far less exceptional position. This project examines what lies behind the average 52.6-percentage-point gap between those two measures and how much of it the available evidence can explain.</p>
+  <p class="dek">Greece's labour market recovered. Its households did not. Two in three say they're struggling to make ends meet &mdash; the EU's highest share &mdash; while the official poverty rate looks far less exceptional. This project asks why.</p>
 
   <div class="stat-row">
     <div class="tile"><p class="l">Reported hardship, 2024</p><p class="v gr">66.7% <span class="unit">of households</span></p><p class="s">EU-country median: 17.1% · highest of 27</p></div>
     <div class="tile"><p class="l">Income poverty (AROP), 2024</p><p class="v">19.6% <span class="unit">of people</span></p><p class="s">EU-country median: 15.5% · 7th highest of 27</p></div>
     <div class="tile"><p class="l">Average gap, 2015–2024</p><p class="v">52.6 <span class="unit">pp</span></p><p class="s">largely unexplained</p></div>
   </div>
-
-  <p class="cta-row"><a class="cta" href="narrative.html">Read the story →</a></p>
 
   <div class="research-q">
     <p class="rq-title">The question behind the numbers</p>
@@ -188,17 +191,12 @@ footer a{color:var(--text-secondary)}
       <p class="carousel-count" data-count-for="car-en" aria-live="polite">1 / 8</p>
     </div>
   </div>
-  <p class="carousel-cta"><a class="cta" href="narrative.html">Read the full analysis →</a></p>
+  <p class="carousel-cta"><a class="cta" href="narrative.html">Read the full story →</a></p>
 
   <p class="note"><b>What the analysis finds.</b> Reported hardship cannot be dismissed as pessimism alone. It moves with specific material difficulties and with broader pressures involving wages, purchasing power, unemployment and housing.<br><br>No single factor, however, robustly explains the full 52.6-percentage-point average gap. The results show associations between countries, not that any one factor causes hardship within individual households.</p>
 
-  <h2>Options</h2>
-  <div class="cards">
-    <a class="card" href="narrative.html">
-      <h3>The story →</h3>
-      <p>What happened and why, in plain language, in eight sections. Start here if you want the explanation without the model tables.</p>
-      <p class="meta">long read · general audience</p>
-    </a>
+  <h2>Go deeper</h2>
+  <div class="cards cards-secondary">
     <a class="card" href="report.html">
       <h3>The technical report →</h3>
       <p>The complete evidence record: every model, robustness check, null result, and methodological caveat, with interactive charts.</p>

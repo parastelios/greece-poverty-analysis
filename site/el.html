@@ -49,6 +49,11 @@ h1{font-size:44px;line-height:1.15;letter-spacing:-0.02em;margin:0 0 18px;text-w
 h2{font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
   color:var(--text-muted);margin:48px 0 16px}
 .cards{display:grid;gap:14px}
+.cards-secondary{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.cards-secondary .card{padding:16px 18px}
+.cards-secondary .card h3{font-size:16px}
+.cards-secondary .card p{font-size:13px}
+@media(max-width:680px){.cards-secondary{grid-template-columns:1fr}}
 a.card{display:block;background:var(--surface-1);border:1px solid var(--border);
   border-radius:12px;padding:22px 24px;text-decoration:none;color:inherit;
   transition:border-color .15s ease, transform .15s ease}
@@ -60,11 +65,11 @@ a.card:focus-visible{outline:2px solid var(--gr);outline-offset:2px}
 .top-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
 .lang-switch{font-size:12px;font-weight:600;letter-spacing:.04em;white-space:nowrap}
 .lang-switch .cur{color:var(--text-primary)}
-.lang-switch a{color:var(--text-muted);text-decoration:none;margin-left:8px}
+.lang-switch a{color:var(--text-muted);text-decoration:none}
 .lang-switch a:hover{color:var(--gr)}
+.lang-switch > :last-child{margin-left:8px}
 .note{font-size:13px;color:var(--text-secondary);background:var(--surface-2);
   border-radius:10px;padding:16px 18px;margin:34px 0 0}
-.cta-row{margin:28px 0 0}
 a.cta{display:inline-block;background:var(--gr);color:#fff;font-size:15px;font-weight:650;
   text-decoration:none;padding:13px 26px;border-radius:9px;letter-spacing:-.005em;
   transition:transform .15s ease,opacity .15s ease}
@@ -135,18 +140,16 @@ footer a{color:var(--text-secondary)}
 <div class="wrap">
   <div class="top-row">
     <p class="eyebrow">EU-SILC · Eurostat · 2015–2024</p>
-    <p class="lang-switch"><span class="cur">ΕΛ</span><a href="index.html">EN</a></p>
+    <p class="lang-switch"><a href="index.html">EN</a><span class="cur">ΕΛ</span></p>
   </div>
   <h1>Το ελληνικό παράδοξο της φτώχειας</h1>
-  <p class="dek">Δύο στα τρία ελληνικά νοικοκυριά δηλώνουν ότι δυσκολεύονται να τα βγάλουν πέρα, το υψηλότερο ποσοστό στην ΕΕ, κάθε χρόνο από το 2015. Ο επίσημος δείκτης εισοδηματικής φτώχειας κατατάσσει την Ελλάδα στην 7η υψηλότερη θέση μεταξύ των 27: σοβαρή, αλλά όχι ακραία ευρωπαϊκή επίδοση. Η ανάλυση εξετάζει τι βρίσκεται πίσω από αυτό το μέσο χάσμα των 52,6 ποσοστιαίων μονάδων και πόσο από αυτό μπορούν να εξηγήσουν τα διαθέσιμα στοιχεία.</p>
+  <p class="dek">Η αγορά εργασίας της Ελλάδας ανέκαμψε. Τα νοικοκυριά της όχι. Δύο στα τρία δηλώνουν ότι δυσκολεύονται να τα βγάλουν πέρα &mdash; το υψηλότερο ποσοστό στην ΕΕ &mdash; ενώ ο επίσημος δείκτης φτώχειας φαίνεται πολύ λιγότερο ακραίος. Η ανάλυση εξετάζει γιατί.</p>
 
   <div class="stat-row">
     <div class="tile"><p class="l">Δηλωμένη οικονομική δυσκολία, 2024</p><p class="v gr">66,7% <span class="unit">των νοικοκυριών</span></p><p class="s">έναντι 17,1% στη διάμεση χώρα της ΕΕ · 1η θέση</p></div>
     <div class="tile"><p class="l">Εισοδηματική φτώχεια (AROP), 2024</p><p class="v">19,6% <span class="unit">των ανθρώπων</span></p><p class="s">έναντι 15,5% στη διάμεση χώρα της ΕΕ · 7η θέση</p></div>
     <div class="tile"><p class="l">Μέσο χάσμα, 2015–2024</p><p class="v">52,6 <span class="unit">π.μ.</span></p><p class="s">ποσοστιαίες μονάδες · σε μεγάλο βαθμό ανεξήγητο</p></div>
   </div>
-
-  <p class="cta-row"><a class="cta" href="narrative_el.html">Διαβάστε την ιστορία →</a></p>
 
   <div class="research-q">
     <p class="rq-title">Το ερώτημα πίσω από τους αριθμούς</p>
@@ -188,17 +191,12 @@ footer a{color:var(--text-secondary)}
       <p class="carousel-count" data-count-for="car-el" aria-live="polite">1 / 8</p>
     </div>
   </div>
-  <p class="carousel-cta"><a class="cta" href="narrative_el.html">Διαβάστε ολόκληρη την ανάλυση →</a></p>
+  <p class="carousel-cta"><a class="cta" href="narrative_el.html">Διαβάστε ολόκληρη την ιστορία →</a></p>
 
   <p class="note"><b>Τι δείχνει η ανάλυση.</b> Η οικονομική δυσκολία που δηλώνουν τα νοικοκυριά δεν μπορεί να απορριφθεί ως απλή απαισιοδοξία. Συμβαδίζει με συγκεκριμένες υλικές στερήσεις και με ένα ευρύτερο μοτίβο πίεσης στους μισθούς, στην αγοραστική δύναμη, στην απασχόληση και στη στέγαση.<br><br>Κανένας παράγοντας, όμως, δεν εξηγεί μόνος του το μέσο χάσμα των 52,6 ποσοστιαίων μονάδων. Τα αποτελέσματα δείχνουν σχέσεις μεταξύ χωρών, όχι τι προκαλεί τη δυσκολία μέσα σε κάθε νοικοκυριό.</p>
 
-  <h2>Επιλογές</h2>
-  <div class="cards">
-    <a class="card" href="narrative_el.html">
-      <h3>Η ιστορία →</h3>
-      <p>Τι συνέβη και γιατί, σε απλή γλώσσα, σε οκτώ ενότητες, χωρίς τους τεχνικούς πίνακες του μοντέλου.</p>
-      <p class="meta">εκτενές άρθρο · περίπου 55 λεπτά ανάγνωσης</p>
-    </a>
+  <h2>Για περισσότερα</h2>
+  <div class="cards cards-secondary">
     <a class="card" href="report.html">
       <h3>Η τεχνική αναφορά →</h3>
       <p>Το πλήρες αρχείο τεκμηρίωσης: κάθε μοντέλο, έλεγχος αντοχής, μηδενικό αποτέλεσμα και μεθοδολογική επιφύλαξη, με διαδραστικά γραφήματα.</p>
